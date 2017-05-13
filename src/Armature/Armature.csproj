@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{893267E2-5B94-4647-9EF6-70390757F11A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Armature</RootNamespace>
+    <AssemblyName>Armature</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\ArrayTail.cs" />
+    <Compile Include="Common\DictionaryExtension.cs" />
+    <Compile Include="Common\ExceptionExtension.cs" />
+    <Compile Include="Core\ArmatureException.cs" />
+    <Compile Include="Core\BuildPlansCollection.cs" />
+    <Compile Include="Core\LeafBuildStep.cs" />
+    <Compile Include="Core\MatchedBuildActions.cs" />
+    <Compile Include="Core\PassingBuildSequenceWeight.cs" />
+    <Compile Include="Core\BuildResult.cs" />
+    <Compile Include="Core\IBuildStep.cs" />
+    <Compile Include="Core\UnitInfoExtension.cs" />
+    <Compile Include="Core\UnitInfoMatcher.cs" />
+    <Compile Include="Core\BuildStepBase.cs" />
+    <Compile Include="Core\BuildStep.cs" />
+    <Compile Include="Core\WeightedExtension.cs" />
+    <Compile Include="Core\Weighted.cs" />
+    <Compile Include="Framework\BuildStage.cs" />
+    <Compile Include="Framework\BuildValueForParameterStep.cs" />
+    <Compile Include="Framework\FindAttributedConstructorBuildStep.cs" />
+    <Compile Include="Framework\FindConstructorBuildStepBase.cs" />
+    <Compile Include="Framework\FindLongestConstructorBuildStep.cs" />
+    <Compile Include="Framework\CreateByReflectionBuildAction.cs" />
+    <Compile Include="Framework\AnyUnitBuildStep.cs" />
+    <Compile Include="Framework\RedirectManyTypesBuildAction.cs" />
+    <Compile Include="Framework\RedirectOpenGenericTypeBuildAction.cs" />
+    <Compile Include="Framework\SingletonBuildAction.cs" />
+    <Compile Include="Framework\SpecialToken.cs" />
+    <Compile Include="Framework\WeakBuildSequenceBuildStep.cs" />
+    <Compile Include="Logging\Log.cs" />
+    <Compile Include="Logging\LogExtension.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Core\Build.cs" />
+    <Compile Include="Core\IBuildAction.cs" />
+    <Compile Include="Core\Builder.cs" />
+    <Compile Include="Core\UnitInfo.cs" />
+    <Compile Include="Core\IBuildPlansCollection.cs" />
+    <Compile Include="Framework\UnitBuilderExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SyntaxSugar\AdjusterSugar.cs" />
+    <Compile Include="SyntaxSugar\AddCreationBuildStep.cs" />
+    <Compile Include="SyntaxSugar\BuildPlansCollectionExtension.cs" />
+    <Compile Include="Framework\CreateWithFactoryMethodBuildAction.cs" />
+    <Compile Include="Framework\RedirectTypeBuildAction.cs" />
+    <Compile Include="SyntaxSugar\BuilderExtension.cs" />
+    <Compile Include="SyntaxSugar\Default.cs" />
+    <Compile Include="SyntaxSugar\For.cs" />
+    <Compile Include="SyntaxSugar\IParameterBuildPlanner.cs" />
+    <Compile Include="SyntaxSugar\AttributedParameterValueBuildStep.cs" />
+    <Compile Include="SyntaxSugar\ParameterValueBuildStep.cs" />
+    <Compile Include="SyntaxSugar\ParameterValueBuildActionWeight.cs" />
+    <Compile Include="SyntaxSugar\TreatOpenGenericSugar.cs" />
+    <Compile Include="SyntaxSugar\TreatSugar.cs" />
+    <Compile Include="SyntaxSugar\ParameterNameValueBuildStep.cs" />
+    <Compile Include="SyntaxSugar\StrictParameterTypeValueBuildStep.cs" />
+    <Compile Include="SyntaxSugar\Match.cs" />
+    <Compile Include="SyntaxSugar\WeakParameterTypeValueBuildStep.cs" />
+    <Compile Include="SyntaxSugar\BuildingSugar.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Armature.Interface\Armature.Interface.csproj">
+      <Project>{8F7B1053-FF1F-4B3A-9665-F296B81838B5}</Project>
+      <Name>Armature.Interface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
