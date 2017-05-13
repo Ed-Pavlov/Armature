@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace Armature.Framework
 {
-  public class WeakBuildSequenceBuildStep : BuildStep
+  public class WeakBuildSequenceBuildStep : StaticBuildStep
   {
     private readonly UnitInfoMatcher _matcher;
 

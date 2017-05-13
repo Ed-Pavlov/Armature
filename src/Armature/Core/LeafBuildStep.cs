@@ -7,12 +7,9 @@ namespace Armature.Core
 {
   /// <summary>
   /// Base class for a build step which triggers on the last unit in the build sequence only.
-  /// Returns no build action if does not match building unitl
-  /// Can't be a parent for any other build steps.
-  /// Always returns false for <see cref="Equals"/> and null for <see cref="GetChildBuldStep"/> because these
-  /// methods are used to make a chain for build steps.
+  /// Returns no build action if does not match building unit
   /// </summary>
-  public abstract class LeafBuildStep : IBuildStep
+  public abstract class LeafBuildStep : BuildStepBase
   {
     private readonly int _weight;
 
@@ -21,7 +18,7 @@ namespace Armature.Core
       _weight = weight;
     }
 
-    public MatchedBuildActions GetBuildActions(int inputWeight, ArrayTail<UnitInfo> buildSequence)
+    public override MatchedBuildActions GetBuildActions(int inputWeight, ArrayTail<UnitInfo> buildSequence)
     {
       if (buildSequence.Length != 1) return null;
 
@@ -32,17 +29,12 @@ namespace Armature.Core
         : new MatchedBuildActions{{buildStep.BuildStage, new List<Weighted<IBuildAction>>{buildStep.BuildAction.WithWeight(inputWeight + _weight)}}};
     }
 
-    protected abstract StagedBuildAction GetBuildAction(UnitInfo unitInfo);
-
-    public IBuildStep GetChildBuldStep(ArrayTail<IBuildStep> buildStepsSequence)
-    {
-      return null;
-    }
-
-    public bool Equals(IBuildStep other)
+    public override bool Equals(IBuildStep obj)
     {
       return false;
     }
+
+    protected abstract StagedBuildAction GetBuildAction(UnitInfo unitInfo);
 
     protected class StagedBuildAction
     {

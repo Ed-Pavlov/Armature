@@ -51,8 +51,8 @@
     <Compile Include="Core\IBuildStep.cs" />
     <Compile Include="Core\UnitInfoExtension.cs" />
     <Compile Include="Core\UnitInfoMatcher.cs" />
+    <Compile Include="Core\StaticBuildStep.cs" />
     <Compile Include="Core\BuildStepBase.cs" />
-    <Compile Include="Core\BuildStep.cs" />
     <Compile Include="Core\WeightedExtension.cs" />
     <Compile Include="Core\Weighted.cs" />
     <Compile Include="Framework\BuildStage.cs" />

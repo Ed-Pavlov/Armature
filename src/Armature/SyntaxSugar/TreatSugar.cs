@@ -7,9 +7,9 @@ namespace Armature
 {
   public class TreatSugar<T> : AdjusterSugar
   {
-    private readonly BuildStep _buildStep;
+    private readonly StaticBuildStep _buildStep;
 
-    public TreatSugar(BuildStep buildStep) : base(buildStep)
+    public TreatSugar(StaticBuildStep buildStep) : base(buildStep)
     {
       _buildStep = buildStep;
     }

@@ -7,9 +7,9 @@ namespace Armature
 {
   public class TreatOpenGenericSugar
   {
-    private readonly BuildStep _buildStep;
+    private readonly StaticBuildStep _buildStep;
 
-    public TreatOpenGenericSugar([NotNull] BuildStep buildStep)
+    public TreatOpenGenericSugar([NotNull] StaticBuildStep buildStep)
     {
       if (buildStep == null) throw new ArgumentNullException("buildStep");
 

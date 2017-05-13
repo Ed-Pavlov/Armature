@@ -5,6 +5,6 @@ namespace Armature
 {
   public interface IParameterBuildPlanner
   {
-    void RegisterParameterResolver([NotNull] BuildStep buildStep);
+    void RegisterParameterResolver([NotNull] BuildStepBase buildStep);
   }
 }

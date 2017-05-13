@@ -34,7 +34,7 @@ namespace Armature
 
     private class TypeParameterBuildPlanner<T> : ParameterBuildPlanner, IParameterBuildPlanner
     {
-      public void RegisterParameterResolver(BuildStep buildStep)
+      public void RegisterParameterResolver(BuildStepBase buildStep)
       {
         buildStep.AddChildBuildStep(new StrictParameterTypeValueBuildStep(typeof(T), BuildAction));
       }
@@ -49,7 +49,7 @@ namespace Armature
         _parameterName = parameterName;
       }
 
-      public void RegisterParameterResolver(BuildStep buildStep)
+      public void RegisterParameterResolver(BuildStepBase buildStep)
       {
         buildStep.AddChildBuildStep(new ParameterNameValueBuildStep(_parameterName, BuildAction));
       }
@@ -65,7 +65,7 @@ namespace Armature
         _injectPointId = injectPointId;
       }
 
-      public void RegisterParameterResolver(BuildStep buildStep)
+      public void RegisterParameterResolver(BuildStepBase buildStep)
       {
         buildStep.AddChildBuildStep(new AttributedParameterValueBuildStep(_injectPointId, BuildAction));
       }
