@@ -56,7 +56,7 @@ namespace Armature
       {
         nextBuildStep = new WeakBuildSequenceBuildStep(Match.Type<TRedirect>(token));
         nextBuildStep.AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
-        _buildStep.AddChildBuildStep(nextBuildStep);
+        _buildStep.AddBuildStep(nextBuildStep);
       }
 
       return new AdjusterSugar(nextBuildStep);

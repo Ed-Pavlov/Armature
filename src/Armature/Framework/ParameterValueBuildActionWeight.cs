@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Armature
+namespace Armature.Framework
 {
   [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
   public class ParameterValueBuildActionWeight

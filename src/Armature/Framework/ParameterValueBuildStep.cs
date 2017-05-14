@@ -1,9 +1,8 @@
 ﻿using System.Reflection;
 using Armature.Core;
-using Armature.Framework;
 using Armature.Logging;
 
-namespace Armature
+namespace Armature.Framework
 {
   public abstract class ParameterValueBuildStep : LeafBuildStep
   {

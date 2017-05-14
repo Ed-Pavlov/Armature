@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Reflection;
-using Armature.Framework;
 using JetBrains.Annotations;
 
-namespace Armature
+namespace Armature.Framework
 {
   public class WeakParameterTypeValueBuildStep : ParameterValueBuildStep
   {

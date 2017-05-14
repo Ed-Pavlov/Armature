@@ -31,7 +31,7 @@ namespace Tests.Functional
       // register AddPostfixToString buildAction for any string on the very first stage
       // (postprocessing will be called last and buildAction will add a postfix to created or cached string
       var anyUnitBuildStep = new AnyUnitBuildStep();
-      anyUnitBuildStep.AddChildBuildStep(new AnyStringBuildStep(InterceptBuildStage, new AddPostfixToString(Postfix)));
+      anyUnitBuildStep.AddBuildStep(new AnyStringBuildStep(InterceptBuildStage, new AddPostfixToString(Postfix)));
       target.AddBuildStep(anyUnitBuildStep);
 
       // --act

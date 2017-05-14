@@ -21,7 +21,7 @@ namespace Tests.UnitTests
       // --arrange
       var target = new WeakBuildSequenceBuildStep(Match.Type<IDisposableValue1>(null));
       var next = new WeakBuildSequenceBuildStep(Match.Type<IDisposable>(null));
-      target.AddChildBuildStep(next);
+      target.AddBuildStep(next);
       next.AddBuildAction(BuildStage.Cache, expected);
 
       // --act
@@ -41,9 +41,9 @@ namespace Tests.UnitTests
       var singletonAction = new SingletonBuildAction();
       var buildStep2 = new AnyUnitBuildStep().AddBuildAction(BuildStage.Cache, singletonAction);
 
-      var target = new WeakBuildSequenceBuildStep(Match.Type<string>(null))
-        .AddChildBuildStep(buildStep1)
-        .AddChildBuildStep(buildStep2);
+      var target = new WeakBuildSequenceBuildStep(Match.Type<string>(null));
+      target.AddBuildStep(buildStep1);
+      target.AddBuildStep(buildStep2);
 
       // --act
       var actual = target.GetBuildActions(0, ArrayTail.Of(new[] {Unit.OfType<string>(), Unit.OfType<int>()}, 0));

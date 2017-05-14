@@ -36,7 +36,7 @@ namespace Armature
     {
       public void RegisterParameterResolver(BuildStepBase buildStep)
       {
-        buildStep.AddChildBuildStep(new StrictParameterTypeValueBuildStep(typeof(T), BuildAction));
+        buildStep.AddBuildStep(new StrictParameterTypeValueBuildStep(typeof(T), BuildAction));
       }
     }
 
@@ -51,7 +51,7 @@ namespace Armature
 
       public void RegisterParameterResolver(BuildStepBase buildStep)
       {
-        buildStep.AddChildBuildStep(new ParameterNameValueBuildStep(_parameterName, BuildAction));
+        buildStep.AddBuildStep(new ParameterNameValueBuildStep(_parameterName, BuildAction));
       }
     }
 
@@ -67,7 +67,7 @@ namespace Armature
 
       public void RegisterParameterResolver(BuildStepBase buildStep)
       {
-        buildStep.AddChildBuildStep(new AttributedParameterValueBuildStep(_injectPointId, BuildAction));
+        buildStep.AddBuildStep(new AttributedParameterValueBuildStep(_injectPointId, BuildAction));
       }
     }
   }

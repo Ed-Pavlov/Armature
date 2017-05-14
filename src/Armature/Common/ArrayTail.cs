@@ -46,11 +46,6 @@ namespace Armature.Common
       return new ArrayTail<T>(array, startIndex);
     }
 
-    public static ArrayTail<T> GetLastItemAsTail<T>(this ArrayTail<T> arrayTail)
-    {
-      return arrayTail.GetTail(arrayTail.Length - 1);
-    }
-
     public static T GetLastItem<T>(this ArrayTail<T> arrayTail)
     {
       return arrayTail[arrayTail.Length - 1];

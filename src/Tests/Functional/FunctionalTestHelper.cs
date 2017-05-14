@@ -15,9 +15,9 @@ namespace Tests.Functional
       var container = new Builder(stages, parentBuilder);
 
       var treatAll = new AnyUnitBuildStep();
-      treatAll.AddChildBuildStep(new FindLongestConstructorBuildStep());
-      treatAll.AddChildBuildStep(new FindAttributedConstructorBuildStep(10));
-      treatAll.AddChildBuildStep(BuildValueForParameterStep.Instance);
+      treatAll.AddBuildStep(new FindLongestConstructorBuildStep());
+      treatAll.AddBuildStep(new FindAttributedConstructorBuildStep(10));
+      treatAll.AddBuildStep(BuildValueForParameterStep.Instance);
 
       container.AddBuildStep(treatAll);
       return container;

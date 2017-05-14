@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Armature.Common;
 using JetBrains.Annotations;
 
@@ -18,10 +19,9 @@ namespace Armature.Core
     [CanBeNull]
     MatchedBuildActions GetBuildActions(int inputWeight, ArrayTail<UnitInfo> buildSequence);
 
-    /// <summary>
-    /// Matches a whole sequence and returns the last <see cref="IBuildStep"/> if found. Used to create build plans
-    /// </summary>
-    [CanBeNull]
-    IBuildStep GetChildBuldStep(ArrayTail<IBuildStep> buildStepsSequence);
+    void AddBuildStep([NotNull] IBuildStep buildStep);
+
+    [NotNull]
+    IEnumerable<IBuildStep> Children { get; }
   }
 }

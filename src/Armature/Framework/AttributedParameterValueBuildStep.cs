@@ -7,7 +7,7 @@ using Armature.Interface;
 using Armature.Logging;
 using JetBrains.Annotations;
 
-namespace Armature
+namespace Armature.Framework
 {
   /// <summary>
   /// Contains a build step to build a value for a parameter marked with an <see cref="Attribute"/>.

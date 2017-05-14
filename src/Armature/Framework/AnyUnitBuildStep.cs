@@ -7,7 +7,9 @@ namespace Armature.Framework
   {
     public override MatchedBuildActions GetBuildActions(int inputWeight, ArrayTail<UnitInfo> buildSequence)
     {
-      return GetChildrenActions(inputWeight + PassingBuildSequenceWeight.AnyUnit, buildSequence.GetLastItemAsTail())
+      var lastItemAsTail = buildSequence.GetTail(buildSequence.Length - 1);
+
+      return GetChildrenActions(inputWeight + PassingBuildSequenceWeight.AnyUnit, lastItemAsTail)
         .Merge(GetOwnActions(inputWeight + PassingBuildSequenceWeight.AnyUnit));
     }
 

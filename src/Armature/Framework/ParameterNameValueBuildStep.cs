@@ -4,7 +4,7 @@ using Armature.Core;
 using Armature.Logging;
 using JetBrains.Annotations;
 
-namespace Armature
+namespace Armature.Framework
 {
   public class ParameterNameValueBuildStep : ParameterValueBuildStep
   {

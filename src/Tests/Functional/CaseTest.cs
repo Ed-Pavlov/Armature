@@ -15,7 +15,7 @@ namespace Tests.Functional
   public class CaseTest
   {
     [Test]
-    public void WhenResolving()
+    public void Building()
     {
       // --arrange
       var target = FunctionalTestHelper.CreateContainer();
@@ -27,8 +27,6 @@ namespace Tests.Functional
       target
         .Treat<IDisposableValue1>()
         .As<OneDisposableCtorClass>();
-
-      target.PrintLog();
 
       // --act
       var actual = target.Build<IDisposableValue1>();
@@ -99,8 +97,6 @@ namespace Tests.Functional
       target.Treat<IDisposableValue2>()
         .As<OneDisposableCtorClass>()
         .UsingParameters(expected);
-
-      target.PrintLog();
 
       // --act
       var instance = target.Build<IDisposableValue2>();

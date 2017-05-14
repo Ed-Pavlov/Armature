@@ -11,12 +11,12 @@ namespace Armature.Core
   public class Build
   {
     [NotNull] private readonly IEnumerable<object> _stages;
-    [NotNull] private readonly IBuildPlansCollection _buildPlans;
-    [CanBeNull] private readonly IBuildPlansCollection _sessionBuildPlans;
+    [NotNull] private readonly BuildPlansCollection _buildPlans;
+    [CanBeNull] private readonly BuildPlansCollection _sessionBuildPlans;
 
     private readonly List<UnitInfo> _buildSequence = new List<UnitInfo>(4);
 
-    private Build([NotNull] IEnumerable<object> stages, [NotNull] IBuildPlansCollection buildPlans, [CanBeNull] IBuildPlansCollection sessionBuildPlans)
+    private Build([NotNull] IEnumerable<object> stages, [NotNull] BuildPlansCollection buildPlans, [CanBeNull] BuildPlansCollection sessionBuildPlans)
     {
       if (stages == null) throw new ArgumentNullException("stages");
       if (buildPlans == null) throw new ArgumentNullException("buildPlans");
@@ -34,7 +34,7 @@ namespace Armature.Core
     /// <param name="sessionBuildPlans">Sessional build plans used to build a unit. Sessional plans overrides common <paramref name="buildPlans"/></param>
     /// <returns>Returns <see cref="BuildUnit(Armature.Core.UnitInfo,MatchedBuildActions)"/> if unit was built or null otherwise. <see cref="BuildUnit(Armature.Core.UnitInfo,MatchedBuildActions)"/> for details.</returns>
     [CanBeNull]
-    public static BuildResult BuildUnit(IEnumerable<object> stages, UnitInfo unitInfo, IBuildPlansCollection buildPlans, IBuildPlansCollection sessionBuildPlans)
+    public static BuildResult BuildUnit(IEnumerable<object> stages, UnitInfo unitInfo, BuildPlansCollection buildPlans, BuildPlansCollection sessionBuildPlans)
     {
       return new Build(stages, buildPlans, sessionBuildPlans).BuildUnit(unitInfo);
     }
@@ -51,10 +51,10 @@ namespace Armature.Core
         try
         {
           if (_sessionBuildPlans != null)
-            result = BuildUnit(unitInfo, _sessionBuildPlans.GetActions(_buildSequence));
+            result = BuildUnit(unitInfo, _sessionBuildPlans.GetBuildActions(_buildSequence));
 
           if(result == null)
-            result = BuildUnit(unitInfo, _buildPlans.GetActions(_buildSequence));
+            result = BuildUnit(unitInfo, _buildPlans.GetBuildActions(_buildSequence));
         }
         finally
         {

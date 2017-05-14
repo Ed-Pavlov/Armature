@@ -1,39 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Armature.Common;
-using Armature.Logging;
 
 namespace Armature.Core
 {
-  public class BuildPlansCollection : IBuildPlansCollection
+  public class BuildPlansCollection
   {
-    private readonly List<IBuildStep> _children = new List<IBuildStep>();
+    /// <summary>
+    /// Reuse implementation of <see cref="BuildStepBase"/> to implement <see cref="BuildPlansCollection"/> public interface
+    /// </summary>
+    private readonly RootBuildStep _rootBuildStep = new RootBuildStep();
 
-    public IBuildPlansCollection AddBuildStep(IBuildStep buildStep)
+    public MatchedBuildActions GetBuildActions(IList<UnitInfo> buildSequence)
     {
-      if (buildStep == null) throw new ArgumentNullException("buildStep");
-      _children.Add(buildStep);
-      return this;
+      return _rootBuildStep.GetBuildActions(0, ArrayTail.Of(buildSequence, 0));
     }
 
-    public IBuildStep GetBuildStep(ArrayTail<IBuildStep> buildStepsSequence)
+    public void AddBuildStep(IBuildStep buildStep)
     {
-      return _children.SingleOrDefault(child => child.GetChildBuldStep(buildStepsSequence) != null);
+      _rootBuildStep.AddBuildStep(buildStep);
     }
 
-    public MatchedBuildActions GetActions(IList<UnitInfo> buildSequence)
+    public IEnumerable<IBuildStep> Children
     {
-      var array = ArrayTail.Of(buildSequence, 0);
-      return _children.Aggregate((MatchedBuildActions) null, (current, child) => current.Merge(child.GetBuildActions(0, array)));
+      get { return _rootBuildStep.Children; }
     }
 
-     public void PrintLog()
+    private class RootBuildStep : BuildStepBase
     {
-      Log.Info("------ Actions Collection ------");
-      foreach (var child in _children)
-        Log.Info(child.ToString());
-      Log.Info("------/Actions Collection ------");
+      public override MatchedBuildActions GetBuildActions(int inputWeight, ArrayTail<UnitInfo> buildSequence)
+      {
+        return GetChildrenActions(inputWeight, buildSequence);
+      }
+
+      public override bool Equals(IBuildStep other)
+      {
+        throw new NotSupportedException();
+      }
     }
   }
 }

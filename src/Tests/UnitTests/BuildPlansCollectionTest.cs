@@ -17,12 +17,12 @@ namespace Tests.UnitTests
       var singletonAction = new SingletonBuildAction();
       var buildStep2 = new AnyUnitBuildStep().AddBuildAction(BuildStage.Cache, singletonAction);
 
-      var target = new BuildPlansCollection()
-        .AddBuildStep(buildStep1)
-        .AddBuildStep(buildStep2);
+      var target = new BuildPlansCollection();
+      target.AddBuildStep(buildStep1);
+      target.AddBuildStep(buildStep2);
 
       // --act
-      var actual = target.GetActions(new[] {Unit.OfType<string>()});
+      var actual = target.GetBuildActions(new[] {Unit.OfType<string>()});
 
       // --assert
       actual[BuildStage.Cache]

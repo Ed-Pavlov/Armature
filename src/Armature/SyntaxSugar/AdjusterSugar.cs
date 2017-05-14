@@ -24,7 +24,7 @@ namespace Armature
         if (parameterBuildPlanner != null)
           parameterBuildPlanner.RegisterParameterResolver(_buildStep);
         else
-          _buildStep.AddChildBuildStep(new WeakParameterTypeValueBuildStep(parameter));
+          _buildStep.AddBuildStep(new WeakParameterTypeValueBuildStep(parameter));
       }
       return this;
     }
@@ -36,7 +36,7 @@ namespace Armature
 
     public AdjusterSugar UsingAttributedConstructor(object injectionPointId)
     {
-      _buildStep.AddChildBuildStep(new FindAttributedConstructorBuildStep(0, injectionPointId));
+      _buildStep.AddBuildStep(new FindAttributedConstructorBuildStep(0, injectionPointId));
       return this;
     }
   }
