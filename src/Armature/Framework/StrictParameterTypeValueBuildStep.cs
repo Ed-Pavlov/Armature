@@ -10,8 +10,8 @@ namespace Armature.Framework
   {
     private readonly Type _parameterType;
 
-    public StrictParameterTypeValueBuildStep([NotNull] Type parameterType, [NotNull] IBuildAction buildAction)
-      : base(buildAction, ParameterValueBuildActionWeight.TypedParameterResolver)
+    public StrictParameterTypeValueBuildStep(int weight, [NotNull] Type parameterType, [NotNull] IBuildAction buildAction)
+      : base(buildAction, weight)
     {
       if (parameterType == null) throw new ArgumentNullException("parameterType");
       _parameterType = parameterType;

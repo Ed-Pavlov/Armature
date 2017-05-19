@@ -39,7 +39,9 @@ namespace Armature.Core
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
     public object BuildUnit(UnitInfo unitInfo, BuildPlansCollection sessionRules = null)
     {
-      var buildResult = Build.BuildUnit(_stages, unitInfo, this, sessionRules);
+      var buildSession = new BuildSession(_stages, this, sessionRules);
+
+      var buildResult = buildSession.BuildUnit(unitInfo);
       if (buildResult != null)
         return buildResult.Value;
 

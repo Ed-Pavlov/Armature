@@ -5,10 +5,7 @@ namespace Armature.Framework
 {
   public class BuildValueForParameterStep : LeafBuildStep
   {
-    // it has no children and no state, so use a singleton
-    public static readonly IBuildStep Instance = new BuildValueForParameterStep();
-
-    private BuildValueForParameterStep() : base(0)
+    public BuildValueForParameterStep(int weight) : base(weight)
     {}
 
     protected override StagedBuildAction GetBuildAction(UnitInfo unitInfo)

@@ -62,22 +62,22 @@ namespace Armature
       return new AdjusterSugar(nextBuildStep);
     }
 
-    public void CreatedBy([NotNull] Func<Build.Session, T> factoryMethod)
+    public void CreatedBy([NotNull] Func<UnitBuilder, T> factoryMethod)
     {
       _buildStep.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T>(factoryMethod));
     }
 
-    public void CreatedBy<T1>([NotNull] Func<Build.Session, T1, T> factoryMethod)
+    public void CreatedBy<T1>([NotNull] Func<UnitBuilder, T1, T> factoryMethod)
     {
       _buildStep.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod));
     }
 
-    public void CreatedBy<T1, T2>([NotNull] Func<Build.Session, T1, T2, T> factoryMethod)
+    public void CreatedBy<T1, T2>([NotNull] Func<UnitBuilder, T1, T2, T> factoryMethod)
     {
       _buildStep.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod));
     }
 
-    public void CreatedBy<T1, T2, T3>([NotNull] Func<Build.Session, T1, T2, T3, T> factoryMethod)
+    public void CreatedBy<T1, T2, T3>([NotNull] Func<UnitBuilder, T1, T2, T3, T> factoryMethod)
     {
       _buildStep.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod));
     }

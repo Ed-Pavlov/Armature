@@ -16,20 +16,25 @@ namespace Armature.Framework
       _instance = new Instance(value);
     }
 
-    public void Execute(Build.Session buildSession)
+    public void Execute(UnitBuilder unitBuilder)
     {
       Log.Verbose("{0}.Execute: Instance={1}", typeof(SingletonBuildAction).Name, _instance ?? (object)"null");
 
       if (_instance != null)
-        buildSession.BuildResult = new BuildResult(_instance.Value);
+        unitBuilder.BuildResult = new BuildResult(_instance.Value);
     }
 
-    public void PostProcess(Build.Session buildSession)
+    public void PostProcess(UnitBuilder unitBuilder)
     {
-      Log.Verbose("{0}.PostProcess: BuildResult={1}, Instance={2}", typeof(SingletonBuildAction).Name, buildSession.BuildResult ?? (object)"null", _instance ?? (object)"null");
+      Log.Verbose("{0}.PostProcess: BuildResult={1}, Instance={2}", typeof(SingletonBuildAction).Name, unitBuilder.BuildResult ?? (object)"null", _instance ?? (object)"null");
 
-      if(buildSession.BuildResult != null)
-        _instance = new Instance(buildSession.BuildResult.Value);
+      if(unitBuilder.BuildResult != null)
+        _instance = new Instance(unitBuilder.BuildResult.Value);
+    }
+
+    public override string ToString()
+    {
+      return string.Format("{0}: {1}", GetType().Name, _instance ?? (object)"not set");
     }
 
     private class Instance

@@ -49,6 +49,7 @@
     <Compile Include="Core\PassingBuildSequenceWeight.cs" />
     <Compile Include="Core\BuildResult.cs" />
     <Compile Include="Core\IBuildStep.cs" />
+    <Compile Include="Core\UnitBuilder.cs" />
     <Compile Include="Core\UnitInfoExtension.cs" />
     <Compile Include="Core\UnitInfoMatcher.cs" />
     <Compile Include="Core\StaticBuildStep.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Framework\BuildValueForParameterStep.cs" />
     <Compile Include="Framework\FindAttributedConstructorBuildStep.cs" />
     <Compile Include="Framework\FindConstructorBuildStepBase.cs" />
+    <Compile Include="Framework\FindConstructorBuildStepWeight.cs" />
     <Compile Include="Framework\FindLongestConstructorBuildStep.cs" />
     <Compile Include="Framework\CreateByReflectionBuildAction.cs" />
     <Compile Include="Framework\AnyUnitBuildStep.cs" />
@@ -77,7 +79,7 @@
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\LogExtension.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Core\Build.cs" />
+    <Compile Include="Core\BuildSession.cs" />
     <Compile Include="Core\IBuildAction.cs" />
     <Compile Include="Core\Builder.cs" />
     <Compile Include="Core\UnitInfo.cs" />

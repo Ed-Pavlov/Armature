@@ -18,16 +18,16 @@ namespace Armature.Framework
   {
     private readonly Predicate<Attribute> _predicate;
 
-    public AttributedParameterValueBuildStep([CanBeNull] object injectPointId, [NotNull] IBuildAction buildAction)
-      : this(buildAction, CreateInjectAttributePredicate(injectPointId))
+    public AttributedParameterValueBuildStep(int weight, [CanBeNull] object injectPointId, [NotNull] IBuildAction buildAction)
+      : this(weight, CreateInjectAttributePredicate(injectPointId), buildAction)
     {}
 
     /// <summary>
     /// Use this constructor to use <see cref="AttributedParameterValueBuildStep"/> with any other attribute rether then <see cref="InjectAttribute"/>
     /// </summary>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    public AttributedParameterValueBuildStep([NotNull] IBuildAction buildAction, [NotNull] Predicate<Attribute> predicate)
-      : base(buildAction, ParameterValueBuildActionWeight.AttributedParameterResolver)
+    public AttributedParameterValueBuildStep(int weight, [NotNull] Predicate<Attribute> predicate, [NotNull] IBuildAction buildAction)
+      : base(buildAction, weight)
     {
       if (predicate == null) throw new ArgumentNullException("predicate");
       _predicate = predicate;

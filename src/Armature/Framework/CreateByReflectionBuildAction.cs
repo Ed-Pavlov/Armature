@@ -12,16 +12,16 @@ namespace Armature.Framework
     private CreateByReflectionBuildAction()
     {}
 
-    public void Execute(Build.Session buildSession)
+    public void Execute(UnitBuilder unitBuilder)
     {
-      if(buildSession.BuildResult == null)
+      if(unitBuilder.BuildResult == null)
 			{
-        var type = buildSession.UnitInfo.GetUnitType();
+        var type = unitBuilder.UnitInfo.GetUnitType();
 
 			  // ReSharper disable once PossibleNullReferenceException
         if( !type.IsInterface && !type.IsAbstract )
         {
-          var constructor = buildSession.GetConstructorOf(type);
+          var constructor = unitBuilder.GetConstructorOf(type);
           var parameters = constructor.GetParameters();
 
           if (parameters.Length == 0 && type.IsValueType) // do not create default value of value type, it can confuse logic
@@ -31,8 +31,8 @@ namespace Armature.Framework
           {
             var instance = parameters.Length == 0 
               ? Activator.CreateInstance(type) 
-              : Activator.CreateInstance(type, buildSession.GetValuesForParameters(parameters));
-            buildSession.BuildResult = new BuildResult(instance);
+              : Activator.CreateInstance(type, unitBuilder.GetValuesForParameters(parameters));
+            unitBuilder.BuildResult = new BuildResult(instance);
           }
           catch (TargetInvocationException exception)
           {
@@ -44,7 +44,12 @@ namespace Armature.Framework
 			}
     }
 
-    public void PostProcess(Build.Session buildSession)
+    public void PostProcess(UnitBuilder unitBuilder)
     {}
+
+    public override string ToString()
+    {
+      return GetType().Name;
+    }
   }
 }

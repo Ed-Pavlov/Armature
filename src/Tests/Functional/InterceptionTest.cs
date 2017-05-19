@@ -113,14 +113,14 @@ namespace Tests.Functional
         _postfix = postfix;
       }
 
-      public void Execute(Build.Session buildSession)
+      public void Execute(UnitBuilder unitBuilder)
       {}
 
-      public void PostProcess(Build.Session buildSession)
+      public void PostProcess(UnitBuilder unitBuilder)
       {
-        var assembleResult = buildSession.BuildResult;
+        var assembleResult = unitBuilder.BuildResult;
         var value = (string)assembleResult.Value;
-        buildSession.BuildResult = new BuildResult(value + _postfix);
+        unitBuilder.BuildResult = new BuildResult(value + _postfix);
       }
     }
 

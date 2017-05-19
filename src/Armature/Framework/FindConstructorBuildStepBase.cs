@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Armature.Core;
+using Armature.Logging;
 
 namespace Armature.Framework
 {
@@ -9,24 +10,17 @@ namespace Armature.Framework
     protected FindConstructorBuildStepBase(int weight) : base(weight)
     {}
 
-
     protected override StagedBuildAction GetBuildAction(UnitInfo unitInfo)
     {
       if (!Equals(unitInfo.Token, SpecialToken.FindConstructor))
-      {
-//        this.LogDoesNotMatch(buildSequence);
         return null;
-      }
 
       var constructorInfo = GetConstructor(unitInfo.GetUnitType());
-      if (constructorInfo == null)
-      {
-//        this.LogInfo("constructor is not found");
-        return null;
-      }
-
-//      this.LogBuildStepMatch(buildSequence);
-      return new StagedBuildAction(BuildStage.Create, new SingletonBuildAction(constructorInfo));
+      Log.Verbose("{0}: {1}", GetType().Name, constructorInfo == null ? "is not found" : constructorInfo.ToString());
+      
+      return constructorInfo == null 
+        ? null 
+        : new StagedBuildAction(BuildStage.Create, new SingletonBuildAction(constructorInfo));
     }
 
     protected abstract ConstructorInfo GetConstructor(Type type);

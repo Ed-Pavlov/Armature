@@ -14,25 +14,25 @@ namespace Armature.Framework
       if(constructionObjects.Length == 0) throw new Exception();
     }
 
-    public void Execute(Build.Session buildSession)
+    public void Execute(UnitBuilder unitBuilder)
     {
-      if(buildSession.BuildResult != null)
+      if(unitBuilder.BuildResult != null)
         throw new Exception();
 
       var result = new List<TFrom>();
       foreach (var targetId in _constructionObjects)
       {
-        var buildResult = buildSession.Build(targetId);
+        var buildResult = unitBuilder.Build(targetId);
         if (buildResult != null)
         {
           result.Add((TFrom) buildResult.Value);
-          buildSession.BuildResult = null;
+          unitBuilder.BuildResult = null;
         }
       }
-      buildSession.BuildResult = new BuildResult(result);
+      unitBuilder.BuildResult = new BuildResult(result);
     }
 
-    public void PostProcess(Build.Session buildSession)
+    public void PostProcess(UnitBuilder unitBuilder)
     {}
   }
 }

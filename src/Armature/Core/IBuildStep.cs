@@ -20,6 +20,7 @@ namespace Armature.Core
     MatchedBuildActions GetBuildActions(int inputWeight, ArrayTail<UnitInfo> buildSequence);
 
     void AddBuildStep([NotNull] IBuildStep buildStep);
+    bool RemoveBuildStep([NotNull] IBuildStep buildStep);
 
     [NotNull]
     IEnumerable<IBuildStep> Children { get; }

@@ -1,7 +1,7 @@
 ﻿namespace Armature.Core
 {
   /// <summary>
-  /// Represents a result of the <see cref="Build"/>, null is a valid result.
+  /// Represents a result of the <see cref="BuildSession"/>, null is a valid <see cref="Value"/>.
   /// </summary>
   public class BuildResult
   {

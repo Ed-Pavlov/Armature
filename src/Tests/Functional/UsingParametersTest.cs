@@ -147,8 +147,7 @@ namespace Tests.Functional
       const string expectedString3 = "value";
       const string l3ExpectedString = "levelThree";
 
-      using(Log.Enabled(LogLevel.Verbose))
-
+      using(Log.Enabled(LogLevel.Info))
       {
         var target = FunctionalTestHelper.CreateContainer();
 

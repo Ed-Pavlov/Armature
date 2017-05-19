@@ -8,8 +8,8 @@ namespace Armature.Framework
   {
     private readonly object _parameterValue;
 
-    public WeakParameterTypeValueBuildStep([NotNull] object parameterValue)
-      : base(new SingletonBuildAction(parameterValue), ParameterValueBuildActionWeight.FreeValueResolver)
+    public WeakParameterTypeValueBuildStep(int weight, [NotNull] object parameterValue)
+      : base(new SingletonBuildAction(parameterValue), weight)
     {
       if (parameterValue == null) throw new ArgumentNullException("parameterValue");
       _parameterValue = parameterValue;

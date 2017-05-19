@@ -16,20 +16,20 @@ namespace Armature.Framework
     protected override StagedBuildAction GetBuildAction(UnitInfo unitInfo)
     {
       return Matches(unitInfo)
-        ? new StagedBuildAction(BuildStage.Create,_buildAction)
+        ? new StagedBuildAction(BuildStage.Create, _buildAction)
         : null;
     }
 
     private bool Matches(UnitInfo unitInfo)
     {
       var parameterInfo = unitInfo.Id as ParameterInfo;
+      if (parameterInfo == null || !Equals(unitInfo.Token, SpecialToken.BuildParameterValue))
+        return false;
 
-      using (Log.Block(GetType().Name))
-      {
-        return parameterInfo != null && Equals(unitInfo.Token, SpecialToken.BuildParameterValue) && Matches(parameterInfo);
-
-//        this.LogBuildStepMatch(buildSequence);
-      }
+      var matches = Matches(parameterInfo);
+      Log.Verbose("{0}: {1}", GetType().Name, matches ? "matches" : "does not match");
+      
+      return matches;
     }
 
     protected abstract bool Matches(ParameterInfo parameterInfo);

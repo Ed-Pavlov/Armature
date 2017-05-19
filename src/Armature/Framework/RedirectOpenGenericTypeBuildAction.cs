@@ -17,13 +17,18 @@ namespace Armature.Framework
       _token = token;
     }
 
-    public void Execute(Build.Session buildSession)
+    public void Execute(UnitBuilder unitBuilder)
     {
-      var genericType = _redirectTo.MakeGenericType(buildSession.UnitInfo.GetUnitType().GetGenericArguments());
-      buildSession.BuildResult = buildSession.Build(new UnitInfo(genericType, _token));
+      var genericType = _redirectTo.MakeGenericType(unitBuilder.UnitInfo.GetUnitType().GetGenericArguments());
+      unitBuilder.BuildResult = unitBuilder.Build(new UnitInfo(genericType, _token));
     }
 
-    public void PostProcess(Build.Session buildSession)
+    public void PostProcess(UnitBuilder unitBuilder)
     {}
+
+    public override string ToString()
+    {
+      return string.Format("{0}: [{1},{2}]", GetType().Name, _redirectTo, _token ?? "null");
+    }
   }
 }

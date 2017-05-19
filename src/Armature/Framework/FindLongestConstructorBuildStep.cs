@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Armature.Core;
 
 namespace Armature.Framework
 {
@@ -9,7 +10,7 @@ namespace Armature.Framework
   {
     private static readonly ConstructorInfo NoParametersConstructor = typeof (DefaultConstructor).GetConstructors()[0];
 
-    public FindLongestConstructorBuildStep(int weight = 0) : base(weight)
+    public FindLongestConstructorBuildStep(int weight) : base(weight)
     {}
 
     protected override ConstructorInfo GetConstructor(Type type)
@@ -19,7 +20,7 @@ namespace Armature.Framework
         if (type.IsValueType)
           return NoParametersConstructor;
         else
-          throw new Exception("DoesNotContainConstructor");
+          throw new ArmatureException("DoesNotContainConstructor");
 
       var suitableConstructors = new Dictionary<int, int> {{0, constructors[0].GetParameters().Length}};
       for (var i = 1; i < constructors.Length; i++)
@@ -38,7 +39,7 @@ namespace Armature.Framework
 
       if (suitableConstructors.Count != 1)
       {
-        var exc = new Exception("ConstructorsAmbiguty");
+        var exc = new ArmatureException("ConstructorsAmbiguty");
         var counter = 0;
         foreach (var pair in suitableConstructors)
           exc.Data.Add("Constructor" + counter++, constructors[pair.Key]);

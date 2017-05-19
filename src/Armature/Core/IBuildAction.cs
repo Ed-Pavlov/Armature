@@ -4,7 +4,7 @@ namespace Armature.Core
 {
   public interface IBuildAction
   {
-    void Execute([NotNull] Build.Session buildSession);
-    void PostProcess([NotNull] Build.Session buildSession);
+    void Execute([NotNull] UnitBuilder unitBuilder);
+    void PostProcess([NotNull] UnitBuilder unitBuilder);
   }
 }

@@ -1,5 +1,6 @@
 using System;
 using Armature.Core;
+using Armature.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Framework
@@ -17,18 +18,22 @@ namespace Armature.Framework
       _token = token;
     }
 
-    public void Execute(Build.Session buildSession)
+    public void Execute(UnitBuilder unitBuilder)
     {
-      if (buildSession.BuildResult == null)
-        buildSession.BuildResult = buildSession.Build(new UnitInfo(_redirectTo, _token));
+      if (unitBuilder.BuildResult == null)
+      {
+        var unitInfo = new UnitInfo(_redirectTo, _token);
+        Log.Verbose("{0}: {1}", GetType().Name, unitInfo);
+        unitBuilder.BuildResult = unitBuilder.Build(unitInfo);
+      }
     }
 
-    public void PostProcess(Build.Session buildSession)
+    public void PostProcess(UnitBuilder unitBuilder)
     {}
 
     public override string ToString()
     {
-      return string.Format("[{0}: _redirectTo={1}]", GetType().Name, _redirectTo);
+      return string.Format("{0}: {1}", GetType().Name, _redirectTo);
     }
   }
 }

@@ -14,8 +14,16 @@ namespace Armature.Core
     public void AddBuildStep(IBuildStep buildStep)
     {
       if (buildStep == null) throw new ArgumentNullException("buildStep");
+      
       if(!LazyChildren.Add(buildStep))
         throw new ArgumentException("Build step is already presented in children collection");
+    }
+
+    public bool RemoveBuildStep(IBuildStep buildStep)
+    {
+      if (buildStep == null) throw new ArgumentNullException("buildStep");
+      
+      return _children != null && _children.Remove(buildStep);
     }
 
     public IEnumerable<IBuildStep> Children
