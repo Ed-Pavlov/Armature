@@ -11,7 +11,7 @@ namespace Armature.Logging
       if (buildSequence.Count == 0)
         Log.Info("BuildSequence=null");
       else
-        LogBuildSequence(ArrayTail.Of(buildSequence, 0));
+        LogBuildSequence(buildSequence.GetTail(0));
     }
 
     public static void LogBuildSequence(this ArrayTail<UnitInfo> buildSequence, LogLevel logLevel = LogLevel.Info)

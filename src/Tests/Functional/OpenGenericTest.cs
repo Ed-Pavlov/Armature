@@ -10,7 +10,7 @@ namespace Tests.Functional
     [Test]
     public void Register()
     {
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .TreatOpenGeneric(typeof(IGeneric<>))
@@ -23,7 +23,7 @@ namespace Tests.Functional
     [Test]
     public void RegisterWithUsingParameters()
     {
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       const int expected = 5;
       target
@@ -38,7 +38,7 @@ namespace Tests.Functional
     [Test]
     public void RegisterAsOpenAndClosedGeneric()
     {
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .TreatOpenGeneric(typeof(IGeneric<>))

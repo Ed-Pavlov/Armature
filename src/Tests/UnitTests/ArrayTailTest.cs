@@ -13,7 +13,7 @@ namespace Tests.UnitTests
       var array = new int[arrayLength];
 
       var startIndex = 1;
-      var arrayTail = ArrayTail.Of(array, startIndex);
+      var arrayTail = array.GetTail(startIndex);
 
       // --assert
       Assert.That(arrayTail.Length, Is.EqualTo(arrayLength - startIndex));
@@ -26,7 +26,7 @@ namespace Tests.UnitTests
       var array = new []{0, 1, 2, 3};
 
       const int startIndex = 1;
-      var arrayTail = ArrayTail.Of(array, startIndex);
+      var arrayTail = array.GetTail(startIndex);
 
       var expected = new int[arrayTail.Length];
       for (var i = startIndex; i < array.Length; i++)
@@ -49,7 +49,7 @@ namespace Tests.UnitTests
       var array = new []{0, 1, 2, lastItem};
 
       const int startIndex = 1;
-      var arrayTail = ArrayTail.Of(array, startIndex);
+      var arrayTail = array.GetTail(startIndex);
 
       // --assert
       Assert.That(arrayTail.GetLastItem(), Is.EqualTo(lastItem));

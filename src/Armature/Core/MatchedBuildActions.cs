@@ -43,12 +43,12 @@ namespace Armature.Core
     }
 
     [CanBeNull]
-    public static IBuildAction GetTopmostAction([CanBeNull] this MatchedBuildActions self, [NotNull] object stage)
+    public static IBuildAction GetTopmostAction([CanBeNull] this MatchedBuildActions matchedBuildActions, [NotNull] object stage)
     {
-      if (self == null) return null;
       if (stage == null) throw new ArgumentNullException("stage");
+      if (matchedBuildActions == null) return null;
 
-      var actions = self.GetValueSafe(stage);
+      var actions = matchedBuildActions.GetValueSafe(stage);
       if (actions == null) return null;
 
       actions.Sort((l, r) => r.Weight.CompareTo(l.Weight)); // sort descending

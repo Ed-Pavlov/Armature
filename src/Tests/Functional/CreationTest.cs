@@ -10,7 +10,7 @@ namespace Tests.Functional
     public void AsIs()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<EmptyCtorClass>()
         .AsIs();
@@ -26,7 +26,7 @@ namespace Tests.Functional
     public void As()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<IEmptyInterface1>()
         .As<EmptyCtorClass>();
@@ -43,7 +43,7 @@ namespace Tests.Functional
     {
       // --arrange
       EmptyCtorClass expected = null;
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<EmptyCtorClass>()
         .CreatedBy(_ =>
@@ -65,7 +65,7 @@ namespace Tests.Functional
     [Test]
     public void AsAddsDefaultCreationStrategy()
     {
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .Treat<IEmptyInterface1>()
@@ -95,7 +95,7 @@ namespace Tests.Functional
     [Test]
     public void AsWithoutDefaultCreationStrategy()
     {
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .Treat<IEmptyInterface1>()

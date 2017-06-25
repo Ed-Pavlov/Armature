@@ -7,29 +7,32 @@ using JetBrains.Annotations;
 namespace Armature.Core
 {
   /// <summary>
-  /// The "dependency injection builder" contains the set of build plans and method <see cref="BuildUnit"/>
+  /// The "dependency injection builder" contains build steps for units and method <see cref="BuildUnit"/>
   ///
-  /// Building a unit it goes over all "build stages" for each stage it get a build step if any and executes it <see cref=".ctor"/> for details
+  /// Building a unit it goes over all "build stages", for each stage it gets a build step if any and executes it 
+  /// <see cref="Builder(IEnumerable{object}, Builder[])"/> for details
   /// </summary>
   public class Builder : BuildPlansCollection
   {
-    private readonly Builder _parentBuilder;
+    private readonly Builder[] _parentBuilders;
     private readonly IEnumerable<object> _stages;
 
     /// <param name="stages">The ordered collection of build stages all of which are performed to build a unit</param>
-    /// <param name="parentBuilder">If unit is not built and parentBuilder is set, trying to build a unit using parent builder. <see cref="BuildUnit"/></param>
+    /// <param name="parentBuilders">If unit is not built and parentBuilder is set, trying to build a unit using parent builders one by one
+    /// in the order how the were passed into constructor </param>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="ArgumentException"></exception>
-    public Builder([NotNull] IEnumerable<object> stages, [CanBeNull] Builder parentBuilder)
+    public Builder([NotNull] IEnumerable<object> stages, params Builder[] parentBuilders)
     {
       if (stages == null) throw new ArgumentNullException("stages");
-
+      if (parentBuilders != null && parentBuilders.Any(_ => _ == null)) throw new ArgumentException("Should not contain null values", "parentBuilders");
+      
       var array = stages.ToArray();
       if(array.Length == 0)
         throw new ArgumentException("empty", "stages");
 
       _stages = array;
-      _parentBuilder = parentBuilder;
+      _parentBuilders = parentBuilders == null || parentBuilders.Length == 0 ? null : parentBuilders;
     }
 
     /// <summary>
@@ -45,10 +48,20 @@ namespace Armature.Core
       if (buildResult != null)
         return buildResult.Value;
 
-      if(_parentBuilder == null)
-        throw new ArmatureException("Can't build unit").AddData("unitInfo", unitInfo);
-
-      return _parentBuilder.BuildUnit(unitInfo, sessionRules);
+      if (_parentBuilders != null)
+        foreach (var parentBuilder in _parentBuilders)
+        {
+          try
+          {
+            return parentBuilder.BuildUnit(unitInfo, sessionRules);
+          }
+          catch (Exception)
+          {
+            // continue
+          }
+        }
+      
+      throw new ArmatureException("Can't build unit").AddData("unitInfo", unitInfo);
     }
   }
 }

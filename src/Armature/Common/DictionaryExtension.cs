@@ -6,8 +6,12 @@ namespace Armature.Common
 {
   public static class DictionaryExtension
   {
-    public static TValue GetOrCreateValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TValue> createValue)
+    public static TValue GetOrCreateValue<TKey, TValue>([NotNull] this Dictionary<TKey, TValue> dictionary, [NotNull] TKey key, [NotNull] Func<TValue> createValue)
     {
+      if (dictionary == null) throw new ArgumentNullException("dictionary");
+      if (key == null) throw new ArgumentNullException("key");
+      if (createValue == null) throw new ArgumentNullException("createValue");
+      
       TValue value;
       if (!dictionary.TryGetValue(key, out value))
       {

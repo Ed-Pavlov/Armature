@@ -9,7 +9,7 @@ namespace Tests.Functional
     public void AsSingleton()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<EmptyCtorClass>()
         .AsIs()
@@ -28,7 +28,7 @@ namespace Tests.Functional
     {
       // --arrange
       var expected = new EmptyCtorClass();
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<EmptyCtorClass>()
         .AsInstance(expected);

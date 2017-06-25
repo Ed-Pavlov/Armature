@@ -29,13 +29,13 @@ namespace Tests
     [DotMemoryUnit(SavingStrategy = SavingStrategy.OnCheckFail)]
     public void Measure()
     {
-      var parentContainer = FunctionalTestHelper.CreateContainer();
+      var parentContainer = FunctionalTestHelper.CreateBuilder();
       var expected = new MemoryStream();
       parentContainer
         .Treat<IDisposable>()
         .AsInstance(expected);
 
-      var container = FunctionalTestHelper.CreateContainer(parentContainer);
+      var container = FunctionalTestHelper.CreateBuilder(parentContainer);
       container
         .Building<IDisposable>()
         .Building<MemoryStream>()

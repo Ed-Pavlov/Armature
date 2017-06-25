@@ -11,7 +11,7 @@ namespace Tests.Functional
     {
       // --arrange
       var expected = new MemoryStream();
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<OneDisposableCtorClass>()
         .AsIs()
@@ -30,7 +30,7 @@ namespace Tests.Functional
       // --arrange
       var expectedDisposable = new MemoryStream();
       var expectedString = "ldksjf";
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<TwoDisposableStringCtorClass>()
         .AsIs()
@@ -50,7 +50,7 @@ namespace Tests.Functional
       // --arrange
       var expectedOne = new MemoryStream();
       var expectedTwo = new MemoryStream();
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
       target.Treat<OneDisposableCtorClass>()
         .AsIs()
         .UsingParameters(expectedOne);
@@ -75,7 +75,7 @@ namespace Tests.Functional
       // --arrange
       var expected1 = new MemoryStream();
       var expected2 = new MemoryStream();
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<IDisposableValue1>()
         .As<OneDisposableCtorClass>()

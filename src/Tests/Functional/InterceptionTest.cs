@@ -21,7 +21,7 @@ namespace Tests.Functional
     {
       // --arrange
       // create container with another one stage in the very beginning of conveyer
-      var target = FunctionalTestHelper.CreateContainer(null, InterceptBuildStage, BuildStage.Cache, BuildStage.Redirect, BuildStage.Create);
+      var target = FunctionalTestHelper.CreateBuilder(null, InterceptBuildStage, BuildStage.Cache, BuildStage.Redirect, BuildStage.Create);
 
       target
         .Treat<StringConsumer>()

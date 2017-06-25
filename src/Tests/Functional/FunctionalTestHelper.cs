@@ -5,14 +5,14 @@ namespace Tests.Functional
 {
   public static class FunctionalTestHelper
   {
-    public static Builder CreateContainer(Builder parentBuilder = null)
+    public static Builder CreateBuilder(params Builder[] parentBuilders)
     {
-      return CreateContainer(parentBuilder, BuildStage.Cache, BuildStage.Redirect, BuildStage.Initialize, BuildStage.Create);
+      return CreateBuilder(parentBuilders, BuildStage.Cache, BuildStage.Redirect, BuildStage.Initialize, BuildStage.Create);
     }
 
-    public static Builder CreateContainer(Builder parentBuilder = null, params object[] stages)
+    public static Builder CreateBuilder(Builder[] parentBuilders, params object[] stages)
     {
-      var container = new Builder(stages, parentBuilder);
+      var container = new Builder(stages, parentBuilders);
 
       var treatAll = new AnyUnitBuildStep();
       treatAll.AddBuildStep(new FindLongestConstructorBuildStep(FindConstructorBuildStepWeight.Lowest));

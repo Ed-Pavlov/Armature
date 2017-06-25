@@ -1,10 +1,13 @@
-﻿namespace Armature.Core
+﻿using JetBrains.Annotations;
+
+namespace Armature.Core
 {
   /// <summary>
   /// Represents a result of the <see cref="BuildSession"/>, null is a valid <see cref="Value"/>.
   /// </summary>
   public class BuildResult
   {
+    [CanBeNull]
     public readonly object Value;
 
     public BuildResult(object value)

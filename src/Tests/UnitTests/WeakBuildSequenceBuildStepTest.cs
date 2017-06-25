@@ -26,7 +26,7 @@ namespace Tests.UnitTests
 
       // --act
       var actual = target
-        .GetBuildActions(0, ArrayTail.Of(new[] {Unit.OfType<IDisposableValue1>(), Unit.OfType<OneDisposableCtorClass>(), Unit.OfType<IDisposable>()}, 0))
+        .GetBuildActions(0, new[] {Unit.OfType<IDisposableValue1>(), Unit.OfType<OneDisposableCtorClass>(), Unit.OfType<IDisposable>()}.GetTail(0))
         .GetTopmostAction(BuildStage.Cache);
 
       // --assert
@@ -46,7 +46,7 @@ namespace Tests.UnitTests
       target.AddBuildStep(buildStep2);
 
       // --act
-      var actual = target.GetBuildActions(0, ArrayTail.Of(new[] {Unit.OfType<string>(), Unit.OfType<int>()}, 0));
+      var actual = target.GetBuildActions(0, new[] {Unit.OfType<string>(), Unit.OfType<int>()}.GetTail(0));
 
       // --assert
       actual[BuildStage.Cache]

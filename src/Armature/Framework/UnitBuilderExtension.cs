@@ -30,7 +30,7 @@ namespace Armature.Framework
       {
         var buildResult = unitBuilder.Build(new UnitInfo(parameters[i], SpecialToken.BuildParameterValue));
         if (buildResult == null)
-          throw new ArmatureException("Can't build value for parameter").AddData("Parameter", parameters[i]);
+          throw new ArmatureException("Can't build value for parameter {0}").AddData("Parameter", parameters[i]);
 
         values[i] = buildResult.Value;
       }

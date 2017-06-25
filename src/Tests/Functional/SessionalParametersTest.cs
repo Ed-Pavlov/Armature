@@ -14,7 +14,7 @@ namespace Tests.Functional
     {
       const string expected = "megastring";
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .Treat<OneStringCtorClass>()
@@ -33,7 +33,7 @@ namespace Tests.Functional
       var expected = new MemoryStream();
 
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .Treat<OneDisposableCtorClass>()
@@ -53,7 +53,7 @@ namespace Tests.Functional
       const string expectedString2 = "l;kjsf";
 
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .Treat<Subject>()
@@ -73,7 +73,7 @@ namespace Tests.Functional
     public void pass_null_as_valid_value()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .Treat<OneStringCtorClass>()

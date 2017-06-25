@@ -15,7 +15,7 @@ namespace Tests.Functional
     public void WithoutParameters()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .Treat<OneStringCtorClass>()
@@ -34,7 +34,7 @@ namespace Tests.Functional
       const string expectedString = "dsljf";
 
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .Treat<TwoDisposableStringCtorClass>()
@@ -57,7 +57,7 @@ namespace Tests.Functional
     public void RegisterNullAsParameterValue()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .Treat<OneStringCtorClass>()
@@ -74,7 +74,7 @@ namespace Tests.Functional
     [Test]
     public void RegisterUsingDifferentBuildPlansWithDifferentParameters()
     {
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       const string asInterfaceParameterValue = "AsInterface";
       const string asIsParameterValue = "AsIs";
@@ -103,7 +103,7 @@ namespace Tests.Functional
       // registered parameter should not be propagated into LevelOne
 
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .Treat<LevelOne>()
@@ -124,7 +124,7 @@ namespace Tests.Functional
     {
       const string expectedString = "value";
 
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target.Treat<LevelOne>().AsIs();
       target.Treat<LevelTwo>().AsIs();
@@ -149,7 +149,7 @@ namespace Tests.Functional
 
       using(Log.Enabled(LogLevel.Info))
       {
-        var target = FunctionalTestHelper.CreateContainer();
+        var target = FunctionalTestHelper.CreateBuilder();
 
         target.Treat<LevelOne>().AsIs();
         target.Treat<LevelTwo>().AsIs();
@@ -179,7 +179,7 @@ namespace Tests.Functional
       const string expectedString3 = "value";
       const string l3ExpectedString = "levelThree";
 
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target.Treat<LevelOne>().AsIs();
       target.Treat<LevelTwo>().AsIs();
@@ -208,7 +208,7 @@ namespace Tests.Functional
       const string expected = "expected";
 
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .Treat<LevelOne>()
@@ -228,7 +228,7 @@ namespace Tests.Functional
       const string expected = "expected";
 
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .Treat<LevelOne>()

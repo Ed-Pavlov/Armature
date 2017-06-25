@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ArrayTail.cs" />
+    <Compile Include="Common\ArrayTailExtension.cs" />
     <Compile Include="Common\DictionaryExtension.cs" />
     <Compile Include="Common\ExceptionExtension.cs" />
     <Compile Include="Core\ArmatureException.cs" />

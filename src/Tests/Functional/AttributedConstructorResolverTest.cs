@@ -15,7 +15,7 @@ namespace Tests.Functional
     {
       var expected = typeof(Subject).GetConstructors().First(_ => _.GetParameters().Length == 0);
       // --arrange
-      var container = FunctionalTestHelper.CreateContainer();
+      var container = FunctionalTestHelper.CreateBuilder();
       container
         .Treat<Subject>()
         .AsIs();

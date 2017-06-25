@@ -26,10 +26,7 @@ namespace Armature.Core
       foreach (DictionaryEntry pair in Data)
       {
         sb.AppendFormat("\tRecord {0}:", i++)
-          .AppendLine()
-          .AppendFormat("Key: {0}", pair.Key)
-          .AppendLine()
-          .AppendFormat("Value: {0}", pair.Value)
+          .AppendFormat("Key: {0}, Value={1}", pair.Key, pair.Value)
           .AppendLine();
       }
       return sb.ToString();

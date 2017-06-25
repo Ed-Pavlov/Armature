@@ -18,7 +18,7 @@ namespace Tests.Functional
     public void Building()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
       target
         .Building<IDisposableValue1>()
         .Treat<IDisposable>()
@@ -41,7 +41,7 @@ namespace Tests.Functional
     {
       // --arrange
       var expected = new EmptyCtorClass();
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<IEmptyInterface1>()
         .As<EmptyCtorClass>();
@@ -66,7 +66,7 @@ namespace Tests.Functional
     public void LoggerCase()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<string>()
         .CreatedBy(assembler => assembler.BuildSequence.First().Id.ToString());
@@ -87,7 +87,7 @@ namespace Tests.Functional
     public void UsingParametersTwiceOnSameImplementationTest()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target.Treat<IDisposableValue1>()
         .As<OneDisposableCtorClass>()
@@ -110,7 +110,7 @@ namespace Tests.Functional
     {
       const string token1 = "t1";
 
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target.Treat<IDisposableValue1>().As<OneDisposableCtorClass>();
       target.Treat<IDisposableValue2>(token1).As<OneDisposableCtorClass>();
@@ -125,7 +125,7 @@ namespace Tests.Functional
     [Test(Description = "Registration of some entity separated in several parts should work")]
     public void SeparatedRegistration()
     {
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<IDisposableValue1>()
         .As<OneDisposableCtorClass>();
@@ -158,7 +158,7 @@ namespace Tests.Functional
       var expected1 = new OneDisposableCtorClass(null);
       var expected2 = new OneStringCtorClass(null);
 
-      var container = FunctionalTestHelper.CreateContainer();
+      var container = FunctionalTestHelper.CreateBuilder();
       container
         .Treat<OneDisposableCtorClass>(oneDisposableCtorCalssToken)
         .AsInstance(expected1);

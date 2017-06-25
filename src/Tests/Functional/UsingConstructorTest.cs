@@ -12,7 +12,7 @@ namespace Tests.Functional
     [Test]
     public void UsingConstructorShouldBeAppliedDirectlyToRegisteredType()
     {
-      var target = FunctionalTestHelper.CreateContainer();
+      var target = FunctionalTestHelper.CreateBuilder();
 
       target
         .Treat<Dependency>()

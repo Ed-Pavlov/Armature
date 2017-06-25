@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
@@ -36,19 +36,6 @@ namespace Armature.Common
     public ArrayTail<T> GetTail(int startIndex)
     {
       return new ArrayTail<T>(_array, _startIndex + startIndex);
-    }
-  }
-
-  public static class ArrayTail
-  {
-    public static ArrayTail<T> Of<T>(IList<T> array, int startIndex)
-    {
-      return new ArrayTail<T>(array, startIndex);
-    }
-
-    public static T GetLastItem<T>(this ArrayTail<T> arrayTail)
-    {
-      return arrayTail[arrayTail.Length - 1];
     }
   }
 }
