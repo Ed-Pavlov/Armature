@@ -60,6 +60,7 @@
     <Compile Include="Framework\AttributedParameterValueBuildStep.cs" />
     <Compile Include="Framework\BuildStage.cs" />
     <Compile Include="Framework\AddOrGetBuildStepExtension.cs" />
+    <Compile Include="Framework\BuildValueForInjectPointParameterUsingTokenBuildStep.cs" />
     <Compile Include="Framework\BuildValueForParameterStep.cs" />
     <Compile Include="Framework\FindAttributedConstructorBuildStep.cs" />
     <Compile Include="Framework\FindConstructorBuildStepBase.cs" />

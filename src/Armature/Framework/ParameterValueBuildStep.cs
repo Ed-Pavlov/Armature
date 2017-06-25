@@ -16,10 +16,10 @@ namespace Armature.Framework
 
     protected override StagedBuildAction GetBuildAction(UnitInfo unitInfo)
     {
-      var parameterInfo = unitInfo.Id as ParameterInfo;
-      if (parameterInfo == null || !Equals(unitInfo.Token, SpecialToken.BuildParameterValue))
+      if (!Equals(unitInfo.Token, SpecialToken.BuildParameterValue))
         return null;
-
+      
+      var parameterInfo = (ParameterInfo)unitInfo.Id;
       var matches = Matches(parameterInfo);
       Log.Verbose("{0}: {1}", GetType().Name, matches ? "matches" : "does not match");
       

@@ -61,6 +61,7 @@
     <Compile Include="Common\Unit.cs" />
     <Compile Include="Functional\AdjusterSugarTest.cs" />
     <Compile Include="Functional\AttributedConstructorResolverTest.cs" />
+    <Compile Include="Functional\AutoWiringTest.cs" />
     <Compile Include="Functional\CachingTest.cs" />
     <Compile Include="Functional\CaseTest.cs" />
     <Compile Include="Functional\FunctionalTestHelper.cs" />

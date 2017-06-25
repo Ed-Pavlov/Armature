@@ -22,11 +22,11 @@ namespace Armature.Core
     {
       if (buildSequence.Length != 1) return null;
 
-      var buildStep = GetBuildAction(buildSequence.GetLastItem());
+      var buildAction = GetBuildAction(buildSequence.GetLastItem());
 
-      return buildStep == null
+      return buildAction == null
         ? null
-        : new MatchedBuildActions{{buildStep.BuildStage, new List<Weighted<IBuildAction>>{buildStep.BuildAction.WithWeight(inputWeight + _weight)}}};
+        : new MatchedBuildActions{{buildAction.BuildStage, new List<Weighted<IBuildAction>>{buildAction.BuildAction.WithWeight(inputWeight + _weight)}}};
     }
 
     public override bool Equals(IBuildStep obj)
