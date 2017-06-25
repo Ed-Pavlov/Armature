@@ -1,4 +1,7 @@
-﻿using Armature.Core;
+﻿using System;
+using System.Reflection;
+using Armature.Common;
+using Armature.Core;
 using Armature.Framework;
 using JetBrains.Annotations;
 
@@ -6,68 +9,81 @@ namespace Armature
 {
   public static class For
   {
-    public static ParameterBuildPlanner Parameter<T>()
+    public static ParameterValueBuildPlanner Parameter<T>()
     {
-      return new TypeParameterBuildPlanner<T>();
+      return new ParameterValueBuildPlanner(getBuildAction =>
+        new StrictParameterTypeValueBuildStep(
+          ParameterValueBuildActionWeight.TypedParameterResolver, 
+          typeof(T), 
+          getBuildAction));
     }
 
-    public static ParameterBuildPlanner ParameterName(string parameterName)
+    public static ParameterValueBuildPlanner ParameterName(string parameterName)
     {
-      return new NamedParameterBuildPlanner(parameterName);
+      return new ParameterValueBuildPlanner(getBuildAction =>
+        new ParameterNameValueBuildStep(
+          ParameterValueBuildActionWeight.NamedParameterResolver, 
+          parameterName, 
+          getBuildAction));
     }
 
-    public static ParameterBuildPlanner ParameterId([CanBeNull] object injectPointId)
+    public static ParameterValueBuildPlanner ParameterId([CanBeNull] object injectPointId)
     {
-      return new MarkedParameterBuildPlanner(injectPointId);
+      return new ParameterValueBuildPlanner(getBuildAction =>
+        new AttributedParameterValueBuildStep(
+          ParameterValueBuildActionWeight.AttributedParameterResolver, 
+          injectPointId, 
+          getBuildAction));
     }
 
-    public class ParameterBuildPlanner
+    public class ParameterValueBuildPlanner : IParameterValueBuildPlanner
     {
-      public ParameterBuildPlanner UseValue([CanBeNull] object value)
+      /// <summary>
+      /// Factory method creates build step builds a value for a parameter, we can't pass it to constructor
+      /// because does not have build action factory method, which appears later by calling <see cref="UseValue"/>, <see cref="UseToken"/> etc
+      /// </summary>
+      private readonly Func<Func<ParameterInfo, IBuildAction>, IBuildStep> _createBuildStep;
+      
+      /// <summary>
+      /// Creates a build action based on passed by parameter value build step <see cref="ParameterInfo"/>,
+      /// some strategies ignores it
+      /// </summary>
+      private Func<ParameterInfo, IBuildAction> _getBuildAction;
+
+      public ParameterValueBuildPlanner(Func<Func<ParameterInfo, IBuildAction>, IBuildStep> createBuildStep)
       {
-        BuildAction = new SingletonBuildAction(value);
+        _createBuildStep = createBuildStep;
+      }
+
+      public void AddBuildParameterValueStepTo(BuildStepBase buildStep)
+      {
+        if(_getBuildAction == null) throw new InvalidOperationException("Parameter value source not specified, did you forget call UseValue/UseToken etc?");
+        buildStep.AddBuildStep(_createBuildStep(_getBuildAction));
+      }
+      
+      public IParameterValueBuildPlanner UseValue([CanBeNull] object value)
+      {
+        // just return value for any parameter matched by build step
+        _getBuildAction = parameterInfo =>
+        {
+          if (parameterInfo.ParameterType.IsInstanceOfType(value)) 
+            return new SingletonBuildAction(value);
+          
+          var exception = new InvalidOperationException("The type of value provided for a parameter does not match with parameter type")
+            .AddData("ParameterInfo", parameterInfo)
+            .AddData("Value", value);
+          if (value != null)
+            exception.AddData("Value type", value.GetType());
+          throw exception;
+        }; 
         return this;
       }
 
-      protected IBuildAction BuildAction { get; private set; }
-    }
-
-    private class TypeParameterBuildPlanner<T> : ParameterBuildPlanner, IParameterBuildPlanner
-    {
-      public void RegisterParameterResolver(BuildStepBase buildStep)
+      public IParameterValueBuildPlanner UseToken([NotNull] object token)
       {
-        buildStep.AddBuildStep(new StrictParameterTypeValueBuildStep(ParameterValueBuildActionWeight.TypedParameterResolver, typeof(T), BuildAction));
-      }
-    }
-
-    private class NamedParameterBuildPlanner : ParameterBuildPlanner, IParameterBuildPlanner
-    {
-      private readonly string _parameterName;
-
-      public NamedParameterBuildPlanner(string parameterName)
-      {
-        _parameterName = parameterName;
-      }
-
-      public void RegisterParameterResolver(BuildStepBase buildStep)
-      {
-        buildStep.AddBuildStep(new ParameterNameValueBuildStep(ParameterValueBuildActionWeight.NamedParameterResolver, _parameterName, BuildAction));
-      }
-    }
-
-    private class MarkedParameterBuildPlanner : ParameterBuildPlanner, IParameterBuildPlanner
-    {
-      [CanBeNull]
-      private readonly object _injectPointId;
-
-      public MarkedParameterBuildPlanner([CanBeNull] object injectPointId)
-      {
-        _injectPointId = injectPointId;
-      }
-
-      public void RegisterParameterResolver(BuildStepBase buildStep)
-      {
-        buildStep.AddBuildStep(new AttributedParameterValueBuildStep(ParameterValueBuildActionWeight.AttributedParameterResolver, _injectPointId, BuildAction));
+        if (token == null) throw new ArgumentNullException("token");
+        _getBuildAction = parameterInfo => new RedirectTypeBuildAction(parameterInfo.ParameterType, token); // build value by UnitInfo(parameterType, token)
+        return this;
       }
     }
   }

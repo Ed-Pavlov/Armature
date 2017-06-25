@@ -146,31 +146,29 @@ namespace Tests.Functional
     {
       const string expectedString3 = "value";
       const string l3ExpectedString = "levelThree";
+      
+      //--arrange
+      var target = FunctionalTestHelper.CreateBuilder();
 
-      using(Log.Enabled(LogLevel.Info))
-      {
-        var target = FunctionalTestHelper.CreateBuilder();
+      target.Treat<LevelOne>().AsIs();
+      target.Treat<LevelTwo>().AsIs();
+      target
+        .Treat<LevelThree>()
+        .AsIs()
+        .UsingParameters(l3ExpectedString);
 
-        target.Treat<LevelOne>().AsIs();
-        target.Treat<LevelTwo>().AsIs();
-        target
-          .Treat<LevelThree>()
-          .AsIs()
-          .UsingParameters(l3ExpectedString);
+      target
+        .Building<LevelThree>()
+        .TreatAll()
+        .UsingParameters(expectedString3);
 
-        target
-          .Building<LevelThree>()
-          .TreatAll()
-          .UsingParameters(expectedString3);
+      // --act
+      var actual = target.Build<LevelThree>();
 
-        // --act
-        var actual = target.Build<LevelThree>();
-
-        // --assert
-        actual.String.Should().Be(l3ExpectedString);
-        actual.LevelTwo.String.Should().Be(expectedString3);
-        actual.LevelTwo.LevelOne.String.Should().Be(expectedString3);
-      }
+      // --assert
+      actual.String.Should().Be(l3ExpectedString);
+      actual.LevelTwo.String.Should().Be(expectedString3);
+      actual.LevelTwo.LevelOne.String.Should().Be(expectedString3);
     }
 
     [Test]
@@ -235,6 +233,39 @@ namespace Tests.Functional
         .AsIs()
         .UsingParameters(For.ParameterId(null).UseValue(expected));
 
+      // --act
+      var actual = target.Build<LevelOne>();
+
+      // --assert
+      actual.String.Should().Be(expected);
+    }
+
+    [Test]
+    public void UseToken()
+    {
+      const string rightToken = "token398";
+      const string badToken = "sdoy7256";
+      const string expected = "expected 398752";
+      
+      // --arrange
+      var target = FunctionalTestHelper.CreateBuilder();
+      target
+        .Treat<LevelOne>()
+        .AsIs()
+        .UsingParameters(For.Parameter<string>().UseToken(rightToken));
+      
+      target
+        .Treat<string>(rightToken)
+        .AsInstance(expected);
+      
+      target
+        .Treat<string>(badToken)
+        .AsInstance(expected + "dlskjgflkj");
+
+      target
+        .Treat<string>()
+        .AsInstance("sldfjk lkjsd sdf ");
+      
       // --act
       var actual = target.Build<LevelOne>();
 

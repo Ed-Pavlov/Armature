@@ -94,7 +94,7 @@
     <Compile Include="Framework\RedirectTypeBuildAction.cs" />
     <Compile Include="SyntaxSugar\Default.cs" />
     <Compile Include="SyntaxSugar\For.cs" />
-    <Compile Include="SyntaxSugar\IParameterBuildPlanner.cs" />
+    <Compile Include="SyntaxSugar\IParameterValueBuildPlanner.cs" />
     <Compile Include="SyntaxSugar\TreatOpenGenericSugar.cs" />
     <Compile Include="SyntaxSugar\TreatSugar.cs" />
     <Compile Include="SyntaxSugar\Match.cs" />

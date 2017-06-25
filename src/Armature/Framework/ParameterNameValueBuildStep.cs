@@ -10,8 +10,8 @@ namespace Armature.Framework
   {
     private readonly string _parameterName;
 
-    public ParameterNameValueBuildStep(int weight, [NotNull] string parameterName, [NotNull] IBuildAction buildAction)
-      : base(buildAction, weight)
+    public ParameterNameValueBuildStep(int weight, [NotNull] string parameterName, [NotNull] Func<ParameterInfo, IBuildAction> getBuildAction)
+      : base(getBuildAction, weight)
     {
       if (parameterName == null) throw new ArgumentNullException("parameterName");
       _parameterName = parameterName;

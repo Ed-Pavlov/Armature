@@ -20,9 +20,9 @@ namespace Armature
 
       foreach (var parameter in values)
       {
-        var parameterBuildPlanner = parameter as IParameterBuildPlanner;
+        var parameterBuildPlanner = parameter as IParameterValueBuildPlanner;
         if (parameterBuildPlanner != null)
-          parameterBuildPlanner.RegisterParameterResolver(_buildStep);
+          parameterBuildPlanner.AddBuildParameterValueStepTo(_buildStep);
         else
           _buildStep.AddBuildStep(new WeakParameterTypeValueBuildStep(ParameterValueBuildActionWeight.FreeValueResolver, parameter));
       }
