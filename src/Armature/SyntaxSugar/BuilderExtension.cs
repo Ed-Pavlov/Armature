@@ -7,18 +7,28 @@ namespace Armature
 {
   public static class BuilderExtension
   {
+    /// <summary>
+    /// Use token for building a unit. See <see cref="UnitInfo"/> for details.
+    /// </summary>
     [DebuggerStepThrough]
     public static Token WithToken([NotNull] this Builder builder, [NotNull] object token)
     {
       return new Token(token, builder);
     }
 
+    /// <summary>
+    /// Builds a Unit registered as type <typeparamref name="T"/>
+    /// </summary>
     [DebuggerStepThrough]
     public static T Build<T>([NotNull] this Builder builder)
     {
       return builder.Build<T>(null, null);
     }
 
+    /// <summary>
+    /// Builds a Unit registered as type <typeparamref name="T"/> using additional <see cref="parameters"/> they can be values or 
+    /// implementation of <see cref="IParameterValueBuildPlanner"/>. See <see cref="For"/> for details.  
+    /// </summary>
     [DebuggerStepThrough]
     public static T Build<T>([NotNull] this Builder builder, params object[] parameters)
     {

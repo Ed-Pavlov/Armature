@@ -5,9 +5,12 @@ using Armature.Logging;
 
 namespace Armature.Framework
 {
+  /// <summary>
+  /// Base class for build steps which "build" <see cref="ConstructorInfo"/> for a <see cref="UnitInfo.Id"/> as Type
+  /// </summary>
   public abstract class FindConstructorBuildStepBase : LeafBuildStep
   {
-    protected FindConstructorBuildStepBase(int weight) : base(weight)
+    protected FindConstructorBuildStepBase(int matchingWeight) : base(matchingWeight)
     {}
 
     protected override StagedBuildAction GetBuildAction(UnitInfo unitInfo)

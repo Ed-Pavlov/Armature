@@ -25,13 +25,13 @@ namespace Armature
     {
       if (type == null) throw new ArgumentNullException("type");
 
-      var buildStep = new WeakBuildSequenceBuildStep(Match.Type(type, token));
+      var buildStep = new UnitSequenceWeakMatchingBuildStep(Match.Type(type, token));
       return new BuildingSugar(_buildStep.AddOrGetBuildStep(buildStep), _container);
     }
 
     public TreatSugar<T> Treat<T>(object token = null)
     {
-      var buildStep = new WeakBuildSequenceBuildStep(Match.Type<T>(token));
+      var buildStep = new UnitSequenceWeakMatchingBuildStep(Match.Type<T>(token));
       return new TreatSugar<T>(_buildStep.AddOrGetBuildStep(buildStep));
     }
 

@@ -6,12 +6,15 @@ using JetBrains.Annotations;
 
 namespace Armature.Framework
 {
-  public class ParameterNameValueBuildStep : ParameterValueBuildStep
+  /// <summary>
+  /// Matches with a <see cref="ParameterInfo"/> with a given name
+  /// </summary>
+  public class NamedParameterValueBuildStep : ParameterValueBuildStep
   {
     private readonly string _parameterName;
 
-    public ParameterNameValueBuildStep(int weight, [NotNull] string parameterName, [NotNull] Func<ParameterInfo, IBuildAction> getBuildAction)
-      : base(getBuildAction, weight)
+    public NamedParameterValueBuildStep(int matchingWeight, [NotNull] string parameterName, [NotNull] Func<ParameterInfo, IBuildAction> getBuildAction)
+      : base(getBuildAction, matchingWeight)
     {
       if (parameterName == null) throw new ArgumentNullException("parameterName");
       _parameterName = parameterName;

@@ -166,7 +166,7 @@ namespace Tests.Functional
         .AsInstance(expected2);
 
       // --act
-      var buildStep = new WeakBuildSequenceBuildStep(Match.Type<List<IDisposableValue1>>(null));
+      var buildStep = new UnitSequenceWeakMatchingBuildStep(Match.Type<List<IDisposableValue1>>(null));
       buildStep.AddBuildAction(
         BuildStage.Redirect,
         new RedirectManyTypesBuildAction<IDisposableValue1>(

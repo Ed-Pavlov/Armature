@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Armature.Common
 {
-  public static class DictionaryExtension
+  internal static class DictionaryExtension
   {
     public static TValue GetOrCreateValue<TKey, TValue>([NotNull] this Dictionary<TKey, TValue> dictionary, [NotNull] TKey key, [NotNull] Func<TValue> createValue)
     {
@@ -26,13 +26,6 @@ namespace Armature.Common
     {
       TValue value;
       return dictionary.TryGetValue(key, out value) ? value : defaultValue;
-    }
-
-    [CanBeNull]
-    public static TValue GetValueSafe<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TValue> createValue)
-    {
-      TValue value;
-      return dictionary.TryGetValue(key, out value) ? value : createValue();
     }
   }
 }

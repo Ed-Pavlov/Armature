@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Armature.Core;
 
 namespace Armature.Framework
 {
+  /// <summary>
+  /// Build action instantiates an object of type <see cref="UnitInfo.Id"/> as Type using reflection
+  /// </summary>
   public class CreateByReflectionBuildAction : IBuildAction
   {
     // it has no state, so use a singleton
@@ -12,11 +16,11 @@ namespace Armature.Framework
     private CreateByReflectionBuildAction()
     {}
 
-    public void Execute(UnitBuilder unitBuilder)
+    public void Process(UnitBuilder unitBuilder)
     {
       if(unitBuilder.BuildResult == null)
 			{
-        var type = unitBuilder.UnitInfo.GetUnitType();
+        var type = unitBuilder.BuildSequence.Last().GetUnitType();
 
 			  // ReSharper disable once PossibleNullReferenceException
         if( !type.IsInterface && !type.IsAbstract )

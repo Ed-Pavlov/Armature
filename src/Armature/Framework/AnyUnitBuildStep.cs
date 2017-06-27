@@ -5,17 +5,21 @@ namespace Armature.Framework
 {
   public class AnyUnitBuildStep : StaticBuildStep
   {
-    public override MatchedBuildActions GetBuildActions(int inputWeight, ArrayTail<UnitInfo> buildSequence)
+    /// <summary>
+    /// This steps matches any <see cref="UnitInfo"/>, so it pass the tail of <paramref name="matchingPattern"/> into its children and merges the result
+    /// with its own build actions
+    /// </summary>
+    public override MatchedBuildActions GetBuildActions(int inputMatchingWeight, ArrayTail<UnitInfo> matchingPattern)
     {
-      var lastItemAsTail = buildSequence.GetTail(buildSequence.Length - 1);
+      var lastItemAsTail = matchingPattern.GetTail(matchingPattern.Length - 1);
 
-      return GetChildrenActions(inputWeight + PassingBuildSequenceWeight.AnyUnit, lastItemAsTail)
-        .Merge(GetOwnActions(inputWeight + PassingBuildSequenceWeight.AnyUnit));
+      return GetChildrenActions(inputMatchingWeight + UnitSequenceMatchingWeight.AnyUnit, lastItemAsTail)
+        .Merge(GetOwnActions(inputMatchingWeight + UnitSequenceMatchingWeight.AnyUnit));
     }
 
     public override bool Equals(IBuildStep other)
     {
-      return other is AnyUnitBuildStep;
+      return ReferenceEquals(this, other);
     }
   }
 }

@@ -1,25 +1,35 @@
 ﻿using System;
 using Armature.Core;
+using Armature.Framework;
 using JetBrains.Annotations;
 
 namespace Armature
 {
   public static class Match
   {
+    /// <summary>
+    /// Creates a matcher with <see cref="UnitInfo"/>(typeof(<see cref="T"/>), <see cref="token"/>)
+    /// </summary>
     public static UnitInfoMatcher Type<T>(object token)
     {
       return Type(typeof(T), token);
     }
 
+    /// <summary>
+    /// Creates a matcher with <see cref="UnitInfo"/>(<see cref="type"/>, <see cref="token"/>)
+    /// </summary>
     public static UnitInfoMatcher Type([NotNull] Type type, object token)
     {
       if (type == null) throw new ArgumentNullException("type");
       return new UnitInfoMatcher(
         new UnitInfo(type, token),
         (pattern, other) => pattern.GetUnitTypeSafe() == other.GetUnitTypeSafe() && Equals(pattern.Token, other.Token),
-        PassingBuildSequenceWeight.WeakSequence);
+        UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
     }
 
+    /// <summary>
+    /// Creates a matcher with <see cref="UnitInfo"/>(<see cref="type"/>, <see cref="token"/>)
+    /// </summary>
     public static UnitInfoMatcher OpenGenericType(Type type, object token)
     {
       return new UnitInfoMatcher(
@@ -29,7 +39,7 @@ namespace Armature
             var unitType = other.GetUnitTypeSafe();
             return unitType != null && unitType.IsGenericType && Equals(unitType.GetGenericTypeDefinition(), pattern.Id);
           },
-        PassingBuildSequenceWeight.WeakSequenceOpenGeneric);
+        UnitSequenceMatchingWeight.WeakMatchingOpenGenericUnit);
     }
   }
 }

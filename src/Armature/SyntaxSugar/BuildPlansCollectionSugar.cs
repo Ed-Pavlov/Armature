@@ -6,13 +6,13 @@ using JetBrains.Annotations;
 
 namespace Armature
 {
-  public static class BuildPlansCollectionExtension
+  public static class BuildPlansCollectionSugar
   {
     public static TreatSugar<T> Treat<T>([NotNull] this BuildPlansCollection container, object token = null)
     {
       if (container == null) throw new ArgumentNullException("container");
 
-      var buildStep = new WeakBuildSequenceBuildStep(Match.Type<T>(token));
+      var buildStep = new UnitSequenceWeakMatchingBuildStep(Match.Type<T>(token));
       return new TreatSugar<T>(container.AddOrGetBuildStep(buildStep));
     }
 
@@ -20,7 +20,7 @@ namespace Armature
     {
       if (container == null) throw new ArgumentNullException("container");
 
-      var buildStep = new WeakBuildSequenceBuildStep(Match.OpenGenericType(openGenericType, token));
+      var buildStep = new UnitSequenceWeakMatchingBuildStep(Match.OpenGenericType(openGenericType, token));
       return new TreatOpenGenericSugar(container.AddOrGetBuildStep(buildStep));
     }
 
@@ -41,7 +41,7 @@ namespace Armature
     {
       if (container == null) throw new ArgumentNullException("container");
 
-      var buildStep = new WeakBuildSequenceBuildStep(Match.Type(type, token));
+      var buildStep = new UnitSequenceWeakMatchingBuildStep(Match.Type(type, token));
       return new BuildingSugar(container.AddOrGetBuildStep(buildStep), container);
     }
   }

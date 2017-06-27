@@ -113,7 +113,7 @@ namespace Tests.Functional
         _postfix = postfix;
       }
 
-      public void Execute(UnitBuilder unitBuilder)
+      public void Process(UnitBuilder unitBuilder)
       {}
 
       public void PostProcess(UnitBuilder unitBuilder)

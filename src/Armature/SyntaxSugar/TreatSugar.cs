@@ -14,22 +14,25 @@ namespace Armature
       _buildStep = buildStep;
     }
 
+    /// <summary>
+    /// Treat Unit as is w/o any redirections
+    /// </summary>
     public AdjusterSugar AsIs()
     { 
       _buildStep.AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
       return new AdjusterSugar(_buildStep);
     }
 
+    /// <summary>
+    /// Pass the <see cref="instance"/> to any consumer of an Unit 
+    /// </summary>
     public void AsInstance([CanBeNull] T instance)
     {
       _buildStep.AddBuildAction(BuildStage.Cache, new SingletonBuildAction(instance));
     }
 
-    /// <summary>
-    /// Overload to call As with set <param name="addDefaultCreateAction"/> but w/o a token. Bool is not suitable because bool value can be passed as a token
-    /// </summary>
     /// <param name="addDefaultCreateAction">If <see cref="AddCreationBuildStep.Yes"/> adds a build step
-    /// <see cref="Default.CreationBuildAction"/> for {<typeparamref name="TRedirect"/>, null} pair
+    /// <see cref="Default.CreationBuildAction"/> for <see cref="UnitInfo"/>(<see name="TRedirect"/>, null)
     /// as a creation build step.</param>
     public AdjusterSugar As<TRedirect>(AddCreationBuildStep addDefaultCreateAction)
     {
@@ -38,7 +41,7 @@ namespace Armature
 
     /// <param name="token"></param>
     /// <param name="addDefaultCreateAction">If <see cref="AddCreationBuildStep.Yes"/> adds a build step
-    /// <see cref="Default.CreationBuildAction"/> for {<typeparamref name="TRedirect"/>, <paramref name="token"/>} pair
+    /// <see cref="Default.CreationBuildAction"/> for <see cref="UnitInfo"/>(<see name="TRedirect"/>, <see cref="token"/>)
     /// as a creation build step.</param>
     /// <typeparam name="TRedirect"></typeparam>
     public AdjusterSugar As<TRedirect>(object token = null, AddCreationBuildStep addDefaultCreateAction = AddCreationBuildStep.Yes)
@@ -54,7 +57,7 @@ namespace Armature
       var nextBuildStep = _buildStep;
       if (addDefaultCreateAction == AddCreationBuildStep.Yes)
       {
-        nextBuildStep = new WeakBuildSequenceBuildStep(Match.Type<TRedirect>(token));
+        nextBuildStep = new UnitSequenceWeakMatchingBuildStep(Match.Type<TRedirect>(token));
         nextBuildStep.AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
         _buildStep.AddBuildStep(nextBuildStep);
       }

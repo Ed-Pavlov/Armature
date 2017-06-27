@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using JetBrains.Annotations;
 
 namespace Armature.Framework
@@ -8,7 +9,14 @@ namespace Armature.Framework
   /// </summary>
   internal class SpecialToken
   {
+    /// <summary>
+    /// Is used to build a value for parameter
+    /// </summary>
     public static readonly object BuildParameterValue = new SpecialToken("ParameterValue");
+    
+    /// <summary>
+    /// Is use to "build" a <see cref="ConstructorInfo"/> for a type
+    /// </summary>
     public static readonly object FindConstructor = new SpecialToken("Constructor");
 
     private readonly string _description;

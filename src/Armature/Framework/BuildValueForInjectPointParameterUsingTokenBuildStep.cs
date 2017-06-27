@@ -7,11 +7,12 @@ using Armature.Logging;
 namespace Armature.Framework
 {
   /// <summary>
-  /// This build step applyes to the parameter marked with InjectAttribute and build unit represented by UnitInfo(parameterInfo.Type, injectPointId as Token)
+  /// This build step matches with the parameter marked with <see cref="InjectAttribute"/> and its build action build unit represented 
+  /// by <see cref="UnitInfo"/>(parameterInfo.Type, injectPointId as Token)
   /// </summary>
   public class BuildValueForInjectPointParameterUsingTokenBuildStep : LeafBuildStep
   {
-    public BuildValueForInjectPointParameterUsingTokenBuildStep(int weight) : base(weight)
+    public BuildValueForInjectPointParameterUsingTokenBuildStep(int matchingWeight) : base(matchingWeight)
     {}
 
     protected override StagedBuildAction GetBuildAction(UnitInfo unitInfo)

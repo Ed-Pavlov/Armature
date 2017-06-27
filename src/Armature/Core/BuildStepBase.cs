@@ -8,13 +8,13 @@ namespace Armature.Core
 {
   /// <summary>
   /// Base class for a build step implementing a base logic of adding/removing children build steps
-  /// and obtainging build actions from them
+  /// and obtainging build actions from them. See <see cref="IBuildStep"/> for details
   /// </summary>
   public abstract class BuildStepBase : IBuildStep
   {
     private HashSet<IBuildStep> _children;
 
-    public abstract MatchedBuildActions GetBuildActions(int inputWeight, ArrayTail<UnitInfo> buildSequence);
+    public abstract MatchedBuildActions GetBuildActions(int inputMatchingWeight, ArrayTail<UnitInfo> matchingPattern);
 
     public void AddBuildStep([NotNull] IBuildStep buildStep)
     {
@@ -42,11 +42,11 @@ namespace Armature.Core
     /// <summary>
     /// Gets matched actions from all children build steps
     /// </summary>
-    /// <param name="startWeight">The base weight which can be changed by children build steps</param>
-    /// <param name="buildSequence">Build sequence</param>
-    protected MatchedBuildActions GetChildrenActions(int startWeight, ArrayTail<UnitInfo> buildSequence)
+    /// <param name="inputMatchingWeight">The weight of matching which used by children build steps to calculate a final weight of matching</param>
+    /// <param name="matchingPattern">The sequence of unit infos to match with build steps and find suitable one</param>
+    protected MatchedBuildActions GetChildrenActions(int inputMatchingWeight, ArrayTail<UnitInfo> matchingPattern)
     {
-      return LazyChildren.Aggregate((MatchedBuildActions) null, (current, child) => current.Merge(child.GetBuildActions(startWeight, buildSequence)));
+      return LazyChildren.Aggregate((MatchedBuildActions) null, (current, child) => current.Merge(child.GetBuildActions(inputMatchingWeight, matchingPattern)));
     }
 
     private HashSet<IBuildStep> LazyChildren

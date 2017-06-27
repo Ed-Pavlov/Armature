@@ -18,10 +18,8 @@ namespace Armature.Core
     private readonly IEnumerable<object> _stages;
 
     /// <param name="stages">The ordered collection of build stages all of which are performed to build a unit</param>
-    /// <param name="parentBuilders">If unit is not built and parentBuilder is set, trying to build a unit using parent builders one by one
-    /// in the order how the were passed into constructor </param>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="ArgumentException"></exception>
+    /// <param name="parentBuilders">If unit is not built and <paramref name="parentBuilders"/> are provided, trying to build a unit using 
+    /// parent builders one by one in the order they passed into constructor </param>
     public Builder([NotNull] IEnumerable<object> stages, params Builder[] parentBuilders)
     {
       if (stages == null) throw new ArgumentNullException("stages");
@@ -38,13 +36,11 @@ namespace Armature.Core
     /// <summary>
     /// Builds a unit represented by <see cref="UnitInfo"/>
     /// </summary>
-    /// <returns>Returns an instance of unit or null if unit is null.</returns>
+    /// <returns>Returns an instance or null if null is registered as an unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
     public object BuildUnit(UnitInfo unitInfo, BuildPlansCollection sessionRules = null)
     {
-      var buildSession = new BuildSession(_stages, this, sessionRules);
-
-      var buildResult = buildSession.BuildUnit(unitInfo);
+      var buildResult = BuildSession.BuildUnit(unitInfo, _stages, this, sessionRules);
       if (buildResult != null)
         return buildResult.Value;
 

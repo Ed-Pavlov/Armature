@@ -4,8 +4,10 @@ using JetBrains.Annotations;
 namespace Armature.Framework
 {
   /// <summary>
-  /// Use objects but int or enum in order to avoid memory trafiic on boxing
+  /// Represents predefined build stages used by out of the box Armature framework. This list can be extended or completely replaced
+  /// if another framework is implemented based on Armature core  
   /// </summary>
+  /// <remarks>Use objects but int or enum in order to avoid memory trafiic on boxing</remarks>
   public class BuildStage
   {
     public static readonly BuildStage Cache = new BuildStage("Cache");

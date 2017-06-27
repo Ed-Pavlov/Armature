@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace Armature.Common
 {
-  public static class ExceptionExtension
+  internal static class ExceptionExtension
   {
     public static T AddData<T>([NotNull] this T exception, [NotNull] object key, [CanBeNull] object value) where T : Exception
     {

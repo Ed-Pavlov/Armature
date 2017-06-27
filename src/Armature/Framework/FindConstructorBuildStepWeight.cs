@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Armature.Framework
 {
+  [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
   public class FindConstructorBuildStepWeight
   {
     // ReSharper disable once MemberCanBePrivate.Global (introduced to use in inheritors)

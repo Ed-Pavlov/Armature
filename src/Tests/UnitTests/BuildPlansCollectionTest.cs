@@ -29,7 +29,7 @@ namespace Tests.UnitTests
         .Should()
         .HaveCount(2)
         .And
-        .Subject.Select(_ => _.Entity)
+        .Subject.Select(_ => _.BuildAction)
         .Should()
         .BeEquivalentTo(singletonAction, CreateByReflectionBuildAction.Instance);
     }

@@ -16,25 +16,18 @@ namespace Armature
       _buildStep = buildStep;
     }
 
-    /// <summary>
-    /// Overload to call As with set <param name="addDefaultCreateAction"/> but w/o a token. Bool is not suitable because bool value can be passed as a token
-    /// </summary>
     /// <param name="openGenericType"></param>
     /// <param name="addDefaultCreateAction">If <see cref="AddCreationBuildStep.Yes"/> adds a build step
-    /// <see cref="Default.CreationBuildAction"/> for {<paramref name="openGenericType"/>, null} pair
-    /// as a creation build step.</param>
+    /// <see cref="Default.CreationBuildAction"/> for <see cref="UnitInfo"/>(<paramref name="openGenericType"/>, null) as a creation build step.</param>
     public AdjusterSugar As(Type openGenericType, AddCreationBuildStep addDefaultCreateAction)
     {
       return As(openGenericType, null, addDefaultCreateAction);
     }
 
-    /// <summary>
-    ///
-    /// </summary>
     /// <param name="openGenericType"></param>
     /// <param name="token"></param>
     /// <param name="addDefaultCreateAction">If <see cref="AddCreationBuildStep.Yes"/> adds a build step
-    /// <see cref="Default.CreationBuildAction"/> for {<paramref name="openGenericType"/>, <paramref name="token"/>} pair
+    /// <see cref="Default.CreationBuildAction"/> for <see cref="UnitInfo"/>(<paramref name="openGenericType"/>, <see cref="token"/>) 
     /// as a creation build step.</param>
     public AdjusterSugar As(Type openGenericType, object token = null, AddCreationBuildStep addDefaultCreateAction = AddCreationBuildStep.Yes)
     {
@@ -43,7 +36,7 @@ namespace Armature
       var nextBuildStep = _buildStep;
       if (addDefaultCreateAction == AddCreationBuildStep.Yes)
       {
-        nextBuildStep = new WeakBuildSequenceBuildStep(Match.OpenGenericType(openGenericType, token));
+        nextBuildStep = new UnitSequenceWeakMatchingBuildStep(Match.OpenGenericType(openGenericType, token));
         nextBuildStep.AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
         _buildStep.AddBuildStep(nextBuildStep);
       }

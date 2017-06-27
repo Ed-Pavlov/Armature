@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace Armature.Core
 {
   /// <summary>
-  /// Describes an unit to build
+  /// Describes an unit to build. <see cref="IBuildStep"/> matches with passed collection of <see cref="UnitInfo"/>
   /// </summary>
   [Serializable]
   public class UnitInfo : IEquatable<UnitInfo>
@@ -20,6 +20,7 @@ namespace Armature.Core
       Token = token;
     }
 
+    [DebuggerStepThrough]
     public bool Equals(UnitInfo other)
     {
       if (ReferenceEquals(null, other)) return false;
@@ -28,11 +29,13 @@ namespace Armature.Core
       return Equals(Id, other.Id) && Equals(Token, other.Token);
     }
 
+    [DebuggerStepThrough]
     public override bool Equals(object obj)
     {
       return Equals(obj as UnitInfo);
     }
 
+    [DebuggerStepThrough]
     public override int GetHashCode()
     {
       unchecked
@@ -41,11 +44,13 @@ namespace Armature.Core
       }
     }
 
+    [DebuggerStepThrough]
     public static bool operator ==(UnitInfo left, UnitInfo right)
     {
       return Equals(left, right);
     }
 
+    [DebuggerStepThrough]
     public static bool operator !=(UnitInfo left, UnitInfo right)
     {
       return !Equals(left, right);

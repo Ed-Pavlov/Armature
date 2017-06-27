@@ -5,6 +5,9 @@ using Armature.Logging;
 
 namespace Armature.Core
 {
+  /// <summary>
+  /// Base class for build steps contains predefined collection of <see cref="IBuildAction"/>
+  /// </summary>
   public abstract class StaticBuildStep : BuildStepBase
   {
     private Dictionary<object, List<IBuildAction>> _buildActions;
@@ -38,9 +41,7 @@ namespace Armature.Core
           .ToList();
 
         if (actions.Count > 0)
-        {
           result.Add(pair.Key, actions);
-        }
       }
       return result;
     }

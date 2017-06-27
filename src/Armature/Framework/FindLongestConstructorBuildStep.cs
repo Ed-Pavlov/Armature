@@ -6,11 +6,15 @@ using Armature.Core;
 
 namespace Armature.Framework
 {
+  /// <summary>
+  /// Build steps "builds" <see cref="ConstructorInfo"/> for a <see cref="UnitInfo.Id"/> as Type, returns <see cref="ConstructorInfo"/>
+  /// for a public constructor with the maximum number of parameters  
+  /// </summary>
   public class FindLongestConstructorBuildStep : FindConstructorBuildStepBase
   {
     private static readonly ConstructorInfo NoParametersConstructor = typeof (DefaultConstructor).GetConstructors()[0];
 
-    public FindLongestConstructorBuildStep(int weight) : base(weight)
+    public FindLongestConstructorBuildStep(int matchingWeight) : base(matchingWeight)
     {}
 
     protected override ConstructorInfo GetConstructor(Type type)

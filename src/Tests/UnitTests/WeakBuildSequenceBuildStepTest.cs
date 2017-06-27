@@ -19,8 +19,8 @@ namespace Tests.UnitTests
       var expected = new SingletonBuildAction();
 
       // --arrange
-      var target = new WeakBuildSequenceBuildStep(Match.Type<IDisposableValue1>(null));
-      var next = new WeakBuildSequenceBuildStep(Match.Type<IDisposable>(null));
+      var target = new UnitSequenceWeakMatchingBuildStep(Match.Type<IDisposableValue1>(null));
+      var next = new UnitSequenceWeakMatchingBuildStep(Match.Type<IDisposable>(null));
       target.AddBuildStep(next);
       next.AddBuildAction(BuildStage.Cache, expected);
 
@@ -41,7 +41,7 @@ namespace Tests.UnitTests
       var singletonAction = new SingletonBuildAction();
       var buildStep2 = new AnyUnitBuildStep().AddBuildAction(BuildStage.Cache, singletonAction);
 
-      var target = new WeakBuildSequenceBuildStep(Match.Type<string>(null));
+      var target = new UnitSequenceWeakMatchingBuildStep(Match.Type<string>(null));
       target.AddBuildStep(buildStep1);
       target.AddBuildStep(buildStep2);
 
@@ -53,7 +53,7 @@ namespace Tests.UnitTests
         .Should()
         .HaveCount(2)
         .And
-        .Subject.Select(_ => _.Entity)
+        .Subject.Select(_ => _.BuildAction)
         .Should()
         .BeEquivalentTo(CreateByReflectionBuildAction.Instance, singletonAction);
     }

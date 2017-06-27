@@ -6,29 +6,34 @@ using JetBrains.Annotations;
 namespace Armature.Core
 {
   /// <summary>
-  /// Base class for a build step which triggers on the last unit in the build sequence only.
-  /// Returns no build action if does not match building unit
+  /// Base class for a build step which can match with the last unit in the build sequence only.
+  /// Returns no build action if does not match building <see cref="UnitInfo"/>
   /// </summary>
   public abstract class LeafBuildStep : BuildStepBase
   {
-    private readonly int _weight;
+    private readonly int _matchingWeight;
 
-    protected LeafBuildStep(int weight)
+    protected LeafBuildStep(int matchingWeight)
     {
-      _weight = weight;
+      _matchingWeight = matchingWeight;
     }
 
-    public override MatchedBuildActions GetBuildActions(int inputWeight, ArrayTail<UnitInfo> buildSequence)
+    public override MatchedBuildActions GetBuildActions(int inputMatchingWeight, ArrayTail<UnitInfo> matchingPattern)
     {
-      if (buildSequence.Length != 1) return null;
+      if (matchingPattern.Length != 1) return null;
 
-      var buildAction = GetBuildAction(buildSequence.GetLastItem());
+      var buildAction = GetBuildAction(matchingPattern.GetLastItem());
 
       return buildAction == null
         ? null
-        : new MatchedBuildActions{{buildAction.BuildStage, new List<Weighted<IBuildAction>>{buildAction.BuildAction.WithWeight(inputWeight + _weight)}}};
+        : new MatchedBuildActions{
+        {
+          buildAction.BuildStage, 
+          new List<WeightedBuildAction>{buildAction.BuildAction.WithWeight(inputMatchingWeight + _matchingWeight)}
+        }};
     }
 
+    //TODO: is it right, how to Remove such build step?
     public override bool Equals(IBuildStep obj)
     {
       return false;

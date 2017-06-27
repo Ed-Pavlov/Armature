@@ -5,6 +5,9 @@ using JetBrains.Annotations;
 
 namespace Armature.Framework
 {
+  /// <summary>
+  /// Build action redirects building of unit of one type to the unit of another type. E.g. redirecting interface to the implementation
+  /// </summary>
   public class RedirectTypeBuildAction : IBuildAction
   {
     private readonly Type _redirectTo;
@@ -18,7 +21,7 @@ namespace Armature.Framework
       _token = token;
     }
 
-    public void Execute(UnitBuilder unitBuilder)
+    public void Process(UnitBuilder unitBuilder)
     {
       if (unitBuilder.BuildResult == null)
       {

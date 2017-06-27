@@ -4,6 +4,10 @@ using JetBrains.Annotations;
 
 namespace Armature.Framework
 {
+  /// <summary>
+  /// Build action which caches built unit in <see cref="PostProcess"/> and then set it as <see cref="BuildResult"/> in <see cref="Process"/>.
+  /// Simplest eternal singleton 
+  /// </summary>
   public class SingletonBuildAction : IBuildAction
   {
     private Instance _instance;
@@ -16,7 +20,7 @@ namespace Armature.Framework
       _instance = new Instance(value);
     }
 
-    public void Execute(UnitBuilder unitBuilder)
+    public void Process(UnitBuilder unitBuilder)
     {
       Log.Verbose("{0}.Execute: Instance={1}", typeof(SingletonBuildAction).Name, _instance ?? (object)"null");
 

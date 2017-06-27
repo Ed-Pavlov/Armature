@@ -8,6 +8,10 @@ namespace Armature.Framework
 {
   public static class UnitBuilderExtension
   {
+    /// <summary>
+    /// Builds a <see cref="ConstructorInfo"/> for a <see creaf="type"/> by building a unit represented 
+    /// by <see cref="UnitInfo"/>(<see cref="type"/>, <see cref="SpecialToken.FindConstructor"/>) via current build session. 
+    /// </summary>
     public static ConstructorInfo GetConstructorOf([NotNull] this UnitBuilder unitBuilder, [NotNull] Type type)
     {
       if (unitBuilder == null) throw new ArgumentNullException("unitBuilder");
@@ -19,6 +23,10 @@ namespace Armature.Framework
       return (ConstructorInfo) result.Value;
     }
 
+    /// <summary>
+    /// Builds values for parameters by building a set of <see cref="UnitInfo"/>(<see cref="parameters"/>[i], <see cref="SpecialToken.BuildParameterValue"/>)
+    /// one by one via current build session 
+    /// </summary>
     public static object[] GetValuesForParameters([NotNull] this UnitBuilder unitBuilder, [NotNull] ParameterInfo[] parameters)
     {
       if (unitBuilder == null) throw new ArgumentNullException("unitBuilder");

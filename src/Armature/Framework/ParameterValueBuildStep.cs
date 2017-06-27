@@ -9,7 +9,7 @@ namespace Armature.Framework
   {
     private readonly Func<ParameterInfo, IBuildAction> _getBuildAction;
 
-    protected ParameterValueBuildStep(Func<ParameterInfo, IBuildAction> getBuildAction, int weight) : base(weight)
+    protected ParameterValueBuildStep(Func<ParameterInfo, IBuildAction> getBuildAction, int matchingWeight) : base(matchingWeight)
     {
       _getBuildAction = getBuildAction;
     }

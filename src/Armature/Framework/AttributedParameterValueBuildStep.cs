@@ -10,19 +10,25 @@ using JetBrains.Annotations;
 namespace Armature.Framework
 {
   /// <summary>
-  /// Contains a build step to build a value for a parameter marked with an <see cref="Attribute"/>.
+  /// Build step matches with <see cref="UnitInfo"/> describes value needed to pass to the parameter marked with special <see cref="Attribute"/> 
   /// <see cref="InjectAttribute"/> is used by default  by Armature framework.
-  /// Provide your own <see cref=".ctor(Predicate{Attribute})"/> if you want to use another attribute
+  /// Provide your own <see cref=".ctor(Predicate{Attribute})"/> if you want to use another attribute.
   /// </summary>
   public class AttributedParameterValueBuildStep : ParameterValueBuildStep
   {
     private readonly Predicate<Attribute> _predicate;
 
+    /// <summary>
+    /// Creates build step which matches with parameter marked with <see cref="InjectAttribute"/> with <see cref="injectPointId"/> as inject point id
+    /// </summary>
+    /// <param name="matchingWeight"></param>
+    /// <param name="injectPointId"></param>
+    /// <param name="getBuildAction">Factory method returning build action for passed <see cref="ParameterInfo"/></param>
     public AttributedParameterValueBuildStep(
-      int weight, [CanBeNull] 
-      object injectPointId, 
+      int matchingWeight, 
+      [CanBeNull] object injectPointId, 
       [NotNull] Func<ParameterInfo, IBuildAction> getBuildAction)
-      : this(weight, CreateInjectAttributePredicate(injectPointId), getBuildAction)
+      : this(matchingWeight, CreateInjectAttributePredicate(injectPointId), getBuildAction)
     {}
 
     /// <summary>
@@ -30,10 +36,10 @@ namespace Armature.Framework
     /// </summary>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public AttributedParameterValueBuildStep(
-      int weight, 
+      int matchingWeight, 
       [NotNull] Predicate<Attribute> predicate, 
       [NotNull] Func<ParameterInfo, IBuildAction> getBuildAction)
-      : base(getBuildAction, weight)
+      : base(getBuildAction, matchingWeight)
     {
       if (predicate == null) throw new ArgumentNullException("predicate");
       _predicate = predicate;
@@ -66,5 +72,8 @@ namespace Armature.Framework
         return injectAttribute != null && Equals(injectAttribute.InjectionPointId, injectionPointId);
       };
     }
+
+    
+    
   }
 }

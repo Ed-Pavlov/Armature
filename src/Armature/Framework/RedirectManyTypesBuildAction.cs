@@ -14,7 +14,7 @@ namespace Armature.Framework
       if(constructionObjects.Length == 0) throw new Exception();
     }
 
-    public void Execute(UnitBuilder unitBuilder)
+    public void Process(UnitBuilder unitBuilder)
     {
       if(unitBuilder.BuildResult != null)
         throw new Exception();
