@@ -58,6 +58,34 @@ namespace Tests.Functional
       // --assert
       actual.Should().Be(expected);
     }
+    
+    [Test]
+    public void CreatedByMethodFactory1()
+    {
+      OneStringCtorClass expected;
+      const string expectedString = "expected397";
+      
+      // --arrange
+      var target = FunctionalTestHelper.CreateBuilder();
+      
+      target
+        .Treat<string>()
+        .AsInstance(expectedString);
+      
+      target
+        .Treat<OneStringCtorClass>()
+        .CreatedBy<string>((_, value) =>
+        {
+          expected = new OneStringCtorClass(value);
+          return expected;
+        });
+
+      // --act
+      var actual = target.Build<OneStringCtorClass>();
+
+      // --assert
+      actual.Text.Should().Be(expectedString);
+    }
 
     /// <summary>
     /// <see cref="TreatSugar{T}.As{TRedirect}(object, AddCreationBuildStep)"/> adds default creation strategy

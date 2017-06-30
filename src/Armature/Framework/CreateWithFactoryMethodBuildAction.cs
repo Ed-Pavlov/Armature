@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Armature.Core;
 using JetBrains.Annotations;
@@ -42,7 +43,8 @@ namespace Armature.Framework
     {
       if (unitBuilder.BuildResult == null)
       {
-        var result = Execute(unitBuilder, unitBuilder.GetValuesForParameters(GetMethod().GetParameters()));
+        // remove UnitBuilder parameter from parameters array when resolving parameters values
+        var result = Execute(unitBuilder, unitBuilder.GetValuesForParameters(GetMethod().GetParameters().Skip(1).ToArray()));
         unitBuilder.BuildResult = new BuildResult(result);
       }
     }

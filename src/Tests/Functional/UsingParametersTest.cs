@@ -6,13 +6,14 @@ using Armature.Logging;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 namespace Tests.Functional
 {
   public class UsingParametersTest
   {
     [Test]
-    public void WithoutParameters()
+    public void should_throw_exception_if_there_is_no_value_for_parameter()
     {
       // --arrange
       var target = FunctionalTestHelper.CreateBuilder();
@@ -28,7 +29,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void RegisterWithTwoWeakParameters()
+    public void should_inject_provided_values_to_constructor()
     {
       var expectedDisposable = new Disposable();
       const string expectedString = "dsljf";
@@ -54,7 +55,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void RegisterNullAsParameterValue()
+    public void should_register_null_as_parameter_value()
     {
       // --arrange
       var target = FunctionalTestHelper.CreateBuilder();
@@ -72,7 +73,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void RegisterUsingDifferentBuildPlansWithDifferentParameters()
+    public void should_register_different_parameter_values_in_different_build_plans()
     {
       var target = FunctionalTestHelper.CreateBuilder();
 
@@ -97,7 +98,7 @@ namespace Tests.Functional
     }
     
     [Test]
-    public void ParametersShouldBeAppliedDirectlyToTypeTheyRegistiredFor()
+    public void should_not_pass_registered_parameter_when_building_dependency()
     {
       // Register string parameter only for LevelTwo class, despite that LevelOne also requires string in its .ctor
       // registered parameter should not be propagated into LevelOne
@@ -120,7 +121,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void RegisterParametersForAll()
+    public void should_use_parameter_value_for_all_build_plans()
     {
       const string expectedString = "value";
 
@@ -142,7 +143,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void WhenResolvingUnitTreatAll()
+    public void should_use_one_parameter_for_unit_and_other_for_dependencies()
     {
       const string expectedString3 = "value";
       const string l3ExpectedString = "levelThree";
@@ -166,42 +167,13 @@ namespace Tests.Functional
       var actual = target.Build<LevelThree>();
 
       // --assert
-      actual.String.Should().Be(l3ExpectedString);
-      actual.LevelTwo.String.Should().Be(expectedString3);
-      actual.LevelTwo.LevelOne.String.Should().Be(expectedString3);
+      actual.String.Should().Be(l3ExpectedString, "Because {0} is registered for {1}", l3ExpectedString, typeof(LevelThree).Name);
+      actual.LevelTwo.String.Should().Be(expectedString3, "Because {0} is registered for all {1} dependencies", expectedString3, typeof(LevelThree).Name);
+      actual.LevelTwo.LevelOne.String.Should().Be(expectedString3, "Because {0} is registered for all {1} dependencies", expectedString3, typeof(LevelThree).Name);
     }
 
     [Test]
-    public void WhenResolvingDependencyTreatAll()
-    {
-      const string expectedString3 = "value";
-      const string l3ExpectedString = "levelThree";
-
-      var target = FunctionalTestHelper.CreateBuilder();
-
-      target.Treat<LevelOne>().AsIs();
-      target.Treat<LevelTwo>().AsIs();
-      target
-        .Treat<LevelThree>()
-        .AsIs()
-        .UsingParameters(l3ExpectedString);
-
-      target
-        .Building<LevelTwo>()
-        .TreatAll()
-        .UsingParameters(expectedString3);
-
-      // --act
-      var actual = target.Build<LevelThree>();
-
-      // --assert
-      actual.String.Should().Be(l3ExpectedString);
-      actual.LevelTwo.String.Should().Be(expectedString3);
-      actual.LevelTwo.LevelOne.String.Should().Be(expectedString3);
-    }
-
-    [Test]
-    public void NamedParameter()
+    public void should_use_value_for_parameter_with_given_name()
     {
       const string expected = "expected";
 
@@ -221,7 +193,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void MarkedParameter()
+    public void should_use_value_for_parameter_marked_with_attribute()
     {
       const string expected = "expected";
 
@@ -241,7 +213,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void UseToken()
+    public void should_build_value_for_parameter_using_parameter_type_and_token()
     {
       const string rightToken = "token398";
       const string badToken = "sdoy7256";
@@ -271,6 +243,45 @@ namespace Tests.Functional
 
       // --assert
       actual.String.Should().Be(expected);
+    }
+
+    [Test]
+    public void should_use_resolver_if_value_is_not_provided()
+    {
+      const int expectedInt = 392;
+
+      // --arrange
+      var target = FunctionalTestHelper.CreateBuilder();
+      target
+        .Treat<LevelOne>()
+        .AsIs()
+        .UsingParameters(For.Parameter<string>().UseResolver<int>((_, intValue) => intValue.ToString()));
+      
+      // --act
+      var actual = target.Build<LevelOne>(expectedInt);
+
+      // --assert
+      actual.String.Should().Be(expectedInt.ToString());
+    }
+    
+    [Test]
+    public void should_use_value_if_both_value_and_resolver_are_provided()
+    {
+      const string expectedString = "expected29083";
+
+      Log.Enabled(LogLevel.Verbose);
+      // --arrange
+      var target = FunctionalTestHelper.CreateBuilder();
+      target
+        .Treat<LevelOne>()
+        .AsIs()
+        .UsingParameters(For.Parameter<string>().UseResolver<int>((_, intValue) => intValue.ToString()));
+      
+      // --act
+      var actual = target.Build<LevelOne>(expectedString);
+
+      // --assert
+      actual.String.Should().Be(expectedString);
     }
 
     [UsedImplicitly]

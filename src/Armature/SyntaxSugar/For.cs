@@ -101,6 +101,12 @@ namespace Armature
         _getBuildAction = parameterInfo => new RedirectTypeBuildAction(parameterInfo.ParameterType, token); // build value by UnitInfo(parameterType, token)
         return this;
       }
+
+      public IParameterValueBuildPlanner UseResolver<T>(Func<UnitBuilder, T, object> resolver)
+      {
+        _getBuildAction = _ => new CreateWithFactoryMethodBuildAction<T, object>(resolver);
+        return this;
+      }
     }
   }
 }
