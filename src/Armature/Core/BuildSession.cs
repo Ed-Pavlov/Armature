@@ -8,17 +8,14 @@ namespace Armature.Core
   /// <summary>
   /// Represents whole build session of the one Unit, all dependency of the built unit are built in context of one build session
   /// </summary>
-  public struct BuildSession
+  public class BuildSession
   {
     private readonly IEnumerable<object> _buildStages;
     private readonly List<UnitInfo> _buildSequence;
     
     private readonly BuildPlansCollection _buildPlans;
-    /// <summary>
-    /// Build plans collection contains additional build plans or overriding build plans contained in <see cref="_buildPlans"/> collection  
-    /// </summary>
     [CanBeNull] 
-    private readonly BuildPlansCollection _buildPlansOverrides;
+    private readonly BuildPlansCollection _runtimeBuildPlans;
 
     /// <summary>
     /// Builds a Unit represented by <paramref name="unitInfo"/>
@@ -26,27 +23,26 @@ namespace Armature.Core
     /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IBuildStep"/> for details</param>
     /// <param name="buildStages">The conveyer of build stages. <see cref="Builder"/> for details</param>
     /// <param name="buildPlans">Build plans used to build a unit</param>
-    /// <param name="buildPlansOverrides">Build plans collection contains additional build plans or overriding build plans contained 
-    /// in <paramref name="buildPlans"/> collection</param>
+    /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit"/> method </param>
     public static BuildResult BuildUnit(
       [NotNull] UnitInfo unitInfo,
       [NotNull] IEnumerable<object> buildStages,
       [NotNull] BuildPlansCollection buildPlans,
-      [CanBeNull] BuildPlansCollection buildPlansOverrides)
+      [CanBeNull] BuildPlansCollection runtimeBuildPlans)
     {
-      return new BuildSession(buildStages, buildPlans, buildPlansOverrides).BuildUnit(unitInfo);
+      return new BuildSession(buildStages, buildPlans, runtimeBuildPlans).BuildUnit(unitInfo);
     }
     
     private BuildSession(
       [NotNull] IEnumerable<object> buildStages, 
       [NotNull] BuildPlansCollection buildPlans, 
-      [CanBeNull] BuildPlansCollection buildPlansOverrides)
+      [CanBeNull] BuildPlansCollection runtimeBuildPlans)
     {
       if (buildStages == null) throw new ArgumentNullException("buildStages");
       if (buildPlans == null) throw new ArgumentNullException("buildPlans");
       _buildStages = buildStages;
       _buildPlans = buildPlans;
-      _buildPlansOverrides = buildPlansOverrides;
+      _runtimeBuildPlans = runtimeBuildPlans;
       _buildSequence = new List<UnitInfo>(4);
     }
 
@@ -55,26 +51,21 @@ namespace Armature.Core
     {
       if (unitInfo == null) throw new ArgumentNullException("unitInfo");
       
-      BuildResult result = null;
-
       using (LogBuildSessionState(unitInfo))
       {
         _buildSequence.Add(unitInfo);
         try
         {
-          if (_buildPlansOverrides != null)
-            result = BuildUnit(_buildPlansOverrides.GetBuildActions(_buildSequence));
-
-          if(result == null)
-            result = BuildUnit(_buildPlans.GetBuildActions(_buildSequence));
+          var actions = _buildPlans.GetBuildActions(_buildSequence);
+          var runtimeActions = _runtimeBuildPlans == null ? null : _runtimeBuildPlans.GetBuildActions(_buildSequence);
+          
+          return BuildUnit(actions.Merge(runtimeActions));
         }
         finally
         {
           _buildSequence.RemoveAt(_buildSequence.Count - 1);
         }
       }
-
-      return result;
     }
 
     private BuildResult BuildUnit(MatchedBuildActions matchedBuildActions)

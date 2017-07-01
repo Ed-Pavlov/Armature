@@ -36,11 +36,13 @@ namespace Armature.Core
     /// <summary>
     /// Builds a unit represented by <see cref="UnitInfo"/>
     /// </summary>
+    /// <param name="unitInfo">Building unit "id"</param>
+    /// <param name="runtimeBuildPlans">Additional build plans to build a unit or its dependencies</param>
     /// <returns>Returns an instance or null if null is registered as an unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
-    public object BuildUnit(UnitInfo unitInfo, BuildPlansCollection sessionRules = null)
+    public object BuildUnit(UnitInfo unitInfo, BuildPlansCollection runtimeBuildPlans = null)
     {
-      var buildResult = BuildSession.BuildUnit(unitInfo, _stages, this, sessionRules);
+      var buildResult = BuildSession.BuildUnit(unitInfo, _stages, this, runtimeBuildPlans);
       if (buildResult != null)
         return buildResult.Value;
 
@@ -49,7 +51,7 @@ namespace Armature.Core
         {
           try
           {
-            return parentBuilder.BuildUnit(unitInfo, sessionRules);
+            return parentBuilder.BuildUnit(unitInfo, runtimeBuildPlans);
           }
           catch (Exception)
           {
