@@ -6,7 +6,7 @@ namespace Armature.Framework
   /// Matching weight for different build steps building values for a parameters
   /// </summary>
   [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-  public class ParameterValueBuildActionWeight
+  public class ParameterValueBuildStepWeight
   {
     // ReSharper disable once MemberCanBePrivate.Global (introduced to use in inheritors)
     protected const int Step = 100;
@@ -16,21 +16,21 @@ namespace Armature.Framework
     /// <summary>
     /// <see cref="WeakParameterTypeValueBuildStep"/> 
     /// </summary>
-    public const int FreeValueResolver = Lowest + Step;
+    public const int WeakTypedParameter = Lowest + Step;
     
     /// <summary>
     /// <see cref="StrictParameterTypeValueBuildStep"/>
     /// </summary>
-    public const int TypedParameterResolver = FreeValueResolver + Step;
+    public const int TypedParameter = WeakTypedParameter + Step;
     
     /// <summary>
-    /// <see cref="AttributedParameterResolver"/>
+    /// <see cref="AttributedParameterValueBuildStep"/>
     /// </summary>
-    public const int AttributedParameterResolver = TypedParameterResolver + Step;
+    public const int AttributedParameter = TypedParameter + Step;
     
     /// <summary>
     /// <see cref="NamedParameterValueBuildStep"/>
     /// </summary>
-    public const int NamedParameterResolver = AttributedParameterResolver + Step;
+    public const int NamedParameter = AttributedParameter + Step;
   }
 }

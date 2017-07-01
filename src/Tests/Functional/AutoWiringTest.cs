@@ -45,7 +45,7 @@ namespace Tests.Functional
       // --arrange
       var target = FunctionalTestHelper.CreateBuilder();
       var rootBuildStep = target.AddOrGetBuildStep(new AnyUnitBuildStep());
-      rootBuildStep.AddBuildStep(new BuildValueForInjectPointParameterUsingTokenBuildStep(ParameterValueBuildActionWeight.Lowest + 1));
+      rootBuildStep.AddBuildStep(new BuildValueForInjectPointParameterUsingTokenBuildStep(ParameterValueBuildStepWeight.Lowest + 1));
 
       target
         .Treat<Consumer>()
@@ -72,7 +72,7 @@ namespace Tests.Functional
     {
       var target = FunctionalTestHelper.CreateBuilder();
       var rootBuildStep = target.AddOrGetBuildStep(new AnyUnitBuildStep());
-      rootBuildStep.AddBuildStep(new BuildValueForInjectPointParameterUsingTokenBuildStep(ParameterValueBuildActionWeight.Lowest + 1));
+      rootBuildStep.AddBuildStep(new BuildValueForInjectPointParameterUsingTokenBuildStep(ParameterValueBuildStepWeight.Lowest + 1));
       return target;
     }
     

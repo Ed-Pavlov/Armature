@@ -29,7 +29,7 @@ namespace Armature
         if (parameterBuildPlanner != null)
           parameterBuildPlanner.AddBuildParameterValueStepTo(_buildStep);
         else
-          _buildStep.AddBuildStep(new WeakParameterTypeValueBuildStep(ParameterValueBuildActionWeight.FreeValueResolver, parameter));
+          _buildStep.AddBuildStep(new WeakParameterTypeValueBuildStep(ParameterValueBuildStepWeight.WeakTypedParameter, parameter));
       }
       return this;
     }

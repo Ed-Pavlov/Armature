@@ -67,7 +67,7 @@
     <Compile Include="Framework\CreateByReflectionBuildAction.cs" />
     <Compile Include="Framework\AnyUnitBuildStep.cs" />
     <Compile Include="Framework\NamedParameterValueBuildStep.cs" />
-    <Compile Include="Framework\ParameterValueBuildActionWeight.cs" />
+    <Compile Include="Framework\ParameterValueBuildStepWeight.cs" />
     <Compile Include="Framework\ParameterValueBuildStep.cs" />
     <Compile Include="Framework\UnitInfoMatcher.cs" />
     <Compile Include="Framework\UnitSequenceMatchingWeight.cs" />

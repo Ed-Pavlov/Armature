@@ -17,7 +17,7 @@ namespace Tests.Functional
       var treatAll = new AnyUnitBuildStep();
       treatAll.AddBuildStep(new FindLongestConstructorBuildStep(FindConstructorBuildStepWeight.Lowest));
       treatAll.AddBuildStep(new FindAttributedConstructorBuildStep(FindConstructorBuildStepWeight.Attributed));
-      treatAll.AddBuildStep(new BuildValueForParameterStep(ParameterValueBuildActionWeight.Lowest));
+      treatAll.AddBuildStep(new BuildValueForParameterStep(ParameterValueBuildStepWeight.Lowest));
 
       container.AddBuildStep(treatAll);
       return container;

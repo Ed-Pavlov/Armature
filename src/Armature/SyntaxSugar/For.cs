@@ -13,11 +13,12 @@ namespace Armature
     /// <summary>
     /// Matches with parameter with <see cref="ParameterInfo.ParameterType"/> equals to <see cref="T"/>
     /// </summary>
-    public static ParameterValueBuildPlanner Parameter<T>()
+    /// <param name="weight">Weight of the build step building the value for parameter</param>
+    public static ParameterValueBuildPlanner Parameter<T>(int weight = ParameterValueBuildStepWeight.TypedParameter)
     {
       return new ParameterValueBuildPlanner(getBuildAction =>
         new StrictParameterTypeValueBuildStep(
-          ParameterValueBuildActionWeight.TypedParameterResolver, 
+          weight, 
           typeof(T), 
           getBuildAction));
     }
@@ -25,13 +26,14 @@ namespace Armature
     /// <summary>
     /// Matches with parameter with <see cref="ParameterInfo.Name"/> equals to <see cref="parameterName"/>
     /// </summary>
-    /// <param name="parameterName"></param>
+    /// <param name="parameterName">Build step building the value will match with parameter with this name</param>
+    /// <param name="weight">Weight of the build step building the value for parameter</param>
     /// <returns></returns>
-    public static ParameterValueBuildPlanner ParameterName(string parameterName)
+    public static ParameterValueBuildPlanner ParameterName(string parameterName, int weight = ParameterValueBuildStepWeight.NamedParameter)
     {
       return new ParameterValueBuildPlanner(getBuildAction =>
         new NamedParameterValueBuildStep(
-          ParameterValueBuildActionWeight.NamedParameterResolver, 
+          weight, 
           parameterName, 
           getBuildAction));
     }
@@ -39,11 +41,13 @@ namespace Armature
     /// <summary>
     /// Matches with parameter marked with <see cref="InjectAttribute"/>(<see cref="injectPointId"/>)
     /// </summary>
-    public static ParameterValueBuildPlanner ParameterId([CanBeNull] object injectPointId)
+    /// <param name="injectPointId">The id of the injection point see <see cref="InjectAttribute"/> constructor for details</param>
+    /// <param name="weight">Weight of the build step building the value for parameter</param>
+    public static ParameterValueBuildPlanner ParameterId([CanBeNull] object injectPointId, int weight = ParameterValueBuildStepWeight.AttributedParameter)
     {
       return new ParameterValueBuildPlanner(getBuildAction =>
         new AttributedParameterValueBuildStep(
-          ParameterValueBuildActionWeight.AttributedParameterResolver, 
+          weight, 
           injectPointId, 
           getBuildAction));
     }
