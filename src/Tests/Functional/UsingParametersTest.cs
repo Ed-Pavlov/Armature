@@ -6,7 +6,6 @@ using Armature.Logging;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace Tests.Functional
 {
@@ -269,7 +268,6 @@ namespace Tests.Functional
     {
       const string expectedString = "expected29083";
 
-      Log.Enabled(LogLevel.Verbose);
       // --arrange
       var target = FunctionalTestHelper.CreateBuilder();
       target
@@ -282,6 +280,26 @@ namespace Tests.Functional
 
       // --assert
       actual.String.Should().Be(expectedString);
+    }
+
+    [Test]
+    public void should_use_personal_parameter_value_but_runtime_parameter()
+    {
+      const string expected = "expected29083";
+
+      // --arrange
+      var target = FunctionalTestHelper.CreateBuilder();
+      target
+        .Treat<LevelOne>()
+        .AsIs()
+        .UsingParameters(For.Parameter<string>().UseValue(expected));
+      
+      // --act
+      var actual = target.Build<LevelOne>(expected + "bad");
+
+      // --assert
+      actual.String.Should().Be(expected);
+
     }
 
     [UsedImplicitly]
