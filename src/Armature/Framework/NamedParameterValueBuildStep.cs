@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using Armature.Core;
-using Armature.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Framework
@@ -22,16 +21,7 @@ namespace Armature.Framework
 
     protected override bool Matches(ParameterInfo parameterInfo)
     {
-      var matches = _parameterName == parameterInfo.Name;
-
-      if(!matches)
-      {
-        Log.Info("Does not match");
-        Log.Info("MatchName={0}", _parameterName);
-        Log.Info("ParameterName={0}", parameterInfo.Name);
-      }
-
-      return matches;
+      return _parameterName == parameterInfo.Name;
     }
   }
 }

@@ -17,12 +17,16 @@ namespace Armature.Framework
     protected override StagedBuildAction GetBuildAction(UnitInfo unitInfo)
     {
       if (!Equals(unitInfo.Token, SpecialToken.BuildParameterValue))
+      {
+        Log.Trace("does not match unit");
         return null;
+      }
       
       var parameterInfo = (ParameterInfo)unitInfo.Id;
       var matches = Matches(parameterInfo);
-      Log.Verbose("{0}: {1}", GetType().Name, matches ? "matches" : "does not match");
       
+      Log.Verbose("{0} parameter {1}", matches ? "matches" : "does not match", parameterInfo);
+
       return matches 
         ? new StagedBuildAction(BuildStage.Create, _getBuildAction(parameterInfo)) 
         : null;

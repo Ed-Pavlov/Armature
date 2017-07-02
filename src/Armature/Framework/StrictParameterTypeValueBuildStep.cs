@@ -22,16 +22,7 @@ namespace Armature.Framework
 
     protected override bool Matches(ParameterInfo parameterInfo)
     {
-      var matches = _parameterType == parameterInfo.ParameterType;
-
-      using (Log.Block(GetType().Name))
-      {
-        Log.Info("Match={0}", matches);
-        Log.Info("MatchType={0}", _parameterType);
-        Log.Info("ParameterType={0}", parameterInfo.ParameterType);
-      }
-
-      return matches;
+      return _parameterType == parameterInfo.ParameterType;
     }
   }
 }

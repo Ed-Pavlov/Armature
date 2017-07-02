@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Armature.Common;
 using Armature.Core;
+using Armature.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Framework
@@ -27,7 +29,9 @@ namespace Armature.Framework
         if (!_matcher.Matches(unitInfo))
           continue;
 
-        return GetActions(matchingPattern.GetTail(i), _matcher.MatchingWeight + inputMatchingWeight);
+        var matchedBuildActions = GetActions(matchingPattern.GetTail(i), _matcher.MatchingWeight + inputMatchingWeight);
+        LogMatchResult(matchedBuildActions);
+        return matchedBuildActions;
       }
       return null;
     }
@@ -43,6 +47,30 @@ namespace Armature.Framework
     {
       var other = obj as UnitSequenceWeakMatchingBuildStep;
       return other != null && _matcher.Equals(other._matcher);
+    }
+
+    private void LogMatchResult(MatchedBuildActions result)
+    {
+      var typeName = GetType().Name;
+      if (result == null || result.Count == 0)
+        Log.Trace("{0}: no actions", typeName);
+      else if (result.Count > 1)
+      {
+        using (Log.Block(typeName, LogLevel.Trace))
+          result.LogMatchedBuildActions(LogLevel.Trace);
+      }
+      else
+      {
+        var weightedBuildActions = result.First().Value;
+        if (weightedBuildActions.Count == 1)
+          Log.Trace("{0}: {1}", typeName, weightedBuildActions[0]);
+        else
+        {
+          using (Log.Block(typeName, LogLevel.Trace))
+            foreach (var weightedBuildAction in weightedBuildActions)
+              Log.Trace(weightedBuildAction.ToString());
+        }
+      }
     }
   }
 }

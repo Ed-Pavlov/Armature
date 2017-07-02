@@ -20,7 +20,7 @@ namespace Armature.Core
 
     public override string ToString()
     {
-      return string.Format("Weight={0}, Of={1}", Weight, BuildAction);
+      return string.Format("{0}, Weight={1}", BuildAction, Weight);
     }
   }
 }

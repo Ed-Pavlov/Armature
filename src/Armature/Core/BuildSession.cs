@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Armature.Logging;
 using JetBrains.Annotations;
 
@@ -76,23 +78,30 @@ namespace Armature.Core
       
       // builder to pass into IBuldActon.Execute
       var unitBuilder = new UnitBuilder(_buildSequence, this);
+      
       foreach (var stage in _buildStages)
       {
         var buildAction = matchedBuildActions.GetTopmostAction(stage);
         if (buildAction == null)
           continue;
 
-        Log.Info("[{0}] {1}", stage, buildAction);
+        Log.Info("Execute: [{0}], [{1}]", buildAction, stage);
         
         performedActions.Push(buildAction);
         buildAction.Process(unitBuilder);
 
         if (unitBuilder.BuildResult != null)
+        {
+          Log.Info("Unit is build: {0}", unitBuilder.BuildResult);
           break; // object is built, unwind called actions in reverse orders
+        }
       }
 
-      foreach (var action in performedActions)
-        action.PostProcess(unitBuilder);
+      foreach (var buildAction in performedActions)
+      {
+        Log.Info("PostProcess: {0}", buildAction);
+        buildAction.PostProcess(unitBuilder);
+      }
 
       return unitBuilder.BuildResult;
     }
@@ -100,11 +109,11 @@ namespace Armature.Core
     private IDisposable LogBuildSessionState(UnitInfo unitInfo)
     {
       Log.Info("");
-      Log.Info("BuildSession.Build");
+      Log.Info("BuildSession.Build UnitInfo={0}", unitInfo);
       var block = Log.AddIndent(true);
       {
-        Log.Info("UnitInfo={0}", unitInfo);
         _buildSequence.LogBuildSequence();
+        Log.Info("");
         return block;
       }
     }

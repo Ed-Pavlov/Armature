@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Armature.Core;
 using Armature.Interface;
-using Armature.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Framework
@@ -52,16 +51,7 @@ namespace Armature.Framework
         .OfType<InjectAttribute>()
         .SingleOrDefault();
 
-      var matches = _predicate(injectAttribute);
-
-      if(!matches)
-      {
-        Log.Info("Does not match");
-//        Log.Info("MatchId={0}", _injectPointId ?? "null");
-        Log.Info("ParameterId={0}", injectAttribute == null ? "not marked" : injectAttribute.InjectionPointId ?? "null");
-      }
-
-      return matches;
+      return _predicate(injectAttribute);
     }
 
     private static Predicate<Attribute> CreateInjectAttributePredicate(object injectionPointId)

@@ -9,7 +9,7 @@ namespace Armature.Logging
     public static void LogBuildSequence(this IList<UnitInfo> buildSequence)
     {
       if (buildSequence.Count == 0)
-        Log.Info("BuildSequence=null");
+        Log.Info("BuildSequence is empty");
       else
         LogBuildSequence(buildSequence.GetTail(0));
     }
@@ -17,7 +17,7 @@ namespace Armature.Logging
     public static void LogBuildSequence(this ArrayTail<UnitInfo> buildSequence, LogLevel logLevel = LogLevel.Info)
     {
       if (buildSequence.Length == 0)
-        Log.WriteLine(logLevel, "BuildSequence=null");
+        Log.WriteLine(logLevel, "BuildSequence is empty");
       else if (buildSequence.Length == 1)
         Log.WriteLine(logLevel, "BuildSequence={0}", buildSequence.GetLastItem());
       else
@@ -28,34 +28,13 @@ namespace Armature.Logging
       }
     }
 
-    public static void LogDoesNotMatch(this IBuildStep match, ArrayTail<UnitInfo> buildSequence, string format = null, params object[] param)
+    public static void LogMatchedBuildActions(this MatchedBuildActions matchedBuildActions, LogLevel logLevel = LogLevel.Verbose)
     {
-      if (format == null)
+      foreach (var pair in matchedBuildActions)
       {
-        Log.Info("{0}: not matched", match.GetType().Name);
-        buildSequence.LogBuildSequence(LogLevel.Verbose);
-      }
-      else
-      {
-        using(Log.Block(string.Format("{0}: not matched", match.GetType().Name)))
-        {
-          Log.Info("Parameter");
-        }
-      }
-    }
-
-    public static void LogInfo(this IBuildStep match, string format, params object[] param)
-    {
-      Log.Info("{0}: {1}", match.GetType().Name, string.Format(format, param));
-    }
-
-    public static void LogBuildStepMatch(this IBuildStep buildStep, ArrayTail<UnitInfo> buildSequence)
-    {
-      using (Log.Block(buildStep.GetType().Name))
-      {
-        Log.Info("matches!");
-//        Log.Info("Weight={0}", buildAction.Weight);
-        buildSequence.LogBuildSequence();
+        using (Log.Block(string.Format("[{0}]", pair.Key), logLevel))
+          foreach (var weightedBuildAction in pair.Value)
+            Log.WriteLine(logLevel, "{0}", weightedBuildAction);
       }
     }
   }

@@ -22,16 +22,12 @@ namespace Armature.Framework
 
     public void Process(UnitBuilder unitBuilder)
     {
-      Log.Verbose("{0}.Execute: Instance={1}", typeof(SingletonBuildAction).Name, _instance ?? (object)"null");
-
       if (_instance != null)
         unitBuilder.BuildResult = new BuildResult(_instance.Value);
     }
 
     public void PostProcess(UnitBuilder unitBuilder)
     {
-      Log.Verbose("{0}.PostProcess: BuildResult={1}, Instance={2}", typeof(SingletonBuildAction).Name, unitBuilder.BuildResult ?? (object)"null", _instance ?? (object)"null");
-
       if(unitBuilder.BuildResult != null)
         _instance = new Instance(unitBuilder.BuildResult.Value);
     }
@@ -52,7 +48,7 @@ namespace Armature.Framework
 
       public override string ToString()
       {
-        return Value == null ? "null" : Value.ToString();
+        return Value == null ? "[no Instance]" : "Instance=" + Value;
       }
     }
   }

@@ -273,7 +273,7 @@ namespace Tests.Functional
       target
         .Treat<LevelOne>()
         .AsIs()
-        .UsingParameters(For.Parameter<string>().UseResolver<int>((_, intValue) => intValue.ToString()));
+        .UsingParameters(For.Parameter<string>(int.MinValue).UseResolver<int>((_, intValue) => intValue.ToString()));
       
       // --act
       var actual = target.Build<LevelOne>(expectedString);

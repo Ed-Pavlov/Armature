@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Armature.Common;
+using Armature.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Core
@@ -22,15 +23,23 @@ namespace Armature.Core
     {
       if (matchingPattern.Length != 1) return null;
 
-      var buildAction = GetBuildAction(matchingPattern.GetLastItem());
+      using(Log.Block(GetType().Name, LogLevel.Trace))
+      {
+        var buildAction = GetBuildAction(matchingPattern.GetLastItem());
+        if (buildAction == null)
+          return null;
 
-      return buildAction == null
-        ? null
-        : new MatchedBuildActions{
+        var weightedBuildAction = buildAction.BuildAction.WithWeight(inputMatchingWeight + _matchingWeight);
+        Log.Trace("build action {0}", weightedBuildAction);
+        
+        return new MatchedBuildActions
         {
-          buildAction.BuildStage, 
-          new List<WeightedBuildAction>{buildAction.BuildAction.WithWeight(inputMatchingWeight + _matchingWeight)}
-        }};
+          {
+            buildAction.BuildStage,
+            new List<WeightedBuildAction> {weightedBuildAction}
+          }
+        };
+      }
     }
 
     //TODO: is it right, how to Remove such build step?

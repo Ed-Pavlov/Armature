@@ -24,7 +24,7 @@ namespace Armature.Framework
         if (type.IsValueType)
           return NoParametersConstructor;
         else
-          throw new ArmatureException("DoesNotContainConstructor");
+          throw new ArmatureException("Does not contain constructor");
 
       var suitableConstructors = new Dictionary<int, int> {{0, constructors[0].GetParameters().Length}};
       for (var i = 1; i < constructors.Length; i++)

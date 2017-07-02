@@ -33,11 +33,7 @@ namespace Armature.Core
         var buildStage = pair.Value;
 
         var actions = buildStage
-          .Select(action =>
-          {
-            Log.Verbose("{0} matches", action);
-            return action.WithWeight(inputWeight);
-          })
+          .Select(action => action.WithWeight(inputWeight))
           .ToList();
 
         if (actions.Count > 0)

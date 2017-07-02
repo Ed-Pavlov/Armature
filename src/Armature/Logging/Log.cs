@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using JetBrains.Annotations;
 
 namespace Armature.Logging
@@ -28,22 +27,28 @@ namespace Armature.Logging
     }
 
     [StringFormatMethod("format")]
+    public static void Info(string format, params object[] parameters)
+    {
+      WriteLine(LogLevel.Info, format, parameters);
+    }
+    
+    [StringFormatMethod("format")]
+    public static void Trace(string format, params object[] parameters)
+    {
+      WriteLine(LogLevel.Verbose, format, parameters);
+    }
+    
+    [StringFormatMethod("format")]
     public static void Verbose(string format, params object[] parameters)
     {
       WriteLine(LogLevel.Verbose, format, parameters);
     }
 
     [StringFormatMethod("format")]
-    public static void Info(string format, params object[] parameters)
-    {
-      WriteLine(LogLevel.Info, format, parameters);
-    }
-
-    [StringFormatMethod("format")]
     public static void WriteLine(LogLevel logLevel, string format, params object[] parameters)
     {
       if(logLevel > _logLevel) return;
-      Trace.WriteLine(GetIndent() + string.Format(format, parameters));
+      System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, parameters));
     }
 
     private static string GetIndent()

@@ -16,14 +16,17 @@ namespace Armature.Framework
     protected override StagedBuildAction GetBuildAction(UnitInfo unitInfo)
     {
       if (!Equals(unitInfo.Token, SpecialToken.FindConstructor))
+      {
+        Log.Trace("does not match unit");
         return null;
+      }
 
       var constructorInfo = GetConstructor(unitInfo.GetUnitType());
-      Log.Verbose("{0}: {1}", GetType().Name, constructorInfo == null ? "is not found" : constructorInfo.ToString());
+      Log.Verbose("Constructor {0}", constructorInfo == null ? "is not found" : string.Format("{0} found", constructorInfo));
       
       return constructorInfo == null 
         ? null 
-        : new StagedBuildAction(BuildStage.Create, new SingletonBuildAction(constructorInfo));
+        : new StagedBuildAction(BuildStage.Cache, new SingletonBuildAction(constructorInfo));
     }
 
     protected abstract ConstructorInfo GetConstructor(Type type);
