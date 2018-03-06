@@ -1,5 +1,6 @@
 ﻿using System;
 using Armature;
+using Armature.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -15,6 +16,10 @@ namespace Tests.Functional
       target
         .TreatOpenGeneric(typeof(IGeneric<>))
         .As(typeof(Generic<>));
+
+      target
+        .Treat<IGeneric<int>>()
+        .As<Generic<int>>();
 
       var actual = target.Build<IGeneric<int>>();
       actual.Should().BeOfType<Generic<int>>();

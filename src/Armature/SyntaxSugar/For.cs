@@ -1,9 +1,9 @@
-﻿using System;
+﻿﻿using System;
 using System.Reflection;
-using Armature.Common;
-using Armature.Core;
+ using Armature.Core;
 using Armature.Framework;
-using Armature.Interface;
+ using Armature.Framework.BuildActions;
+ using Armature.Interface;
 using JetBrains.Annotations;
 
 namespace Armature
@@ -13,68 +13,57 @@ namespace Armature
     /// <summary>
     /// Matches with parameter with <see cref="ParameterInfo.ParameterType"/> equals to <see cref="T"/>
     /// </summary>
-    /// <param name="weight">Weight of the build step building the value for parameter</param>
-    public static ParameterValueBuildPlanner Parameter<T>(int weight = ParameterValueBuildStepWeight.TypedParameter)
+    public static ParameterValueBuildPlanner Parameter<T>(int weight = ParameterMatcherWeight.TypedParameter)
     {
-      return new ParameterValueBuildPlanner(getBuildAction =>
-        new StrictParameterTypeValueBuildStep(
-          weight, 
-          typeof(T), 
-          getBuildAction));
+      var matcher = new ParameterByStrictTypeMatcher(typeof(T));
+      return new ParameterValueBuildPlanner(matcher, weight);
     }
 
     /// <summary>
     /// Matches with parameter with <see cref="ParameterInfo.Name"/> equals to <see cref="parameterName"/>
     /// </summary>
-    /// <param name="parameterName">Build step building the value will match with parameter with this name</param>
-    /// <param name="weight">Weight of the build step building the value for parameter</param>
+    /// <param name="parameterName">Matches parameter with this name</param>
+    /// <param name="weight">Weight of such match</param>
     /// <returns></returns>
-    public static ParameterValueBuildPlanner ParameterName(string parameterName, int weight = ParameterValueBuildStepWeight.NamedParameter)
+    public static ParameterValueBuildPlanner ParameterName([NotNull] string parameterName, int weight = ParameterMatcherWeight.NamedParameter)
     {
-      return new ParameterValueBuildPlanner(getBuildAction =>
-        new NamedParameterValueBuildStep(
-          weight, 
-          parameterName, 
-          getBuildAction));
+      var matcher = new ParameterByNameMatcher(parameterName);
+      return new ParameterValueBuildPlanner(matcher, weight);
     }
 
     /// <summary>
     /// Matches with parameter marked with <see cref="InjectAttribute"/>(<see cref="injectPointId"/>)
     /// </summary>
-    /// <param name="injectPointId">The id of the injection point see <see cref="InjectAttribute"/> constructor for details</param>
-    /// <param name="weight">Weight of the build step building the value for parameter</param>
-    public static ParameterValueBuildPlanner ParameterId([CanBeNull] object injectPointId, int weight = ParameterValueBuildStepWeight.AttributedParameter)
+    /// <param name="injectPointId">Matches parameter marked with <see cref="InjectAttribute"/> with <see cref="InjectAttribute.InjectionPointId"/>
+    /// equals to <paramref name="injectPointId"/></param>
+    /// <param name="weight">Weight of such match</param>
+    public static ParameterValueBuildPlanner ParameterId([CanBeNull] object injectPointId, int weight = ParameterMatcherWeight.AttributedParameter)
     {
-      return new ParameterValueBuildPlanner(getBuildAction =>
-        new AttributedParameterValueBuildStep(
-          weight, 
-          injectPointId, 
-          getBuildAction));
+      var matcher = new ParameterByInjectPointMatcher(injectPointId);
+      return new ParameterValueBuildPlanner(matcher, weight);
     }
 
     public class ParameterValueBuildPlanner : IParameterValueBuildPlanner
     {
-      /// <summary>
-      /// Factory method creates build step builds a value for a parameter, we can't pass it to constructor
-      /// because does not have build action factory method, which appears later by calling <see cref="UseValue"/>, <see cref="UseToken"/> etc
-      /// </summary>
-      private readonly Func<Func<ParameterInfo, IBuildAction>, IBuildStep> _createBuildStep;
-      
-      /// <summary>
-      /// Creates a build action based on passed by parameter value build step <see cref="ParameterInfo"/>,
-      /// some strategies ignores it
-      /// </summary>
-      private Func<ParameterInfo, IBuildAction> _getBuildAction;
+      private readonly IUnitMatcher _parameterMatcher;
+      private readonly int _weight;
 
-      public ParameterValueBuildPlanner(Func<Func<ParameterInfo, IBuildAction>, IBuildStep> createBuildStep)
+      private IBuildAction _buildAction;
+
+      public ParameterValueBuildPlanner([NotNull] IUnitMatcher parameterMatcher, int weight)
       {
-        _createBuildStep = createBuildStep;
+        if (parameterMatcher == null) throw new ArgumentNullException("parameterMatcher");
+        _parameterMatcher = parameterMatcher;
+        _weight = weight;
       }
 
-      void IParameterValueBuildPlanner.AddBuildParameterValueStepTo(BuildStepBase buildStep)
+      void IParameterValueBuildPlanner.AddBuildParameterValueStepTo(IUnitSequenceMatcher unitSequenceMatcher)
       {
-        if(_getBuildAction == null) throw new InvalidOperationException("Parameter value source not specified, did you forget call UseValue/UseToken etc?");
-        buildStep.AddBuildStep(_createBuildStep(_getBuildAction));
+        if(_buildAction == null) throw new InvalidOperationException("Parameter value source not specified, did you forget call UseValue/UseToken etc?");
+
+        unitSequenceMatcher
+          .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(_parameterMatcher, ParameterMatcherWeight.Lowest + 1))
+          .AddBuildAction(BuildStage.Create, _buildAction, _weight);
       }
 
       /// <summary>
@@ -82,17 +71,7 @@ namespace Armature
       /// </summary>
       public IParameterValueBuildPlanner UseValue([CanBeNull] object value)
       {
-        // just return value for any parameter matched by build step
-        _getBuildAction = parameterInfo =>
-        {
-          if (value == null || parameterInfo.ParameterType.IsInstanceOfType(value)) 
-            return new SingletonBuildAction(value);
-
-          throw new InvalidOperationException("The type of value provided for a parameter does not match with parameter type")
-            .AddData("ParameterInfo", parameterInfo)
-            .AddData("Value", value)
-            .AddData("Value type", value.GetType());
-        }; 
+        _buildAction = new SingletonBuildAction(value);
         return this;
       }
 
@@ -102,13 +81,14 @@ namespace Armature
       public IParameterValueBuildPlanner UseToken([NotNull] object token)
       {
         if (token == null) throw new ArgumentNullException("token");
-        _getBuildAction = parameterInfo => new RedirectTypeBuildAction(parameterInfo.ParameterType, token); // build value by UnitInfo(parameterType, token)
+        
+        _buildAction = new RedirectParameterInfoBuildAction(token);
         return this;
       }
 
       public IParameterValueBuildPlanner UseResolver<T>(Func<UnitBuilder, T, object> resolver)
       {
-        _getBuildAction = _ => new CreateWithFactoryMethodBuildAction<T, object>(resolver);
+        _buildAction = new CreateWithFactoryMethodBuildAction<T, object>(resolver);
         return this;
       }
     }

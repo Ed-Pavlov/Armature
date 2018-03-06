@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 
 namespace Armature.Framework
 {
+  /// <inheritdoc />
   /// <summary>
   /// Build action instantiates an object using passed factory method
   /// </summary>
@@ -34,6 +35,7 @@ namespace Armature.Framework
     }
   }
 
+  /// <inheritdoc />
   /// <summary>
   /// Base class for build actions instantiates an object using factory method with input parameters
   /// </summary>
@@ -61,6 +63,7 @@ namespace Armature.Framework
     }
   }
 
+  /// <inheritdoc />
   /// <summary>
   /// Build action instantiates an object using passed factory method
   /// </summary>
@@ -85,6 +88,7 @@ namespace Armature.Framework
     }
   }
 
+  /// <inheritdoc />
   /// <summary>
   /// Build action instantiates an object using passed factory method
   /// </summary>
@@ -109,6 +113,7 @@ namespace Armature.Framework
     }
   }
 
+  /// <inheritdoc />
   /// <summary>
   /// Build action instantiates an object using passed factory method
   /// </summary>

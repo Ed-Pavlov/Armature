@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using Armature.Common;
+using Armature.Framework;
 using JetBrains.Annotations;
 
 namespace Armature.Core
 {
   /// <summary>
-  /// The collection of build plans. Build plan is a sequence of build steps building an unit.
-  /// All build plans are contained in a forest of trees form. See <see cref="IBuildStep"/> for details.
+  /// The collection of build plans. Build plan of the unit is units sequence matchers containing build action factories.
+  /// All build plans are contained in a forest of trees form. See <see cref="IUnitSequenceMatcher"/> for details. 
   /// </summary>
   public class BuildPlansCollection
   {
-    private readonly RootBuildStep _rootBuildStep = new RootBuildStep();
+    private readonly Root _root = new Root();
 
     /// <summary>
     /// Returns build actions which should be performed to build an unit represented by the last item of <paramref name="buildSequence"/>
@@ -25,38 +26,40 @@ namespace Armature.Core
     public MatchedBuildActions GetBuildActions([NotNull] IList<UnitInfo> buildSequence)
     {
       if (buildSequence == null) throw new ArgumentNullException("buildSequence");
-      return _rootBuildStep.GetBuildActions(0, buildSequence.GetTail(0));
+      return _root.GetBuildActions(buildSequence.GetTail(0), 0);
     }
 
     /// <summary>
     /// Adds a root build step (tree) into the forest of trees 
     /// </summary>
-    /// <param name="buildStep">The build step to add, it can have child build steps of can be filled with them later</param>
-    public void AddBuildStep([NotNull] IBuildStep buildStep)
+    /// <param name="unitSequenceMatcher">The build step to add, it can have child build steps of can be filled with them later</param>
+    public void AddUnitMatcher([NotNull] IUnitSequenceMatcher unitSequenceMatcher)
     {
-      if (buildStep == null) throw new ArgumentNullException("buildStep");
-      _rootBuildStep.AddBuildStep(buildStep);
+      if (unitSequenceMatcher == null) throw new ArgumentNullException("unitSequenceMatcher");
+      _root.Children.Add(unitSequenceMatcher);
     }
 
     /// <summary>
     /// Collection of root build steps
     /// </summary>
-    public IEnumerable<IBuildStep> Children
+    public ICollection<IUnitSequenceMatcher> Children
     {
-      get { return _rootBuildStep.Children; }
+      get { return _root.Children; }
     }
 
+    /// <inheritdoc />
     /// <summary>
-    /// Reuse implementation of <see cref="BuildStepBase"/> to implement <see cref="BuildPlansCollection"/> public interface
+    /// Reuse implementation of <see cref="T:Armature.Core.UnitSequenceMatcherBase" />
+    /// to implement <see cref="T:Armature.Core.BuildPlansCollection" /> public interface
     /// </summary>
-    private class RootBuildStep : BuildStepBase
+    private class Root : UnitSequenceMatcherBase
     {
-      public override MatchedBuildActions GetBuildActions(int inputMatchingWeight, ArrayTail<UnitInfo> matchingPattern)
+      public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputMatchingWeight)
       {
-        return GetChildrenActions(inputMatchingWeight, matchingPattern);
+        return GetChildrenActions(inputMatchingWeight, buildingUnitsSequence);
       }
 
-      public override bool Equals(IBuildStep other)
+      public override bool Equals(IUnitSequenceMatcher other)
       {
         throw new NotSupportedException();
       }

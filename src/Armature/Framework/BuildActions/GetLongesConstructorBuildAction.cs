@@ -1,31 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Armature.Core;
+using Armature.Logging;
 
-namespace Armature.Framework
+namespace Armature.Framework.BuildActions
 {
-  /// <summary>
-  /// Build steps "builds" <see cref="ConstructorInfo"/> for a <see cref="UnitInfo.Id"/> as Type, returns <see cref="ConstructorInfo"/>
-  /// for a public constructor with the maximum number of parameters  
-  /// </summary>
-  public class FindLongestConstructorBuildStep : FindConstructorBuildStepBase
+  public class GetLongesConstructorBuildAction : IBuildAction
   {
-    private static readonly ConstructorInfo NoParametersConstructor = typeof (DefaultConstructor).GetConstructors()[0];
-
-    public FindLongestConstructorBuildStep(int matchingWeight) : base(matchingWeight)
-    {}
-
-    protected override ConstructorInfo GetConstructor(Type type)
+    public void Process(UnitBuilder unitBuilder)
     {
-      var constructors = type.GetConstructors();
-      if (constructors.Length == 0)
-        if (type.IsValueType)
-          return NoParametersConstructor;
-        else
-          throw new ArmatureException("Does not contain constructor");
+      var unitType = unitBuilder.GetUnitUnderConstruction().GetUnitType();
+      var constructor = GetConstructor(unitType.GetConstructors());
+      
+      constructor.LogConstructor(this);
 
+      unitBuilder.BuildResult = new BuildResult(constructor);
+    }
+
+    public void PostProcess(UnitBuilder unitBuilder)
+    {
+    }
+    
+    private static ConstructorInfo GetConstructor(ConstructorInfo[] constructors)
+    {
       var suitableConstructors = new Dictionary<int, int> {{0, constructors[0].GetParameters().Length}};
       for (var i = 1; i < constructors.Length; i++)
       {
@@ -52,7 +50,5 @@ namespace Armature.Framework
 
       return constructors[suitableConstructors.First().Key];
     }
-
-    private class DefaultConstructor{}
   }
 }

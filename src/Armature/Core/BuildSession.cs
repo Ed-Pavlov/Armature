@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Armature.Logging;
 using JetBrains.Annotations;
 
@@ -22,7 +20,7 @@ namespace Armature.Core
     /// <summary>
     /// Builds a Unit represented by <paramref name="unitInfo"/>
     /// </summary>
-    /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IBuildStep"/> for details</param>
+    /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher"/> for details</param>
     /// <param name="buildStages">The conveyer of build stages. <see cref="Builder"/> for details</param>
     /// <param name="buildPlans">Build plans used to build a unit</param>
     /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit"/> method </param>
@@ -60,7 +58,6 @@ namespace Armature.Core
         {
           var actions = _buildPlans.GetBuildActions(_buildSequence);
           var runtimeActions = _runtimeBuildPlans == null ? null : _runtimeBuildPlans.GetBuildActions(_buildSequence);
-          
           return BuildUnit(actions.Merge(runtimeActions));
         }
         finally
@@ -70,7 +67,7 @@ namespace Armature.Core
       }
     }
 
-    private BuildResult BuildUnit(MatchedBuildActions matchedBuildActions)
+   private BuildResult BuildUnit(MatchedBuildActions matchedBuildActions)
     {
       if (matchedBuildActions == null) return null;
 
@@ -85,6 +82,7 @@ namespace Armature.Core
         if (buildAction == null)
           continue;
 
+        Log.Info("");
         Log.Info("Execute: [{0}], [{1}]", buildAction, stage);
         
         performedActions.Push(buildAction);

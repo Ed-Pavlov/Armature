@@ -7,12 +7,12 @@ namespace Armature
 {
   public class BuildingSugar
   {
-    private readonly BuildStepBase _buildStep;
+    private readonly IUnitSequenceMatcher _unitSequenceMatcher;
     private readonly BuildPlansCollection _container;
 
-    public BuildingSugar(BuildStepBase buildStep, BuildPlansCollection container)
+    public BuildingSugar(IUnitSequenceMatcher unitSequenceMatcher, BuildPlansCollection container)
     {
-      _buildStep = buildStep;
+      _unitSequenceMatcher = unitSequenceMatcher;
       _container = container;
     }
 
@@ -25,20 +25,20 @@ namespace Armature
     {
       if (type == null) throw new ArgumentNullException("type");
 
-      var buildStep = new UnitSequenceWeakMatchingBuildStep(Match.Type(type, token));
-      return new BuildingSugar(_buildStep.AddOrGetBuildStep(buildStep), _container);
+      var buildStep = new WeakUnitSequenceMatcher(Match.Type(type, token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      return new BuildingSugar(_unitSequenceMatcher.AddOrGetUnitMatcher(buildStep), _container);
     }
 
     public TreatSugar<T> Treat<T>(object token = null)
     {
-      var buildStep = new UnitSequenceWeakMatchingBuildStep(Match.Type<T>(token));
-      return new TreatSugar<T>(_buildStep.AddOrGetBuildStep(buildStep));
+      var buildStep = new WeakUnitSequenceMatcher(Match.Type<T>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      return new TreatSugar<T>(_unitSequenceMatcher.AddOrGetUnitMatcher(buildStep));
     }
 
     public AdjusterSugar TreatAll()
     {
-      var buildStep = new AnyUnitBuildStep();
-      return new AdjusterSugar(_buildStep.AddOrGetBuildStep(buildStep));
+      var buildStep = new AnyUnitSequenceMatcher();
+      return new AdjusterSugar(_unitSequenceMatcher.AddOrGetUnitMatcher(buildStep));
     }
   }
 }

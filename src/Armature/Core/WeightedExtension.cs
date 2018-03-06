@@ -1,10 +1,10 @@
-﻿namespace Armature.Core
+﻿﻿namespace Armature.Core
 {
   public static class WeightedExtension
   {
-    public static WeightedBuildAction WithWeight(this IBuildAction entity, int weight)
+    public static Weighted<T> WithWeight<T>(this T entity, int weight)
     {
-      return new WeightedBuildAction(weight, entity);
+      return new Weighted<T>(entity, weight);
     }
   }
 }

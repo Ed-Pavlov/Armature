@@ -4,7 +4,7 @@ namespace Armature.Core
 {
   /// <summary>
   /// Build action. One or more build actions should be performed to build a unit. Building is two-pass process, each build action
-  /// called twice. <see cref="PostProcess"/> is called in reverse order to <see cref="Process"/>
+  /// called twice. <see cref="PostProcess"/> is called in reverse order of <see cref="Process"/>
   /// </summary>
   public interface IBuildAction
   {

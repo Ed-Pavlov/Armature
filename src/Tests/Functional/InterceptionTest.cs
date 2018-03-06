@@ -19,32 +19,36 @@ namespace Tests.Functional
     [TestCaseSource("InterceptUnitTestCases")]
     public void InterceptUnit(Action<Builder> makeRegistration)
     {
-      // --arrange
-      // create container with another one stage in the very beginning of conveyer
-      var target = FunctionalTestHelper.CreateBuilder(null, InterceptBuildStage, BuildStage.Cache, BuildStage.Redirect, BuildStage.Create);
+        // --arrange
+        // create container with another one stage in the very beginning of conveyer
+        var target = FunctionalTestHelper.CreateBuilder(null, InterceptBuildStage, BuildStage.Cache, BuildStage.Redirect, BuildStage.Create);
 
-      target
-        .Treat<StringConsumer>()
-        .AsIs()
-        .UsingParameters(Expected);
+        target
+          .Treat<StringConsumer>()
+          .AsIs()
+          .UsingParameters(Expected);
 
-      // register AddPostfixToString buildAction for any string on the very first stage
-      // (postprocessing will be called last and buildAction will add a postfix to created or cached string
-      var anyUnitBuildStep = new AnyUnitBuildStep();
-      anyUnitBuildStep.AddBuildStep(new AnyStringBuildStep(InterceptBuildStage, new AddPostfixToString(Postfix)));
-      target.AddBuildStep(anyUnitBuildStep);
+        // register AddPostfixToString buildAction for any string on the very first stage
+        // (postprocessing will be called last and buildAction will add a postfix to created or cached string
 
-      // --act
-      var actual = target.Build<StringConsumer>();
+        target
+          .AddOrGetUnitMatcher(new AnyUnitSequenceMatcher())
+          .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(new AnyStringMatcher(), 0))
+          .AddBuildAction(InterceptBuildStage, new AddPostfixToString(Postfix), 0);
 
-      // --assert
-      Assert.That(actual.Value, Is.EqualTo(Expected + Postfix));
+
+        // --act
+        var actual = target.Build<StringConsumer>();
+
+        // --assert
+        Assert.That(actual.Value, Is.EqualTo(Expected + Postfix));
     }
 
     private static IEnumerable InterceptUnitTestCases()
     {
       yield return new TestCaseData(new Action<Builder>(target =>
-        target.Treat<StringConsumer>()
+        target
+          .Treat<StringConsumer>()
           .AsIs()
           .UsingParameters(Expected)))
         .SetName("RegisteredAsParameterValue");
@@ -77,26 +81,18 @@ namespace Tests.Functional
     /// <summary>
     /// GetBuildAction with any string not depending on token
     /// </summary>
-    private class AnyStringBuildStep : LeafBuildStep
+    private class AnyStringMatcher : IUnitMatcher
     {
-      private readonly object _stage;
-      private readonly IBuildAction _buildAction;
-
-      public AnyStringBuildStep(object stage, [NotNull] IBuildAction buildAction) : base(0)
-      {
-        if (buildAction == null) throw new ArgumentNullException("buildAction");
-        _stage = stage;
-        _buildAction = buildAction;
-      }
-
-      protected override StagedBuildAction GetBuildAction(UnitInfo unitInfo)
+      public bool Matches(UnitInfo unitInfo)
       {
         var parameterInfo = unitInfo.Id as ParameterInfo;
         var type = parameterInfo == null ? null : parameterInfo.ParameterType;
+        return type == typeof(string);
+      }
 
-        return type == typeof(string)
-          ? new StagedBuildAction(_stage, _buildAction)
-          : null;
+      public bool Equals(IUnitMatcher other)
+      {
+        throw new NotImplementedException();
       }
     }
 

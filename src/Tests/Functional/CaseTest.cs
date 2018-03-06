@@ -166,14 +166,12 @@ namespace Tests.Functional
         .AsInstance(expected2);
 
       // --act
-      var buildStep = new UnitSequenceWeakMatchingBuildStep(Match.Type<List<IDisposableValue1>>(null));
-      buildStep.AddBuildAction(
-        BuildStage.Redirect,
-        new RedirectManyTypesBuildAction<IDisposableValue1>(
-            Unit.OfType<OneDisposableCtorClass>(oneDisposableCtorCalssToken),
-            Unit.OfType<OneStringCtorClass>()));
+      var buildStep = new WeakUnitSequenceMatcher(Match.Type<List<IDisposableValue1>>(null), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      buildStep.AddBuildAction(BuildStage.Redirect, new RedirectManyTypesBuildAction<IDisposableValue1>(
+        Unit.OfType<OneDisposableCtorClass>(oneDisposableCtorCalssToken),
+        Unit.OfType<OneStringCtorClass>()), 0);
 
-      container.AddBuildStep(buildStep);
+      container.AddUnitMatcher(buildStep);
         
       var actual = container.Build<List<IDisposableValue1>>();
 

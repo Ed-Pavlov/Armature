@@ -8,7 +8,7 @@ namespace Armature.Core
   /// This is an restricted interface of the <see cref="BuildSession"/> passed to <see cref="IBuildAction.Process"/> and
   /// <see cref="IBuildAction.PostProcess"/>
   /// </summary>
-  public class UnitBuilder
+  public class UnitBuilder //TODO: maybe interface IBuildSession would be better?
   {
     private readonly BuildSession _buildSession;
       

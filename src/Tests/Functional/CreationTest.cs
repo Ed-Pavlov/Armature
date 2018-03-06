@@ -1,4 +1,5 @@
 ﻿using Armature;
+using Armature.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -17,7 +18,6 @@ namespace Tests.Functional
 
       // --act
       var actual = target.Build<EmptyCtorClass>();
-
       // --assert
       actual.Should().BeOfType<EmptyCtorClass>();
     }

@@ -1,17 +1,19 @@
-﻿using System;
+﻿﻿using System;
 using Armature.Core;
 using Armature.Framework;
 using Armature.Interface;
+ using JetBrains.Annotations;
 
 namespace Armature
 {
   public class AdjusterSugar
   {
-    private readonly StaticBuildStep _buildStep;
+    private readonly IUnitSequenceMatcher _unitSequenceMatcher;
 
-    public AdjusterSugar(StaticBuildStep buildStep)
+    public AdjusterSugar([NotNull] IUnitSequenceMatcher unitSequenceMatcher)
     {
-      _buildStep = buildStep;
+      if (unitSequenceMatcher == null) throw new ArgumentNullException("unitSequenceMatcher");
+      _unitSequenceMatcher = unitSequenceMatcher;
     }
 
     /// <summary>
@@ -27,9 +29,13 @@ namespace Armature
       {
         var parameterBuildPlanner = parameter as IParameterValueBuildPlanner;
         if (parameterBuildPlanner != null)
-          parameterBuildPlanner.AddBuildParameterValueStepTo(_buildStep);
+          parameterBuildPlanner.AddBuildParameterValueStepTo(_unitSequenceMatcher);
         else
-          _buildStep.AddBuildStep(new WeakParameterTypeValueBuildStep(ParameterValueBuildStepWeight.WeakTypedParameter, parameter));
+        {
+          _unitSequenceMatcher
+            .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(new ParameterByWeakTypeMatcher(parameter), ParameterMatcherWeight.Lowest + 1))
+            .AddBuildAction(BuildStage.Create, new SingletonBuildAction(parameter), ParameterMatcherWeight.WeakTypedParameter);
+        }
       }
       return this;
     }
@@ -39,15 +45,34 @@ namespace Armature
     /// </summary>
     public void AsSingleton()
     {
-      _buildStep.AddBuildAction(BuildStage.Cache, new SingletonBuildAction());
+      _unitSequenceMatcher.AddBuildAction(BuildStage.Cache, new SingletonBuildAction(), 0);
     }
 
     /// <summary>
     /// Instantiate an Unit using a constructor marked with <see cref="InjectAttribute"/>(<see cref="injectionPointId"/>)
     /// </summary>
-    public AdjusterSugar UsingAttributedConstructor(object injectionPointId)
+    public AdjusterSugar UsingInjectPointConstructor(object injectionPointId)
     {
-      _buildStep.AddBuildStep(new FindAttributedConstructorBuildStep(0, injectionPointId));
+      var matcher = new ConstructorByInjectPointIdMatcher(injectionPointId);
+      
+      _unitSequenceMatcher
+        .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(matcher, 0))
+        .AddBuildAction(BuildStage.Create, matcher.BuildAction, 0);
+      return this;
+    }
+
+    public AdjusterSugar UsingParameterlessConstructor()
+    {
+      return UsingConstructorWithParameters();
+    }
+
+    public AdjusterSugar UsingConstructorWithParameters(params Type[] parameterTypes)
+    {
+      var matcher = new ConstructorByParametersMatcher(parameterTypes);
+      
+      _unitSequenceMatcher
+        .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(matcher, 0))
+        .AddBuildAction(BuildStage.Create, matcher.BuildAction, 0);
       return this;
     }
   }

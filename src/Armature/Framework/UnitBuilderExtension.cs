@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Armature.Common;
 using Armature.Core;
@@ -10,21 +11,21 @@ namespace Armature.Framework
   {
     /// <summary>
     /// Builds a <see cref="ConstructorInfo"/> for a <see creaf="type"/> by building a unit represented 
-    /// by <see cref="UnitInfo"/>(<see cref="type"/>, <see cref="SpecialToken.FindConstructor"/>) via current build session. 
+    /// by <see cref="UnitInfo"/>(<see cref="type"/>, <see cref="SpecialToken.Constructor"/>) via current build session. 
     /// </summary>
     public static ConstructorInfo GetConstructorOf([NotNull] this UnitBuilder unitBuilder, [NotNull] Type type)
     {
       if (unitBuilder == null) throw new ArgumentNullException("unitBuilder");
       if (type == null) throw new ArgumentNullException("type");
 
-      var result = unitBuilder.Build(new UnitInfo(type, SpecialToken.FindConstructor));
+      var result = unitBuilder.Build(new UnitInfo(type, SpecialToken.Constructor));
       if(result == null || result.Value == null)
         throw new Exception( string.Format("Can't find appropriate constructor for type {0}", type));
       return (ConstructorInfo) result.Value;
     }
 
     /// <summary>
-    /// Builds values for parameters by building a set of <see cref="UnitInfo"/>(<see cref="parameters"/>[i], <see cref="SpecialToken.BuildParameterValue"/>)
+    /// Builds values for parameters by building a set of <see cref="UnitInfo"/>(<see cref="parameters"/>[i], <see cref="SpecialToken.ParameterValue"/>)
     /// one by one via current build session 
     /// </summary>
     public static object[] GetValuesForParameters([NotNull] this UnitBuilder unitBuilder, [NotNull] ParameterInfo[] parameters)
@@ -36,13 +37,18 @@ namespace Armature.Framework
       var values = new object[parameters.Length];
       for (var i = 0; i < parameters.Length; i++)
       {
-        var buildResult = unitBuilder.Build(new UnitInfo(parameters[i], SpecialToken.BuildParameterValue));
+        var buildResult = unitBuilder.Build(new UnitInfo(parameters[i], SpecialToken.ParameterValue));
         if (buildResult == null)
           throw new ArmatureException(string.Format("Can't build value for parameter {0}", parameters[i]));
 
         values[i] = buildResult.Value;
       }
       return values;
+    }
+
+    public static UnitInfo GetUnitUnderConstruction(this UnitBuilder unitBuilder)
+    {
+      return unitBuilder.BuildSequence.Last();
     }
   }
 }

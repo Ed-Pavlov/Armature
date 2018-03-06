@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Armature;
 using Armature.Core;
 using Armature.Framework;
 using FluentAssertions;
@@ -13,13 +14,15 @@ namespace Tests.UnitTests
     public void should_return_all_merged_actions()
     {
       // --arrange
-      var buildStep1 = new AnyUnitBuildStep().AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
+      var buildStep1 = new LeafUnitSequenceMatcher(Match.Type<string>(null), 0);
+      buildStep1.AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance, 0);
       var singletonAction = new SingletonBuildAction();
-      var buildStep2 = new AnyUnitBuildStep().AddBuildAction(BuildStage.Cache, singletonAction);
+      var buildStep2 = new AnyUnitSequenceMatcher();
+      buildStep2.AddBuildAction(BuildStage.Cache, singletonAction, 0);
 
       var target = new BuildPlansCollection();
-      target.AddBuildStep(buildStep1);
-      target.AddBuildStep(buildStep2);
+      target.AddUnitMatcher(buildStep1);
+      target.AddUnitMatcher(buildStep2);
 
       // --act
       var actual = target.GetBuildActions(new[] {Unit.OfType<string>()});
@@ -29,7 +32,7 @@ namespace Tests.UnitTests
         .Should()
         .HaveCount(2)
         .And
-        .Subject.Select(_ => _.BuildAction)
+        .Subject.Select(_ => _.Entity)
         .Should()
         .BeEquivalentTo(singletonAction, CreateByReflectionBuildAction.Instance);
     }

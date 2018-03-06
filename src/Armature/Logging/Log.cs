@@ -19,11 +19,9 @@ namespace Armature.Logging
       var currentLogLevel = _logLevel;
       if (logLevel > _logLevel) // disable logging for all block content
         return new Bracket(() => _logLevel = LogLevel.None, () => _logLevel = currentLogLevel);
-      else
-      {
-        WriteLine(logLevel, name);
-        return AddIndent(true);
-      }
+      
+      WriteLine(logLevel, name);
+      return logLevel <= _logLevel ? AddIndent(true) : new DumbDisposable();
     }
 
     [StringFormatMethod("format")]
@@ -35,7 +33,7 @@ namespace Armature.Logging
     [StringFormatMethod("format")]
     public static void Trace(string format, params object[] parameters)
     {
-      WriteLine(LogLevel.Verbose, format, parameters);
+      WriteLine(LogLevel.Trace, format, parameters);
     }
     
     [StringFormatMethod("format")]
@@ -102,13 +100,21 @@ namespace Armature.Logging
         _endAction();
       }
     }
+
+    private class DumbDisposable : IDisposable
+    {
+      public void Dispose()
+      {
+        // dumb
+      }
+    }
   }
 
   public enum LogLevel
   {
     None = 0,
     Info,
+    Verbose,
     Trace,
-    Verbose
   }
 }

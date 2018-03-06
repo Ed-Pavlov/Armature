@@ -1,5 +1,6 @@
 ﻿using Armature.Core;
 using Armature.Framework;
+using Armature.Framework.BuildActions;
 
 namespace Tests.Functional
 {
@@ -14,12 +15,22 @@ namespace Tests.Functional
     {
       var container = new Builder(stages, parentBuilders);
 
-      var treatAll = new AnyUnitBuildStep();
-      treatAll.AddBuildStep(new FindLongestConstructorBuildStep(FindConstructorBuildStepWeight.Lowest));
-      treatAll.AddBuildStep(new FindAttributedConstructorBuildStep(FindConstructorBuildStepWeight.Attributed));
-      treatAll.AddBuildStep(new AutowireParameterValueBuildStep(ParameterValueBuildStepWeight.Lowest));
+      var treatAll = new AnyUnitSequenceMatcher();
+      
+      var constructorMathcer = new LeafUnitSequenceMatcher(AnyConstructorMatcher.Instance, FindConstructorBuildStepWeight.Lowest)
+        .AddBuildAction(BuildStage.Create, new GetLongesConstructorBuildAction(), FindConstructorBuildStepWeight.Lowest);
+      treatAll.Children.Add(constructorMathcer);
+      
+      var constructorByInjectPointIdMatcher = new ConstructorByInjectPointIdMatcher();
+      var ctorByInjectPointIdMatcher = new LeafUnitSequenceMatcher(constructorByInjectPointIdMatcher, FindConstructorBuildStepWeight.Attributed)
+        .AddBuildAction(BuildStage.Create, constructorByInjectPointIdMatcher.BuildAction, FindConstructorBuildStepWeight.Attributed);
+      treatAll.Children.Add(ctorByInjectPointIdMatcher);
+      
+      var parameterMatcher = new LeafUnitSequenceMatcher(AnyParameterMatcher.Instance, ParameterMatcherWeight.Lowest)
+        .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction(), ParameterMatcherWeight.Lowest);
+      treatAll.Children.Add(parameterMatcher);
 
-      container.AddBuildStep(treatAll);
+      container.AddUnitMatcher(treatAll);
       return container;
     }
   }

@@ -7,13 +7,13 @@ namespace Armature
 {
   public class TreatOpenGenericSugar
   {
-    private readonly StaticBuildStep _buildStep;
+    private readonly IUnitSequenceMatcher _unitSequenceMatcher;
 
-    public TreatOpenGenericSugar([NotNull] StaticBuildStep buildStep)
+    public TreatOpenGenericSugar([NotNull] IUnitSequenceMatcher unitSequenceMatcher)
     {
-      if (buildStep == null) throw new ArgumentNullException("buildStep");
+      if (unitSequenceMatcher == null) throw new ArgumentNullException("unitSequenceMatcher");
 
-      _buildStep = buildStep;
+      _unitSequenceMatcher = unitSequenceMatcher;
     }
 
     /// <param name="openGenericType"></param>
@@ -31,14 +31,15 @@ namespace Armature
     /// as a creation build step.</param>
     public AdjusterSugar As(Type openGenericType, object token = null, AddCreationBuildStep addDefaultCreateAction = AddCreationBuildStep.Yes)
     {
-      _buildStep.AddBuildAction(BuildStage.Redirect, new RedirectOpenGenericTypeBuildAction(openGenericType, token));
+      _unitSequenceMatcher.AddBuildAction(BuildStage.Redirect, new RedirectOpenGenericTypeBuildAction(openGenericType, token), 0);
 
-      var nextBuildStep = _buildStep;
+      var nextBuildStep = _unitSequenceMatcher;
       if (addDefaultCreateAction == AddCreationBuildStep.Yes)
       {
-        nextBuildStep = new UnitSequenceWeakMatchingBuildStep(Match.OpenGenericType(openGenericType, token));
-        nextBuildStep.AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
-        _buildStep.AddBuildStep(nextBuildStep);
+        nextBuildStep = new WeakUnitSequenceMatcher(Match.OpenGenericType(openGenericType, token), UnitSequenceMatchingWeight.WeakMatchingOpenGenericUnit);
+
+        _unitSequenceMatcher
+          .AddOrGetUnitMatcher(nextBuildStep).AddBuildAction(BuildStage.Create, Default.CreationBuildAction, 0);
       }
 
       return new AdjusterSugar(nextBuildStep);

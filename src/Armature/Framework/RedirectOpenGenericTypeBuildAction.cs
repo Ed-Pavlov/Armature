@@ -24,7 +24,7 @@ namespace Armature.Framework
 
     public void Process(UnitBuilder unitBuilder)
     {
-      var genericType = _redirectTo.MakeGenericType(unitBuilder.BuildSequence.Last().GetUnitType().GetGenericArguments());
+      var genericType = _redirectTo.MakeGenericType(unitBuilder.GetUnitUnderConstruction().GetUnitType().GetGenericArguments());
       unitBuilder.BuildResult = unitBuilder.Build(new UnitInfo(genericType, _token));
     }
 

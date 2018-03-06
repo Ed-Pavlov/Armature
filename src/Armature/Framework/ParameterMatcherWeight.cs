@@ -3,10 +3,10 @@
 namespace Armature.Framework
 {
   /// <summary>
-  /// Matching weight for different build steps building values for a parameters
+  /// Matching weight for different parameter matchers
   /// </summary>
   [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-  public class ParameterValueBuildStepWeight
+  public class ParameterMatcherWeight
   {
     // ReSharper disable once MemberCanBePrivate.Global (introduced to use in inheritors)
     protected const int Step = 100;
@@ -14,22 +14,22 @@ namespace Armature.Framework
     public const int Lowest = 0;
     
     /// <summary>
-    /// <see cref="WeakParameterTypeValueBuildStep"/> 
+    /// <see cref="BuildWeakTypedParameterValueActionFactory"/> 
     /// </summary>
     public const int WeakTypedParameter = Lowest + Step;
     
     /// <summary>
-    /// <see cref="StrictParameterTypeValueBuildStep"/>
+    /// <see cref="BuildStrictTypedParameterValueActionFactory"/>
     /// </summary>
     public const int TypedParameter = WeakTypedParameter + Step;
     
     /// <summary>
-    /// <see cref="AttributedParameterValueBuildStep"/>
+    /// <see cref="BuildAttributedParameterValueActionFactory"/>
     /// </summary>
     public const int AttributedParameter = TypedParameter + Step;
     
     /// <summary>
-    /// <see cref="NamedParameterValueBuildStep"/>
+    /// <see cref="BuildNamedParameterValueActionFactory"/>
     /// </summary>
     public const int NamedParameter = AttributedParameter + Step;
   }

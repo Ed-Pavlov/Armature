@@ -12,12 +12,12 @@ namespace Armature.Framework
     /// <summary>
     /// Is used to build a value for parameter
     /// </summary>
-    public static readonly object BuildParameterValue = new SpecialToken("ParameterValue");
+    public static readonly object ParameterValue = new SpecialToken("ParameterValue");
     
     /// <summary>
-    /// Is use to "build" a <see cref="ConstructorInfo"/> for a type
+    /// Is used to "build" a <see cref="ConstructorInfo"/> for a type
     /// </summary>
-    public static readonly object FindConstructor = new SpecialToken("Constructor");
+    public static readonly object Constructor = new SpecialToken("Constructor");
 
     private readonly string _description;
 

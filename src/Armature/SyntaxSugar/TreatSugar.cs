@@ -7,20 +7,20 @@ namespace Armature
 {
   public class TreatSugar<T> : AdjusterSugar
   {
-    private readonly StaticBuildStep _buildStep;
+    private readonly IUnitSequenceMatcher _unitSequenceMatcher;
 
-    public TreatSugar(StaticBuildStep buildStep) : base(buildStep)
+    public TreatSugar([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher)
     {
-      _buildStep = buildStep;
+      _unitSequenceMatcher = unitSequenceMatcher;
     }
 
     /// <summary>
     /// Treat Unit as is w/o any redirections
     /// </summary>
     public AdjusterSugar AsIs()
-    { 
-      _buildStep.AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
-      return new AdjusterSugar(_buildStep);
+    {
+      _unitSequenceMatcher.AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance, 0);
+      return new AdjusterSugar(_unitSequenceMatcher);
     }
 
     /// <summary>
@@ -28,7 +28,7 @@ namespace Armature
     /// </summary>
     public void AsInstance([CanBeNull] T instance)
     {
-      _buildStep.AddBuildAction(BuildStage.Cache, new SingletonBuildAction(instance));
+      _unitSequenceMatcher.AddBuildAction(BuildStage.Cache, new SingletonBuildAction(instance), 0);
     }
 
     /// <param name="addDefaultCreateAction">If <see cref="AddCreationBuildStep.Yes"/> adds a build step
@@ -52,14 +52,15 @@ namespace Armature
       if(!typeof(T).IsAssignableFrom(redirectTo))
         throw new Exception("Not assignable");
 
-      _buildStep.AddBuildAction(BuildStage.Redirect, new RedirectTypeBuildAction(redirectTo, token));
+      _unitSequenceMatcher.AddBuildAction(BuildStage.Redirect, new RedirectTypeBuildAction(redirectTo, token), 0);
 
-      var nextBuildStep = _buildStep;
+      var nextBuildStep = _unitSequenceMatcher;
       if (addDefaultCreateAction == AddCreationBuildStep.Yes)
       {
-        nextBuildStep = new UnitSequenceWeakMatchingBuildStep(Match.Type<TRedirect>(token));
-        nextBuildStep.AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
-        _buildStep.AddBuildStep(nextBuildStep);
+        nextBuildStep = new WeakUnitSequenceMatcher(Match.Type<TRedirect>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+
+        _unitSequenceMatcher
+          .AddOrGetUnitMatcher(nextBuildStep).AddBuildAction(BuildStage.Create, Default.CreationBuildAction, 0);
       }
 
       return new AdjusterSugar(nextBuildStep);
@@ -67,22 +68,22 @@ namespace Armature
 
     public void CreatedBy([NotNull] Func<UnitBuilder, T> factoryMethod)
     {
-      _buildStep.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T>(factoryMethod));
+      _unitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T>(factoryMethod), 0);
     }
 
     public void CreatedBy<T1>([NotNull] Func<UnitBuilder, T1, T> factoryMethod)
     {
-      _buildStep.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod));
+      _unitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod), 0);
     }
 
     public void CreatedBy<T1, T2>([NotNull] Func<UnitBuilder, T1, T2, T> factoryMethod)
     {
-      _buildStep.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod));
+      _unitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod), 0);
     }
 
     public void CreatedBy<T1, T2, T3>([NotNull] Func<UnitBuilder, T1, T2, T3, T> factoryMethod)
     {
-      _buildStep.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod));
+      _unitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod), 0);
     }
   }
 }

@@ -12,24 +12,24 @@ namespace Armature
     {
       if (container == null) throw new ArgumentNullException("container");
 
-      var buildStep = new UnitSequenceWeakMatchingBuildStep(Match.Type<T>(token));
-      return new TreatSugar<T>(container.AddOrGetBuildStep(buildStep));
+      var buildStep = new WeakUnitSequenceMatcher(Match.Type<T>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      return new TreatSugar<T>(container.AddOrGetUnitMatcher(buildStep));
     }
 
     public static TreatOpenGenericSugar TreatOpenGeneric([NotNull] this BuildPlansCollection container, Type openGenericType, object token = null)
     {
       if (container == null) throw new ArgumentNullException("container");
 
-      var buildStep = new UnitSequenceWeakMatchingBuildStep(Match.OpenGenericType(openGenericType, token));
-      return new TreatOpenGenericSugar(container.AddOrGetBuildStep(buildStep));
+      var buildStep = new WeakUnitSequenceMatcher(Match.OpenGenericType(openGenericType, token), UnitSequenceMatchingWeight.WeakMatchingOpenGenericUnit);
+      return new TreatOpenGenericSugar(container.AddOrGetUnitMatcher(buildStep));
     }
 
     public static AdjusterSugar TreatAll([NotNull] this BuildPlansCollection container, object token = null)
     {
       if (container == null) throw new ArgumentNullException("container");
 
-      var buildStep = new AnyUnitBuildStep();
-      return new AdjusterSugar(container.AddOrGetBuildStep(buildStep));
+      var buildStep = new AnyUnitSequenceMatcher();
+      return new AdjusterSugar(container.AddOrGetUnitMatcher(buildStep));
     }
 
     public static BuildingSugar Building<T>(this BuildPlansCollection container, object token = null)
@@ -41,8 +41,8 @@ namespace Armature
     {
       if (container == null) throw new ArgumentNullException("container");
 
-      var buildStep = new UnitSequenceWeakMatchingBuildStep(Match.Type(type, token));
-      return new BuildingSugar(container.AddOrGetBuildStep(buildStep), container);
+      var buildStep = new WeakUnitSequenceMatcher(Match.Type(type, token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      return new BuildingSugar(container.AddOrGetUnitMatcher(buildStep), container);
     }
   }
 }

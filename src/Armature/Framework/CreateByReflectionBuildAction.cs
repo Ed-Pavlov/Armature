@@ -5,8 +5,9 @@ using Armature.Core;
 
 namespace Armature.Framework
 {
+  /// <inheritdoc />
   /// <summary>
-  /// Build action instantiates an object of type <see cref="UnitInfo.Id"/> as Type using reflection
+  /// Build action instantiates an object of type <see cref="UnitInfo.Id" /> as Type using reflection
   /// </summary>
   public class CreateByReflectionBuildAction : IBuildAction
   {
@@ -20,7 +21,7 @@ namespace Armature.Framework
     {
       if(unitBuilder.BuildResult == null)
 			{
-        var type = unitBuilder.BuildSequence.Last().GetUnitType();
+        var type = unitBuilder.GetUnitUnderConstruction().GetUnitType();
 
 			  // ReSharper disable once PossibleNullReferenceException
         if( !type.IsInterface && !type.IsAbstract )
@@ -33,9 +34,14 @@ namespace Armature.Framework
 
           try
           {
-            var instance = parameters.Length == 0 
-              ? Activator.CreateInstance(type) 
-              : Activator.CreateInstance(type, unitBuilder.GetValuesForParameters(parameters));
+            object instance;
+            if (parameters.Length == 0)
+              instance = Activator.CreateInstance(type);
+            else
+            {
+              var valuesForParameters = unitBuilder.GetValuesForParameters(parameters);
+              instance = Activator.CreateInstance(type, valuesForParameters);
+            }
             unitBuilder.BuildResult = new BuildResult(instance);
           }
           catch (TargetInvocationException exception)

@@ -4,8 +4,8 @@ using JetBrains.Annotations;
 namespace Armature.Framework
 {
   /// <summary>
-  /// Represents predefined build stages used by out of the box Armature framework. This list can be extended or completely replaced
-  /// if another framework is implemented based on Armature core  
+  /// Represents predefined build stages used by out of the box Armature framework syntax sugar. This list can be extended or completely replaced
+  /// if another framework is implemented on an Armature core base  
   /// </summary>
   /// <remarks>Use objects but int or enum in order to avoid memory trafiic on boxing</remarks>
   public class BuildStage
@@ -16,6 +16,7 @@ namespace Armature.Framework
     public static readonly BuildStage Create = new BuildStage("Create");
 
     private readonly string _name;
+    
     private BuildStage([NotNull] string name)
     {
       if (name == null) throw new ArgumentNullException("name");

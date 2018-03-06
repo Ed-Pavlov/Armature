@@ -5,6 +5,6 @@ namespace Armature
 {
   public interface IParameterValueBuildPlanner
   {
-    void AddBuildParameterValueStepTo([NotNull] BuildStepBase buildStep);
+    void AddBuildParameterValueStepTo([NotNull] IUnitSequenceMatcher unitSequenceMatcher);
   }
 }

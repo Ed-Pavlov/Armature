@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using Armature.Common;
 using Armature.Core;
 
@@ -27,15 +28,10 @@ namespace Armature.Logging
             Log.Info(buildSequence[i].ToString());
       }
     }
-
-    public static void LogMatchedBuildActions(this MatchedBuildActions matchedBuildActions, LogLevel logLevel = LogLevel.Verbose)
+    
+    public static void LogConstructor(this ConstructorInfo constructorInfo, object source)
     {
-      foreach (var pair in matchedBuildActions)
-      {
-        using (Log.Block(string.Format("[{0}]", pair.Key), logLevel))
-          foreach (var weightedBuildAction in pair.Value)
-            Log.WriteLine(logLevel, "{0}", weightedBuildAction);
-      }
+      Log.Trace("{0}: {1}", source, constructorInfo == null ? "constructor is not found" : string.Format("{0} found", constructorInfo));
     }
   }
 }

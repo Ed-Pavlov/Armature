@@ -6,12 +6,12 @@ using JetBrains.Annotations;
 
 namespace Armature.Core
 {
-  /// <summary>
-  /// The "dependency injection builder" contains build steps for units and method <see cref="BuildUnit"/>
-  ///
-  /// Building a unit it goes over all "build stages", for each stage it gets a build step if any and executes it 
-  /// <see cref="Builder(IEnumerable{object}, Builder[])"/> for details
-  /// </summary>
+  /// <inheritdoc />
+  ///  <summary>
+  ///  The "dependency injection builder" contains build steps for units and method <see cref="BuildUnit(Armature.Core.UnitInfo,Armature.Core.BuildPlansCollection)" />
+  ///  Building a unit it goes over all "build stages", for each stage it gets a build step if any and executes it 
+  ///  <see cref="Builder(System.Collections.Generic.IEnumerable{System.Object},Armature.Core.Builder[])" /> for details
+  ///  </summary>
   public class Builder : BuildPlansCollection
   {
     private readonly Builder[] _parentBuilders;

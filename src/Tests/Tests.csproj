@@ -68,6 +68,7 @@
     <Compile Include="Functional\InterceptionTest.cs" />
     <Compile Include="Functional\MultiParentTest.cs" />
     <Compile Include="Functional\OpenGenericTest.cs" />
+    <Compile Include="Functional\ReplacingRegistrationsTest.cs" />
     <Compile Include="Functional\SessionalParametersTest.cs" />
     <Compile Include="Functional\TestTypes.cs" />
     <Compile Include="Functional\CreationTest.cs" />
