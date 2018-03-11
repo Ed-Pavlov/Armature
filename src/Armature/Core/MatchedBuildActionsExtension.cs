@@ -9,7 +9,7 @@ namespace Armature.Core
   public static class MatchedBuildActionsExtension
   {
     /// <summary>
-    /// Merges two collections into one
+    ///   Merges two collections into one
     /// </summary>
     public static MatchedBuildActions Merge(this MatchedBuildActions left, MatchedBuildActions right)
     {
@@ -23,7 +23,9 @@ namespace Armature.Core
         List<Weighted<IBuildAction>> resultValue;
         List<Weighted<IBuildAction>> rightValue;
         if (!right.TryGetValue(pair.Key, out rightValue)) // if key is presented only in 'left' dictionary - get value from it
+        {
           resultValue = pair.Value;
+        }
         else // if key is presented in both dictionaries create a new list and merge items from both
         {
           resultValue = new List<Weighted<IBuildAction>>(pair.Value);
@@ -33,7 +35,6 @@ namespace Armature.Core
         result.Add(pair.Key, resultValue);
       }
 
-
       foreach (var pair in right)
         if (!left.ContainsKey(pair.Key))
           result.Add(pair.Key, pair.Value); // for all keys presented in 'right' and not presented in 'left' dictionary get value from 'right'
@@ -42,27 +43,28 @@ namespace Armature.Core
     }
 
     /// <summary>
-    /// Returns the build action with biggest matching weight for the build stage
+    ///   Returns the build action with biggest matching weight for the build stage
     /// </summary>
     /// <exception cref="ArmatureException">Throws if there are more than one action with equal matching weight</exception>
     [CanBeNull]
     public static IBuildAction GetTopmostAction([CanBeNull] this MatchedBuildActions matchedBuildActions, [NotNull] object stage)
     {
-      if (stage == null) throw new ArgumentNullException("stage");
+      if (stage == null) throw new ArgumentNullException(nameof(stage));
+
       if (matchedBuildActions == null) return null;
 
       var actions = matchedBuildActions.GetValueSafe(stage);
       if (actions == null) return null;
 
       actions.Sort((l, r) => r.Weight.CompareTo(l.Weight)); // sort descending
-      
-      if(actions.Count > 1)
-        if(actions[0].Weight == actions[1].Weight)
+
+      if (actions.Count > 1)
+        if (actions[0].Weight == actions[1].Weight)
           throw new ArmatureException("Two or more building actions have the same weight. Enable logging to find the reason");
 
       return actions[0].Entity;
     }
-    
+
     public static void ToLog(this MatchedBuildActions actions, LogLevel logLevel = LogLevel.Verbose)
     {
       Log.WriteLine(logLevel, "{0} matched actions", actions == null ? "no" : actions.Count.ToString("n0"));
@@ -75,15 +77,15 @@ namespace Armature.Core
     {
       var stage = stageActions.Key;
       var actionsList = stageActions.Value;
-      
-      if(actionsList.Count == 1)
+
+      if (actionsList.Count == 1)
         Log.WriteLine(logLevel, "Stage={0}, Action={1}", stage, actionsList[0]);
       else
-      {
         using (Log.Block(string.Format("[Stage={0}, {1} actions]", stage, actionsList.Count), logLevel))
+        {
           foreach (var action in actionsList)
             Log.WriteLine(logLevel, "Action={0}", action);
-      }
+        }
     }
   }
 }

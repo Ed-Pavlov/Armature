@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Armature.Core;
@@ -8,13 +9,15 @@ namespace Armature.Framework
   public class ConstructorByAttributeMatcher<T> : IUnitMatcher
   {
     private readonly Predicate<T> _predicate;
-    private readonly IBuildAction _buildAction;
 
+    [DebuggerStepThrough]
     public ConstructorByAttributeMatcher(Predicate<T> predicate = null)
     {
       _predicate = predicate;
-      _buildAction = new BuildActionImpl(this);
+      BuildAction = new BuildActionImpl(this);
     }
+
+    public IBuildAction BuildAction { get; }
 
     public bool Matches(UnitInfo unitInfo)
     {
@@ -26,37 +29,28 @@ namespace Armature.Framework
       return constructorInfo != null;
     }
 
+    [DebuggerStepThrough]
+    public bool Equals(IUnitMatcher other) => other is ConstructorByAttributeMatcher<T> matcher && Equals(_predicate, matcher._predicate);
+
     private ConstructorInfo GetConstructorInfo(Type unitType)
     {
       var constructorInfo = unitType
         .GetConstructors()
-        .SingleOrDefault(ctor =>
-          ctor
-            .GetCustomAttributes(typeof(T), false)
-            .OfType<T>()
-            .SingleOrDefault(attribute => _predicate == null || _predicate(attribute)) != null);
+        .SingleOrDefault(
+          ctor =>
+            ctor
+              .GetCustomAttributes(typeof(T), false)
+              .OfType<T>()
+              .SingleOrDefault(attribute => _predicate == null || _predicate(attribute)) != null);
       return constructorInfo;
-    }
-
-    public bool Equals(IUnitMatcher other)
-    {
-      var matcher = other as ConstructorByAttributeMatcher<T>;
-      return matcher != null && Equals(_predicate, matcher._predicate);
-    }
-
-    public IBuildAction BuildAction
-    {
-      get { return _buildAction; }
     }
 
     private class BuildActionImpl : IBuildAction
     {
       private readonly ConstructorByAttributeMatcher<T> _owner;
 
-      public BuildActionImpl(ConstructorByAttributeMatcher<T> owner)
-      {
-        _owner = owner;
-      }
+      [DebuggerStepThrough]
+      public BuildActionImpl(ConstructorByAttributeMatcher<T> owner) => _owner = owner;
 
       public void Process(UnitBuilder unitBuilder)
       {
@@ -65,9 +59,8 @@ namespace Armature.Framework
         unitBuilder.BuildResult = new BuildResult(constructorInfo);
       }
 
-      public void PostProcess(UnitBuilder unitBuilder)
-      {
-      }
+      [DebuggerStepThrough]
+      public void PostProcess(UnitBuilder unitBuilder) { }
     }
   }
 }

@@ -34,13 +34,9 @@ namespace Tests.Functional
       public readonly bool AttributedConstructorIsCalled;
 
       [Inject]
-      public Subject()
-      {
-        AttributedConstructorIsCalled = true;
-      }
+      public Subject() { AttributedConstructorIsCalled = true; }
 
-      public Subject(int i)
-      {}
+      public Subject(int i) { }
     }
   }
 }

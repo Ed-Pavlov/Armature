@@ -1,4 +1,5 @@
-﻿using Armature.Core;
+﻿using System.Diagnostics;
+using Armature.Core;
 
 namespace Armature.Framework
 {
@@ -6,18 +7,11 @@ namespace Armature.Framework
   {
     public static readonly IUnitMatcher Instance = new AnyConstructorMatcher();
 
-    private AnyConstructorMatcher()
-    {
-    }
+    private AnyConstructorMatcher() { }
 
-    public bool Matches(UnitInfo unitInfo)
-    {
-      return unitInfo.Token == SpecialToken.Constructor && unitInfo.GetUnitTypeSafe() != null;
-    }
+    public bool Matches(UnitInfo unitInfo) => unitInfo.Token == SpecialToken.Constructor && unitInfo.GetUnitTypeSafe() != null;
 
-    public bool Equals(IUnitMatcher other)
-    {
-      return ReferenceEquals(this, other);
-    }
+    [DebuggerStepThrough]
+    public bool Equals(IUnitMatcher other) => ReferenceEquals(this, other);
   }
 }

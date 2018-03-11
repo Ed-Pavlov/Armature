@@ -92,7 +92,7 @@ namespace Tests.Functional
       public readonly string String1;
       public readonly string String2;
 
-      public Subject([Inject]string string1, string string2)
+      public Subject([Inject] string string1, string string2)
       {
         String1 = string1;
         String2 = string2;

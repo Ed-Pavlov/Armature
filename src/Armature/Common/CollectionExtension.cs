@@ -1,7 +1,10 @@
-﻿namespace Armature.Common
+﻿using System.Diagnostics;
+
+namespace Armature.Common
 {
   internal static class CollectionExtension
   {
+    [DebuggerStepThrough]
     public static bool EqualsTo<T>(this T[] left, T[] right)
     {
       if (left.Length != right.Length) return false;

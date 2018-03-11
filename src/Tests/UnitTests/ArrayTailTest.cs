@@ -23,7 +23,7 @@ namespace Tests.UnitTests
     public void GetValue()
     {
       // --arrange
-      var array = new []{0, 1, 2, 3};
+      var array = new[] {0, 1, 2, 3};
 
       const int startIndex = 1;
       var arrayTail = array.GetTail(startIndex);
@@ -46,7 +46,7 @@ namespace Tests.UnitTests
     {
       // --arrange
       const int lastItem = 23;
-      var array = new []{0, 1, 2, lastItem};
+      var array = new[] {0, 1, 2, lastItem};
 
       const int startIndex = 1;
       var arrayTail = array.GetTail(startIndex);

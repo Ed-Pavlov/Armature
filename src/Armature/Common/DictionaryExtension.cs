@@ -1,31 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using JetBrains.Annotations;
 
 namespace Armature.Common
 {
   internal static class DictionaryExtension
   {
+    [DebuggerStepThrough]
     public static TValue GetOrCreateValue<TKey, TValue>([NotNull] this Dictionary<TKey, TValue> dictionary, [NotNull] TKey key, [NotNull] Func<TValue> createValue)
     {
-      if (dictionary == null) throw new ArgumentNullException("dictionary");
-      if (key == null) throw new ArgumentNullException("key");
-      if (createValue == null) throw new ArgumentNullException("createValue");
-      
-      TValue value;
-      if (!dictionary.TryGetValue(key, out value))
+      if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
+      if (key == null) throw new ArgumentNullException(nameof(key));
+      if (createValue == null) throw new ArgumentNullException(nameof(createValue));
+
+      if (!dictionary.TryGetValue(key, out var value))
       {
         value = createValue();
         dictionary.Add(key, value);
       }
+
       return value;
     }
 
+    [DebuggerStepThrough]
     [CanBeNull]
-    public static TValue GetValueSafe<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue))
-    {
-      TValue value;
-      return dictionary.TryGetValue(key, out value) ? value : defaultValue;
-    }
+    public static TValue GetValueSafe<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default) =>
+      dictionary.TryGetValue(key, out var value) ? value : defaultValue;
   }
 }

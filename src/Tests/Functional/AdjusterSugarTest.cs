@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using Armature;
-using Armature.Logging;
 using NUnit.Framework;
 
 namespace Tests.Functional
@@ -31,7 +30,7 @@ namespace Tests.Functional
       // --arrange
       var expectedDisposable = new MemoryStream();
       const string expectedString = "ldksjf";
-      
+
       var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<TwoDisposableStringCtorClass>()
@@ -65,7 +64,7 @@ namespace Tests.Functional
       // --act
       var actualOne = target.Build<OneDisposableCtorClass>();
       var actualTwo = target.Build<TwoDisposableStringCtorClass>();
-      
+
       // --assert
       Assert.That(actualOne.Disposable, Is.SameAs(expectedOne));
       Assert.That(actualTwo.Disposable, Is.SameAs(expectedTwo));
@@ -91,7 +90,7 @@ namespace Tests.Functional
       // --act
       var actual1 = target.Build<IDisposableValue1>();
       var actual2 = target.Build<IDisposableValue2>();
-      
+
       // --assert
       Assert.That(actual1.Disposable, Is.SameAs(expected1));
       Assert.That(actual2.Disposable, Is.SameAs(expected2));

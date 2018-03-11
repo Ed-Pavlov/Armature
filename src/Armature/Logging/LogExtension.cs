@@ -22,16 +22,16 @@ namespace Armature.Logging
       else if (buildSequence.Length == 1)
         Log.WriteLine(logLevel, "BuildSequence={0}", buildSequence.GetLastItem());
       else
-      {
         using (Log.Block("BuildSequence", logLevel))
+        {
           for (var i = 0; i < buildSequence.Length; i++)
             Log.Info(buildSequence[i].ToString());
-      }
+        }
     }
-    
-    public static void LogConstructor(this ConstructorInfo constructorInfo, object source)
-    {
-      Log.Trace("{0}: {1}", source, constructorInfo == null ? "constructor is not found" : string.Format("{0} found", constructorInfo));
-    }
+
+    public static void LogConstructor(this ConstructorInfo constructorInfo, object source) => Log.Trace(
+      "{0}: {1}",
+      source,
+      constructorInfo == null ? "constructor is not found" : string.Format("{0} found", constructorInfo));
   }
 }

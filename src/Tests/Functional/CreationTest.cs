@@ -1,5 +1,4 @@
 ﻿using Armature;
-using Armature.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -46,11 +45,12 @@ namespace Tests.Functional
       var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<EmptyCtorClass>()
-        .CreatedBy(_ =>
-        {
-          expected = new EmptyCtorClass();
-          return expected;
-        });
+        .CreatedBy(
+          _ =>
+            {
+              expected = new EmptyCtorClass();
+              return expected;
+            });
 
       // --act
       var actual = target.Build<EmptyCtorClass>();
@@ -58,27 +58,28 @@ namespace Tests.Functional
       // --assert
       actual.Should().Be(expected);
     }
-    
+
     [Test]
     public void CreatedByMethodFactory1()
     {
       OneStringCtorClass expected;
       const string expectedString = "expected397";
-      
+
       // --arrange
       var target = FunctionalTestHelper.CreateBuilder();
-      
+
       target
         .Treat<string>()
         .AsInstance(expectedString);
-      
+
       target
         .Treat<OneStringCtorClass>()
-        .CreatedBy<string>((_, value) =>
-        {
-          expected = new OneStringCtorClass(value);
-          return expected;
-        });
+        .CreatedBy<string>(
+          (_, value) =>
+            {
+              expected = new OneStringCtorClass(value);
+              return expected;
+            });
 
       // --act
       var actual = target.Build<OneStringCtorClass>();
@@ -88,7 +89,7 @@ namespace Tests.Functional
     }
 
     /// <summary>
-    /// <see cref="TreatSugar{T}.As{TRedirect}(object, AddCreationBuildStep)"/> adds default creation strategy
+    ///   <see cref="TreatSugar{T}.As{TRedirect}(object, AddCreationBuildStep)" /> adds default creation strategy
     /// </summary>
     [Test]
     public void AsAddsDefaultCreationStrategy()

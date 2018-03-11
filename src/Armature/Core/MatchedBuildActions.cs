@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Armature.Core
 {
   /// <summary>
-  /// Collection of build actions from matched build steps grouped by the build stage
+  ///   Collection of build actions from matched build steps grouped by the build stage
   /// </summary>
   public class MatchedBuildActions : Dictionary<object, List<Weighted<IBuildAction>>>
   {
+    [DebuggerStepThrough]
     public override string ToString()
     {
       var sb = new StringBuilder(string.Format("{0} matched stages\n", Count));
@@ -20,7 +22,7 @@ namespace Armature.Core
           sb.AppendLine();
         }
       }
-      
+
       return sb.ToString();
     }
   }

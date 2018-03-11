@@ -2,7 +2,6 @@
 using Armature;
 using Armature.Core;
 using Armature.Interface;
-using Armature.Logging;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;
@@ -22,7 +21,7 @@ namespace Tests.Functional
         .AsIs();
 
       Action build = () => target.Build<OneStringCtorClass>();
-      
+
       // --act, assert
       build.ShouldThrowExactly<ArmatureException>();
     }
@@ -46,7 +45,8 @@ namespace Tests.Functional
 
       // --assert
       actual
-        .ShouldBeEquivalentTo(new
+        .ShouldBeEquivalentTo(
+          new
           {
             String = expectedString,
             Disposable = expectedDisposable
@@ -95,7 +95,7 @@ namespace Tests.Functional
       asInterface.Text.Should().Be(asInterfaceParameterValue);
       asIs.Text.Should().Be(asIsParameterValue);
     }
-    
+
     [Test]
     public void should_not_pass_registered_parameter_when_building_dependency()
     {
@@ -146,7 +146,7 @@ namespace Tests.Functional
     {
       const string expectedString3 = "value";
       const string l3ExpectedString = "levelThree";
-      
+
       //--arrange
       var target = FunctionalTestHelper.CreateBuilder();
 
@@ -217,18 +217,18 @@ namespace Tests.Functional
       const string rightToken = "token398";
       const string badToken = "sdoy7256";
       const string expected = "expected 398752";
-      
+
       // --arrange
       var target = FunctionalTestHelper.CreateBuilder();
       target
         .Treat<LevelOne>()
         .AsIs()
         .UsingParameters(For.Parameter<string>().UseToken(rightToken));
-      
+
       target
         .Treat<string>(rightToken)
         .AsInstance(expected);
-      
+
       target
         .Treat<string>(badToken)
         .AsInstance(expected + "dlskjgflkj");
@@ -236,7 +236,7 @@ namespace Tests.Functional
       target
         .Treat<string>()
         .AsInstance("sldfjk lkjsd sdf ");
-      
+
       // --act
       var actual = target.Build<LevelOne>();
 
@@ -255,14 +255,14 @@ namespace Tests.Functional
         .Treat<LevelOne>()
         .AsIs()
         .UsingParameters(For.Parameter<string>().UseResolver<int>((_, intValue) => intValue.ToString()));
-      
+
       // --act
       var actual = target.Build<LevelOne>(expectedInt);
 
       // --assert
       actual.String.Should().Be(expectedInt.ToString());
     }
-    
+
     [Test]
     public void should_use_value_if_both_value_and_resolver_are_provided()
     {
@@ -274,7 +274,7 @@ namespace Tests.Functional
         .Treat<LevelOne>()
         .AsIs()
         .UsingParameters(For.Parameter<string>(int.MinValue).UseResolver<int>((_, intValue) => intValue.ToString()));
-      
+
       // --act
       var actual = target.Build<LevelOne>(expectedString);
 
@@ -293,13 +293,12 @@ namespace Tests.Functional
         .Treat<LevelOne>()
         .AsIs()
         .UsingParameters(For.Parameter<string>().UseValue(expected));
-      
+
       // --act
       var actual = target.Build<LevelOne>(expected + "bad");
 
       // --assert
       actual.String.Should().Be(expected);
-
     }
 
     [UsedImplicitly]
@@ -307,10 +306,7 @@ namespace Tests.Functional
     {
       public readonly string String;
 
-      public LevelOne([Inject]string @string)
-      {
-        String = @string;
-      }
+      public LevelOne([Inject] string @string) => String = @string;
     }
 
     [UsedImplicitly]
@@ -318,10 +314,7 @@ namespace Tests.Functional
     {
       public readonly LevelOne LevelOne;
 
-      public LevelTwo(LevelOne levelOne, string @string) : base(@string)
-      {
-        LevelOne = levelOne;
-      }
+      public LevelTwo(LevelOne levelOne, string @string) : base(@string) => LevelOne = levelOne;
     }
 
     [UsedImplicitly]
@@ -329,10 +322,7 @@ namespace Tests.Functional
     {
       public readonly LevelTwo LevelTwo;
 
-      public LevelThree(LevelTwo levelTwo, string @string) : base(@string)
-      {
-        LevelTwo = levelTwo;
-      }
+      public LevelThree(LevelTwo levelTwo, string @string) : base(@string) => LevelTwo = levelTwo;
     }
   }
 }

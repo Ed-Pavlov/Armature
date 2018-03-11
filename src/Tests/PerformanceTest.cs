@@ -13,17 +13,40 @@ namespace Tests
   {
     private readonly List<Type> _types = new List<Type>
     {
-      typeof(bool), typeof(byte), typeof(char), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long),
-      typeof(ulong), typeof(float), typeof(double), typeof(decimal), typeof(string),
-      typeof(bool[]), typeof(byte[]), typeof(char[]), typeof(short[]), typeof(ushort[]), typeof(int[]), typeof(uint[]), 
-      typeof(long[]), typeof(ulong[]), typeof(float[]), typeof(double[]), typeof(decimal[]), typeof(string[])
+      typeof(bool),
+      typeof(byte),
+      typeof(char),
+      typeof(short),
+      typeof(ushort),
+      typeof(int),
+      typeof(uint),
+      typeof(long),
+      typeof(ulong),
+      typeof(float),
+      typeof(double),
+      typeof(decimal),
+      typeof(string),
+      typeof(bool[]),
+      typeof(byte[]),
+      typeof(char[]),
+      typeof(short[]),
+      typeof(ushort[]),
+      typeof(int[]),
+      typeof(uint[]),
+      typeof(long[]),
+      typeof(ulong[]),
+      typeof(float[]),
+      typeof(double[]),
+      typeof(decimal[]),
+      typeof(string[])
     };
 
     // ordered tree: 100 000 times, 2.21 sec
     // whole tree traverse: 100 000 times, 2.44 sec // TreeNode implementation
     // whole tree traverse: 100 000 times, 1 sec // BuildAction tree implementation
 
-    [Test, Ignore("Run manually only")]
+    [Test]
+    [Ignore("Run manually only")]
     [AssertTraffic(AllocatedSizeInBytes = 0)]
 //    [AssertTraffic(AllocatedObjectsCount = 3, Types = new[] { typeof(AssembleStage)})]
     [DotMemoryUnit(SavingStrategy = SavingStrategy.OnCheckFail)]
@@ -43,13 +66,11 @@ namespace Tests
         .AsInstance(new byte[1]);
 
       foreach (var type in _types)
-      {
         container
           .Building(type)
           .Treat<IDisposable>()
           .As<MemoryStream>()
           .UsingParameters(0);
-      }
 
       var sw = new Stopwatch();
       sw.Start();

@@ -11,10 +11,10 @@ namespace Armature.Framework
 
     public ParameterByNameMatcher([NotNull] string parameterName)
     {
-      if (parameterName == null) throw new ArgumentNullException("parameterName");
+      if (parameterName == null) throw new ArgumentNullException(nameof(parameterName));
+
       _parameterName = parameterName;
     }
-
 
     public bool Matches(UnitInfo unitInfo)
     {

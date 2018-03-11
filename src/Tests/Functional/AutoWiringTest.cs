@@ -38,10 +38,7 @@ namespace Tests.Functional
       actual.StringValue.Should().Be(expected, "Because expected value registered UsingParameters for Consumer");
     }
 
-    private static Builder CreateTarget()
-    {
-      return FunctionalTestHelper.CreateBuilder();
-    }
+    private static Builder CreateTarget() => FunctionalTestHelper.CreateBuilder();
 
     [UsedImplicitly]
     private class Consumer
@@ -49,10 +46,7 @@ namespace Tests.Functional
       public const string PointId = "PointId 9387";
       public readonly string StringValue;
 
-      public Consumer([Inject(PointId)] string stringValue)
-      {
-        StringValue = stringValue;
-      }
+      public Consumer([Inject(PointId)] string stringValue) => StringValue = stringValue;
     }
   }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using Armature;
 using Armature.OverrideSugar;
 using FluentAssertions;
@@ -14,7 +13,7 @@ namespace Tests.Functional
     public void ReplaceSingleton()
     {
       var builder = FunctionalTestHelper.CreateBuilder();
-      
+
       builder
         .Treat<IDisposable>()
         .As<MemoryStream>()

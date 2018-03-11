@@ -8,43 +8,34 @@ namespace Armature
   public static class BuilderExtension
   {
     /// <summary>
-    /// Use token for building a unit. See <see cref="UnitInfo"/> for details.
+    ///   Use token for building a unit. See <see cref="UnitInfo" /> for details.
     /// </summary>
     [DebuggerStepThrough]
-    public static Token WithToken([NotNull] this Builder builder, [NotNull] object token)
-    {
-      return new Token(token, builder);
-    }
+    public static Token WithToken([NotNull] this Builder builder, [NotNull] object token) => new Token(token, builder);
 
     /// <summary>
-    /// Builds a Unit registered as type <typeparamref name="T"/>
+    ///   Builds a Unit registered as type <typeparamref name="T" />
     /// </summary>
     [DebuggerStepThrough]
-    public static T Build<T>([NotNull] this Builder builder)
-    {
-      return builder.Build<T>(null, null);
-    }
+    public static T Build<T>([NotNull] this Builder builder) => builder.Build<T>(null, null);
 
     /// <summary>
-    /// Builds a Unit registered as type <typeparamref name="T"/> using additional <see cref="parameters"/> they can be values or 
-    /// implementation of <see cref="IParameterValueBuildPlanner"/>. See <see cref="For"/> for details.  
+    ///   Builds a Unit registered as type <typeparamref name="T" /> using additional <see cref="parameters" /> they can be values or
+    ///   implementation of <see cref="IParameterMatcherSugar" />. See <see cref="For" /> for details.
     /// </summary>
     [DebuggerStepThrough]
-    public static T Build<T>([NotNull] this Builder builder, params object[] parameters)
-    {
-      return builder.Build<T>(null, parameters);
-    }
+    public static T Build<T>([NotNull] this Builder builder, params object[] parameters) => builder.Build<T>(null, parameters);
 
     /// <summary>
-    /// All other Build... methods should delegate to this one. This is the real implementation
+    ///   All other Build... methods should delegate to this one. This is the real implementation
     /// </summary>
     [DebuggerStepThrough]
     private static T Build<T>([NotNull] this Builder builder, [CanBeNull] object token, [CanBeNull] params object[] parameters)
     {
-      if (builder == null) throw new ArgumentNullException("builder");
+      if (builder == null) throw new ArgumentNullException(nameof(builder));
 
       BuildPlansCollection sessionalBuildPlans = null;
-      if(parameters != null && parameters.Length > 0)
+      if (parameters != null && parameters.Length > 0)
       {
         sessionalBuildPlans = new BuildPlansCollection();
         sessionalBuildPlans
@@ -52,7 +43,7 @@ namespace Armature
           .UsingParameters(parameters);
       }
 
-      return (T) builder.BuildUnit(new UnitInfo(typeof(T), token), sessionalBuildPlans);
+      return (T)builder.BuildUnit(new UnitInfo(typeof(T), token), sessionalBuildPlans);
     }
 
     public struct Token
@@ -62,23 +53,17 @@ namespace Armature
 
       public Token([NotNull] object token, [NotNull] Builder builder)
       {
-        if (token == null) throw new ArgumentNullException("token");
+        if (token == null) throw new ArgumentNullException(nameof(token));
 
         _token = token;
         _builder = builder;
       }
 
       [DebuggerStepThrough]
-      public T Build<T>()
-      {
-        return _builder.Build<T>(_token, null);
-      }
-      
+      public T Build<T>() => _builder.Build<T>(_token, null);
+
       [DebuggerStepThrough]
-      public T Build<T>(params object[] parameters)
-      {
-        return _builder.Build<T>(_token, parameters);
-      }
+      public T Build<T>(params object[] parameters) => _builder.Build<T>(_token, parameters);
     }
   }
 }

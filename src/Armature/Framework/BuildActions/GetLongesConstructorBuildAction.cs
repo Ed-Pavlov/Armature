@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Armature.Core;
@@ -12,16 +13,15 @@ namespace Armature.Framework.BuildActions
     {
       var unitType = unitBuilder.GetUnitUnderConstruction().GetUnitType();
       var constructor = GetConstructor(unitType.GetConstructors());
-      
+
       constructor.LogConstructor(this);
 
       unitBuilder.BuildResult = new BuildResult(constructor);
     }
 
-    public void PostProcess(UnitBuilder unitBuilder)
-    {
-    }
-    
+    [DebuggerStepThrough]
+    public void PostProcess(UnitBuilder unitBuilder) { }
+
     private static ConstructorInfo GetConstructor(ConstructorInfo[] constructors)
     {
       var suitableConstructors = new Dictionary<int, int> {{0, constructors[0].GetParameters().Length}};
@@ -31,7 +31,9 @@ namespace Armature.Framework.BuildActions
 
         var maxParametersCount = suitableConstructors.First().Value;
         if (paramentersCount == maxParametersCount)
+        {
           suitableConstructors.Add(i, paramentersCount);
+        }
         else if (paramentersCount > maxParametersCount)
         {
           suitableConstructors.Clear();

@@ -1,6 +1,5 @@
 ﻿using System;
 using Armature;
-using Armature.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -67,27 +66,16 @@ namespace Tests.Functional
 
     private class Generic<T> : IGeneric<T>
     {
-      public T Value { get{throw new NotSupportedException();} }
+      public T Value => throw new NotSupportedException();
     }
 
     private class GenericWithParameter<T> : IGeneric<T>
     {
-      private readonly T _value;
+      public GenericWithParameter(T value) => Value = value;
 
-      public GenericWithParameter(T value)
-      {
-        _value = value;
-      }
+      public T Value { get; }
 
-      public T Value
-      {
-        get { return _value; }
-      }
-
-      public override string ToString()
-      {
-        return string.Format("{0}", _value);
-      }
+      public override string ToString() => string.Format("{0}", Value);
     }
   }
 }

@@ -5,17 +5,17 @@ using JetBrains.Annotations;
 namespace Armature.Framework
 {
   /// <summary>
-  /// These tokens are used by Armature framework to distinguish internal build steps from possible users for the same types
+  ///   These tokens are used by Armature framework to distinguish internal build steps from possible users for the same types
   /// </summary>
   internal class SpecialToken
   {
     /// <summary>
-    /// Is used to build a value for parameter
+    ///   Is used to build a value for parameter
     /// </summary>
     public static readonly object ParameterValue = new SpecialToken("ParameterValue");
-    
+
     /// <summary>
-    /// Is used to "build" a <see cref="ConstructorInfo"/> for a type
+    ///   Is used to "build" a <see cref="ConstructorInfo" /> for a type
     /// </summary>
     public static readonly object Constructor = new SpecialToken("Constructor");
 
@@ -23,13 +23,11 @@ namespace Armature.Framework
 
     private SpecialToken([NotNull] string description)
     {
-       if (description == null) throw new ArgumentNullException("description");
-       _description = description;
+      if (description == null) throw new ArgumentNullException(nameof(description));
+
+      _description = description;
     }
 
-     public override string ToString()
-     {
-       return string.Format(typeof(SpecialToken).Name + "." +_description);
-     }
+    public override string ToString() => string.Format(typeof(SpecialToken).Name + "." + _description);
   }
 }

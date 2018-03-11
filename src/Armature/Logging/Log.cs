@@ -19,33 +19,25 @@ namespace Armature.Logging
       var currentLogLevel = _logLevel;
       if (logLevel > _logLevel) // disable logging for all block content
         return new Bracket(() => _logLevel = LogLevel.None, () => _logLevel = currentLogLevel);
-      
+
       WriteLine(logLevel, name);
       return logLevel <= _logLevel ? AddIndent(true) : new DumbDisposable();
     }
 
     [StringFormatMethod("format")]
-    public static void Info(string format, params object[] parameters)
-    {
-      WriteLine(LogLevel.Info, format, parameters);
-    }
-    
+    public static void Info(string format, params object[] parameters) => WriteLine(LogLevel.Info, format, parameters);
+
     [StringFormatMethod("format")]
-    public static void Trace(string format, params object[] parameters)
-    {
-      WriteLine(LogLevel.Trace, format, parameters);
-    }
-    
+    public static void Trace(string format, params object[] parameters) => WriteLine(LogLevel.Trace, format, parameters);
+
     [StringFormatMethod("format")]
-    public static void Verbose(string format, params object[] parameters)
-    {
-      WriteLine(LogLevel.Verbose, format, parameters);
-    }
+    public static void Verbose(string format, params object[] parameters) => WriteLine(LogLevel.Verbose, format, parameters);
 
     [StringFormatMethod("format")]
     public static void WriteLine(LogLevel logLevel, string format, params object[] parameters)
     {
-      if(logLevel > _logLevel) return;
+      if (logLevel > _logLevel) return;
+
       System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, parameters));
     }
 
@@ -57,19 +49,16 @@ namespace Armature.Logging
       return indent;
     }
 
-    public static IDisposable AddIndent(bool newBlock = false, int count = 1)
-    {
-      return new Indenter(newBlock, count);
-    }
+    public static IDisposable AddIndent(bool newBlock = false, int count = 1) => new Indenter(newBlock, count);
 
     private class Indenter : IDisposable
     {
-      private readonly bool _newBlock;
       private readonly int _count;
+      private readonly bool _newBlock;
 
       public Indenter(bool newBlock, int count)
       {
-        if(newBlock)
+        if (newBlock)
           Info("{{");
 
         _newBlock = newBlock;
@@ -80,7 +69,7 @@ namespace Armature.Logging
       public void Dispose()
       {
         _indent -= _count;
-        if(_newBlock)
+        if (_newBlock)
           Info("}}");
       }
     }
@@ -95,10 +84,7 @@ namespace Armature.Logging
         _endAction = endAction;
       }
 
-      public void Dispose()
-      {
-        _endAction();
-      }
+      public void Dispose() => _endAction();
     }
 
     private class DumbDisposable : IDisposable
@@ -115,6 +101,6 @@ namespace Armature.Logging
     None = 0,
     Info,
     Verbose,
-    Trace,
+    Trace
   }
 }

@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Diagnostics;
 using JetBrains.Annotations;
 
 namespace Armature.Common
 {
   internal static class ExceptionExtension
   {
-    public static T AddData<T>([NotNull] this T exception, [NotNull] object key, [CanBeNull] object value) where T : Exception
+    [DebuggerStepThrough]
+    public static T AddData<T>([NotNull] this T exception, [NotNull] object key, [CanBeNull] object value)
+      where T : Exception
     {
-      if (exception == null) throw new ArgumentNullException("exception");
-      if (key == null) throw new ArgumentNullException("key");
-      
+      if (exception == null) throw new ArgumentNullException(nameof(exception));
+      if (key == null) throw new ArgumentNullException(nameof(key));
+
       exception.Data.Add(key, value);
       return exception;
     }

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using Armature.Core;
 
 namespace Armature.Framework
@@ -7,17 +8,11 @@ namespace Armature.Framework
   {
     public static readonly IUnitMatcher Instance = new AnyParameterMatcher();
 
-    private AnyParameterMatcher()
-    {}
+    private AnyParameterMatcher() { }
 
-    public bool Matches(UnitInfo unitInfo)
-    {
-      return unitInfo.Token == SpecialToken.ParameterValue && unitInfo.Id is ParameterInfo;
-    }
+    public bool Matches(UnitInfo unitInfo) => unitInfo.Token == SpecialToken.ParameterValue && unitInfo.Id is ParameterInfo;
 
-    public bool Equals(IUnitMatcher other)
-    {
-      return ReferenceEquals(this, other);
-    }
+    [DebuggerStepThrough]
+    public bool Equals(IUnitMatcher other) => ReferenceEquals(this, other);
   }
 }

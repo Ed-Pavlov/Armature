@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Armature.Common;
@@ -10,19 +11,17 @@ namespace Armature.Framework
   public class ConstructorByParametersMatcher : IUnitMatcher
   {
     private readonly Type[] _parameters;
-    private readonly IBuildAction _buildAction;
 
+    [DebuggerStepThrough]
     public ConstructorByParametersMatcher([NotNull] params Type[] parameters)
     {
-      if (parameters == null) throw new ArgumentNullException("parameters");
+      if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+
       _parameters = parameters;
-      _buildAction = new BuildActionImpl(this);
+      BuildAction = new BuildActionImpl(this);
     }
 
-    public IBuildAction BuildAction
-    {
-      get { return _buildAction; }
-    }
+    public IBuildAction BuildAction { get; }
 
     public bool Matches(UnitInfo unitInfo)
     {
@@ -30,16 +29,10 @@ namespace Armature.Framework
       return unitType != null && GetConstructor(unitType) != null;
     }
 
-    public bool Equals(IUnitMatcher obj)
-    {
-      var other = obj as ConstructorByParametersMatcher;
-      return other != null && _parameters.EqualsTo(other._parameters);
-    }
+    [DebuggerStepThrough]
+    public bool Equals(IUnitMatcher obj) => obj is ConstructorByParametersMatcher other && _parameters.EqualsTo(other._parameters);
 
-    private ConstructorInfo GetConstructor([NotNull] Type unitType)
-    {
-      return unitType.GetConstructors().FirstOrDefault(ctor => IsParametersListMatch(ctor.GetParameters(), _parameters));
-    }
+    private ConstructorInfo GetConstructor([NotNull] Type unitType) => unitType.GetConstructors().FirstOrDefault(ctor => IsParametersListMatch(ctor.GetParameters(), _parameters));
 
     private static bool IsParametersListMatch(ParameterInfo[] parameterInfos, Type[] parameterTypes)
     {
@@ -49,17 +42,16 @@ namespace Armature.Framework
       for (var i = 0; i < parameterInfos.Length; i++)
         if (parameterInfos[i].ParameterType != parameterTypes[i])
           return false;
+
       return true;
     }
-    
+
     private class BuildActionImpl : IBuildAction
     {
       private readonly ConstructorByParametersMatcher _owner;
 
-      public BuildActionImpl(ConstructorByParametersMatcher owner)
-      {
-        _owner = owner;
-      }
+      [DebuggerStepThrough]
+      public BuildActionImpl(ConstructorByParametersMatcher owner) => _owner = owner;
 
       public void Process(UnitBuilder unitBuilder)
       {
@@ -68,9 +60,8 @@ namespace Armature.Framework
         unitBuilder.BuildResult = new BuildResult(constructor);
       }
 
-      public void PostProcess(UnitBuilder unitBuilder)
-      {
-      }
+      [DebuggerStepThrough]
+      public void PostProcess(UnitBuilder unitBuilder) { }
     }
   }
 }

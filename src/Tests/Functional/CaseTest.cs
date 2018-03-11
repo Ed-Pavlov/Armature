@@ -14,6 +14,8 @@ namespace Tests.Functional
 {
   public class CaseTest
   {
+    public CaseTest() => Debug.Listeners.Add(new ConsoleTraceListener());
+
     [Test]
     public void Building()
     {
@@ -35,7 +37,6 @@ namespace Tests.Functional
       Assert.That(actual.Disposable, Is.InstanceOf<MemoryStream>());
     }
 
-    
     [Test(Description = "Type registered as instance should be resolved to this instance if interfaces treated as this type")]
     public void RegisterViaInterfaceAndAsInstance()
     {
@@ -167,21 +168,19 @@ namespace Tests.Functional
 
       // --act
       var buildStep = new WeakUnitSequenceMatcher(Match.Type<List<IDisposableValue1>>(null), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
-      buildStep.AddBuildAction(BuildStage.Redirect, new RedirectManyTypesBuildAction<IDisposableValue1>(
-        Unit.OfType<OneDisposableCtorClass>(oneDisposableCtorCalssToken),
-        Unit.OfType<OneStringCtorClass>()), 0);
+      buildStep.AddBuildAction(
+        BuildStage.Redirect,
+        new RedirectManyTypesBuildAction<IDisposableValue1>(
+          Unit.OfType<OneDisposableCtorClass>(oneDisposableCtorCalssToken),
+          Unit.OfType<OneStringCtorClass>()),
+        0);
 
       container.AddUnitMatcher(buildStep);
-        
+
       var actual = container.Build<List<IDisposableValue1>>();
 
       // --assert
       actual.Should().ContainInOrder(expected1, expected2);
-    }
-   
-    public CaseTest()
-    {
-      Debug.Listeners.Add(new ConsoleTraceListener());
     }
   }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Armature.Core;
 using Armature.Framework;
@@ -10,20 +11,20 @@ namespace Armature.OverrideSugar
   {
     public static OverrideSugar<T> Override<T>([NotNull] this BuildPlansCollection buildPlan, object token = null)
     {
-      if (buildPlan == null) throw new ArgumentNullException("buildPlan");
+      if (buildPlan == null) throw new ArgumentNullException(nameof(buildPlan));
 
       var newSequenceMatcher = new WeakUnitSequenceMatcher(Match.Type<T>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
       var oldSequenceMatcher = buildPlan.Children.Single(_ => _.Equals(newSequenceMatcher));
 
       buildPlan.Children.Remove(oldSequenceMatcher);
-      
-      return new OverrideSugar<T>(buildPlan.AddOrGetUnitMatcher(newSequenceMatcher));
+
+      return new OverrideSugar<T>(buildPlan.AddOrGetUnitMatcher(newSequenceMatcher), buildPlan);
     }
   }
-  
+
   public class OverrideSugar<T> : TreatSugar<T>
   {
-    public OverrideSugar(WeakUnitSequenceMatcher sequenceMatcher) : base(sequenceMatcher)
-    {}
+    [DebuggerStepThrough]
+    public OverrideSugar(WeakUnitSequenceMatcher sequenceMatcher, [NotNull] BuildPlansCollection container) : base(sequenceMatcher, container) { }
   }
 }

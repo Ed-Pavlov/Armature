@@ -13,7 +13,7 @@ namespace Tests.Functional
     [Test]
     public void UsingConstructorShouldBeAppliedDirectlyToRegisteredType()
     {
-      using(Log.Enabled(LogLevel.Trace))
+      using (Log.Enabled(LogLevel.Trace))
       {
         var target = FunctionalTestHelper.CreateBuilder();
 
@@ -38,19 +38,20 @@ namespace Tests.Functional
 
   public class Constructed
   {
-    public readonly Dependency Dependency;
     public const string ConstructorId = "poiintid";
-
+    public readonly Dependency Dependency;
 
     [Inject(ConstructorId)]
     public Constructed([NotNull] Dependency dependency)
     {
-      if (dependency == null) throw new ArgumentNullException("dependency");
+      if (dependency == null) throw new ArgumentNullException(nameof(dependency));
+
       Dependency = dependency;
     }
 
     public Constructed(string value, int digit) // longest constructor
-    { }
+    {
+    }
   }
 
   public class Dependency
@@ -58,10 +59,7 @@ namespace Tests.Functional
     public readonly bool ConstructedViaAttributed;
 
     [Inject(Constructed.ConstructorId)]
-    public Dependency()
-    {
-      ConstructedViaAttributed = true;
-    }
+    public Dependency() => ConstructedViaAttributed = true;
 
     public Dependency(string value) { }
   }

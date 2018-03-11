@@ -3,8 +3,9 @@ using JetBrains.Annotations;
 
 namespace Armature
 {
-  public interface IParameterValueBuildPlanner
+  public interface IParameterMatcherSugar
   {
+    IBuildAction BuildAction { get; set; }
     void AddBuildParameterValueStepTo([NotNull] IUnitSequenceMatcher unitSequenceMatcher);
   }
 }
