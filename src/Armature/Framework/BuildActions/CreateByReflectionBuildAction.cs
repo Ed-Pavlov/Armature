@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using Armature.Core;
 
-namespace Armature.Framework
+namespace Armature.Framework.BuildActions
 {
   /// <summary>
   ///   Build action instantiates an object of type <see cref="UnitInfo.Id" /> as Type using reflection
@@ -15,16 +15,16 @@ namespace Armature.Framework
 
     private CreateByReflectionBuildAction() { }
 
-    public void Process(UnitBuilder unitBuilder)
+    public void Process(IBuildSession buildSession)
     {
-      if (unitBuilder.BuildResult == null)
+      if (buildSession.BuildResult == null)
       {
-        var type = unitBuilder.GetUnitUnderConstruction().GetUnitType();
+        var type = buildSession.GetUnitUnderConstruction().GetUnitType();
 
         // ReSharper disable once PossibleNullReferenceException
         if (!type.IsInterface && !type.IsAbstract)
         {
-          var constructor = unitBuilder.GetConstructorOf(type);
+          var constructor = buildSession.GetConstructorOf(type);
           var parameters = constructor.GetParameters();
 
           if (parameters.Length == 0 && type.IsValueType) // do not create default value of value type, it can confuse logic
@@ -39,11 +39,11 @@ namespace Armature.Framework
             }
             else
             {
-              var valuesForParameters = unitBuilder.GetValuesForParameters(parameters);
+              var valuesForParameters = buildSession.GetValuesForParameters(parameters);
               instance = Activator.CreateInstance(type, valuesForParameters);
             }
 
-            unitBuilder.BuildResult = new BuildResult(instance);
+            buildSession.BuildResult = new BuildResult(instance);
           }
           catch (TargetInvocationException exception)
           {
@@ -57,7 +57,7 @@ namespace Armature.Framework
     }
 
     [DebuggerStepThrough]
-    public void PostProcess(UnitBuilder unitBuilder) { }
+    public void PostProcess(IBuildSession buildSession) { }
 
     [DebuggerStepThrough]
     public override string ToString() => GetType().Name;

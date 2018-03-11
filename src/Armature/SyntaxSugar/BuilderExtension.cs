@@ -11,7 +11,7 @@ namespace Armature
     ///   Use token for building a unit. See <see cref="UnitInfo" /> for details.
     /// </summary>
     [DebuggerStepThrough]
-    public static Token WithToken([NotNull] this Builder builder, [NotNull] object token) => new Token(token, builder);
+    public static Tokenizer WithToken([NotNull] this Builder builder, [NotNull] object token) => new Tokenizer(token, builder);
 
     /// <summary>
     ///   Builds a Unit registered as type <typeparamref name="T" />
@@ -21,7 +21,7 @@ namespace Armature
 
     /// <summary>
     ///   Builds a Unit registered as type <typeparamref name="T" /> using additional <see cref="parameters" /> they can be values or
-    ///   implementation of <see cref="IParameterMatcherSugar" />. See <see cref="For" /> for details.
+    ///   implementation of <see cref="IParameterValueBuildPlan" />. See <see cref="For" /> for details.
     /// </summary>
     [DebuggerStepThrough]
     public static T Build<T>([NotNull] this Builder builder, params object[] parameters) => builder.Build<T>(null, parameters);
@@ -46,12 +46,12 @@ namespace Armature
       return (T)builder.BuildUnit(new UnitInfo(typeof(T), token), sessionalBuildPlans);
     }
 
-    public struct Token
+    public struct Tokenizer
     {
       private readonly object _token;
       private readonly Builder _builder;
 
-      public Token([NotNull] object token, [NotNull] Builder builder)
+      public Tokenizer([NotNull] object token, [NotNull] Builder builder)
       {
         if (token == null) throw new ArgumentNullException(nameof(token));
 

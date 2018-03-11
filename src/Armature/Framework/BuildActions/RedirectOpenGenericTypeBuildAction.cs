@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Armature.Core;
 using JetBrains.Annotations;
 
-namespace Armature.Framework
+namespace Armature.Framework.BuildActions
 {
   /// <summary>
   ///   Build action redirects building of unit of one open generic type to the unit of another open generic type.
@@ -24,14 +24,17 @@ namespace Armature.Framework
       _token = token;
     }
 
-    public void Process(UnitBuilder unitBuilder)
+    public void Process(IBuildSession buildSession)
     {
-      var genericType = _redirectTo.MakeGenericType(unitBuilder.GetUnitUnderConstruction().GetUnitType().GetGenericArguments());
-      unitBuilder.BuildResult = unitBuilder.Build(new UnitInfo(genericType, _token));
+      var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
+      var effectiveToken = Equals(_token, Token.Propagate) ? unitUnderConstruction.Token : _token;
+      
+      var genericType = _redirectTo.MakeGenericType(buildSession.GetUnitUnderConstruction().GetUnitType().GetGenericArguments());
+      buildSession.BuildResult = buildSession.BuildUnit(new UnitInfo(genericType, effectiveToken));
     }
 
     [DebuggerStepThrough]
-    public void PostProcess(UnitBuilder unitBuilder) { }
+    public void PostProcess(IBuildSession buildSession) { }
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}: [{1},{2}]", GetType().Name, _redirectTo, _token ?? "null");

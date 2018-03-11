@@ -44,8 +44,11 @@
     <Compile Include="Core\ArmatureException.cs" />
     <Compile Include="Core\BuildPlansCollection.cs" />
     <Compile Include="Core\ConstructorMatcher.cs" />
+    <Compile Include="Core\IBuildSession.cs" />
     <Compile Include="Core\MatchedBuildActionsExtension.cs" />
     <Compile Include="Core\OpenGenericTypeMatcher.cs" />
+    <Compile Include="Core\Token.cs" />
+    <Compile Include="Core\UnitBuilder.cs" />
     <Compile Include="Core\UnitInfoMatcher.cs" />
     <Compile Include="Core\IUnitMatcher.cs" />
     <Compile Include="Core\LeafUnitSequenceMatcher.cs" />
@@ -53,7 +56,6 @@
     <Compile Include="Core\BuildResult.cs" />
     <Compile Include="Core\IUnitSequenceMatcher.cs" />
     <Compile Include="Core\ParameterMatcher.cs" />
-    <Compile Include="Core\UnitBuilder.cs" />
     <Compile Include="Core\UnitInfoExtension.cs" />
     <Compile Include="Core\UnitSequenceMatcherBase.cs" />
     <Compile Include="Core\Weighted.cs" />
@@ -66,6 +68,7 @@
     <Compile Include="Framework\BuildActions\RedirectManyTypesBuildAction.cs" />
     <Compile Include="Framework\BuildActions\RedirectOpenGenericTypeBuildAction.cs" />
     <Compile Include="Framework\BuildActions\RedirectParameterInfoBuildAction.cs" />
+    <Compile Include="Framework\BuildActions\RedirectParameterInfoToTypeAndTokenBuildAction.cs" />
     <Compile Include="Framework\BuildActions\RedirectTypeBuildAction.cs" />
     <Compile Include="Framework\BuildActions\SingletonBuildAction.cs" />
     <Compile Include="Framework\BuildStage.cs" />
@@ -93,7 +96,7 @@
     <Compile Include="Core\IBuildAction.cs" />
     <Compile Include="Core\Builder.cs" />
     <Compile Include="Core\UnitInfo.cs" />
-    <Compile Include="Framework\UnitBuilderExtension.cs" />
+    <Compile Include="Framework\BuildSessionExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SyntaxSugar\AdjusterSugar.cs" />
     <Compile Include="SyntaxSugar\AddCreationBuildStep.cs" />
@@ -105,8 +108,9 @@
     <Compile Include="SyntaxSugar\Extensibility\IUnitSequenceExtensibility.cs" />
     <Compile Include="SyntaxSugar\Extensibility\UnitSequenceExtensibility.cs" />
     <Compile Include="SyntaxSugar\For.cs" />
-    <Compile Include="SyntaxSugar\IParameterMatcherSugar.cs" />
+    <Compile Include="SyntaxSugar\IParameterValueBuildPlan.cs" />
     <Compile Include="SyntaxSugar\ParameterMatcherSugar.cs" />
+    <Compile Include="SyntaxSugar\ParameterValueBuildPlan.cs" />
     <Compile Include="SyntaxSugar\TreatOpenGenericSugar.cs" />
     <Compile Include="SyntaxSugar\TreatSugar.cs" />
     <Compile Include="SyntaxSugar\Match.cs" />

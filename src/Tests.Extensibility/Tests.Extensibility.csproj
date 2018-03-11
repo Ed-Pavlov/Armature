@@ -55,7 +55,7 @@
     <Compile Include="MaybePropagation\Extension\Extension.cs" />
     <Compile Include="MaybePropagation\Extension\GetMaybeValueBuildAction.cs" />
     <Compile Include="MaybePropagation\Extension\Maybe.cs" />
-    <Compile Include="MaybePropagation\Extension\MaybePropagationException.cs" />
+    <Compile Include="MaybePropagation\Extension\MaybeIsNothingException.cs" />
     <Compile Include="MaybePropagation\TestData\Types.cs" />
     <Compile Include="MaybePropagation\AsMaybeValueOfTest.cs" />
     <Compile Include="MaybePropagation\TreatMaybeValueTest.cs" />

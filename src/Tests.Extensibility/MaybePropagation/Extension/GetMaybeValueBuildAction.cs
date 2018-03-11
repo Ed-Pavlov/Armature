@@ -5,22 +5,22 @@ namespace Tests.Extensibility.MaybePropagation.Extension
   /// <summary>
   /// Uses <see cref="Maybe{T}.Value"/> as a build unit
   /// </summary>
-  internal class GetMaybeValueBuildAction<T> : IBuildAction
+  public class GetMaybeValueBuildAction<T> : IBuildAction
   {
-    public void Process(UnitBuilder unitBuilder)
+    public void Process(IBuildSession buildSession)
     {}
 
-    public void PostProcess(UnitBuilder unitBuilder)
+    public void PostProcess(IBuildSession buildSession)
     {
-      var result = unitBuilder.BuildResult;
+      var result = buildSession.BuildResult;
       if(result?.Value == null)
         throw new ArmatureException(string.Format("Can't build value of {0}", typeof(Maybe<T>)));
 
       var maybe = (Maybe<T>)result.Value;
       if (maybe.HasValue)
-        unitBuilder.BuildResult = new BuildResult(maybe.Value);
+        buildSession.BuildResult = new BuildResult(maybe.Value);
       else
-        throw new MaybePropagationException();
+        throw new MaybeIsNothingException();
     }
   }
 }

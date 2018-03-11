@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Armature.Core;
 using Armature.Extensibility;
 using Armature.Framework;
+using Armature.Framework.BuildActions;
 using Armature.Interface;
 using JetBrains.Annotations;
 
@@ -15,7 +16,7 @@ namespace Armature
     public AdjusterSugar([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) {} 
 
     /// <summary>
-    ///   The set of values for parameters of registered Unit can be values or implementation of <see cref="IParameterMatcherSugar" />.
+    ///   The set of values for parameters of registered Unit can be values or implementation of <see cref="IParameterValueBuildPlan" />.
     ///   See <see cref="For" /> for details
     /// </summary>
     public AdjusterSugar UsingParameters(params object[] values)
@@ -25,8 +26,8 @@ namespace Armature
 
       foreach (var parameter in values)
       {
-        if (parameter is IParameterMatcherSugar parameterMatcher)
-          parameterMatcher.AddBuildParameterValueStepTo(UnitSequenceMatcher);
+        if (parameter is IParameterValueBuildPlan parameterMatcher)
+          parameterMatcher.Register(UnitSequenceMatcher);
         else
           UnitSequenceMatcher
             .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(new ParameterByWeakTypeMatcher(parameter), ParameterMatcherWeight.Lowest + 1))

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Armature.Core;
 
-namespace Armature.Framework
+namespace Armature.Framework.BuildActions
 {
   public class RedirectManyTypesBuildAction<TFrom> : IBuildAction
   {
@@ -17,26 +17,26 @@ namespace Armature.Framework
       _constructionObjects = constructionObjects;
     }
 
-    public void Process(UnitBuilder unitBuilder)
+    public void Process(IBuildSession buildSession)
     {
-      if (unitBuilder.BuildResult != null)
+      if (buildSession.BuildResult != null)
         throw new Exception();
 
       var result = new List<TFrom>();
       foreach (var targetId in _constructionObjects)
       {
-        var buildResult = unitBuilder.Build(targetId);
+        var buildResult = buildSession.BuildUnit(targetId);
         if (buildResult != null)
         {
           result.Add((TFrom)buildResult.Value);
-          unitBuilder.BuildResult = null;
+          buildSession.BuildResult = null;
         }
       }
 
-      unitBuilder.BuildResult = new BuildResult(result);
+      buildSession.BuildResult = new BuildResult(result);
     }
 
     [DebuggerStepThrough]
-    public void PostProcess(UnitBuilder unitBuilder) { }
+    public void PostProcess(IBuildSession buildSession) { }
   }
 }

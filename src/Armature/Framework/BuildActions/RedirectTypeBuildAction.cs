@@ -4,7 +4,7 @@ using Armature.Core;
 using Armature.Logging;
 using JetBrains.Annotations;
 
-namespace Armature.Framework
+namespace Armature.Framework.BuildActions
 {
   /// <summary>
   ///   Build action redirects building of unit of one type to the unit of another type. E.g. redirecting interface to the implementation
@@ -25,18 +25,21 @@ namespace Armature.Framework
       _token = token;
     }
 
-    public void Process(UnitBuilder unitBuilder)
+    public void Process(IBuildSession buildSession)
     {
-      if (unitBuilder.BuildResult == null)
+      if (buildSession.BuildResult == null)
       {
-        var unitInfo = new UnitInfo(_redirectTo, _token);
+        var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
+        var effectiveToken = Equals(_token, Token.Propagate) ? unitUnderConstruction.Token : _token;
+
+        var unitInfo = new UnitInfo(_redirectTo, effectiveToken);
         Log.Verbose("{0}: {1}", GetType().Name, unitInfo);
-        unitBuilder.BuildResult = unitBuilder.Build(unitInfo);
+        buildSession.BuildResult = buildSession.BuildUnit(unitInfo);
       }
     }
 
     [DebuggerStepThrough]
-    public void PostProcess(UnitBuilder unitBuilder) { }
+    public void PostProcess(IBuildSession buildSession) { }
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}: {1}", GetType().Name, _redirectTo);

@@ -2,6 +2,7 @@
 using Armature.Core;
 using Armature.Extensibility;
 using Armature.Framework;
+using Armature.Framework.BuildActions;
 using JetBrains.Annotations;
 
 namespace Armature
@@ -73,16 +74,16 @@ namespace Armature
       return new CreateSugar<T>(UnitSequenceMatcher, token);
     }
     
-    public void CreatedBy([NotNull] Func<UnitBuilder, T> factoryMethod) =>
+    public void CreatedBy([NotNull] Func<IBuildSession, T> factoryMethod) =>
       UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T>(factoryMethod), 0);
 
-    public AdjusterSugar CreatedBy<T1>([NotNull] Func<UnitBuilder, T1, T> factoryMethod) => 
+    public AdjusterSugar CreatedBy<T1>([NotNull] Func<IBuildSession, T1, T> factoryMethod) => 
       new AdjusterSugar(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod),0));
 
-    public AdjusterSugar CreatedBy<T1, T2>([NotNull] Func<UnitBuilder, T1, T2, T> factoryMethod) =>
+    public AdjusterSugar CreatedBy<T1, T2>([NotNull] Func<IBuildSession, T1, T2, T> factoryMethod) =>
       new AdjusterSugar(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod),0));
 
-    public AdjusterSugar CreatedBy<T1, T2, T3>([NotNull] Func<UnitBuilder, T1, T2, T3, T> factoryMethod) => 
+    public AdjusterSugar CreatedBy<T1, T2, T3>([NotNull] Func<IBuildSession, T1, T2, T3, T> factoryMethod) => 
       new AdjusterSugar(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod), 0));
  }
 }

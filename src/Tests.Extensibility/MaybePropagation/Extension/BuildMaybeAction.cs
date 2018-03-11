@@ -12,21 +12,21 @@ namespace Tests.Extensibility.MaybePropagation.Extension
 
     public BuildMaybeAction(Guid uniqueToken) => _uniqueToken = uniqueToken;
 
-    public void Process(UnitBuilder unitBuilder)
+    public void Process(IBuildSession buildSession)
     {
       try
       {
-        var result = unitBuilder.Build(new UnitInfo(typeof(T), _uniqueToken));
+        var result = buildSession.BuildUnit(new UnitInfo(typeof(T), _uniqueToken));
         if (result == null) throw new InvalidOperationException();
 
-        unitBuilder.BuildResult = new BuildResult(((T)result.Value).ToMaybe());
+        buildSession.BuildResult = new BuildResult(((T)result.Value).ToMaybe());
       }
-      catch (MaybePropagationException)
+      catch (MaybeIsNothingException)
       {
-        unitBuilder.BuildResult = new BuildResult(Maybe<T>.Nothing);
+        buildSession.BuildResult = new BuildResult(Maybe<T>.Nothing);
       }
     }
 
-    public void PostProcess(UnitBuilder unitBuilder) { }
+    public void PostProcess(IBuildSession buildSession) { }
   }
 }

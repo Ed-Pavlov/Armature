@@ -2,6 +2,7 @@
 using Armature;
 using Armature.Core;
 using Armature.Framework;
+using Armature.Framework.BuildActions;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;

@@ -10,13 +10,13 @@ namespace Armature.Core
   {
     /// <summary>
     ///   This method is called first for all matched actions in direct order.
-    ///   Once <see cref="UnitBuilder.BuildResult" /> is set by any action, no other actions are called.
+    ///   Once <see cref="IBuildSession.BuildResult" /> is set by any action, no other actions are called.
     /// </summary>
-    void Process([NotNull] UnitBuilder unitBuilder);
+    void Process([NotNull] IBuildSession buildSession);
 
     /// <summary>
     ///   This method is called when all actions for which <see cref="Process" /> was called are rewind after the unit is just built
     /// </summary>
-    void PostProcess([NotNull] UnitBuilder unitBuilder);
+    void PostProcess([NotNull] IBuildSession buildSession);
   }
 }

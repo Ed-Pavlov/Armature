@@ -53,15 +53,15 @@ namespace Armature.Framework
       [DebuggerStepThrough]
       public BuildActionImpl(ConstructorByParametersMatcher owner) => _owner = owner;
 
-      public void Process(UnitBuilder unitBuilder)
+      public void Process(IBuildSession buildSession)
       {
-        var unitType = unitBuilder.GetUnitUnderConstruction().GetUnitType();
+        var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
         var constructor = _owner.GetConstructor(unitType);
-        unitBuilder.BuildResult = new BuildResult(constructor);
+        buildSession.BuildResult = new BuildResult(constructor);
       }
 
       [DebuggerStepThrough]
-      public void PostProcess(UnitBuilder unitBuilder) { }
+      public void PostProcess(IBuildSession buildSession) { }
     }
   }
 }

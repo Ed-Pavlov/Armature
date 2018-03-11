@@ -1,5 +1,4 @@
 ﻿using Armature;
-using Armature.Core;
 using Armature.Interface;
 using FluentAssertions;
 using JetBrains.Annotations;
@@ -20,8 +19,7 @@ namespace Tests.Functional
       target
         .Treat<Consumer>()
         .AsIs()
-        .UsingParameters(
-          For.ParameterId(Consumer.PointId).UseValue(expected));
+        .UsingParameters(For.ParameterId(Consumer.PointId).UseValue(expected));
 
       target
         .Treat<string>(Consumer.PointId)
@@ -37,8 +35,6 @@ namespace Tests.Functional
       // --assert
       actual.StringValue.Should().Be(expected, "Because expected value registered UsingParameters for Consumer");
     }
-
-    private static Builder CreateTarget() => FunctionalTestHelper.CreateBuilder();
 
     [UsedImplicitly]
     private class Consumer

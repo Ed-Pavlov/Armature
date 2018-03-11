@@ -3,17 +3,15 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Armature.Core;
-using Armature.Framework;
 using Armature.Framework.BuildActions;
 using JetBrains.Annotations;
 
 namespace Armature
 {
-  public class ParameterMatcherSugar : IParameterMatcherSugar
+  public class ParameterMatcherSugar
   {
     private readonly IUnitMatcher _parameterMatcher;
     private readonly int _weight;
-    private IBuildAction _buildAction;
 
     [DebuggerStepThrough]
     public ParameterMatcherSugar([NotNull] IUnitMatcher parameterMatcher, int weight)
@@ -22,46 +20,28 @@ namespace Armature
       _weight = weight;
     }
 
-    IBuildAction IParameterMatcherSugar.BuildAction { [DebuggerStepThrough] get => _buildAction; [DebuggerStepThrough] set => _buildAction = value; }
-
-    void IParameterMatcherSugar.AddBuildParameterValueStepTo(IUnitSequenceMatcher unitSequenceMatcher)
-    {
-      if (_buildAction == null) throw new InvalidOperationException("Parameter value source not specified, did you forget call UseValue/UseToken etc?");
-
-      unitSequenceMatcher
-        .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(_parameterMatcher, ParameterMatcherWeight.Lowest + 1))
-        .AddBuildAction(BuildStage.Create, _buildAction, _weight);
-    }
-
     /// <summary>
     ///   Use the <see cref="value" /> for the parameter
     /// </summary>
-    public IParameterMatcherSugar UseValue([CanBeNull] object value)
-    {
-      _buildAction = new SingletonBuildAction(value);
-      return this;
-    }
+    public ParameterValueBuildPlan UseValue([CanBeNull] object value) => new ParameterValueBuildPlan(_parameterMatcher, new SingletonBuildAction(value), _weight);
 
     /// <summary>
     ///   For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <see cref="token" />
     /// </summary>
-    public IParameterMatcherSugar UseToken([NotNull] object token)
+    public ParameterValueBuildPlan UseToken([NotNull] object token)
     {
       if (token == null) throw new ArgumentNullException(nameof(token));
-
-      _buildAction = new RedirectParameterInfoBuildAction(token);
-      return this;
+      return new ParameterValueBuildPlan(_parameterMatcher, new RedirectParameterInfoBuildAction(token), _weight);
     }
 
-    public IParameterMatcherSugar UseResolver<T>(Func<UnitBuilder, T, object> resolver)
-    {
-      _buildAction = new CreateWithFactoryMethodBuildAction<T, object>(resolver);
-      return this;
-    }
+    public ParameterValueBuildPlan UseResolver<T>(Func<IBuildSession, T, object> resolver) => 
+      new ParameterValueBuildPlan(_parameterMatcher, new CreateWithFactoryMethodBuildAction<T, object>(resolver), _weight);
+    public ParameterValueBuildPlan UseInjectPointIdAsToken() => new ParameterValueBuildPlan(_parameterMatcher, RedirectParameterInfoToTypeAndTokenBuildAction.Instance, _weight);
+
   }
 
   /// <summary>
-  ///   This generic type is used for further extensibility possibilities which involves generic types. Generic type can't be constructed from typeof
+  /// This generic type is used for further extensibility possibilities which involves generic types. Generic type can't be constructed from typeof
   /// </summary>
   /// <typeparam name="T">The type of parameter</typeparam>
   [SuppressMessage("ReSharper", "UnusedTypeParameter")]

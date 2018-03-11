@@ -5,31 +5,31 @@ using System.Reflection;
 using Armature.Core;
 using JetBrains.Annotations;
 
-namespace Armature.Framework
+namespace Armature.Framework.BuildActions
 {
   /// <summary>
   ///   Build action instantiates an object using passed factory method
   /// </summary>
   public class CreateWithFactoryMethodBuildAction<TR> : IBuildAction
   {
-    private readonly Func<UnitBuilder, TR> _factoryMethod;
+    private readonly Func<IBuildSession, TR> _factoryMethod;
 
     [DebuggerStepThrough]
-    public CreateWithFactoryMethodBuildAction([NotNull] Func<UnitBuilder, TR> factoryMethod)
+    public CreateWithFactoryMethodBuildAction([NotNull] Func<IBuildSession, TR> factoryMethod)
     {
       if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
 
       _factoryMethod = factoryMethod;
     }
 
-    public void Process(UnitBuilder unitBuilder)
+    public void Process(IBuildSession buildSession)
     {
-      if (unitBuilder.BuildResult == null)
-        unitBuilder.BuildResult = new BuildResult(_factoryMethod(unitBuilder));
+      if (buildSession.BuildResult == null)
+        buildSession.BuildResult = new BuildResult(_factoryMethod(buildSession));
     }
 
     [DebuggerStepThrough]
-    public void PostProcess(UnitBuilder unitBuilder) { }
+    public void PostProcess(IBuildSession buildSession) { }
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}: {1}", GetType().Name, _factoryMethod);
@@ -40,21 +40,21 @@ namespace Armature.Framework
   /// </summary>
   public abstract class CreateWithFactoryMethodBuildAction : IBuildAction
   {
-    public void Process(UnitBuilder unitBuilder)
+    public void Process(IBuildSession buildSession)
     {
-      if (unitBuilder.BuildResult == null)
+      if (buildSession.BuildResult == null)
       {
-        // remove UnitBuilder parameter from parameters array when resolving parameters values
-        var result = Execute(unitBuilder, unitBuilder.GetValuesForParameters(GetMethod().GetParameters().Skip(1).ToArray()));
-        unitBuilder.BuildResult = new BuildResult(result);
+        // remove BuildSession parameter from parameters array when resolving parameters values
+        var result = Execute(buildSession, buildSession.GetValuesForParameters(GetMethod().GetParameters().Skip(1).ToArray()));
+        buildSession.BuildResult = new BuildResult(result);
       }
     }
 
     [DebuggerStepThrough]
-    public void PostProcess(UnitBuilder unitBuilder) { }
+    public void PostProcess(IBuildSession buildSession) { }
 
     protected abstract MethodBase GetMethod();
-    protected abstract object Execute(UnitBuilder unitBuilder, object[] values);
+    protected abstract object Execute(IBuildSession buildSessoin, object[] values);
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}: {1}", GetType().Name, GetMethod());
@@ -65,10 +65,10 @@ namespace Armature.Framework
   /// </summary>
   public class CreateWithFactoryMethodBuildAction<T1, TR> : CreateWithFactoryMethodBuildAction
   {
-    private readonly Func<UnitBuilder, T1, TR> _factoryMethod;
+    private readonly Func<IBuildSession, T1, TR> _factoryMethod;
 
     [DebuggerStepThrough]
-    public CreateWithFactoryMethodBuildAction([NotNull] Func<UnitBuilder, T1, TR> factoryMethod)
+    public CreateWithFactoryMethodBuildAction([NotNull] Func<IBuildSession, T1, TR> factoryMethod)
     {
       if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
 
@@ -77,7 +77,7 @@ namespace Armature.Framework
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object Execute(UnitBuilder unitBuilder, object[] values) => _factoryMethod(unitBuilder, (T1)values[0]);
+    protected override object Execute(IBuildSession buildSessoin, object[] values) => _factoryMethod(buildSessoin, (T1)values[0]);
   }
 
   /// <summary>
@@ -85,10 +85,10 @@ namespace Armature.Framework
   /// </summary>
   public class CreateWithFactoryMethodBuildAction<T1, T2, TR> : CreateWithFactoryMethodBuildAction
   {
-    private readonly Func<UnitBuilder, T1, T2, TR> _factoryMethod;
+    private readonly Func<IBuildSession, T1, T2, TR> _factoryMethod;
 
     [DebuggerStepThrough]
-    public CreateWithFactoryMethodBuildAction([NotNull] Func<UnitBuilder, T1, T2, TR> factoryMethod)
+    public CreateWithFactoryMethodBuildAction([NotNull] Func<IBuildSession, T1, T2, TR> factoryMethod)
     {
       if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
 
@@ -97,7 +97,7 @@ namespace Armature.Framework
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object Execute(UnitBuilder unitBuilder, object[] values) => _factoryMethod(unitBuilder, (T1)values[0], (T2)values[1]);
+    protected override object Execute(IBuildSession buildSessoin, object[] values) => _factoryMethod(buildSessoin, (T1)values[0], (T2)values[1]);
   }
 
   /// <summary>
@@ -105,10 +105,10 @@ namespace Armature.Framework
   /// </summary>
   public class CreateWithFactoryMethodBuildAction<T1, T2, T3, TR> : CreateWithFactoryMethodBuildAction
   {
-    private readonly Func<UnitBuilder, T1, T2, T3, TR> _factoryMethod;
+    private readonly Func<IBuildSession, T1, T2, T3, TR> _factoryMethod;
 
     [DebuggerStepThrough]
-    public CreateWithFactoryMethodBuildAction([NotNull] Func<UnitBuilder, T1, T2, T3, TR> factoryMethod)
+    public CreateWithFactoryMethodBuildAction([NotNull] Func<IBuildSession, T1, T2, T3, TR> factoryMethod)
     {
       if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
 
@@ -117,6 +117,6 @@ namespace Armature.Framework
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object Execute(UnitBuilder unitBuilder, object[] values) => _factoryMethod(unitBuilder, (T1)values[0], (T2)values[1], (T3)values[2]);
+    protected override object Execute(IBuildSession buildSessoin, object[] values) => _factoryMethod(buildSessoin, (T1)values[0], (T2)values[1], (T3)values[2]);
   }
 }

@@ -95,7 +95,7 @@ namespace Tests.Extensibility.MaybePropagation
       actual.Value.Section.Should().NotBeNull();
     }
     
-    [Ignore("Need to be implemented")]
+    [Test]
     public void should_build_maybe_use_inject_point_id_as_token_for_dependency()
     {
       var builder = FunctionalTestHelper.CreateBuilder();
@@ -108,11 +108,10 @@ namespace Tests.Extensibility.MaybePropagation
         .TreatMaybeValue()
         .As<Reader1>()
         .BuildingWhich(_ => _
-                 .Treat<Section>()
-//                 .UseInjectPointIdAsToken()
+                 .Treat<Section>(Token.Any)
                  .AsMaybeValueOf()
-//                 .PropagateTokenTo()
-                 .Created<Maybe<Section>>());
+                 .Created<Maybe<Section>>(Token.Propagate))
+        .UsingParameters(For.Parameter<Section>().UseInjectPointIdAsToken());
 
       var actual = builder.Build<Maybe<IReader>>();
 

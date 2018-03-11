@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using Armature;
 using Armature.Framework;
+using Armature.Framework.BuildActions;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;

@@ -12,15 +12,15 @@ namespace Armature.Framework.BuildActions
     [DebuggerStepThrough]
     public RedirectParameterInfoBuildAction(object token = null) => _token = token;
 
-    public void Process(UnitBuilder unitBuilder)
+    public void Process(IBuildSession buildSession)
     {
-      var parameterInfo = (ParameterInfo)unitBuilder.GetUnitUnderConstruction().Id;
+      var parameterInfo = (ParameterInfo)buildSession.GetUnitUnderConstruction().Id;
       var unitInfo = new UnitInfo(parameterInfo.ParameterType, _token);
       Log.Verbose("{0}: {1}", GetType().Name, unitInfo);
-      unitBuilder.BuildResult = unitBuilder.Build(unitInfo);
+      buildSession.BuildResult = buildSession.BuildUnit(unitInfo);
     }
 
     [DebuggerStepThrough]
-    public void PostProcess(UnitBuilder unitBuilder) { }
+    public void PostProcess(IBuildSession buildSession) { }
   }
 }

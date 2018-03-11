@@ -16,6 +16,8 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public UnitInfo([CanBeNull] object id, [CanBeNull] object token)
     {
+      if(id == null && token == null) throw new ArgumentNullException(nameof(id), @"Either id or token should be provided");
+      
       Id = id;
       Token = token;
     }
@@ -26,7 +28,7 @@ namespace Armature.Core
       if (ReferenceEquals(null, other)) return false;
       if (ReferenceEquals(this, other)) return true;
 
-      return Equals(Id, other.Id) && Equals(Token, other.Token);
+      return Equals(Id, other.Id) && (Equals(Token, other.Token) || Equals(Token, Core.Token.Any) || Equals(other.Token, Core.Token.Any));
     }
 
     [DebuggerStepThrough]

@@ -1,15 +1,15 @@
 ﻿using System.Linq;
 using System.Reflection;
 using Armature.Core;
+using Armature.Framework.BuildActions;
 using Armature.Interface;
-using Armature.Logging;
 
 namespace Armature.Framework
 {
   public class InjectPointParameterMatcher : IUnitMatcher
   {
     public static readonly IUnitMatcher Instance = new InjectPointParameterMatcher();
-    public static IBuildAction BuildAction { get; } = new BuildActionImpl();
+    public static IBuildAction BuildAction { get; } = new RedirectParameterInfoToTypeAndTokenBuildAction();
 
     private InjectPointParameterMatcher() { }
 
@@ -26,24 +26,5 @@ namespace Armature.Framework
     }
 
     public bool Equals(IUnitMatcher matcher) => matcher is InjectPointParameterMatcher;
-
-    public class BuildActionImpl : IBuildAction
-    {
-      public void Process(UnitBuilder unitBuilder)
-      {
-        var parameterInfo = (ParameterInfo)unitBuilder.GetUnitUnderConstruction().Id;
-
-        var attribute = parameterInfo
-          .GetCustomAttributes(typeof(InjectAttribute), true)
-          .OfType<InjectAttribute>()
-          .Single();
-
-        var unitInfo = new UnitInfo(parameterInfo.ParameterType, attribute.InjectionPointId);
-        Log.Verbose("{0}: {1}", GetType().Name, unitInfo);
-        unitBuilder.BuildResult = unitBuilder.Build(unitInfo);
-      }
-
-      public void PostProcess(UnitBuilder unitBuilder) { }
-    }
   }
 }

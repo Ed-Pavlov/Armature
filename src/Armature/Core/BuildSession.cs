@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Armature.Logging;
 using JetBrains.Annotations;
 
@@ -29,7 +30,7 @@ namespace Armature.Core
       _runtimeBuildPlans = runtimeBuildPlans;
       _buildSequence = new List<UnitInfo>(4);
     }
-
+   
     /// <summary>
     ///   Builds a Unit represented by <paramref name="unitInfo" />
     /// </summary>
@@ -43,8 +44,7 @@ namespace Armature.Core
       [NotNull] BuildPlansCollection buildPlans,
       [CanBeNull] BuildPlansCollection runtimeBuildPlans) => new BuildSession(buildStages, buildPlans, runtimeBuildPlans).BuildUnit(unitInfo);
 
-    [CanBeNull]
-    [Pure]
+    [CanBeNull][Pure]
     public BuildResult BuildUnit([NotNull] UnitInfo unitInfo)
     {
       if (unitInfo == null) throw new ArgumentNullException(nameof(unitInfo));
@@ -55,7 +55,7 @@ namespace Armature.Core
         try
         {
           var actions = _buildPlans.GetBuildActions(_buildSequence);
-          var runtimeActions = _runtimeBuildPlans == null ? null : _runtimeBuildPlans.GetBuildActions(_buildSequence);
+          var runtimeActions = _runtimeBuildPlans?.GetBuildActions(_buildSequence);
           return BuildUnit(actions.Merge(runtimeActions));
         }
         finally
@@ -65,6 +65,7 @@ namespace Armature.Core
       }
     }
 
+    [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
     private BuildResult BuildUnit(MatchedBuildActions matchedBuildActions)
     {
       if (matchedBuildActions == null) return null;
@@ -73,7 +74,7 @@ namespace Armature.Core
 
       // builder to pass into IBuldActon.Execute
       var unitBuilder = new UnitBuilder(_buildSequence, this);
-
+      
       foreach (var stage in _buildStages)
       {
         var buildAction = matchedBuildActions.GetTopmostAction(stage);

@@ -2,11 +2,11 @@
 using Armature.Core;
 using JetBrains.Annotations;
 
-namespace Armature.Framework
+namespace Armature.Framework.BuildActions
 {
   /// <summary>
-  ///   Build action which caches built unit in <see cref="M:Armature.Framework.SingletonBuildAction.PostProcess(Armature.Core.UnitBuilder)" /> and then set it as
-  ///   <see cref="T:Armature.Core.BuildResult" /> in <see cref="M:Armature.Framework.SingletonBuildAction.Process(Armature.Core.UnitBuilder)" />.
+  ///   Build action which caches built unit in <see cref="PostProcess" /> and then set it as
+  ///   <see cref="T:Armature.Core.BuildResult" /> in <see cref="Process" />.
   ///   Simplest eternal singleton
   /// </summary>
   public class SingletonBuildAction : IBuildAction
@@ -19,16 +19,16 @@ namespace Armature.Framework
     [DebuggerStepThrough]
     public SingletonBuildAction([CanBeNull] object value) => _instance = new Instance(value);
 
-    public void Process(UnitBuilder unitBuilder)
+    public void Process(IBuildSession buildSession)
     {
       if (_instance != null)
-        unitBuilder.BuildResult = new BuildResult(_instance.Value);
+        buildSession.BuildResult = new BuildResult(_instance.Value);
     }
 
-    public void PostProcess(UnitBuilder unitBuilder)
+    public void PostProcess(IBuildSession buildSession)
     {
-      if (unitBuilder.BuildResult != null)
-        _instance = new Instance(unitBuilder.BuildResult.Value);
+      if (buildSession.BuildResult != null)
+        _instance = new Instance(buildSession.BuildResult.Value);
     }
 
     [DebuggerStepThrough]
