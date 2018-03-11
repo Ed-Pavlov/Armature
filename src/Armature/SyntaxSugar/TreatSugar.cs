@@ -1,5 +1,6 @@
 ﻿using System;
 using Armature.Core;
+using Armature.Extensibility;
 using Armature.Framework;
 using JetBrains.Annotations;
 
@@ -7,24 +8,21 @@ namespace Armature
 {
   public class TreatSugar<T> : AdjusterSugar
   {
-    private readonly IUnitSequenceMatcher _unitSequenceMatcher;
-
-    public TreatSugar([NotNull] IUnitSequenceMatcher unitSequenceMatcher, [NotNull] BuildPlansCollection container) : base(unitSequenceMatcher, container) =>
-      _unitSequenceMatcher = unitSequenceMatcher;
+    public TreatSugar([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) {}
 
     /// <summary>
     ///   Treat Unit as is w/o any redirections
     /// </summary>
     public AdjusterSugar AsIs()
     {
-      _unitSequenceMatcher.AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance, 0);
-      return new AdjusterSugar(_unitSequenceMatcher, Container);
+      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance, 0);
+      return new AdjusterSugar(UnitSequenceMatcher);
     }
 
     /// <summary>
     ///   Pass the <see cref="instance" /> to any consumer of an Unit
     /// </summary>
-    public void AsInstance([CanBeNull] T instance) => _unitSequenceMatcher.AddBuildAction(BuildStage.Cache, new SingletonBuildAction(instance), 0);
+    public void AsInstance([CanBeNull] T instance) => UnitSequenceMatcher.AddBuildAction(BuildStage.Cache, new SingletonBuildAction(instance), 0);
 
     /// <param name="addDefaultCreateAction">
     ///   If <see cref="AddCreationBuildStep.Yes" /> adds a build step
@@ -48,37 +46,43 @@ namespace Armature
       if (!typeof(T).IsAssignableFrom(redirectTo))
         throw new Exception("Not assignable");
 
-      _unitSequenceMatcher.AddBuildAction(BuildStage.Redirect, new RedirectTypeBuildAction(redirectTo, token), 0);
+      UnitSequenceMatcher.AddBuildAction(BuildStage.Redirect, new RedirectTypeBuildAction(redirectTo, token), 0);
 
-      var nextBuildStep = _unitSequenceMatcher;
+      var nextBuildStep = UnitSequenceMatcher;
       if (addDefaultCreateAction == AddCreationBuildStep.Yes)
       {
         nextBuildStep = new WeakUnitSequenceMatcher(Match.Type<TRedirect>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
 
-        _unitSequenceMatcher
+        UnitSequenceMatcher
           .AddOrGetUnitMatcher(nextBuildStep)
           .AddBuildAction(BuildStage.Create, Default.CreationBuildAction, 0);
       }
 
-      return new AdjusterSugar(nextBuildStep, Container);
+      return new AdjusterSugar(nextBuildStep);
     }
 
+    public CreateSugar<T> Created<TRedirect>(object token = null)
+    {
+      var redirectTo = typeof(TRedirect);
+
+      //Todo: should this check be moved inside RedirectTypeBuildAction?
+      if (!typeof(T).IsAssignableFrom(redirectTo))
+        throw new Exception("Not assignable");
+
+      UnitSequenceMatcher.AddBuildAction(BuildStage.Redirect, new RedirectTypeBuildAction(redirectTo, token), 0);
+      return new CreateSugar<T>(UnitSequenceMatcher, token);
+    }
+    
     public void CreatedBy([NotNull] Func<UnitBuilder, T> factoryMethod) =>
-      _unitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T>(factoryMethod), 0);
+      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T>(factoryMethod), 0);
 
-    public void CreatedBy<T1>([NotNull] Func<UnitBuilder, T1, T> factoryMethod) => _unitSequenceMatcher.AddBuildAction(
-      BuildStage.Create,
-      new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod),
-      0);
+    public AdjusterSugar CreatedBy<T1>([NotNull] Func<UnitBuilder, T1, T> factoryMethod) => 
+      new AdjusterSugar(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod),0));
 
-    public void CreatedBy<T1, T2>([NotNull] Func<UnitBuilder, T1, T2, T> factoryMethod) => _unitSequenceMatcher.AddBuildAction(
-      BuildStage.Create,
-      new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod),
-      0);
+    public AdjusterSugar CreatedBy<T1, T2>([NotNull] Func<UnitBuilder, T1, T2, T> factoryMethod) =>
+      new AdjusterSugar(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod),0));
 
-    public void CreatedBy<T1, T2, T3>([NotNull] Func<UnitBuilder, T1, T2, T3, T> factoryMethod) => _unitSequenceMatcher.AddBuildAction(
-      BuildStage.Create,
-      new CreateWithFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod),
-      0);
-  }
+    public AdjusterSugar CreatedBy<T1, T2, T3>([NotNull] Func<UnitBuilder, T1, T2, T3, T> factoryMethod) => 
+      new AdjusterSugar(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod), 0));
+ }
 }

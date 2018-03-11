@@ -16,8 +16,7 @@ namespace Armature.Framework
 
     public bool Matches(UnitInfo unitInfo)
     {
-      var parameterInfo = unitInfo.Id as ParameterInfo;
-      if (parameterInfo == null || unitInfo.Token != SpecialToken.ParameterValue)
+      if (!(unitInfo.Id is ParameterInfo parameterInfo) || unitInfo.Token != SpecialToken.ParameterValue)
         return false;
 
       var attribute = parameterInfo
@@ -28,6 +27,6 @@ namespace Armature.Framework
     }
 
     [DebuggerStepThrough]
-    public bool Equals(IUnitMatcher other) => other is ParameterByAttributeMatcher<T> matcher && Equals(_predicate, matcher._predicate);
+    public bool Equals(IUnitMatcher matcher) => matcher is ParameterByAttributeMatcher<T> other && Equals(_predicate, other._predicate);
   }
 }

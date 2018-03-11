@@ -9,6 +9,7 @@ namespace Tests.Functional
     public static Builder CreateBuilder(params Builder[] parentBuilders) => CreateBuilder(
       parentBuilders,
       BuildStage.Cache,
+      BuildStage.Intercept,
       BuildStage.Redirect,
       BuildStage.Initialize,
       BuildStage.Create);
@@ -19,19 +20,27 @@ namespace Tests.Functional
 
       var treatAll = new AnyUnitSequenceMatcher();
 
-      var constructorMathcer = new LeafUnitSequenceMatcher(AnyConstructorMatcher.Instance, FindConstructorBuildStepWeight.Lowest)
+      var constructorMathcer =
+        new LeafUnitSequenceMatcher(AnyConstructorMatcher.Instance, FindConstructorBuildStepWeight.Lowest)
         .AddBuildAction(BuildStage.Create, new GetLongesConstructorBuildAction(), FindConstructorBuildStepWeight.Lowest);
       treatAll.Children.Add(constructorMathcer);
 
       var constructorByInjectPointIdMatcher = new ConstructorByInjectPointIdMatcher();
-      var ctorByInjectPointIdMatcher = new LeafUnitSequenceMatcher(constructorByInjectPointIdMatcher, FindConstructorBuildStepWeight.Attributed)
+      var ctorByInjectPointIdMatcher = 
+        new LeafUnitSequenceMatcher(constructorByInjectPointIdMatcher, FindConstructorBuildStepWeight.Attributed)
         .AddBuildAction(BuildStage.Create, constructorByInjectPointIdMatcher.BuildAction, FindConstructorBuildStepWeight.Attributed);
       treatAll.Children.Add(ctorByInjectPointIdMatcher);
 
-      var parameterMatcher = new LeafUnitSequenceMatcher(AnyParameterMatcher.Instance, ParameterMatcherWeight.Lowest)
+      var anyParameterMatcher =
+        new LeafUnitSequenceMatcher(AnyParameterMatcher.Instance, ParameterMatcherWeight.Lowest)
         .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction(), ParameterMatcherWeight.Lowest);
-      treatAll.Children.Add(parameterMatcher);
-
+      treatAll.Children.Add(anyParameterMatcher);
+      
+      var injectPointParameterMatcher =
+        new LeafUnitSequenceMatcher(InjectPointParameterMatcher.Instance, ParameterMatcherWeight.Lowest + 1)
+        .AddBuildAction(BuildStage.Create, InjectPointParameterMatcher.BuildAction, 0);
+      treatAll.Children.Add(injectPointParameterMatcher);
+      
       container.AddUnitMatcher(treatAll);
       return container;
     }

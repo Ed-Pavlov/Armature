@@ -11,8 +11,8 @@ namespace Armature
     {
       if (container == null) throw new ArgumentNullException(nameof(container));
 
-      var buildStep = new WeakUnitSequenceMatcher(Match.Type<T>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
-      return new TreatSugar<T>(container.AddOrGetUnitMatcher(buildStep), container);
+      var unitSequenceMatcher = new WeakUnitSequenceMatcher(Match.Type<T>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      return new TreatSugar<T>(container.AddOrGetUnitMatcher(unitSequenceMatcher));
     }
 
     public static TreatOpenGenericSugar TreatOpenGeneric([NotNull] this BuildPlansCollection container, Type openGenericType, object token = null)
@@ -28,7 +28,7 @@ namespace Armature
       if (container == null) throw new ArgumentNullException(nameof(container));
 
       var buildStep = new AnyUnitSequenceMatcher();
-      return new AdjusterSugar(container.AddOrGetUnitMatcher(buildStep), container);
+      return new AdjusterSugar(container.AddOrGetUnitMatcher(buildStep));
     }
 
     public static BuildingSugar Building<T>(this BuildPlansCollection container, object token = null) => container.Building(typeof(T), token);
@@ -38,7 +38,7 @@ namespace Armature
       if (container == null) throw new ArgumentNullException(nameof(container));
 
       var buildStep = new WeakUnitSequenceMatcher(Match.Type(type, token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
-      return new BuildingSugar(container.AddOrGetUnitMatcher(buildStep), container);
+      return new BuildingSugar(container.AddOrGetUnitMatcher(buildStep));
     }
   }
 }

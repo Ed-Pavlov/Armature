@@ -11,6 +11,7 @@ namespace Armature.Framework
   public class BuildStage
   {
     public static readonly BuildStage Cache = new BuildStage("Cache");
+    public static readonly BuildStage Intercept = new BuildStage("Intercept");
     public static readonly BuildStage Redirect = new BuildStage("Redirect");
     public static readonly BuildStage Initialize = new BuildStage("Initialize");
     public static readonly BuildStage Create = new BuildStage("Create");

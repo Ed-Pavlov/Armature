@@ -1,28 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
+using Armature.Extensibility;
 using Armature.Framework;
 using Armature.Interface;
 using JetBrains.Annotations;
 
 namespace Armature
 {
-  public class AdjusterSugar : ISugar
+  public class AdjusterSugar : UnitSequenceExtensibility
   {
-    private readonly IUnitSequenceMatcher _unitSequenceMatcher;
-    protected readonly BuildPlansCollection Container;
 
     [DebuggerStepThrough]
-    public AdjusterSugar([NotNull] IUnitSequenceMatcher unitSequenceMatcher, [NotNull] BuildPlansCollection container)
-    {
-      if (unitSequenceMatcher == null) throw new ArgumentNullException(nameof(unitSequenceMatcher));
-      if (container == null) throw new ArgumentNullException(nameof(container));
-
-      _unitSequenceMatcher = unitSequenceMatcher;
-      Container = container;
-    }
-
-    BuildPlansCollection ISugar.BuildPlansCollection => Container;
+    public AdjusterSugar([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) {} 
 
     /// <summary>
     ///   The set of values for parameters of registered Unit can be values or implementation of <see cref="IParameterMatcherSugar" />.
@@ -35,11 +25,10 @@ namespace Armature
 
       foreach (var parameter in values)
       {
-        var parameterBuildPlanner = parameter as IParameterMatcherSugar;
-        if (parameterBuildPlanner != null)
-          parameterBuildPlanner.AddBuildParameterValueStepTo(_unitSequenceMatcher);
+        if (parameter is IParameterMatcherSugar parameterMatcher)
+          parameterMatcher.AddBuildParameterValueStepTo(UnitSequenceMatcher);
         else
-          _unitSequenceMatcher
+          UnitSequenceMatcher
             .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(new ParameterByWeakTypeMatcher(parameter), ParameterMatcherWeight.Lowest + 1))
             .AddBuildAction(BuildStage.Create, new SingletonBuildAction(parameter), ParameterMatcherWeight.WeakTypedParameter);
       }
@@ -50,7 +39,7 @@ namespace Armature
     /// <summary>
     ///   Register Unit as an eternal singleton <see cref="SingletonBuildAction" /> for details
     /// </summary>
-    public void AsSingleton() => _unitSequenceMatcher.AddBuildAction(BuildStage.Cache, new SingletonBuildAction(), 0);
+    public void AsSingleton() => UnitSequenceMatcher.AddBuildAction(BuildStage.Cache, new SingletonBuildAction(), 0);
 
     /// <summary>
     ///   Instantiate an Unit using a constructor marked with <see cref="InjectAttribute" />(<see cref="injectionPointId" />)
@@ -59,7 +48,7 @@ namespace Armature
     {
       var matcher = new ConstructorByInjectPointIdMatcher(injectionPointId);
 
-      _unitSequenceMatcher
+      UnitSequenceMatcher
         .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(matcher, 0))
         .AddBuildAction(BuildStage.Create, matcher.BuildAction, 0);
       return this;
@@ -71,9 +60,17 @@ namespace Armature
     {
       var matcher = new ConstructorByParametersMatcher(parameterTypes);
 
-      _unitSequenceMatcher
+      UnitSequenceMatcher
         .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(matcher, 0))
         .AddBuildAction(BuildStage.Create, matcher.BuildAction, 0);
+      return this;
+    }
+
+    public AdjusterSugar BuildingWhich([NotNull] Action<BuildingSugar> tuneAction)
+    {
+      if (tuneAction is null) throw new ArgumentNullException(nameof(tuneAction));
+
+      tuneAction(new BuildingSugar(UnitSequenceMatcher));
       return this;
     }
   }

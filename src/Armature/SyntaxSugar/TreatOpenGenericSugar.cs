@@ -49,7 +49,7 @@ namespace Armature
           .AddBuildAction(BuildStage.Create, Default.CreationBuildAction, 0);
       }
 
-      return new AdjusterSugar(nextBuildStep, _container);
+      return new AdjusterSugar(nextBuildStep);
     }
   }
 }

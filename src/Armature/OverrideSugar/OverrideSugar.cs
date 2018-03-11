@@ -25,6 +25,6 @@ namespace Armature.OverrideSugar
   public class OverrideSugar<T> : TreatSugar<T>
   {
     [DebuggerStepThrough]
-    public OverrideSugar(WeakUnitSequenceMatcher sequenceMatcher, [NotNull] BuildPlansCollection container) : base(sequenceMatcher, container) { }
+    public OverrideSugar(WeakUnitSequenceMatcher sequenceMatcher, [NotNull] BuildPlansCollection container) : base(sequenceMatcher) { }
   }
 }

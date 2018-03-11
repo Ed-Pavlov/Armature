@@ -75,6 +75,7 @@
     <Compile Include="Framework\ConstructorByParametersMatcher.cs" />
     <Compile Include="Framework\FindConstructorBuildStepWeight.cs" />
     <Compile Include="Framework\AnyUnitSequenceMatcher.cs" />
+    <Compile Include="Framework\InjectPointParameterMatcher.cs" />
     <Compile Include="Framework\ParameterByAttributeMatcher.cs" />
     <Compile Include="Framework\ParameterByInjectPointMatcher.cs" />
     <Compile Include="Framework\ParameterByNameMatcher.cs" />
@@ -98,10 +99,13 @@
     <Compile Include="SyntaxSugar\AddCreationBuildStep.cs" />
     <Compile Include="SyntaxSugar\BuilderExtension.cs" />
     <Compile Include="SyntaxSugar\BuildPlansCollectionSugar.cs" />
+    <Compile Include="SyntaxSugar\CreateSugar.cs" />
     <Compile Include="SyntaxSugar\Default.cs" />
+    <Compile Include="SyntaxSugar\Extensibility\ExtensibilityExtension.cs" />
+    <Compile Include="SyntaxSugar\Extensibility\IUnitSequenceExtensibility.cs" />
+    <Compile Include="SyntaxSugar\Extensibility\UnitSequenceExtensibility.cs" />
     <Compile Include="SyntaxSugar\For.cs" />
     <Compile Include="SyntaxSugar\IParameterMatcherSugar.cs" />
-    <Compile Include="SyntaxSugar\ISugar.cs" />
     <Compile Include="SyntaxSugar\ParameterMatcherSugar.cs" />
     <Compile Include="SyntaxSugar\TreatOpenGenericSugar.cs" />
     <Compile Include="SyntaxSugar\TreatSugar.cs" />

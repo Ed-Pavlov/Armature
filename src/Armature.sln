@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Armature.Interface", "Armat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Armature", "Armature\Armature.csproj", "{893267E2-5B94-4647-9EF6-70390757F11A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Extensibility", "Tests.Extensibility\Tests.Extensibility.csproj", "{5A6E51EE-4876-498E-9722-284CFC2B80D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{893267E2-5B94-4647-9EF6-70390757F11A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{893267E2-5B94-4647-9EF6-70390757F11A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{893267E2-5B94-4647-9EF6-70390757F11A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A6E51EE-4876-498E-9722-284CFC2B80D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A6E51EE-4876-498E-9722-284CFC2B80D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A6E51EE-4876-498E-9722-284CFC2B80D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A6E51EE-4876-498E-9722-284CFC2B80D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
