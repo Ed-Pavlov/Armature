@@ -9,8 +9,6 @@ namespace Tests.Functional
     public static Builder CreateBuilder(params Builder[] parentBuilders) => CreateBuilder(
       parentBuilders,
       BuildStage.Cache,
-      BuildStage.Intercept,
-      BuildStage.Redirect,
       BuildStage.Initialize,
       BuildStage.Create);
 

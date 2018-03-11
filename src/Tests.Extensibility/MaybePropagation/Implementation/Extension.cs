@@ -3,10 +3,12 @@ using Armature;
 using Armature.Extensibility;
 using Armature.Framework;
 
-namespace Tests.Extensibility.MaybePropagation.Extension
+namespace Tests.Extensibility.MaybePropagation.Implementation
 {
   public static class Extension
   {
+    public const int GetMaybeValueStage = 4;
+
     /// <summary>
     /// Specifies what unit should be built to fill <see cref="Maybe{T}"/> value.
     /// </summary>
@@ -24,7 +26,7 @@ namespace Tests.Extensibility.MaybePropagation.Extension
     public static TreatSugar<Maybe<T>> AsMaybeValueOf<T>(this TreatSugar<T> treatSugar)
     {
       var treat = treatSugar.AsUnitSequenceExtensibility();
-      return new TreatSugar<Maybe<T>>(treat.UnitSequenceMatcher.AddBuildAction(BuildStage.Intercept, new GetMaybeValueBuildAction<T>(), 0));
+      return new TreatSugar<Maybe<T>>(treat.UnitSequenceMatcher.AddBuildAction(GetMaybeValueStage, new GetMaybeValueBuildAction<T>(), 0));
     }
   }
 }

@@ -170,7 +170,7 @@ namespace Tests.Functional
       // --act
       var buildStep = new WeakUnitSequenceMatcher(Match.Type<List<IDisposableValue1>>(null), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
       buildStep.AddBuildAction(
-        BuildStage.Redirect,
+        BuildStage.Create,
         new RedirectManyTypesBuildAction<IDisposableValue1>(
           Unit.OfType<OneDisposableCtorClass>(oneDisposableCtorCalssToken),
           Unit.OfType<OneStringCtorClass>()),

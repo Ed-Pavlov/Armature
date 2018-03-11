@@ -11,19 +11,12 @@ namespace Armature.Framework
   public class BuildStage
   {
     public static readonly BuildStage Cache = new BuildStage("Cache");
-    public static readonly BuildStage Intercept = new BuildStage("Intercept");
-    public static readonly BuildStage Redirect = new BuildStage("Redirect");
     public static readonly BuildStage Initialize = new BuildStage("Initialize");
     public static readonly BuildStage Create = new BuildStage("Create");
 
     private readonly string _name;
 
-    private BuildStage([NotNull] string name)
-    {
-      if (name == null) throw new ArgumentNullException(nameof(name));
-
-      _name = name;
-    }
+    private BuildStage([NotNull] string name) => _name = name ?? throw new ArgumentNullException(nameof(name));
 
     public override string ToString() => _name;
   }

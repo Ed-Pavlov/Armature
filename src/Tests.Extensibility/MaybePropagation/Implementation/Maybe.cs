@@ -1,4 +1,4 @@
-﻿namespace Tests.Extensibility.MaybePropagation.Extension
+﻿namespace Tests.Extensibility.MaybePropagation.Implementation
 {
   public class Maybe<T>
   {

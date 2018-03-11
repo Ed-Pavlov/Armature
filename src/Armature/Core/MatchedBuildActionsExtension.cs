@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Armature.Common;
 using Armature.Logging;
 using JetBrains.Annotations;
@@ -9,8 +10,9 @@ namespace Armature.Core
   public static class MatchedBuildActionsExtension
   {
     /// <summary>
-    ///   Merges two collections into one
+    /// Merges two collections into one
     /// </summary>
+    [DebuggerStepThrough]
     public static MatchedBuildActions Merge(this MatchedBuildActions left, MatchedBuildActions right)
     {
       if (left == null) return right;
@@ -21,11 +23,8 @@ namespace Armature.Core
       foreach (var pair in left)
       {
         List<Weighted<IBuildAction>> resultValue;
-        List<Weighted<IBuildAction>> rightValue;
-        if (!right.TryGetValue(pair.Key, out rightValue)) // if key is presented only in 'left' dictionary - get value from it
-        {
+        if (!right.TryGetValue(pair.Key, out var rightValue)) // if key is presented only in 'left' dictionary - get value from it
           resultValue = pair.Value;
-        }
         else // if key is presented in both dictionaries create a new list and merge items from both
         {
           resultValue = new List<Weighted<IBuildAction>>(pair.Value);
@@ -51,9 +50,7 @@ namespace Armature.Core
     {
       if (stage == null) throw new ArgumentNullException(nameof(stage));
 
-      if (matchedBuildActions == null) return null;
-
-      var actions = matchedBuildActions.GetValueSafe(stage);
+      var actions = matchedBuildActions?.GetValueSafe(stage);
       if (actions == null) return null;
 
       actions.Sort((l, r) => r.Weight.CompareTo(l.Weight)); // sort descending
@@ -67,7 +64,7 @@ namespace Armature.Core
 
     public static void ToLog(this MatchedBuildActions actions, LogLevel logLevel = LogLevel.Verbose)
     {
-      Log.WriteLine(logLevel, "{0} matched actions", actions == null ? "no" : actions.Count.ToString("n0"));
+      Log.WriteLine(logLevel, "{0} matched actions", actions?.Count.ToString("n0") ?? "no");
       if (actions != null)
         foreach (var pair in actions)
           LogStageBuildActions(pair, logLevel);

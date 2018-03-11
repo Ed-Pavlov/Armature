@@ -47,7 +47,7 @@ namespace Armature
       if (!typeof(T).IsAssignableFrom(redirectTo))
         throw new Exception("Not assignable");
 
-      UnitSequenceMatcher.AddBuildAction(BuildStage.Redirect, new RedirectTypeBuildAction(redirectTo, token), 0);
+      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectTypeBuildAction(redirectTo, token), 0);
 
       var nextBuildStep = UnitSequenceMatcher;
       if (addDefaultCreateAction == AddCreationBuildStep.Yes)
@@ -70,7 +70,7 @@ namespace Armature
       if (!typeof(T).IsAssignableFrom(redirectTo))
         throw new Exception("Not assignable");
 
-      UnitSequenceMatcher.AddBuildAction(BuildStage.Redirect, new RedirectTypeBuildAction(redirectTo, token), 0);
+      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectTypeBuildAction(redirectTo, token), 0);
       return new CreateSugar<T>(UnitSequenceMatcher, token);
     }
     

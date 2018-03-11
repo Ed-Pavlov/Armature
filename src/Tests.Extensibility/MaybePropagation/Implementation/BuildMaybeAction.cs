@@ -1,7 +1,7 @@
 ﻿using System;
 using Armature.Core;
 
-namespace Tests.Extensibility.MaybePropagation.Extension
+namespace Tests.Extensibility.MaybePropagation.Implementation
 {
   /// <summary>
   /// Builds <typeparamref name="T"/> and wraps it into <see cref="Maybe{T}"/>

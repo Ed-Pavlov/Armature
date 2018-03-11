@@ -3,7 +3,7 @@ using Armature;
 using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
-using Tests.Extensibility.MaybePropagation.Extension;
+using Tests.Extensibility.MaybePropagation.Implementation;
 using Tests.Extensibility.MaybePropagation.TestData;
 using Tests.Functional;
 

@@ -51,11 +51,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MaybePropagation\Extension\BuildMaybeAction.cs" />
-    <Compile Include="MaybePropagation\Extension\Extension.cs" />
-    <Compile Include="MaybePropagation\Extension\GetMaybeValueBuildAction.cs" />
-    <Compile Include="MaybePropagation\Extension\Maybe.cs" />
-    <Compile Include="MaybePropagation\Extension\MaybeIsNothingException.cs" />
+    <Compile Include="MaybePropagation\Implementation\BuildMaybeAction.cs" />
+    <Compile Include="MaybePropagation\Implementation\Extension.cs" />
+    <Compile Include="MaybePropagation\Implementation\GetMaybeValueBuildAction.cs" />
+    <Compile Include="MaybePropagation\Implementation\Maybe.cs" />
+    <Compile Include="MaybePropagation\Implementation\MaybeIsNothingException.cs" />
     <Compile Include="MaybePropagation\TestData\Types.cs" />
     <Compile Include="MaybePropagation\AsMaybeValueOfTest.cs" />
     <Compile Include="MaybePropagation\TreatMaybeValueTest.cs" />

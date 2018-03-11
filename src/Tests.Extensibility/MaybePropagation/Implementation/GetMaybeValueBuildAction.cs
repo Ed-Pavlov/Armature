@@ -1,6 +1,6 @@
 ﻿using Armature.Core;
 
-namespace Tests.Extensibility.MaybePropagation.Extension
+namespace Tests.Extensibility.MaybePropagation.Implementation
 {
   /// <summary>
   /// Uses <see cref="Maybe{T}.Value"/> as a build unit
@@ -8,7 +8,8 @@ namespace Tests.Extensibility.MaybePropagation.Extension
   public class GetMaybeValueBuildAction<T> : IBuildAction
   {
     public void Process(IBuildSession buildSession)
-    {}
+    {
+    }
 
     public void PostProcess(IBuildSession buildSession)
     {

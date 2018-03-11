@@ -29,6 +29,10 @@ namespace Armature.Core
       var array = stages.ToArray();
       if (array.Length == 0)
         throw new ArgumentException("empty", nameof(stages));
+      if(array.Any(stage => stage == null))
+        throw new ArgumentException("Contains null stage", nameof(stages));
+      if(array.Length != array.Distinct().Count())
+        throw new ArgumentException("Contains duplicates", nameof(stages));
 
       _stages = array;
       _parentBuilders = parentBuilders == null || parentBuilders.Length == 0 ? null : parentBuilders;
