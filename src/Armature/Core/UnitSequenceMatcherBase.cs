@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,46 +13,49 @@ namespace Armature.Core
   /// </summary>
   public abstract class UnitSequenceMatcherBase : IUnitSequenceMatcher
   {
-    private Dictionary<object, List<Weighted<IBuildAction>>> _actionFactories;
+    private Dictionary<object, IBuildAction> _buildActions;
     private HashSet<IUnitSequenceMatcher> _children;
 
-    private HashSet<IUnitSequenceMatcher> LazyChildren { [DebuggerStepThrough] get => _children ?? (_children = new HashSet<IUnitSequenceMatcher>()); }
+    protected UnitSequenceMatcherBase(int weight) => Weight = weight;
 
-    private Dictionary<object, List<Weighted<IBuildAction>>> LazyActionFactories
+    protected int Weight { get; }
+
+    private HashSet<IUnitSequenceMatcher> LazyChildren
     {
-      [DebuggerStepThrough] get => _actionFactories ?? (_actionFactories = new Dictionary<object, List<Weighted<IBuildAction>>>());
+      [DebuggerStepThrough]
+      get => _children ?? (_children = new HashSet<IUnitSequenceMatcher>());
     }
+
+    private Dictionary<object, IBuildAction> LazyBuildAction { [DebuggerStepThrough] get => _buildActions ?? (_buildActions = new Dictionary<object, IBuildAction>()); }
 
     [NotNull]
     public ICollection<IUnitSequenceMatcher> Children { [DebuggerStepThrough] get { return LazyChildren; } }
 
     [CanBeNull]
-    public abstract MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputMatchingWeight);
+    public abstract MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight);
 
     [DebuggerStepThrough]
-    public IUnitSequenceMatcher AddBuildAction(object buildStage, IBuildAction buildAction, int weight)
+    public IUnitSequenceMatcher AddBuildAction(object buildStage, IBuildAction buildAction)
     {
-      LazyActionFactories
-        .GetOrCreateValue(buildStage, () => new List<Weighted<IBuildAction>>())
-        .Add(buildAction.WithWeight(weight));
+      if (LazyBuildAction.ContainsKey(buildAction))
+        throw new ArgumentException(string.Format($"Already contains build action for stage {buildStage}"));
+
+      LazyBuildAction.Add(buildStage, buildAction);
       return this;
     }
 
     public abstract bool Equals(IUnitSequenceMatcher other);
 
     [DebuggerStepThrough]
-    protected MatchedBuildActions GetOwnActions(UnitInfo unitInfo, int inputWeight) //TODO: can be null or what? 
+    [CanBeNull]
+    protected MatchedBuildActions GetOwnActions(int inputWeight)
     {
-      var result = new MatchedBuildActions();
-      foreach (var pair in LazyActionFactories) //TODO: use _actionFactories instead in order to not create it if it is not neeeded
-      {
-        var actions = pair.Value
-          .Select(_ => _.Entity.WithWeight(_.Weight + inputWeight))
-          .ToList();
+      if (_buildActions == null) return null;
 
-        if (actions.Count > 0)
-          result.Add(pair.Key, actions);
-      }
+      var matchingWeight = Weight + inputWeight;
+      var result = new MatchedBuildActions();
+      foreach (var pair in _buildActions)
+        result.Add(pair.Key, new List<Weighted<IBuildAction>> {pair.Value.WithWeight(matchingWeight)});
 
       return result;
     }
@@ -62,7 +66,10 @@ namespace Armature.Core
     /// <param name="inputMatchingWeight">The weight of matching which used by children build steps to calculate a final weight of matching</param>
     /// <param name="unitBuildingSequence">The sequence of unit infos to match with build steps and find suitable one</param>
     [DebuggerStepThrough]
+    [CanBeNull]
     protected MatchedBuildActions GetChildrenActions(int inputMatchingWeight, ArrayTail<UnitInfo> unitBuildingSequence) =>
-      LazyChildren.Aggregate((MatchedBuildActions)null, (current, child) => current.Merge(child.GetBuildActions(unitBuildingSequence, inputMatchingWeight)));
+      _children?.Aggregate(
+        (MatchedBuildActions)null,
+        (current, child) => current.Merge(child.GetBuildActions(unitBuildingSequence, inputMatchingWeight)));
   }
 }

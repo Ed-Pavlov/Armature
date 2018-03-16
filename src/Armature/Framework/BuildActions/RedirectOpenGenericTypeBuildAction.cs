@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
+using Armature.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Framework.BuildActions
@@ -37,6 +38,6 @@ namespace Armature.Framework.BuildActions
     public void PostProcess(IBuildSession buildSession) { }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}: [{1},{2}]", GetType().Name, _redirectTo, _token ?? "null");
+    public override string ToString() => string.Format("{0}[{1}, {2}]", GetType().GetShortName(), _redirectTo.AsLogString(), _token.AsLogString());
   }
 }

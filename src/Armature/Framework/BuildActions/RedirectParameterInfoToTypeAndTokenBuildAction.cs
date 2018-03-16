@@ -17,13 +17,19 @@ namespace Armature.Framework.BuildActions
       var attribute = parameterInfo
         .GetCustomAttributes(typeof(InjectAttribute), true)
         .OfType<InjectAttribute>()
-        .Single();
+        .SingleOrDefault();
 
-      var unitInfo = new UnitInfo(parameterInfo.ParameterType, attribute.InjectionPointId);
-      Log.Verbose("{0}: {1}", GetType().Name, unitInfo);
-      buildSession.BuildResult = buildSession.BuildUnit(unitInfo);
+      if (attribute == null)
+        Log.Info("{0}{{{1}}}", this, "No parameter marked with InjectAttribute");
+      else
+      {
+        var unitInfo = new UnitInfo(parameterInfo.ParameterType, attribute.InjectionPointId);
+        buildSession.BuildResult = buildSession.BuildUnit(unitInfo);
+      }
     }
 
     public void PostProcess(IBuildSession buildSession) { }
+    
+    public override string ToString() => GetType().GetShortName();
   }
 }

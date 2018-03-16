@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Armature.Core;
+using Armature.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Framework.BuildActions
@@ -32,7 +33,7 @@ namespace Armature.Framework.BuildActions
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}: {1}", GetType().Name, _instance ?? (object)"not set");
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().Name, (object)_instance ?? "not set");
 
     private class Instance
     {
@@ -42,7 +43,7 @@ namespace Armature.Framework.BuildActions
       public Instance([CanBeNull] object value) => Value = value;
 
       [DebuggerStepThrough]
-      public override string ToString() => Value == null ? "[no Instance]" : "Instance=" + Value;
+      public override string ToString() => Value == null ? "[no instance]" : Value.AsLogString();
     }
   }
 }

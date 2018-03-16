@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using Armature.Core;
+using Armature.Logging;
 
 namespace Armature.Framework.BuildActions
 {
@@ -24,7 +25,10 @@ namespace Armature.Framework.BuildActions
         // ReSharper disable once PossibleNullReferenceException
         if (!type.IsInterface && !type.IsAbstract)
         {
-          var constructor = buildSession.GetConstructorOf(type);
+          ConstructorInfo constructor;
+          using(Log.Block(LogLevel.Trace, "Looking for constructor"))
+            constructor = buildSession.GetConstructorOf(type);
+
           var parameters = constructor.GetParameters();
 
           if (parameters.Length == 0 && type.IsValueType) // do not create default value of value type, it can confuse logic
@@ -39,7 +43,9 @@ namespace Armature.Framework.BuildActions
             }
             else
             {
-              var valuesForParameters = buildSession.GetValuesForParameters(parameters);
+              object[] valuesForParameters;
+              using(Log.Block(LogLevel.Trace, "Looking for parameters"))
+                valuesForParameters = buildSession.GetValuesForParameters(parameters);
               instance = Activator.CreateInstance(type, valuesForParameters);
             }
 
@@ -58,8 +64,7 @@ namespace Armature.Framework.BuildActions
 
     [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
-
-    [DebuggerStepThrough]
-    public override string ToString() => GetType().Name;
+    
+    public override string ToString() => GetType().GetShortName();
   }
 }

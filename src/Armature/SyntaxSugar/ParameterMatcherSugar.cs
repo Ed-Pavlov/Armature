@@ -36,8 +36,8 @@ namespace Armature
 
     public ParameterValueBuildPlan UseResolver<T>(Func<IBuildSession, T, object> resolver) => 
       new ParameterValueBuildPlan(_parameterMatcher, new CreateWithFactoryMethodBuildAction<T, object>(resolver), _weight);
+    
     public ParameterValueBuildPlan UseInjectPointIdAsToken() => new ParameterValueBuildPlan(_parameterMatcher, RedirectParameterInfoToTypeAndTokenBuildAction.Instance, _weight);
-
   }
 
   /// <summary>

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Armature.Core;
+using Armature.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Framework
@@ -11,6 +13,7 @@ namespace Armature.Framework
   {
     private readonly Predicate<T> _predicate;
 
+    [SuppressMessage("ReSharper", "MemberCanBeProtected.Global")]
     [DebuggerStepThrough]
     public ParameterByAttributeMatcher([CanBeNull] Predicate<T> predicate) => _predicate = predicate;
 
@@ -28,5 +31,8 @@ namespace Armature.Framework
 
     [DebuggerStepThrough]
     public bool Equals(IUnitMatcher matcher) => matcher is ParameterByAttributeMatcher<T> other && Equals(_predicate, other._predicate);
+    
+    [DebuggerStepThrough]
+    public override string ToString() => GetType().GetShortName();
   }
 }

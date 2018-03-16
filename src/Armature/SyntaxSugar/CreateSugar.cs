@@ -18,7 +18,7 @@ namespace Armature
 
       UnitSequenceMatcher
         .AddOrGetUnitMatcher(sequenceMatcher)
-        .AddBuildAction(BuildStage.Create, Default.CreationBuildAction, 0);
+        .AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
       return new AdjusterSugar(sequenceMatcher);
     }
     
@@ -28,7 +28,7 @@ namespace Armature
 
       UnitSequenceMatcher
         .AddOrGetUnitMatcher(sequenceMatcher)
-        .AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance, 0);
+        .AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
       return new AdjusterSugar(sequenceMatcher);
     }
   }

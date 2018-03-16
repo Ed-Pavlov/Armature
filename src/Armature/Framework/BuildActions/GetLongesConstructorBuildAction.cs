@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Armature.Core;
 using Armature.Logging;
+using JetBrains.Annotations;
 
 namespace Armature.Framework.BuildActions
 {
@@ -12,11 +13,8 @@ namespace Armature.Framework.BuildActions
     public void Process(IBuildSession buildSession)
     {
       var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
-      var constructor = GetConstructor(unitType.GetConstructors());
-
-      constructor.LogConstructor(this);
-
-      buildSession.BuildResult = new BuildResult(constructor);
+      var ctor = GetConstructor(unitType.GetConstructors());
+      buildSession.BuildResult = new BuildResult(ctor);
     }
 
     [DebuggerStepThrough]
@@ -52,5 +50,7 @@ namespace Armature.Framework.BuildActions
 
       return constructors[suitableConstructors.First().Key];
     }
+    
+    public override string ToString() => GetType().GetShortName();
   }
 }

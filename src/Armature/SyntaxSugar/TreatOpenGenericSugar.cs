@@ -38,7 +38,7 @@ namespace Armature
     /// </param>
     public AdjusterSugar As(Type openGenericType, object token = null, AddCreationBuildStep addDefaultCreateAction = AddCreationBuildStep.Yes)
     {
-      _unitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectOpenGenericTypeBuildAction(openGenericType, token), 0);
+      _unitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectOpenGenericTypeBuildAction(openGenericType, token));
 
       var nextBuildStep = _unitSequenceMatcher;
       if (addDefaultCreateAction == AddCreationBuildStep.Yes)
@@ -47,7 +47,7 @@ namespace Armature
 
         _unitSequenceMatcher
           .AddOrGetUnitMatcher(nextBuildStep)
-          .AddBuildAction(BuildStage.Create, Default.CreationBuildAction, 0);
+          .AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
       }
 
       return new AdjusterSugar(nextBuildStep);

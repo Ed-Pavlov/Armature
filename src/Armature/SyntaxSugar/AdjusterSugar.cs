@@ -6,6 +6,7 @@ using Armature.Framework;
 using Armature.Framework.BuildActions;
 using Armature.Interface;
 using JetBrains.Annotations;
+using ConstructorMatcher = Armature.Framework.ConstructorMatcher;
 
 namespace Armature
 {
@@ -30,8 +31,8 @@ namespace Armature
           parameterMatcher.Register(UnitSequenceMatcher);
         else
           UnitSequenceMatcher
-            .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(new ParameterByWeakTypeMatcher(parameter), ParameterMatcherWeight.Lowest + 1))
-            .AddBuildAction(BuildStage.Create, new SingletonBuildAction(parameter), ParameterMatcherWeight.WeakTypedParameter);
+            .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(new ParameterByWeakTypeMatcher(parameter), ParameterMatchingWeight.WeakTypedParameter))
+            .AddBuildAction(BuildStage.Create, new SingletonBuildAction(parameter));
       }
 
       return this;
@@ -40,18 +41,16 @@ namespace Armature
     /// <summary>
     ///   Register Unit as an eternal singleton <see cref="SingletonBuildAction" /> for details
     /// </summary>
-    public void AsSingleton() => UnitSequenceMatcher.AddBuildAction(BuildStage.Cache, new SingletonBuildAction(), 0);
+    public void AsSingleton() => UnitSequenceMatcher.AddBuildAction(BuildStage.Cache, new SingletonBuildAction());
 
     /// <summary>
     ///   Instantiate an Unit using a constructor marked with <see cref="InjectAttribute" />(<see cref="injectionPointId" />)
     /// </summary>
     public AdjusterSugar UsingInjectPointConstructor(object injectionPointId)
     {
-      var matcher = new ConstructorByInjectPointIdMatcher(injectionPointId);
-
       UnitSequenceMatcher
-        .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(matcher, 0))
-        .AddBuildAction(BuildStage.Create, matcher.BuildAction, 0);
+        .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(ConstructorMatcher.Instance, 0))
+        .AddBuildAction(BuildStage.Create, new GetInjectPointConstructorBuildAction(injectionPointId));
       return this;
     }
 
@@ -59,11 +58,9 @@ namespace Armature
 
     public AdjusterSugar UsingConstructorWithParameters(params Type[] parameterTypes)
     {
-      var matcher = new ConstructorByParametersMatcher(parameterTypes);
-
       UnitSequenceMatcher
-        .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(matcher, 0))
-        .AddBuildAction(BuildStage.Create, matcher.BuildAction, 0);
+        .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(ConstructorMatcher.Instance, 0))
+        .AddBuildAction(BuildStage.Create, new GetConstructorByParameterTypesBuildAction(parameterTypes));
       return this;
     }
 

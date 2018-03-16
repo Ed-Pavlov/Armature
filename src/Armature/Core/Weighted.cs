@@ -1,8 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using Armature.Logging;
 
 namespace Armature.Core
 {
-  public struct Weighted<T>
+  public struct Weighted<T> : IComparable<Weighted<T>>
   {
     public readonly T Entity;
     public readonly int Weight;
@@ -13,8 +15,11 @@ namespace Armature.Core
       Entity = entity;
       Weight = weight;
     }
+    
+    [DebuggerStepThrough]
+    public int CompareTo(Weighted<T> other) => Weight.CompareTo(other.Weight);
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}, Weight={1:n0}", Entity, Weight);
+    public override string ToString() => string.Format("{0}, Weight={1:n0}", Entity.AsLogString(), Weight);
   }
 }

@@ -20,18 +20,17 @@ namespace Armature.Core
     ///   Returns build actions for building unit if matches it
     /// </summary>
     /// <param name="buildingUnitsSequence">The sequence of units representing the context of currently building unit</param>
-    /// <param name="inputMatchingWeight">The weight of matching which used by children matchers to calculate a final weight of matching</param>
+    /// <param name="inputWeight">The weight of matching which used by children matchers to calculate a final weight of matching</param>
     /// <returns>Returns a collections of weighted build actions grouped by a bulding stage</returns>
     [CanBeNull]
-    MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputMatchingWeight);
+    MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight);
 
     /// <summary>
-    ///   Adds a build action factory which creates <see cref="IBuildAction" /> for a unit which is matched by this matcher
+    ///   Adds a build action <see cref="IBuildAction" /> for a unit which is matched by this matcher
     /// </summary>
     /// <param name="buildStage">Build stage in which the build action is applied</param>
     /// <param name="buildAction">Build action</param>
-    /// <param name="weight">The weight of the action, needed if several build actions are registered for the unit in one build stage</param>
     /// <returns>Returns 'this' in order to use fluent syntax</returns>
-    IUnitSequenceMatcher AddBuildAction(object buildStage, IBuildAction buildAction, int weight);
+    IUnitSequenceMatcher AddBuildAction(object buildStage, IBuildAction buildAction);
   }
 }

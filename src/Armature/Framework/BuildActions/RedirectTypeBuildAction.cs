@@ -33,7 +33,6 @@ namespace Armature.Framework.BuildActions
         var effectiveToken = Equals(_token, Token.Propagate) ? unitUnderConstruction.Token : _token;
 
         var unitInfo = new UnitInfo(_redirectTo, effectiveToken);
-        Log.Verbose("{0}: {1}", GetType().Name, unitInfo);
         buildSession.BuildResult = buildSession.BuildUnit(unitInfo);
       }
     }
@@ -42,6 +41,6 @@ namespace Armature.Framework.BuildActions
     public void PostProcess(IBuildSession buildSession) { }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}: {1}", GetType().Name, _redirectTo);
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _redirectTo.AsLogString());
   }
 }

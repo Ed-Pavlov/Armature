@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using Armature.Core;
+using Armature.Logging;
 
 namespace Armature.Framework
 {
@@ -16,5 +17,8 @@ namespace Armature.Framework
 
     [DebuggerStepThrough]
     public bool Equals(IUnitMatcher other) => other is ParameterByWeakTypeMatcher matcher && Equals(_parameterValue, matcher._parameterValue);
+    
+    [DebuggerStepThrough]
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _parameterValue.AsLogString());
   }
 }

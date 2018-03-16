@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Armature.Core;
+using Armature.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Framework.BuildActions
@@ -15,12 +16,8 @@ namespace Armature.Framework.BuildActions
     private readonly Func<IBuildSession, TR> _factoryMethod;
 
     [DebuggerStepThrough]
-    public CreateWithFactoryMethodBuildAction([NotNull] Func<IBuildSession, TR> factoryMethod)
-    {
-      if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
-
-      _factoryMethod = factoryMethod;
-    }
+    public CreateWithFactoryMethodBuildAction([NotNull] Func<IBuildSession, TR> factoryMethod) => 
+      _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
 
     public void Process(IBuildSession buildSession)
     {
@@ -32,7 +29,7 @@ namespace Armature.Framework.BuildActions
     public void PostProcess(IBuildSession buildSession) { }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}: {1}", GetType().Name, _factoryMethod);
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _factoryMethod.AsLogString());
   }
 
   /// <summary>
@@ -57,7 +54,7 @@ namespace Armature.Framework.BuildActions
     protected abstract object Execute(IBuildSession buildSessoin, object[] values);
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}: {1}", GetType().Name, GetMethod());
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), GetMethod().AsLogString());
   }
 
   /// <summary>
@@ -68,12 +65,8 @@ namespace Armature.Framework.BuildActions
     private readonly Func<IBuildSession, T1, TR> _factoryMethod;
 
     [DebuggerStepThrough]
-    public CreateWithFactoryMethodBuildAction([NotNull] Func<IBuildSession, T1, TR> factoryMethod)
-    {
-      if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
-
-      _factoryMethod = factoryMethod;
-    }
+    public CreateWithFactoryMethodBuildAction([NotNull] Func<IBuildSession, T1, TR> factoryMethod) => 
+      _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
@@ -88,12 +81,8 @@ namespace Armature.Framework.BuildActions
     private readonly Func<IBuildSession, T1, T2, TR> _factoryMethod;
 
     [DebuggerStepThrough]
-    public CreateWithFactoryMethodBuildAction([NotNull] Func<IBuildSession, T1, T2, TR> factoryMethod)
-    {
-      if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
-
-      _factoryMethod = factoryMethod;
-    }
+    public CreateWithFactoryMethodBuildAction([NotNull] Func<IBuildSession, T1, T2, TR> factoryMethod) => 
+      _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
@@ -108,12 +97,8 @@ namespace Armature.Framework.BuildActions
     private readonly Func<IBuildSession, T1, T2, T3, TR> _factoryMethod;
 
     [DebuggerStepThrough]
-    public CreateWithFactoryMethodBuildAction([NotNull] Func<IBuildSession, T1, T2, T3, TR> factoryMethod)
-    {
-      if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
-
-      _factoryMethod = factoryMethod;
-    }
+    public CreateWithFactoryMethodBuildAction([NotNull] Func<IBuildSession, T1, T2, T3, TR> factoryMethod) => 
+      _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 

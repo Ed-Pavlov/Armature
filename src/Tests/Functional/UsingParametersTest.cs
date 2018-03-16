@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Globalization;
 using Armature;
 using Armature.Core;
+using Armature.Framework;
 using Armature.Interface;
+using Armature.Logging;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;
@@ -261,25 +264,6 @@ namespace Tests.Functional
 
       // --assert
       actual.String.Should().Be(expectedInt.ToString());
-    }
-
-    [Test]
-    public void should_use_value_if_both_value_and_resolver_are_provided()
-    {
-      const string expectedString = "expected29083";
-
-      // --arrange
-      var target = FunctionalTestHelper.CreateBuilder();
-      target
-        .Treat<LevelOne>()
-        .AsIs()
-        .UsingParameters(For.Parameter<string>(int.MinValue).UseResolver<int>((_, intValue) => intValue.ToString()));
-
-      // --act
-      var actual = target.Build<LevelOne>(expectedString);
-
-      // --assert
-      actual.String.Should().Be(expectedString);
     }
 
     [Test]

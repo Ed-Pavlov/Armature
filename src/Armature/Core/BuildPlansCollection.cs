@@ -59,9 +59,13 @@ namespace Armature.Core
     /// </summary>
     private class Root : UnitSequenceMatcherBase
     {
+      public Root() : base(0)
+      {
+      }
+
       [DebuggerStepThrough]
-      public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputMatchingWeight) =>
-        GetChildrenActions(inputMatchingWeight, buildingUnitsSequence);
+      public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight) =>
+        GetChildrenActions(inputWeight, buildingUnitsSequence);
 
       [DebuggerStepThrough]
       public override bool Equals(IUnitSequenceMatcher other) => throw new NotSupportedException();

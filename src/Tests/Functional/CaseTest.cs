@@ -173,8 +173,7 @@ namespace Tests.Functional
         BuildStage.Create,
         new RedirectManyTypesBuildAction<IDisposableValue1>(
           Unit.OfType<OneDisposableCtorClass>(oneDisposableCtorCalssToken),
-          Unit.OfType<OneStringCtorClass>()),
-        0);
+          Unit.OfType<OneStringCtorClass>()));
 
       container.AddUnitMatcher(buildStep);
 

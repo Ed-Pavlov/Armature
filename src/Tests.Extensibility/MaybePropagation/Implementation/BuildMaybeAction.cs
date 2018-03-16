@@ -1,5 +1,6 @@
 ﻿using System;
 using Armature.Core;
+using Armature.Logging;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {
@@ -28,5 +29,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     }
 
     public void PostProcess(IBuildSession buildSession) { }
+
+    public override string ToString() => GetType().GetShortName();
   }
 }

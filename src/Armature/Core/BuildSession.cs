@@ -15,19 +15,19 @@ namespace Armature.Core
     private readonly List<UnitInfo> _buildSequence;
     private readonly IEnumerable<object> _buildStages;
     [CanBeNull]
-    private readonly BuildPlansCollection _runtimeBuildPlans;
+    private readonly BuildPlansCollection _auxBuildPlans;
 
     private BuildSession(
       [NotNull] IEnumerable<object> buildStages,
       [NotNull] BuildPlansCollection buildPlans,
-      [CanBeNull] BuildPlansCollection runtimeBuildPlans)
+      [CanBeNull] BuildPlansCollection auxBuildPlans)
     {
       if (buildStages == null) throw new ArgumentNullException(nameof(buildStages));
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
       _buildStages = buildStages;
       _buildPlans = buildPlans;
-      _runtimeBuildPlans = runtimeBuildPlans;
+      _auxBuildPlans = auxBuildPlans;
       _buildSequence = new List<UnitInfo>(4);
     }
    
@@ -54,9 +54,15 @@ namespace Armature.Core
         _buildSequence.Add(unitInfo);
         try
         {
-          var actions = _buildPlans.GetBuildActions(_buildSequence);
-          var runtimeActions = _runtimeBuildPlans?.GetBuildActions(_buildSequence);
-          return BuildUnit(actions.Merge(runtimeActions));
+          MatchedBuildActions actions;
+          MatchedBuildActions auxActions;
+          using(Log.Block(LogLevel.Verbose, "Looking for build actions"))
+          {
+            actions = _buildPlans.GetBuildActions(_buildSequence);
+            auxActions = _auxBuildPlans?.GetBuildActions(_buildSequence);
+          }
+          Log.Verbose("");
+          return BuildUnit(actions.Merge(auxActions));
         }
         finally
         {
@@ -69,7 +75,7 @@ namespace Armature.Core
     private BuildResult BuildUnit(MatchedBuildActions matchedBuildActions)
     {
       if (matchedBuildActions == null) return null;
-
+      
       var performedActions = new Stack<IBuildAction>();
 
       // builder to pass into IBuldActon.Execute
@@ -81,23 +87,24 @@ namespace Armature.Core
         if (buildAction == null)
           continue;
 
-        Log.Info("");
-        Log.Info("Execute: [{0}], [{1}]", buildAction, stage);
-
         performedActions.Push(buildAction);
-        buildAction.Process(unitBuilder);
+
+        using(Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Execute action", buildAction))
+          buildAction.Process(unitBuilder);
 
         if (unitBuilder.BuildResult != null)
         {
-          Log.Info("Unit is build: {0}", unitBuilder.BuildResult);
+          Log.Info("");
+          Log.Info("Built unit{{{0}}}", unitBuilder.BuildResult);
           break; // object is built, unwind called actions in reverse orders
         }
       }
 
       foreach (var buildAction in performedActions)
       {
-        Log.Info("PostProcess: {0}", buildAction);
-        buildAction.PostProcess(unitBuilder);
+        Log.Info("");
+        using(Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Rewind action", buildAction))
+          buildAction.PostProcess(unitBuilder);
       }
 
       return unitBuilder.BuildResult;
@@ -105,14 +112,11 @@ namespace Armature.Core
 
     private IDisposable LogBuildSessionState(UnitInfo unitInfo)
     {
-      Log.Info("");
-      Log.Info("BuildSession.Build UnitInfo={0}", unitInfo);
-      var block = Log.AddIndent(true);
+      var block = Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Build", unitInfo);
       {
         _buildSequence.LogBuildSequence();
-        Log.Info("");
-        return block;
       }
+      return block;
     }
   }
 }

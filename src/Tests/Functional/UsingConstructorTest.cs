@@ -13,26 +13,23 @@ namespace Tests.Functional
     [Test]
     public void UsingConstructorShouldBeAppliedDirectlyToRegisteredType()
     {
-      using (Log.Enabled(LogLevel.Trace))
-      {
-        var target = FunctionalTestHelper.CreateBuilder();
+      var target = FunctionalTestHelper.CreateBuilder();
 
-        target
-          .Treat<Dependency>()
-          .AsIs()
-          .UsingParameters("value");
+      target
+        .Treat<Dependency>()
+        .AsIs()
+        .UsingParameters("value");
 
-        target
-          .Treat<Constructed>()
-          .AsIs()
-          .UsingInjectPointConstructor(Constructed.ConstructorId);
+      target
+        .Treat<Constructed>()
+        .AsIs()
+        .UsingInjectPointConstructor(Constructed.ConstructorId);
 
-        var actual = target.Build<Constructed>();
+      var actual = target.Build<Constructed>();
 
-        // --assert
-        actual.Dependency.Should().NotBeNull();
-        actual.Dependency.ConstructedViaAttributed.Should().BeFalse();
-      }
+      // --assert
+      actual.Dependency.Should().NotBeNull();
+      actual.Dependency.ConstructedViaAttributed.Should().BeFalse();
     }
   }
 

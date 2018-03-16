@@ -13,26 +13,20 @@ namespace Armature.Core
   /// </summary>
   public class LeafUnitSequenceMatcher : UnitSequenceMatcherBase
   {
-    private readonly int _matchingWeight;
     private readonly IUnitMatcher _unitMatcher;
 
     /// <param name="unitMatcher">Object contains the logic of matching with building unit</param>
-    /// <param name="matchingWeight">The weight of matching</param>
+    /// <param name="weight">The weight of matching</param>
     [DebuggerStepThrough]
-    public LeafUnitSequenceMatcher([NotNull] IUnitMatcher unitMatcher, int matchingWeight)
-    {
-      if (unitMatcher == null) throw new ArgumentNullException(nameof(unitMatcher));
-
-      _matchingWeight = matchingWeight;
-      _unitMatcher = unitMatcher;
-    }
+    public LeafUnitSequenceMatcher([NotNull] IUnitMatcher unitMatcher, int weight) : base(weight) => 
+      _unitMatcher = unitMatcher ?? throw new ArgumentNullException(nameof(unitMatcher));
 
     /// <summary>
     ///   If <paramref name="buildingUnitsSequence" /> contains more then one element return null. This matcher matches only unit under construction which is
     ///   the last one in the <see cref="buildingUnitsSequence" />.
     /// </summary>
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
-    public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputMatchingWeight)
+    public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
       if (buildingUnitsSequence.Length != 1) return null;
 
@@ -41,20 +35,20 @@ namespace Armature.Core
 
       if (!matches)
       {
-        Log.Trace("{0}: not matched", this);
+        Log.Trace("{0}{{not matched}}", this);
         return null;
       }
 
-      using (Log.Block(this.ToString(), LogLevel.Verbose))
+      using (Log.Block(LogLevel.Verbose, this.ToString()))
       {
-        var buildActions = GetOwnActions(unitInfo, _matchingWeight + inputMatchingWeight);
+        var buildActions = GetOwnActions(inputWeight);
         buildActions.ToLog();
         return buildActions;
       }
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}.{1}", GetType().Name, _unitMatcher);
+    public override string ToString() => string.Format("{0}.{1}", GetType().GetShortName(), _unitMatcher);
 
     #region Equality
     private bool Equals(LeafUnitSequenceMatcher other)
@@ -62,7 +56,7 @@ namespace Armature.Core
       if (ReferenceEquals(null, other)) return false;
       if (ReferenceEquals(this, other)) return true;
 
-      return _matchingWeight == other._matchingWeight && Equals(_unitMatcher, other._unitMatcher);
+      return Weight == other.Weight && Equals(_unitMatcher, other._unitMatcher);
     }
 
     public override bool Equals(IUnitSequenceMatcher obj) => Equals(obj as LeafUnitSequenceMatcher);
@@ -73,7 +67,7 @@ namespace Armature.Core
     {
       unchecked
       {
-        return (_matchingWeight * 397) ^ (_unitMatcher != null ? _unitMatcher.GetHashCode() : 0);
+        return (Weight * 397) ^ (_unitMatcher != null ? _unitMatcher.GetHashCode() : 0);
       }
     }
 

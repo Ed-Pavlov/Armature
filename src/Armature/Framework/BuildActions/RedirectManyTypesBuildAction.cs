@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Armature.Core;
+using Armature.Logging;
 
 namespace Armature.Framework.BuildActions
 {
@@ -38,5 +40,8 @@ namespace Armature.Framework.BuildActions
 
     [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
+    
+    public override string ToString() => 
+      string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", _constructionObjects.ToString()));
   }
 }

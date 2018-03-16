@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Armature.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Core
@@ -40,11 +41,6 @@ namespace Armature.Core
     public override int GetHashCode() => UnitInfo.GetHashCode();
 
     [DebuggerStepThrough]
-    public static bool operator ==(UnitInfoMatcher left, UnitInfoMatcher right) => Equals(left, right);
-
-    [DebuggerStepThrough]
-    public static bool operator !=(UnitInfoMatcher left, UnitInfoMatcher right) => !Equals(left, right);
-
-    public override string ToString() => string.Format("{0}: Unit={1}", GetType().Name, UnitInfo);
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), UnitInfo.AsLogString());
   }
 }

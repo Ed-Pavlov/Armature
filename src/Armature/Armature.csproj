@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
@@ -43,7 +44,6 @@
     <Compile Include="Common\ExceptionExtension.cs" />
     <Compile Include="Core\ArmatureException.cs" />
     <Compile Include="Core\BuildPlansCollection.cs" />
-    <Compile Include="Core\ConstructorMatcher.cs" />
     <Compile Include="Core\IBuildSession.cs" />
     <Compile Include="Core\MatchedBuildActionsExtension.cs" />
     <Compile Include="Core\OpenGenericTypeMatcher.cs" />
@@ -55,16 +55,19 @@
     <Compile Include="Core\MatchedBuildActions.cs" />
     <Compile Include="Core\BuildResult.cs" />
     <Compile Include="Core\IUnitSequenceMatcher.cs" />
-    <Compile Include="Core\ParameterMatcher.cs" />
     <Compile Include="Core\UnitInfoExtension.cs" />
     <Compile Include="Core\UnitSequenceMatcherBase.cs" />
     <Compile Include="Core\Weighted.cs" />
     <Compile Include="Core\WeightedExtension.cs" />
-    <Compile Include="Framework\AnyConstructorMatcher.cs" />
-    <Compile Include="Framework\AnyParameterMatcher.cs" />
+    <Compile Include="Framework\BuildActions\GetConstructorByParameterTypesBuildAction.cs" />
+    <Compile Include="Framework\ConstructorMatcher.cs" />
+    <Compile Include="Framework\ParameterMatcher.cs" />
     <Compile Include="Framework\BuildActions\CreateByReflectionBuildAction.cs" />
     <Compile Include="Framework\BuildActions\CreateWithFactoryMethodBuildAction.cs" />
+    <Compile Include="Framework\BuildActions\GetAttributedConstructorBuildAction.cs" />
+    <Compile Include="Framework\BuildActions\GetInjectPointConstructorBuildAction.cs" />
     <Compile Include="Framework\BuildActions\GetLongesConstructorBuildAction.cs" />
+    <Compile Include="Framework\BuildActions\OrderedBuildActionContainer.cs" />
     <Compile Include="Framework\BuildActions\RedirectManyTypesBuildAction.cs" />
     <Compile Include="Framework\BuildActions\RedirectOpenGenericTypeBuildAction.cs" />
     <Compile Include="Framework\BuildActions\RedirectParameterInfoBuildAction.cs" />
@@ -73,22 +76,18 @@
     <Compile Include="Framework\BuildActions\SingletonBuildAction.cs" />
     <Compile Include="Framework\BuildStage.cs" />
     <Compile Include="Framework\AddOrGetBuildStepExtension.cs" />
-    <Compile Include="Framework\ConstructorByAttributeMatcher.cs" />
-    <Compile Include="Framework\ConstructorByInjectPointIdMatcher.cs" />
-    <Compile Include="Framework\ConstructorByParametersMatcher.cs" />
-    <Compile Include="Framework\FindConstructorBuildStepWeight.cs" />
     <Compile Include="Framework\AnyUnitSequenceMatcher.cs" />
-    <Compile Include="Framework\InjectPointParameterMatcher.cs" />
     <Compile Include="Framework\ParameterByAttributeMatcher.cs" />
     <Compile Include="Framework\ParameterByInjectPointMatcher.cs" />
     <Compile Include="Framework\ParameterByNameMatcher.cs" />
     <Compile Include="Framework\ParameterByStrictTypeMatcher.cs" />
     <Compile Include="Framework\ParameterByWeakTypeMatcher.cs" />
-    <Compile Include="Framework\ParameterMatcherWeight.cs" />
+    <Compile Include="Framework\ParameterMatchingWeight.cs" />
     <Compile Include="Framework\UnitSequenceMatchingWeight.cs" />
     <Compile Include="Framework\SpecialToken.cs" />
     <Compile Include="Framework\WeakUnitSequenceMatcher.cs" />
     <Compile Include="Logging\Log.cs" />
+    <Compile Include="Logging\LogConst.cs" />
     <Compile Include="Logging\LogExtension.cs" />
     <Compile Include="OverrideSugar\OverrideSugar.cs" />
     <Compile Include="Properties\Annotations.cs" />

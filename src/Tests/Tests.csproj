@@ -78,6 +78,7 @@
     <Compile Include="UnitTests\BuildPlansCollectionTest.cs" />
     <Compile Include="UnitTests\ArrayTailTest.cs" />
     <Compile Include="UnitTests\FindAttributedConstructorBuildStepTest.cs" />
+    <Compile Include="UnitTests\GetConstructorByParameterTypesBuildActionTest.cs" />
     <Compile Include="UnitTests\RedirectOpenGenericTypeBuildActionTest.cs" />
     <Compile Include="UnitTests\RedirectTypeBuildActionTest.cs" />
     <Compile Include="UnitTests\UnitMatcherTest.cs" />

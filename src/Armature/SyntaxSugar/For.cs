@@ -10,10 +10,10 @@ namespace Armature
     /// <summary>
     ///   Matches with parameter with <see cref="ParameterInfo.ParameterType" /> equals to <see cref="T" />
     /// </summary>
-    public static ParameterMatcherSugar<T> Parameter<T>(int weight = ParameterMatcherWeight.TypedParameter)
+    public static ParameterMatcherSugar<T> Parameter<T>()
     {
       var matcher = new ParameterByStrictTypeMatcher(typeof(T));
-      return new ParameterMatcherSugar<T>(matcher, weight);
+      return new ParameterMatcherSugar<T>(matcher, ParameterMatchingWeight.TypedParameter);
     }
 
     /// <summary>
@@ -22,10 +22,10 @@ namespace Armature
     /// <param name="parameterName">Matches parameter with this name</param>
     /// <param name="weight">Weight of such match</param>
     /// <returns></returns>
-    public static ParameterMatcherSugar ParameterName([NotNull] string parameterName, int weight = ParameterMatcherWeight.NamedParameter)
+    public static ParameterMatcherSugar ParameterName([NotNull] string parameterName)
     {
       var matcher = new ParameterByNameMatcher(parameterName);
-      return new ParameterMatcherSugar(matcher, weight);
+      return new ParameterMatcherSugar(matcher, ParameterMatchingWeight.NamedParameter);
     }
 
     /// <summary>
@@ -36,10 +36,10 @@ namespace Armature
     ///   equals to <paramref name="injectPointId" />
     /// </param>
     /// <param name="weight">Weight of such match</param>
-    public static ParameterMatcherSugar ParameterId([CanBeNull] object injectPointId, int weight = ParameterMatcherWeight.AttributedParameter)
+    public static ParameterMatcherSugar ParameterId([CanBeNull] object injectPointId)
     {
       var matcher = new ParameterByInjectPointMatcher(injectPointId);
-      return new ParameterMatcherSugar(matcher, weight);
+      return new ParameterMatcherSugar(matcher, ParameterMatchingWeight.AttributedParameter);
     }
   }
 }

@@ -14,31 +14,28 @@ namespace Tests.Functional
 
     public static Builder CreateBuilder(Builder[] parentBuilders, params object[] stages)
     {
+      var treatAll = new AnyUnitSequenceMatcher
+      {
+        new LeafUnitSequenceMatcher(ConstructorMatcher.Instance, 0)
+          .AddBuildAction(
+            BuildStage.Create,
+            new OrderedBuildActionContainer
+            {
+              new GetInjectPointConstructorBuildAction(),
+              new GetLongesConstructorBuildAction()
+            }),
+
+        new LeafUnitSequenceMatcher(ParameterMatcher.Instance, ParameterMatchingWeight.Lowest)
+          .AddBuildAction(
+            BuildStage.Create,
+            new OrderedBuildActionContainer
+            {
+              new RedirectParameterInfoToTypeAndTokenBuildAction(),
+              new RedirectParameterInfoBuildAction()
+            })
+      };
+
       var container = new Builder(stages, parentBuilders);
-
-      var treatAll = new AnyUnitSequenceMatcher();
-
-      var constructorMathcer =
-        new LeafUnitSequenceMatcher(AnyConstructorMatcher.Instance, FindConstructorBuildStepWeight.Lowest)
-        .AddBuildAction(BuildStage.Create, new GetLongesConstructorBuildAction(), FindConstructorBuildStepWeight.Lowest);
-      treatAll.Children.Add(constructorMathcer);
-
-      var constructorByInjectPointIdMatcher = new ConstructorByInjectPointIdMatcher();
-      var ctorByInjectPointIdMatcher = 
-        new LeafUnitSequenceMatcher(constructorByInjectPointIdMatcher, FindConstructorBuildStepWeight.Attributed)
-        .AddBuildAction(BuildStage.Create, constructorByInjectPointIdMatcher.BuildAction, FindConstructorBuildStepWeight.Attributed);
-      treatAll.Children.Add(ctorByInjectPointIdMatcher);
-
-      var anyParameterMatcher =
-        new LeafUnitSequenceMatcher(AnyParameterMatcher.Instance, ParameterMatcherWeight.Lowest)
-        .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction(), ParameterMatcherWeight.Lowest);
-      treatAll.Children.Add(anyParameterMatcher);
-      
-      var injectPointParameterMatcher =
-        new LeafUnitSequenceMatcher(InjectPointParameterMatcher.Instance, ParameterMatcherWeight.Lowest + 1)
-        .AddBuildAction(BuildStage.Create, InjectPointParameterMatcher.BuildAction, 0);
-      treatAll.Children.Add(injectPointParameterMatcher);
-      
       container.AddUnitMatcher(treatAll);
       return container;
     }

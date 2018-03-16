@@ -16,7 +16,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     {
       var treat = treatSugar.AsUnitSequenceExtensibility();
       var uniqueToken = Guid.NewGuid();
-      treat.UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueToken), 0);
+      treat.UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueToken));
       return new TreatSugar<T>(treat.UnitSequenceMatcher.AddOrGetUnitMatcher(new WeakUnitSequenceMatcher(Match.Type<T>(uniqueToken), 0)));
     }
 
@@ -26,7 +26,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     public static TreatSugar<Maybe<T>> AsMaybeValueOf<T>(this TreatSugar<T> treatSugar)
     {
       var treat = treatSugar.AsUnitSequenceExtensibility();
-      return new TreatSugar<Maybe<T>>(treat.UnitSequenceMatcher.AddBuildAction(GetMaybeValueStage, new GetMaybeValueBuildAction<T>(), 0));
+      return new TreatSugar<Maybe<T>>(treat.UnitSequenceMatcher.AddBuildAction(GetMaybeValueStage, new GetMaybeValueBuildAction<T>()));
     }
   }
 }

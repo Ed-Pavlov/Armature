@@ -16,10 +16,10 @@ namespace Tests.UnitTests
     {
       // --arrange
       var buildStep1 = new LeafUnitSequenceMatcher(Match.Type<string>(null), 0);
-      buildStep1.AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance, 0);
+      buildStep1.AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
       var singletonAction = new SingletonBuildAction();
       var buildStep2 = new AnyUnitSequenceMatcher();
-      buildStep2.AddBuildAction(BuildStage.Cache, singletonAction, 0);
+      buildStep2.AddBuildAction(BuildStage.Cache, singletonAction);
 
       var target = new BuildPlansCollection();
       target.AddUnitMatcher(buildStep1);

@@ -16,11 +16,12 @@ namespace Armature.Framework.BuildActions
     {
       var parameterInfo = (ParameterInfo)buildSession.GetUnitUnderConstruction().Id;
       var unitInfo = new UnitInfo(parameterInfo.ParameterType, _token);
-      Log.Verbose("{0}: {1}", GetType().Name, unitInfo);
       buildSession.BuildResult = buildSession.BuildUnit(unitInfo);
     }
 
     [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
+
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _token.AsLogString());
   }
 }

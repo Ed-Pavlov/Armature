@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Armature.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Core
@@ -15,6 +16,6 @@ namespace Armature.Core
     public BuildResult(object value) => Value = value;
 
     [DebuggerStepThrough]
-    public override string ToString() => Value?.ToString() ?? "null";
+    public override string ToString() => Value.AsLogString();
   }
 }

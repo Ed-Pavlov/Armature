@@ -61,28 +61,5 @@ namespace Armature.Core
 
       return actions[0].Entity;
     }
-
-    public static void ToLog(this MatchedBuildActions actions, LogLevel logLevel = LogLevel.Verbose)
-    {
-      Log.WriteLine(logLevel, "{0} matched actions", actions?.Count.ToString("n0") ?? "no");
-      if (actions != null)
-        foreach (var pair in actions)
-          LogStageBuildActions(pair, logLevel);
-    }
-
-    private static void LogStageBuildActions(KeyValuePair<object, List<Weighted<IBuildAction>>> stageActions, LogLevel logLevel)
-    {
-      var stage = stageActions.Key;
-      var actionsList = stageActions.Value;
-
-      if (actionsList.Count == 1)
-        Log.WriteLine(logLevel, "Stage={0}, Action={1}", stage, actionsList[0]);
-      else
-        using (Log.Block(string.Format("[Stage={0}, {1} actions]", stage, actionsList.Count), logLevel))
-        {
-          foreach (var action in actionsList)
-            Log.WriteLine(logLevel, "Action={0}", action);
-        }
-    }
   }
 }

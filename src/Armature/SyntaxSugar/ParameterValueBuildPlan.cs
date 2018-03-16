@@ -23,7 +23,7 @@ namespace Armature
 
     void IParameterValueBuildPlan.Register(IUnitSequenceMatcher unitSequenceMatcher) =>
       unitSequenceMatcher
-        .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(_parameterMatcher, ParameterMatcherWeight.Lowest + 1))
-        .AddBuildAction(BuildStage.Create, _buildAction, _weight);
+        .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(_parameterMatcher, _weight))
+        .AddBuildAction(BuildStage.Create, _buildAction);
   }
 }

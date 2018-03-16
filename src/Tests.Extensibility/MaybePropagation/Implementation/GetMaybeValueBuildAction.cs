@@ -1,4 +1,5 @@
 ﻿using Armature.Core;
+using Armature.Logging;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {
@@ -23,5 +24,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
       else
         throw new MaybeIsNothingException();
     }
+    
+    public override string ToString() => GetType().GetShortName();
   }
 }

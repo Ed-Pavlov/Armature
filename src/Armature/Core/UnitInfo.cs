@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Armature.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Core
@@ -49,6 +50,6 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public static bool operator !=(UnitInfo left, UnitInfo right) => !Equals(left, right);
 
-    public override string ToString() => string.Format("[Id={0}, Token={1}]", Id, Token ?? "null");
+    public override string ToString() => string.Format("{0}, {1}", Id.AsLogString(), Token.AsLogString());
   }
 }
