@@ -24,6 +24,18 @@ namespace Armature.Framework
       parent.Children.Add(unitSequenceMatcher);
       return unitSequenceMatcher;
     }
+    
+    [DebuggerStepThrough]
+    public static T AddUniqueUnitMatcher<T>(this IUnitSequenceMatcher parent, T unitSequenceMatcher)
+      where T : IUnitSequenceMatcher
+    {
+      var existentMatcher = parent.Children.FirstOrDefault(_ => _.Equals(unitSequenceMatcher));
+      if (existentMatcher != null)
+        throw new ArmatureException(string.Format("There is already matcher {0}", unitSequenceMatcher));
+
+      parent.Children.Add(unitSequenceMatcher);
+      return unitSequenceMatcher;
+    }
 
     /// <summary>
     ///   Adds the <paramref name="unitSequenceMatcher"/> into <see cref="parent" />, if <see cref="parent" /> already contains a build step equal to

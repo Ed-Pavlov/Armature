@@ -9,13 +9,20 @@ namespace Armature.Framework
   public static class SpecialToken
   {
     /// <summary>
-    ///   Is used to build a value for parameter
-    /// </summary>
-    public static readonly object ParameterValue = new Token("ParameterValue");
-
-    /// <summary>
     ///   Is used to "build" a <see cref="ConstructorInfo" /> for a type
     /// </summary>
     public static readonly object Constructor = new Token("Constructor");
+    
+    /// <summary>
+    ///   Is used to build a value for parameter
+    /// </summary>
+    public static readonly object InjectValue = new Token("InjectValue");
+    
+    /// <summary>
+    ///   Is used to build a <see cref="PropertyInfo"/> 
+    /// </summary>
+    public static readonly object Property = new Token("Property");
+    
+    public static bool IsSpecial(this object obj) => obj is Token token && (token == Constructor || token == InjectValue || token == Property || token == InjectValue);
   }
 }

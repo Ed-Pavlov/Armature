@@ -32,7 +32,7 @@ namespace Tests.Functional
 
       target
         .AddOrGetUnitMatcher(new AnyUnitSequenceMatcher())
-        .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(new AnyStringMatcher(), 0))
+        .AddOrGetUnitMatcher(new LastUnitSequenceMatcher(new AnyStringMatcher(), 0))
         .AddBuildAction(InterceptBuildStage, new AddPostfixToString(Postfix));
 
       // --act

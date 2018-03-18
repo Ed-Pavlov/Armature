@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Armature;
+using Armature.Core;
 using Armature.Framework;
 using Armature.Framework.BuildActions;
 using FluentAssertions;
@@ -168,7 +169,7 @@ namespace Tests.Functional
         .AsInstance(expected2);
 
       // --act
-      var buildStep = new WeakUnitSequenceMatcher(Match.Type<List<IDisposableValue1>>(null), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      var buildStep = new WildcardUnitSequenceMatcher(Match.Type<List<IDisposableValue1>>(null), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
       buildStep.AddBuildAction(
         BuildStage.Create,
         new RedirectManyTypesBuildAction<IDisposableValue1>(

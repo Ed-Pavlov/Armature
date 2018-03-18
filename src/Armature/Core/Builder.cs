@@ -8,7 +8,7 @@ namespace Armature.Core
 {
   /// <summary>
   ///   The "dependency injection builder" contains build steps for units and method <see cref="BuildUnit(Armature.Core.UnitInfo,Armature.Core.BuildPlansCollection)" />
-  ///   Building a unit it goes over all "build stages", for each stage it gets a build step if any and executes it
+  ///   Building a unit it goes over all "build stages", for each stage it gets a build step if any and executes it see
   ///   <see cref="Builder(System.Collections.Generic.IEnumerable{System.Object},Armature.Core.Builder[])" /> for details
   /// </summary>
   public class Builder : BuildPlansCollection
@@ -42,20 +42,36 @@ namespace Armature.Core
     ///   Builds a unit represented by <see cref="UnitInfo" />
     /// </summary>
     /// <param name="unitInfo">Building unit "id"</param>
-    /// <param name="runtimeBuildPlans">Additional build plans to build a unit or its dependencies</param>
+    /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
     /// <returns>Returns an instance or null if null is registered as an unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
-    public object BuildUnit(UnitInfo unitInfo, BuildPlansCollection runtimeBuildPlans = null)
+    public object BuildUnit(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null) => 
+      Build(unitInfo, auxBuildPlans, BuildSession.BuildUnit).Value;
+
+    /// <summary>
+    ///   Builds all units represented by <see cref="UnitInfo" />
+    /// </summary>
+    /// <param name="unitInfo">Building unit "id"</param>
+    /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
+    /// <returns>Returns an instance or null if null is registered as an unit.</returns>
+    /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
+    public IReadOnlyList<object> BuildAllUnits(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null)
     {
-      var buildResult = BuildSession.BuildUnit(unitInfo, _stages, this, runtimeBuildPlans);
+      var buildResult = Build(unitInfo, auxBuildPlans, BuildSession.BuildAllUnits);
+      return buildResult.Select(_ => _.Value).ToArray();
+    }
+    
+    private T Build<T>(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans, Func<UnitInfo, IEnumerable<object>, BuildPlansCollection, BuildPlansCollection, T> build)
+    {
+      var buildResult = build(unitInfo, _stages, this, auxBuildPlans);
       if (buildResult != null)
-        return buildResult.Value;
+        return buildResult;
 
       if (_parentBuilders != null)
         foreach (var parentBuilder in _parentBuilders)
           try
           {
-            return parentBuilder.BuildUnit(unitInfo, runtimeBuildPlans);
+            return parentBuilder.Build(unitInfo, auxBuildPlans, build);
           }
           catch (Exception)
           {

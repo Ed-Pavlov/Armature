@@ -13,7 +13,7 @@ namespace Armature.Core
     public readonly object Value;
 
     [DebuggerStepThrough]
-    public BuildResult(object value) => Value = value;
+    public BuildResult([CanBeNull] object value) => Value = value;
 
     [DebuggerStepThrough]
     public override string ToString() => Value.AsLogString();

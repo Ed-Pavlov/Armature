@@ -8,6 +8,11 @@ namespace Armature.Common
   internal static class DictionaryExtension
   {
     [DebuggerStepThrough]
+    [CanBeNull]
+    public static TValue GetValueSafe<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default) =>
+      dictionary.TryGetValue(key, out var value) ? value : defaultValue;
+    
+    [DebuggerStepThrough]
     public static TValue GetOrCreateValue<TKey, TValue>([NotNull] this Dictionary<TKey, TValue> dictionary, [NotNull] TKey key, [NotNull] Func<TValue> createValue)
     {
       if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
@@ -22,10 +27,5 @@ namespace Armature.Common
 
       return value;
     }
-
-    [DebuggerStepThrough]
-    [CanBeNull]
-    public static TValue GetValueSafe<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default) =>
-      dictionary.TryGetValue(key, out var value) ? value : defaultValue;
   }
 }

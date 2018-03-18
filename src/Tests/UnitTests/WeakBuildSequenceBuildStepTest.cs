@@ -20,8 +20,8 @@ namespace Tests.UnitTests
       var expected = new SingletonBuildAction();
 
       // --arrange
-      var target = new WeakUnitSequenceMatcher(Match.Type<IDisposableValue1>(null), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
-      var next = new WeakUnitSequenceMatcher(Match.Type<IDisposable>(null), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      var target = new WildcardUnitSequenceMatcher(Match.Type<IDisposableValue1>(null), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      var next = new WildcardUnitSequenceMatcher(Match.Type<IDisposable>(null), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
       target.AddOrGetUnitMatcher(next);
       next.AddBuildAction(BuildStage.Cache, expected);
 
@@ -38,13 +38,13 @@ namespace Tests.UnitTests
     public void should_return_children_merged_actions()
     {
       // --arrange
-      var buildStep1 = new LeafUnitSequenceMatcher(Match.Type<int>(null), 0);
+      var buildStep1 = new LastUnitSequenceMatcher(Match.Type<int>(null), 0);
       buildStep1.AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
       var singletonAction = new SingletonBuildAction();
       var buildStep2 = new AnyUnitSequenceMatcher();
       buildStep2.AddBuildAction(BuildStage.Cache, singletonAction);
 
-      var target = new WeakUnitSequenceMatcher(Match.Type<string>(null), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      var target = new WildcardUnitSequenceMatcher(Match.Type<string>(null), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
       target.AddOrGetUnitMatcher(buildStep1);
       target.AddOrGetUnitMatcher(buildStep2);
 

@@ -24,13 +24,13 @@ namespace Armature
     {
       if (type == null) throw new ArgumentNullException(nameof(type));
 
-      var buildStep = new WeakUnitSequenceMatcher(Match.Type(type, token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      var buildStep = new WildcardUnitSequenceMatcher(Match.Type(type, token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
       return new BuildingSugar(_unitSequenceMatcher.AddOrGetUnitMatcher(buildStep));
     }
 
     public TreatSugar<T> Treat<T>(object token = null)
     {
-      var buildStep = new WeakUnitSequenceMatcher(Match.Type<T>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      var buildStep = new WildcardUnitSequenceMatcher(Match.Type<T>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
       return new TreatSugar<T>(_unitSequenceMatcher.AddOrGetUnitMatcher(buildStep));
     }
 

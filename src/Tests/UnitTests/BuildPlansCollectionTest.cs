@@ -15,7 +15,7 @@ namespace Tests.UnitTests
     public void should_return_all_merged_actions()
     {
       // --arrange
-      var buildStep1 = new LeafUnitSequenceMatcher(Match.Type<string>(null), 0);
+      var buildStep1 = new LastUnitSequenceMatcher(Match.Type<string>(null), 0);
       buildStep1.AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
       var singletonAction = new SingletonBuildAction();
       var buildStep2 = new AnyUnitSequenceMatcher();

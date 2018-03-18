@@ -21,7 +21,7 @@ namespace Armature
 
     /// <summary>
     ///   Builds a Unit registered as type <typeparamref name="T" /> using additional <see cref="parameters" /> they can be values or
-    ///   implementation of <see cref="IParameterValueBuildPlan" />. See <see cref="For" /> for details.
+    ///   implementation of <see cref="IBuildPlan" />. See <see cref="ForParameter" /> for details.
     /// </summary>
     [DebuggerStepThrough]
     public static T Build<T>([NotNull] this Builder builder, params object[] parameters) => builder.Build<T>(null, parameters);

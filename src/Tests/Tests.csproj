@@ -62,12 +62,15 @@
     <Compile Include="Functional\AdjusterSugarTest.cs" />
     <Compile Include="Functional\AttributedConstructorResolverTest.cs" />
     <Compile Include="Functional\AutoWiringTest.cs" />
+    <Compile Include="Functional\BuildAllTest.cs" />
     <Compile Include="Functional\CachingTest.cs" />
     <Compile Include="Functional\CaseTest.cs" />
     <Compile Include="Functional\FunctionalTestHelper.cs" />
+    <Compile Include="Functional\InjectIntoPropertyTest.cs" />
     <Compile Include="Functional\InterceptionTest.cs" />
     <Compile Include="Functional\MultiParentTest.cs" />
     <Compile Include="Functional\OpenGenericTest.cs" />
+    <Compile Include="Functional\PropertyIntializationTest.cs" />
     <Compile Include="Functional\ReplacingRegistrationsTest.cs" />
     <Compile Include="Functional\SessionalParametersTest.cs" />
     <Compile Include="Functional\TestTypes.cs" />
@@ -77,6 +80,7 @@
     <Compile Include="PerformanceTest.cs" />
     <Compile Include="UnitTests\BuildPlansCollectionTest.cs" />
     <Compile Include="UnitTests\ArrayTailTest.cs" />
+    <Compile Include="UnitTests\DictionaryExtensionTest.cs" />
     <Compile Include="UnitTests\FindAttributedConstructorBuildStepTest.cs" />
     <Compile Include="UnitTests\GetConstructorByParameterTypesBuildActionTest.cs" />
     <Compile Include="UnitTests\RedirectOpenGenericTypeBuildActionTest.cs" />

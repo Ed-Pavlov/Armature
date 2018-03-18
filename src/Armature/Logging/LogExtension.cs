@@ -24,7 +24,7 @@ namespace Armature.Logging
       if (buildSequence.Length == 0)
         Log.WriteLine(logLevel, BuildsequenceIsEmpty);
       else if (buildSequence.Length == 1)
-        Log.WriteLine(logLevel, "BuildSequence{{{0}}}", buildSequence.GetLastItem());
+        Log.WriteLine(logLevel, "BuildSequence{{{0}}}", buildSequence.Last());
       else
         using (Log.Block(logLevel, "BuildSequence"))
         {

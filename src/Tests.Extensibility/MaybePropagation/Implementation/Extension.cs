@@ -1,5 +1,6 @@
 ﻿using System;
 using Armature;
+using Armature.Core;
 using Armature.Extensibility;
 using Armature.Framework;
 
@@ -17,7 +18,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
       var treat = treatSugar.AsUnitSequenceExtensibility();
       var uniqueToken = Guid.NewGuid();
       treat.UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueToken));
-      return new TreatSugar<T>(treat.UnitSequenceMatcher.AddOrGetUnitMatcher(new WeakUnitSequenceMatcher(Match.Type<T>(uniqueToken), 0)));
+      return new TreatSugar<T>(treat.UnitSequenceMatcher.AddOrGetUnitMatcher(new WildcardUnitSequenceMatcher(Match.Type<T>(uniqueToken), 0)));
     }
 
     /// <summary>

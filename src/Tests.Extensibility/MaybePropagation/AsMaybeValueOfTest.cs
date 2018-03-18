@@ -2,7 +2,6 @@
 using Armature;
 using Armature.Core;
 using Armature.Framework;
-using Armature.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Extensibility.MaybePropagation.Implementation;
@@ -109,7 +108,7 @@ namespace Tests.Extensibility.MaybePropagation
             .Treat<Section>(Token.Any)
             .AsMaybeValueOf()
             .Created<Maybe<Section>>(Token.Propagate))
-        .UsingParameters(For.Parameter<Section>().UseInjectPointIdAsToken());
+        .UsingParameters(ForParameter.OfType<Section>().UseInjectPointIdAsToken());
 
       var actual = builder.Build<Maybe<IReader>>();
 

@@ -5,17 +5,17 @@ using Armature.Logging;
 
 namespace Armature.Framework.BuildActions
 {
-  public class RedirectParameterInfoBuildAction : IBuildAction
+  public class RedirectPropertyInfoBuildAction : IBuildAction
   {
     private readonly object _token;
 
     [DebuggerStepThrough]
-    public RedirectParameterInfoBuildAction(object token = null) => _token = token;
+    public RedirectPropertyInfoBuildAction(object token = null) => _token = token;
 
     public void Process(IBuildSession buildSession)
     {
-      var parameterInfo = (ParameterInfo)buildSession.GetUnitUnderConstruction().Id;
-      var unitInfo = new UnitInfo(parameterInfo.ParameterType, _token);
+      var propertyInfo = (PropertyInfo)buildSession.GetUnitUnderConstruction().Id;
+      var unitInfo = new UnitInfo(propertyInfo.PropertyType, _token);
       buildSession.BuildResult = buildSession.BuildUnit(unitInfo);
     }
 

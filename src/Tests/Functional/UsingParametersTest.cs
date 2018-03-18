@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Globalization;
 using Armature;
+using Armature.Common;
 using Armature.Core;
-using Armature.Framework;
 using Armature.Interface;
-using Armature.Logging;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;
@@ -65,7 +63,7 @@ namespace Tests.Functional
       target
         .Treat<OneStringCtorClass>()
         .AsIs()
-        .UsingParameters(For.Parameter<string>().UseValue(null));
+        .UsingParameters(ForParameter.OfType<string>().UseValue(null));
 
       // --act
       var actual = target.Build<OneStringCtorClass>();
@@ -185,7 +183,7 @@ namespace Tests.Functional
       target
         .Treat<LevelOne>()
         .AsIs()
-        .UsingParameters(For.ParameterName("string").UseValue(expected));
+        .UsingParameters(ForParameter.Named("string").UseValue(expected));
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -205,7 +203,7 @@ namespace Tests.Functional
       target
         .Treat<LevelOne>()
         .AsIs()
-        .UsingParameters(For.ParameterId(null).UseValue(expected));
+        .UsingParameters(ForParameter.WithInjectPoint(null).UseValue(expected));
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -226,7 +224,7 @@ namespace Tests.Functional
       target
         .Treat<LevelOne>()
         .AsIs()
-        .UsingParameters(For.Parameter<string>().UseToken(rightToken));
+        .UsingParameters(ForParameter.OfType<string>().UseToken(rightToken));
 
       target
         .Treat<string>(rightToken)
@@ -257,7 +255,7 @@ namespace Tests.Functional
       target
         .Treat<LevelOne>()
         .AsIs()
-        .UsingParameters(For.Parameter<string>().UseResolver<int>((_, intValue) => intValue.ToString()));
+        .UsingParameters(ForParameter.OfType<string>().UseResolver<int>((_, intValue) => intValue.ToString()));
 
       // --act
       var actual = target.Build<LevelOne>(expectedInt);
@@ -276,13 +274,32 @@ namespace Tests.Functional
       target
         .Treat<LevelOne>()
         .AsIs()
-        .UsingParameters(For.Parameter<string>().UseValue(expected));
+        .UsingParameters(ForParameter.OfType<string>().UseValue(expected));
 
       // --act
       var actual = target.Build<LevelOne>(expected + "bad");
 
       // --assert
       actual.String.Should().Be(expected);
+    }
+    
+    [Test]
+    public void should_fail_if_value_for_the_same_parameter_registered_more_than_once()
+    {
+      const string expected = "expected29083";
+
+      // --arrange
+      var target = FunctionalTestHelper.CreateBuilder();
+
+      var adjusterSugar = target
+        .Treat<LevelOne>()
+        .AsIs();
+      
+      // --act
+      Action actual = () =>adjusterSugar .UsingParameters(ForParameter.OfType<string>().UseToken(expected), ForParameter.OfType<string>().UseValue("kldj"));
+      
+      // --assert
+      actual.ShouldThrowExactly<ArmatureException>();
     }
 
     [UsedImplicitly]

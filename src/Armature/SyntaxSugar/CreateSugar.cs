@@ -14,7 +14,7 @@ namespace Armature
 
     public AdjusterSugar ByDefault()
     {
-      var sequenceMatcher = new WeakUnitSequenceMatcher(Match.Type<T>(_token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type<T>(_token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
 
       UnitSequenceMatcher
         .AddOrGetUnitMatcher(sequenceMatcher)
@@ -24,7 +24,7 @@ namespace Armature
     
     public AdjusterSugar ByReflection()
     {
-      var sequenceMatcher = new WeakUnitSequenceMatcher(Match.Type<T>(_token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type<T>(_token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
 
       UnitSequenceMatcher
         .AddOrGetUnitMatcher(sequenceMatcher)

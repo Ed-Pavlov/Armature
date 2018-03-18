@@ -7,12 +7,12 @@ using Armature.Logging;
 
 namespace Armature.Framework.BuildActions
 {
-  public class GetAttributedConstructorBuildAction<T> : IBuildAction
+  public class GeConstructorBytAttributeBuildAction<T> : IBuildAction
   {
     private readonly Predicate<T> _predicate;
 
     [DebuggerStepThrough]
-    public GetAttributedConstructorBuildAction(Predicate<T> predicate = null) => _predicate = predicate;
+    public GeConstructorBytAttributeBuildAction(Predicate<T> predicate = null) => _predicate = predicate;
 
     public void Process(IBuildSession buildSession)
     {

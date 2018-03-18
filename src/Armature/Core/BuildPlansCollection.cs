@@ -57,7 +57,7 @@ namespace Armature.Core
     ///   Reuse implementation of <see cref="T:Armature.Core.UnitSequenceMatcherBase" />
     ///   to implement <see cref="T:Armature.Core.BuildPlansCollection" /> public interface
     /// </summary>
-    private class Root : UnitSequenceMatcherBase
+    private class Root : UnitSequenceMathcherWithChildren
     {
       public Root() : base(0)
       {

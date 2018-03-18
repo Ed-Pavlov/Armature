@@ -13,7 +13,7 @@ namespace Armature.OverrideSugar
     {
       if (buildPlan == null) throw new ArgumentNullException(nameof(buildPlan));
 
-      var newSequenceMatcher = new WeakUnitSequenceMatcher(Match.Type<T>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      var newSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
       var oldSequenceMatcher = buildPlan.Children.Single(_ => _.Equals(newSequenceMatcher));
 
       buildPlan.Children.Remove(oldSequenceMatcher);
@@ -25,6 +25,6 @@ namespace Armature.OverrideSugar
   public class OverrideSugar<T> : TreatSugar<T>
   {
     [DebuggerStepThrough]
-    public OverrideSugar(WeakUnitSequenceMatcher sequenceMatcher, [NotNull] BuildPlansCollection container) : base(sequenceMatcher) { }
+    public OverrideSugar(WildcardUnitSequenceMatcher sequenceMatcher, [NotNull] BuildPlansCollection container) : base(sequenceMatcher) { }
   }
 }

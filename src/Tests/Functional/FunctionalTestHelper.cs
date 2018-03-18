@@ -1,6 +1,8 @@
 ﻿using Armature.Core;
 using Armature.Framework;
 using Armature.Framework.BuildActions;
+using Armature.Framework.Parameters;
+using Armature.Framework.Properties;
 
 namespace Tests.Functional
 {
@@ -16,23 +18,32 @@ namespace Tests.Functional
     {
       var treatAll = new AnyUnitSequenceMatcher
       {
-        new LeafUnitSequenceMatcher(ConstructorMatcher.Instance, 0)
+        // inject into constructor
+        new LastUnitSequenceMatcher(ConstructorMatcher.Instance, 0)
           .AddBuildAction(
             BuildStage.Create,
             new OrderedBuildActionContainer
             {
               new GetInjectPointConstructorBuildAction(),
-              new GetLongesConstructorBuildAction()
+              GetLongesConstructorBuildAction.Instance
             }),
 
-        new LeafUnitSequenceMatcher(ParameterMatcher.Instance, ParameterMatchingWeight.Lowest)
+        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance, ParameterMatchingWeight.Lowest)
           .AddBuildAction(
             BuildStage.Create,
             new OrderedBuildActionContainer
             {
-              new RedirectParameterInfoToTypeAndTokenBuildAction(),
-              new RedirectParameterInfoBuildAction()
-            })
+              RedirectParameterInjectPointToTypeAndTokenBuildAction.Instance,
+              new RedirectParameterToTypeAndTokenBuildAction()
+            }),
+        
+        new LastUnitSequenceMatcher(PropetyValueMatcher.Instance, ParameterMatchingWeight.Lowest)
+          .AddBuildAction(
+            BuildStage.Create,
+            new OrderedBuildActionContainer
+            {
+              new RedirectPropertyInfoBuildAction()
+            }),
       };
 
       var container = new Builder(stages, parentBuilders);

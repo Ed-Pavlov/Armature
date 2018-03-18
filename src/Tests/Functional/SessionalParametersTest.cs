@@ -61,8 +61,8 @@ namespace Tests.Functional
 
       // --act
       var actual = target.Build<Subject>(
-        For.ParameterId(null).UseValue(expectedString1),
-        For.ParameterName("string2").UseValue(expectedString2));
+        ForParameter.WithInjectPoint(null).UseValue(expectedString1),
+        ForParameter.Named("string2").UseValue(expectedString2));
 
       // --assert
       actual.String1.Should().Be(expectedString1);
@@ -80,7 +80,7 @@ namespace Tests.Functional
         .AsIs();
 
       // --act
-      var actual = target.Build<OneStringCtorClass>(For.Parameter<string>().UseValue(null));
+      var actual = target.Build<OneStringCtorClass>(ForParameter.OfType<string>().UseValue(null));
 
       // --assert
       actual.Text.Should().BeNull();

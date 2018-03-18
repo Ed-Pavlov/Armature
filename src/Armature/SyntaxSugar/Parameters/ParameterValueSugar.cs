@@ -8,13 +8,13 @@ using JetBrains.Annotations;
 
 namespace Armature
 {
-  public class ParameterMatcherSugar
+  public class ParameterValueSugar
   {
     private readonly IUnitMatcher _parameterMatcher;
     private readonly int _weight;
 
     [DebuggerStepThrough]
-    public ParameterMatcherSugar([NotNull] IUnitMatcher parameterMatcher, int weight)
+    public ParameterValueSugar([NotNull] IUnitMatcher parameterMatcher, int weight)
     {
       _parameterMatcher = parameterMatcher ?? throw new ArgumentNullException(nameof(parameterMatcher));
       _weight = weight;
@@ -31,13 +31,13 @@ namespace Armature
     public ParameterValueBuildPlan UseToken([NotNull] object token)
     {
       if (token == null) throw new ArgumentNullException(nameof(token));
-      return new ParameterValueBuildPlan(_parameterMatcher, new RedirectParameterInfoBuildAction(token), _weight);
+      return new ParameterValueBuildPlan(_parameterMatcher, new RedirectParameterToTypeAndTokenBuildAction(token), _weight);
     }
 
     public ParameterValueBuildPlan UseResolver<T>(Func<IBuildSession, T, object> resolver) => 
       new ParameterValueBuildPlan(_parameterMatcher, new CreateWithFactoryMethodBuildAction<T, object>(resolver), _weight);
     
-    public ParameterValueBuildPlan UseInjectPointIdAsToken() => new ParameterValueBuildPlan(_parameterMatcher, RedirectParameterInfoToTypeAndTokenBuildAction.Instance, _weight);
+    public ParameterValueBuildPlan UseInjectPointIdAsToken() => new ParameterValueBuildPlan(_parameterMatcher, RedirectParameterInjectPointToTypeAndTokenBuildAction.Instance, _weight);
   }
 
   /// <summary>
@@ -45,8 +45,8 @@ namespace Armature
   /// </summary>
   /// <typeparam name="T">The type of parameter</typeparam>
   [SuppressMessage("ReSharper", "UnusedTypeParameter")]
-  public class ParameterMatcherSugar<T> : ParameterMatcherSugar
+  public class ParameterValueSugar<T> : ParameterValueSugar
   {
-    public ParameterMatcherSugar([NotNull] IUnitMatcher parameterMatcher, int weight) : base(parameterMatcher, weight) { }
+    public ParameterValueSugar([NotNull] IUnitMatcher parameterMatcher, int weight) : base(parameterMatcher, weight) { }
   }
 }

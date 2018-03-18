@@ -24,5 +24,11 @@ namespace Armature.Core
     /// </summary>
     /// <returns>Returns an instance or null if unit can't be built.</returns>
     BuildResult BuildUnit([NotNull] UnitInfo unitInfo);
+    
+    /// <summary>
+    /// Builds all units represented by <see cref="UnitInfo" /> in the context of the current build session
+    /// </summary>
+    /// <returns>Returns an instance or null if unit can't be built.</returns>
+    IReadOnlyList<BuildResult> BuildAllUnits([NotNull] UnitInfo unitInfo);
   }
 }

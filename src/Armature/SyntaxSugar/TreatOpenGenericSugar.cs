@@ -43,7 +43,7 @@ namespace Armature
       var nextBuildStep = _unitSequenceMatcher;
       if (addDefaultCreateAction == AddCreationBuildStep.Yes)
       {
-        nextBuildStep = new WeakUnitSequenceMatcher(Match.OpenGenericType(openGenericType, token), UnitSequenceMatchingWeight.WeakMatchingOpenGenericUnit);
+        nextBuildStep = new WildcardUnitSequenceMatcher(Match.OpenGenericType(openGenericType, token), UnitSequenceMatchingWeight.WeakMatchingOpenGenericUnit);
 
         _unitSequenceMatcher
           .AddOrGetUnitMatcher(nextBuildStep)

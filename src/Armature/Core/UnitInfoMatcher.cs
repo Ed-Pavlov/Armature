@@ -23,24 +23,17 @@ namespace Armature.Core
     public virtual bool Matches(UnitInfo unitInfo) => UnitInfo.Equals(unitInfo);
 
     [DebuggerStepThrough]
-    public bool Equals(IUnitMatcher other) => Equals(other as UnitInfoMatcher);
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), UnitInfo.AsLogString());
+
+    #region Equality
+    [DebuggerStepThrough]
+    public virtual bool Equals(IUnitMatcher obj) => obj is UnitInfoMatcher other && UnitInfo.Equals(other.UnitInfo); 
 
     [DebuggerStepThrough]
     public override bool Equals(object obj) => Equals(obj as UnitInfoMatcher);
 
     [DebuggerStepThrough]
-    private bool Equals(UnitInfoMatcher other)
-    {
-      if (ReferenceEquals(null, other)) return false;
-      if (ReferenceEquals(this, other)) return true;
-
-      return UnitInfo == other.UnitInfo;
-    }
-
-    [DebuggerStepThrough]
     public override int GetHashCode() => UnitInfo.GetHashCode();
-
-    [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), UnitInfo.AsLogString());
+    #endregion
   }
 }

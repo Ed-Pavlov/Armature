@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Armature.Common;
@@ -8,18 +9,20 @@ using JetBrains.Annotations;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Applies passed <see cref="IUnitMatcher" /> to the unit under construction.
-  ///   <see cref="LeafUnitSequenceMatcher(Armature.Core.IUnitMatcher,int)" /> and <see cref="GetBuildActions" /> for details
+  /// Matches only unit under construction in the sequence and applies passed <see cref="IUnitMatcher" /> to it.
+  /// See <see cref="LastUnitSequenceMatcher(Armature.Core.IUnitMatcher,int)" /> and <see cref="GetBuildActions" /> for details
   /// </summary>
-  public class LeafUnitSequenceMatcher : UnitSequenceMatcherBase
+  public class LastUnitSequenceMatcher : UnitSequenceMatcher
   {
     private readonly IUnitMatcher _unitMatcher;
 
     /// <param name="unitMatcher">Object contains the logic of matching with building unit</param>
     /// <param name="weight">The weight of matching</param>
     [DebuggerStepThrough]
-    public LeafUnitSequenceMatcher([NotNull] IUnitMatcher unitMatcher, int weight) : base(weight) => 
+    public LastUnitSequenceMatcher([NotNull] IUnitMatcher unitMatcher, int weight) : base(weight) => 
       _unitMatcher = unitMatcher ?? throw new ArgumentNullException(nameof(unitMatcher));
+
+    public override ICollection<IUnitSequenceMatcher> Children => throw new NotSupportedException("LastUnitSequenceMatcher can't contain children");
 
     /// <summary>
     ///   If <paramref name="buildingUnitsSequence" /> contains more then one element return null. This matcher matches only unit under construction which is
@@ -30,7 +33,7 @@ namespace Armature.Core
     {
       if (buildingUnitsSequence.Length != 1) return null;
 
-      var unitInfo = buildingUnitsSequence.GetLastItem();
+      var unitInfo = buildingUnitsSequence.Last();
       var matches = _unitMatcher.Matches(unitInfo);
 
       if (!matches)
@@ -51,17 +54,17 @@ namespace Armature.Core
     public override string ToString() => string.Format("{0}.{1}", GetType().GetShortName(), _unitMatcher);
 
     #region Equality
-    private bool Equals(LeafUnitSequenceMatcher other)
+    private bool Equals(LastUnitSequenceMatcher other)
     {
       if (ReferenceEquals(null, other)) return false;
       if (ReferenceEquals(this, other)) return true;
 
-      return Weight == other.Weight && Equals(_unitMatcher, other._unitMatcher);
+      return Weight == other.Weight && _unitMatcher.Equals(other._unitMatcher);
     }
 
-    public override bool Equals(IUnitSequenceMatcher obj) => Equals(obj as LeafUnitSequenceMatcher);
+    public override bool Equals(IUnitSequenceMatcher obj) => Equals(obj as LastUnitSequenceMatcher);
 
-    public override bool Equals(object obj) => Equals(obj as LeafUnitSequenceMatcher);
+    public override bool Equals(object obj) => Equals(obj as LastUnitSequenceMatcher);
 
     public override int GetHashCode()
     {
@@ -70,12 +73,6 @@ namespace Armature.Core
         return (Weight * 397) ^ (_unitMatcher != null ? _unitMatcher.GetHashCode() : 0);
       }
     }
-
-    [DebuggerStepThrough]
-    public static bool operator ==(LeafUnitSequenceMatcher left, LeafUnitSequenceMatcher right) => Equals(left, right);
-
-    [DebuggerStepThrough]
-    public static bool operator !=(LeafUnitSequenceMatcher left, LeafUnitSequenceMatcher right) => !Equals(left, right);
     #endregion
   }
 }

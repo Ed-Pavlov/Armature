@@ -52,7 +52,7 @@ namespace Armature
       var nextBuildStep = UnitSequenceMatcher;
       if (addDefaultCreateAction == AddCreationBuildStep.Yes)
       {
-        nextBuildStep = new WeakUnitSequenceMatcher(Match.Type<TRedirect>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+        nextBuildStep = new StrictUnitSequenceMatcher(Match.Type<TRedirect>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
 
         UnitSequenceMatcher
           .AddOrGetUnitMatcher(nextBuildStep)

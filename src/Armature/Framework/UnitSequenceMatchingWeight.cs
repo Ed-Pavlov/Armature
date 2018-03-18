@@ -28,12 +28,12 @@ namespace Armature.Framework
     public static int AnyUnit => _any;
 
     /// <summary>
-    ///   Used for <see cref="WeakUnitSequenceMatcher" /> wich matches with a <see cref="UnitInfo" /> contains an open generic <see cref="Type" />
+    ///   Used for <see cref="WildcardUnitSequenceMatcher" /> wich matches with a <see cref="UnitInfo" /> contains an open generic <see cref="Type" />
     /// </summary>
     public static int WeakMatchingOpenGenericUnit => _weakOpenGeneric;
 
     /// <summary>
-    ///   Used for <see cref="WeakUnitSequenceMatcher" /> wich matches with a <see cref="UnitInfo" /> contains a <see cref="Type" />
+    ///   Used for <see cref="WildcardUnitSequenceMatcher" /> wich matches with a <see cref="UnitInfo" /> contains a <see cref="Type" />
     /// </summary>
     public static int WeakMatchingTypeUnit => _weak;
   }

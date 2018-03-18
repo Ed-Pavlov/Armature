@@ -6,17 +6,20 @@ using Armature.Logging;
 
 namespace Armature.Framework.BuildActions
 {
-  public class RedirectParameterInfoToTypeAndTokenBuildAction : IBuildAction
+  public class RedirectParameterInjectPointToTypeAndTokenBuildAction : IBuildAction
   {
-    public static readonly IBuildAction Instance = new RedirectParameterInfoToTypeAndTokenBuildAction();
-    
+    public static readonly IBuildAction Instance = new RedirectParameterInjectPointToTypeAndTokenBuildAction();
+
+    private RedirectParameterInjectPointToTypeAndTokenBuildAction()
+    {
+    }
+
     public void Process(IBuildSession buildSession)
     {
       var parameterInfo = (ParameterInfo)buildSession.GetUnitUnderConstruction().Id;
 
       var attribute = parameterInfo
-        .GetCustomAttributes(typeof(InjectAttribute), true)
-        .OfType<InjectAttribute>()
+        .GetCustomAttributes<InjectAttribute>()
         .SingleOrDefault();
 
       if (attribute == null)

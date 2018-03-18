@@ -11,7 +11,7 @@ namespace Armature
     {
       if (container == null) throw new ArgumentNullException(nameof(container));
 
-      var unitSequenceMatcher = new WeakUnitSequenceMatcher(Match.Type<T>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
       return new TreatSugar<T>(container.AddOrGetUnitMatcher(unitSequenceMatcher));
     }
 
@@ -19,7 +19,7 @@ namespace Armature
     {
       if (container == null) throw new ArgumentNullException(nameof(container));
 
-      var buildStep = new WeakUnitSequenceMatcher(Match.OpenGenericType(openGenericType, token), UnitSequenceMatchingWeight.WeakMatchingOpenGenericUnit);
+      var buildStep = new WildcardUnitSequenceMatcher(Match.OpenGenericType(openGenericType, token), UnitSequenceMatchingWeight.WeakMatchingOpenGenericUnit);
       return new TreatOpenGenericSugar(container.AddOrGetUnitMatcher(buildStep), container);
     }
 
@@ -37,7 +37,7 @@ namespace Armature
     {
       if (container == null) throw new ArgumentNullException(nameof(container));
 
-      var buildStep = new WeakUnitSequenceMatcher(Match.Type(type, token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
+      var buildStep = new WildcardUnitSequenceMatcher(Match.Type(type, token), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
       return new BuildingSugar(container.AddOrGetUnitMatcher(buildStep));
     }
   }

@@ -26,7 +26,7 @@ namespace Armature.Core
     MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight);
 
     /// <summary>
-    ///   Adds a build action <see cref="IBuildAction" /> for a unit which is matched by this matcher
+    ///   Adds a <see cref="IBuildAction" /> for a unit which is matched by this matcher
     /// </summary>
     /// <param name="buildStage">Build stage in which the build action is applied</param>
     /// <param name="buildAction">Build action</param>

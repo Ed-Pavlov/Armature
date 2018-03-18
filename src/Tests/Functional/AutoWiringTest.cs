@@ -19,7 +19,7 @@ namespace Tests.Functional
       target
         .Treat<Consumer>()
         .AsIs()
-        .UsingParameters(For.ParameterId(Consumer.PointId).UseValue(expected));
+        .UsingParameters(ForParameter.WithInjectPoint(Consumer.PointId).UseValue(expected));
 
       target
         .Treat<string>(Consumer.PointId)

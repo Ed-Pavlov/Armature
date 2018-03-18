@@ -7,6 +7,9 @@ using JetBrains.Annotations;
 
 namespace Armature.Framework
 {
+  /// <summary>
+  /// Matches any sequence of building units, thus passing the unit under construction to its children and merge their build actions with its own.
+  /// </summary>
   /// <remarks>
   ///   This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
   ///   new AnyUnitSequenceMatcher
@@ -17,13 +20,11 @@ namespace Armature.Framework
   ///       .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
   ///   };
   /// </remarks>
-  public class AnyUnitSequenceMatcher : UnitSequenceMatcherBase, IEnumerable
+  public class AnyUnitSequenceMatcher : UnitSequenceMathcherWithChildren, IEnumerable
   {
     public AnyUnitSequenceMatcher() : this(UnitSequenceMatchingWeight.AnyUnit) { }
-
     public AnyUnitSequenceMatcher(int weight) : base(weight) { }
 
-    
     /// <summary>
     ///   Matches any <see cref="UnitInfo" />, so it pass the building unit info into its children and returns merged result
     /// </summary>

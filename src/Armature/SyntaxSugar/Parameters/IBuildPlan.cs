@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace Armature
 {
-  public interface IParameterValueBuildPlan
+  public interface IBuildPlan
   {
     void Register([NotNull] IUnitSequenceMatcher unitSequenceMatcher);
   }

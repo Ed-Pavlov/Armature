@@ -146,8 +146,8 @@ namespace Tests.Functional
       var actual3 = target.Build<EmptyCtorClass>();
 
       // --assert
-      actual1.Should().Be(actual2);
-      actual1.Should().Be(actual3);
+      actual1.Should().BeSameAs(actual2);
+      actual1.Should().BeSameAs(actual3);
     }
   }
 }

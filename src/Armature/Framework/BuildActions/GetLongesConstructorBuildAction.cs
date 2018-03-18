@@ -10,6 +10,12 @@ namespace Armature.Framework.BuildActions
 {
   public class GetLongesConstructorBuildAction : IBuildAction
   {
+    public static readonly IBuildAction Instance = new GetLongesConstructorBuildAction();
+
+    private GetLongesConstructorBuildAction()
+    {
+    }
+
     public void Process(IBuildSession buildSession)
     {
       var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();

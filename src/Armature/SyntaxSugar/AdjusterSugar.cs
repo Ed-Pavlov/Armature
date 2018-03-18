@@ -4,6 +4,8 @@ using Armature.Core;
 using Armature.Extensibility;
 using Armature.Framework;
 using Armature.Framework.BuildActions;
+using Armature.Framework.Parameters;
+using Armature.Framework.Properties;
 using Armature.Interface;
 using JetBrains.Annotations;
 using ConstructorMatcher = Armature.Framework.ConstructorMatcher;
@@ -17,8 +19,8 @@ namespace Armature
     public AdjusterSugar([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) {} 
 
     /// <summary>
-    ///   The set of values for parameters of registered Unit can be values or implementation of <see cref="IParameterValueBuildPlan" />.
-    ///   See <see cref="For" /> for details
+    ///   The set of values for parameters of registered Unit can be values or implementation of <see cref="IBuildPlan" />.
+    ///   See <see cref="ForParameter" /> for details
     /// </summary>
     public AdjusterSugar UsingParameters(params object[] values)
     {
@@ -27,14 +29,35 @@ namespace Armature
 
       foreach (var parameter in values)
       {
-        if (parameter is IParameterValueBuildPlan parameterMatcher)
-          parameterMatcher.Register(UnitSequenceMatcher);
+        if (parameter is IParameterValueBuildPlan buildPlan)
+          buildPlan.Register(UnitSequenceMatcher);
+        else if(parameter is IBuildPlan)
+          throw new ArmatureException("IParameterValueBuildPlan or plain object value expected"); 
         else
           UnitSequenceMatcher
-            .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(new ParameterByWeakTypeMatcher(parameter), ParameterMatchingWeight.WeakTypedParameter))
+            .AddOrGetUnitMatcher(new LastUnitSequenceMatcher(new ParameterByWeakTypeMatcher(parameter), ParameterMatchingWeight.WeakTypedParameter))
             .AddBuildAction(BuildStage.Create, new SingletonBuildAction(parameter));
       }
 
+      return this;
+    }
+
+    public AdjusterSugar InjectProperty(params object[] values)
+    {
+      UnitSequenceMatcher.AddBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance);
+      
+      foreach (var value in values)
+      {
+        if(value is IPropertyValueBuildPlan buildPlan)
+          buildPlan.Register(UnitSequenceMatcher);
+        else if(value is IBuildPlan)
+          throw new ArmatureException("IPropertyValueBuildPlanor plain object value expected"); 
+        else
+          UnitSequenceMatcher
+            .AddOrGetUnitMatcher(new LastUnitSequenceMatcher(new PropertyByWeakTypeMatcher(value), ParameterMatchingWeight.WeakTypedParameter))
+            .AddBuildAction(BuildStage.Create, new SingletonBuildAction(value));
+      }
+      
       return this;
     }
 
@@ -49,7 +72,7 @@ namespace Armature
     public AdjusterSugar UsingInjectPointConstructor(object injectionPointId)
     {
       UnitSequenceMatcher
-        .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(ConstructorMatcher.Instance, 0))
+        .AddOrGetUnitMatcher(new LastUnitSequenceMatcher(ConstructorMatcher.Instance, 0))
         .AddBuildAction(BuildStage.Create, new GetInjectPointConstructorBuildAction(injectionPointId));
       return this;
     }
@@ -59,7 +82,7 @@ namespace Armature
     public AdjusterSugar UsingConstructorWithParameters(params Type[] parameterTypes)
     {
       UnitSequenceMatcher
-        .AddOrGetUnitMatcher(new LeafUnitSequenceMatcher(ConstructorMatcher.Instance, 0))
+        .AddOrGetUnitMatcher(new LastUnitSequenceMatcher(ConstructorMatcher.Instance, 0))
         .AddBuildAction(BuildStage.Create, new GetConstructorByParameterTypesBuildAction(parameterTypes));
       return this;
     }
