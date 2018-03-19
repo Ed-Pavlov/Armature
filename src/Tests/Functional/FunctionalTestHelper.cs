@@ -1,8 +1,13 @@
 ﻿using Armature.Core;
 using Armature.Framework;
 using Armature.Framework.BuildActions;
-using Armature.Framework.Parameters;
-using Armature.Framework.Properties;
+using Armature.Framework.BuildActions.Constructor;
+using Armature.Framework.BuildActions.Parameter;
+using Armature.Framework.BuildActions.Property;
+using Armature.Framework.UnitMatchers;
+using Armature.Framework.UnitMatchers.Parameters;
+using Armature.Framework.UnitMatchers.Properties;
+using Armature.Framework.UnitSequenceMatcher;
 
 namespace Tests.Functional
 {
@@ -28,7 +33,7 @@ namespace Tests.Functional
               GetLongesConstructorBuildAction.Instance
             }),
 
-        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance, ParameterMatchingWeight.Lowest)
+        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance, InjectPointMatchingWeight.Lowest)
           .AddBuildAction(
             BuildStage.Create,
             new OrderedBuildActionContainer
@@ -37,7 +42,7 @@ namespace Tests.Functional
               new RedirectParameterToTypeAndTokenBuildAction()
             }),
         
-        new LastUnitSequenceMatcher(PropetyValueMatcher.Instance, ParameterMatchingWeight.Lowest)
+        new LastUnitSequenceMatcher(PropetyValueMatcher.Instance, InjectPointMatchingWeight.Lowest)
           .AddBuildAction(
             BuildStage.Create,
             new OrderedBuildActionContainer

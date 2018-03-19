@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+﻿using Armature.Properties;
 
 namespace Armature.Core
 {

@@ -3,7 +3,9 @@ using Armature.Core;
 using Armature.Extensibility;
 using Armature.Framework;
 using Armature.Framework.BuildActions;
-using JetBrains.Annotations;
+using Armature.Framework.BuildActions.Creation;
+using Armature.Framework.UnitSequenceMatcher;
+using Armature.Properties;
 
 namespace Armature
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using JetBrains.Annotations;
+using Armature.Properties;
 
 namespace Armature.Logging
 {

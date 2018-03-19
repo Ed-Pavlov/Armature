@@ -3,9 +3,11 @@ using System.Diagnostics;
 using Armature.Core;
 using Armature.Framework;
 using Armature.Framework.BuildActions;
-using Armature.Framework.Properties;
+using Armature.Framework.BuildActions.Property;
+using Armature.Framework.UnitMatchers.Properties;
+using Armature.Framework.UnitSequenceMatcher;
 using Armature.Logging;
-using JetBrains.Annotations;
+using Armature.Properties;
 
 namespace Armature
 {

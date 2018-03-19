@@ -3,6 +3,7 @@ using Armature;
 using Armature.Core;
 using Armature.Extensibility;
 using Armature.Framework;
+using Armature.Framework.UnitSequenceMatcher;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {

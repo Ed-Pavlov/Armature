@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Logging;
-using JetBrains.Annotations;
+using Armature.Properties;
 
 namespace Armature.Core
 {

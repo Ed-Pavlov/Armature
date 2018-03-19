@@ -4,6 +4,8 @@ using System.Reflection;
 using Armature;
 using Armature.Core;
 using Armature.Framework;
+using Armature.Framework.UnitSequenceMatcher;
+using Armature.Properties;
 using JetBrains.Annotations;
 using NUnit.Framework;
 

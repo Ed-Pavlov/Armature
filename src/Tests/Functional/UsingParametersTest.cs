@@ -3,6 +3,7 @@ using Armature;
 using Armature.Common;
 using Armature.Core;
 using Armature.Interface;
+using Armature.Properties;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;

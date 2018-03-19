@@ -3,7 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using Armature.Core;
 using Armature.Framework;
-using JetBrains.Annotations;
+using Armature.Framework.UnitSequenceMatcher;
+using Armature.Properties;
 
 namespace Armature.OverrideSugar
 {

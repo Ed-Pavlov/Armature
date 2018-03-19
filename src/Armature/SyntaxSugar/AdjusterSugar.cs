@@ -4,11 +4,14 @@ using Armature.Core;
 using Armature.Extensibility;
 using Armature.Framework;
 using Armature.Framework.BuildActions;
-using Armature.Framework.Parameters;
-using Armature.Framework.Properties;
+using Armature.Framework.BuildActions.Constructor;
+using Armature.Framework.BuildActions.Property;
+using Armature.Framework.UnitMatchers.Parameters;
+using Armature.Framework.UnitMatchers.Properties;
+using Armature.Framework.UnitSequenceMatcher;
 using Armature.Interface;
-using JetBrains.Annotations;
-using ConstructorMatcher = Armature.Framework.ConstructorMatcher;
+using Armature.Properties;
+using ConstructorMatcher = Armature.Framework.UnitMatchers.ConstructorMatcher;
 
 namespace Armature
 {
@@ -29,13 +32,13 @@ namespace Armature
 
       foreach (var parameter in values)
       {
-        if (parameter is IParameterValueBuildPlan buildPlan)
-          buildPlan.Register(UnitSequenceMatcher);
+        if (parameter is ParameterValueBuildPlan buildPlan)
+          ((IBuildPlan)buildPlan).Register(UnitSequenceMatcher);
         else if(parameter is IBuildPlan)
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected"); 
         else
           UnitSequenceMatcher
-            .AddOrGetUnitMatcher(new LastUnitSequenceMatcher(new ParameterByWeakTypeMatcher(parameter), ParameterMatchingWeight.WeakTypedParameter))
+            .AddOrGetUnitMatcher(new LastUnitSequenceMatcher(new ParameterByValueMatcher(parameter), InjectPointMatchingWeight.WeakTypedParameter))
             .AddBuildAction(BuildStage.Create, new SingletonBuildAction(parameter));
       }
 
@@ -54,7 +57,7 @@ namespace Armature
           throw new ArmatureException("IPropertyValueBuildPlanor plain object value expected"); 
         else
           UnitSequenceMatcher
-            .AddOrGetUnitMatcher(new LastUnitSequenceMatcher(new PropertyByWeakTypeMatcher(value), ParameterMatchingWeight.WeakTypedParameter))
+            .AddOrGetUnitMatcher(new LastUnitSequenceMatcher(new PropertyByValueMatcher(value), InjectPointMatchingWeight.WeakTypedParameter))
             .AddBuildAction(BuildStage.Create, new SingletonBuildAction(value));
       }
       

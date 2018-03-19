@@ -1,6 +1,7 @@
 using System.IO;
 using Armature;
 using Armature.Interface;
+using Armature.Properties;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;

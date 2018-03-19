@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Armature.Common;
-using JetBrains.Annotations;
+using Armature.Framework.UnitSequenceMatcher;
+using Armature.Properties;
 
 namespace Armature.Core
 {

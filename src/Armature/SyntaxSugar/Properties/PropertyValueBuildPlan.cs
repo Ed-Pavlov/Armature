@@ -1,15 +1,12 @@
 ﻿using System;
 using Armature.Core;
 using Armature.Framework;
-using Armature.Framework.Properties;
-using JetBrains.Annotations;
+using Armature.Framework.UnitMatchers.Properties;
+using Armature.Framework.UnitSequenceMatcher;
+using Armature.Properties;
 
 namespace Armature
 {
-  public interface IPropertyValueBuildPlan : IBuildPlan
-  {
-  }
-
   public class PropertyValueBuildPlan : BuildValuePlan, IPropertyValueBuildPlan
   {
     private readonly IBuildAction _getPropertyAction;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Armature.Logging;
-using JetBrains.Annotations;
+using Armature.Properties;
 
 namespace Armature.Core
 {

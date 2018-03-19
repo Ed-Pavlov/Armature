@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Armature.Common;
-using JetBrains.Annotations;
+using Armature.Properties;
 
 namespace Armature.Core
 {

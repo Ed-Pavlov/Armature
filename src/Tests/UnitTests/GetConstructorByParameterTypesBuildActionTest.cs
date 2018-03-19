@@ -3,6 +3,7 @@ using System.IO;
 using Armature.Core;
 using Armature.Framework;
 using Armature.Framework.BuildActions;
+using Armature.Framework.BuildActions.Constructor;
 using FluentAssertions;
 using NUnit.Framework;
 using Rhino.Mocks;

@@ -3,6 +3,8 @@ using Armature;
 using Armature.Core;
 using Armature.Framework;
 using Armature.Framework.BuildActions;
+using Armature.Framework.BuildActions.Creation;
+using Armature.Framework.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;

@@ -4,7 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Armature.Core;
 using Armature.Framework.BuildActions;
-using JetBrains.Annotations;
+using Armature.Framework.BuildActions.Creation;
+using Armature.Framework.BuildActions.Parameter;
+using Armature.Properties;
 
 namespace Armature
 {

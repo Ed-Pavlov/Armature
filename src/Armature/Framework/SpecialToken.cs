@@ -14,15 +14,15 @@ namespace Armature.Framework
     public static readonly object Constructor = new Token("Constructor");
     
     /// <summary>
-    ///   Is used to build a value for parameter
-    /// </summary>
-    public static readonly object InjectValue = new Token("InjectValue");
-    
-    /// <summary>
     ///   Is used to build a <see cref="PropertyInfo"/> 
     /// </summary>
     public static readonly object Property = new Token("Property");
     
-    public static bool IsSpecial(this object obj) => obj is Token token && (token == Constructor || token == InjectValue || token == Property || token == InjectValue);
+    /// <summary>
+    ///   Is used to build a value for inject point
+    /// </summary>
+    public static readonly object InjectValue = new Token("InjectValue");
+    
+    public static bool IsSpecial(this object obj) => obj is Token token && (token == Constructor || token == Property || token == InjectValue);
   }
 }

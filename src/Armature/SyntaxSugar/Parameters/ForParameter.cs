@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using Armature.Framework;
-using Armature.Framework.Parameters;
+using Armature.Framework.UnitMatchers.Parameters;
 using Armature.Interface;
-using JetBrains.Annotations;
+using Armature.Properties;
 
 namespace Armature
 {
@@ -14,7 +14,7 @@ namespace Armature
     public static ParameterValueSugar<T> OfType<T>()
     {
       var matcher = new ParameterByStrictTypeMatcher(typeof(T));
-      return new ParameterValueSugar<T>(matcher, ParameterMatchingWeight.TypedParameter);
+      return new ParameterValueSugar<T>(matcher, InjectPointMatchingWeight.TypedParameter);
     }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace Armature
     public static ParameterValueSugar Named([NotNull] string parameterName)
     {
       var matcher = new ParameterByNameMatcher(parameterName);
-      return new ParameterValueSugar(matcher, ParameterMatchingWeight.NamedParameter);
+      return new ParameterValueSugar(matcher, InjectPointMatchingWeight.NamedParameter);
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ namespace Armature
     public static ParameterValueSugar WithInjectPoint([CanBeNull] object injectPointId)
     {
       var matcher = new ParameterByInjectPointMatcher(injectPointId);
-      return new ParameterValueSugar(matcher, ParameterMatchingWeight.AttributedParameter);
+      return new ParameterValueSugar(matcher, InjectPointMatchingWeight.AttributedParameter);
     }
   }
 }

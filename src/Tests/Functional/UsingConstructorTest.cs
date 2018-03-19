@@ -2,6 +2,7 @@
 using Armature;
 using Armature.Interface;
 using Armature.Logging;
+using Armature.Properties;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;

@@ -1,9 +1,10 @@
 ﻿using System.Reflection;
 using Armature.Framework;
 using Armature.Framework.BuildActions;
-using Armature.Framework.Properties;
+using Armature.Framework.BuildActions.Property;
+using Armature.Framework.UnitMatchers.Properties;
 using Armature.Interface;
-using JetBrains.Annotations;
+using Armature.Properties;
 
 namespace Armature
 {
@@ -14,9 +15,9 @@ namespace Armature
     /// </summary>
     public static PropertyValueSugar<T> OfType<T>()
     {
-      var matcher = new PropertyByStrictTypeMatcher(typeof(T));
       var getPropertyAction = new GetPropertyByTypeBuildAction(typeof(T));
-      return new PropertyValueSugar<T>(matcher, getPropertyAction, ParameterMatchingWeight.TypedParameter);
+      var matcher = new PropertyByStrictTypeMatcher(typeof(T));
+      return new PropertyValueSugar<T>(matcher, getPropertyAction, InjectPointMatchingWeight.TypedParameter);
     }
 
     /// <summary>
@@ -26,9 +27,9 @@ namespace Armature
     /// <returns></returns>
     public static PropertyValueSugar Named([NotNull] string parameterName)
     {
-      var matcher = new PropertyByNameMatcher(parameterName);
       var getPropertyAction = new GetPropertyByNameBuildAction(parameterName);
-      return new PropertyValueSugar(matcher, getPropertyAction, ParameterMatchingWeight.NamedParameter);
+      var matcher = new PropertyByNameMatcher(parameterName);
+      return new PropertyValueSugar(matcher, getPropertyAction, InjectPointMatchingWeight.NamedParameter);
     }
 
     /// <summary>
@@ -40,9 +41,9 @@ namespace Armature
     /// </param>
     public static PropertyValueSugar WithInjectPoint([CanBeNull] object injectPointId)
     {
-      var matcher = new PropertyByInjectPointMatcher(injectPointId);
       var getPropertyAction = new GetPropertyByInjectPointBuildAction(injectPointId);
-      return new PropertyValueSugar(matcher, getPropertyAction, ParameterMatchingWeight.AttributedParameter);
+      var matcher = new PropertyByInjectPointMatcher(injectPointId);
+      return new PropertyValueSugar(matcher, getPropertyAction, InjectPointMatchingWeight.AttributedParameter);
     }
   }
 }

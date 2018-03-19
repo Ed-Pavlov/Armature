@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Armature.Common;
 using Armature.Core;
-using JetBrains.Annotations;
+using Armature.Properties;
 
 namespace Armature.Framework
 {
