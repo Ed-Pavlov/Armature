@@ -15,7 +15,7 @@ namespace Tests.Functional
     public void should_return_two_implementation_of_one_interface()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateBuilder();
+      var target = FunctionalTestHelper.CreateTarget();
 
       target.Treat<IDisposable>().As<SampleType1>();
       target.Treat<IDisposable>().As<SampleType2>();
@@ -33,7 +33,7 @@ namespace Tests.Functional
     public void should_throw_if_more_than_one_build_stage_involved()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateBuilder();
+      var target = FunctionalTestHelper.CreateTarget();
 
       target.Treat<IDisposable>().As<SampleType1>();
       target.Treat<IDisposable>().As<SampleType2>();
@@ -52,7 +52,7 @@ namespace Tests.Functional
       using(Log.Enabled(LogLevel.Verbose))
       {
         // --arrange
-        var target = FunctionalTestHelper.CreateBuilder();
+        var target = FunctionalTestHelper.CreateTarget();
 
         target.Treat<IDisposable>().As<SampleType1>().AsSingleton();
         target.Treat<IDisposable>().As<SampleType2>();

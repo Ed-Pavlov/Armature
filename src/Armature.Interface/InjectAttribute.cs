@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Armature.Interface
+namespace Armature
 {
   [AttributeUsage(
     AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Field

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Logging;
-using Armature.Properties;
+using Resharper.Annotations;
 
 namespace Armature.Core
 {
@@ -43,12 +43,6 @@ namespace Armature.Core
         return ((Id != null ? Id.GetHashCode() : 0) * 397) ^ (Token != null ? Token.GetHashCode() : 0);
       }
     }
-
-    [DebuggerStepThrough]
-    public static bool operator ==(UnitInfo left, UnitInfo right) => Equals(left, right);
-
-    [DebuggerStepThrough]
-    public static bool operator !=(UnitInfo left, UnitInfo right) => !Equals(left, right);
 
     public override string ToString() => string.Format("{0}, {1}", Id.AsLogString(), Token.AsLogString());
   }

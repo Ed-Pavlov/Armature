@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Armature.Properties;
+using Resharper.Annotations;
 
 namespace Armature.Core
 {

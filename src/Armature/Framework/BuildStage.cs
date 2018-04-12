@@ -1,7 +1,8 @@
 ﻿using System;
-using Armature.Properties;
+using System.Diagnostics.CodeAnalysis;
+using Resharper.Annotations;
 
-namespace Armature.Framework
+namespace Armature
 {
   /// <summary>
   ///   Represents predefined build stages used by out of the box Armature framework syntax sugar. This list can be extended or completely replaced
@@ -16,7 +17,8 @@ namespace Armature.Framework
 
     private readonly string _name;
 
-    private BuildStage([NotNull] string name) => _name = name ?? throw new ArgumentNullException(nameof(name));
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+    protected BuildStage([NotNull] string name) => _name = name ?? throw new ArgumentNullException(nameof(name));
 
     public override string ToString() => _name;
   }

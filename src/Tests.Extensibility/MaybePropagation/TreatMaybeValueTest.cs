@@ -14,7 +14,7 @@ namespace Tests.Extensibility.MaybePropagation
     [Test]
     public void should_build_maybe()
     {
-      var builder = FunctionalTestHelper.CreateBuilder();
+      var builder = FunctionalTestHelper.CreateTarget();
 
       builder.Treat<Section>().AsInstance(new Section());
 
@@ -32,7 +32,7 @@ namespace Tests.Extensibility.MaybePropagation
     [Test]
     public void should_not_build_maybe_if_dependency_cant_be_built()
     {
-      var builder = FunctionalTestHelper.CreateBuilder();
+      var builder = FunctionalTestHelper.CreateTarget();
 
       // --act
       builder

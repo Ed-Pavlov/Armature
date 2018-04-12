@@ -1,4 +1,4 @@
-﻿using Armature.Properties;
+﻿using Resharper.Annotations;
 
 namespace Armature.Core
 {

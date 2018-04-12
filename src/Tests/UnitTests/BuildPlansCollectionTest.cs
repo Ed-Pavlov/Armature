@@ -1,10 +1,9 @@
 ﻿using System.Linq;
 using Armature;
 using Armature.Core;
-using Armature.Framework;
-using Armature.Framework.BuildActions;
-using Armature.Framework.BuildActions.Creation;
-using Armature.Framework.UnitSequenceMatcher;
+using Armature.Core.BuildActions;
+using Armature.Core.BuildActions.Creation;
+using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
@@ -16,16 +15,15 @@ namespace Tests.UnitTests
     [Test]
     public void should_return_all_merged_actions()
     {
-      // --arrange
-      var buildStep1 = new LastUnitSequenceMatcher(Match.Type<string>(null), 0);
-      buildStep1.AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
       var singletonAction = new SingletonBuildAction();
-      var buildStep2 = new AnyUnitSequenceMatcher();
-      buildStep2.AddBuildAction(BuildStage.Cache, singletonAction);
+      
+      // --arrange
+      var matchString = new LastUnitSequenceMatcher(Match.Type<string>(null)).AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
+      var matchAny = new AnyUnitSequenceMatcher().AddBuildAction(BuildStage.Cache, singletonAction);
 
       var target = new BuildPlansCollection();
-      target.AddUnitMatcher(buildStep1);
-      target.AddUnitMatcher(buildStep2);
+      target.Children.Add(matchString);
+      target.Children.Add(matchAny);
 
       // --act
       var actual = target.GetBuildActions(new[] {Unit.OfType<string>()});

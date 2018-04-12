@@ -3,10 +3,8 @@ using System.Collections;
 using System.Reflection;
 using Armature;
 using Armature.Core;
-using Armature.Framework;
-using Armature.Framework.UnitSequenceMatcher;
-using Armature.Properties;
-using JetBrains.Annotations;
+using Armature.Core.UnitSequenceMatcher;
+using Resharper.Annotations;
 using NUnit.Framework;
 
 namespace Tests.Functional
@@ -33,8 +31,8 @@ namespace Tests.Functional
       // (postprocessing will be called last and buildAction will add a postfix to created or cached string
 
       target
-        .AddOrGetUnitMatcher(new AnyUnitSequenceMatcher())
-        .AddOrGetUnitMatcher(new LastUnitSequenceMatcher(new AnyStringMatcher(), 0))
+        .AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
+        .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new AnyStringMatcher()))
         .AddBuildAction(InterceptBuildStage, new AddPostfixToString(Postfix));
 
       // --act
@@ -91,8 +89,7 @@ namespace Tests.Functional
     {
       public bool Matches(UnitInfo unitInfo)
       {
-        var parameterInfo = unitInfo.Id as ParameterInfo;
-        var type = parameterInfo == null ? null : parameterInfo.ParameterType;
+        var type = unitInfo.Id is ParameterInfo parameterInfo ? parameterInfo.ParameterType : null;
         return type == typeof(string);
       }
 

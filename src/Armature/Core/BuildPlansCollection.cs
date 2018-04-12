@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Armature.Common;
-using Armature.Framework.UnitSequenceMatcher;
-using Armature.Properties;
+using Armature.Core.UnitSequenceMatcher;
+using Resharper.Annotations;
 
 namespace Armature.Core
 {
   /// <summary>
-  ///   The collection of build plans. Build plan of the unit is units sequence matchers containing build action factories.
-  ///   All build plans are contained in a forest of trees form. See <see cref="IUnitSequenceMatcher" /> for details.
+  ///   The collection of build plans. Build plan of the unit is the tree of units sequence matchers containing build actions.
+  ///   All build plans are contained as a forest of trees.
+  /// See <see cref="IUnitSequenceMatcher" /> for details.
   /// </summary>
   public class BuildPlansCollection
   {
     private readonly Root _root = new Root();
 
     /// <summary>
-    ///   Collection of root build steps
+    ///   Forest of <see cref="IUnitSequenceMatcher"/> trees
     /// </summary>
     public ICollection<IUnitSequenceMatcher> Children => _root.Children;
 
@@ -43,23 +44,11 @@ namespace Armature.Core
     }
 
     /// <summary>
-    ///   Adds a root build step (tree) into the forest of trees
-    /// </summary>
-    /// <param name="unitSequenceMatcher">The build step to add, it can have child build steps of can be filled with them later</param>
-    [DebuggerStepThrough]
-    public void AddUnitMatcher([NotNull] IUnitSequenceMatcher unitSequenceMatcher)
-    {
-      if (unitSequenceMatcher == null) throw new ArgumentNullException(nameof(unitSequenceMatcher));
-
-      _root.Children.Add(unitSequenceMatcher);
-    }
-
-    /// <summary>
-    ///   Reuse implementation of <see cref="T:Armature.Core.UnitSequenceMatcherBase" />
-    ///   to implement <see cref="T:Armature.Core.BuildPlansCollection" /> public interface
+    ///   Reuse implementation of <see cref="UnitSequenceMathcherWithChildren" /> to implement <see cref="BuildPlansCollection" /> public interface
     /// </summary>
     private class Root : UnitSequenceMathcherWithChildren
     {
+      [DebuggerStepThrough]
       public Root() : base(0)
       {
       }

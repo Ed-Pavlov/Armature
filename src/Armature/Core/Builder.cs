@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Armature.Common;
-using Armature.Properties;
+using Resharper.Annotations;
 
 namespace Armature.Core
 {
   /// <summary>
-  ///   The "dependency injection builder" contains build steps for units and method <see cref="BuildUnit(Armature.Core.UnitInfo,Armature.Core.BuildPlansCollection)" />
-  ///   Building a unit it goes over all "build stages", for each stage it gets a build step if any and executes it see
-  ///   <see cref="Builder(System.Collections.Generic.IEnumerable{System.Object},Armature.Core.Builder[])" /> for details
+  ///   The builder of units. 
+  ///   Building a unit it goes over all "build stages", for each stage it gets a build action if any and executes it see
+  ///   <see cref="Builder(IEnumerable{System.Object}, Builder[])" /> for details.
   /// </summary>
   public class Builder : BuildPlansCollection
   {

@@ -1,43 +1,49 @@
 using Armature;
+using Armature.Core;
+using Armature.Core.BuildActions.Constructor;
+using Armature.Core.UnitMatchers;
+using Armature.Core.UnitSequenceMatcher;
+using FluentAssertions;
 using NUnit.Framework;
+
+// ReSharper disable all
 
 namespace Tests.Functional
 {
   public class CachingTest
   {
     [Test]
-    public void AsSingleton()
+    public void should_create_instance_only_once()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateBuilder();
+      var target = CreateTarget();
       target
-        .Treat<EmptyCtorClass>()
+        .Treat<Subject>()
         .AsIs()
         .AsSingleton();
 
       // --act
-      var expected = target.Build<EmptyCtorClass>();
-      var actual = target.Build<EmptyCtorClass>();
+      var expected = target.Build<Subject>();
+      var actual = target.Build<Subject>();
 
       // --assert
-      Assert.That(actual, Is.SameAs(expected));
+      actual.Should().BeSameAs(expected);
     }
-
-    [Test]
-    public void AsInstance()
+    
+    private static Builder CreateTarget()
     {
-      // --arrange
-      var expected = new EmptyCtorClass();
-      var target = FunctionalTestHelper.CreateBuilder();
-      target
-        .Treat<EmptyCtorClass>()
-        .AsInstance(expected);
+      var treatAll = new AnyUnitSequenceMatcher
+      {
+        // inject into constructor
+        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
+      };
 
-      // --act
-      var actual = target.Build<EmptyCtorClass>();
-
-      // --assert
-      Assert.That(actual, Is.SameAs(expected));
+      var container = new Builder(new[] {BuildStage.Cache, BuildStage.Create});
+      container.Children.Add(treatAll);
+      return container;
     }
+    
+    private class Subject{}
   }
 }

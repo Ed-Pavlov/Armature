@@ -5,7 +5,7 @@ using System.Text;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Collection of build actions from matched build steps grouped by the build stage
+  ///   Collection of build actions from matched build plans grouped by the build stage
   /// </summary>
   public class MatchedBuildActions : Dictionary<object, List<Weighted<IBuildAction>>>
   {

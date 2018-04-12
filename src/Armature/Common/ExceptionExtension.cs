@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Properties;
+using Resharper.Annotations;
 
 namespace Armature.Common
 {

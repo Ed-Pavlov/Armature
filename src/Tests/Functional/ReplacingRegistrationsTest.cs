@@ -1,9 +1,12 @@
-﻿using System;
-using System.IO;
-using Armature;
-using Armature.OverrideSugar;
+﻿using Armature;
+using Armature.Core;
+using Armature.Core.BuildActions.Constructor;
+using Armature.Core.UnitMatchers;
+using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
+
+// Resharper disable all
 
 namespace Tests.Functional
 {
@@ -12,22 +15,41 @@ namespace Tests.Functional
     [Test]
     public void ReplaceSingleton()
     {
-      var builder = FunctionalTestHelper.CreateBuilder();
+      var builder = CreateTarget();
 
       builder
-        .Treat<IDisposable>()
-        .As<MemoryStream>()
-        .UsingParameterlessConstructor()
-        .AsSingleton();
+        .Treat<Subject>()
+        .AsIs()
+        .UsingParameterlessConstructor();
 
       builder
-        .Override<IDisposable>()
-        .As<MemoryStream>()
-        .UsingConstructorWithParameters(typeof(int))
-        .UsingParameters(10)
-        .AsSingleton();
+        .Override<Subject>()
+        .AsIs()
+        .UsingParameters(10);
 
-      builder.Build<IDisposable>().Should().BeOfType<MemoryStream>().Which.Capacity.Should().Be(10);
+      builder.Build<Subject>().Should().BeOfType<Subject>().Which.Value.Should().Be(10);
+    }
+
+    private static Builder CreateTarget()
+    {
+      var treatAll = new AnyUnitSequenceMatcher
+      {
+        // inject into constructor
+        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
+      };
+
+      var container = new Builder(new[]{ BuildStage.Cache, BuildStage.Initialize, BuildStage.Create});
+      container.Children.Add(treatAll);
+      return container;
+    }
+    
+    private class Subject
+    {
+      public int Value { get; }
+
+      public Subject(){}
+      public Subject(int value) => Value = value;
     }
   }
 }

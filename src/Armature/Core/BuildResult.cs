@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Armature.Logging;
-using Armature.Properties;
+using Resharper.Annotations;
 
 namespace Armature.Core
 {

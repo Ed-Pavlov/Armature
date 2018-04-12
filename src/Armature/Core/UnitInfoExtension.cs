@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using Armature.Properties;
+using Resharper.Annotations;
 
 namespace Armature.Core
 {
@@ -10,7 +9,6 @@ namespace Armature.Core
     /// <summary>
     ///   Returns a <see cref="Type" /> if <see cref="UnitInfo.Id" /> is a type, otherwise throws exception.
     /// </summary>
-    [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalse")]
     [DebuggerStepThrough]
     [NotNull]
     public static Type GetUnitType([NotNull] this UnitInfo unitInfo) =>
@@ -19,7 +17,6 @@ namespace Armature.Core
     /// <summary>
     ///   Returns a <see cref="Type" /> if <see cref="UnitInfo.Id" /> is a type, otherwise null.
     /// </summary>
-    [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalse")]
     [DebuggerStepThrough]
     [CanBeNull]
     public static Type GetUnitTypeSafe([NotNull] this UnitInfo unitInfo) =>

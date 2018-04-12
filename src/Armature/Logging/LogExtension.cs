@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using Armature.Common;
 using Armature.Core;
 
 namespace Armature.Logging
@@ -11,26 +9,16 @@ namespace Armature.Logging
   {
     private const string BuildsequenceIsEmpty = "BuildSequence{{empty}}";
 
-    public static void LogBuildSequence(this IList<UnitInfo> buildSequence)
+    public static void LogBuildSequence(this IList<UnitInfo> buildSequence, LogLevel logLevel = LogLevel.Verbose)
     {
       if (buildSequence.Count == 0)
-        Log.Verbose(BuildsequenceIsEmpty);
-      else
-        LogBuildSequence(buildSequence.GetTail(0), LogLevel.Verbose);
-    }
-
-    public static void LogBuildSequence(this ArrayTail<UnitInfo> buildSequence, LogLevel logLevel = LogLevel.Info)
-    {
-      if (buildSequence.Length == 0)
         Log.WriteLine(logLevel, BuildsequenceIsEmpty);
-      else if (buildSequence.Length == 1)
+      else if (buildSequence.Count == 1)
         Log.WriteLine(logLevel, "BuildSequence{{{0}}}", buildSequence.Last());
       else
         using (Log.Block(logLevel, "BuildSequence"))
-        {
-          for (var i = 0; i < buildSequence.Length; i++)
-            Log.WriteLine(logLevel, buildSequence[i].ToString());
-        }
+          foreach (var unitInfo in buildSequence)
+            Log.WriteLine(logLevel, unitInfo.ToString());
     }
 
     public static void ToLog(this MatchedBuildActions actions, LogLevel logLevel = LogLevel.Verbose)

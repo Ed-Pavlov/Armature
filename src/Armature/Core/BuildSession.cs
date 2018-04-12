@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Armature.Logging;
-using Armature.Properties;
+using Resharper.Annotations;
 
 namespace Armature.Core
 {
   /// <summary>
   ///   Represents whole build session of the one Unit, all dependency of the built unit are built in context of one build session
   /// </summary>
-  public class BuildSession
+  public partial class BuildSession
   {
     private readonly BuildPlansCollection _buildPlans;
     private readonly List<UnitInfo> _buildSequence;
@@ -87,7 +87,7 @@ namespace Armature.Core
             actions = _buildPlans.GetBuildActions(_buildSequence);
             auxActions = _auxBuildPlans?.GetBuildActions(_buildSequence);
           }
-          Log.Verbose("");
+          Log.WriteLine(LogLevel.Verbose, "");
           return build(actions.Merge(auxActions));
         }
         finally
@@ -105,7 +105,7 @@ namespace Armature.Core
       var performedActions = new Stack<IBuildAction>();
 
       // builder to pass into IBuldActon.Execute
-      var unitBuilder = new UnitBuilder(_buildSequence, this);
+      var unitBuilder = new Interface(_buildSequence, this);
       
       foreach (var stage in _buildStages)
       {
@@ -120,15 +120,15 @@ namespace Armature.Core
 
         if (unitBuilder.BuildResult != null)
         {
-          Log.Info("");
-          Log.Info("Built unit{{{0}}}", unitBuilder.BuildResult);
+          Log.WriteLine(LogLevel.Info, "");
+          Log.WriteLine(LogLevel.Info, "Built unit{{{0}}}", unitBuilder.BuildResult);
           break; // object is built, unwind called actions in reverse orders
         }
       }
 
       foreach (var buildAction in performedActions)
       {
-        Log.Info("");
+        Log.WriteLine(LogLevel.Info, "");
         using(Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Rewind action", buildAction))
           buildAction.PostProcess(unitBuilder);
       }
@@ -147,7 +147,7 @@ namespace Armature.Core
       var result = new List<BuildResult>();
       foreach (var buildAction in matchedBuildActions.Values.Single().Select(_ => _.Entity))
       {
-        var unitBuilder = new UnitBuilder(_buildSequence, this);
+        var unitBuilder = new Interface(_buildSequence, this);
 
         using (Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Execute action", buildAction))
         {
@@ -157,8 +157,8 @@ namespace Armature.Core
 
         if (unitBuilder.BuildResult != null)
         {
-          Log.Info("");
-          Log.Info("Built unit{{{0}}}", unitBuilder.BuildResult);
+          Log.WriteLine(LogLevel.Info, "");
+          Log.WriteLine(LogLevel.Info, "Built unit{{{0}}}", unitBuilder.BuildResult);
           result.Add(unitBuilder.BuildResult);
         }
       }

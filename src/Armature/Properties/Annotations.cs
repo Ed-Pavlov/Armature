@@ -10,7 +10,7 @@ using System.Diagnostics;
 // ReSharper disable InconsistentNaming
 
 // ReSharper disable once CheckNamespace
-namespace Armature.Properties
+namespace Resharper.Annotations
 {
   /// <summary>
   /// Indicates that the value of the marked element could be <c>null</c> sometimes,

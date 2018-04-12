@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Armature.Common;
-using Armature.Logging;
-using Armature.Properties;
+using Resharper.Annotations;
 
 namespace Armature.Core
 {

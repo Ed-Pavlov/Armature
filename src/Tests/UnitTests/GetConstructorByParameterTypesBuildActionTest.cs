@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Armature.Core;
-using Armature.Framework;
-using Armature.Framework.BuildActions;
-using Armature.Framework.BuildActions.Constructor;
+using Armature.Core.BuildActions.Constructor;
 using FluentAssertions;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -49,6 +48,7 @@ namespace Tests.UnitTests
       buildSession.BuildResult.Should().BeNull();
     }
 
+    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
     private class SampleType
     {
       public SampleType(int i, IDisposable d)

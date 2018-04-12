@@ -1,29 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Armature;
-using Armature.Core;
-using Armature.Framework;
-using Armature.Framework.BuildActions;
-using Armature.Framework.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
+
+// Resharper disable all
 
 namespace Tests.Functional
 {
   public class CaseTest
   {
-    public CaseTest() => Debug.Listeners.Add(new ConsoleTraceListener());
-
     [Test]
     public void Building()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateBuilder();
+      var target = FunctionalTestHelper.CreateTarget();
       target
         .Building<IDisposableValue1>()
         .Treat<IDisposable>()
@@ -45,13 +40,13 @@ namespace Tests.Functional
     {
       // --arrange
       var expected = new EmptyCtorClass();
-      var target = FunctionalTestHelper.CreateBuilder();
+      var target = FunctionalTestHelper.CreateTarget();
       target
         .Treat<IEmptyInterface1>()
-        .As<EmptyCtorClass>();
+        .As<EmptyCtorClass>(AddCreateBuildAction.No);
       target
         .Treat<IEmptyInterface2>()
-        .As<EmptyCtorClass>();
+        .As<EmptyCtorClass>(AddCreateBuildAction.No);
       target
         .Treat<EmptyCtorClass>()
         .AsInstance(expected);
@@ -70,7 +65,7 @@ namespace Tests.Functional
     public void LoggerCase()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateBuilder();
+      var target = FunctionalTestHelper.CreateTarget();
       target
         .Treat<string>()
         .CreatedBy(assembler => assembler.BuildSequence.First().Id.ToString());
@@ -91,7 +86,7 @@ namespace Tests.Functional
     public void UsingParametersTwiceOnSameImplementationTest()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateBuilder();
+      var target = FunctionalTestHelper.CreateTarget();
 
       target.Treat<IDisposableValue1>()
         .As<OneDisposableCtorClass>()
@@ -114,14 +109,14 @@ namespace Tests.Functional
     {
       const string token1 = "t1";
 
-      var target = FunctionalTestHelper.CreateBuilder();
+      var target = FunctionalTestHelper.CreateTarget();
 
-      target.Treat<IDisposableValue1>().As<OneDisposableCtorClass>();
-      target.Treat<IDisposableValue2>(token1).As<OneDisposableCtorClass>();
+      target.Treat<IDisposableValue1>().As<OneDisposableCtorClass>(AddCreateBuildAction.No);
+      target.Treat<IDisposableValue2>(token1).As<OneDisposableCtorClass>(AddCreateBuildAction.No);
       target.Treat<OneDisposableCtorClass>().AsInstance(new OneDisposableCtorClass(null));
 
       var dep = target.Build<IDisposableValue1>();
-      var dep1 = target.WithToken(token1).Build<IDisposableValue2>();
+      var dep1 = target.UsingToken(token1).Build<IDisposableValue2>();
 
       Assert.AreSame(dep, dep1);
     }
@@ -129,7 +124,7 @@ namespace Tests.Functional
     [Test(Description = "Registration of some entity separated in several parts should work")]
     public void SeparatedRegistration()
     {
-      var target = FunctionalTestHelper.CreateBuilder();
+      var target = FunctionalTestHelper.CreateTarget();
       target
         .Treat<IDisposableValue1>()
         .As<OneDisposableCtorClass>();
@@ -154,35 +149,64 @@ namespace Tests.Functional
       actual1.Should().BeSameAs(actual2);
     }
 
-    [Test]
-    public void RegisterOneInterfaceAsManyImplementations()
+    private interface IEmptyInterface1
     {
-      // --arrange
-      const string oneDisposableCtorCalssToken = "disp";
-      var expected1 = new OneDisposableCtorClass(null);
-      var expected2 = new OneStringCtorClass(null);
+    }
 
-      var container = FunctionalTestHelper.CreateBuilder();
-      container
-        .Treat<OneDisposableCtorClass>(oneDisposableCtorCalssToken)
-        .AsInstance(expected1);
-      container.Treat<OneStringCtorClass>()
-        .AsInstance(expected2);
+    private interface IEmptyInterface2
+    {
+    }
 
-      // --act
-      var buildStep = new WildcardUnitSequenceMatcher(Match.Type<List<IDisposableValue1>>(null), UnitSequenceMatchingWeight.WeakMatchingTypeUnit);
-      buildStep.AddBuildAction(
-        BuildStage.Create,
-        new RedirectManyTypesBuildAction<IDisposableValue1>(
-          Unit.OfType<OneDisposableCtorClass>(oneDisposableCtorCalssToken),
-          Unit.OfType<OneStringCtorClass>()));
+    private class EmptyCtorClass : IEmptyInterface1, IEmptyInterface2
+    {
+      private static int _counter = 1;
+      private readonly int _id = _counter++;
 
-      container.AddUnitMatcher(buildStep);
+      public override string ToString() { return _id.ToString(); }
+    }
 
-      var actual = container.Build<List<IDisposableValue1>>();
+    private interface IDisposableValue1
+    {
+      IDisposable Disposable { get; }
+    }
 
-      // --assert
-      actual.Should().ContainInOrder(expected1, expected2);
+    private interface IDisposableValue2
+    {
+      IDisposable Disposable { get; }
+    }
+
+    private class OneDisposableCtorClass : IDisposableValue1, IDisposableValue2
+    {
+      private readonly IDisposable _disposable;
+
+      public OneDisposableCtorClass(IDisposable disposable) { _disposable = disposable; }
+
+      public IDisposable Disposable { get { return _disposable; } }
+    }
+
+    private class OneStringCtorClass : IDisposableValue1, IDisposableValue2
+    {
+      private readonly string _text;
+
+      public OneStringCtorClass(string text) { _text = text; }
+
+      public string Text { get { return _text; } }
+
+      IDisposable IDisposableValue1.Disposable { get { throw new NotImplementedException(); } }
+
+      IDisposable IDisposableValue2.Disposable { get { throw new NotImplementedException(); } }
+    }
+
+    private class TwoDisposableStringCtorClass : OneDisposableCtorClass
+    {
+      public readonly string String;
+
+      public TwoDisposableStringCtorClass(IDisposable disposable, string @string) : base(disposable) { String = @string; }
+    }
+
+    private class Disposable : IDisposable
+    {
+      public void Dispose() { }
     }
   }
 }

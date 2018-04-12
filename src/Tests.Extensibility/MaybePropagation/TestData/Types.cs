@@ -1,4 +1,4 @@
-﻿using Armature.Interface;
+﻿using Armature;
 
 namespace Tests.Extensibility.MaybePropagation.TestData
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Armature.Properties;
+using Resharper.Annotations;
 
 namespace Armature.Logging
 {
@@ -81,7 +81,7 @@ namespace Armature.Logging
       public Indenter(bool newBlock, int count)
       {
         if (newBlock)
-          Info("{{");
+          WriteLine(LogLevel.Info, "{{");
 
         _newBlock = newBlock;
         _count = count;
@@ -92,7 +92,7 @@ namespace Armature.Logging
       {
         _indent -= _count;
         if (_newBlock)
-          Info("}}");
+          WriteLine(LogLevel.Info, "}}");
       }
     }
 

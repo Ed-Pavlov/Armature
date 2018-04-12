@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Armature.Framework
+namespace Armature
 {
   /// <summary>
   /// Matching weight for different parameter matchers

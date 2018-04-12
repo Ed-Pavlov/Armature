@@ -1,5 +1,5 @@
 ﻿using Armature.Core;
-using Armature.Framework.BuildActions;
+using Armature.Core.BuildActions;
 using NUnit.Framework;
 using Rhino.Mocks;
 
