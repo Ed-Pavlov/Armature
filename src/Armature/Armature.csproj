@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{893267E2-5B94-4647-9EF6-70390757F11A}</ProjectGuid>
+    <ProjectGuid>{B7BF9BE8-E5A5-4B7F-8539-19AB22AD7A49}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Armature</RootNamespace>
     <AssemblyName>Armature</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,146 +21,66 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\ArrayTail.cs" />
-    <Compile Include="Common\ArrayTailExtension.cs" />
-    <Compile Include="Common\DictionaryExtension.cs" />
-    <Compile Include="Common\EmptyArray.cs" />
-    <Compile Include="Common\ExceptionExtension.cs" />
-    <Compile Include="Common\WithExtension.cs" />
-    <Compile Include="Core\ArmatureException.cs" />
-    <Compile Include="Core\BuildActions\Constructor\GetConstructorByParameterTypesBuildAction.cs" />
-    <Compile Include="Core\BuildActions\Constructor\GetConstructorBytAttributeBuildAction.cs" />
-    <Compile Include="Core\BuildActions\Constructor\GetInjectPointConstructorBuildAction.cs" />
-    <Compile Include="Core\BuildActions\Constructor\GetLongesConstructorBuildAction.cs" />
-    <Compile Include="Core\BuildActions\CreateInjectValueBuildAction.cs" />
-    <Compile Include="Core\BuildActions\Creation\CreateByFactoryMethodBuildAction.cs" />
-    <Compile Include="Core\BuildActions\Creation\CreateByReflectionBuildAction.cs" />
-    <Compile Include="Core\BuildActions\OrderedBuildActionContainer.cs" />
-    <Compile Include="Core\BuildActions\Parameter\CreateParameterValueAction.cs" />
-    <Compile Include="Core\BuildActions\Parameter\CreateParameterValueForInjectPointBuildAction.cs" />
-    <Compile Include="Core\BuildActions\Property\CreatePropertyValueBuildAction.cs" />
-    <Compile Include="Core\BuildActions\Property\CreatePropertyValueForInjectPointBuildAction.cs" />
-    <Compile Include="Core\BuildActions\Property\GetPropertyByAttributeBuildAction.cs" />
-    <Compile Include="Core\BuildActions\Property\GetPropertyByInjectPointBuildAction.cs" />
-    <Compile Include="Core\BuildActions\Property\GetPropertyByNameBuildAction.cs" />
-    <Compile Include="Core\BuildActions\Property\GetPropertyByTypeBuildAction.cs" />
-    <Compile Include="Core\BuildActions\Property\InjectIntoPropertiesBuildAction.cs" />
-    <Compile Include="Core\BuildActions\RedirectOpenGenericTypeBuildAction.cs" />
-    <Compile Include="Core\BuildActions\RedirectTypeBuildAction.cs" />
-    <Compile Include="Core\BuildActions\SingletonBuildAction.cs" />
-    <Compile Include="Core\BuildPlansCollection.cs" />
-    <Compile Include="Core\BuildSessionExtension.cs" />
-    <Compile Include="Core\IBuildSession.cs" />
-    <Compile Include="Core\MatchedBuildActionsExtension.cs" />
-    <Compile Include="Core\SpecialToken.cs" />
-    <Compile Include="Core\Token.cs" />
-    <Compile Include="Core\BuildSession.Interface.cs" />
-    <Compile Include="Core\IUnitMatcher.cs" />
-    <Compile Include="Core\MatchedBuildActions.cs" />
-    <Compile Include="Core\BuildResult.cs" />
-    <Compile Include="Core\IUnitSequenceMatcher.cs" />
-    <Compile Include="Core\UnitInfoExtension.cs" />
-    <Compile Include="Core\UnitMatchers\AnyTypeMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\BaseTypeMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\ConstructorMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\InjectPointByAttributeMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\InjectPointByIdMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\InjectPointByNameMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\InjectPointByStrictTypeMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\InjectPointByValueMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\OpenGenericTypeMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\Parameters\ParameterByAttributeMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\Parameters\ParameterByInjectPointMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\Parameters\ParameterByNameMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\Parameters\ParameterByStrictTypeMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\Parameters\ParameterByValueMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\Parameters\ParameterValueMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\Properties\PropertyByAttributeMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\Properties\PropertyByInjectPointMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\Properties\PropertyByNameMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\Properties\PropertyByStrictTypeMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\Properties\PropertyByValueMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\Properties\PropertyMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\Properties\PropetyValueMatcher.cs" />
-    <Compile Include="Core\UnitMatchers\UnitInfoMatcher.cs" />
-    <Compile Include="Core\UnitSequenceMatcherExtension.cs" />
-    <Compile Include="Core\UnitSequenceMatcher\AnyUnitSequenceMatcher.cs" />
-    <Compile Include="Core\UnitSequenceMatcher\LastUnitSequenceMatcher.cs" />
-    <Compile Include="Core\UnitSequenceMatcher\StrictUnitSequenceMatcher.cs" />
-    <Compile Include="Core\UnitSequenceMatcher\UnitSequenceMatcher.cs" />
-    <Compile Include="Core\UnitSequenceMatcher\UnitSequenceMatchingWeight.cs" />
-    <Compile Include="Core\UnitSequenceMatcher\UnitSequenceMathcherWithChildren.cs" />
-    <Compile Include="Core\UnitSequenceMatcher\WildcardUnitSequenceMatcher.cs" />
-    <Compile Include="Core\Weighted.cs" />
-    <Compile Include="Core\WeightedExtension.cs" />
-    <Compile Include="Logging\Log.cs" />
-    <Compile Include="Logging\LogConst.cs" />
-    <Compile Include="Logging\LogExtension.cs" />
-    <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Core\BuildSession.cs" />
-    <Compile Include="Core\IBuildAction.cs" />
-    <Compile Include="Core\Builder.cs" />
-    <Compile Include="Core\UnitInfo.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Framework\Tuner.cs" />
-    <Compile Include="Framework\AddCreateBuildAction.cs" />
-    <Compile Include="Framework\BuilderExtension.cs" />
-    <Compile Include="Framework\BuildPlansCollectionExtension.cs" />
-    <Compile Include="Framework\BuildStage.cs" />
-    <Compile Include="Framework\CreationTuner.cs" />
-    <Compile Include="Framework\Default.cs" />
-    <Compile Include="Framework\Extensibility\ExtensibilityExtension.cs" />
-    <Compile Include="Framework\Extensibility\IUnitSequenceExtensibility.cs" />
-    <Compile Include="Framework\Extensibility\UnitSequenceExtensibility.cs" />
-    <Compile Include="Framework\IBuildPlan.cs" />
-    <Compile Include="Framework\InjectPointMatchingWeight.cs" />
-    <Compile Include="Framework\Parameters\ForParameter.cs" />
-    <Compile Include="Framework\Parameters\IParameterValueBuildPlan.cs" />
-    <Compile Include="Framework\Parameters\ParameterValueTuner.cs" />
-    <Compile Include="Framework\Parameters\ParameterValueBuildPlan.cs" />
-    <Compile Include="Framework\Properties\ForProperty.cs" />
-    <Compile Include="Framework\Properties\InjectPropertyByInjectPointIdBuildPlan.cs" />
-    <Compile Include="Framework\Properties\InjectPropertyByNameBuildPlan.cs" />
-    <Compile Include="Framework\Properties\IPropertyValueBuildPlan.cs" />
-    <Compile Include="Framework\Properties\Property.cs" />
-    <Compile Include="Framework\Properties\PropertyValueBuildPlan.cs" />
-    <Compile Include="Framework\Properties\PropertyValueTuner.cs" />
-    <Compile Include="Framework\TreatingOpenGenericTuner.cs" />
-    <Compile Include="Framework\TreatingTuner.cs" />
-    <Compile Include="Framework\Match.cs" />
-    <Compile Include="Framework\SequenceTuner.cs" />
-    <Compile Include="Framework\BuildValuePlan.cs" />
+    <Compile Include="AddCreateBuildAction.cs" />
+    <Compile Include="BuilderExtension.cs" />
+    <Compile Include="BuildPlansCollectionExtension.cs" />
+    <Compile Include="BuildStage.cs" />
+    <Compile Include="BuildValuePlan.cs" />
+    <Compile Include="CreationTuner.cs" />
+    <Compile Include="Default.cs" />
+    <Compile Include="Extensibility\ExtensibilityExtension.cs" />
+    <Compile Include="Extensibility\IUnitSequenceExtensibility.cs" />
+    <Compile Include="Extensibility\UnitSequenceExtensibility.cs" />
+    <Compile Include="IBuildPlan.cs" />
+    <Compile Include="InjectPointMatchingWeight.cs" />
+    <Compile Include="Match.cs" />
+    <Compile Include="Parameters\ForParameter.cs" />
+    <Compile Include="Parameters\IParameterValueBuildPlan.cs" />
+    <Compile Include="Parameters\ParameterValueBuildPlan.cs" />
+    <Compile Include="Parameters\ParameterValueTuner.cs" />
+    <Compile Include="Assembly\Annotations.cs" />
+    <Compile Include="Assembly\AssemblyInfo.cs" />
+    <Compile Include="Properties\ForProperty.cs" />
+    <Compile Include="Properties\InjectPropertyByInjectPointIdBuildPlan.cs" />
+    <Compile Include="Properties\InjectPropertyByNameBuildPlan.cs" />
+    <Compile Include="Properties\IPropertyValueBuildPlan.cs" />
+    <Compile Include="Properties\Property.cs" />
+    <Compile Include="Properties\PropertyValueBuildPlan.cs" />
+    <Compile Include="Properties\PropertyValueTuner.cs" />
+    <Compile Include="SequenceTuner.cs" />
+    <Compile Include="TreatingOpenGenericTuner.cs" />
+    <Compile Include="TreatingTuner.cs" />
+    <Compile Include="Tuner.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Armature.Interface\Armature.Interface.csproj">
-      <Project>{8F7B1053-FF1F-4B3A-9665-F296B81838B5}</Project>
-      <Name>Armature.Interface</Name>
+    <ProjectReference Include="..\Armature.Core\Armature.Core.csproj">
+      <Project>{893267E2-5B94-4647-9EF6-70390757F11A}</Project>
+      <Name>Armature.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
 </Project>

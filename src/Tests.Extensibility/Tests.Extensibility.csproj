@@ -66,12 +66,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Armature.Core\Armature.Core.csproj">
+      <Project>{893267E2-5B94-4647-9EF6-70390757F11A}</Project>
+      <Name>Armature.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Armature.Interface\Armature.Interface.csproj">
       <Project>{8f7b1053-ff1f-4b3a-9665-f296b81838b5}</Project>
       <Name>Armature.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\Armature\Armature.csproj">
-      <Project>{893267e2-5b94-4647-9ef6-70390757f11a}</Project>
+      <Project>{B7BF9BE8-E5A5-4B7F-8539-19AB22AD7A49}</Project>
       <Name>Armature</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tests\Tests.csproj">
