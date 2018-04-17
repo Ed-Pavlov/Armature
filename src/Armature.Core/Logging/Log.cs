@@ -2,7 +2,7 @@
 using System.Linq;
 using Resharper.Annotations;
 
-namespace Armature.Logging
+namespace Armature.Core.Logging
 {
   public static class Log
   {

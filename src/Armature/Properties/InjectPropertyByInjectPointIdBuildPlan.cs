@@ -1,9 +1,9 @@
 ﻿using System;
 using Armature.Core;
 using Armature.Core.BuildActions.Property;
+using Armature.Core.Logging;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
-using Armature.Logging;
 using Resharper.Annotations;
 
 namespace Armature

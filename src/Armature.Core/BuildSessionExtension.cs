@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Armature.Common;
 using Resharper.Annotations;
+using Armature.Core.Common;
 
 namespace Armature.Core
 {

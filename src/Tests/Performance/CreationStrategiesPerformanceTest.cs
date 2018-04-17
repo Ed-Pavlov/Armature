@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Armature.Common;
+using Armature.Core.Common;
 using NUnit.Framework;
 
 namespace Tests.Performance

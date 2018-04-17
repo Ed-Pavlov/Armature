@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Armature.Common;
-using Armature.Core.UnitSequenceMatcher;
 using Resharper.Annotations;
+using Armature.Core.Common;
+using Armature.Core.UnitSequenceMatcher;
 
 namespace Armature.Core
 {

@@ -2,8 +2,8 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Armature.Logging;
 using Resharper.Annotations;
+using Armature.Core.Logging;
 
 namespace Armature.Core.BuildActions.Constructor
 {

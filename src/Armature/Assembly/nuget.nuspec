@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+    <metadata minClientVersion="2.8">
+        <id>Armature</id>
+        <version>0.9</version>
+        <title>Armature</title>
+        <authors>Ed Pavlov</authors>
+        <owners>Ed Pavlov</owners>
+        <licenseUrl>https://github.com/Ed-ward/Armature/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/Ed-ward/Armature</projectUrl>
+        <iconUrl></iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Armature is lightweight and extremely easily extensible dependency injection framework</description>
+        <copyright>Copyright © 2018 Ed Pavlov</copyright>
+        <tags>dependency-injection dependencyinjection di ioc .NET</tags>
+
+        <dependencies>
+          <dependency id="Armature.Interface" version="0.9" />
+          <dependency id="Armature.Core" version="0.9" />
+        </dependencies>
+    </metadata>
+</package>

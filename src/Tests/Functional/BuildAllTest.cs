@@ -2,7 +2,7 @@
 using System.Linq;
 using Armature;
 using Armature.Core;
-using Armature.Logging;
+using Armature.Core.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Armature.Common;
 using Resharper.Annotations;
+using Armature.Core.Common;
 
 namespace Armature.Core
 {

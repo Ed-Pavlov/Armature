@@ -1,4 +1,4 @@
-﻿namespace Armature.Common
+﻿namespace Armature.Core.Common
 {
   public static class EmptyArray<T>
   {

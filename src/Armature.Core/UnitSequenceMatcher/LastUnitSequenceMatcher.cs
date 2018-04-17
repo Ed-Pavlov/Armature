@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using Armature.Common;
-using Armature.Logging;
 using Resharper.Annotations;
+using Armature.Core.Common;
+using Armature.Core.Logging;
 
 namespace Armature.Core.UnitSequenceMatcher
 {

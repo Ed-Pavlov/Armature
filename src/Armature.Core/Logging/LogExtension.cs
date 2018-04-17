@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Armature.Core;
 
-namespace Armature.Logging
+namespace Armature.Core.Logging
 {
   public static class LogExtension
   {

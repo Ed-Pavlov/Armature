@@ -1,4 +1,4 @@
-﻿using Armature.Common;
+﻿using Armature.Core.Common;
 using FluentAssertions;
 using NUnit.Framework;
 

@@ -1,8 +1,8 @@
 ﻿using System;
-using Armature.Common;
 using Armature.Core;
 using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Creation;
+using Armature.Core.Common;
 using Armature.Core.UnitSequenceMatcher;
 using Resharper.Annotations;
 

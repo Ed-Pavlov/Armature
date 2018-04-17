@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <LangVersion>7.2</LangVersion>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\CommonAssemblyInfo.cs">
+      <Link>Assembly\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ArmatureException.cs" />
     <Compile Include="BuildActions\Constructor\GetConstructorByParameterTypesBuildAction.cs" />
     <Compile Include="BuildActions\Constructor\GetConstructorBytAttributeBuildAction.cs" />
@@ -126,6 +130,9 @@
       <Project>{8F7B1053-FF1F-4B3A-9665-F296B81838B5}</Project>
       <Name>Armature.Interface</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assembly\nuget.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

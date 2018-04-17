@@ -15,25 +15,25 @@ namespace Armature.Core.UnitSequenceMatcher
   [SuppressMessage("ReSharper", "ConvertToConstant.Global")]
   public class UnitSequenceMatchingWeight
   {
-    protected static int _step = 100;
-    protected static int _lowest = 0;
-    protected static int _any = _lowest - _step;
-    protected static int _wildcard = _any + _step;
-    protected static int _strict = _wildcard + _step;
+    protected static int Step = 100;
+    protected static int Lowest = 0;
+    protected static int Any = Lowest - Step;
+    protected static int Wildcard = Any + Step;
+    protected static int Strict = Wildcard + Step;
 
     /// <summary>
     /// Is used for <see cref="AnyUnitSequenceMatcher" />
     /// </summary>
-    public static int AnyUnit => _any;
+    public static int AnyUnit => Any;
 
     /// <summary>
     ///   Used for <see cref="WildcardUnitSequenceMatcher" /> wich matches with a <see cref="UnitInfo" /> contains a <see cref="Type" />
     /// </summary>
-    public static int WildcardMatchingUnit => _wildcard;
+    public static int WildcardMatchingUnit => Wildcard;
     
     /// <summary>
     ///   Used for <see cref="StrictUnitSequenceMatcher" /> wich matches with a <see cref="UnitInfo" /> contains a <see cref="Type" />
     /// </summary>
-    public static int StrictMatchingUnit => _strict;
+    public static int StrictMatchingUnit => Strict;
   }
 }

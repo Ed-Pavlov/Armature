@@ -1,4 +1,4 @@
-﻿namespace Armature.Logging
+﻿namespace Armature.Core.Logging
 {
   public static class LogConst
   {

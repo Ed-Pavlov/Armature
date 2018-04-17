@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Armature.Logging;
+using Armature.Core.Logging;
 
 namespace Armature.Core.UnitMatchers
 {

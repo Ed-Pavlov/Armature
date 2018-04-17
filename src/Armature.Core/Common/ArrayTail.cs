@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Resharper.Annotations;
 
-namespace Armature.Common
+namespace Armature.Core.Common
 {
   /// <summary>
   ///   Data structure used to take a tail of the collection w/o memory allocations

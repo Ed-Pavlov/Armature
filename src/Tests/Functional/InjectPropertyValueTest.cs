@@ -1,8 +1,8 @@
 ﻿using Armature;
-using Armature.Common;
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
 using Armature.Core.BuildActions.Property;
+using Armature.Core.Common;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;

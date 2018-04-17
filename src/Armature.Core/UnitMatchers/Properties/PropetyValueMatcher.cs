@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using Armature.Logging;
+using Armature.Core.Logging;
 
 namespace Armature.Core.UnitMatchers.Properties
 {

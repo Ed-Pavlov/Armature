@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Logging;
 using Resharper.Annotations;
+using Armature.Core.Logging;
 
 namespace Armature.Core.BuildActions
 {

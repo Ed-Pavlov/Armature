@@ -1,5 +1,5 @@
 ﻿using Armature.Core;
-using Armature.Logging;
+using Armature.Core.Logging;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {

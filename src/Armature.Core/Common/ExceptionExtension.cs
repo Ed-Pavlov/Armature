@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Resharper.Annotations;
 
-namespace Armature.Common
+namespace Armature.Core.Common
 {
   internal static class ExceptionExtension
   {
