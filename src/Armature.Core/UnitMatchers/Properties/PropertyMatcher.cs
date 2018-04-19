@@ -3,6 +3,9 @@ using Armature.Core.Logging;
 
 namespace Armature.Core.UnitMatchers.Properties
 {
+  /// <summary>
+  /// Matches Unit representing "property" of the currently building Unit
+  /// </summary>
   public class PropertyMatcher : IUnitMatcher
   {
     public static readonly IUnitMatcher Instance = new PropertyMatcher();

@@ -3,7 +3,7 @@
 namespace Armature.Core.UnitMatchers
 {
   /// <summary>
-  ///   Matches <see cref="T:Armature.Core.UnitInfo" /> with an open generic type
+  ///   Matches <see cref="UnitInfo" /> with an open generic type
   /// </summary>
   public class OpenGenericTypeMatcher : UnitInfoMatcher
   {

@@ -7,7 +7,8 @@ using Armature.Core.Common;
 namespace Armature.Core.UnitSequenceMatcher
 {
   /// <summary>
-  /// Matches any sequence of building units, thus passing the unit under construction to its children and merge their build actions with its own.
+  /// Matches any sequence of building units, thus passing the unit under construction to <see cref="IUnitSequenceMatcher.Children"/> and merge their
+  /// build actions with its own.
   /// </summary>
   /// <remarks>
   ///   This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
@@ -21,14 +22,23 @@ namespace Armature.Core.UnitSequenceMatcher
   /// </remarks>
   public class AnyUnitSequenceMatcher : UnitSequenceMathcherWithChildren, IEnumerable
   {
-    public AnyUnitSequenceMatcher() : this(UnitSequenceMatchingWeight.AnyUnit) { }
-    public AnyUnitSequenceMatcher(int weight) : base(weight) { }
+    private readonly object _token;
+    
+    public AnyUnitSequenceMatcher(object token = null) : this(UnitSequenceMatchingWeight.AnyUnit, token) {  }
+    public AnyUnitSequenceMatcher(int weight, object token = null) : base(weight) => _token = token;
 
     /// <summary>
     ///   Matches any <see cref="UnitInfo" />, so it pass the building unit info into its children and returns merged result
     /// </summary>
     public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
+      if (_token != null)
+      {
+        var unitInfo = buildingUnitsSequence.Last();
+        if (!Equals(unitInfo.Token, _token))
+          return null;
+      }
+      
       var lastItemAsTail = buildingUnitsSequence.GetTail(buildingUnitsSequence.Length - 1);
 
       return GetChildrenActions(inputWeight + Weight, lastItemAsTail)

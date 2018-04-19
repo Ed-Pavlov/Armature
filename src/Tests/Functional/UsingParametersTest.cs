@@ -8,6 +8,7 @@ using Armature.Core.BuildActions.Parameter;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitSequenceMatcher;
+using Armature.Parameters;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -200,7 +201,7 @@ namespace Tests.Functional
       target
         .Treat<Subject>()
         .AsIs()
-        .UsingParameters(forParameter.UseResolver<int>((_, intValue) => intValue.ToString()));
+        .UsingParameters(forParameter.UseFactoryMethod<int>((_, intValue) => intValue.ToString()));
 
       // --act
       var actual = target.Build<Subject>();

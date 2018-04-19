@@ -5,6 +5,9 @@ using Resharper.Annotations;
 
 namespace Armature.Core.UnitMatchers.Parameters
 {
+  /// <summary>
+  /// Matches parameter by exact type matching
+  /// </summary>
   public class ParameterByStrictTypeMatcher : InjectPointByStrictTypeMatcher
   {
     [DebuggerStepThrough]

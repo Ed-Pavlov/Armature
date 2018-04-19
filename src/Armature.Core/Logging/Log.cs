@@ -4,25 +4,41 @@ using Resharper.Annotations;
 
 namespace Armature.Core.Logging
 {
+  /// <summary>
+  /// Class is used to log Armature activities in human friendly form. Writes data into <see cref="System.Diagnostics.Trace"/>, so
+  /// add a listener to see the log.
+  /// </summary>
   public static class Log
   {
     private static int _indent;
     private static LogLevel _logLevel;
 
+    /// <summary>
+    /// Used to enable logging in a limited scope using "using" C# keyword
+    /// </summary>
     public static IDisposable Enabled(LogLevel logLevel = LogLevel.Info)
     {
       _logLevel = logLevel;
       return new Bracket(() => _logLevel = logLevel, () => _logLevel = LogLevel.None);
     }
 
+    /// <summary>
+    /// Used to make a named and indented "block" in log data 
+    /// </summary>
     public static IDisposable Block(LogLevel logLevel, string name, params object[] parameters)
     {
       WriteLine(logLevel, name, parameters);
       return logLevel <= _logLevel ? AddIndent(true) : new DumbDisposable();
     }
 
-    public static bool LogNamespace { get; } = false;
+    /// <summary>
+    /// Set should full type name be logged or only short name w/o namespace to simplify reading.
+    /// </summary>
+    public static bool LogFullTypeName { get; } = false;
     
+    /// <summary>
+    /// Used to make an indented "block" in log data
+    /// </summary>
     public static IDisposable AddIndent(bool newBlock = false, int count = 1) => new Indenter(newBlock, count);
     
     [StringFormatMethod("format")]
@@ -43,6 +59,16 @@ namespace Armature.Core.Logging
       System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, parameters.Select(ToLogString).ToArray()));
     }
 
+    /// <summary>
+    /// Returns the name of <paramref name="type"/> respecting <see cref="LogFullTypeName"/> property
+    /// </summary>
+    public static string AsLogString(this Type type) => LogFullTypeName ? type.ToString() : type.GetShortName();
+    
+    /// <summary>
+    /// Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString"/> returns
+    /// </summary>
+    public static string ToLogString(object obj) => obj == null ? "null" : AsLogString((dynamic)obj);
+    
     private static string GetIndent()
     {
       var indent = "";
@@ -51,7 +77,7 @@ namespace Armature.Core.Logging
       return indent;
     }
 
-    public static string AsLogString(this Type type) => LogNamespace ? type.ToString() : type.GetShortName();
+    
     private static string AsLogString(object obj)
     {
       if (obj == null) return "null";
@@ -71,8 +97,6 @@ namespace Armature.Core.Logging
       return string.Format("{0}[{1}]", main, arguments);
     }
     
-    internal static string ToLogString(object obj) => obj == null ? "null" : AsLogString((dynamic)obj);
-
     private class Indenter : IDisposable
     {
       private readonly int _count;

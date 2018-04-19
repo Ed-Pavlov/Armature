@@ -8,7 +8,7 @@ using Armature.Core.BuildActions.Creation;
 using Armature.Core.BuildActions.Parameter;
 using Resharper.Annotations;
 
-namespace Armature
+namespace Armature.Parameters
 {
   public class ParameterValueTuner
   {
@@ -23,12 +23,12 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Use the <see cref="value" /> for the parameter
+    ///   Use the <paramref name="value"/> for the parameter
     /// </summary>
     public ParameterValueBuildPlan UseValue([CanBeNull] object value) => new ParameterValueBuildPlan(_parameterMatcher, new SingletonBuildAction(value), _weight);
 
     /// <summary>
-    ///   For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <see cref="token" />
+    ///   For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <paramref name="token"/>
     /// </summary>
     public ParameterValueBuildPlan UseToken([NotNull] object token)
     {
@@ -36,10 +36,19 @@ namespace Armature
       return new ParameterValueBuildPlan(_parameterMatcher, new CreateParameterValueAction(token), _weight);
     }
 
-    public ParameterValueBuildPlan UseResolver<T>(Func<IBuildSession, T, object> resolver) => 
-      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T, object>(resolver), _weight);
+    /// <summary>
+    /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
+    /// </summary>
+    public ParameterValueBuildPlan UseFactoryMethod<T>(Func<IBuildSession, T, object> factoryMethod) => 
+      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T, object>(factoryMethod), _weight);
     
-    public ParameterValueBuildPlan UseInjectPointIdAsToken() => new ParameterValueBuildPlan(_parameterMatcher, CreateParameterValueForInjectPointBuildAction.Instance, _weight);
+    /// <summary>
+    /// For building a value for the parameter use the type of parameter and <see cref="InjectAttribute.InjectionPointId"/> as token
+    /// </summary>
+    public ParameterValueBuildPlan UseInjectPointIdAsToken() => new ParameterValueBuildPlan(
+      _parameterMatcher,
+      CreateParameterValueForInjectPointBuildAction.Instance,
+      _weight);
   }
 
   /// <summary>

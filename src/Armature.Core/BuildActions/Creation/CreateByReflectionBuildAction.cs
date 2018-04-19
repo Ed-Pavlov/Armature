@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using Armature.Core.Common;
 using Armature.Core.Logging;
 
 namespace Armature.Core.BuildActions.Creation
 {
   /// <summary>
-  ///   Build action instantiates an object of type <see cref="UnitInfo.Id" /> as Type using reflection
+  ///   Builds an Unit using reflection
   /// </summary>
   public class CreateByReflectionBuildAction : IBuildAction
   {
@@ -38,7 +39,7 @@ namespace Armature.Core.BuildActions.Creation
             object instance;
             if (parameters.Length == 0)
             {
-              instance = Activator.CreateInstance(type); // activator is faster then ctor.Invoke for parameterless ctor
+              instance = constructor.Invoke(EmptyArray<object>.Instance);
             }
             else
             {

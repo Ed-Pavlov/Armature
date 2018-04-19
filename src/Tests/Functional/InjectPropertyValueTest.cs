@@ -171,7 +171,7 @@ namespace Tests.Functional
       target
         .Treat<Subject>()
         .AsIs()
-        .InjectProperty(ForProperty.OfType<int>().UseResolver(_ => expected));
+        .InjectProperty(ForProperty.OfType<int>().UseFactoryMethod(_ => expected));
 
       // --act
       var actual = target.Build<Subject>();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -11,10 +12,10 @@ namespace Tests.Performance
   [Ignore("Run manually only")]
   public class CreationStrategiesPerformanceTest
   {
-    private readonly string[] _values = {"1", "2", "3", "4", "5", "6", "7"};
+    private readonly object[] _values = {"1", "2", "3", "4", "5", "6", "7"};
     private readonly ConstructorInfo _constructorInfo = typeof(Subject).GetConstructors().Single(_ => _.GetParameters().Length > 0);
     private readonly ConstructorInfo _emptyConstructorInfo = typeof(Subject).GetConstructors().Single(_ => _.GetParameters().Length == 0);
-    private const int Count = 10000;
+    private const int Count = 100000;
 
     [Test]
     public void CreateByEmptyConstructorInfo()
@@ -123,6 +124,8 @@ namespace Tests.Performance
         .Compile();
     }
 
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
     private class Subject
     {
       public Subject(){}

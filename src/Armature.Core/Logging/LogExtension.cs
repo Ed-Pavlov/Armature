@@ -8,7 +8,14 @@ namespace Armature.Core.Logging
   {
     private const string BuildsequenceIsEmpty = "BuildSequence{{empty}}";
 
-    public static void LogBuildSequence(this IList<UnitInfo> buildSequence, LogLevel logLevel = LogLevel.Verbose)
+    public static string GetShortName(this Type type) => 
+      type.IsGenericType 
+        ? string.Format("{0}<{1}>", type.GetGenericTypeDefinition().Name, string.Join(", ", type.GenericTypeArguments.Select(_ => _.Name).ToArray()))
+        : type.Name;
+    
+    public static string AsLogString(this object obj) => Log.ToLogString(obj);
+    
+    public static void ToLog(this IList<UnitInfo> buildSequence, LogLevel logLevel = LogLevel.Verbose)
     {
       if (buildSequence.Count == 0)
         Log.WriteLine(logLevel, BuildsequenceIsEmpty);
@@ -29,10 +36,10 @@ namespace Armature.Core.Logging
       }
       
       foreach (var pair in actions)
-        LogStageBuildActions(pair, logLevel);
+        LogMatchedBuildActions(pair, logLevel);
     }
 
-    private static void LogStageBuildActions(KeyValuePair<object, List<Weighted<IBuildAction>>> stagedActions, LogLevel logLevel)
+    private static void LogMatchedBuildActions(KeyValuePair<object, List<Weighted<IBuildAction>>> stagedActions, LogLevel logLevel)
     {
       var stage = stagedActions.Key;
       var actionsList = stagedActions.Value;
@@ -47,12 +54,5 @@ namespace Armature.Core.Logging
             Log.WriteLine(logLevel, "{0}", action);
         }
     }
-    
-    public static string GetShortName(this Type type) => 
-      type.IsGenericType 
-        ? string.Format("{0}<{1}>", type.GetGenericTypeDefinition().Name, string.Join(", ", type.GenericTypeArguments.Select(_ => _.Name).ToArray()))
-        : type.Name;
-    
-    public static string AsLogString(this object obj) => Log.ToLogString(obj);
   }
 }

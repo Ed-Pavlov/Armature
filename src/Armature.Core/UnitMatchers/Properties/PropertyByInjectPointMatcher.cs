@@ -2,6 +2,9 @@
 
 namespace Armature.Core.UnitMatchers.Properties
 {
+  /// <summary>
+  /// Matches property marked with <see cref="InjectAttribute"/> with specified <see cref="InjectAttribute.InjectionPointId"/>
+  /// </summary>
   public class PropertyByInjectPointMatcher : InjectPointByIdMatcher
   {
     [DebuggerStepThrough]

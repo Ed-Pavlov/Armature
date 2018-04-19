@@ -12,13 +12,13 @@ namespace Armature
   public static class Match
   {
     /// <summary>
-    ///   Creates a matcher with <see cref="UnitInfo" />(typeof(<see cref="T" />), <see cref="token" />)
+    ///   Creates a type matcher with <see cref="UnitInfo" />(typeof(<typeparamref name="T"/>), <paramref name="token" />)
     /// </summary>
     [DebuggerStepThrough]
     public static IUnitMatcher Type<T>(object token) => Type(typeof(T), token);
 
     /// <summary>
-    ///   Creates a matcher with <see cref="UnitInfo" />(<see cref="type" />, <see cref="token" />)
+    ///   Creates a type matcher with <see cref="UnitInfo" />(<paramref name="type"/>, <paramref name="token"/>)
     /// </summary>
     [DebuggerStepThrough]
     public static IUnitMatcher Type([NotNull] Type type, object token)
@@ -29,7 +29,7 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Creates a matcher with <see cref="UnitInfo" />(<see cref="type" />, <see cref="token" />)
+    ///   Creates a open generic type matcher with <see cref="UnitInfo" />(<paramref name="type"/>, <paramref name="token"/>)
     /// </summary>
     [DebuggerStepThrough]
     public static IUnitMatcher OpenGenericType(Type type, object token) => new OpenGenericTypeMatcher(new UnitInfo(type, token));

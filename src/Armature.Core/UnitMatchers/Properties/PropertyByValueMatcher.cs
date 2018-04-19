@@ -5,6 +5,9 @@ using Resharper.Annotations;
 
 namespace Armature.Core.UnitMatchers.Properties
 {
+  /// <summary>
+  /// Matches property suited for provided value type
+  /// </summary>
   public class PropertyByValueMatcher : InjectPointByValueMatcher
   {
     [DebuggerStepThrough]

@@ -170,7 +170,7 @@ namespace Armature.Core
     {
       var block = Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Build", unitInfo);
       {
-        _buildSequence.LogBuildSequence();
+        _buildSequence.ToLog();
       }
       return block;
     }

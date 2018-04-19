@@ -14,33 +14,31 @@ namespace Armature
   [SuppressMessage("ReSharper", "ConvertToConstant.Global")]
   public class InjectPointMatchingWeight
   {
-    protected static int _step = 100;
-    protected static int _lowest = 0;
-    protected static int _weakType = _lowest + _step;
-    protected static int _strictType = _weakType + _step;
-    protected static int _attribute = _strictType + _step;
-    protected static int _name = _attribute + _step;
+    protected static int Step = 100;
+    protected static int Zero = 0;
+    protected static int WeakType = Zero + Step;
+    protected static int StrictType = WeakType + Step;
+    protected static int Attribute = StrictType + Step;
+    protected static int Name = Attribute + Step;
    
-    public static int Lowest => _lowest;
-
     /// <summary>
     /// Weight of matcher matching value for parameter by assignability value to parameter.
     /// </summary>
-    public static int WeakTypedParameter => _weakType;
+    public static int WeakTypedParameter => WeakType;
 
     /// <summary>
     /// Weight of matcher matching value for parameter by strict type equality.
     /// </summary>
-    public static int TypedParameter => _strictType;
+    public static int TypedParameter => StrictType;
 
     /// <summary>
     /// Weight of matcher matching parameter by attribute.
     /// </summary>
-    public static int AttributedParameter => _attribute;
+    public static int AttributedParameter => Attribute;
 
     /// <summary>
     /// Weight of matcher matching parameter by name
     /// </summary>
-    public static int NamedParameter => _name;
+    public static int NamedParameter => Name;
   }
 }

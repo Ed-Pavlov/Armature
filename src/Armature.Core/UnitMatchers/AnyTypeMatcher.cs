@@ -3,6 +3,9 @@ using Armature.Core.Logging;
 
 namespace Armature.Core.UnitMatchers
 {
+  /// <summary>
+  /// Matches any type which can be instantiated
+  /// </summary>
   public class AnyTypeMatcher : IUnitMatcher
   {
     public static readonly IUnitMatcher Instance = new AnyTypeMatcher();

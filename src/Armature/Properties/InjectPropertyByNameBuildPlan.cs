@@ -9,6 +9,9 @@ using Resharper.Annotations;
 
 namespace Armature
 {
+  /// <summary>
+  /// Adds a plan injecting dependencies into properties with corresponding names
+  /// </summary>
   public class InjectPropertyByNameBuildPlan : IPropertyValueBuildPlan
   {
     private readonly string[] _names;
@@ -22,7 +25,7 @@ namespace Armature
     }
 
     [DebuggerStepThrough]
-    public void Register(IUnitSequenceMatcher unitSequenceMatcher) =>
+    public void Apply(IUnitSequenceMatcher unitSequenceMatcher) =>
       unitSequenceMatcher
         .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(PropertyMatcher.Instance))
         .AddBuildAction(BuildStage.Create, new GetPropertyByNameBuildAction(_names));

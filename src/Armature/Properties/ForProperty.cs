@@ -8,7 +8,7 @@ namespace Armature
   public static class ForProperty
   {
     /// <summary>
-    ///   Matches with parameter with <see cref="ParameterInfo.ParameterType" /> equals to <see cref="T" />
+    ///   Matches with property with <see cref="PropertyInfo.PropertyType" /> equals to <typeparamref name="T"/>
     /// </summary>
     public static PropertyValueTuner<T> OfType<T>()
     {
@@ -18,24 +18,18 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Matches with parameter with <see cref="ParameterInfo.Name" /> equals to <see cref="parameterName" />
+    ///   Matches with property with <see cref="MemberInfo.Name" /> equals to <paramref name="propertyName"/>
     /// </summary>
-    /// <param name="parameterName">Matches parameter with this name</param>
-    /// <returns></returns>
-    public static PropertyValueTuner Named([NotNull] string parameterName)
+    public static PropertyValueTuner Named([NotNull] string propertyName)
     {
-      var getPropertyAction = new GetPropertyByNameBuildAction(parameterName);
-      var matcher = new PropertyByNameMatcher(parameterName);
+      var getPropertyAction = new GetPropertyByNameBuildAction(propertyName);
+      var matcher = new PropertyByNameMatcher(propertyName);
       return new PropertyValueTuner(matcher, getPropertyAction, InjectPointMatchingWeight.NamedParameter);
     }
 
     /// <summary>
-    ///   Matches with parameter marked with <see cref="InjectAttribute" />(<see cref="injectPointId" />)
+    ///   Matches with property marked with <see cref="InjectAttribute" />(<paramref name="injectPointId"/>)
     /// </summary>
-    /// <param name="injectPointId">
-    ///   Matches parameter marked with <see cref="InjectAttribute" /> with <see cref="InjectAttribute.InjectionPointId" />
-    ///   equals to <paramref name="injectPointId" />
-    /// </param>
     public static PropertyValueTuner WithInjectPoint([CanBeNull] object injectPointId)
     {
       var getPropertyAction = new GetPropertyByInjectPointBuildAction(injectPointId);

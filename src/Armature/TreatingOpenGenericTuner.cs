@@ -30,7 +30,7 @@ namespace Armature
     /// <param name="token"></param>
     /// <param name="addDefaultCreateAction">
     ///   If <see cref="AddCreateBuildAction.Yes" /> adds a build action
-    ///   <see cref="Default.CreationBuildAction" /> for <see cref="UnitInfo" />(<paramref name="openGenericType" />, <see cref="token" />)
+    ///   <see cref="Default.CreationBuildAction" /> for <see cref="UnitInfo" />(<paramref name="openGenericType" />, <paramref name="token"/>)
     ///   as a creation build action.
     /// </param>
     public Tuner As(Type openGenericType, object token = null, AddCreateBuildAction addDefaultCreateAction = AddCreateBuildAction.Yes)

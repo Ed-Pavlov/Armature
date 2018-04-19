@@ -8,7 +8,7 @@
         <owners>Ed Pavlov</owners>
         <licenseUrl>https://github.com/Ed-ward/Armature/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/Ed-ward/Armature</projectUrl>
-        <iconUrl></iconUrl>
+        <iconUrl>https://user-images.githubusercontent.com/13353926/38953149-18aedc4a-434e-11e8-873c-d98e2e591f0b.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Armature is lightweight and extremely easily extensible dependency injection framework</description>
         <copyright>Copyright © 2018 Ed Pavlov</copyright>
@@ -18,4 +18,8 @@
           <dependency id="Armature.Interface" version="0.9" />
         </dependencies>
     </metadata>
+    <files>
+        <file src="..\bin\release\Armature.Core.dll" target="lib\net461" />
+        <file src="..\bin\release\Armature.Core.xml" target="lib\net461" />
+    </files>
 </package>

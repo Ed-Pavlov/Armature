@@ -6,6 +6,9 @@ using Resharper.Annotations;
 
 namespace Armature.Core.UnitMatchers.Parameters
 {
+  /// <summary>
+  /// Matches parameter marked with attribute which satisfies user provided conditions
+  /// </summary>
   [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
   public class ParameterByAttributeMatcher<T> : InjectPointByAttributeMatcher<T>
     where T : Attribute

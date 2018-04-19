@@ -7,6 +7,9 @@ using Armature.Core.Logging;
 
 namespace Armature.Core.BuildActions.Constructor
 {
+  /// <summary>
+  /// "Builds" a constructor Unit of the currently building Unit by parameter types  
+  /// </summary>
   public class GetConstructorByParameterTypesBuildAction : IBuildAction
   {
     private readonly Type[] _parameterTypes;

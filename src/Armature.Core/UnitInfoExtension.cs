@@ -19,7 +19,10 @@ namespace Armature.Core
     /// </summary>
     [DebuggerStepThrough]
     [CanBeNull]
-    public static Type GetUnitTypeSafe([NotNull] this UnitInfo unitInfo) =>
-      unitInfo != null ? unitInfo.Id as Type : throw new ArgumentNullException(nameof(unitInfo));
+    public static Type GetUnitTypeSafe([NotNull] this UnitInfo unitInfo)
+    {
+      if (unitInfo == null) throw new ArgumentNullException(nameof(unitInfo));
+      return unitInfo.Id as Type;
+    }
   }
 }

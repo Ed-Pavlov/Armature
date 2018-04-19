@@ -6,7 +6,8 @@ using Armature.Core.Common;
 namespace Armature.Core.UnitSequenceMatcher
 {
   /// <summary>
-  /// Matches the first unit in the sequence and applies passed <see cref="IUnitMatcher" /> to it.
+  /// Matches the first unit in the sequence and only if it matches pass the tail of building
+  /// sequence to its <see cref="UnitSequenceMathcherWithChildren.Children"/>
   ///  </summary>
   public class StrictUnitSequenceMatcher : UnitSequenceMathcherWithChildren, IEquatable<StrictUnitSequenceMatcher>
   {

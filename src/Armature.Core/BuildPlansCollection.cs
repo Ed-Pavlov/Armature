@@ -33,7 +33,7 @@ namespace Armature.Core
     ///   [A, B] in this case.
     /// </remarks>
     /// <returns>
-    ///   Returns all matched build actions for the <see cref="buildSequence" />. All actions are grouped by a building stage
+    ///   Returns all matched build actions for the <paramref name="buildSequence"/>. All actions are grouped by a building stage
     ///   and coupled with a "weight of matching". See <see cref="MatchedBuildActions" /> type declaration for details.
     /// </returns>
     public MatchedBuildActions GetBuildActions([NotNull] IList<UnitInfo> buildSequence)

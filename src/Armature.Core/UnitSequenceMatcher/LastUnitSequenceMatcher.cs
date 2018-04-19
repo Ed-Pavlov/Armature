@@ -26,7 +26,7 @@ namespace Armature.Core.UnitSequenceMatcher
 
     /// <summary>
     ///   If <paramref name="buildingUnitsSequence" /> contains more then one element return null. This matcher matches only unit under construction which is
-    ///   the last one in the <see cref="buildingUnitsSequence" />.
+    ///   the last one in the <paramref name="buildingUnitsSequence"/>.
     /// </summary>
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
     public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)

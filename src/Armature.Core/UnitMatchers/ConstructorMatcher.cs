@@ -3,6 +3,9 @@ using Armature.Core.Logging;
 
 namespace Armature.Core.UnitMatchers
 {
+  /// <summary>
+  /// Matches Unit representing "constructor" of the currently building Unit
+  /// </summary>
   public class ConstructorMatcher : IUnitMatcher
   {
     public static readonly IUnitMatcher Instance = new ConstructorMatcher();

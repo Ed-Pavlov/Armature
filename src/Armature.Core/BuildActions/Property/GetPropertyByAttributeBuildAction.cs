@@ -7,6 +7,9 @@ using Armature.Core.Logging;
 
 namespace Armature.Core.BuildActions.Property
 {
+  /// <summary>
+  /// "Builds" a property Unit of the currently building Unit marked with attribute which satisfies user provided conditions
+  /// </summary>
   public class GetPropertyByAttributeBuildAction<T> : IBuildAction
     where T : Attribute
   {

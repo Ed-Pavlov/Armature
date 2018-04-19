@@ -5,6 +5,9 @@ using ArgumentNullException = System.ArgumentNullException;
 
 namespace Armature
 {
+  /// <summary>
+  /// Stores and applies a plan how to build value to inject.
+  /// </summary>
   public abstract class BuildValuePlan : IBuildPlan
   {
     private readonly IBuildAction _getValueAction;
@@ -18,14 +21,17 @@ namespace Armature
       _weight = weight;
     }
     
-    void IBuildPlan.Register(IUnitSequenceMatcher unitSequenceMatcher)
+    void IBuildPlan.Apply(IUnitSequenceMatcher unitSequenceMatcher)
     {
       unitSequenceMatcher
         .AddUniqueUnitMatcher(new LastUnitSequenceMatcher(_unitMatcher, _weight))
         .AddBuildAction(BuildStage.Create, _getValueAction);
-      Register(unitSequenceMatcher);
+      Apply(unitSequenceMatcher);
     }
 
-    protected virtual void Register(IUnitSequenceMatcher unitSequenceMatcher){}
+    /// <summary>
+    ///  Can be overriden to add extra logic in addition to implemented in <see cref="IBuildPlan.Apply"/> 
+    /// </summary>
+    protected virtual void Apply(IUnitSequenceMatcher unitSequenceMatcher){}
   }
 }

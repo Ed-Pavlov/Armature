@@ -3,7 +3,7 @@
 namespace Armature.Core.BuildActions.Property
 {
   /// <summary>
-  /// Injects values into object's properties specified for injection
+  /// Injects values into building Unit properties specified for injection
   /// </summary>
   public class InjectIntoPropertiesBuildAction : IBuildAction
   {

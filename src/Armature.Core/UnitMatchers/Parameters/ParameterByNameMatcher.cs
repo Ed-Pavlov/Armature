@@ -4,6 +4,9 @@ using Resharper.Annotations;
 
 namespace Armature.Core.UnitMatchers.Parameters
 {
+  /// <summary>
+  /// Matches parameter by name
+  /// </summary>
   public class ParameterByNameMatcher : InjectPointByNameMatcher
   {
     [DebuggerStepThrough]

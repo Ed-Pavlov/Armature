@@ -22,6 +22,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Armature.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +34,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Armature.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -59,7 +65,6 @@
     <Compile Include="Parameters\IParameterValueBuildPlan.cs" />
     <Compile Include="Parameters\ParameterValueBuildPlan.cs" />
     <Compile Include="Parameters\ParameterValueTuner.cs" />
-    <Compile Include="Assembly\Annotations.cs" />
     <Compile Include="Assembly\AssemblyInfo.cs" />
     <Compile Include="Properties\ForProperty.cs" />
     <Compile Include="Properties\InjectPropertyByInjectPointIdBuildPlan.cs" />
@@ -78,6 +83,10 @@
       <Project>{893267E2-5B94-4647-9EF6-70390757F11A}</Project>
       <Name>Armature.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Armature.Interface\Armature.Interface.csproj">
+      <Project>{8f7b1053-ff1f-4b3a-9665-f296b81838b5}</Project>
+      <Name>Armature.Interface</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assembly\nuget.nuspec" />
@@ -90,4 +99,7 @@
     <Target Name="AfterBuild">
     </Target>
     -->
+  <Target Name="AfterBuild" Condition="$(Configuration)==Release">
+    <Exec Command="..\..\tools\nuget.exe pack Assembly\nuget.nuspec -OutputDirectory ..\..\publish" />
+  </Target>
 </Project>

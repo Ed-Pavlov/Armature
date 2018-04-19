@@ -13,7 +13,8 @@ namespace Armature
     public TreatingTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) {}
 
     /// <summary>
-    ///   Treat Unit as is w/o any redirections
+    /// For all who depends on <typeparamref name="T"/> inject object of type <typeparamref name="T"/>.
+    /// Tune plan of building it by subsequence calls.  
     /// </summary>
     public Tuner AsIs()
     {
@@ -22,24 +23,21 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Pass the <see cref="instance" /> to any consumer of an Unit
+    ///   For all who depends on <typeparamref name="T"/> inject <paramref name="instance"/>.
     /// </summary>
     public void AsInstance([CanBeNull] T instance) => UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new SingletonBuildAction(instance));
 
+    /// <summary>
+    /// For all who depends on <typeparamref name="T"/> inject object of type <typeparamref name="TRedirect"/>.
+    /// Tune plan of building it by subsequence calls.  
+    /// </summary>
     /// <param name="addDefaultCreateAction">
-    ///   If <see cref="AddCreateBuildAction.Yes" /> adds a build action
-    ///   <see cref="Default.CreationBuildAction" /> for <see cref="UnitInfo" />(<see name="TRedirect" />, null)
-    ///   as a creation build action.
+    ///   If <see cref="AddCreateBuildAction.Yes" /> adds a build action <see cref="Default.CreationBuildAction" /> for
+    ///   <see cref="UnitInfo" />(<see name="TRedirect" />, null) as a creation build action.
     /// </param>
     public Tuner As<TRedirect>(AddCreateBuildAction addDefaultCreateAction) => As<TRedirect>(null, addDefaultCreateAction);
 
-    /// <param name="token"></param>
-    /// <param name="addDefaultCreateAction">
-    ///   If <see cref="AddCreateBuildAction.Yes" /> adds a build action
-    ///   <see cref="Default.CreationBuildAction" /> for <see cref="UnitInfo" />(<see name="TRedirect" />, <see cref="token" />)
-    ///   as a creation build action.
-    /// </param>
-    /// <typeparam name="TRedirect"></typeparam>
+    ///<inheritdoc cref="As{TRedirect}(Armature.AddCreateBuildAction)"/>
     public Tuner As<TRedirect>(object token = null, AddCreateBuildAction addDefaultCreateAction = AddCreateBuildAction.Yes)
     {
       var from = typeof(T);
@@ -65,6 +63,10 @@ namespace Armature
       return new Tuner(childMatcher);
     }
 
+    /// <summary>
+    /// For all who depends on <typeparamref name="T"/> inject object of type <typeparamref name="TRedirect"/>.
+    /// Tune plan of building it by subsequence calls.  
+    /// </summary>
     public CreationTuner<T> Created<TRedirect>(object token = null)
     {
       var redirectTo = typeof(TRedirect);
@@ -77,15 +79,21 @@ namespace Armature
       return new CreationTuner<T>(UnitSequenceMatcher, token);
     }
     
+    /// <summary>
+    /// For all who depends on <typeparamref name="T"/> inject object created by specified factory method.
+    /// </summary>
     public void CreatedBy([NotNull] Func<IBuildSession, T> factoryMethod) =>
       UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T>(factoryMethod));
 
+    /// <inheritdoc cref="CreatedBy"/>
     public Tuner CreatedBy<T1>([NotNull] Func<IBuildSession, T1, T> factoryMethod) => 
       new Tuner(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T>(factoryMethod)));
 
+    /// <inheritdoc cref="CreatedBy"/>
     public Tuner CreatedBy<T1, T2>([NotNull] Func<IBuildSession, T1, T2, T> factoryMethod) =>
       new Tuner(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T>(factoryMethod)));
 
+    /// <inheritdoc cref="CreatedBy"/>
     public Tuner CreatedBy<T1, T2, T3>([NotNull] Func<IBuildSession, T1, T2, T3, T> factoryMethod) => 
       new Tuner(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod)));
  }

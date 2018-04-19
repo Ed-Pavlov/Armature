@@ -7,6 +7,9 @@ using Armature.Core.Logging;
 
 namespace Armature.Core.BuildActions.Constructor
 {
+  /// <summary>
+  /// "Builds" a constructor Unit of the currently building Unit marked with attribute which satisfies user provided conditions  
+  /// </summary>
   public class GetConstructorBytAttributeBuildAction<T> : IBuildAction
   {
     private readonly Predicate<T> _predicate;

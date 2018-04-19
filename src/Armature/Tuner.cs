@@ -8,6 +8,7 @@ using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
+using Armature.Parameters;
 using Resharper.Annotations;
 using ConstructorMatcher = Armature.Core.UnitMatchers.ConstructorMatcher;
 
@@ -19,8 +20,7 @@ namespace Armature
     public Tuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) {} 
 
     /// <summary>
-    ///   The set of values for parameters of registered Unit can be values or implementation of <see cref="IBuildPlan" />.
-    ///   See <see cref="ForParameter" /> for details
+    ///   Provided values will be used to inject the into created object. See <see cref="ForParameter" /> for details
     /// </summary>
     public Tuner UsingParameters(params object[] values)
     {
@@ -30,7 +30,7 @@ namespace Armature
       foreach (var parameter in values)
       {
         if (parameter is IParameterValueBuildPlan buildPlan)
-          buildPlan.Register(UnitSequenceMatcher);
+          buildPlan.Apply(UnitSequenceMatcher);
         else if(parameter is IBuildPlan)
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected"); 
         else
@@ -42,6 +42,10 @@ namespace Armature
       return this;
     }
 
+    /// <summary>
+    /// Provided values will be injected into properties of the created object.  See <see cref="ForProperty"/> for details. 
+    /// Also value can be a build plan returned by one of the method of the <see cref="Property"/> class, which specifies properties to inject dependencies.
+    /// </summary>
     public Tuner InjectProperty(params object[] values)
     {
       UnitSequenceMatcher.AddBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance);
@@ -49,7 +53,7 @@ namespace Armature
       foreach (var value in values)
       {
         if(value is IPropertyValueBuildPlan buildPlan)
-          buildPlan.Register(UnitSequenceMatcher);
+          buildPlan.Apply(UnitSequenceMatcher);
         else if(value is IBuildPlan)
           throw new ArmatureException("IPropertyValueBuildPlanor plain object value expected"); 
         else
@@ -67,7 +71,7 @@ namespace Armature
     public void AsSingleton() => UnitSequenceMatcher.AddBuildAction(BuildStage.Cache, new SingletonBuildAction());
 
     /// <summary>
-    ///   Instantiate an Unit using a constructor marked with <see cref="InjectAttribute" />(<see cref="injectionPointId" />)
+    ///   Instantiate an Unit using a constructor marked with <see cref="InjectAttribute" />(<paramref name="injectionPointId"/>)
     /// </summary>
     public Tuner UsingInjectPointConstructor(object injectionPointId)
     {
@@ -77,8 +81,14 @@ namespace Armature
       return this;
     }
 
+    /// <summary>
+    /// Instantiate an Unit using constructor without parameters
+    /// </summary>
     public Tuner UsingParameterlessConstructor() => UsingConstructorWithParameters();
 
+    /// <summary>
+    /// Instantiate an Unit using constructor with exact set of parameters as provided in <paramref name="parameterTypes"/>
+    /// </summary>
     public Tuner UsingConstructorWithParameters(params Type[] parameterTypes)
     {
       UnitSequenceMatcher
@@ -87,6 +97,9 @@ namespace Armature
       return this;
     }
 
+    /// <summary>
+    /// Doing the same as <see cref="BuildPlansCollectionExtension.Building{T}"/> but w/o breaking fluent syntax
+    /// </summary>
     public Tuner BuildingWhich([NotNull] Action<SequenceTuner> tuneAction)
     {
       if (tuneAction is null) throw new ArgumentNullException(nameof(tuneAction));

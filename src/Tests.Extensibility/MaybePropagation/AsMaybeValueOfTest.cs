@@ -1,6 +1,7 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
+using Armature.Parameters;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Extensibility.MaybePropagation.Implementation;

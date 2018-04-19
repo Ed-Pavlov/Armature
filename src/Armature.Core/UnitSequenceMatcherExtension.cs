@@ -6,7 +6,7 @@ namespace Armature.Core
   public static class UnitSequenceMatcherExtension
   {
     /// <summary>
-    ///   Adds the <paramref name="unitSequenceMatcher"/> into <see cref="parent" />, if <see cref="parent" /> already contains the matcher equal to
+    ///   Adds the <paramref name="unitSequenceMatcher"/> into <paramref name="parent"/>, if <paramref name="parent"/> already contains the matcher equal to
     ///   <paramref name="unitSequenceMatcher"/> it does not add it but return the existent one. This method is used to add on a build plan or
     ///   make a several registrations regarding one Unit separately.
     /// </summary>
@@ -23,6 +23,10 @@ namespace Armature.Core
       return unitSequenceMatcher;
     }
     
+    /// <summary>
+    ///   Adds the <paramref name="unitSequenceMatcher"/> into <paramref name="parent"/>, if <paramref name="parent"/> already contains the matcher equal to
+    ///   <paramref name="unitSequenceMatcher"/> throws exception.
+    /// </summary>
     [DebuggerStepThrough]
     public static T AddUniqueUnitMatcher<T>(this IUnitSequenceMatcher parent, T unitSequenceMatcher)
       where T : IUnitSequenceMatcher
@@ -36,7 +40,7 @@ namespace Armature.Core
     }
 
     /// <summary>
-    ///   Adds the <paramref name="unitSequenceMatcher"/> into <see cref="parent" />, if <see cref="parent" /> already contains the matcher equal to
+    ///   Adds the <paramref name="unitSequenceMatcher"/> into <paramref name="parent"/>, if <paramref name="parent"/> already contains the matcher equal to
     ///   <paramref name="unitSequenceMatcher"/> it does not add it but return the existent one. This method is used to add on a build plan or
     ///   make a several registrations regarding one Unit separately.
     /// </summary>

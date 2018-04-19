@@ -5,7 +5,14 @@
   /// </summary>
   public class Token
   {
+    /// <summary>
+    /// Means "any token"
+    /// </summary>
     public static readonly Token Any = new Token("Any");
+    
+    /// <summary>
+    /// Used to propagate token to building dependencies
+    /// </summary>
     public static readonly Token Propagate = new Token("Propagate");
     
     private readonly string _name;

@@ -8,7 +8,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.BuildActions.Creation
 {
   /// <summary>
-  ///   Build action instantiates an object using passed factory method
+  ///   Build an Unit using passed factory method
   /// </summary>
   public class CreateByFactoryMethodBuildAction<TR> : IBuildAction
   {
@@ -32,7 +32,7 @@ namespace Armature.Core.BuildActions.Creation
   }
 
   /// <summary>
-  ///   Base class for build actions instantiates an object using factory method with input parameters
+  ///   Base class for build actions building an Unit using factory method with input parameters
   /// </summary>
   public abstract class CreateByFactoryMethodBuildAction : IBuildAction
   {
@@ -56,9 +56,7 @@ namespace Armature.Core.BuildActions.Creation
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), GetMethod().AsLogString());
   }
 
-  /// <summary>
-  ///   Build action instantiates an object using passed factory method
-  /// </summary>
+  /// <inheritdoc cref="CreateByFactoryMethodBuildAction"/>
   public class CreateByFactoryMethodBuildAction<T1, TR> : CreateByFactoryMethodBuildAction
   {
     private readonly Func<IBuildSession, T1, TR> _factoryMethod;
@@ -72,9 +70,7 @@ namespace Armature.Core.BuildActions.Creation
     protected override object Execute(IBuildSession buildSessoin, object[] values) => _factoryMethod(buildSessoin, (T1)values[0]);
   }
 
-  /// <summary>
-  ///   Build action instantiates an object using passed factory method
-  /// </summary>
+  /// <inheritdoc cref="CreateByFactoryMethodBuildAction"/>
   public class CreateByFactoryMethodBuildAction<T1, T2, TR> : CreateByFactoryMethodBuildAction
   {
     private readonly Func<IBuildSession, T1, T2, TR> _factoryMethod;
@@ -88,9 +84,7 @@ namespace Armature.Core.BuildActions.Creation
     protected override object Execute(IBuildSession buildSessoin, object[] values) => _factoryMethod(buildSessoin, (T1)values[0], (T2)values[1]);
   }
 
-  /// <summary>
-  ///   Build action instantiates an object using passed factory method
-  /// </summary>
+  /// <inheritdoc cref="CreateByFactoryMethodBuildAction"/>
   public class CreateByFactoryMethodBuildAction<T1, T2, T3, TR> : CreateByFactoryMethodBuildAction
   {
     private readonly Func<IBuildSession, T1, T2, T3, TR> _factoryMethod;

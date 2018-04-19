@@ -8,7 +8,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.BuildActions.Property
 {
   /// <summary>
-  /// Builds a list of properties by <see cref="PropertyInfo.Name"/>
+  /// "Builds" a constructor Unit of the currently building Unit with provided names
   /// </summary>
   public class GetPropertyByNameBuildAction : IBuildAction
   {

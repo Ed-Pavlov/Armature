@@ -6,8 +6,8 @@ namespace Armature.Core.BuildActions
 {
   /// <summary>
   ///   Build action which caches built unit in <see cref="PostProcess" /> and then set it as
-  ///   <see cref="T:Armature.Core.BuildResult" /> in <see cref="Process" />.
-  ///   Simplest eternal singleton
+  ///   <see cref="BuildResult" /> in <see cref="Process" />.
+  ///   Simplest eternal singleton.
   /// </summary>
   public class SingletonBuildAction : IBuildAction
   {

@@ -5,6 +5,9 @@ using Armature.Core.Logging;
 
 namespace Armature.Core.UnitMatchers
 {
+  /// <summary>
+  /// Base class for matchers matching an "inject point" suited for provided value type
+  /// </summary>
   public abstract class InjectPointByValueMatcher : IUnitMatcher
   {
     private readonly object _value;

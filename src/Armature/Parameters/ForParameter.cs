@@ -2,12 +2,12 @@
 using Armature.Core.UnitMatchers.Parameters;
 using Resharper.Annotations;
 
-namespace Armature
+namespace Armature.Parameters
 {
   public static class ForParameter
   {
     /// <summary>
-    ///   Matches with parameter with <see cref="ParameterInfo.ParameterType" /> equals to <see cref="T" />
+    ///   Matches with parameter with <see cref="ParameterInfo.ParameterType" /> equals to <typeparamref name="T"/>
     /// </summary>
     public static ParameterValueTuner<T> OfType<T>()
     {
@@ -16,7 +16,7 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Matches with parameter with <see cref="ParameterInfo.Name" /> equals to <see cref="parameterName" />
+    ///   Matches with parameter with <see cref="ParameterInfo.Name" /> equals to <paramref name="parameterName"/>
     /// </summary>
     /// <param name="parameterName">Matches parameter with this name</param>
     /// <returns></returns>
@@ -27,7 +27,7 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Matches with parameter marked with <see cref="InjectAttribute" />(<see cref="injectPointId" />)
+    ///   Matches with parameter marked with <see cref="InjectAttribute" />(<paramref name="injectPointId"/>)
     /// </summary>
     /// <param name="injectPointId">
     ///   Matches parameter marked with <see cref="InjectAttribute" /> with <see cref="InjectAttribute.InjectionPointId" />

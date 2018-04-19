@@ -6,7 +6,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.BuildActions
 {
   /// <summary>
-  /// Base class for build actions creating values to inject
+  /// Base class for build actions building values to inject
   /// </summary>
   public abstract class CreateInjectValueBuildAction : IBuildAction
   {

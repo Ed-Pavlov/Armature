@@ -6,7 +6,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.UnitMatchers
 {
   /// <summary>
-  ///   Matches one <see cref="F:Armature.Core.UnitMatchers.UnitInfoMatcher.UnitInfo" /> with other.
+  ///   Matches one <see cref="UnitInfo" /> with other.
   /// </summary>
   public class UnitInfoMatcher : IUnitMatcher
   {
