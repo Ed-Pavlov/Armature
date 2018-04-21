@@ -108,7 +108,7 @@ namespace Tests.Functional
             
 
         new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, new CreateParameterValueAction()) // autowiring
+          .AddBuildAction(BuildStage.Create, new CreateParameterValueBuildAction()) // autowiring
       };
       
       var target = new Builder(new []{BuildStage.Initialize, BuildStage.Create});

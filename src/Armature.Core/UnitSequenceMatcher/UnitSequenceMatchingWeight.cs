@@ -18,7 +18,9 @@ namespace Armature.Core.UnitSequenceMatcher
     protected static int Step = 100;
     protected static int Lowest = 0;
     protected static int Any = Lowest - Step;
-    protected static int Wildcard = Any + Step;
+    protected static int WildcardOpenGeneric = Any + Step;
+    protected static int WildcardBaseType = WildcardOpenGeneric + Step;
+    protected static int Wildcard = WildcardBaseType + Step;
     protected static int Strict = Wildcard + Step;
 
     /// <summary>
@@ -26,6 +28,16 @@ namespace Armature.Core.UnitSequenceMatcher
     /// </summary>
     public static int AnyUnit => Any;
 
+    /// <summary>
+    ///   Used for <see cref="WildcardUnitSequenceMatcher" /> wich matches with a <see cref="UnitInfo" /> contains open generic type
+    /// </summary>
+    public static int WildcardMatchingOpenGenericUnit => WildcardOpenGeneric;
+    
+    /// <summary>
+    ///   Used for <see cref="WildcardUnitSequenceMatcher" /> wich matches with a <see cref="UnitInfo" /> contains inheritors of a type
+    /// </summary>
+    public static int WildcardMatchingBaseTypeUnit => WildcardBaseType;
+    
     /// <summary>
     ///   Used for <see cref="WildcardUnitSequenceMatcher" /> wich matches with a <see cref="UnitInfo" /> contains a <see cref="Type" />
     /// </summary>

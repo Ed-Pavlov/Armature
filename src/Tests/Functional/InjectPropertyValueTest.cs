@@ -189,7 +189,7 @@ namespace Tests.Functional
         new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
           .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
 
-        new LastUnitSequenceMatcher(PropetyValueMatcher.Instance)
+        new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
           .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction()),
       };
 

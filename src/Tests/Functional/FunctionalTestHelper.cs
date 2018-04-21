@@ -49,10 +49,10 @@ namespace Tests.Functional
             new OrderedBuildActionContainer
             {
               CreateParameterValueForInjectPointBuildAction.Instance,
-              new CreateParameterValueAction()
+              new CreateParameterValueBuildAction()
             }),
         
-        new LastUnitSequenceMatcher(PropetyValueMatcher.Instance)
+        new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
           .AddBuildAction(
             BuildStage.Create,
             new OrderedBuildActionContainer
@@ -86,10 +86,10 @@ namespace Tests.Functional
             new OrderedBuildActionContainer
             {
               CreateParameterValueForInjectPointBuildAction.Instance,
-              new CreateParameterValueAction()
+              new CreateParameterValueBuildAction()
             }),
         
-        new LastUnitSequenceMatcher(PropetyValueMatcher.Instance)
+        new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
           .AddBuildAction(
             BuildStage.Create,
             new OrderedBuildActionContainer

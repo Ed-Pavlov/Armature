@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Armature.Core;
+using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
 using Resharper.Annotations;
 
@@ -19,6 +20,20 @@ namespace Armature
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(token));
       return new TreatingTuner<T>(container.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
+    
+    /// <summary>
+    /// Used to make a build plan for <typeparamref name="T"/>.
+    /// How <typeparamref name="T"/> should be treated is specified by subsequence calls using returned object. 
+    /// </summary>
+    public static TreatingTuner<T> TreatInheritorsOf<T>([NotNull] this BuildPlansCollection container, object token = null)
+    {
+      if (container == null) throw new ArgumentNullException(nameof(container));
+
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
+        new BaseTypeMatcher(new UnitInfo(typeof(T), token)),
+        UnitSequenceMatchingWeight.WildcardMatchingBaseTypeUnit);
+      return new TreatingTuner<T>(container.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
+    } 
     
     /// <summary>
     /// Used to override a build plan for <typeparamref name="T"/>
@@ -44,7 +59,9 @@ namespace Armature
     {
       if (container == null) throw new ArgumentNullException(nameof(container));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.OpenGenericType(openGenericType, token), UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
+        Match.OpenGenericType(openGenericType, token),
+        UnitSequenceMatchingWeight.WildcardMatchingOpenGenericUnit);
       return new TreatingOpenGenericTuner(container.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 

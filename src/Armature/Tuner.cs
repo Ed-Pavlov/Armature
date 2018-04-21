@@ -55,7 +55,7 @@ namespace Armature
         if(value is IPropertyValueBuildPlan buildPlan)
           buildPlan.Apply(UnitSequenceMatcher);
         else if(value is IBuildPlan)
-          throw new ArmatureException("IPropertyValueBuildPlanor plain object value expected"); 
+          throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected"); 
         else
           UnitSequenceMatcher
             .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new PropertyByValueMatcher(value), InjectPointMatchingWeight.WeakTypedParameter))

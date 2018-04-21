@@ -194,7 +194,7 @@ namespace Tests.Functional
             new OrderedBuildActionContainer
             {
               CreateParameterValueForInjectPointBuildAction.Instance,
-              new CreateParameterValueAction()
+              new CreateParameterValueBuildAction()
             }),
       };
       

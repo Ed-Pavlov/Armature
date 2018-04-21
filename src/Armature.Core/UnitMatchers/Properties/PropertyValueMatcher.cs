@@ -7,11 +7,11 @@ namespace Armature.Core.UnitMatchers.Properties
   /// <summary>
   /// Matches Unit representing "value for property" of the currently building Unit
   /// </summary>
-  public class PropetyValueMatcher : IUnitMatcher
+  public class PropertyValueMatcher : IUnitMatcher
   {
-    public static readonly IUnitMatcher Instance = new PropetyValueMatcher();
+    public static readonly IUnitMatcher Instance = new PropertyValueMatcher();
 
-    private PropetyValueMatcher() { }
+    private PropertyValueMatcher() { }
 
     public bool Matches(UnitInfo unitInfo) => unitInfo.Token == SpecialToken.InjectValue && unitInfo.Id is PropertyInfo;
 

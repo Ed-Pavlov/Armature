@@ -56,7 +56,7 @@
     <Compile Include="BuildActions\Creation\CreateByFactoryMethodBuildAction.cs" />
     <Compile Include="BuildActions\Creation\CreateByReflectionBuildAction.cs" />
     <Compile Include="BuildActions\OrderedBuildActionContainer.cs" />
-    <Compile Include="BuildActions\Parameter\CreateParameterValueAction.cs" />
+    <Compile Include="BuildActions\Parameter\CreateParameterValueBuildAction.cs" />
     <Compile Include="BuildActions\Parameter\CreateParameterValueForInjectPointBuildAction.cs" />
     <Compile Include="BuildActions\Property\CreatePropertyValueBuildAction.cs" />
     <Compile Include="BuildActions\Property\CreatePropertyValueForInjectPointBuildAction.cs" />
@@ -116,7 +116,7 @@
     <Compile Include="UnitMatchers\Properties\PropertyByStrictTypeMatcher.cs" />
     <Compile Include="UnitMatchers\Properties\PropertyByValueMatcher.cs" />
     <Compile Include="UnitMatchers\Properties\PropertyMatcher.cs" />
-    <Compile Include="UnitMatchers\Properties\PropetyValueMatcher.cs" />
+    <Compile Include="UnitMatchers\Properties\PropertyValueMatcher.cs" />
     <Compile Include="UnitMatchers\UnitInfoMatcher.cs" />
     <Compile Include="UnitSequenceMatcherExtension.cs" />
     <Compile Include="UnitSequenceMatcher\AnyUnitSequenceMatcher.cs" />
@@ -146,7 +146,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="AfterBuild" Condition="$(Configuration)==Release">
-    <Exec Command="..\..\tools\nuget.exe pack Assembly\nuget.nuspec -OutputDirectory ..\..\publish" />
-  </Target>
+  <!--<Target Name="AfterBuild" Condition="$(Configuration)==Release">-->
+    <!--<Exec Command="..\..\tools\nuget.exe pack Assembly\nuget.nuspec -OutputDirectory ..\..\publish" />-->
+  <!--</Target>-->
 </Project>

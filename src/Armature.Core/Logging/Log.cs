@@ -68,6 +68,28 @@ namespace Armature.Core.Logging
     /// Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString"/> returns
     /// </summary>
     public static string ToLogString(object obj) => obj == null ? "null" : AsLogString((dynamic)obj);
+
+    public static void PrintBuildPlans(this BuildPlansCollection buildPlansCollection)
+    {
+      using(Log.Enabled())
+        foreach (var unitSequenceMatcher in buildPlansCollection.Children)
+          using (Log.Block(LogLevel.Info, unitSequenceMatcher.ToString()))
+            Print(unitSequenceMatcher);
+    }
+
+    private static void Print(IUnitSequenceMatcher unitSequenceMatcher)
+    {
+      try
+      {
+        foreach (var child in unitSequenceMatcher.Children)
+          using (Log.Block(LogLevel.Info, child.ToString()))
+            Print(child);
+      }
+      catch (Exception)
+      {
+        //ignore
+      }
+    }
     
     private static string GetIndent()
     {

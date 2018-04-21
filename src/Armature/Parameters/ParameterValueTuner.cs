@@ -33,7 +33,7 @@ namespace Armature.Parameters
     public ParameterValueBuildPlan UseToken([NotNull] object token)
     {
       if (token == null) throw new ArgumentNullException(nameof(token));
-      return new ParameterValueBuildPlan(_parameterMatcher, new CreateParameterValueAction(token), _weight);
+      return new ParameterValueBuildPlan(_parameterMatcher, new CreateParameterValueBuildAction(token), _weight);
     }
 
     /// <summary>

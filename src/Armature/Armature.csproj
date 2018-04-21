@@ -99,7 +99,7 @@
     <Target Name="AfterBuild">
     </Target>
     -->
-  <Target Name="AfterBuild" Condition="$(Configuration)==Release">
-    <Exec Command="..\..\tools\nuget.exe pack Assembly\nuget.nuspec -OutputDirectory ..\..\publish" />
-  </Target>
+  <!--<Target Name="AfterBuild" Condition="$(Configuration)==Release">-->
+    <!--<Exec Command="..\..\tools\nuget.exe pack Assembly\nuget.nuspec -OutputDirectory ..\..\publish" />-->
+  <!--</Target>-->
 </Project>

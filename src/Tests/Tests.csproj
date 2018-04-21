@@ -60,6 +60,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Common\Unit.cs" />
     <Compile Include="Functional\AutowiringTest.cs" />
+    <Compile Include="Functional\BaseTypeTest.cs" />
     <Compile Include="Functional\CachingTest.cs" />
     <Compile Include="Functional\CreationTest.cs" />
     <Compile Include="Functional\GetConstructorByParameterTypesBuildActionTest.cs" />
