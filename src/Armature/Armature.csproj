@@ -37,6 +37,8 @@
     <DocumentationFile>bin\Release\Armature.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>1591</NoWarn>
+    <!--<AssemblyOriginatorKeyFile>$(SolutionDir)..\private\armature.snk</AssemblyOriginatorKeyFile>-->
+    <!--<SignAssembly>True</SignAssembly>-->
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

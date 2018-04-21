@@ -36,6 +36,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Release\Armature.Core.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
+    <!--<AssemblyOriginatorKeyFile>$(SolutionDir)..\private\armature.snk</AssemblyOriginatorKeyFile>-->
+    <!--<SignAssembly>True</SignAssembly>-->
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />

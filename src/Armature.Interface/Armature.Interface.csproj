@@ -11,7 +11,7 @@
     <AssemblyName>Armature.Interface</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>7</LangVersion>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -35,8 +35,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <DocumentationFile>bin\Release\Armature.Interface.xml</DocumentationFile>
+    <!--<AssemblyOriginatorKeyFile>$(SolutionDir)..\private\armature.snk</AssemblyOriginatorKeyFile>-->
+    <!--<SignAssembly>True</SignAssembly>-->
   </PropertyGroup>
-
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -60,7 +61,6 @@
   </Target>
   -->
   <!--<Target Name="AfterBuild" Condition="$(Configuration)==Release">-->
-    <!--<Exec Command="..\..\tools\nuget.exe pack Assembly\nuget.nuspec -OutputDirectory ..\..\publish" />-->
+  <!--<Exec Command="..\..\tools\nuget.exe pack Assembly\nuget.nuspec -OutputDirectory ..\..\publish" />-->
   <!--</Target>-->
-
 </Project>
