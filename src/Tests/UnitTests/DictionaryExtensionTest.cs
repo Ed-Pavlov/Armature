@@ -42,7 +42,7 @@ namespace Tests.UnitTests
       var actual = target.GetValueSafe(3);
       
       // ----assert
-      actual.Should().Be(default);
+      actual.Should().Be(default(Weighted<string>));
     }
   }
 }
