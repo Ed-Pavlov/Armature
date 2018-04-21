@@ -21,7 +21,7 @@ namespace Armature.Core.UnitMatchers.Properties
     
     public static T GetPropertyAttribute(UnitInfo unitInfo)
     {
-      if (!(unitInfo.Id is PropertyInfo propertyInfo)) return default;
+      if (!(unitInfo.Id is PropertyInfo propertyInfo)) return default(T);
       return propertyInfo.GetCustomAttribute<T>();
     }
   }

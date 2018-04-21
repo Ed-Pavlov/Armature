@@ -9,7 +9,7 @@ namespace Armature.Core.Common
   {
     [DebuggerStepThrough]
     [CanBeNull]
-    public static TValue GetValueSafe<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default) =>
+    public static TValue GetValueSafe<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue)) =>
       dictionary.TryGetValue(key, out var value) ? value : defaultValue;
     
     [DebuggerStepThrough]
