@@ -3,6 +3,8 @@ using System.Collections;
 using System.Reflection;
 using Armature;
 using Armature.Core;
+using Armature.Core.BuildActions.Constructor;
+using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
 using Resharper.Annotations;
 using NUnit.Framework;
@@ -11,7 +13,6 @@ namespace Tests.Functional
 {
   public class InterceptionTest
   {
-    private const int InterceptBuildStage = 1;
     private const string Expected = "expected string value";
     private const string Postfix = ".postfix";
 
@@ -20,7 +21,7 @@ namespace Tests.Functional
     {
       // --arrange
       // create container with another one stage in the very beginning of conveyer
-      var target = FunctionalTestHelper.CreateBuilder(null, InterceptBuildStage, BuildStage.Cache, BuildStage.Create);
+      var target = CreateTarget();
 
       target
         .Treat<StringConsumer>()
@@ -33,7 +34,7 @@ namespace Tests.Functional
       target
         .AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
         .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new AnyStringMatcher()))
-        .AddBuildAction(InterceptBuildStage, new AddPostfixToString(Postfix));
+        .AddBuildAction(BuildStage.Intercept, new AddPostfixToString(Postfix));
 
       // --act
       var actual = target.Build<StringConsumer>();
@@ -77,11 +78,24 @@ namespace Tests.Functional
 
                 target
                   .Treat<string>()
-                  .CreatedBy(_ => Expected);
+                  .AsCreatedBy(_ => Expected);
               }))
         .SetName("RegisteredAsFactoryMethod");
     }
 
+    private static Builder CreateTarget()
+    {
+      var treatAll = new AnyUnitSequenceMatcher
+      {
+        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
+      };
+
+      var container = new Builder(BuildStage.Intercept, BuildStage.Cache, BuildStage.Create);
+      container.Children.Add(treatAll);
+      return container;
+    }
+    
     /// <summary>
     ///   GetBuildAction with any string not depending on token
     /// </summary>

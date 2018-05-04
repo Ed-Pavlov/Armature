@@ -1,6 +1,5 @@
 ﻿using Armature;
 using Armature.Core;
-using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Constructor;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
@@ -11,6 +10,40 @@ namespace Tests.Functional
 {
   public class CreationTest
   {
+    [Test]
+    public void should_use_default_strategy()
+    {
+      // --arrange
+      var target = CreateTarget();
+      target
+        .Treat<ISubject1>()
+        .AsCreated<Subject>()
+        .ByDefault();
+
+      // --act
+      var actual = target.Build<ISubject1>();
+
+      // --assert
+      actual.Should().BeOfType<Subject>();
+    }
+    
+    [Test]
+    public void should_use_reflection_strategy()
+    {
+      // --arrange
+      var target = CreateTarget();
+      target
+        .Treat<ISubject1>()
+        .AsCreated<Subject>()
+        .ByReflection();
+      
+      // --act
+      var actual = target.Build<ISubject1>();
+
+      // --assert
+      actual.Should().BeOfType<Subject>();
+    }
+
     [Test]
     public void should_add_default_creation_strategy()
     {
@@ -52,7 +85,7 @@ namespace Tests.Functional
       var target = CreateTarget();
       target
         .Treat<Subject>()
-        .CreatedBy(_ => expected);
+        .AsCreatedBy(_ => expected);
 
       // --act
       var actual = target.Build<Subject>();
@@ -72,7 +105,7 @@ namespace Tests.Functional
 
       target
         .Treat<Subject>()
-        .CreatedBy<string>(
+        .AsCreatedBy<string>(
           (_, value) =>
             {
               value.Should().Be(expectedString);
@@ -131,7 +164,7 @@ namespace Tests.Functional
 
       target
         .Treat<Subject>(token)
-        .CreatedBy(_ => expected);
+        .AsCreatedBy(_ => expected);
 
 
       // --act
@@ -160,7 +193,7 @@ namespace Tests.Functional
       
       target
         .Treat<Subject>()
-        .CreatedBy(_ => createdByFactory);
+        .AsCreatedBy(_ => createdByFactory);
 
       // --act
       var actual = target.Build<ISubject1>();
@@ -180,11 +213,33 @@ namespace Tests.Functional
       target
         .Treat<Subject>()
         .AsInstance(expected);
+      
       // --act
       var actual = target.Build<Subject>();
 
       // --assert
       actual.Should().BeSameAs(expected);
+    }
+
+    [Test]
+    public void should_use_runtime_parameters_when_build_with_token()
+    {
+      const string token = "token";
+      const int expected = 98347;
+      
+      // --arrange
+      var target = CreateTarget();
+
+      target
+        .Treat<Subject>(token)
+        .AsIs()
+        .UsingConstructorWithParameters<int>();
+      
+      // --act
+      var actual = target.UsingToken(token).Build<Subject>(expected);
+
+      // --assert
+      actual.Value.Should().Be(expected);     
     }
     
     private static Builder CreateTarget()
@@ -193,22 +248,24 @@ namespace Tests.Functional
       {
         // inject into constructor
         new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(
-            BuildStage.Create,
-            new OrderedBuildActionContainer
-            {
-              new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-              GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
-            })
+          .AddBuildAction(BuildStage.Create, new GetConstructorByParameterTypesBuildAction()) // use empty ctor by default in this test
       };
 
-      var container = new Builder(new[] {BuildStage.Cache, BuildStage.Create});
+      var container = new Builder(BuildStage.Cache, BuildStage.Create);
       container.Children.Add(treatAll);
       return container;
     }
 
     private interface ISubject1{}
     private interface ISubject2{}
-    private class Subject : ISubject1, ISubject2{}
+
+    private class Subject : ISubject1, ISubject2
+    {
+      public readonly int Value;
+
+      public Subject() { }
+
+      public Subject(int value) => Value = value;
+    }
   }
 }

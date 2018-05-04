@@ -12,10 +12,20 @@ namespace Armature
   public class BuildStage
   {
     /// <summary>
+    /// Stage of intercepting any unit returned by build process
+    /// </summary>
+    public static readonly BuildStage Intercept = new BuildStage("Intercept");
+
+    /// <summary>
     /// Stage of building when already built and cached object can be reused
     /// </summary>
     public static readonly BuildStage Cache = new BuildStage("Cache");
-    
+
+    /// <summary>
+    /// Stage of awareness that some unit was built
+    /// </summary>
+    public static readonly BuildStage Aware = new BuildStage("Aware");
+
     /// <summary>
     /// Stage of injecting dependencies into newly created unit
     /// </summary>

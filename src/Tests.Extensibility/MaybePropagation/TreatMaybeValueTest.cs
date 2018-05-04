@@ -1,6 +1,11 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
+using Armature.Core.BuildActions.Constructor;
+using Armature.Core.BuildActions.Parameter;
+using Armature.Core.UnitMatchers;
+using Armature.Core.UnitMatchers.Parameters;
+using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Extensibility.MaybePropagation.Implementation;
@@ -14,7 +19,7 @@ namespace Tests.Extensibility.MaybePropagation
     [Test]
     public void should_build_maybe()
     {
-      var builder = FunctionalTestHelper.CreateTarget();
+      var builder = CreateTarget();
 
       builder.Treat<Section>().AsInstance(new Section());
 
@@ -32,7 +37,7 @@ namespace Tests.Extensibility.MaybePropagation
     [Test]
     public void should_not_build_maybe_if_dependency_cant_be_built()
     {
-      var builder = FunctionalTestHelper.CreateTarget();
+      var builder = CreateTarget();
 
       // --act
       builder
@@ -44,6 +49,23 @@ namespace Tests.Extensibility.MaybePropagation
 
       // --assert
       actual.ShouldThrowExactly<ArmatureException>();
+    }
+    
+    private static Builder CreateTarget()
+    {
+      var treatAll = new AnyUnitSequenceMatcher
+      {
+        // inject into constructor
+        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
+        
+        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+          .AddBuildAction(BuildStage.Create, new CreateParameterValueBuildAction()),
+      };
+
+      var builder = new Builder(BuildStage.Cache, BuildStage.Create);
+      builder.Children.Add(treatAll);
+      return builder;
     }
   }
 }

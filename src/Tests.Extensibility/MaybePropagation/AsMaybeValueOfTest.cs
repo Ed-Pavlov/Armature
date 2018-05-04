@@ -1,6 +1,11 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
+using Armature.Core.BuildActions.Constructor;
+using Armature.Core.BuildActions.Parameter;
+using Armature.Core.UnitMatchers;
+using Armature.Core.UnitMatchers.Parameters;
+using Armature.Core.UnitSequenceMatcher;
 using Armature.Parameters;
 using FluentAssertions;
 using NUnit.Framework;
@@ -23,7 +28,7 @@ namespace Tests.Extensibility.MaybePropagation
         .Treat<Maybe<IReader>>()
         .TreatMaybeValue()
         .As<Reader>()
-        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().Created<Maybe<Section>>());
+        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().AsCreated<Maybe<Section>>());
 
       var actual = builder.Build<Maybe<IReader>>();
 
@@ -44,7 +49,7 @@ namespace Tests.Extensibility.MaybePropagation
         .Treat<Maybe<IReader>>()
         .TreatMaybeValue()
         .As<Reader>()
-        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().Created<Maybe<Section>>());
+        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().AsCreated<Maybe<Section>>());
 
       var actual = builder.Build<Maybe<IReader>>();
 
@@ -62,7 +67,7 @@ namespace Tests.Extensibility.MaybePropagation
         .Treat<Maybe<IReader>>()
         .TreatMaybeValue()
         .As<Reader>()
-        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().Created<Maybe<Section>>());
+        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().AsCreated<Maybe<Section>>());
 
       Action actual = () => builder.Build<Maybe<IReader>>();
 
@@ -82,7 +87,7 @@ namespace Tests.Extensibility.MaybePropagation
         .Treat<Maybe<IReader>>()
         .TreatMaybeValue()
         .As<Reader>()
-        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().Created<Maybe<Section>>(token));
+        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().AsCreated<Maybe<Section>>(token));
 
       var actual = builder.Build<Maybe<IReader>>();
 
@@ -107,7 +112,7 @@ namespace Tests.Extensibility.MaybePropagation
           _ => _
             .Treat<Section>(Token.Any)
             .AsMaybeValueOf()
-            .Created<Maybe<Section>>(Token.Propagate))
+            .AsCreated<Maybe<Section>>(Token.Propagate))
         .UsingParameters(ForParameter.OfType<Section>().UseInjectPointIdAsToken());
 
       var actual = builder.Build<Maybe<IReader>>();
@@ -117,7 +122,21 @@ namespace Tests.Extensibility.MaybePropagation
       actual.Value.Section.Should().NotBeNull();
     }
 
-    private static Builder CreateTarget() =>
-      FunctionalTestHelper.CreateBuilder(null, BuildStage.Cache, Extension.GetMaybeValueStage, BuildStage.Initialize, BuildStage.Create);
+    private static Builder CreateTarget()
+    {
+      var treatAll = new AnyUnitSequenceMatcher
+      {
+        // inject into constructor
+        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
+        
+        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+          .AddBuildAction(BuildStage.Create, new CreateParameterValueBuildAction()),
+      };
+
+      var builder = new Builder(BuildStage.Cache, Extension.GetMaybeValueStage, BuildStage.Initialize, BuildStage.Create);
+      builder.Children.Add(treatAll);
+      return builder;
+    }
   }
 }

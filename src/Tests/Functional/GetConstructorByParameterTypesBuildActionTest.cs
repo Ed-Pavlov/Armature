@@ -64,7 +64,7 @@ namespace Tests.Functional
             }),
       };
 
-      var container = new Builder(new[]{ BuildStage.Create});
+      var container = new Builder(BuildStage.Create);
       container.Children.Add(treatAll);
       return container;
     }

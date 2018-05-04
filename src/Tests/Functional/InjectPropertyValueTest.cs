@@ -193,7 +193,7 @@ namespace Tests.Functional
           .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction()),
       };
 
-      var container = new Builder(new[]{BuildStage.Initialize, BuildStage.Create});
+      var container = new Builder(BuildStage.Initialize, BuildStage.Create);
       container.Children.Add(treatAll);
       return container;
     }

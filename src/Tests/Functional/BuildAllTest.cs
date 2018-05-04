@@ -2,7 +2,10 @@
 using System.Linq;
 using Armature;
 using Armature.Core;
+using Armature.Core.BuildActions.Constructor;
 using Armature.Core.Logging;
+using Armature.Core.UnitMatchers;
+using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
@@ -15,7 +18,7 @@ namespace Tests.Functional
     public void should_return_two_implementation_of_one_interface()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateTarget();
+      var target = CreateTarget();
 
       target.Treat<IDisposable>().As<SampleType1>();
       target.Treat<IDisposable>().As<SampleType2>();
@@ -33,7 +36,7 @@ namespace Tests.Functional
     public void should_throw_if_more_than_one_build_stage_involved()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateTarget();
+      var target = CreateTarget();
 
       target.Treat<IDisposable>().As<SampleType1>();
       target.Treat<IDisposable>().As<SampleType2>();
@@ -52,7 +55,7 @@ namespace Tests.Functional
       using(Log.Enabled(LogLevel.Verbose))
       {
         // --arrange
-        var target = FunctionalTestHelper.CreateTarget();
+        var target = CreateTarget();
 
         target.Treat<IDisposable>().As<SampleType1>().AsSingleton();
         target.Treat<IDisposable>().As<SampleType2>();
@@ -73,7 +76,20 @@ namespace Tests.Functional
         actual.Single(_ => _ is SampleType2).Should().NotBeSameAs(precondition.Single(_ => _ is SampleType2));
       }
     }
-    
+
+    private Builder CreateTarget()
+    {
+      var treatAll = new AnyUnitSequenceMatcher
+      {
+        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+        .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
+      };
+      
+      var builder = new Builder(BuildStage.Cache, BuildStage.Create);
+      builder.Children.Add(treatAll);
+      return builder;
+    }
+
     private class SampleType1 : IDisposable
     {
       public void Dispose() {  }

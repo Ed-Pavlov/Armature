@@ -71,6 +71,17 @@ namespace Armature
     public void AsSingleton() => UnitSequenceMatcher.AddBuildAction(BuildStage.Cache, new SingletonBuildAction());
 
     /// <summary>
+    ///   Instantiate an Unit using a constructor with the biggest number of parameters
+    /// </summary>
+    public Tuner UsingLongestConstructor()
+    {
+      UnitSequenceMatcher
+        .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(ConstructorMatcher.Instance))
+        .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance);
+      return this;
+    }
+    
+    /// <summary>
     ///   Instantiate an Unit using a constructor marked with <see cref="InjectAttribute" />(<paramref name="injectionPointId"/>)
     /// </summary>
     public Tuner UsingInjectPointConstructor(object injectionPointId)
@@ -86,6 +97,26 @@ namespace Armature
     /// </summary>
     public Tuner UsingParameterlessConstructor() => UsingConstructorWithParameters();
 
+    /// <summary>
+    /// Instantiate an Unit using constructor with exact set of parameters provided as generic arguments
+    /// </summary>
+    public Tuner UsingConstructorWithParameters<T1>() => UsingConstructorWithParameters(typeof(T1));
+    
+    /// <summary>
+    /// Instantiate an Unit using constructor with exact set of parameters provided as generic arguments
+    /// </summary>
+    public Tuner UsingConstructorWithParameters<T1, T2>() => UsingConstructorWithParameters(typeof(T1), typeof(T2));
+    
+    /// <summary>
+    /// Instantiate an Unit using constructor with exact set of parameters provided as generic arguments
+    /// </summary>
+    public Tuner UsingConstructorWithParameters<T1, T2, T3>() => UsingConstructorWithParameters(typeof(T1), typeof(T2), typeof(T3));
+    
+    /// <summary>
+    /// Instantiate an Unit using constructor with exact set of parameters provided as generic arguments
+    /// </summary>
+    public Tuner UsingConstructorWithParameters<T1, T2, T3, T4>() => UsingConstructorWithParameters(typeof(T1), typeof(T2), typeof(T3), typeof(T4));
+    
     /// <summary>
     /// Instantiate an Unit using constructor with exact set of parameters as provided in <paramref name="parameterTypes"/>
     /// </summary>

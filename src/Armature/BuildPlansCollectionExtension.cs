@@ -69,11 +69,11 @@ namespace Armature
     /// Used to add some details to build plan of any building unit. E.g. to specify what constructor to use, or register a dependency needed by any type
     /// in the system. Usually used as a part of other build plan. See <see cref="Building{T}"/> for details.  
     /// </summary>
-    public static Tuner TreatAll([NotNull] this BuildPlansCollection container, object token = null)
+    public static Tuner TreatAll([NotNull] this BuildPlansCollection container)
     {
       if (container == null) throw new ArgumentNullException(nameof(container));
 
-      var unitSequenceMatcher = new AnyUnitSequenceMatcher(token);
+      var unitSequenceMatcher = new AnyUnitSequenceMatcher();
       return new Tuner(container.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 

@@ -39,9 +39,9 @@ namespace Tests.Functional
           .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
       };
 
-      var container = new Builder(new[] {BuildStage.Cache, BuildStage.Create});
-      container.Children.Add(treatAll);
-      return container;
+      var builder = new Builder(BuildStage.Cache, BuildStage.Create);
+      builder.Children.Add(treatAll);
+      return builder;
     }
     
     private class Subject{}

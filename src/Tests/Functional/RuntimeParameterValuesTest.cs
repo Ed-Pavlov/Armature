@@ -111,7 +111,7 @@ namespace Tests.Functional
           .AddBuildAction(BuildStage.Create, new CreateParameterValueBuildAction()) // autowiring
       };
       
-      var target = new Builder(new []{BuildStage.Initialize, BuildStage.Create});
+      var target = new Builder(BuildStage.Initialize, BuildStage.Create);
       target.Children.Add(treatAll);
       return target;
     }

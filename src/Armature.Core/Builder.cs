@@ -16,6 +16,12 @@ namespace Armature.Core
     private readonly Builder[] _parentBuilders;
     private readonly IEnumerable<object> _stages;
 
+    public Builder() => throw new ArgumentException("Use constructor with parameters");
+    
+    /// <param name="stages">The ordered collection of build stages all of which are performed to build a unit</param>
+    public Builder([NotNull] params object[] stages) : this(stages, EmptyArray<Builder>.Instance)
+    {}
+    
     /// <param name="stages">The ordered collection of build stages all of which are performed to build a unit</param>
     /// <param name="parentBuilders">
     ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using

@@ -39,7 +39,7 @@ namespace Tests.Functional
           .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
       };
 
-      var container = new Builder(new[]{ BuildStage.Cache, BuildStage.Initialize, BuildStage.Create});
+      var container = new Builder(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create);
       container.Children.Add(treatAll);
       return container;
     }

@@ -198,7 +198,7 @@ namespace Tests.Functional
             }),
       };
       
-      var target = new Builder(new []{BuildStage.Create});
+      var target = new Builder(BuildStage.Create);
       target.Children.Add(treatAll);
       return target;
     }

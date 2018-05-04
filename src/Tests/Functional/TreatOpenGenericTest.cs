@@ -1,4 +1,5 @@
-﻿using Armature;
+﻿using System;
+using Armature;
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
 using Armature.Core.UnitMatchers;
@@ -76,6 +77,23 @@ namespace Tests.Functional
       // --assert
       actual.Value.Should().Be(closed);
     }
+
+    [Test]
+    public void should_not_add_creation_strategy()
+    {
+      // --arrange
+      var target = CreateTarget();
+
+      target
+        .TreatOpenGeneric(typeof(ISubject<>))
+        .As(typeof(Subject<>), AddCreateBuildAction.No);
+
+      // --act
+      Action actual = () => target.Build<ISubject<int>>(5);
+      
+      // --assert
+      actual.ShouldThrow<ArmatureException>();
+    }
     
     private static Builder CreateTarget()
     {
@@ -86,7 +104,7 @@ namespace Tests.Functional
           .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
       };
 
-      var container = new Builder(new[] {BuildStage.Create});
+      var container = new Builder(BuildStage.Create);
       container.Children.Add(treatAll);
       return container;
     }

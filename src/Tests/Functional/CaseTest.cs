@@ -4,6 +4,15 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Armature;
+using Armature.Core;
+using Armature.Core.BuildActions;
+using Armature.Core.BuildActions.Constructor;
+using Armature.Core.BuildActions.Parameter;
+using Armature.Core.BuildActions.Property;
+using Armature.Core.UnitMatchers;
+using Armature.Core.UnitMatchers.Parameters;
+using Armature.Core.UnitMatchers.Properties;
+using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
@@ -14,61 +23,14 @@ namespace Tests.Functional
 {
   public class CaseTest
   {
-    [Test]
-    public void Building()
-    {
-      // --arrange
-      var target = FunctionalTestHelper.CreateTarget();
-      target
-        .Building<IDisposableValue1>()
-        .Treat<IDisposable>()
-        .CreatedBy(_ => new MemoryStream());
-
-      target
-        .Treat<IDisposableValue1>()
-        .As<OneDisposableCtorClass>();
-
-      // --act
-      var actual = target.Build<IDisposableValue1>();
-
-      // --assert
-      Assert.That(actual.Disposable, Is.InstanceOf<MemoryStream>());
-    }
-
-    [Test(Description = "Type registered as instance should be resolved to this instance if interfaces treated as this type")]
-    public void RegisterViaInterfaceAndAsInstance()
-    {
-      // --arrange
-      var expected = new EmptyCtorClass();
-      var target = FunctionalTestHelper.CreateTarget();
-      target
-        .Treat<IEmptyInterface1>()
-        .As<EmptyCtorClass>(AddCreateBuildAction.No);
-      target
-        .Treat<IEmptyInterface2>()
-        .As<EmptyCtorClass>(AddCreateBuildAction.No);
-      target
-        .Treat<EmptyCtorClass>()
-        .AsInstance(expected);
-
-      // --act
-      var actual1 = target.Build<IEmptyInterface1>();
-      var actual2 = target.Build<IEmptyInterface2>();
-
-      // --assert
-      Assert.That(actual1, Is.SameAs(expected));
-      Assert.That(actual2, Is.SameAs(expected));
-    }
-
     [Test(Description = "Inject ILogger<T> into class T")]
-    [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
     public void LoggerCase()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateTarget();
+      var target = CreateTarget();
       target
         .Treat<string>()
-        .CreatedBy(assembler => assembler.BuildSequence.First().Id.ToString());
+        .AsCreatedBy(assembler => assembler.BuildSequence.First().Id.ToString());
 
       target
         .Treat<TwoDisposableStringCtorClass>()
@@ -86,7 +48,7 @@ namespace Tests.Functional
     public void UsingParametersTwiceOnSameImplementationTest()
     {
       // --arrange
-      var target = FunctionalTestHelper.CreateTarget();
+      var target = CreateTarget();
 
       target.Treat<IDisposableValue1>()
         .As<OneDisposableCtorClass>()
@@ -109,7 +71,7 @@ namespace Tests.Functional
     {
       const string token1 = "t1";
 
-      var target = FunctionalTestHelper.CreateTarget();
+      var target = CreateTarget();
 
       target.Treat<IDisposableValue1>().As<OneDisposableCtorClass>(AddCreateBuildAction.No);
       target.Treat<IDisposableValue2>(token1).As<OneDisposableCtorClass>(AddCreateBuildAction.No);
@@ -124,7 +86,7 @@ namespace Tests.Functional
     [Test(Description = "Registration of some entity separated in several parts should work")]
     public void SeparatedRegistration()
     {
-      var target = FunctionalTestHelper.CreateTarget();
+      var target = CreateTarget();
       target
         .Treat<IDisposableValue1>()
         .As<OneDisposableCtorClass>();
@@ -149,6 +111,43 @@ namespace Tests.Functional
       actual1.Should().BeSameAs(actual2);
     }
 
+    private static Builder CreateTarget()
+    {
+      var treatAll = new AnyUnitSequenceMatcher
+      {
+        // inject into constructor
+        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+          .AddBuildAction(
+            BuildStage.Create,
+            new OrderedBuildActionContainer
+            {
+              new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
+              GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
+            }),
+
+        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+          .AddBuildAction(
+            BuildStage.Create,
+            new OrderedBuildActionContainer
+            {
+              CreateParameterValueForInjectPointBuildAction.Instance,
+              new CreateParameterValueBuildAction()
+            }),
+        
+        new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
+          .AddBuildAction(
+            BuildStage.Create,
+            new OrderedBuildActionContainer
+            {
+              new CreatePropertyValueBuildAction()
+            }),
+      };
+
+      var container = new Builder(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create);
+      container.Children.Add(treatAll);
+      return container;
+    }
+    
     private interface IEmptyInterface1
     {
     }

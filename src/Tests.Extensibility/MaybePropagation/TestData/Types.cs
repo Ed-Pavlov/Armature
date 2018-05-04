@@ -2,22 +2,22 @@
 
 namespace Tests.Extensibility.MaybePropagation.TestData
 {
-  public class Section
+  class Section
   {
   }
 
-  public interface IReader
+  interface IReader
   {
     Section Section { get; }
   }
 
-  public class Reader : IReader
+  class Reader : IReader
   {
     public Reader(Section section) => Section = section;
     public Section Section { get; }
   }
   
-  public class Reader1 : IReader
+  class Reader1 : IReader
   {
     public const string InjectPointId = "SectionType";
     

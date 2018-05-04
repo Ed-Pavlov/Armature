@@ -22,23 +22,19 @@ namespace Armature.Core.UnitSequenceMatcher
   /// </remarks>
   public class AnyUnitSequenceMatcher : UnitSequenceMathcherWithChildren, IEnumerable
   {
-    private readonly object _token;
+    public AnyUnitSequenceMatcher() : this(UnitSequenceMatchingWeight.AnyUnit)
+    {
+    }
     
-    public AnyUnitSequenceMatcher(object token = null) : this(UnitSequenceMatchingWeight.AnyUnit, token) {  }
-    public AnyUnitSequenceMatcher(int weight, object token = null) : base(weight) => _token = token;
+    public AnyUnitSequenceMatcher(int weight) : base(weight)
+    { 
+    }
 
     /// <summary>
     ///   Matches any <see cref="UnitInfo" />, so it pass the building unit info into its children and returns merged result
     /// </summary>
     public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
-      if (_token != null)
-      {
-        var unitInfo = buildingUnitsSequence.Last();
-        if (!Equals(unitInfo.Token, _token))
-          return null;
-      }
-      
       var lastItemAsTail = buildingUnitsSequence.GetTail(buildingUnitsSequence.Length - 1);
 
       return GetChildrenActions(inputWeight + Weight, lastItemAsTail)
