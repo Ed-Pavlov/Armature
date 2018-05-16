@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Armature</RootNamespace>
     <AssemblyName>Armature.Interface</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <LangVersion>7</LangVersion>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
