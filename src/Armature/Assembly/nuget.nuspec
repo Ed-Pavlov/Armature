@@ -20,9 +20,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="..\bin\release\net461\Armature.dll" target="lib\net461" />
-        <file src="..\bin\release\net461\Armature.xml" target="lib\net461" />
-        <file src="..\bin\release\net45\Armature.dll" target="lib\net45" />
-        <file src="..\bin\release\net45\Armature.xml" target="lib\net45" />
+        <file src="..\bin\release\Armature.dll" target="lib\net461" />
+        <file src="..\bin\release\Armature.xml" target="lib\net461" />
     </files>
 </package>
