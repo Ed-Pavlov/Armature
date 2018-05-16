@@ -15,7 +15,9 @@
         <tags>dependency-injection dependencyinjection di ioc .NET</tags>
     </metadata>
     <files>
-        <file src="..\bin\release\Armature.Interface.dll" target="lib\net461" />
-        <file src="..\bin\release\Armature.Interface.xml" target="lib\net461" />
+        <file src="..\bin\release\net461\Armature.Interface.dll" target="lib\net461" />
+        <file src="..\bin\release\net461\Armature.Interface.xml" target="lib\net461" />
+        <file src="..\bin\release\net45\Armature.Interface.dll" target="lib\net45" />
+        <file src="..\bin\release\net45\Armature.Interface.xml" target="lib\net45" />
     </files>
 </package>

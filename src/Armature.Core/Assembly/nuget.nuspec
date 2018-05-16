@@ -19,7 +19,9 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="..\bin\release\Armature.Core.dll" target="lib\net461" />
-        <file src="..\bin\release\Armature.Core.xml" target="lib\net461" />
+        <file src="..\bin\release\net461\Armature.Core.dll" target="lib\net461" />
+        <file src="..\bin\release\net461\Armature.Core.xml" target="lib\net461" />
+        <file src="..\bin\release\net45\Armature.Core.dll" target="lib\net45" />
+        <file src="..\bin\release\net45\Armature.Core.xml" target="lib\net45" />
     </files>
 </package>
