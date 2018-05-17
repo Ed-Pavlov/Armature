@@ -8,7 +8,7 @@ using System.Reflection;
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]
 #else
- [assembly: AssemblyConfiguration("Release")]
+[assembly: AssemblyConfiguration("Release")]
 #endif
 
 [assembly: AssemblyProduct("Armature")]
@@ -23,6 +23,6 @@ using System.Reflection;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.9")]
-[assembly: AssemblyInformationalVersion("0.9 Beta")]
+[assembly: AssemblyVersion("1.0.4")]
+[assembly: AssemblyInformationalVersion("1.0.4")]
 //[assembly: AssemblyFileVersion("0.9.*.*")]
