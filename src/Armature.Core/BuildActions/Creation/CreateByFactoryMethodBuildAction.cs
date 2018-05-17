@@ -8,7 +8,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.BuildActions.Creation
 {
   /// <summary>
-  ///   Build an Unit using passed factory method
+  ///   Build action building an Unit using factory method
   /// </summary>
   public class CreateByFactoryMethodBuildAction<TR> : IBuildAction
   {
@@ -32,7 +32,7 @@ namespace Armature.Core.BuildActions.Creation
   }
 
   /// <summary>
-  ///   Base class for build actions building an Unit using factory method with input parameters
+  ///   Build action building an Unit using factory method with input parameters
   /// </summary>
   public abstract class CreateByFactoryMethodBuildAction : IBuildAction
   {
@@ -40,8 +40,11 @@ namespace Armature.Core.BuildActions.Creation
     {
       if (buildSession.BuildResult == null)
       {
-        // remove BuildSession parameter from parameters array when resolving parameters values
-        var result = Execute(buildSession, buildSession.GetValuesForParameters(GetMethod().GetParameters().Skip(1).ToArray()));
+        var parameters = GetMethod()
+          .GetParameters()
+          .Skip(1) // remove BuildSession parameter from parameters array when resolving parameters values
+          .ToArray();
+        var result = Execute(buildSession, buildSession.GetValuesForParameters(parameters));
         buildSession.BuildResult = new BuildResult(result);
       }
     }
@@ -50,7 +53,7 @@ namespace Armature.Core.BuildActions.Creation
     public void PostProcess(IBuildSession buildSession) { }
 
     protected abstract MethodBase GetMethod();
-    protected abstract object Execute(IBuildSession buildSessoin, object[] values);
+    protected abstract object Execute(IBuildSession buildSession, object[] values);
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), GetMethod().AsLogString());
@@ -67,7 +70,7 @@ namespace Armature.Core.BuildActions.Creation
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object Execute(IBuildSession buildSessoin, object[] values) => _factoryMethod(buildSessoin, (T1)values[0]);
+    protected override object Execute(IBuildSession buildSession, object[] values) => _factoryMethod(buildSession, (T1)values[0]);
   }
 
   /// <inheritdoc cref="CreateByFactoryMethodBuildAction"/>
@@ -81,7 +84,7 @@ namespace Armature.Core.BuildActions.Creation
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object Execute(IBuildSession buildSessoin, object[] values) => _factoryMethod(buildSessoin, (T1)values[0], (T2)values[1]);
+    protected override object Execute(IBuildSession buildSession, object[] values) => _factoryMethod(buildSession, (T1)values[0], (T2)values[1]);
   }
 
   /// <inheritdoc cref="CreateByFactoryMethodBuildAction"/>
@@ -95,6 +98,66 @@ namespace Armature.Core.BuildActions.Creation
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object Execute(IBuildSession buildSessoin, object[] values) => _factoryMethod(buildSessoin, (T1)values[0], (T2)values[1], (T3)values[2]);
+    protected override object Execute(IBuildSession buildSession, object[] values) => _factoryMethod(buildSession, (T1)values[0], (T2)values[1], (T3)values[2]);
+  }
+  
+  /// <inheritdoc cref="CreateByFactoryMethodBuildAction"/>
+  public class CreateByFactoryMethodBuildAction<T1, T2, T3, T4, TR> : CreateByFactoryMethodBuildAction
+  {
+    private readonly Func<IBuildSession, T1, T2, T3, T4, TR> _factoryMethod;
+
+    [DebuggerStepThrough]
+    public CreateByFactoryMethodBuildAction([NotNull] Func<IBuildSession, T1, T2, T3, T4, TR> factoryMethod) => 
+      _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
+
+    protected override MethodBase GetMethod() => _factoryMethod.Method;
+
+    protected override object Execute(IBuildSession buildSession, object[] values) => 
+      _factoryMethod(buildSession, (T1)values[0], (T2)values[1], (T3)values[2], (T4)values[3]);
+  }
+  
+  /// <inheritdoc cref="CreateByFactoryMethodBuildAction"/>
+  public class CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, TR> : CreateByFactoryMethodBuildAction
+  {
+    private readonly Func<IBuildSession, T1, T2, T3, T4, T5, TR> _factoryMethod;
+
+    [DebuggerStepThrough]
+    public CreateByFactoryMethodBuildAction([NotNull] Func<IBuildSession, T1, T2, T3, T4, T5, TR> factoryMethod) => 
+      _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
+
+    protected override MethodBase GetMethod() => _factoryMethod.Method;
+
+    protected override object Execute(IBuildSession buildSession, object[] values) => 
+      _factoryMethod(buildSession, (T1)values[0], (T2)values[1], (T3)values[2], (T4)values[3], (T5)values[4]);
+  }
+  
+  /// <inheritdoc cref="CreateByFactoryMethodBuildAction"/>
+  public class CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, TR> : CreateByFactoryMethodBuildAction
+  {
+    private readonly Func<IBuildSession, T1, T2, T3, T4, T5, T6, TR> _factoryMethod;
+
+    [DebuggerStepThrough]
+    public CreateByFactoryMethodBuildAction([NotNull] Func<IBuildSession, T1, T2, T3, T4, T5, T6, TR> factoryMethod) => 
+      _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
+
+    protected override MethodBase GetMethod() => _factoryMethod.Method;
+
+    protected override object Execute(IBuildSession buildSession, object[] values) => 
+      _factoryMethod(buildSession, (T1)values[0], (T2)values[1], (T3)values[2], (T4)values[3], (T5)values[4], (T6)values[5]);
+  }
+  
+  /// <inheritdoc cref="CreateByFactoryMethodBuildAction"/>
+  public class CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, TR> : CreateByFactoryMethodBuildAction
+  {
+    private readonly Func<IBuildSession, T1, T2, T3, T4, T5, T6, T7, TR> _factoryMethod;
+
+    [DebuggerStepThrough]
+    public CreateByFactoryMethodBuildAction([NotNull] Func<IBuildSession, T1, T2, T3, T4, T5, T6, T7, TR> factoryMethod) => 
+      _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
+
+    protected override MethodBase GetMethod() => _factoryMethod.Method;
+
+    protected override object Execute(IBuildSession buildSession, object[] values) => 
+      _factoryMethod(buildSession, (T1)values[0], (T2)values[1], (T3)values[2], (T4)values[3], (T5)values[4], (T6)values[5], (T7)values[6]);
   }
 }
