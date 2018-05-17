@@ -185,7 +185,7 @@ namespace Tests.Functional
       Action actual = () => target.Build<Subject>();
 
       // --assert
-      actual.ShouldThrowExactly<ArmatureException>();
+      actual.Should().ThrowExactly<ArmatureException>();
     }
 
     [TestCaseSource("ForParameterSource")]
@@ -243,7 +243,7 @@ namespace Tests.Functional
       Action actual = () => adjuster.UsingParameters(ForParameter.OfType<string>().UseToken("expected29083"), ForParameter.OfType<string>().UseValue("kldj"));
       
       // --assert
-      actual.ShouldThrowExactly<ArmatureException>();
+      actual.Should().ThrowExactly<ArmatureException>();
     }
 
     [Test]
@@ -263,7 +263,7 @@ namespace Tests.Functional
         .UsingParameters(expected);
 
       Action actual = () => target.Build<LevelTwo>();
-      actual.ShouldThrow<ArmatureException>("Register string parameter only for LevelTwo class, despite that LevelOne also requires string in its .ctor registered parameter should not be propagated into LevelOne");
+      actual.Should().Throw<ArmatureException>("Register string parameter only for LevelTwo class, despite that LevelOne also requires string in its .ctor registered parameter should not be propagated into LevelOne");
     }
 
     [Test]

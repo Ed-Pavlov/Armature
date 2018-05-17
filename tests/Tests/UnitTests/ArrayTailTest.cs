@@ -1,5 +1,6 @@
 ﻿using Armature.Core.Common;
 using FluentAssertions;
+using FluentAssertions.Equivalency;
 using NUnit.Framework;
 
 namespace Tests.UnitTests
@@ -37,9 +38,12 @@ namespace Tests.UnitTests
       var actual = array.GetTail(startIndex);
 
       // --assert
-      actual.ShouldBeEquivalentTo(expected);
+      var actualArray = new int[actual.Length];
+      for (var i = 0; i < actual.Length; i++)
+        actualArray[i] = actual[i];
+      actualArray.Should().BeEquivalentTo(expected);
     }
-
+    
     [Test]
     public void LastItem()
     {

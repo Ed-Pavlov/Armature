@@ -170,7 +170,7 @@ namespace Tests.Functional
       Action actual = () => target.Build<Subject>();
 
       // --assert
-      actual.ShouldThrowExactly<ArmatureException>();
+      actual.Should().ThrowExactly<ArmatureException>();
     }
     
     private static Builder CreateTarget()

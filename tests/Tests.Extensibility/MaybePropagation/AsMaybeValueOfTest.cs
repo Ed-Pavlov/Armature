@@ -11,7 +11,6 @@ using FluentAssertions;
 using NUnit.Framework;
 using Tests.Extensibility.MaybePropagation.Implementation;
 using Tests.Extensibility.MaybePropagation.TestData;
-using Tests.Functional;
 
 namespace Tests.Extensibility.MaybePropagation
 {
@@ -72,7 +71,7 @@ namespace Tests.Extensibility.MaybePropagation
       Action actual = () => builder.Build<Maybe<IReader>>();
 
       // --assert
-      actual.ShouldThrowExactly<ArmatureException>();
+      actual.Should().ThrowExactly<ArmatureException>();
     }
 
     [Test]

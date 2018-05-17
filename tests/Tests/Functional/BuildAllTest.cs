@@ -46,7 +46,7 @@ namespace Tests.Functional
       Action actual = () => target.BuildAllUnits(Unit.OfType<IDisposable>());
       
       // --assert
-      actual.ShouldThrowExactly<ArmatureException>();
+      actual.Should().ThrowExactly<ArmatureException>();
     }
 
     [Test]

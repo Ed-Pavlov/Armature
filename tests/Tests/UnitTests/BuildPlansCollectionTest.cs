@@ -35,7 +35,7 @@ namespace Tests.UnitTests
         .And
         .Subject.Select(_ => _.Entity)
         .Should()
-        .BeEquivalentTo(singletonAction, CreateByReflectionBuildAction.Instance);
+        .Equal(CreateByReflectionBuildAction.Instance, singletonAction);
     }
   }
 }

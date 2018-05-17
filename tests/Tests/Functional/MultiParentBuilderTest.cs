@@ -97,7 +97,7 @@ namespace Tests.Functional
       Action action = () => target.Build<string>();
 
       // --assert
-      action.ShouldThrowExactly<ArmatureException>("There is no registration neither in child neither in parent builders");
+      action.Should().ThrowExactly<ArmatureException>("There is no registration neither in child neither in parent builders");
     }
 
     private static Builder CreateTarget(params Builder[] parents) => new Builder(new[]{BuildStage.Create}, parents);
