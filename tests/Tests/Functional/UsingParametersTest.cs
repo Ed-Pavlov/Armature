@@ -201,7 +201,7 @@ namespace Tests.Functional
       target
         .Treat<Subject>()
         .AsIs()
-        .UsingParameters(forParameter.UseFactoryMethod<int>((_, intValue) => intValue.ToString()));
+        .UsingParameters(forParameter.UseFactoryMethod<int>(intValue => intValue.ToString()));
 
       // --act
       var actual = target.Build<Subject>();

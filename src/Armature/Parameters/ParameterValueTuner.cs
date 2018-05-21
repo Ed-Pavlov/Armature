@@ -47,45 +47,56 @@ namespace Armature.Parameters
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
-    public ParameterValueBuildPlan UseFactoryMethod<T>(Func<IBuildSession, T, object> factoryMethod) => 
-      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T, object>(factoryMethod), _weight);
-    
+    public ParameterValueBuildPlan UseFactoryMethod(Func<object> factoryMethod) => 
+      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<object>(_ => factoryMethod()), _weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
-    public ParameterValueBuildPlan UseFactoryMethod<T1, T2>(Func<IBuildSession, T1, T2, object> factoryMethod) => 
+    public ParameterValueBuildPlan UseFactoryMethod<T>(Func<T, object> factoryMethod) => 
+      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T, object>(factoryMethod), _weight);
+    
+    /// <summary>
+    /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
+    /// </summary>
+    public ParameterValueBuildPlan UseFactoryMethod<T1, T2>(Func<T1, T2, object> factoryMethod) => 
       new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T1, T2, object>(factoryMethod), _weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
-    public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3>(Func<IBuildSession, T1, T2, T3, object> factoryMethod) => 
+    public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3>(Func<T1, T2, T3, object> factoryMethod) => 
       new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, object>(factoryMethod), _weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
-    public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3, T4>(Func<IBuildSession, T1, T2, T3, T4, object> factoryMethod) => 
+    public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object> factoryMethod) => 
       new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, object>(factoryMethod), _weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
-    public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3, T4, T5>(Func<IBuildSession, T1, T2, T3, T4, T5, object> factoryMethod) => 
+    public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object> factoryMethod) => 
       new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, object>(factoryMethod), _weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
-    public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3, T4, T5, T6>(Func<IBuildSession, T1, T2, T3, T4, T5, T6, object> factoryMethod) => 
+    public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object> factoryMethod) => 
       new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, object>(factoryMethod), _weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
-    public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3, T4, T5, T6, T7>(Func<IBuildSession, T1, T2, T3, T4, T5, T6, T7, object> factoryMethod) => 
+    public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object> factoryMethod) => 
       new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, object>(factoryMethod), _weight);
+ 
+    /// <summary>
+    /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
+    /// </summary>
+    public ParameterValueBuildPlan UseFactoryMethod(Func<IBuildSession, object> factoryMethod) => 
+      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<object>(factoryMethod), _weight);
     
   }
 

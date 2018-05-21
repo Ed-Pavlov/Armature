@@ -2,7 +2,6 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
     <metadata minClientVersion="2.8">
         <id>Armature</id>
-        <version>1.0.9</version>
         <title>Armature</title>
         <authors>Ed Pavlov</authors>
         <owners>Ed Pavlov</owners>
@@ -14,9 +13,10 @@
         <copyright>Copyright © 2018 Ed Pavlov</copyright>
         <tags>dependency-injection dependencyinjection di ioc .NET</tags>
 
+        <version>1.0.10</version>
         <dependencies>
-          <dependency id="Armature.Interface" version="1.0.9" />
-          <dependency id="Armature.Core" version="1.0.9" />
+          <dependency id="Armature.Interface" version="1.0.10" />
+          <dependency id="Armature.Core" version="1.0.10" />
         </dependencies>
     </metadata>
     <files>

@@ -106,7 +106,7 @@ namespace Tests.Functional
       target
         .Treat<Subject>()
         .AsCreatedBy<string>(
-          (_, value) =>
+          value =>
             {
               value.Should().Be(expectedString);
               return expected;
