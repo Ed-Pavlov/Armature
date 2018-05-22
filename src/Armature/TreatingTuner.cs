@@ -67,8 +67,8 @@ namespace Armature
     /// <summary>
     /// For all who depends on <typeparamref name="T"/> inject object created by specified factory method.
     /// </summary>
-    public void AsCreatedBy([NotNull] Func<T> factoryMethod) =>
-      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T>(_ => factoryMethod()));
+    public Tuner AsCreatedBy([NotNull] Func<T> factoryMethod) =>
+      new Tuner(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T>(_ => factoryMethod())));
 
     /// <inheritdoc cref="AsCreatedBy(Func{T})"/>
     public Tuner AsCreatedBy<T1>([NotNull] Func<T1, T> factoryMethod) => 
@@ -99,7 +99,7 @@ namespace Armature
       new Tuner(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, T>(factoryMethod)));
     
     /// <inheritdoc cref="AsCreatedBy(Func{T})"/>
-    public void AsCreatedBy([NotNull] Func<IBuildSession, T> factoryMethod) =>
-      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T>(factoryMethod));
+    public Tuner AsCreatedBy([NotNull] Func<IBuildSession, T> factoryMethod) =>
+      new Tuner(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T>(factoryMethod)));
  }
 }
