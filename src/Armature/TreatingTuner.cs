@@ -34,10 +34,10 @@ namespace Armature
     ///   If <see cref="AddCreateBuildAction.Yes" /> adds a build action <see cref="Default.CreationBuildAction" /> for
     ///   <see cref="UnitInfo" />(<see name="TRedirect" />, null) as a creation build action.
     /// </param>
-    public Tuner As<TRedirect>(AddCreateBuildAction addDefaultCreateAction) where TRedirect : T => As<TRedirect>(null, addDefaultCreateAction);
+    public Tuner As<TRedirect>(AddCreateBuildAction addDefaultCreateAction) => As<TRedirect>(null, addDefaultCreateAction);
 
     ///<inheritdoc cref="As{TRedirect}(Armature.AddCreateBuildAction)"/>
-    public Tuner As<TRedirect>(object token = null, AddCreateBuildAction addDefaultCreateAction = AddCreateBuildAction.Yes) where TRedirect : T
+    public Tuner As<TRedirect>(object token = null, AddCreateBuildAction addDefaultCreateAction = AddCreateBuildAction.Yes)
     {
       UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectTypeBuildAction(typeof(TRedirect), token));
 
