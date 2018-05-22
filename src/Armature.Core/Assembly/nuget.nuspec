@@ -13,7 +13,7 @@
         <copyright>Copyright © 2018 Ed Pavlov</copyright>
         <tags>dependency-injection dependencyinjection di ioc .NET</tags>
 
-        <!--<version>1.0.11</version>-->
+        <version>1.0.14</version>
         <dependencies>
           <dependency id="Armature.Interface" />
         </dependencies>
