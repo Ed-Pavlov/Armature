@@ -1,31 +1,27 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Armature.Core;
 using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Creation;
 using Armature.Core.BuildActions.Parameter;
+using Armature.Extensibility;
 using Resharper.Annotations;
 
 namespace Armature
 {
-  public class ParameterValueTuner
+  public class ParameterValueTuner : UnitMatcherExtensibility
   {
-    private readonly IUnitMatcher _parameterMatcher;
-    private readonly int _weight;
-
     [DebuggerStepThrough]
-    public ParameterValueTuner([NotNull] IUnitMatcher parameterMatcher, int weight)
+    public ParameterValueTuner([NotNull] IUnitMatcher unitMatcher, int weight)
+      : base(unitMatcher, weight)
     {
-      _parameterMatcher = parameterMatcher ?? throw new ArgumentNullException(nameof(parameterMatcher));
-      _weight = weight;
     }
 
     /// <summary>
     ///   Use the <paramref name="value"/> for the parameter
     /// </summary>
-    public ParameterValueBuildPlan UseValue([CanBeNull] object value) => new ParameterValueBuildPlan(_parameterMatcher, new SingletonBuildAction(value), _weight);
+    public ParameterValueBuildPlan UseValue([CanBeNull] object value) => new ParameterValueBuildPlan(UnitMatcher, new SingletonBuildAction(value), Weight);
 
     /// <summary>
     ///   For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <paramref name="token"/>
@@ -33,80 +29,69 @@ namespace Armature
     public ParameterValueBuildPlan UseToken([NotNull] object token)
     {
       if (token == null) throw new ArgumentNullException(nameof(token));
-      return new ParameterValueBuildPlan(_parameterMatcher, new CreateParameterValueBuildAction(token), _weight);
+      return new ParameterValueBuildPlan(UnitMatcher, new CreateParameterValueBuildAction(token), Weight);
     }
 
     /// <summary>
     /// For building a value for the parameter use the type of parameter and <see cref="InjectAttribute.InjectionPointId"/> as token
     /// </summary>
     public ParameterValueBuildPlan UseInjectPointIdAsToken() => new ParameterValueBuildPlan(
-      _parameterMatcher,
+      UnitMatcher,
       CreateParameterValueForInjectPointBuildAction.Instance,
-      _weight);
+      Weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
     public ParameterValueBuildPlan UseFactoryMethod(Func<object> factoryMethod) => 
-      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<object>(_ => factoryMethod()), _weight);
+      new ParameterValueBuildPlan(UnitMatcher, new CreateByFactoryMethodBuildAction<object>(_ => factoryMethod()), Weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
     public ParameterValueBuildPlan UseFactoryMethod<T>(Func<T, object> factoryMethod) => 
-      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T, object>(factoryMethod), _weight);
+      new ParameterValueBuildPlan(UnitMatcher, new CreateByFactoryMethodBuildAction<T, object>(factoryMethod), Weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
     public ParameterValueBuildPlan UseFactoryMethod<T1, T2>(Func<T1, T2, object> factoryMethod) => 
-      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T1, T2, object>(factoryMethod), _weight);
+      new ParameterValueBuildPlan(UnitMatcher, new CreateByFactoryMethodBuildAction<T1, T2, object>(factoryMethod), Weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
     public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3>(Func<T1, T2, T3, object> factoryMethod) => 
-      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, object>(factoryMethod), _weight);
+      new ParameterValueBuildPlan(UnitMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, object>(factoryMethod), Weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
     public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object> factoryMethod) => 
-      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, object>(factoryMethod), _weight);
+      new ParameterValueBuildPlan(UnitMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, object>(factoryMethod), Weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
     public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object> factoryMethod) => 
-      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, object>(factoryMethod), _weight);
+      new ParameterValueBuildPlan(UnitMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, object>(factoryMethod), Weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
     public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object> factoryMethod) => 
-      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, object>(factoryMethod), _weight);
+      new ParameterValueBuildPlan(UnitMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, object>(factoryMethod), Weight);
     
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
     public ParameterValueBuildPlan UseFactoryMethod<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object> factoryMethod) => 
-      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, object>(factoryMethod), _weight);
+      new ParameterValueBuildPlan(UnitMatcher, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, object>(factoryMethod), Weight);
  
     /// <summary>
     /// For building a value for the parameter use <paramref name="factoryMethod"/> factory method
     /// </summary>
     public ParameterValueBuildPlan UseFactoryMethod(Func<IBuildSession, object> factoryMethod) => 
-      new ParameterValueBuildPlan(_parameterMatcher, new CreateByFactoryMethodBuildAction<object>(factoryMethod), _weight);
-    
-  }
-
-  /// <summary>
-  /// This generic type is used for further extensibility possibilities which involves generic types. Generic type can't be constructed from typeof
-  /// </summary>
-  /// <typeparam name="T">The type of parameter</typeparam>
-  [SuppressMessage("ReSharper", "UnusedTypeParameter")]
-  public class ParameterValueTuner<T> : ParameterValueTuner
-  {
-    public ParameterValueTuner([NotNull] IUnitMatcher parameterMatcher, int weight) : base(parameterMatcher, weight) { }
+      new ParameterValueBuildPlan(UnitMatcher, new CreateByFactoryMethodBuildAction<object>(factoryMethod), Weight);
   }
 }

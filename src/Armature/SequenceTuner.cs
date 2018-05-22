@@ -2,20 +2,16 @@
 using System.Diagnostics;
 using Armature.Core;
 using Armature.Core.UnitSequenceMatcher;
+using Armature.Extensibility;
 using Resharper.Annotations;
 
 namespace Armature
 {
-  public class SequenceTuner
+  public class SequenceTuner : UnitSequenceExtensibility
   {
-    private readonly IUnitSequenceMatcher _unitSequenceMatcher;
-
     [DebuggerStepThrough]
-    public SequenceTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher)
+    public SequenceTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher)
     {
-      if (unitSequenceMatcher is null) throw new ArgumentNullException(nameof(unitSequenceMatcher));
-
-      _unitSequenceMatcher = unitSequenceMatcher;
     }
 
     /// <summary>
@@ -31,7 +27,7 @@ namespace Armature
       if (type == null) throw new ArgumentNullException(nameof(type));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
-      return new SequenceTuner(_unitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
+      return new SequenceTuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
     /// <summary>
@@ -41,7 +37,7 @@ namespace Armature
     public TreatingTuner<T> Treat<T>(object token = null)
     {
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(token));
-      return new TreatingTuner<T>(_unitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
+      return new TreatingTuner<T>(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
     /// <summary>
@@ -50,7 +46,7 @@ namespace Armature
     public Tuner TreatAll()
     {
       var unitSequenceMatcher = new AnyUnitSequenceMatcher();
-      return new Tuner(_unitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
+      return new Tuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
   }
 }

@@ -6,11 +6,11 @@ using Resharper.Annotations;
 
 namespace Armature
 {
-  public class CreationTuner<T> : UnitSequenceExtensibility
+  public class CreationTuner<T> : UnitSequenceExtensibility, IExtensibility<object>
   {
-    private readonly object _token;
+    protected readonly object Token;
 
-    public CreationTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher, [CanBeNull] object token) : base(unitSequenceMatcher) => _token = token;
+    public CreationTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher, [CanBeNull] object token) : base(unitSequenceMatcher) => Token = token;
 
     /// <summary>
     /// Specifies that unit of type <typeparamref name="T"/> should be created using default creation strategy
@@ -18,7 +18,7 @@ namespace Armature
     /// </summary>
     public Tuner ByDefault()
     {
-      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type<T>(_token));
+      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type<T>(Token));
 
       UnitSequenceMatcher
         .AddOrGetUnitSequenceMatcher(sequenceMatcher)
@@ -32,12 +32,14 @@ namespace Armature
     /// <returns></returns>
     public Tuner ByReflection()
     {
-      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type<T>(_token));
+      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type<T>(Token));
 
       UnitSequenceMatcher
         .AddOrGetUnitSequenceMatcher(sequenceMatcher)
         .AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
       return new Tuner(sequenceMatcher);
     }
+
+    object IExtensibility<object>.Item1 => Token;
   }
 }

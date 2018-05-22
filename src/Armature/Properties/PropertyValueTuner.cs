@@ -5,31 +5,23 @@ using Armature.Core;
 using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Creation;
 using Armature.Core.BuildActions.Property;
+using Armature.Extensibility;
 using Resharper.Annotations;
 
 namespace Armature
 {
-  public class PropertyValueTuner
+  public class PropertyValueTuner : BuildActionExtensibility
   {
-    private readonly IBuildAction _getPropertyAction;
-    private readonly IUnitMatcher _propertyMatcher;
-    private readonly int _weight;
-
-    public PropertyValueTuner([NotNull] IUnitMatcher propertyMatcher, [NotNull] IBuildAction getPropertyAction, int weight)
+    public PropertyValueTuner([NotNull] IUnitMatcher propertyUnitMatcher, [NotNull] IBuildAction getPropertyAction, int weight) 
+      : base(propertyUnitMatcher, getPropertyAction, weight)
     {
-      if (propertyMatcher is null) throw new ArgumentNullException(nameof(propertyMatcher));
-      if (getPropertyAction is null) throw new ArgumentNullException(nameof(getPropertyAction));
-
-      _propertyMatcher = propertyMatcher;
-      _getPropertyAction = getPropertyAction;
-      _weight = weight;
     }
 
     /// <summary>
     ///   Inject the <paramref name="value" /> into the property
     /// </summary>
     public PropertyValueBuildPlan UseValue([CanBeNull] object value) => 
-      new PropertyValueBuildPlan(_propertyMatcher, _getPropertyAction, new SingletonBuildAction(value), _weight);
+      new PropertyValueBuildPlan(UnitMatcher, BuildAction, new SingletonBuildAction(value), Weight);
 
     /// <summary>
     ///   For building a value for the property use <see cref="PropertyInfo.PropertyType" /> and <paramref name="token"/>
@@ -38,27 +30,27 @@ namespace Armature
     {
       if (token == null) throw new ArgumentNullException(nameof(token));
 
-      return new PropertyValueBuildPlan(_propertyMatcher, _getPropertyAction, new CreatePropertyValueBuildAction(token), _weight);
+      return new PropertyValueBuildPlan(UnitMatcher, BuildAction, new CreatePropertyValueBuildAction(token), Weight);
     }
 
     /// <summary>
     ///   For building a value for the property use factory method />
     /// </summary>
     public PropertyValueBuildPlan UseFactoryMethod(Func<IBuildSession, object> factoryMethod) =>
-      new PropertyValueBuildPlan(_propertyMatcher, _getPropertyAction, new CreateByFactoryMethodBuildAction<object>(factoryMethod), _weight);
+      new PropertyValueBuildPlan(UnitMatcher, BuildAction, new CreateByFactoryMethodBuildAction<object>(factoryMethod), Weight);
 
     /// <summary>
     ///   For building a value for the property use <see cref="PropertyInfo.PropertyType" /> and <see cref="InjectAttribute.InjectionPointId" /> as a token
     /// </summary>
     public PropertyValueBuildPlan UseInjectPointIdAsToken() => 
-      new PropertyValueBuildPlan(_propertyMatcher, _getPropertyAction, CreatePropertyValueForInjectPointBuildAction.Instance, _weight);
+      new PropertyValueBuildPlan(UnitMatcher, BuildAction, CreatePropertyValueForInjectPointBuildAction.Instance, Weight);
   }
 
   [SuppressMessage("ReSharper", "UnusedTypeParameter")]
   public class PropertyValueTuner<T> : PropertyValueTuner
   {
-    public PropertyValueTuner([NotNull] IUnitMatcher propertyMatcher, IBuildAction getPropertyAction, int weight) 
-      : base(propertyMatcher, getPropertyAction, weight)
+    public PropertyValueTuner([NotNull] IUnitMatcher propertyUnitMatcher, IBuildAction getPropertyAction, int weight) 
+      : base(propertyUnitMatcher, getPropertyAction, weight)
     {
     }
   }

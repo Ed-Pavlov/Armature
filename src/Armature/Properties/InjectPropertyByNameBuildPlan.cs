@@ -5,6 +5,7 @@ using Armature.Core.BuildActions.Property;
 using Armature.Core.Logging;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
+using Armature.Extensibility;
 using Resharper.Annotations;
 
 namespace Armature
@@ -12,7 +13,7 @@ namespace Armature
   /// <summary>
   /// Adds a plan injecting dependencies into properties with corresponding names
   /// </summary>
-  public class InjectPropertyByNameBuildPlan : IPropertyValueBuildPlan
+  public class InjectPropertyByNameBuildPlan : IPropertyValueBuildPlan, IExtensibility<string[]>
   {
     private readonly string[] _names;
 
@@ -31,5 +32,7 @@ namespace Armature
         .AddBuildAction(BuildStage.Create, new GetPropertyByNameBuildAction(_names));
     
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", _names));
+    
+    string[] IExtensibility<string[]>.Item1 => _names;
   }
 }
