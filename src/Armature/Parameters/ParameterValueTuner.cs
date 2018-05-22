@@ -8,7 +8,7 @@ using Armature.Core.BuildActions.Creation;
 using Armature.Core.BuildActions.Parameter;
 using Resharper.Annotations;
 
-namespace Armature.Parameters
+namespace Armature
 {
   public class ParameterValueTuner
   {

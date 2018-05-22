@@ -1,4 +1,4 @@
-﻿namespace Armature.Parameters
+﻿namespace Armature
 {
   /// <inheritdoc cref="IBuildPlan"/>
   /// <summary>

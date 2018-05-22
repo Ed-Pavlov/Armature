@@ -1,7 +1,7 @@
 ﻿using Armature.Core;
 using Resharper.Annotations;
 
-namespace Armature.Parameters
+namespace Armature
 {
   public class ParameterValueBuildPlan : BuildValuePlan, IParameterValueBuildPlan
   {

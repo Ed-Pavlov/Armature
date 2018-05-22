@@ -17,7 +17,7 @@ namespace Armature
     /// </summary>
     public Tuner AsIs()
     {
-      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
+      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
       return new Tuner(UnitSequenceMatcher);
     }
 

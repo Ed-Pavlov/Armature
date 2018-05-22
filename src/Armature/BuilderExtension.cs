@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
-using Armature.Parameters;
 using Resharper.Annotations;
 using ArgumentNullException = System.ArgumentNullException;
 

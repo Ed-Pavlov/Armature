@@ -7,7 +7,6 @@ using Armature.Core.BuildActions.Parameter;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitSequenceMatcher;
-using Armature.Parameters;
 using FluentAssertions;
 using NUnit.Framework;
 

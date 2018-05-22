@@ -2,7 +2,7 @@
 using Armature.Core.UnitMatchers.Parameters;
 using Resharper.Annotations;
 
-namespace Armature.Parameters
+namespace Armature
 {
   public static class ForParameter
   {

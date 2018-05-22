@@ -8,7 +8,6 @@ using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
-using Armature.Parameters;
 using Resharper.Annotations;
 using ConstructorMatcher = Armature.Core.UnitMatchers.ConstructorMatcher;
 

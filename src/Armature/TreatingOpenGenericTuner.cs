@@ -3,20 +3,16 @@ using System.Diagnostics;
 using Armature.Core;
 using Armature.Core.BuildActions;
 using Armature.Core.UnitSequenceMatcher;
+using Armature.Extensibility;
 using Resharper.Annotations;
 
 namespace Armature
 {
-  public class TreatingOpenGenericTuner
+  public class TreatingOpenGenericTuner : UnitSequenceExtensibility
   {
-    private readonly IUnitSequenceMatcher _unitSequenceMatcher;
-
     [DebuggerStepThrough]
-    public TreatingOpenGenericTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher)
+    public TreatingOpenGenericTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher)
     {
-      if (unitSequenceMatcher == null) throw new ArgumentNullException(nameof(unitSequenceMatcher));
-
-      _unitSequenceMatcher = unitSequenceMatcher;
     }
 
     /// <param name="openGenericType"></param>
@@ -35,19 +31,25 @@ namespace Armature
     /// </param>
     public Tuner As(Type openGenericType, object token = null, AddCreateBuildAction addDefaultCreateAction = AddCreateBuildAction.Yes)
     {
-      _unitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectOpenGenericTypeBuildAction(openGenericType, token));
+      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectOpenGenericTypeBuildAction(openGenericType, token));
 
-      var childMatcher = _unitSequenceMatcher;
+      var childMatcher = UnitSequenceMatcher;
       if (addDefaultCreateAction == AddCreateBuildAction.Yes)
       {
         childMatcher = new WildcardUnitSequenceMatcher(Match.OpenGenericType(openGenericType, token), UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
 
-        _unitSequenceMatcher
+        UnitSequenceMatcher
           .AddOrGetUnitSequenceMatcher(childMatcher)
           .AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
       }
 
       return new Tuner(childMatcher);
+    }
+
+    public Tuner AsIs()
+    {
+      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
+      return new Tuner(UnitSequenceMatcher);
     }
   }
 }
