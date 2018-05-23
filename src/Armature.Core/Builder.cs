@@ -50,8 +50,8 @@ namespace Armature.Core
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
     /// <returns>Returns an instance or null if null is registered as an unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
-    public object BuildUnit(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null) =>
-      Build(unitInfo, auxBuildPlans, BuildSession.BuildUnit).Value;
+    public BuildResult BuildUnit(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null) =>
+      Build(unitInfo, auxBuildPlans, BuildSession.BuildUnit, _parentBuilders);
 
     /// <summary>
     ///   Builds all units represented by <see cref="UnitInfo" />
@@ -62,16 +62,19 @@ namespace Armature.Core
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
     public IReadOnlyList<object> BuildAllUnits(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null)
     {
-      var buildResult = Build(unitInfo, auxBuildPlans, BuildSession.BuildAllUnits);
+      var buildResult = Build(unitInfo, auxBuildPlans, BuildSession.BuildAllUnits, _parentBuilders);
       return buildResult.Select(_ => _.Value).ToArray();
     }
 
     private T Build<T>(
-      UnitInfo unitInfo,
-      BuildPlansCollection auxBuildPlans,
-      Func<UnitInfo, IEnumerable<object>, BuildPlansCollection, BuildPlansCollection, T> build)
+      [NotNull] UnitInfo unitInfo,
+      [CanBeNull] BuildPlansCollection auxBuildPlans,
+      [NotNull] Func<UnitInfo, IEnumerable<object>, BuildPlansCollection, BuildPlansCollection, Builder[], T> build,
+      [CanBeNull] Builder[] parentBuilders)
     {
-      var buildResult = build(unitInfo, _stages, this, auxBuildPlans);
+      if (build is null) throw new ArgumentNullException(nameof(build));
+
+      var buildResult = build(unitInfo, _stages, this, auxBuildPlans, parentBuilders);
       if (buildResult != null)
         return buildResult;
 
@@ -79,7 +82,7 @@ namespace Armature.Core
         foreach (var parentBuilder in _parentBuilders)
           try
           {
-            return parentBuilder.Build(unitInfo, auxBuildPlans, build);
+            return parentBuilder.Build(unitInfo, auxBuildPlans, build, parentBuilders);
           }
           catch (Exception)
           {

@@ -14,6 +14,8 @@ namespace Armature.Core
   public partial class BuildSession
   {
     [CanBeNull]
+    private readonly Builder[] _parentBuilders;
+    [CanBeNull]
     private readonly BuildPlansCollection _auxBuildPlans;
     private readonly BuildPlansCollection _buildPlans;
     private readonly List<UnitInfo> _buildSequence;
@@ -22,7 +24,8 @@ namespace Armature.Core
     private BuildSession(
       [NotNull] IEnumerable<object> buildStages,
       [NotNull] BuildPlansCollection buildPlans,
-      [CanBeNull] BuildPlansCollection auxBuildPlans)
+      [CanBeNull] BuildPlansCollection auxBuildPlans,
+      [CanBeNull] Builder[] parentBuilders)
     {
       if (buildStages == null) throw new ArgumentNullException(nameof(buildStages));
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
@@ -31,6 +34,7 @@ namespace Armature.Core
       _buildPlans = buildPlans;
       _auxBuildPlans = auxBuildPlans;
       _buildSequence = new List<UnitInfo>(4);
+      _parentBuilders = parentBuilders;
     }
 
     /// <summary>
@@ -40,11 +44,16 @@ namespace Armature.Core
     /// <param name="buildStages">The conveyer of build stages. See <see cref="Builder" /> for details</param>
     /// <param name="buildPlans">Build plans used to build a unit</param>
     /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method </param>
+    /// <param name="parentBuilders">
+    ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
+    ///   parent builders one by one in the order they passed into constructor
+    /// </param>
     public static BuildResult BuildUnit(
       [NotNull] UnitInfo unitInfo,
       [NotNull] IEnumerable<object> buildStages,
       [NotNull] BuildPlansCollection buildPlans,
-      [CanBeNull] BuildPlansCollection runtimeBuildPlans) => new BuildSession(buildStages, buildPlans, runtimeBuildPlans).BuildUnit(unitInfo);
+      [CanBeNull] BuildPlansCollection runtimeBuildPlans,
+      [CanBeNull] Builder[] parentBuilders) => new BuildSession(buildStages, buildPlans, runtimeBuildPlans, parentBuilders).BuildUnit(unitInfo);
 
     /// <summary>
     ///   Builds all Units represented by <paramref name="unitInfo" />
@@ -53,11 +62,16 @@ namespace Armature.Core
     /// <param name="buildStages">The conveyer of build stages. See <see cref="Builder" /> for details</param>
     /// <param name="buildPlans">Build plans used to build a unit</param>
     /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method </param>
+    /// <param name="parentBuilders">
+    ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
+    ///   parent builders one by one in the order they passed into constructor
+    /// </param>
     public static IReadOnlyList<BuildResult> BuildAllUnits(
       [NotNull] UnitInfo unitInfo,
       [NotNull] IEnumerable<object> buildStages,
       [NotNull] BuildPlansCollection buildPlans,
-      [CanBeNull] BuildPlansCollection runtimeBuildPlans) => new BuildSession(buildStages, buildPlans, runtimeBuildPlans).BuildAllUnits(unitInfo);
+      [CanBeNull] BuildPlansCollection runtimeBuildPlans,
+      [CanBeNull] Builder[] parentBuilders) => new BuildSession(buildStages, buildPlans, runtimeBuildPlans, parentBuilders).BuildAllUnits(unitInfo);
 
     /// <summary>
     ///   Builds a Unit represented by <paramref name="unitInfo" />
@@ -103,12 +117,12 @@ namespace Armature.Core
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
     private BuildResult BuildUnit(MatchedBuildActions matchedBuildActions)
     {
-      if (matchedBuildActions == null) return null;
-
-      var performedActions = new Stack<IBuildAction>();
+      if (matchedBuildActions == null)
+        return BuildViaParentBuilder();
 
       // builder to pass into IBuldActon.Execute
       var unitBuilder = new Interface(_buildSequence, this);
+      var performedActions = new Stack<IBuildAction>();
 
       foreach (var stage in _buildStages)
       {
@@ -126,7 +140,7 @@ namespace Armature.Core
         if (unitBuilder.BuildResult != null)
         {
           Log.WriteLine(LogLevel.Info, "");
-          Log.WriteLine(LogLevel.Info, "Built unit{{{0}}}", unitBuilder.BuildResult);
+          Log.WriteLine(LogLevel.Info, "Build Result{{{0}}}", unitBuilder.BuildResult);
           break; // object is built, unwind called actions in reverse orders
         }
       }
@@ -139,8 +153,30 @@ namespace Armature.Core
           buildAction.PostProcess(unitBuilder);
         }
       }
-
+      
       return unitBuilder.BuildResult;
+    }
+
+    private BuildResult BuildViaParentBuilder()
+    {
+      if (_parentBuilders == null) return null;
+
+      for (var i = 0; i < _parentBuilders.Length; i++)
+        try
+        {
+          using (Log.Block(LogLevel.Info, "Try build via parent builder #{0}", i))
+          {
+            var buildResult = _parentBuilders[i].BuildUnit(_buildSequence.Last(), _auxBuildPlans);
+            if (buildResult != null)
+              return buildResult;
+          }
+        }
+        catch (Exception)
+        {
+          // continue;
+        }
+
+      return null;
     }
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
@@ -165,7 +201,7 @@ namespace Armature.Core
         if (unitBuilder.BuildResult != null)
         {
           Log.WriteLine(LogLevel.Info, "");
-          Log.WriteLine(LogLevel.Info, "Built unit{{{0}}}", unitBuilder.BuildResult);
+          Log.WriteLine(LogLevel.Info, "Build Result{{{0}}}", unitBuilder.BuildResult);
           result.Add(unitBuilder.BuildResult);
         }
       }

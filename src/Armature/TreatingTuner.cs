@@ -24,7 +24,7 @@ namespace Armature
     /// <summary>
     ///   For all who depends on <typeparamref name="T" /> inject <paramref name="instance" />.
     /// </summary>
-    public void AsInstance([CanBeNull] T instance) => UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new SingletonBuildAction(instance));
+    public void AsInstance([CanBeNull] T instance) => UnitSequenceMatcher.AddBuildAction(BuildStage.Cache, new SingletonBuildAction(instance));
 
     /// <summary>
     ///   For all who depends on <typeparamref name="T" /> inject object of type <typeparamref name="TRedirect" />.

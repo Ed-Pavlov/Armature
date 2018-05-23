@@ -3,6 +3,7 @@ using Armature;
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
 using Armature.Core.BuildActions.Parameter;
+using Armature.Core.Logging;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitSequenceMatcher;
@@ -110,14 +111,57 @@ namespace Tests.Functional
     {
       const string expected = "expectedstring";
 
+      // --arrange
       var parentBuilder = new Builder(BuildStage.Cache);
       parentBuilder.Treat<string>().AsInstance(expected);
 
       var target = CreateTarget(parentBuilder);
+      target
+        .Treat<Subject>()
+        .AsIs();
+
+      using(Log.Enabled(LogLevel.Trace))
+      {
+        // --act
+        var actual = target.Build<Subject>();
+
+        // --assert
+        actual.Should().NotBeNull();
+        actual.String.Should().Be(expected);
+      }
+    }
+    
+    [Test]
+    public void should_use_parameter_value_from_local_build_plan()
+    {
+      const string expected = "expectedstring";
+
+      // --arrange
+      var parentBuilder = new Builder(BuildStage.Cache);
+      parentBuilder.Treat<string>().AsInstance(expected + "bad");
+
+      var target = CreateTarget(parentBuilder);
+      target
+        .Treat<string>()
+        .AsInstance(expected);
+      
+      target
+        .Treat<Subject>()
+        .AsIs();
+
+      using(Log.Enabled(LogLevel.Trace))
+      {
+        // --act
+        var actual = target.Build<Subject>();
+
+        // --assert
+        actual.Should().NotBeNull();
+        actual.String.Should().Be(expected);
+      }
     }
 
     private static Builder CreateTarget(params Builder[] parents) =>
-      new Builder(new[] {BuildStage.Create}, parents)
+      new Builder(new[] {BuildStage.Cache, BuildStage.Create}, parents)
       {
         new AnyUnitSequenceMatcher
         {

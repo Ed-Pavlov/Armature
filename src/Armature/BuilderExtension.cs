@@ -43,7 +43,7 @@ namespace Armature
           .UsingParameters(parameters);
       }
 
-      return (T)builder.BuildUnit(new UnitInfo(typeof(T), token), sessionalBuildPlans);
+      return (T)builder.BuildUnit(new UnitInfo(typeof(T), token), sessionalBuildPlans).Value;
     }
 
     public struct Tokenizer
