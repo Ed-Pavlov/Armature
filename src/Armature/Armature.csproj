@@ -26,8 +26,8 @@
     <ProjectReference Include="..\Armature.Core\Armature.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Assembly\CommonAssemblyInfo.cs</Link>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Assembly\GlobalAssemblyInfo.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -20,18 +21,17 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Tests")]
 [assembly: InternalsVisibleTo("Armature")]
 #else
-[assembly: InternalsVisibleTo("Tests")]
-[assembly: InternalsVisibleTo("Armature")]
-//[assembly: InternalsVisibleTo("Tests, PublicKey=" + Public.Key)]
-//[assembly: InternalsVisibleTo("Armature, PublicKey=" + Public.Key)]
+[assembly: InternalsVisibleTo("Tests, PublicKey=" + Public.Key)]
+[assembly: InternalsVisibleTo("Armature, PublicKey=" + Public.Key)]
 #endif
 
 
+[SuppressMessage("ReSharper", "CheckNamespace")]
 static class Public
 {
   public const string Key = 
-    "00240000048000009400000006020000002400005253413100040000010001002da2d8f192cad5f3" +
-    "5f9a09b0fde397d46cb0839e633acb05d9b23888b9db6d90c559b85406e53c9c8b71499db5428bc1" +
-    "0890b38688c61407b202603bcf4077b8616a334fdb2d3b62cec0417a8a96e32c92b4565d1347fa88" +
-    "ca02dd134dce1d7bdad9817b3a856153d2bc53c37bbae5a8aa2765c96d5017517e1f0a8c1458aed5";
+    "0024000004800000940000000602000000240000525341310004000001000100e521fa7f778455d9" +
+    "d6ffd544b626b77a9ba302a23aec6da8ba9dac0ff274af79f1bc4d2b7c1fae922b2c971f933ed037" +
+    "211c012ddc09b4d1da193d072fe55ae950f3a6a215cbe76ace833145f65a6980cda1ae1ca492e2d5" +
+    "304b2197c86a0f750ec7b52176f2b3aa2a26a327a19dd93aa2f72124e728a82f774240a351f8ddb4";
 } 

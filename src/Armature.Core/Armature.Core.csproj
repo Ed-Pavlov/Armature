@@ -29,8 +29,8 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Assembly\CommonAssemblyInfo.cs</Link>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Assembly\GlobalAssemblyInfo.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>
