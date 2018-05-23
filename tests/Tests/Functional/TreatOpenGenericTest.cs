@@ -30,7 +30,7 @@ namespace Tests.Functional
 
       // --act
       var actual = target.Build<ISubject<int>>();
-      
+
       // --assert
       actual.Should().BeOfType<Subject<int>>();
     }
@@ -49,7 +49,7 @@ namespace Tests.Functional
 
       // --act
       var actual = target.Build<ISubject<int>>();
-      
+
       // --assert
       actual.Value.Should().Be(expected);
     }
@@ -73,7 +73,7 @@ namespace Tests.Functional
 
       // --act
       var actual = target.Build<ISubject<string>>();
-      
+
       // --assert
       actual.Value.Should().Be(closed);
     }
@@ -90,21 +90,21 @@ namespace Tests.Functional
 
       // --act
       Action actual = () => target.Build<ISubject<int>>(5);
-      
+
       // --assert
       actual.Should().Throw<ArmatureException>();
     }
-    
-    private static Builder CreateTarget() => 
+
+    private static Builder CreateTarget() =>
       new Builder(BuildStage.Create)
-    {
-      new AnyUnitSequenceMatcher
       {
-        // inject into constructor
-        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
-      }
-    };
+        new AnyUnitSequenceMatcher
+        {
+          // inject into constructor
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
+        }
+      };
 
     private interface ISubject<out T>
     {
@@ -113,7 +113,9 @@ namespace Tests.Functional
 
     private class Subject<T> : ISubject<T>
     {
-      public Subject(){}
+      public Subject()
+      {
+      }
 
       public Subject(T value) => Value = value;
 

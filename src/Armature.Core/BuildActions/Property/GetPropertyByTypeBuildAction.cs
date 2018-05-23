@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
-using Resharper.Annotations;
 using Armature.Core.Logging;
+using Resharper.Annotations;
 
 namespace Armature.Core.BuildActions.Property
 {
   /// <summary>
-  /// "Builds" a property Unit of the currently building Unit of specified type
-  /// specified <see cref="InjectAttribute.InjectionPointId"/>  
+  ///   "Builds" a property Unit of the currently building Unit of specified type
+  ///   specified <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
   public class GetPropertyByTypeBuildAction : IBuildAction
   {
@@ -20,13 +19,13 @@ namespace Armature.Core.BuildActions.Property
     {
       var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
       var properties = unitType.GetProperties().Where(_ => _.PropertyType == _type).ToArray();
-      
-      if(properties.Length == 0)
+
+      if (properties.Length == 0)
         throw new ArmatureException($"No property of type {_type.AsLogString()} in type {unitType.AsLogString()}");
-      
-      if(properties.Length > 1)
+
+      if (properties.Length > 1)
         throw new ArmatureException($"Ambiguity: there are more that one property of type {_type.AsLogString()} in type {unitType.AsLogString()}");
-      
+
       buildSession.BuildResult = new BuildResult(properties);
     }
 

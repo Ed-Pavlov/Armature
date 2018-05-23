@@ -5,7 +5,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.UnitMatchers.Parameters
 {
   /// <summary>
-  /// Matches Unit representing "value for parameter" for the currently building Unit
+  ///   Matches Unit representing "value for parameter" for the currently building Unit
   /// </summary>
   public class ParameterValueMatcher : IUnitMatcher
   {

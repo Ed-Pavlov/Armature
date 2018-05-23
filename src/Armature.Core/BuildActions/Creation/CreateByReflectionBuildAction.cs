@@ -26,8 +26,10 @@ namespace Armature.Core.BuildActions.Creation
         if (!type.IsInterface && !type.IsAbstract)
         {
           ConstructorInfo constructor;
-          using(Log.Block(LogLevel.Trace, "Looking for constructor"))
+          using (Log.Block(LogLevel.Trace, "Looking for constructor"))
+          {
             constructor = buildSession.GetConstructorOf(type);
+          }
 
           var parameters = constructor.GetParameters();
 
@@ -44,9 +46,11 @@ namespace Armature.Core.BuildActions.Creation
             else
             {
               object[] valuesForParameters;
-              using(Log.Block(LogLevel.Trace, "Looking for parameters"))
+              using (Log.Block(LogLevel.Trace, "Looking for parameters"))
+              {
                 valuesForParameters = buildSession.GetValuesForParameters(parameters);
-              
+              }
+
               instance = constructor.Invoke(valuesForParameters);
             }
 
@@ -65,7 +69,7 @@ namespace Armature.Core.BuildActions.Creation
 
     [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
-    
+
     public override string ToString() => GetType().GetShortName();
   }
 }

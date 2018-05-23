@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Resharper.Annotations;
 using Armature.Core.Common;
+using Resharper.Annotations;
 
 namespace Armature.Core
 {
   /// <summary>
-  ///   The builder of units. 
+  ///   The builder of units.
   ///   Building a unit it goes over all "build stages", for each stage it gets a build action if any and executes it see
-  ///   <see cref="Builder(IEnumerable{System.Object}, Builder[])" /> for details.
+  ///   <see cref="Builder(IEnumerable{object}, Builder[])" /> for details.
   /// </summary>
   public class Builder : BuildPlansCollection
   {
@@ -17,11 +17,10 @@ namespace Armature.Core
     private readonly IEnumerable<object> _stages;
 
     public Builder() => throw new ArgumentException("Use constructor with parameters");
-    
+
     /// <param name="stages">The ordered collection of build stages all of which are performed to build a unit</param>
-    public Builder([NotNull] params object[] stages) : this(stages, EmptyArray<Builder>.Instance)
-    {}
-    
+    public Builder([NotNull] params object[] stages) : this(stages, EmptyArray<Builder>.Instance) { }
+
     /// <param name="stages">The ordered collection of build stages all of which are performed to build a unit</param>
     /// <param name="parentBuilders">
     ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
@@ -35,9 +34,9 @@ namespace Armature.Core
       var array = stages.ToArray();
       if (array.Length == 0)
         throw new ArgumentException("empty", nameof(stages));
-      if(array.Any(stage => stage == null))
+      if (array.Any(stage => stage == null))
         throw new ArgumentException("Contains null stage", nameof(stages));
-      if(array.Length != array.Distinct().Count())
+      if (array.Length != array.Distinct().Count())
         throw new ArgumentException("Contains duplicates", nameof(stages));
 
       _stages = array;
@@ -51,7 +50,7 @@ namespace Armature.Core
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
     /// <returns>Returns an instance or null if null is registered as an unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
-    public object BuildUnit(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null) => 
+    public object BuildUnit(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null) =>
       Build(unitInfo, auxBuildPlans, BuildSession.BuildUnit).Value;
 
     /// <summary>
@@ -66,8 +65,11 @@ namespace Armature.Core
       var buildResult = Build(unitInfo, auxBuildPlans, BuildSession.BuildAllUnits);
       return buildResult.Select(_ => _.Value).ToArray();
     }
-    
-    private T Build<T>(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans, Func<UnitInfo, IEnumerable<object>, BuildPlansCollection, BuildPlansCollection, T> build)
+
+    private T Build<T>(
+      UnitInfo unitInfo,
+      BuildPlansCollection auxBuildPlans,
+      Func<UnitInfo, IEnumerable<object>, BuildPlansCollection, BuildPlansCollection, T> build)
     {
       var buildResult = build(unitInfo, _stages, this, auxBuildPlans);
       if (buildResult != null)

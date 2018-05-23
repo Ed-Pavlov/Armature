@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Resharper.Annotations;
 using Armature.Core.Common;
+using Resharper.Annotations;
 
 namespace Armature.Core.UnitSequenceMatcher
 {
@@ -18,7 +18,10 @@ namespace Armature.Core.UnitSequenceMatcher
 
     protected int Weight { get; }
 
-    private Dictionary<object, List<IBuildAction>> LazyBuildAction { [DebuggerStepThrough] get => _buildActions ?? (_buildActions = new Dictionary<object, List<IBuildAction>>()); }
+    private Dictionary<object, List<IBuildAction>> LazyBuildAction
+    {
+      [DebuggerStepThrough] get => _buildActions ?? (_buildActions = new Dictionary<object, List<IBuildAction>>());
+    }
 
     public abstract ICollection<IUnitSequenceMatcher> Children { get; }
 

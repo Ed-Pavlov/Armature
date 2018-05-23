@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Armature.Core.Common;
-using Resharper.Annotations;
 using Armature.Core.Logging;
+using Resharper.Annotations;
 
 namespace Armature.Core
 {
@@ -13,11 +13,11 @@ namespace Armature.Core
   /// </summary>
   public partial class BuildSession
   {
+    [CanBeNull]
+    private readonly BuildPlansCollection _auxBuildPlans;
     private readonly BuildPlansCollection _buildPlans;
     private readonly List<UnitInfo> _buildSequence;
     private readonly IEnumerable<object> _buildStages;
-    [CanBeNull]
-    private readonly BuildPlansCollection _auxBuildPlans;
 
     private BuildSession(
       [NotNull] IEnumerable<object> buildStages,
@@ -32,7 +32,7 @@ namespace Armature.Core
       _auxBuildPlans = auxBuildPlans;
       _buildSequence = new List<UnitInfo>(4);
     }
-   
+
     /// <summary>
     ///   Builds a Unit represented by <paramref name="unitInfo" />
     /// </summary>
@@ -57,21 +57,22 @@ namespace Armature.Core
       [NotNull] UnitInfo unitInfo,
       [NotNull] IEnumerable<object> buildStages,
       [NotNull] BuildPlansCollection buildPlans,
-      [CanBeNull] BuildPlansCollection runtimeBuildPlans)=> new BuildSession(buildStages, buildPlans, runtimeBuildPlans).BuildAllUnits(unitInfo);
+      [CanBeNull] BuildPlansCollection runtimeBuildPlans) => new BuildSession(buildStages, buildPlans, runtimeBuildPlans).BuildAllUnits(unitInfo);
 
     /// <summary>
     ///   Builds a Unit represented by <paramref name="unitInfo" />
     /// </summary>
     /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
     public BuildResult BuildUnit(UnitInfo unitInfo) => Build(unitInfo, BuildUnit);
-    
+
     /// <summary>
     ///   Builds all Units represented by <paramref name="unitInfo" />
     /// </summary>
     /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
     public IReadOnlyList<BuildResult> BuildAllUnits(UnitInfo unitInfo) => Build(unitInfo, BuildAllUnits);
 
-    [CanBeNull][Pure]
+    [CanBeNull]
+    [Pure]
     private T Build<T>([NotNull] UnitInfo unitInfo, Func<MatchedBuildActions, T> build)
     {
       if (unitInfo == null) throw new ArgumentNullException(nameof(unitInfo));
@@ -83,11 +84,12 @@ namespace Armature.Core
         {
           MatchedBuildActions actions;
           MatchedBuildActions auxActions;
-          using(Log.Block(LogLevel.Verbose, "Looking for build actions"))
+          using (Log.Block(LogLevel.Verbose, "Looking for build actions"))
           {
             actions = _buildPlans.GetBuildActions(_buildSequence.AsArrayTail());
             auxActions = _auxBuildPlans?.GetBuildActions(_buildSequence.AsArrayTail());
           }
+
           Log.WriteLine(LogLevel.Verbose, "");
           return build(actions.Merge(auxActions));
         }
@@ -102,12 +104,12 @@ namespace Armature.Core
     private BuildResult BuildUnit(MatchedBuildActions matchedBuildActions)
     {
       if (matchedBuildActions == null) return null;
-      
+
       var performedActions = new Stack<IBuildAction>();
 
       // builder to pass into IBuldActon.Execute
       var unitBuilder = new Interface(_buildSequence, this);
-      
+
       foreach (var stage in _buildStages)
       {
         var buildAction = matchedBuildActions.GetTopmostAction(stage);
@@ -116,8 +118,10 @@ namespace Armature.Core
 
         performedActions.Push(buildAction);
 
-        using(Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Execute action", buildAction))
+        using (Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Execute action", buildAction))
+        {
           buildAction.Process(unitBuilder);
+        }
 
         if (unitBuilder.BuildResult != null)
         {
@@ -130,8 +134,10 @@ namespace Armature.Core
       foreach (var buildAction in performedActions)
       {
         Log.WriteLine(LogLevel.Info, "");
-        using(Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Rewind action", buildAction))
+        using (Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Rewind action", buildAction))
+        {
           buildAction.PostProcess(unitBuilder);
+        }
       }
 
       return unitBuilder.BuildResult;
@@ -142,9 +148,9 @@ namespace Armature.Core
     {
       if (matchedBuildActions == null) return null;
 
-      if(matchedBuildActions.Keys.Count > 1)
+      if (matchedBuildActions.Keys.Count > 1)
         throw new ArmatureException("Actions only for one stage should be provided for BuildAll");
-      
+
       var result = new List<BuildResult>();
       foreach (var buildAction in matchedBuildActions.Values.Single().Select(_ => _.Entity))
       {

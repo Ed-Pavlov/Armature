@@ -2,6 +2,6 @@
 {
   public interface IExtensibility<out T1>
   {
-    T1 Item1 { get; } 
+    T1 Item1 { get; }
   }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using Resharper.Annotations;
 using Armature.Core.Logging;
+using Resharper.Annotations;
 
 namespace Armature.Core.UnitMatchers
 {
@@ -22,7 +22,7 @@ namespace Armature.Core.UnitMatchers
 
     #region Equality
     [DebuggerStepThrough]
-    public virtual bool Equals(IUnitMatcher obj) => obj is UnitInfoMatcher other && UnitInfo.Equals(other.UnitInfo); 
+    public virtual bool Equals(IUnitMatcher obj) => obj is UnitInfoMatcher other && UnitInfo.Equals(other.UnitInfo);
 
     [DebuggerStepThrough]
     public override bool Equals(object obj) => Equals(obj as UnitInfoMatcher);

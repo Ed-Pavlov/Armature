@@ -3,15 +3,13 @@
 namespace Armature.Core.BuildActions.Property
 {
   /// <summary>
-  /// Injects values into building Unit properties specified for injection
+  ///   Injects values into building Unit properties specified for injection
   /// </summary>
   public class InjectIntoPropertiesBuildAction : IBuildAction
   {
     public static readonly IBuildAction Instance = new InjectIntoPropertiesBuildAction();
 
-    private InjectIntoPropertiesBuildAction()
-    {
-    }
+    private InjectIntoPropertiesBuildAction() { }
 
     [DebuggerStepThrough]
     public void Process(IBuildSession buildSession) { }

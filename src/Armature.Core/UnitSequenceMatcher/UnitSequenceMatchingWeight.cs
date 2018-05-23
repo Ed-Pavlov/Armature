@@ -4,10 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 namespace Armature.Core.UnitSequenceMatcher
 {
   /// <summary>
-  /// Weights which are added to the build action by unit sequence matchers of certain kind.
+  ///   Weights which are added to the build action by unit sequence matchers of certain kind.
   /// </summary>
-  /// <remarks>In order to change default priority of matchers inherit this class and change values in static constructor.
-  /// !!! Instantiate inherited class to ensure that static ctor is called !!!</remarks>
+  /// <remarks>
+  ///   In order to change default priority of matchers inherit this class and change values in static constructor.
+  ///   !!! Instantiate inherited class to ensure that static ctor is called !!!
+  /// </remarks>
   [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
   [SuppressMessage("ReSharper", "InconsistentNaming")]
   [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
@@ -24,7 +26,7 @@ namespace Armature.Core.UnitSequenceMatcher
     protected static int Strict = Wildcard + Step;
 
     /// <summary>
-    /// Is used for <see cref="AnyUnitSequenceMatcher" />
+    ///   Is used for <see cref="AnyUnitSequenceMatcher" />
     /// </summary>
     public static int AnyUnit => Any;
 
@@ -32,17 +34,17 @@ namespace Armature.Core.UnitSequenceMatcher
     ///   Used for <see cref="WildcardUnitSequenceMatcher" /> wich matches with a <see cref="UnitInfo" /> contains open generic type
     /// </summary>
     public static int WildcardMatchingOpenGenericUnit => WildcardOpenGeneric;
-    
+
     /// <summary>
     ///   Used for <see cref="WildcardUnitSequenceMatcher" /> wich matches with a <see cref="UnitInfo" /> contains inheritors of a type
     /// </summary>
     public static int WildcardMatchingBaseTypeUnit => WildcardBaseType;
-    
+
     /// <summary>
     ///   Used for <see cref="WildcardUnitSequenceMatcher" /> wich matches with a <see cref="UnitInfo" /> contains a <see cref="Type" />
     /// </summary>
     public static int WildcardMatchingUnit => Wildcard;
-    
+
     /// <summary>
     ///   Used for <see cref="StrictUnitSequenceMatcher" /> wich matches with a <see cref="UnitInfo" /> contains a <see cref="Type" />
     /// </summary>

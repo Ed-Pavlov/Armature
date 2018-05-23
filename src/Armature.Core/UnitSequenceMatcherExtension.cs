@@ -1,20 +1,16 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
-using Armature.Core.UnitSequenceMatcher;
-using Resharper.Annotations;
 
 namespace Armature.Core
 {
   public static class UnitSequenceMatcherExtension
   {
     /// <summary>
-    ///   Adds the <paramref name="unitSequenceMatcher"/> into <paramref name="parent"/>, if <paramref name="parent"/> already contains the matcher equal to
-    ///   <paramref name="unitSequenceMatcher"/> it does not add it but return the existent one. This method is used to add on a build plan or
+    ///   Adds the <paramref name="unitSequenceMatcher" /> into <paramref name="parent" />, if <paramref name="parent" /> already contains the matcher equal to
+    ///   <paramref name="unitSequenceMatcher" /> it does not add it but return the existent one. This method is used to add on a build plan or
     ///   make a several registrations regarding one Unit separately.
     /// </summary>
-    /// <remarks>Call it first and then fill returned <see cref="IUnitSequenceMatcher"/> with build actions or perform other needed actions.</remarks>
+    /// <remarks>Call it first and then fill returned <see cref="IUnitSequenceMatcher" /> with build actions or perform other needed actions.</remarks>
     [DebuggerStepThrough]
     public static T AddOrGetUnitSequenceMatcher<T>(this IUnitSequenceMatcher parent, T unitSequenceMatcher)
       where T : IUnitSequenceMatcher
@@ -26,10 +22,10 @@ namespace Armature.Core
       parent.Children.Add(unitSequenceMatcher);
       return unitSequenceMatcher;
     }
-    
+
     /// <summary>
-    ///   Adds the <paramref name="unitSequenceMatcher"/> into <paramref name="parent"/>, if <paramref name="parent"/> already contains the matcher equal to
-    ///   <paramref name="unitSequenceMatcher"/> throws exception.
+    ///   Adds the <paramref name="unitSequenceMatcher" /> into <paramref name="parent" />, if <paramref name="parent" /> already contains the matcher equal to
+    ///   <paramref name="unitSequenceMatcher" /> throws exception.
     /// </summary>
     [DebuggerStepThrough]
     public static T AddUniqueUnitMatcher<T>(this IUnitSequenceMatcher parent, T unitSequenceMatcher)

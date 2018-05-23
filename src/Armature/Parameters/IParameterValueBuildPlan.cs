@@ -1,8 +1,10 @@
 ﻿namespace Armature
 {
-  /// <inheritdoc cref="IBuildPlan"/>
+  /// <inheritdoc cref="IBuildPlan" />
   /// <summary>
-  /// Contains plan of building value to inject into a parameter
+  ///   Contains plan of building value to inject into a parameter
   /// </summary>
-  public interface IParameterValueBuildPlan : IBuildPlan{}
+  public interface IParameterValueBuildPlan : IBuildPlan
+  {
+  }
 }

@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using Armature.Core;
 using Resharper.Annotations;
-using ArgumentNullException = System.ArgumentNullException;
 
 namespace Armature
 {
@@ -21,7 +20,7 @@ namespace Armature
     public static T Build<T>([NotNull] this Builder builder) => builder.Build<T>(null, null);
 
     /// <summary>
-    ///   Builds a Unit registered as type <typeparamref name="T" /> using additional <paramref name="parameters"/> they can be values or
+    ///   Builds a Unit registered as type <typeparamref name="T" /> using additional <paramref name="parameters" /> they can be values or
     ///   implementation of <see cref="IBuildPlan" />. See <see cref="ForParameter" /> for details.
     /// </summary>
     [DebuggerStepThrough]
@@ -62,13 +61,13 @@ namespace Armature
       }
 
       /// <summary>
-      /// Calls <see cref="BuilderExtension.Build{T}(Builder, object, object[])"/> with <see cref="_token"/> as token
+      ///   Calls <see cref="BuilderExtension.Build{T}(Builder, object, object[])" /> with <see cref="_token" /> as token
       /// </summary>
       [DebuggerStepThrough]
       public T Build<T>() => _builder.Build<T>(_token);
 
       /// <summary>
-      /// Calls <see cref="BuilderExtension.Build{T}(Builder, object, object[])"/> with <see cref="_token"/> as token
+      ///   Calls <see cref="BuilderExtension.Build{T}(Builder, object, object[])" /> with <see cref="_token" /> as token
       /// </summary>
       [DebuggerStepThrough]
       public T Build<T>(params object[] parameters) => _builder.Build<T>(_token, parameters);

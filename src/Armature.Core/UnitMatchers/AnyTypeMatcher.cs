@@ -4,17 +4,15 @@ using Armature.Core.Logging;
 namespace Armature.Core.UnitMatchers
 {
   /// <summary>
-  /// Matches any type which can be instantiated
+  ///   Matches any type which can be instantiated
   /// </summary>
   public class AnyTypeMatcher : IUnitMatcher
   {
     public static readonly IUnitMatcher Instance = new AnyTypeMatcher();
-    
-    private AnyTypeMatcher()
-    {
-    }
 
-    public bool Matches(UnitInfo unitInfo) 
+    private AnyTypeMatcher() { }
+
+    public bool Matches(UnitInfo unitInfo)
     {
       var type = unitInfo.GetUnitTypeSafe();
       return !unitInfo.Token.IsSpecial() && type != null && !type.IsAbstract && !type.IsInterface && !type.IsGenericTypeDefinition;
@@ -28,7 +26,7 @@ namespace Armature.Core.UnitMatchers
     public bool Equals(IUnitMatcher other) => ReferenceEquals(this, other);
 
     [DebuggerStepThrough]
-    public override bool Equals(object obj) => Equals(obj as AnyTypeMatcher );
+    public override bool Equals(object obj) => Equals(obj as AnyTypeMatcher);
 
     [DebuggerStepThrough]
     public override int GetHashCode() => 0;

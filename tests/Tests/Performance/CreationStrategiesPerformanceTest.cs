@@ -12,10 +12,10 @@ namespace Tests.Performance
   [Ignore("Run manually only")]
   public class CreationStrategiesPerformanceTest
   {
-    private readonly object[] _values = {"1", "2", "3", "4", "5", "6", "7"};
+    private const int Count = 100000;
     private readonly ConstructorInfo _constructorInfo = typeof(Subject).GetConstructors().Single(_ => _.GetParameters().Length > 0);
     private readonly ConstructorInfo _emptyConstructorInfo = typeof(Subject).GetConstructors().Single(_ => _.GetParameters().Length == 0);
-    private const int Count = 100000;
+    private readonly object[] _values = {"1", "2", "3", "4", "5", "6", "7"};
 
     [Test]
     public void CreateByEmptyConstructorInfo()
@@ -27,11 +27,11 @@ namespace Tests.Performance
         var value = _emptyConstructorInfo.Invoke(EmptyArray<object>.Instance);
         GC.KeepAlive(value);
       }
-      
+
       sw.Stop();
       Console.WriteLine(sw.Elapsed);
     }
-    
+
     [Test]
     public void CreateByEmtpyActivator()
     {
@@ -42,11 +42,11 @@ namespace Tests.Performance
         var value = Activator.CreateInstance(typeof(Subject), EmptyArray<object>.Instance);
         GC.KeepAlive(value);
       }
-      
+
       sw.Stop();
       Console.WriteLine(sw.Elapsed);
     }
-    
+
     [Test]
     public void CreateByConstructorInfo()
     {
@@ -57,11 +57,11 @@ namespace Tests.Performance
         var value = _constructorInfo.Invoke(_values);
         GC.KeepAlive(value);
       }
-      
+
       sw.Stop();
       Console.WriteLine(sw.Elapsed);
     }
-    
+
     [Test]
     public void CreateByActivator()
     {
@@ -72,11 +72,11 @@ namespace Tests.Performance
         var value = Activator.CreateInstance(typeof(Subject), _values);
         GC.KeepAlive(value);
       }
-      
+
       sw.Stop();
       Console.WriteLine(sw.Elapsed);
     }
-    
+
     [Test]
     public void CreateByCompiledExpression()
     {
@@ -88,11 +88,11 @@ namespace Tests.Performance
         var value = factory(_values);
         GC.KeepAlive(value);
       }
-      
+
       sw.Stop();
       Console.WriteLine(sw.Elapsed);
     }
-    
+
     [Test]
     public void CreateByEmptyCompiledExpression()
     {
@@ -104,7 +104,7 @@ namespace Tests.Performance
         var value = factory(EmptyArray<object>.Instance);
         GC.KeepAlive(value);
       }
-      
+
       sw.Stop();
       Console.WriteLine(sw.Elapsed);
     }
@@ -128,8 +128,13 @@ namespace Tests.Performance
     [SuppressMessage("ReSharper", "UnusedParameter.Local")]
     private class Subject
     {
-      public Subject(){}
-      public Subject(string s1, string s2, string s3, string s4, string s5, string s6, string s7) { }
+      public Subject()
+      {
+      }
+
+      public Subject(string s1, string s2, string s3, string s4, string s5, string s6, string s7)
+      {
+      }
     }
   }
 }

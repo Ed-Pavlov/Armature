@@ -30,23 +30,25 @@ namespace Tests.Functional
       builder.Build<Subject>().Should().BeOfType<Subject>().Which.Value.Should().Be(10);
     }
 
-    private static Builder CreateTarget() => 
+    private static Builder CreateTarget() =>
       new Builder(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
-    {
-      new AnyUnitSequenceMatcher
       {
-        // inject into constructor
-        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
-      }
-    };
+        new AnyUnitSequenceMatcher
+        {
+          // inject into constructor
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
+        }
+      };
 
     private class Subject
     {
-      public int Value { get; }
+      public Subject()
+      {
+      }
 
-      public Subject(){}
       public Subject(int value) => Value = value;
+      public int Value { get; }
     }
   }
 }

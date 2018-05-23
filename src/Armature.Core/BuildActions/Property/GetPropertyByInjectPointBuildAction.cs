@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Resharper.Annotations;
 using Armature.Core.Logging;
+using Resharper.Annotations;
 
 namespace Armature.Core.BuildActions.Property
 {
   /// <summary>
-  /// "Builds" a list of properties Unit of the currently building Unit marked with <see cref="InjectAttribute"/> with
-  /// specified <see cref="InjectAttribute.InjectionPointId"/>  
+  ///   "Builds" a list of properties Unit of the currently building Unit marked with <see cref="InjectAttribute" /> with
+  ///   specified <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
   public class GetPropertyByInjectPointBuildAction : IBuildAction
   {

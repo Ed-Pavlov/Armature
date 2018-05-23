@@ -15,7 +15,7 @@ namespace Armature.Core
       Entity = entity;
       Weight = weight;
     }
-    
+
     [DebuggerStepThrough]
     public int CompareTo(Weighted<T> other) => Weight.CompareTo(other.Weight);
 

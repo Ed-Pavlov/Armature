@@ -40,7 +40,7 @@ namespace Tests.Functional
       // --assert
       actual.Value.Should().Be(expected);
     }
-    
+
     [Test]
     public void should_use_value_matched_with_longest_sequence_and_token()
     {
@@ -63,7 +63,7 @@ namespace Tests.Functional
         .Building<Subject>()
         .Treat<int>()
         .AsInstance(986);
-      
+
       target
         .Building<ISubject>(token)
         .Building<Subject>(token)
@@ -77,30 +77,29 @@ namespace Tests.Functional
       actual.Value.Should().Be(expected);
     }
 
-    private static Builder CreateTarget() => 
+    private static Builder CreateTarget() =>
       new Builder(BuildStage.Cache, BuildStage.Create)
-    {
-      new AnyUnitSequenceMatcher
       {
-        // inject into constructor
-        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
+        new AnyUnitSequenceMatcher
+        {
+          // inject into constructor
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
 
-        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
-      }
-    };
+          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+        }
+      };
 
-    private interface ISubject 
+    private interface ISubject
     {
       int Value { get; }
     }
 
     private class Subject : ISubject
     {
-      public int Value { get; }
-
       public Subject(int value) => Value = value;
+      public int Value { get; }
     }
   }
 }

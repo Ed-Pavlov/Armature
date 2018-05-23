@@ -55,7 +55,7 @@ namespace Tests.Functional
       target
         .Treat<Subject>()
         .AsIs();
-      
+
       // --act
       var actual = target.Build<Subject>();
 
@@ -81,7 +81,7 @@ namespace Tests.Functional
         .Treat<Subject>()
         .AsIs()
         .InjectProperty(Property.Named(nameof(Subject.InjectHere)));
-      
+
       // --act
       var actual = target.Build<Subject>();
 
@@ -90,19 +90,19 @@ namespace Tests.Functional
       actual.InjectThere.Should().Be(expected);
     }
 
-    private static Builder CreateTarget() => 
+    private static Builder CreateTarget() =>
       new Builder(BuildStage.Initialize, BuildStage.Create)
-    {
-      new AnyUnitSequenceMatcher
       {
-        // inject into constructor
-        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance), // constructor with largest number of parameters has less priority
+        new AnyUnitSequenceMatcher
+        {
+          // inject into constructor
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance), // constructor with largest number of parameters has less priority
 
-        new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
-      }
-    };
+          new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
+        }
+      };
 
     private interface ISubject
     {

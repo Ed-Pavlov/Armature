@@ -22,14 +22,14 @@ namespace Tests.Functional
         .AsIs()
         .UsingConstructorWithParameters(typeof(int), typeof(string))
         .UsingParameters(0, "0", new object());
-      
+
       // --act
       var actual = target.Build<Subject>();
-      
+
       // --assert
       actual.ExpectedCtorIsCalled.Should().BeTrue();
     }
-    
+
     [Test]
     public void should_call_parameterless_ctor()
     {
@@ -41,41 +41,47 @@ namespace Tests.Functional
         .AsIs()
         .UsingParameterlessConstructor()
         .UsingParameters(0, "0", new object());
-      
+
       // --act
       var actual = target.Build<Subject>();
-      
+
       // --assert
       actual.ParameterlessCtorIsCalled.Should().BeTrue();
     }
-    
-    private static Builder CreateTarget() => 
+
+    private static Builder CreateTarget() =>
       new Builder(BuildStage.Create)
-    {
-      new AnyUnitSequenceMatcher
       {
-        // inject into constructor
-        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(
-            BuildStage.Create,
-            new OrderedBuildActionContainer
-            {
-              new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-              GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
-            }),
-      }
-    };
+        new AnyUnitSequenceMatcher
+        {
+          // inject into constructor
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+            .AddBuildAction(
+              BuildStage.Create,
+              new OrderedBuildActionContainer
+              {
+                new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
+                GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
+              })
+        }
+      };
 
     private class Subject
     {
-      public readonly bool ParameterlessCtorIsCalled;
       public readonly bool ExpectedCtorIsCalled;
+      public readonly bool ParameterlessCtorIsCalled;
 
       public Subject() => ParameterlessCtorIsCalled = true;
       public Subject(int i, string s) => ExpectedCtorIsCalled = true;
-      public Subject(string s, int i) {}
+
+      public Subject(string s, int i)
+      {
+      }
+
       [Inject]
-      public Subject(int i, string s, object o) {}
+      public Subject(int i, string s, object o)
+      {
+      }
     }
   }
 }

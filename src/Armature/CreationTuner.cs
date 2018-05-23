@@ -12,9 +12,11 @@ namespace Armature
 
     public CreationTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher, [CanBeNull] object token) : base(unitSequenceMatcher) => Token = token;
 
+    object IExtensibility<object>.Item1 => Token;
+
     /// <summary>
-    /// Specifies that unit of type <typeparamref name="T"/> should be created using default creation strategy
-    /// specified in <see cref="Default.CreationBuildAction"/> 
+    ///   Specifies that unit of type <typeparamref name="T" /> should be created using default creation strategy
+    ///   specified in <see cref="Default.CreationBuildAction" />
     /// </summary>
     public Tuner ByDefault()
     {
@@ -25,9 +27,9 @@ namespace Armature
         .AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
       return new Tuner(sequenceMatcher);
     }
-    
+
     /// <summary>
-    /// Specifies that unit of type <typeparamref name="T"/> should be created using reflection
+    ///   Specifies that unit of type <typeparamref name="T" /> should be created using reflection
     /// </summary>
     /// <returns></returns>
     public Tuner ByReflection()
@@ -39,7 +41,5 @@ namespace Armature
         .AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
       return new Tuner(sequenceMatcher);
     }
-
-    object IExtensibility<object>.Item1 => Token;
   }
 }

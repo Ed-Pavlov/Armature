@@ -17,14 +17,14 @@ namespace Tests.UnitTests
 
       var buildSession = MockRepository.GenerateStub<IBuildSession>();
       buildSession.Stub(_ => _.BuildSequence).Return(new[] {new UnitInfo(typeof(IDisposable), null)});
-      
+
       // --act
       target.Process(buildSession);
-      
+
       // --assert
       buildSession.AssertWasNotCalled(_ => _.BuildUnit(null), _ => _.IgnoreArguments());
     }
-    
+
     [Test]
     public void should_not_create_abstract_type()
     {
@@ -33,13 +33,12 @@ namespace Tests.UnitTests
 
       var buildSession = MockRepository.GenerateStub<IBuildSession>();
       buildSession.Stub(_ => _.BuildSequence).Return(new[] {new UnitInfo(typeof(Stream), null)});
-      
+
       // --act
       target.Process(buildSession);
-      
+
       // --assert
       buildSession.AssertWasNotCalled(_ => _.BuildUnit(null), _ => _.IgnoreArguments());
     }
   }
 }
-

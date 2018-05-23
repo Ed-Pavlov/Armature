@@ -8,13 +8,13 @@ namespace Armature.Core.Logging
   {
     private const string BuildsequenceIsEmpty = "BuildSequence{{empty}}";
 
-    public static string GetShortName(this Type type) => 
-      type.IsGenericType 
+    public static string GetShortName(this Type type) =>
+      type.IsGenericType
         ? string.Format("{0}<{1}>", type.GetGenericTypeDefinition().Name, string.Join(", ", type.GenericTypeArguments.Select(_ => _.Name).ToArray()))
         : type.Name;
-    
+
     public static string AsLogString(this object obj) => Log.ToLogString(obj);
-    
+
     public static void ToLog(this IList<UnitInfo> buildSequence, LogLevel logLevel = LogLevel.Verbose)
     {
       if (buildSequence.Count == 0)
@@ -23,8 +23,10 @@ namespace Armature.Core.Logging
         Log.WriteLine(logLevel, "BuildSequence{{{0}}}", buildSequence.Last());
       else
         using (Log.Block(logLevel, "BuildSequence"))
+        {
           foreach (var unitInfo in buildSequence)
             Log.WriteLine(logLevel, unitInfo.ToString());
+        }
     }
 
     public static void ToLog(this MatchedBuildActions actions, LogLevel logLevel = LogLevel.Verbose)
@@ -34,7 +36,7 @@ namespace Armature.Core.Logging
         Log.WriteLine(logLevel, "not matched");
         return;
       }
-      
+
       foreach (var pair in actions)
         LogMatchedBuildActions(pair, logLevel);
     }

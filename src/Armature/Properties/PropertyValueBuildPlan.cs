@@ -19,7 +19,7 @@ namespace Armature
       _getPropertyAction = getPropertyAction ?? throw new ArgumentNullException(nameof(getPropertyAction));
 
     /// <summary>
-    /// In addition to the base logic adds a logic which provides a properties to inject into 
+    ///   In addition to the base logic adds a logic which provides a properties to inject into
     /// </summary>
     /// <param name="unitSequenceMatcher"></param>
     protected override void Apply(IUnitSequenceMatcher unitSequenceMatcher) =>

@@ -11,17 +11,17 @@ namespace Armature.Core
     ///   Is used to "build" a <see cref="ConstructorInfo" /> for a type
     /// </summary>
     public static readonly object Constructor = new Token("Constructor");
-    
+
     /// <summary>
-    ///   Is used to build a <see cref="PropertyInfo"/> 
+    ///   Is used to build a <see cref="PropertyInfo" />
     /// </summary>
     public static readonly object Property = new Token("Property");
-    
+
     /// <summary>
     ///   Is used to build a value for inject point
     /// </summary>
     public static readonly object InjectValue = new Token("InjectValue");
-    
+
     public static bool IsSpecial(this object obj) => obj is Token token && (token == Constructor || token == Property || token == InjectValue);
   }
 }

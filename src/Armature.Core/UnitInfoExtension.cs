@@ -22,6 +22,7 @@ namespace Armature.Core
     public static Type GetUnitTypeSafe([NotNull] this UnitInfo unitInfo)
     {
       if (unitInfo == null) throw new ArgumentNullException(nameof(unitInfo));
+
       return unitInfo.Id as Type;
     }
   }

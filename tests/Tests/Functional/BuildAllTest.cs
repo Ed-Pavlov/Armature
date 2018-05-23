@@ -25,7 +25,7 @@ namespace Tests.Functional
 
       // --act
       var actual = target.BuildAllUnits(Unit.OfType<IDisposable>());
-      
+
       // --assert
       actual.Should().HaveCount(2);
       actual.Should().ContainSingle(_ => _ is SampleType1);
@@ -44,7 +44,7 @@ namespace Tests.Functional
 
       // --act
       Action actual = () => target.BuildAllUnits(Unit.OfType<IDisposable>());
-      
+
       // --assert
       actual.Should().ThrowExactly<ArmatureException>();
     }
@@ -52,7 +52,7 @@ namespace Tests.Functional
     [Test]
     public void more_than_one_build_stage_can_be_used_for_redirected_type()
     {
-      using(Log.Enabled(LogLevel.Verbose))
+      using (Log.Enabled(LogLevel.Verbose))
       {
         // --arrange
         var target = CreateTarget();
@@ -77,23 +77,28 @@ namespace Tests.Functional
       }
     }
 
-    private static Builder CreateTarget() => 
+    private static Builder CreateTarget() =>
       new Builder(BuildStage.Cache, BuildStage.Create)
-    {
-      new AnyUnitSequenceMatcher
       {
-        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
-      }
-    };
+        new AnyUnitSequenceMatcher
+        {
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
+        }
+      };
 
     private class SampleType1 : IDisposable
     {
-      public void Dispose() {  }
+      public void Dispose()
+      {
+      }
     }
+
     private class SampleType2 : IDisposable
     {
-      public void Dispose() {  }
+      public void Dispose()
+      {
+      }
     }
   }
 }

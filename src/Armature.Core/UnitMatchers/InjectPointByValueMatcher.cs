@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using Resharper.Annotations;
 using Armature.Core.Logging;
+using Resharper.Annotations;
 
 namespace Armature.Core.UnitMatchers
 {
   /// <summary>
-  /// Base class for matchers matching an "inject point" suited for provided value type
+  ///   Base class for matchers matching an "inject point" suited for provided value type
   /// </summary>
   public abstract class InjectPointByValueMatcher : IUnitMatcher
   {
@@ -15,14 +15,14 @@ namespace Armature.Core.UnitMatchers
     [DebuggerStepThrough]
     protected InjectPointByValueMatcher([NotNull] object parameterValue) => _value = parameterValue ?? throw new ArgumentNullException(nameof(parameterValue));
 
-    [CanBeNull]
-    protected abstract Type GetInjectPointType(UnitInfo unitInfo);
-    
     public bool Matches(UnitInfo unitInfo)
     {
       var type = GetInjectPointType(unitInfo);
-      return unitInfo.Token == SpecialToken.InjectValue &&  type != null && type.IsInstanceOfType(_value);
+      return unitInfo.Token == SpecialToken.InjectValue && type != null && type.IsInstanceOfType(_value);
     }
+
+    [CanBeNull]
+    protected abstract Type GetInjectPointType(UnitInfo unitInfo);
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _value.AsLogString());

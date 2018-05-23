@@ -130,7 +130,7 @@ namespace Tests.Extensibility.MaybePropagation
             .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
 
           new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance),
+            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
         }
       };
   }

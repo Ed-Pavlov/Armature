@@ -4,7 +4,9 @@
   {
     public static readonly Maybe<T> Nothing = new Maybe<T>();
 
-    private Maybe() { }
+    private Maybe()
+    {
+    }
 
     public Maybe(T value)
     {

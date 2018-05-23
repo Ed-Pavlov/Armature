@@ -45,7 +45,7 @@ namespace Tests.UnitTests
       Equals(left, right).Should().BeTrue();
       Equals(right, left).Should().BeTrue();
     }
-    
+
     [Test]
     public void should_not_be_equal_if_id_differs([Values(null, "token")] object token)
     {
@@ -55,7 +55,7 @@ namespace Tests.UnitTests
       Equals(left, right).Should().BeFalse();
       Equals(right, left).Should().BeFalse();
     }
-    
+
     [Test]
     public void should_not_be_equal_if_token_differs([Values(null, "id")] object id)
     {

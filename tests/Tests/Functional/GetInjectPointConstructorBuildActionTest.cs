@@ -72,25 +72,25 @@ namespace Tests.Functional
       actual.Dependency.InjectPointWithIdConstructorIsCalled.Should().BeFalse();
     }
 
-    private Builder CreateTarget() => 
+    private Builder CreateTarget() =>
       new Builder(BuildStage.Create)
-    {
-      new AnyUnitSequenceMatcher
       {
-        // inject into constructor
-        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(
-            BuildStage.Create,
-            new OrderedBuildActionContainer
-            {
-              new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-              GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
-            }),
+        new AnyUnitSequenceMatcher
+        {
+          // inject into constructor
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+            .AddBuildAction(
+              BuildStage.Create,
+              new OrderedBuildActionContainer
+              {
+                new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
+                GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
+              }),
 
-        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
-      }
-    };
+          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+        }
+      };
 
     class Subject
     {
@@ -100,12 +100,20 @@ namespace Tests.Functional
       public readonly bool InjectPointWithIdConstructorIsCalled;
 
       [Inject(InjectPointId)]
-      public Subject() { InjectPointWithIdConstructorIsCalled = true; }
+      public Subject()
+      {
+        InjectPointWithIdConstructorIsCalled = true;
+      }
 
       [Inject]
-      public Subject(object _1) { InjectPointConstructorIsCalled = true; }
+      public Subject(object _1)
+      {
+        InjectPointConstructorIsCalled = true;
+      }
 
-      public Subject(object _1, object _2) { }
+      public Subject(object _1, object _2)
+      {
+      }
     }
 
     private class LevelTwo
@@ -119,7 +127,8 @@ namespace Tests.Functional
       }
 
       public LevelTwo(string value, int digit) // longest constructor
-      {}
+      {
+      }
     }
   }
 }

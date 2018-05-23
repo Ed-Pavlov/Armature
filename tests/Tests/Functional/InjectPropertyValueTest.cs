@@ -21,7 +21,7 @@ namespace Tests.Functional
       const string expected = "expectedString";
       // --arrange
       var target = CreateTarget();
-      
+
       target
         .AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
         .With( // add build action injecting values into property for any type
@@ -42,7 +42,7 @@ namespace Tests.Functional
 
       // --act
       var actual = target.Build<Subject>();
-      
+
       // --assert
       actual.Should().NotBeNull();
       actual.InjectProperty.Should().Be(expected);
@@ -64,13 +64,13 @@ namespace Tests.Functional
 
       // --act
       var actual = target.Build<Subject>();
-      
+
       // --assert
       actual.Should().NotBeNull();
       actual.InjectProperty.Should().BeNull();
       actual.StringProperty.Should().Be(expected);
     }
-    
+
     [Test]
     public void value_should_be_injected_into_property_by_injectpointid([Values(null, Subject.InjectPointId)] object injectPointId)
     {
@@ -84,11 +84,13 @@ namespace Tests.Functional
         .Treat<Subject>()
         .AsIs()
         .InjectProperty(
-          Property.ByInjectPoint(injectPointId == null ? EmptyArray<object>.Instance : new[]{injectPointId})); // inject property adds a build action injecting values into property
+          Property.ByInjectPoint(injectPointId == null
+            ? EmptyArray<object>.Instance
+            : new[] {injectPointId})); // inject property adds a build action injecting values into property
 
       // --act
       var actual = target.Build<Subject>();
-      
+
       // --assert
       actual.Should().NotBeNull();
       actual.InjectProperty.Should().Be(expected);
@@ -109,13 +111,13 @@ namespace Tests.Functional
 
       // --act
       var actual = target.Build<Subject>();
-      
+
       // --assert
       actual.Should().NotBeNull();
       actual.StringProperty.Should().Be(expected);
       actual.InjectProperty.Should().BeNull();
     }
-    
+
     [Test]
     public void should_use_provided_token_for_property_by_inject_point()
     {
@@ -132,13 +134,13 @@ namespace Tests.Functional
 
       // --act
       var actual = target.Build<Subject>();
-      
+
       // --assert
       actual.Should().NotBeNull();
       actual.InjectProperty.Should().Be(expected);
       actual.StringProperty.Should().BeNull();
     }
-    
+
     [Test]
     public void should_use_inject_point_id_as_token_for_property_by_inject_point()
     {
@@ -154,13 +156,13 @@ namespace Tests.Functional
 
       // --act
       var actual = target.Build<Subject>();
-      
+
       // --assert
       actual.Should().NotBeNull();
       actual.InjectProperty.Should().Be(expected);
       actual.StringProperty.Should().BeNull();
     }
-    
+
     [Test]
     public void should_use_resolver_for_property_by_type()
     {
@@ -175,34 +177,35 @@ namespace Tests.Functional
 
       // --act
       var actual = target.Build<Subject>();
-      
+
       // --assert
       actual.Should().NotBeNull();
       actual.IntProperty.Should().Be(expected);
     }
 
-    public static Builder CreateTarget() => 
+    public static Builder CreateTarget() =>
       new Builder(BuildStage.Initialize, BuildStage.Create)
-    {
-      new AnyUnitSequenceMatcher
       {
-        // inject into constructor
-        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
+        new AnyUnitSequenceMatcher
+        {
+          // inject into constructor
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
 
-        new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction()),
-      }
-    };
+          new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction()),
+        }
+      };
 
     private class Subject
     {
       public const string InjectPointId = "id";
+
       [Inject(InjectPointId)]
       public string InjectProperty { get; set; }
 
       public string StringProperty { get; set; }
-      
+
       public int IntProperty { get; set; }
     }
   }

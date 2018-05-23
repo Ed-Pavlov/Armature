@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using Resharper.Annotations;
 using Armature.Core.Logging;
+using Resharper.Annotations;
 
 namespace Armature.Core
 {
@@ -17,8 +17,8 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public UnitInfo([CanBeNull] object id, [CanBeNull] object token)
     {
-      if(id == null && token == null) throw new ArgumentNullException(nameof(id), @"Either id or token should be provided");
-      
+      if (id == null && token == null) throw new ArgumentNullException(nameof(id), @"Either id or token should be provided");
+
       Id = id;
       Token = token;
     }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using Resharper.Annotations;
 using Armature.Core.Logging;
+using Resharper.Annotations;
 
 namespace Armature.Core.BuildActions
 {
@@ -28,7 +28,7 @@ namespace Armature.Core.BuildActions
     {
       var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
       var effectiveToken = Equals(_token, Token.Propagate) ? unitUnderConstruction.Token : _token;
-      
+
       var genericType = _redirectTo.MakeGenericType(buildSession.GetUnitUnderConstruction().GetUnitType().GetGenericArguments());
       buildSession.BuildResult = buildSession.BuildUnit(new UnitInfo(genericType, effectiveToken));
     }

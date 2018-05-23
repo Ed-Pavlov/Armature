@@ -8,7 +8,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.BuildActions.Constructor
 {
   /// <summary>
-  /// "Builds" a constructor Unit of the currently building Unit marked with attribute which satisfies user provided conditions  
+  ///   "Builds" a constructor Unit of the currently building Unit marked with attribute which satisfies user provided conditions
   /// </summary>
   public class GetConstructorBytAttributeBuildAction<T> : IBuildAction
   {
@@ -22,10 +22,13 @@ namespace Armature.Core.BuildActions.Constructor
     {
       var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
       var ctor = GetConstructorInfo(unitType);
-      if(ctor != null)
+      if (ctor != null)
         buildSession.BuildResult = new BuildResult(ctor);
     }
-      
+
+    [DebuggerStepThrough]
+    public void PostProcess(IBuildSession buildSession) { }
+
     private ConstructorInfo GetConstructorInfo(Type unitType)
     {
       var constructorInfo = unitType
@@ -39,9 +42,6 @@ namespace Armature.Core.BuildActions.Constructor
       return constructorInfo;
     }
 
-    [DebuggerStepThrough]
-    public void PostProcess(IBuildSession buildSession) { }
-    
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _predicate);
   }
 }

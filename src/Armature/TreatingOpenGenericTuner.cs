@@ -11,14 +11,12 @@ namespace Armature
   public class TreatingOpenGenericTuner : UnitSequenceExtensibility
   {
     [DebuggerStepThrough]
-    public TreatingOpenGenericTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher)
-    {
-    }
+    public TreatingOpenGenericTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
 
     /// <param name="openGenericType"></param>
     /// <param name="addDefaultCreateAction">
     ///   If <see cref="AddCreateBuildAction.Yes" /> adds a build action <see cref="Default.CreationBuildAction" /> for
-    /// <see cref="UnitInfo" />(<paramref name="openGenericType" />, null) as a creation build action.
+    ///   <see cref="UnitInfo" />(<paramref name="openGenericType" />, null) as a creation build action.
     /// </param>
     public Tuner As(Type openGenericType, AddCreateBuildAction addDefaultCreateAction) => As(openGenericType, null, addDefaultCreateAction);
 
@@ -26,7 +24,7 @@ namespace Armature
     /// <param name="token"></param>
     /// <param name="addDefaultCreateAction">
     ///   If <see cref="AddCreateBuildAction.Yes" /> adds a build action
-    ///   <see cref="Default.CreationBuildAction" /> for <see cref="UnitInfo" />(<paramref name="openGenericType" />, <paramref name="token"/>)
+    ///   <see cref="Default.CreationBuildAction" /> for <see cref="UnitInfo" />(<paramref name="openGenericType" />, <paramref name="token" />)
     ///   as a creation build action.
     /// </param>
     public Tuner As(Type openGenericType, object token = null, AddCreateBuildAction addDefaultCreateAction = AddCreateBuildAction.Yes)

@@ -9,7 +9,7 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("Debug")]
 #else
 [assembly: AssemblyConfiguration("Release")]
-[assembly:AssemblyKeyFile(@"..\..\private\armature.snk")]
+[assembly: AssemblyKeyFile(@"..\..\private\armature.snk")]
 #endif
 
 [assembly: AssemblyProduct("Armature")]

@@ -5,7 +5,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.UnitMatchers.Properties
 {
   /// <summary>
-  /// Matches Unit representing "value for property" of the currently building Unit
+  ///   Matches Unit representing "value for property" of the currently building Unit
   /// </summary>
   public class PropertyValueMatcher : IUnitMatcher
   {
@@ -21,7 +21,7 @@ namespace Armature.Core.UnitMatchers.Properties
     #region Equality
     [DebuggerStepThrough]
     public bool Equals(IUnitMatcher other) => ReferenceEquals(this, other);
-    
+
     [DebuggerStepThrough]
     public override bool Equals(object obj) => Equals(obj as IUnitMatcher);
 

@@ -8,7 +8,7 @@ namespace Armature
   public static class ForProperty
   {
     /// <summary>
-    ///   Matches with property with <see cref="PropertyInfo.PropertyType" /> equals to <typeparamref name="T"/>
+    ///   Matches with property with <see cref="PropertyInfo.PropertyType" /> equals to <typeparamref name="T" />
     /// </summary>
     public static PropertyValueTuner<T> OfType<T>()
     {
@@ -18,7 +18,7 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Matches with property with <see cref="MemberInfo.Name" /> equals to <paramref name="propertyName"/>
+    ///   Matches with property with <see cref="MemberInfo.Name" /> equals to <paramref name="propertyName" />
     /// </summary>
     public static PropertyValueTuner Named([NotNull] string propertyName)
     {
@@ -28,7 +28,7 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Matches with property marked with <see cref="InjectAttribute" />(<paramref name="injectPointId"/>)
+    ///   Matches with property marked with <see cref="InjectAttribute" />(<paramref name="injectPointId" />)
     /// </summary>
     public static PropertyValueTuner WithInjectPoint([CanBeNull] object injectPointId)
     {

@@ -14,7 +14,6 @@ using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
 using JetBrains.dotMemoryUnit;
 using NUnit.Framework;
-using Tests.Functional;
 
 namespace Tests.Performance
 {
@@ -92,7 +91,7 @@ namespace Tests.Performance
       sw.Stop();
       Console.WriteLine(sw.Elapsed);
     }
-    
+
     private static Builder CreateTarget(Builder parent = null)
     {
       var treatAll = new AnyUnitSequenceMatcher
@@ -115,17 +114,17 @@ namespace Tests.Performance
               CreateParameterValueForInjectPointBuildAction.Instance,
               CreateParameterValueBuildAction.Instance
             }),
-        
+
         new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
           .AddBuildAction(
             BuildStage.Create,
             new OrderedBuildActionContainer
             {
               new CreatePropertyValueBuildAction()
-            }),
+            })
       };
 
-      var buildStages = new object[]{BuildStage.Cache, BuildStage.Initialize, BuildStage.Create};
+      var buildStages = new object[] {BuildStage.Cache, BuildStage.Initialize, BuildStage.Create};
       var builder = parent == null ? new Builder(buildStages) : new Builder(buildStages, parent);
       builder.Children.Add(treatAll);
       return builder;

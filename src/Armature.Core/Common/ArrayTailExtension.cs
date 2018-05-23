@@ -10,7 +10,7 @@ namespace Armature.Core.Common
 
     [DebuggerStepThrough]
     public static T Last<T>(this ArrayTail<T> arrayTail) => arrayTail[arrayTail.Length - 1];
-    
+
     public static ArrayTail<T> AsArrayTail<T>(this IList<T> array) => new ArrayTail<T>(array, 0);
   }
 }

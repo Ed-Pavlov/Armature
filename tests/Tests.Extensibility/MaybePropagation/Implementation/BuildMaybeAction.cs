@@ -5,7 +5,7 @@ using Armature.Core.Logging;
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {
   /// <summary>
-  /// Builds <typeparamref name="T"/> and wraps it into <see cref="Maybe{T}"/>
+  ///   Builds <typeparamref name="T" /> and wraps it into <see cref="Maybe{T}" />
   /// </summary>
   internal class BuildMaybeAction<T> : IBuildAction
   {
@@ -20,7 +20,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
         var result = buildSession.BuildUnit(new UnitInfo(typeof(T), _uniqueToken));
         if (result == null) throw new InvalidOperationException();
 
-        buildSession.BuildResult = new BuildResult(((T)result.Value).ToMaybe());
+        buildSession.BuildResult = new BuildResult(((T) result.Value).ToMaybe());
       }
       catch (MaybeIsNothingException)
       {
@@ -28,7 +28,9 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
       }
     }
 
-    public void PostProcess(IBuildSession buildSession) { }
+    public void PostProcess(IBuildSession buildSession)
+    {
+    }
 
     public override string ToString() => GetType().GetShortName();
   }

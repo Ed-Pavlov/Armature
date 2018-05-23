@@ -17,10 +17,10 @@ namespace Tests.UnitTests
       buildSession.Stub(_ => _.BuildSequence).Return(new[] {new UnitInfo(typeof(IEnumerable<int>), Token.Propagate)});
 
       var buildAction = new RedirectOpenGenericTypeBuildAction(typeof(List<>), expectedToken);
-      
+
       // --act
       buildAction.Process(buildSession);
-      
+
       // --assert
       buildSession.AssertWasCalled(_ => _.BuildUnit(new UnitInfo(typeof(List<int>), expectedToken)));
     }

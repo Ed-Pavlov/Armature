@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Resharper.Annotations;
 using Armature.Core.Common;
 using Armature.Core.Logging;
+using Resharper.Annotations;
 
 namespace Armature.Core.UnitSequenceMatcher
 {
@@ -15,12 +15,10 @@ namespace Armature.Core.UnitSequenceMatcher
   {
     private HashSet<IUnitSequenceMatcher> _children;
 
-    protected UnitSequenceMathcherWithChildren(int weight) : base(weight)
-    {
-    }
+    protected UnitSequenceMathcherWithChildren(int weight) : base(weight) { }
 
-    private HashSet<IUnitSequenceMatcher> LazyChildren{[DebuggerStepThrough] get => _children ?? (_children = new HashSet<IUnitSequenceMatcher>()); }
-    
+    private HashSet<IUnitSequenceMatcher> LazyChildren { [DebuggerStepThrough] get => _children ?? (_children = new HashSet<IUnitSequenceMatcher>()); }
+
     [NotNull]
     public override ICollection<IUnitSequenceMatcher> Children { [DebuggerStepThrough] get { return LazyChildren; } }
 
@@ -44,7 +42,11 @@ namespace Armature.Core.UnitSequenceMatcher
       {
         Log.WriteLine(LogLevel.Verbose, this.ToString());
         using (Log.AddIndent())
-          matchedBuildActions = GetChildrenActions(inputWeight + Weight, buildingUnitsSequence.GetTail(1)); // pass the rest of the sequence to children and return their actions
+        {
+          matchedBuildActions = GetChildrenActions(
+            inputWeight + Weight,
+            buildingUnitsSequence.GetTail(1)); // pass the rest of the sequence to children and return their actions
+        }
       }
       else
       {
@@ -53,7 +55,9 @@ namespace Armature.Core.UnitSequenceMatcher
           Log.WriteLine(LogLevel.Trace, "{0}{{not matched}}", this);
         else
           using (Log.Block(LogLevel.Verbose, this.ToString()))
+          {
             matchedBuildActions.ToLog();
+          }
       }
 
       return matchedBuildActions;

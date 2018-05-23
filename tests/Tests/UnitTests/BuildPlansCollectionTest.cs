@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using Armature;
 using Armature.Core;
-using Armature.Core.Common;
 using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Creation;
+using Armature.Core.Common;
 using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
@@ -17,7 +17,7 @@ namespace Tests.UnitTests
     public void should_return_all_merged_actions()
     {
       var singletonAction = new SingletonBuildAction();
-      
+
       // --arrange
       var matchString = new LastUnitSequenceMatcher(Match.Type<string>(null)).AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
       var matchAny = new AnyUnitSequenceMatcher().AddBuildAction(BuildStage.Cache, singletonAction);

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Resharper.Annotations;
 using Armature.Core.Common;
+using Resharper.Annotations;
 
 namespace Armature.Core
 {
   public static class MatchedBuildActionsExtension
   {
     /// <summary>
-    /// Merges two collections into one
+    ///   Merges two collections into one
     /// </summary>
     [DebuggerStepThrough]
     public static MatchedBuildActions Merge(this MatchedBuildActions left, MatchedBuildActions right)
@@ -23,7 +23,9 @@ namespace Armature.Core
       {
         List<Weighted<IBuildAction>> resultValue;
         if (!right.TryGetValue(pair.Key, out var rightValue)) // if key is presented only in 'left' dictionary - get value from it
+        {
           resultValue = pair.Value;
+        }
         else // if key is presented in both dictionaries create a new list and merge items from both
         {
           resultValue = new List<Weighted<IBuildAction>>(pair.Value);

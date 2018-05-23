@@ -3,7 +3,7 @@
 namespace Armature
 {
   /// <summary>
-  /// Attribute is used to mark type member into which dependencies should be injected
+  ///   Attribute is used to mark type member into which dependencies should be injected
   /// </summary>
   [AttributeUsage(
     AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Field
@@ -11,7 +11,7 @@ namespace Armature
   public class InjectAttribute : Attribute
   {
     /// <summary>
-    /// Id of the injection point. Can be used to distinguishing different points. 
+    ///   Id of the injection point. Can be used to distinguishing different points.
     /// </summary>
     public readonly object InjectionPointId;
 

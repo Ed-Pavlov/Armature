@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Diagnostics;
-using Resharper.Annotations;
 using Armature.Core.Common;
+using Resharper.Annotations;
 
 namespace Armature.Core.UnitSequenceMatcher
 {
   /// <summary>
   ///   Moves along the building units sequence from left to right skipping units until it encounters a matching unit. Behaves like string search with wildcard.
-  ///  </summary>
+  /// </summary>
   public class WildcardUnitSequenceMatcher : UnitSequenceMathcherWithChildren, IEquatable<WildcardUnitSequenceMatcher>
   {
     private readonly IUnitMatcher _matcher;
 
-    public WildcardUnitSequenceMatcher([NotNull] IUnitMatcher matcher) : this(matcher, UnitSequenceMatchingWeight.WildcardMatchingUnit){}
-    public WildcardUnitSequenceMatcher([NotNull] IUnitMatcher matcher, int weight) : base(weight) => 
+    public WildcardUnitSequenceMatcher([NotNull] IUnitMatcher matcher) : this(matcher, UnitSequenceMatchingWeight.WildcardMatchingUnit) { }
+
+    public WildcardUnitSequenceMatcher([NotNull] IUnitMatcher matcher, int weight) : base(weight) =>
       _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
 
     /// <summary>

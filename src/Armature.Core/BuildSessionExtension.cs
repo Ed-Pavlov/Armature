@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Resharper.Annotations;
 using Armature.Core.Common;
+using Resharper.Annotations;
 
 namespace Armature.Core
 {
@@ -12,7 +12,7 @@ namespace Armature.Core
   {
     /// <summary>
     ///   "Builds" a <see cref="ConstructorInfo" /> for a <see creaf="type" /> by building a unit represented
-    ///   by <see cref="UnitInfo" />(<paramref name="type"/>, <see cref="SpecialToken.Constructor" />) via current build session.
+    ///   by <see cref="UnitInfo" />(<paramref name="type" />, <see cref="SpecialToken.Constructor" />) via current build session.
     /// </summary>
     public static ConstructorInfo GetConstructorOf([NotNull] this IBuildSession buildSessoin, [NotNull] Type type)
     {
@@ -27,7 +27,7 @@ namespace Armature.Core
     }
 
     /// <summary>
-    /// "Builds" a list of properties of currently building Unit (<paramref name="type"/>) for injecting dependencies
+    ///   "Builds" a list of properties of currently building Unit (<paramref name="type" />) for injecting dependencies
     /// </summary>
     public static IReadOnlyList<PropertyInfo> GetPropertiesToInject(this IBuildSession buildSession, Type type)
     {
@@ -37,16 +37,16 @@ namespace Armature.Core
     }
 
     /// <summary>
-    /// "Builds" a value to inject into the property representing by <paramref name="propertyInfo"/>
+    ///   "Builds" a value to inject into the property representing by <paramref name="propertyInfo" />
     /// </summary>
     public static object GetValueForProperty(this IBuildSession buildSession, PropertyInfo propertyInfo)
     {
       var buildResult = buildSession.BuildUnit(new UnitInfo(propertyInfo, SpecialToken.InjectValue));
       return buildResult != null ? buildResult.Value : throw new ArmatureException(string.Format("Can't build value for property {0}", propertyInfo));
     }
-    
+
     /// <summary>
-    ///   "Builds" values for parameters by building a set of <see cref="UnitInfo" />(<paramref name="parameters"/>[i], <see cref="SpecialToken.InjectValue" />)
+    ///   "Builds" values for parameters by building a set of <see cref="UnitInfo" />(<paramref name="parameters" />[i], <see cref="SpecialToken.InjectValue" />)
     ///   one by one via current build session
     /// </summary>
     public static object[] GetValuesForParameters([NotNull] this IBuildSession buildSession, [NotNull] ParameterInfo[] parameters)
@@ -69,7 +69,7 @@ namespace Armature.Core
     }
 
     /// <summary>
-    /// Returns the currently building Unit in the build session 
+    ///   Returns the currently building Unit in the build session
     /// </summary>
     [DebuggerStepThrough]
     public static UnitInfo GetUnitUnderConstruction(this IBuildSession buildSession) => buildSession.BuildSequence.Last();

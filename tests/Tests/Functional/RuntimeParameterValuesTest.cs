@@ -97,20 +97,20 @@ namespace Tests.Functional
       actual.String1.Should().BeNull();
     }
 
-    private static Builder CreateTarget() => 
+    private static Builder CreateTarget() =>
       new Builder(BuildStage.Initialize, BuildStage.Create)
-    {
-      new AnyUnitSequenceMatcher
       {
-        // inject into constructor
-        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
+        new AnyUnitSequenceMatcher
+        {
+          // inject into constructor
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
 
 
-        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance) // autowiring
-      }
-    };
+          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance) // autowiring
+        }
+      };
 
     private class Subject
     {
@@ -125,7 +125,10 @@ namespace Tests.Functional
       public Subject(string string1) => String1 = string1;
 
       [Inject(DisposableCtor)]
-      public Subject(IDisposable disposable) { Disposable = disposable; }
+      public Subject(IDisposable disposable)
+      {
+        Disposable = disposable;
+      }
 
       public Subject([Inject] string string1, string string2)
       {

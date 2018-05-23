@@ -7,15 +7,13 @@ using Armature.Core.Logging;
 namespace Armature.Core.BuildActions.Constructor
 {
   /// <summary>
-  /// "Builds" a constructor Unit of the currently building Unit with biggest number of parameters  
+  ///   "Builds" a constructor Unit of the currently building Unit with biggest number of parameters
   /// </summary>
   public class GetLongesConstructorBuildAction : IBuildAction
   {
     public static readonly IBuildAction Instance = new GetLongesConstructorBuildAction();
 
-    private GetLongesConstructorBuildAction()
-    {
-    }
+    private GetLongesConstructorBuildAction() { }
 
     public void Process(IBuildSession buildSession)
     {
@@ -57,7 +55,7 @@ namespace Armature.Core.BuildActions.Constructor
 
       return constructors[suitableConstructors.First().Key];
     }
-    
+
     public override string ToString() => GetType().GetShortName();
   }
 }

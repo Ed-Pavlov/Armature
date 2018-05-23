@@ -109,42 +109,31 @@ namespace Tests.Functional
     public void should_build_parameter_value_via_parent()
     {
       const string expected = "expectedstring";
-      
+
       var parentBuilder = new Builder(BuildStage.Cache);
       parentBuilder.Treat<string>().AsInstance(expected);
 
       var target = CreateTarget(parentBuilder);
-      
     }
 
-    private static Builder CreateTarget(params Builder[] parents)
-    {
-      new Builder("sldjf)");
-      var builder = new Builder(new[] {BuildStage.Create}, parents)
+    private static Builder CreateTarget(params Builder[] parents) =>
+      new Builder(new[] {BuildStage.Create}, parents)
       {
         new AnyUnitSequenceMatcher
         {
           new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
-          
+            .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
+
           new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
         }
       };
-      
-      
-      
-      return builder;
-    }
 
     private class Subject
     {
       public readonly string String;
 
-      public Subject(string @string)
-      {
-        String = @string;
-      }
+      public Subject(string @string) => String = @string;
     }
   }
 }

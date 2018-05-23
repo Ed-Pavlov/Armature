@@ -26,7 +26,7 @@ namespace Tests.Extensibility.MaybePropagation
         .Treat<Maybe<IReader>>()
         .TreatMaybeValue()
         .As<Reader>();
-      
+
       var actual = builder.Build<Maybe<IReader>>();
 
       // --assert
@@ -49,8 +49,8 @@ namespace Tests.Extensibility.MaybePropagation
       // --assert
       actual.Should().ThrowExactly<ArmatureException>();
     }
-    
-    private static Builder CreateTarget() => 
+
+    private static Builder CreateTarget() =>
       new Builder(BuildStage.Cache, BuildStage.Create)
       {
         new AnyUnitSequenceMatcher
@@ -58,9 +58,9 @@ namespace Tests.Extensibility.MaybePropagation
           // inject into constructor
           new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
             .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
-  
+
           new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance),
+            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
         }
       };
   }

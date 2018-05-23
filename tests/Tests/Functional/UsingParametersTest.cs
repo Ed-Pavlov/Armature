@@ -28,7 +28,7 @@ namespace Tests.Functional
       target
         .Treat<string>()
         .AsInstance("blogal");
-      
+
       target
         .Treat<Subject>()
         .AsIs()
@@ -40,7 +40,7 @@ namespace Tests.Functional
       // --assert
       actual.Text.Should().Be(expected);
     }
-    
+
     [Test]
     public void should_pass_two_values()
     {
@@ -97,7 +97,7 @@ namespace Tests.Functional
       target
         .Treat<string>()
         .AsInstance("938754");
-      
+
       target
         .Treat<Subject>()
         .AsIs()
@@ -119,7 +119,7 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target.Treat<string>().AsInstance("bad");
-      
+
       target
         .Treat<Subject>()
         .AsIs()
@@ -131,7 +131,7 @@ namespace Tests.Functional
       // --assert
       actual.Text.Should().Be(expected);
     }
-    
+
     [TestCaseSource("ForParameterSource")]
     public void should_build_value_for_parameter_using_parameter_type_and_token(ParameterValueTuner forParameter)
     {
@@ -140,7 +140,7 @@ namespace Tests.Functional
 
       // --arrange
       var target = CreateTarget();
-      
+
       target
         .Treat<Subject>()
         .AsIs()
@@ -174,12 +174,12 @@ namespace Tests.Functional
       target
         .Treat<string>()
         .AsInstance("09765");
-      
+
       target
         .Treat<Subject>()
         .AsIs()
         .UsingParameters(forParameter.UseToken("token"));
-      
+
       // --act
       Action actual = () => target.Build<Subject>();
 
@@ -194,9 +194,9 @@ namespace Tests.Functional
 
       // --arrange
       var target = CreateTarget();
-      
+
       target.Treat<int>().AsInstance(expectedInt);
-      
+
       target
         .Treat<Subject>()
         .AsIs()
@@ -237,10 +237,10 @@ namespace Tests.Functional
       var adjuster = target
         .Treat<Subject>()
         .AsIs();
-      
+
       // --act
       Action actual = () => adjuster.UsingParameters(ForParameter.OfType<string>().UseToken("expected29083"), ForParameter.OfType<string>().UseValue("kldj"));
-      
+
       // --assert
       actual.Should().ThrowExactly<ArmatureException>();
     }
@@ -262,7 +262,8 @@ namespace Tests.Functional
         .UsingParameters(expected);
 
       Action actual = () => target.Build<LevelTwo>();
-      actual.Should().Throw<ArmatureException>("Register string parameter only for LevelTwo class, despite that LevelOne also requires string in its .ctor registered parameter should not be propagated into LevelOne");
+      actual.Should().Throw<ArmatureException>(
+        "Register string parameter only for LevelTwo class, despite that LevelOne also requires string in its .ctor registered parameter should not be propagated into LevelOne");
     }
 
     [Test]
@@ -280,7 +281,7 @@ namespace Tests.Functional
       target
         .TreatAll()
         .UsingParameters(expected);
-      
+
       // --act
       var actual = target.Build<LevelThree>();
 
@@ -319,63 +320,63 @@ namespace Tests.Functional
       actual.LevelTwo.Text.Should().Be(expected, "Because {0} is registered for all {1} dependencies", expected, typeof(LevelThree).Name);
       actual.LevelTwo.LevelOne.Text.Should().Be(expected, "Because {0} is registered for all {1} dependencies", expected, typeof(LevelThree).Name);
     }
-    
+
     private static IEnumerable ForParameterSource()
     {
       yield return new TestCaseData(ForParameter.OfType<string>()).SetName("OfType");
       yield return new TestCaseData(ForParameter.Named("text")).SetName("Named");
       yield return new TestCaseData(ForParameter.WithInjectPoint(null)).SetName("WithInjectPoint");
     }
-    
-    private static Builder CreateTarget() => 
+
+    private static Builder CreateTarget() =>
       new Builder(BuildStage.Initialize, BuildStage.Create)
-    {
-      new AnyUnitSequenceMatcher
       {
-        // inject into constructor
-        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(
-            BuildStage.Create,
-            new OrderedBuildActionContainer
-            {
-              new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-              GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
-            }),
+        new AnyUnitSequenceMatcher
+        {
+          // inject into constructor
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+            .AddBuildAction(
+              BuildStage.Create,
+              new OrderedBuildActionContainer
+              {
+                new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
+                GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
+              }),
 
 
-        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance) // autowiring
-      }
-    };
+          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance) // autowiring
+        }
+      };
 
     private interface ISubject1
     {
       string Text { get; }
     }
-    
+
     private interface ISubject2
     {
       string Text { get; }
     }
-    
+
     private class Subject : ISubject1, ISubject2
     {
       public const string TwoParameterCtor = "2";
-      
-      public int Value { get; }
-      public string Text { get; }
 
       [Inject] // default ctor
-      public Subject([Inject]string text) => Text = text;
-      
+      public Subject([Inject] string text) => Text = text;
+
       [Inject(TwoParameterCtor)]
       public Subject(string text, int value)
       {
         Text = text;
         Value = value;
       }
+
+      public int Value { get; }
+      public string Text { get; }
     }
-    
+
     private class LevelTwo : Subject
     {
       public readonly Subject LevelOne;

@@ -16,10 +16,10 @@ namespace Tests.UnitTests
       buildSession.Stub(_ => _.BuildSequence).Return(new[] {new UnitInfo(null, Token.Propagate)});
 
       var buildAction = new RedirectTypeBuildAction(typeof(int), expectedToken);
-      
+
       // --act
       buildAction.Process(buildSession);
-      
+
       // --assert
       buildSession.AssertWasCalled(_ => _.BuildUnit(new UnitInfo(typeof(int), expectedToken)));
     }

@@ -2,7 +2,7 @@
 
 namespace Armature.Extensibility
 {
-  interface IBuildActionExtensibility : IUnitMatcherExtensibility
+  internal interface IBuildActionExtensibility : IUnitMatcherExtensibility
   {
     IBuildAction BuildAction { get; }
   }

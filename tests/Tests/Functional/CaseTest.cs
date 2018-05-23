@@ -108,39 +108,39 @@ namespace Tests.Functional
       actual1.Should().BeSameAs(actual2);
     }
 
-    private static Builder CreateTarget() => 
+    private static Builder CreateTarget() =>
       new Builder(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
-    {
-      new AnyUnitSequenceMatcher
       {
-        // inject into constructor
-        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(
-            BuildStage.Create,
-            new OrderedBuildActionContainer
-            {
-              new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-              GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
-            }),
+        new AnyUnitSequenceMatcher
+        {
+          // inject into constructor
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+            .AddBuildAction(
+              BuildStage.Create,
+              new OrderedBuildActionContainer
+              {
+                new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
+                GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
+              }),
 
-        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-          .AddBuildAction(
-            BuildStage.Create,
-            new OrderedBuildActionContainer
-            {
-              CreateParameterValueForInjectPointBuildAction.Instance,
-              CreateParameterValueBuildAction.Instance
-            }),
+          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+            .AddBuildAction(
+              BuildStage.Create,
+              new OrderedBuildActionContainer
+              {
+                CreateParameterValueForInjectPointBuildAction.Instance,
+                CreateParameterValueBuildAction.Instance
+              }),
 
-        new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
-          .AddBuildAction(
-            BuildStage.Create,
-            new OrderedBuildActionContainer
-            {
-              new CreatePropertyValueBuildAction()
-            }),
-      }
-    };
+          new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
+            .AddBuildAction(
+              BuildStage.Create,
+              new OrderedBuildActionContainer
+              {
+                new CreatePropertyValueBuildAction()
+              }),
+        }
+      };
 
     private interface IEmptyInterface1
     {
@@ -155,7 +155,10 @@ namespace Tests.Functional
       private static int _counter = 1;
       private readonly int _id = _counter++;
 
-      public override string ToString() { return _id.ToString(); }
+      public override string ToString()
+      {
+        return _id.ToString();
+      }
     }
 
     private interface IDisposableValue1
@@ -172,34 +175,57 @@ namespace Tests.Functional
     {
       private readonly IDisposable _disposable;
 
-      public OneDisposableCtorClass(IDisposable disposable) { _disposable = disposable; }
+      public OneDisposableCtorClass(IDisposable disposable)
+      {
+        _disposable = disposable;
+      }
 
-      public IDisposable Disposable { get { return _disposable; } }
+      public IDisposable Disposable
+      {
+        get { return _disposable; }
+      }
     }
 
     private class OneStringCtorClass : IDisposableValue1, IDisposableValue2
     {
       private readonly string _text;
 
-      public OneStringCtorClass(string text) { _text = text; }
+      public OneStringCtorClass(string text)
+      {
+        _text = text;
+      }
 
-      public string Text { get { return _text; } }
+      public string Text
+      {
+        get { return _text; }
+      }
 
-      IDisposable IDisposableValue1.Disposable { get { throw new NotImplementedException(); } }
+      IDisposable IDisposableValue1.Disposable
+      {
+        get { throw new NotSupportedException(); }
+      }
 
-      IDisposable IDisposableValue2.Disposable { get { throw new NotImplementedException(); } }
+      IDisposable IDisposableValue2.Disposable
+      {
+        get { throw new NotSupportedException(); }
+      }
     }
 
     private class TwoDisposableStringCtorClass : OneDisposableCtorClass
     {
       public readonly string String;
 
-      public TwoDisposableStringCtorClass(IDisposable disposable, string @string) : base(disposable) { String = @string; }
+      public TwoDisposableStringCtorClass(IDisposable disposable, string @string) : base(disposable)
+      {
+        String = @string;
+      }
     }
 
     private class Disposable : IDisposable
     {
-      public void Dispose() { }
+      public void Dispose()
+      {
+      }
     }
   }
 }

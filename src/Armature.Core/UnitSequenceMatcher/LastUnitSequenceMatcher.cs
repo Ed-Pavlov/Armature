@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using Resharper.Annotations;
 using Armature.Core.Common;
 using Armature.Core.Logging;
+using Resharper.Annotations;
 
 namespace Armature.Core.UnitSequenceMatcher
 {
   /// <summary>
-  /// Matches only unit under construction in the sequence and applies passed <see cref="IUnitMatcher" /> to it.
-  /// See <see cref="LastUnitSequenceMatcher(Armature.Core.IUnitMatcher,int)" /> and <see cref="GetBuildActions" /> for details
+  ///   Matches only unit under construction in the sequence and applies passed <see cref="IUnitMatcher" /> to it.
+  ///   See <see cref="LastUnitSequenceMatcher(Armature.Core.IUnitMatcher,int)" /> and <see cref="GetBuildActions" /> for details
   /// </summary>
   public class LastUnitSequenceMatcher : UnitSequenceMatcher
   {
@@ -19,14 +19,14 @@ namespace Armature.Core.UnitSequenceMatcher
     /// <param name="unitMatcher">Object contains the logic of matching with building unit</param>
     /// <param name="weight">The weight of matching</param>
     [DebuggerStepThrough]
-    public LastUnitSequenceMatcher([NotNull] IUnitMatcher unitMatcher, int weight = 0) : base(weight) => 
+    public LastUnitSequenceMatcher([NotNull] IUnitMatcher unitMatcher, int weight = 0) : base(weight) =>
       _unitMatcher = unitMatcher ?? throw new ArgumentNullException(nameof(unitMatcher));
 
     public override ICollection<IUnitSequenceMatcher> Children => throw new NotSupportedException("LastUnitSequenceMatcher can't contain children");
 
     /// <summary>
     ///   If <paramref name="buildingUnitsSequence" /> contains more then one element return null. This matcher matches only unit under construction which is
-    ///   the last one in the <paramref name="buildingUnitsSequence"/>.
+    ///   the last one in the <paramref name="buildingUnitsSequence" />.
     /// </summary>
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
     public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)

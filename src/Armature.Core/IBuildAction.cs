@@ -10,7 +10,7 @@ namespace Armature.Core
   {
     /// <summary>
     ///   This method is called first for all matched actions in direct order.
-    ///   Once <see cref="IBuildSession.BuildResult" /> is set by any action, no other actions <see cref="Process"/> are called.
+    ///   Once <see cref="IBuildSession.BuildResult" /> is set by any action, no other actions <see cref="Process" /> are called.
     /// </summary>
     void Process([NotNull] IBuildSession buildSession);
 

@@ -9,7 +9,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
   public static class Extension
   {
     /// <summary>
-    /// Specifies what unit should be built to fill <see cref="Maybe{T}"/> value.
+    ///   Specifies what unit should be built to fill <see cref="Maybe{T}" /> value.
     /// </summary>
     public static TreatingTuner<T> TreatMaybeValue<T>(this TreatingTuner<Maybe<T>> treatingTuner)
     {
@@ -20,7 +20,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     }
 
     /// <summary>
-    /// Specifies that value from built <see cref="Maybe{T}"/> should be used as a unit.
+    ///   Specifies that value from built <see cref="Maybe{T}" /> should be used as a unit.
     /// </summary>
     public static TreatingTuner<Maybe<T>> AsMaybeValueOf<T>(this TreatingTuner<T> treatingTuner)
     {

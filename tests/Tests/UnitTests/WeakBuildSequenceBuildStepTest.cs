@@ -10,7 +10,6 @@ using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
-using Tests.Functional;
 
 namespace Tests.UnitTests
 {
@@ -23,8 +22,8 @@ namespace Tests.UnitTests
 
       // --arrange
       var target = new WildcardUnitSequenceMatcher(Match.Type<IDisposable>(null))
-      .AddOrGetUnitSequenceMatcher(new WildcardUnitSequenceMatcher(Match.Type<MemoryStream>(null)))
-      .AddBuildAction(BuildStage.Cache, expected);
+        .AddOrGetUnitSequenceMatcher(new WildcardUnitSequenceMatcher(Match.Type<MemoryStream>(null)))
+        .AddBuildAction(BuildStage.Cache, expected);
 
       // --act
       var actual = target

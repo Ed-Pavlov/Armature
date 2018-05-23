@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using Resharper.Annotations;
 using Armature.Core.Logging;
+using Resharper.Annotations;
 
 namespace Armature.Core.BuildActions.Property
 {
   /// <summary>
-  /// "Builds" a constructor Unit of the currently building Unit with provided names
+  ///   "Builds" a constructor Unit of the currently building Unit with provided names
   /// </summary>
   public class GetPropertyByNameBuildAction : IBuildAction
   {
@@ -17,25 +16,26 @@ namespace Armature.Core.BuildActions.Property
     public GetPropertyByNameBuildAction([NotNull] params string[] names)
     {
       if (names is null || names.Length == 0) throw new ArgumentNullException(nameof(names));
+
       _names = names;
     }
 
     public void Process(IBuildSession buildSession)
     {
       var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
-      
-      var properties = 
-      _names.Select(
-          name =>
-            {
-              var property = unitType.GetProperty(name);
-              if (property == null)
-                throw new ArmatureException(string.Format("There is no property {0} in type {1}", _names, unitType.AsLogString()));
 
-              return property;
-            })
-        .ToArray();
-      
+      var properties =
+        _names.Select(
+            name =>
+              {
+                var property = unitType.GetProperty(name);
+                if (property == null)
+                  throw new ArmatureException(string.Format("There is no property {0} in type {1}", _names, unitType.AsLogString()));
+
+                return property;
+              })
+          .ToArray();
+
       buildSession.BuildResult = new BuildResult(properties);
     }
 

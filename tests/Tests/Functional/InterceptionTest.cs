@@ -6,8 +6,8 @@ using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
-using Resharper.Annotations;
 using NUnit.Framework;
+using Resharper.Annotations;
 
 namespace Tests.Functional
 {
@@ -57,41 +57,41 @@ namespace Tests.Functional
       yield return new TestCaseData(
           new Action<Builder>(
             target =>
-              {
-                target
-                  .Treat<StringConsumer>()
-                  .AsIs();
+            {
+              target
+                .Treat<StringConsumer>()
+                .AsIs();
 
-                target
-                  .Treat<string>()
-                  .AsInstance(Expected);
-              }))
+              target
+                .Treat<string>()
+                .AsInstance(Expected);
+            }))
         .SetName("RegisteredAsInstance");
 
       yield return new TestCaseData(
           new Action<Builder>(
             target =>
-              {
-                target
-                  .Treat<StringConsumer>()
-                  .AsIs();
+            {
+              target
+                .Treat<StringConsumer>()
+                .AsIs();
 
-                target
-                  .Treat<string>()
-                  .AsCreatedBy(_ => Expected);
-              }))
+              target
+                .Treat<string>()
+                .AsCreatedBy(_ => Expected);
+            }))
         .SetName("RegisteredAsFactoryMethod");
     }
 
-    private static Builder CreateTarget() => 
+    private static Builder CreateTarget() =>
       new Builder(BuildStage.Intercept, BuildStage.Cache, BuildStage.Create)
-    {
-      new AnyUnitSequenceMatcher
       {
-        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
-      }
-    };
+        new AnyUnitSequenceMatcher
+        {
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
+        }
+      };
 
     /// <summary>
     ///   GetBuildAction with any string not depending on token
@@ -104,7 +104,7 @@ namespace Tests.Functional
         return type == typeof(string);
       }
 
-      public bool Equals(IUnitMatcher other) => throw new NotImplementedException();
+      public bool Equals(IUnitMatcher other) => throw new NotSupportedException();
     }
 
     /// <summary>
@@ -121,12 +121,14 @@ namespace Tests.Functional
         _postfix = postfix;
       }
 
-      public void Process(IBuildSession buildSession) { }
+      public void Process(IBuildSession buildSession)
+      {
+      }
 
       public void PostProcess(IBuildSession buildSession)
       {
         var assembleResult = buildSession.BuildResult;
-        var value = (string)assembleResult.Value;
+        var value = (string) assembleResult.Value;
         buildSession.BuildResult = new BuildResult(value + _postfix);
       }
     }

@@ -1,34 +1,32 @@
 ﻿using System;
 using System.Collections;
 using System.Diagnostics;
-using Resharper.Annotations;
 using Armature.Core.Common;
+using Resharper.Annotations;
 
 namespace Armature.Core.UnitSequenceMatcher
 {
   /// <summary>
-  /// Matches any sequence of building units, thus passing the unit under construction to <see cref="IUnitSequenceMatcher.Children"/> and merge their
-  /// build actions with its own.
+  ///   Matches any sequence of building units, thus passing the unit under construction to <see cref="IUnitSequenceMatcher.Children" /> and merge their
+  ///   build actions with its own.
   /// </summary>
   /// <remarks>
   ///   This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
   ///   new AnyUnitSequenceMatcher
   ///   {
-  ///     new LeafUnitSequenceMatcher(ConstructorMatcher.Instance, 0)
-  ///       .AddBuildAction(BuildStage.Create, new GetLongesConstructorBuildAction()),
-  ///     new LeafUnitSequenceMatcher(ParameterMatcher.Instance, ParameterMatchingWeight.Lowest)
-  ///       .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
+  ///   new LeafUnitSequenceMatcher(ConstructorMatcher.Instance, 0)
+  ///   .AddBuildAction(BuildStage.Create, new GetLongesConstructorBuildAction()),
+  ///   new LeafUnitSequenceMatcher(ParameterMatcher.Instance, ParameterMatchingWeight.Lowest)
+  ///   .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
   ///   };
   /// </remarks>
   public class AnyUnitSequenceMatcher : UnitSequenceMathcherWithChildren, IEnumerable
   {
-    public AnyUnitSequenceMatcher() : this(UnitSequenceMatchingWeight.AnyUnit)
-    {
-    }
-    
-    public AnyUnitSequenceMatcher(int weight) : base(weight)
-    { 
-    }
+    public AnyUnitSequenceMatcher() : this(UnitSequenceMatchingWeight.AnyUnit) { }
+
+    public AnyUnitSequenceMatcher(int weight) : base(weight) { }
+
+    IEnumerator IEnumerable.GetEnumerator() => throw new NotSupportedException();
 
     /// <summary>
     ///   Matches any <see cref="UnitInfo" />, so it pass the building unit info into its children and returns merged result
@@ -59,7 +57,5 @@ namespace Armature.Core.UnitSequenceMatcher
     [DebuggerStepThrough]
     public override int GetHashCode() => Weight.GetHashCode();
     #endregion
-
-    IEnumerator IEnumerable.GetEnumerator() => throw new NotSupportedException();
   }
 }

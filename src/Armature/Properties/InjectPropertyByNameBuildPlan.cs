@@ -11,7 +11,7 @@ using Resharper.Annotations;
 namespace Armature
 {
   /// <summary>
-  /// Adds a plan injecting dependencies into properties with corresponding names
+  ///   Adds a plan injecting dependencies into properties with corresponding names
   /// </summary>
   public class InjectPropertyByNameBuildPlan : IPropertyValueBuildPlan, IExtensibility<string[]>
   {
@@ -25,14 +25,14 @@ namespace Armature
       _names = names;
     }
 
+    string[] IExtensibility<string[]>.Item1 => _names;
+
     [DebuggerStepThrough]
     public void Apply(IUnitSequenceMatcher unitSequenceMatcher) =>
       unitSequenceMatcher
         .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(PropertyMatcher.Instance))
         .AddBuildAction(BuildStage.Create, new GetPropertyByNameBuildAction(_names));
-    
+
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", _names));
-    
-    string[] IExtensibility<string[]>.Item1 => _names;
   }
 }

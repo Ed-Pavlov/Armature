@@ -5,15 +5,13 @@ using Armature.Core.Logging;
 namespace Armature.Core.BuildActions.Property
 {
   /// <summary>
-  /// Builds value to inject by using <see cref="PropertyInfo.PropertyType"/> and <see cref="InjectAttribute.InjectionPointId"/> as token
+  ///   Builds value to inject by using <see cref="PropertyInfo.PropertyType" /> and <see cref="InjectAttribute.InjectionPointId" /> as token
   /// </summary>
   public class CreatePropertyValueForInjectPointBuildAction : IBuildAction
   {
     public static readonly IBuildAction Instance = new CreatePropertyValueForInjectPointBuildAction();
 
-    private CreatePropertyValueForInjectPointBuildAction()
-    {
-    }
+    private CreatePropertyValueForInjectPointBuildAction() { }
 
     public void Process(IBuildSession buildSession)
     {
@@ -24,7 +22,9 @@ namespace Armature.Core.BuildActions.Property
         .SingleOrDefault();
 
       if (attribute == null)
+      {
         Log.WriteLine(LogLevel.Info, "{0}{{{1}}}", this, "No Property marked with InjectAttribute");
+      }
       else
       {
         var unitInfo = new UnitInfo(propertyInfo.PropertyType, attribute.InjectionPointId);
@@ -32,6 +32,6 @@ namespace Armature.Core.BuildActions.Property
       }
     }
 
-    public void PostProcess(IBuildSession buildSession) {  }
+    public void PostProcess(IBuildSession buildSession) { }
   }
 }

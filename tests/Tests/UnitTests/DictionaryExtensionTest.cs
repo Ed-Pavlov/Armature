@@ -16,11 +16,11 @@ namespace Tests.UnitTests
 
       // --act 
       var actual = target.GetValueSafe(1);
-      
+
       // ----assert
       actual.Should().Be(expected);
     }
-    
+
     [Test]
     public void should_return_null_if_no_value()
     {
@@ -28,11 +28,11 @@ namespace Tests.UnitTests
 
       // --act 
       var actual = target.GetValueSafe(3);
-      
+
       // ----assert
       actual.Should().BeNull();
     }
-    
+
     [Test]
     public void should_return_default_if_no_value()
     {
@@ -40,7 +40,7 @@ namespace Tests.UnitTests
 
       // --act 
       var actual = target.GetValueSafe(3);
-      
+
       // ----assert
       actual.Should().Be(default(Weighted<string>));
     }
