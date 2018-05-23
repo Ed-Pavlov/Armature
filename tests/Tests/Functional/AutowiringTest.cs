@@ -173,9 +173,10 @@ namespace Tests.Functional
       actual.Should().ThrowExactly<ArmatureException>();
     }
     
-    private static Builder CreateTarget()
+    private static Builder CreateTarget() => 
+      new Builder(BuildStage.Create)
     {
-      var treatAll = new AnyUnitSequenceMatcher
+      new AnyUnitSequenceMatcher
       {
         // inject into constructor
         new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
@@ -186,7 +187,7 @@ namespace Tests.Functional
               new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
               GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
             }),
-            
+
 
         new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
           .AddBuildAction(
@@ -194,15 +195,11 @@ namespace Tests.Functional
             new OrderedBuildActionContainer
             {
               CreateParameterValueForInjectPointBuildAction.Instance,
-              new CreateParameterValueBuildAction()
+              CreateParameterValueBuildAction.Instance
             }),
-      };
-      
-      var target = new Builder(BuildStage.Create);
-      target.Children.Add(treatAll);
-      return target;
-    }
-    
+      }
+    };
+
     private interface ISubject1
     {
       string Text { get; }

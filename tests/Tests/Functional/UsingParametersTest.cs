@@ -327,9 +327,10 @@ namespace Tests.Functional
       yield return new TestCaseData(ForParameter.WithInjectPoint(null)).SetName("WithInjectPoint");
     }
     
-    private static Builder CreateTarget()
+    private static Builder CreateTarget() => 
+      new Builder(BuildStage.Initialize, BuildStage.Create)
     {
-      var treatAll = new AnyUnitSequenceMatcher
+      new AnyUnitSequenceMatcher
       {
         // inject into constructor
         new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
@@ -340,16 +341,12 @@ namespace Tests.Functional
               new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
               GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
             }),
-            
+
 
         new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, new CreateParameterValueBuildAction()) // autowiring
-      };
-      
-      var target = new Builder(BuildStage.Initialize, BuildStage.Create);
-      target.Children.Add(treatAll);
-      return target;
-    }
+          .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance) // autowiring
+      }
+    };
 
     private interface ISubject1
     {

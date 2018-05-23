@@ -8,6 +8,8 @@ namespace Armature.Core.BuildActions.Parameter
   /// </summary>
   public class CreateParameterValueBuildAction : CreateInjectValueBuildAction
   {
+    public static readonly IBuildAction Instance = new CreateParameterValueBuildAction();
+    
     public CreateParameterValueBuildAction(object token = null) : base(token)
     {
     }

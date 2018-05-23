@@ -50,21 +50,18 @@ namespace Tests.Extensibility.MaybePropagation
       actual.Should().ThrowExactly<ArmatureException>();
     }
     
-    private static Builder CreateTarget()
-    {
-      var treatAll = new AnyUnitSequenceMatcher
+    private static Builder CreateTarget() => 
+      new Builder(BuildStage.Cache, BuildStage.Create)
       {
-        // inject into constructor
-        new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
-        
-        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, new CreateParameterValueBuildAction()),
+        new AnyUnitSequenceMatcher
+        {
+          // inject into constructor
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
+  
+          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance),
+        }
       };
-
-      var builder = new Builder(BuildStage.Cache, BuildStage.Create);
-      builder.Children.Add(treatAll);
-      return builder;
-    }
   }
 }

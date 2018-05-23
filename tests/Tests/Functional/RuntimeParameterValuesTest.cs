@@ -97,24 +97,21 @@ namespace Tests.Functional
       actual.String1.Should().BeNull();
     }
 
-    private static Builder CreateTarget()
+    private static Builder CreateTarget() => 
+      new Builder(BuildStage.Initialize, BuildStage.Create)
     {
-      var treatAll = new AnyUnitSequenceMatcher
+      new AnyUnitSequenceMatcher
       {
         // inject into constructor
         new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
           .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
-            
+
 
         new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, new CreateParameterValueBuildAction()) // autowiring
-      };
-      
-      var target = new Builder(BuildStage.Initialize, BuildStage.Create);
-      target.Children.Add(treatAll);
-      return target;
-    }
-    
+          .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance) // autowiring
+      }
+    };
+
     private class Subject
     {
       public const string StringCtor = "String";

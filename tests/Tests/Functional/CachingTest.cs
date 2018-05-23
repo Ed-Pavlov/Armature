@@ -30,20 +30,17 @@ namespace Tests.Functional
       actual.Should().BeSameAs(expected);
     }
     
-    private static Builder CreateTarget()
+    private static Builder CreateTarget() => 
+      new Builder(BuildStage.Cache, BuildStage.Create)
     {
-      var treatAll = new AnyUnitSequenceMatcher
+      new AnyUnitSequenceMatcher
       {
         // inject into constructor
         new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
           .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
-      };
+      }
+    };
 
-      var builder = new Builder(BuildStage.Cache, BuildStage.Create);
-      builder.Children.Add(treatAll);
-      return builder;
-    }
-    
     private class Subject{}
   }
 }

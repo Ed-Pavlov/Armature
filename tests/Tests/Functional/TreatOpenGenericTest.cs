@@ -95,19 +95,16 @@ namespace Tests.Functional
       actual.Should().Throw<ArmatureException>();
     }
     
-    private static Builder CreateTarget()
+    private static Builder CreateTarget() => 
+      new Builder(BuildStage.Create)
     {
-      var treatAll = new AnyUnitSequenceMatcher
+      new AnyUnitSequenceMatcher
       {
         // inject into constructor
         new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
           .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
-      };
-
-      var container = new Builder(BuildStage.Create);
-      container.Children.Add(treatAll);
-      return container;
-    }
+      }
+    };
 
     private interface ISubject<out T>
     {

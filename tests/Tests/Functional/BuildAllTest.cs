@@ -77,18 +77,15 @@ namespace Tests.Functional
       }
     }
 
-    private Builder CreateTarget()
+    private static Builder CreateTarget() => 
+      new Builder(BuildStage.Cache, BuildStage.Create)
     {
-      var treatAll = new AnyUnitSequenceMatcher
+      new AnyUnitSequenceMatcher
       {
         new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-        .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
-      };
-      
-      var builder = new Builder(BuildStage.Cache, BuildStage.Create);
-      builder.Children.Add(treatAll);
-      return builder;
-    }
+          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
+      }
+    };
 
     private class SampleType1 : IDisposable
     {

@@ -90,9 +90,10 @@ namespace Tests.Functional
       actual.InjectThere.Should().Be(expected);
     }
 
-    private static Builder CreateTarget()
+    private static Builder CreateTarget() => 
+      new Builder(BuildStage.Initialize, BuildStage.Create)
     {
-      var treatAll = new AnyUnitSequenceMatcher
+      new AnyUnitSequenceMatcher
       {
         // inject into constructor
         new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
@@ -100,12 +101,8 @@ namespace Tests.Functional
 
         new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
           .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
-      };
-
-      var container = new Builder(BuildStage.Initialize, BuildStage.Create);
-      container.Children.Add(treatAll);
-      return container;
-    }
+      }
+    };
 
     private interface ISubject
     {

@@ -31,9 +31,10 @@ namespace Tests.Functional
       actual.ExpectedConstructorIsCalled.Should().BeTrue();
     }
 
-    private static Builder CreateTarget()
+    private static Builder CreateTarget() => 
+      new Builder(BuildStage.Create)
     {
-      var treatAll = new AnyUnitSequenceMatcher
+      new AnyUnitSequenceMatcher
       {
         // inject into constructor
         new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
@@ -44,12 +45,8 @@ namespace Tests.Functional
               new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
               GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
             }),
-      };
-
-      var container = new Builder(BuildStage.Create);
-      container.Children.Add(treatAll);
-      return container;
-    }
+      }
+    };
 
     private class Subject
     {

@@ -77,23 +77,20 @@ namespace Tests.Functional
       actual.Value.Should().Be(expected);
     }
 
-    private static Builder CreateTarget()
+    private static Builder CreateTarget() => 
+      new Builder(BuildStage.Cache, BuildStage.Create)
     {
-      var treatAll = new AnyUnitSequenceMatcher
+      new AnyUnitSequenceMatcher
       {
         // inject into constructor
         new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
           .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
-        
-        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-          .AddBuildAction(BuildStage.Create, new CreateParameterValueBuildAction())
-      };
 
-      var container = new Builder(BuildStage.Cache, BuildStage.Create);
-      container.Children.Add(treatAll);
-      return container;
-    }
-    
+        new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+          .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+      }
+    };
+
     private interface ISubject 
     {
       int Value { get; }

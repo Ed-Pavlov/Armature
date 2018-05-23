@@ -1,6 +1,11 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
+using Armature.Core.BuildActions.Constructor;
+using Armature.Core.BuildActions.Parameter;
+using Armature.Core.UnitMatchers;
+using Armature.Core.UnitMatchers.Parameters;
+using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -100,6 +105,46 @@ namespace Tests.Functional
       action.Should().ThrowExactly<ArmatureException>("There is no registration neither in child neither in parent builders");
     }
 
-    private static Builder CreateTarget(params Builder[] parents) => new Builder(new[]{BuildStage.Create}, parents);
+    [Test]
+    public void should_build_parameter_value_via_parent()
+    {
+      const string expected = "expectedstring";
+      
+      var parentBuilder = new Builder(BuildStage.Cache);
+      parentBuilder.Treat<string>().AsInstance(expected);
+
+      var target = CreateTarget(parentBuilder);
+      
+    }
+
+    private static Builder CreateTarget(params Builder[] parents)
+    {
+      new Builder("sldjf)");
+      var builder = new Builder(new[] {BuildStage.Create}, parents)
+      {
+        new AnyUnitSequenceMatcher
+        {
+          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+          .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
+          
+          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+          .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+        }
+      };
+      
+      
+      
+      return builder;
+    }
+
+    private class Subject
+    {
+      public readonly string String;
+
+      public Subject(string @string)
+      {
+        String = @string;
+      }
+    }
   }
 }

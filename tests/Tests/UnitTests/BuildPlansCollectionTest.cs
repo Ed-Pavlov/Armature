@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Armature;
 using Armature.Core;
+using Armature.Core.Common;
 using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Creation;
 using Armature.Core.UnitSequenceMatcher;
@@ -26,7 +27,7 @@ namespace Tests.UnitTests
       target.Children.Add(matchAny);
 
       // --act
-      var actual = target.GetBuildActions(new[] {Unit.OfType<string>()});
+      var actual = target.GetBuildActions(new[] {Unit.OfType<string>()}.AsArrayTail());
 
       // --assert
       actual[BuildStage.Cache]

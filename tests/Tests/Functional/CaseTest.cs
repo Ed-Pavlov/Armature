@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Armature;
@@ -15,7 +13,6 @@ using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
-using Tests.Common;
 
 // Resharper disable all
 
@@ -111,9 +108,10 @@ namespace Tests.Functional
       actual1.Should().BeSameAs(actual2);
     }
 
-    private static Builder CreateTarget()
+    private static Builder CreateTarget() => 
+      new Builder(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
     {
-      var treatAll = new AnyUnitSequenceMatcher
+      new AnyUnitSequenceMatcher
       {
         // inject into constructor
         new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
@@ -131,9 +129,9 @@ namespace Tests.Functional
             new OrderedBuildActionContainer
             {
               CreateParameterValueForInjectPointBuildAction.Instance,
-              new CreateParameterValueBuildAction()
+              CreateParameterValueBuildAction.Instance
             }),
-        
+
         new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
           .AddBuildAction(
             BuildStage.Create,
@@ -141,13 +139,9 @@ namespace Tests.Functional
             {
               new CreatePropertyValueBuildAction()
             }),
-      };
+      }
+    };
 
-      var container = new Builder(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create);
-      container.Children.Add(treatAll);
-      return container;
-    }
-    
     private interface IEmptyInterface1
     {
     }

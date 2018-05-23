@@ -8,8 +8,6 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
 {
   public static class Extension
   {
-    public const int GetMaybeValueStage = 4;
-
     /// <summary>
     /// Specifies what unit should be built to fill <see cref="Maybe{T}"/> value.
     /// </summary>
@@ -27,7 +25,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     public static TreatingTuner<Maybe<T>> AsMaybeValueOf<T>(this TreatingTuner<T> treatingTuner)
     {
       var treat = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
-      return new TreatingTuner<Maybe<T>>(treat.UnitSequenceMatcher.AddBuildAction(GetMaybeValueStage, new GetMaybeValueBuildAction<T>()));
+      return new TreatingTuner<Maybe<T>>(treat.UnitSequenceMatcher.AddBuildAction(BuildStage.Initialize, new GetMaybeValueBuildAction<T>()));
     }
   }
 }

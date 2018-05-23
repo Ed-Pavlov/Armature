@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Armature.Core.Common;
 using Resharper.Annotations;
 using Armature.Core.Logging;
 
@@ -84,8 +85,8 @@ namespace Armature.Core
           MatchedBuildActions auxActions;
           using(Log.Block(LogLevel.Verbose, "Looking for build actions"))
           {
-            actions = _buildPlans.GetBuildActions(_buildSequence);
-            auxActions = _auxBuildPlans?.GetBuildActions(_buildSequence);
+            actions = _buildPlans.GetBuildActions(_buildSequence.AsArrayTail());
+            auxActions = _auxBuildPlans?.GetBuildActions(_buildSequence.AsArrayTail());
           }
           Log.WriteLine(LogLevel.Verbose, "");
           return build(actions.Merge(auxActions));

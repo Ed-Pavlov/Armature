@@ -83,19 +83,16 @@ namespace Tests.Functional
         .SetName("RegisteredAsFactoryMethod");
     }
 
-    private static Builder CreateTarget()
+    private static Builder CreateTarget() => 
+      new Builder(BuildStage.Intercept, BuildStage.Cache, BuildStage.Create)
     {
-      var treatAll = new AnyUnitSequenceMatcher
+      new AnyUnitSequenceMatcher
       {
         new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
           .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
-      };
+      }
+    };
 
-      var container = new Builder(BuildStage.Intercept, BuildStage.Cache, BuildStage.Create);
-      container.Children.Add(treatAll);
-      return container;
-    }
-    
     /// <summary>
     ///   GetBuildAction with any string not depending on token
     /// </summary>

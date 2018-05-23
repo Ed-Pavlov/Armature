@@ -113,7 +113,7 @@ namespace Tests.Performance
             new OrderedBuildActionContainer
             {
               CreateParameterValueForInjectPointBuildAction.Instance,
-              new CreateParameterValueBuildAction()
+              CreateParameterValueBuildAction.Instance
             }),
         
         new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
