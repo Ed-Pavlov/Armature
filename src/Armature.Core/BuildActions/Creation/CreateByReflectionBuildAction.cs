@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using Armature.Core.Common;
 using Armature.Core.Logging;
@@ -18,7 +19,7 @@ namespace Armature.Core.BuildActions.Creation
 
     public void Process(IBuildSession buildSession)
     {
-      if (buildSession.BuildResult == null)
+      if (!buildSession.BuildResult.HasValue)
       {
         var type = buildSession.GetUnitUnderConstruction().GetUnitType();
 
@@ -46,7 +47,7 @@ namespace Armature.Core.BuildActions.Creation
             else
             {
               object[] valuesForParameters;
-              using (Log.Block(LogLevel.Trace, "Looking for parameters"))
+              using (Log.Block(LogLevel.Trace, () => "Looking for parameters [" + string.Join(", ", parameters.Select(_ => _.ToString()).ToArray()) + "]"))
               {
                 valuesForParameters = buildSession.GetValuesForParameters(parameters);
               }

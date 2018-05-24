@@ -16,9 +16,9 @@ namespace Armature.Core.BuildActions.Property
 
     public void PostProcess(IBuildSession buildSession)
     {
-      var unit = buildSession.BuildResult?.Value;
-      if (unit != null)
+      if (buildSession.BuildResult.HasValue)
       {
+        var unit = buildSession.BuildResult.Value;
         var type = unit.GetType();
         var properties = buildSession.GetPropertiesToInject(type);
 

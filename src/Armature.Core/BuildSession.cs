@@ -21,7 +21,8 @@ namespace Armature.Core
     private readonly List<UnitInfo> _buildSequence;
     private readonly IEnumerable<object> _buildStages;
 
-    private BuildSession(
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+    public BuildSession(
       [NotNull] IEnumerable<object> buildStages,
       [NotNull] BuildPlansCollection buildPlans,
       [CanBeNull] BuildPlansCollection auxBuildPlans,
@@ -77,16 +78,17 @@ namespace Armature.Core
     ///   Builds a Unit represented by <paramref name="unitInfo" />
     /// </summary>
     /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public BuildResult BuildUnit(UnitInfo unitInfo) => Build(unitInfo, BuildUnit);
 
     /// <summary>
     ///   Builds all Units represented by <paramref name="unitInfo" />
     /// </summary>
     /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public IReadOnlyList<BuildResult> BuildAllUnits(UnitInfo unitInfo) => Build(unitInfo, BuildAllUnits);
 
     [CanBeNull]
-    [Pure]
     private T Build<T>([NotNull] UnitInfo unitInfo, Func<MatchedBuildActions, T> build)
     {
       if (unitInfo == null) throw new ArgumentNullException(nameof(unitInfo));
@@ -118,7 +120,7 @@ namespace Armature.Core
     private BuildResult BuildUnit(MatchedBuildActions matchedBuildActions)
     {
       if (matchedBuildActions == null)
-        return BuildViaParentBuilder();
+        return BuildViaParentBuilder(_buildSequence.Last());
 
       // builder to pass into IBuldActon.Execute
       var unitBuilder = new Interface(_buildSequence, this);
@@ -137,10 +139,10 @@ namespace Armature.Core
           buildAction.Process(unitBuilder);
         }
 
-        if (unitBuilder.BuildResult != null)
+        if (unitBuilder.BuildResult.HasValue)
         {
           Log.WriteLine(LogLevel.Info, "");
-          Log.WriteLine(LogLevel.Info, "Build Result{{{0}}}", unitBuilder.BuildResult);
+          Log.WriteLine(LogLevel.Info, "Build Result{{{0}:{1}}}", unitBuilder.BuildResult, unitBuilder.BuildResult.Value?.GetType().AsLogString());
           break; // object is built, unwind called actions in reverse orders
         }
       }
@@ -157,17 +159,17 @@ namespace Armature.Core
       return unitBuilder.BuildResult;
     }
 
-    private BuildResult BuildViaParentBuilder()
+    private BuildResult BuildViaParentBuilder(UnitInfo unitInfo)
     {
-      if (_parentBuilders == null) return null;
+      if (_parentBuilders == null) return default(BuildResult);
 
       for (var i = 0; i < _parentBuilders.Length; i++)
         try
         {
           using (Log.Block(LogLevel.Info, "Try build via parent builder #{0}", i))
           {
-            var buildResult = _parentBuilders[i].BuildUnit(_buildSequence.Last(), _auxBuildPlans);
-            if (buildResult != null)
+            var buildResult = _parentBuilders[i].BuildUnit(unitInfo, _auxBuildPlans);
+            if (buildResult.HasValue)
               return buildResult;
           }
         }
@@ -176,7 +178,7 @@ namespace Armature.Core
           // continue;
         }
 
-      return null;
+      return default(BuildResult);
     }
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
@@ -198,10 +200,10 @@ namespace Armature.Core
           buildAction.PostProcess(unitBuilder);
         }
 
-        if (unitBuilder.BuildResult != null)
+        if (unitBuilder.BuildResult.HasValue)
         {
           Log.WriteLine(LogLevel.Info, "");
-          Log.WriteLine(LogLevel.Info, "Build Result{{{0}}}", unitBuilder.BuildResult);
+          Log.WriteLine(LogLevel.Info, "Build Result{{{0}:{1}}}", unitBuilder.BuildResult, unitBuilder.BuildResult.Value?.GetType().AsLogString());
           result.Add(unitBuilder.BuildResult);
         }
       }

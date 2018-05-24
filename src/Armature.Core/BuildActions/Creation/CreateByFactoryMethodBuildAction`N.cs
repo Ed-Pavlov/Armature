@@ -14,7 +14,7 @@ namespace Armature.Core.BuildActions.Creation
   {
     public void Process(IBuildSession buildSession)
     {
-      if (buildSession.BuildResult == null)
+      if (!buildSession.BuildResult.HasValue)
       {
         var parameters = GetMethod().GetParameters().ToArray();
         var result = Execute(buildSession.GetValuesForParameters(parameters));

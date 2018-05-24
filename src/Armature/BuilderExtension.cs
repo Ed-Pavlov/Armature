@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
+using Armature.Core.Common;
 using Resharper.Annotations;
 
 namespace Armature
@@ -43,7 +44,12 @@ namespace Armature
           .UsingParameters(parameters);
       }
 
-      return (T)builder.BuildUnit(new UnitInfo(typeof(T), token), sessionalBuildPlans).Value;
+      var unitInfo = new UnitInfo(typeof(T), token);
+      var buildResult = builder.BuildUnit(unitInfo, sessionalBuildPlans);
+
+      return buildResult.HasValue 
+        ? (T)buildResult.Value 
+        : throw new ArmatureException("Can't build unit").AddData("unitInfo", unitInfo);
     }
 
     public struct Tokenizer

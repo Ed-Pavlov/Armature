@@ -27,7 +27,7 @@ namespace Armature.Core.BuildActions
 
     public void PostProcess(IBuildSession buildSession)
     {
-      if (buildSession.BuildResult != null)
+      if (buildSession.BuildResult.HasValue)
         _instance = new Instance(buildSession.BuildResult.Value);
     }
 

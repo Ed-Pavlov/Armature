@@ -18,7 +18,7 @@ namespace Armature.Core.BuildActions.Creation
 
     public void Process(IBuildSession buildSession)
     {
-      if (buildSession.BuildResult == null)
+      if (!buildSession.BuildResult.HasValue)
         buildSession.BuildResult = new BuildResult(_factoryMethod(buildSession));
     }
 

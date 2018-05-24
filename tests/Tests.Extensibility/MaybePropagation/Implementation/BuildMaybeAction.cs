@@ -18,7 +18,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
       try
       {
         var result = buildSession.BuildUnit(new UnitInfo(typeof(T), _uniqueToken));
-        if (result == null) throw new InvalidOperationException();
+        if (!result.HasValue) throw new InvalidOperationException();
 
         buildSession.BuildResult = new BuildResult(((T) result.Value).ToMaybe());
       }

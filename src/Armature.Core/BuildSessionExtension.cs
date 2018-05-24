@@ -20,7 +20,7 @@ namespace Armature.Core
       if (type == null) throw new ArgumentNullException(nameof(type));
 
       var result = buildSessoin.BuildUnit(new UnitInfo(type, SpecialToken.Constructor));
-      if (result?.Value == null)
+      if (!result.HasValue)
         throw new Exception(string.Format("Can't find appropriate constructor for type {0}", type));
 
       return (ConstructorInfo)result.Value;
@@ -42,7 +42,7 @@ namespace Armature.Core
     public static object GetValueForProperty(this IBuildSession buildSession, PropertyInfo propertyInfo)
     {
       var buildResult = buildSession.BuildUnit(new UnitInfo(propertyInfo, SpecialToken.InjectValue));
-      return buildResult != null ? buildResult.Value : throw new ArmatureException(string.Format("Can't build value for property {0}", propertyInfo));
+      return buildResult.HasValue ? buildResult.Value : throw new ArmatureException(string.Format("Can't build value for property {0}", propertyInfo));
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ namespace Armature.Core
       for (var i = 0; i < parameters.Length; i++)
       {
         var buildResult = buildSession.BuildUnit(new UnitInfo(parameters[i], SpecialToken.InjectValue));
-        if (buildResult == null)
+        if (!buildResult.HasValue)
           throw new ArmatureException(string.Format("Can't build value for parameter {0}", parameters[i]));
 
         values[i] = buildResult.Value;

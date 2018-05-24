@@ -35,6 +35,15 @@ namespace Armature.Core.Logging
       WriteLine(logLevel, name, parameters);
       return logLevel <= _logLevel ? AddIndent(true) : new DumbDisposable();
     }
+    
+    /// <summary>
+    ///   Used to make a named and indented "block" in log data
+    /// </summary>
+    public static IDisposable Block(LogLevel logLevel, Func<string> getName)
+    {
+      WriteLine(logLevel, getName);
+      return logLevel <= _logLevel ? AddIndent(true) : new DumbDisposable();
+    }
 
     /// <summary>
     ///   Used to make an indented "block" in log data
@@ -57,6 +66,15 @@ namespace Armature.Core.Logging
 
       // ReSharper disable once CoVariantArrayConversion
       System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, parameters.Select(ToLogString).ToArray()));
+    }
+    
+    [StringFormatMethod("format")]
+    public static void WriteLine(LogLevel logLevel, Func<string> createMessage)
+    {
+      if (logLevel > _logLevel) return;
+
+      // ReSharper disable once CoVariantArrayConversion
+      System.Diagnostics.Trace.WriteLine(GetIndent() + createMessage());
     }
 
     /// <summary>

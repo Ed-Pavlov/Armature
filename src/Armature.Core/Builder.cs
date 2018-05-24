@@ -7,7 +7,8 @@ using Resharper.Annotations;
 namespace Armature.Core
 {
   /// <summary>
-  ///   The builder of units.
+  ///   The builder of units. It is the convinient way to keep corresponding build plans (<see cref="BuildPlansCollection" />),
+  ///   build stages, and parent builders to pass into <see cref="BuildSession" /> which is instantiated independently.
   ///   Building a unit it goes over all "build stages", for each stage it gets a build action if any and executes it see
   ///   <see cref="Builder(IEnumerable{object}, Builder[])" /> for details.
   /// </summary>
@@ -19,7 +20,10 @@ namespace Armature.Core
     public Builder() => throw new ArgumentException("Use constructor with parameters");
 
     /// <param name="stages">The ordered collection of build stages all of which are performed to build a unit</param>
-    public Builder([NotNull] params object[] stages) : this(stages, EmptyArray<Builder>.Instance) { }
+    public Builder([NotNull] params object[] stages) : this(stages, EmptyArray<Builder>.Instance)
+    {
+      if(stages.Length == 0) throw new ArgumentNullException(nameof(stages));
+    }
 
     /// <param name="stages">The ordered collection of build stages all of which are performed to build a unit</param>
     /// <param name="parentBuilders">
@@ -74,22 +78,7 @@ namespace Armature.Core
     {
       if (build is null) throw new ArgumentNullException(nameof(build));
 
-      var buildResult = build(unitInfo, _stages, this, auxBuildPlans, parentBuilders);
-      if (buildResult != null)
-        return buildResult;
-
-      if (_parentBuilders != null)
-        foreach (var parentBuilder in _parentBuilders)
-          try
-          {
-            return parentBuilder.Build(unitInfo, auxBuildPlans, build, parentBuilders);
-          }
-          catch (Exception)
-          {
-            // continue
-          }
-
-      throw new ArmatureException("Can't build unit").AddData("unitInfo", unitInfo);
+      return build(unitInfo, _stages, this, auxBuildPlans, parentBuilders);
     }
   }
 }

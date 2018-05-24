@@ -30,7 +30,7 @@ namespace Armature.Core.BuildActions
         try
         {
           buildAction.Process(buildSession);
-          if (buildSession.BuildResult != null)
+          if (buildSession.BuildResult.HasValue)
           {
             Log.WriteLine(LogLevel.Info, "redirected execution to {0}", buildAction);
             _effectiveBuildAction = buildAction;

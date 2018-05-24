@@ -2,6 +2,7 @@
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
 using Armature.Core.BuildActions.Property;
+using Armature.Core.Logging;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
@@ -81,7 +82,7 @@ namespace Tests.Functional
         .Treat<Subject>()
         .AsIs()
         .InjectProperty(Property.Named(nameof(Subject.InjectHere)));
-
+      
       // --act
       var actual = target.Build<Subject>();
 

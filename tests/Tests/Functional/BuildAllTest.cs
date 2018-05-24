@@ -52,29 +52,26 @@ namespace Tests.Functional
     [Test]
     public void more_than_one_build_stage_can_be_used_for_redirected_type()
     {
-      using (Log.Enabled(LogLevel.Verbose))
-      {
-        // --arrange
-        var target = CreateTarget();
+      // --arrange
+      var target = CreateTarget();
 
-        target.Treat<IDisposable>().As<SampleType1>().AsSingleton();
-        target.Treat<IDisposable>().As<SampleType2>();
+      target.Treat<IDisposable>().As<SampleType1>().AsSingleton();
+      target.Treat<IDisposable>().As<SampleType2>();
 
-        // --precondition
-        var precondition = target.BuildAllUnits(Unit.OfType<IDisposable>());
-        precondition.Should().HaveCount(2);
-        precondition.Should().ContainSingle(_ => _ is SampleType1);
-        precondition.Should().ContainSingle(_ => _ is SampleType2);
-        var expectedSingleton = precondition.Single(_ => _ is SampleType1);
+      // --precondition
+      var precondition = target.BuildAllUnits(Unit.OfType<IDisposable>());
+      precondition.Should().HaveCount(2);
+      precondition.Should().ContainSingle(_ => _ is SampleType1);
+      precondition.Should().ContainSingle(_ => _ is SampleType2);
+      var expectedSingleton = precondition.Single(_ => _ is SampleType1);
 
-        // --act
-        var actual = target.BuildAllUnits(Unit.OfType<IDisposable>());
-        actual.Should().HaveCount(2);
-        actual.Should().ContainSingle(_ => _ is SampleType1);
-        actual.Should().ContainSingle(_ => _ is SampleType2);
-        actual.Single(_ => _ is SampleType1).Should().BeSameAs(expectedSingleton);
-        actual.Single(_ => _ is SampleType2).Should().NotBeSameAs(precondition.Single(_ => _ is SampleType2));
-      }
+      // --act
+      var actual = target.BuildAllUnits(Unit.OfType<IDisposable>());
+      actual.Should().HaveCount(2);
+      actual.Should().ContainSingle(_ => _ is SampleType1);
+      actual.Should().ContainSingle(_ => _ is SampleType2);
+      actual.Single(_ => _ is SampleType1).Should().BeSameAs(expectedSingleton);
+      actual.Single(_ => _ is SampleType2).Should().NotBeSameAs(precondition.Single(_ => _ is SampleType2));
     }
 
     private static Builder CreateTarget() =>
