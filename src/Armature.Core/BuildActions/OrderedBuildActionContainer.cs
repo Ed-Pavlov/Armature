@@ -30,7 +30,10 @@ namespace Armature.Core.BuildActions
         try
         {
           buildAction.Process(buildSession);
-          if (buildSession.BuildResult.HasValue)
+          
+          if (!buildSession.BuildResult.HasValue)
+            Log.WriteLine(LogLevel.Trace, "{0} has not built value", buildAction);
+          else
           {
             Log.WriteLine(LogLevel.Info, "redirected execution to {0}", buildAction);
             _effectiveBuildAction = buildAction;
@@ -40,8 +43,7 @@ namespace Armature.Core.BuildActions
         catch (ArmatureException exc)
         {
           LogException(exc);
-          // ReSharper disable once RedundantJumpStatement
-          continue;
+          // continue;
         }
         catch (Exception exc)
         {

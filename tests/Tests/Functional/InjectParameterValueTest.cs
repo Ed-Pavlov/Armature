@@ -15,7 +15,7 @@ using NUnit.Framework;
 
 namespace Tests.Functional
 {
-  public class UsingParametersTest
+  public class InjectParameterValueTest
   {
     [Test]
     public void should_autowire_values_passed_into_using_parameters_rather_then_registered()
@@ -321,6 +321,47 @@ namespace Tests.Functional
       actual.LevelTwo.LevelOne.Text.Should().Be(expected, "Because {0} is registered for all {1} dependencies", expected, typeof(LevelThree).Name);
     }
 
+    [Test]
+    public void should_inject_default_value_into_first_parameter()
+    {
+      const int expectedInt = Subject.DefaultInt - 1;
+
+      //--arrange
+      var target = CreateTarget();
+
+      target
+        .Treat<Subject>()
+        .AsIs()
+        .UsingInjectPointConstructor(Subject.TwoParameterCtor)
+        .UsingParameters(expectedInt);
+
+      // --act
+      var actual = target.Build<Subject>();
+
+      // --assert
+      actual.Text.Should().Be(Subject.DefaultText);
+      actual.Value.Should().Be(expectedInt);
+    }
+    
+    [Test]
+    public void should_inject_default_value_into_both_parameters()
+    {
+      //--arrange
+      var target = CreateTarget();
+
+      target
+        .Treat<Subject>()
+        .AsIs()
+        .UsingInjectPointConstructor(Subject.TwoParameterCtor);
+
+      // --act
+      var actual = target.Build<Subject>();
+
+      // --assert
+      actual.Text.Should().Be(Subject.DefaultText);
+      actual.Value.Should().Be(Subject.DefaultInt);
+    }
+
     private static IEnumerable ForParameterSource()
     {
       yield return new TestCaseData(ForParameter.OfType<string>()).SetName("OfType");
@@ -345,7 +386,12 @@ namespace Tests.Functional
 
 
           new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance) // autowiring
+            .AddBuildAction(BuildStage.Create,
+              new OrderedBuildActionContainer()
+              {
+                CreateParameterValueBuildAction.Instance,
+                GetDefaultParameterValueBuildAction.Instance
+              }) // autowiring
         }
       };
 
@@ -361,18 +407,21 @@ namespace Tests.Functional
 
     private class Subject : ISubject1, ISubject2
     {
+      public const string DefaultText = "defaultText";
+      public const int DefaultInt = 39085;
+      
       public const string TwoParameterCtor = "2";
 
       [Inject] // default ctor
       public Subject([Inject] string text) => Text = text;
 
       [Inject(TwoParameterCtor)]
-      public Subject(string text, int value)
+      public Subject(string text = DefaultText, int value = DefaultInt)
       {
         Text = text;
         Value = value;
       }
-
+      
       public int Value { get; }
       public string Text { get; }
     }

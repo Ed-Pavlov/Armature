@@ -119,18 +119,14 @@ namespace Tests.Functional
       target
         .Treat<Subject>()
         .AsIs();
+      // --act
+      var actual = target.Build<Subject>();
 
-      using(Log.Enabled(LogLevel.Trace))
-      {
-        // --act
-        var actual = target.Build<Subject>();
-
-        // --assert
-        actual.Should().NotBeNull();
-        actual.String.Should().Be(expected);
-      }
+      // --assert
+      actual.Should().NotBeNull();
+      actual.String.Should().Be(expected);
     }
-    
+
     [Test]
     public void should_use_parameter_value_from_local_build_plan()
     {
@@ -144,20 +140,17 @@ namespace Tests.Functional
       target
         .Treat<string>()
         .AsInstance(expected);
-      
+
       target
         .Treat<Subject>()
         .AsIs();
+      
+      // --act
+      var actual = target.Build<Subject>();
 
-      using(Log.Enabled(LogLevel.Trace))
-      {
-        // --act
-        var actual = target.Build<Subject>();
-
-        // --assert
-        actual.Should().NotBeNull();
-        actual.String.Should().Be(expected);
-      }
+      // --assert
+      actual.Should().NotBeNull();
+      actual.String.Should().Be(expected);
     }
 
     private static Builder CreateTarget(params Builder[] parents) =>
