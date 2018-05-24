@@ -17,7 +17,7 @@ namespace Armature.Core.UnitSequenceMatcher
   [SuppressMessage("ReSharper", "ConvertToConstant.Global")]
   public class UnitSequenceMatchingWeight
   {
-    protected static int Step = 100;
+    protected static int Step = 100_000;
     protected static int Lowest = 0;
     protected static int Any = Lowest - Step;
     protected static int WildcardOpenGeneric = Any + Step;

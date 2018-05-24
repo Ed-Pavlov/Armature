@@ -23,11 +23,16 @@ namespace Armature.Core.UnitSequenceMatcher
     /// </summary>
     public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
+      var realWeight = inputWeight;
       for (var i = 0; i < buildingUnitsSequence.Length; i++)
       {
         var unitInfo = buildingUnitsSequence[i];
         if (_matcher.Matches(unitInfo))
-          return GetActions(buildingUnitsSequence.GetTail(i), inputWeight);
+          return GetActions(buildingUnitsSequence.GetTail(i), realWeight);
+
+        // increase weigth on each "skipping" step, it will lead that "deeper" context has more weight then more common
+        // it is needed when some Unit is registered several times, Unit under construction should receive that one which is "closer" to it
+        realWeight++; 
       }
 
       return null;

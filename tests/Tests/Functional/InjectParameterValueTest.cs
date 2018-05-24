@@ -362,6 +362,35 @@ namespace Tests.Functional
       actual.Value.Should().Be(Subject.DefaultInt);
     }
 
+    [Test]
+    public void should_inject_parameter_value_from_narrower_context()
+    {
+      const string expected = "expected";
+
+      //--arrange
+      var target = CreateTarget();
+
+      target
+        .Treat<LevelThree>()
+        .AsIs()
+        .BuildingWhich(_ => _.TreatAll().UsingParameters(expected + "three"));
+
+      target
+        .Treat<LevelTwo>()
+        .AsIs()
+        .BuildingWhich(_ => _.TreatAll().UsingParameters(expected));
+
+      target
+        .Treat<Subject>()
+        .AsIs();
+      
+      // --act
+      var actual = target.Build<LevelThree>();
+
+      // --assert
+      actual.LevelTwo.LevelOne.Text.Should().Be(expected);
+    }
+
     private static IEnumerable ForParameterSource()
     {
       yield return new TestCaseData(ForParameter.OfType<string>()).SetName("OfType");
