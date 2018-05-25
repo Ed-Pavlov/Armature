@@ -31,9 +31,6 @@ namespace Armature.Core.UnitSequenceMatcher
     [DebuggerStepThrough]
     public IUnitSequenceMatcher AddBuildAction(object buildStage, IBuildAction buildAction)
     {
-      if (LazyBuildAction.ContainsKey(buildAction))
-        throw new ArgumentException(string.Format($"Already contains build action for stage {buildStage}"));
-
       LazyBuildAction
         .GetOrCreateValue(buildStage, () => new List<IBuildAction>())
         .Add(buildAction);
