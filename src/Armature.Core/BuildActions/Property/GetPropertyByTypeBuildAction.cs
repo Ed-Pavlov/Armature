@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions.Property
 {
@@ -21,10 +21,10 @@ namespace Armature.Core.BuildActions.Property
       var properties = unitType.GetProperties().Where(_ => _.PropertyType == _type).ToArray();
 
       if (properties.Length == 0)
-        throw new ArmatureException($"No property of type {_type.AsLogString()} in type {unitType.AsLogString()}");
+        throw new ArmatureException($"No property of type {_type.ToLogString()} in type {unitType.ToLogString()}");
 
       if (properties.Length > 1)
-        throw new ArmatureException($"Ambiguity: there are more that one property of type {_type.AsLogString()} in type {unitType.AsLogString()}");
+        throw new ArmatureException($"Ambiguity: there are more that one property of type {_type.ToLogString()} in type {unitType.ToLogString()}");
 
       buildSession.BuildResult = new BuildResult(properties);
     }

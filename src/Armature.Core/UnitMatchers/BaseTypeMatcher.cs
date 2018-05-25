@@ -1,5 +1,5 @@
 ﻿using System;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.UnitMatchers
 {

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Armature.Core.UnitMatchers.Parameters;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature
 {

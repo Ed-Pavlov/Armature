@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Armature.Core.Common;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.UnitSequenceMatcher
 {
@@ -38,11 +38,11 @@ namespace Armature.Core.UnitSequenceMatcher
 
       if (!matches)
       {
-        Log.WriteLine(LogLevel.Trace, "{0}{{not matched}}", this);
+        Log.WriteLine(LogLevel.Trace, () => string.Format("{0}{{not matched}}", this));
         return null;
       }
 
-      using (Log.Block(LogLevel.Verbose, this.ToString()))
+      using (Log.Block(LogLevel.Verbose, this.ToString)) // pass method group, do not call ToString
       {
         var buildActions = GetOwnActions(inputWeight);
         buildActions.ToLog();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Armature.Core.Common;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.UnitSequenceMatcher
 {

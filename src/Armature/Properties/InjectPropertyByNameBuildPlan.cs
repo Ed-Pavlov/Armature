@@ -6,7 +6,7 @@ using Armature.Core.Logging;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature
 {

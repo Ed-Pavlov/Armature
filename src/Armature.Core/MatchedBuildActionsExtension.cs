@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Armature.Core.Common;
-using Resharper.Annotations;
+using Armature.Core.Logging;
+using JetBrains.Annotations;
 
 namespace Armature.Core
 {
@@ -58,7 +59,10 @@ namespace Armature.Core
 
       if (actions.Count > 1)
         if (actions[0].Weight == actions[1].Weight)
+        {
+          Log.WriteLine(LogLevel.Info, "Two or more building actions have the same weight.");
           throw new ArmatureException("Two or more building actions have the same weight. Enable logging to find the reason");
+        }
 
       return actions[0].Entity;
     }

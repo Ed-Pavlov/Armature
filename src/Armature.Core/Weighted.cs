@@ -20,6 +20,6 @@ namespace Armature.Core
     public int CompareTo(Weighted<T> other) => Weight.CompareTo(other.Weight);
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}, Weight={1:n0}", Entity.AsLogString(), Weight);
+    public override string ToString() => string.Format("{0}, Weight={1:n0}", Entity.ToLogString(), Weight);
   }
 }

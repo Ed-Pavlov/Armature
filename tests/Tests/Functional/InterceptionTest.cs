@@ -7,7 +7,7 @@ using Armature.Core.BuildActions.Constructor;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
 using NUnit.Framework;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Tests.Functional
 {

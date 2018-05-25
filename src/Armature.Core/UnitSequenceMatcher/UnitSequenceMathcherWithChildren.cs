@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Armature.Core.Common;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.UnitSequenceMatcher
 {
@@ -40,7 +40,7 @@ namespace Armature.Core.UnitSequenceMatcher
       MatchedBuildActions matchedBuildActions;
       if (buildingUnitsSequence.Length > 1)
       {
-        Log.WriteLine(LogLevel.Verbose, this.ToString());
+        Log.WriteLine(LogLevel.Verbose, this.ToString);  // pass group method, do not call ToString
         using (Log.AddIndent())
         {
           matchedBuildActions = GetChildrenActions(
@@ -52,11 +52,12 @@ namespace Armature.Core.UnitSequenceMatcher
       {
         matchedBuildActions = GetOwnActions(inputWeight);
         if (matchedBuildActions == null)
-          Log.WriteLine(LogLevel.Trace, "{0}{{not matched}}", this);
+          Log.WriteLine(LogLevel.Trace, () => string.Format("{0}{{not matched}}", this));
         else
-          using (Log.Block(LogLevel.Verbose, this.ToString()))
+          using (Log.Block(LogLevel.Verbose, this.ToString)) // pass group method, do not call ToString
           {
-            matchedBuildActions.ToLog();
+            // ReSharper disable once RedundantArgumentDefaultValue
+            matchedBuildActions.ToLog(LogLevel.Verbose);
           }
       }
 

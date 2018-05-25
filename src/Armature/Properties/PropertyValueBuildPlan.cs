@@ -2,7 +2,7 @@
 using Armature.Core;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature
 {

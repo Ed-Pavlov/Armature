@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.UnitMatchers.Parameters
 {

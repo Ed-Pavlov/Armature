@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions.Constructor
 {
@@ -47,6 +47,6 @@ namespace Armature.Core.BuildActions.Constructor
     public override string ToString() => string.Format(
       LogConst.OneParameterFormat,
       GetType().GetShortName(),
-      string.Join(", ", _parameterTypes.Select(Log.AsLogString).ToArray()));
+      string.Join(", ", _parameterTypes.Select(Log.ToLogString).ToArray()));
   }
 }

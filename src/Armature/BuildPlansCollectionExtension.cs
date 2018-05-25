@@ -3,7 +3,7 @@ using System.Linq;
 using Armature.Core;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature
 {

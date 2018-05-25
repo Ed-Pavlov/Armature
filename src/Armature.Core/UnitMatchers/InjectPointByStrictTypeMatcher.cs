@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.UnitMatchers
 {
@@ -21,7 +21,7 @@ namespace Armature.Core.UnitMatchers
     protected abstract Type GetInjectPointType(UnitInfo unitInfo);
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _type.AsLogString());
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _type.ToLogString());
 
     #region Equality
     [DebuggerStepThrough]

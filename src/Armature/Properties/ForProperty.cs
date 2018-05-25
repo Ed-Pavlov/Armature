@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Armature.Core.BuildActions.Property;
 using Armature.Core.UnitMatchers.Properties;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature
 {

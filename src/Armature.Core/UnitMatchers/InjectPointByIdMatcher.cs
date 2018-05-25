@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.UnitMatchers
 {
@@ -17,7 +17,7 @@ namespace Armature.Core.UnitMatchers
       _injectPointId = injectPointId;
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _injectPointId.AsLogString());
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _injectPointId.ToLogString());
 
     #region Equality
     public override bool Equals(IUnitMatcher obj) =>

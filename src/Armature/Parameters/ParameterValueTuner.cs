@@ -6,7 +6,7 @@ using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Creation;
 using Armature.Core.BuildActions.Parameter;
 using Armature.Extensibility;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.UnitMatchers
 {
@@ -18,7 +18,7 @@ namespace Armature.Core.UnitMatchers
     public virtual bool Matches(UnitInfo unitInfo) => UnitInfo.Equals(unitInfo);
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), UnitInfo.AsLogString());
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), UnitInfo.ToLogString());
 
     #region Equality
     [DebuggerStepThrough]

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Armature.Core;
 using Armature.Core.BuildActions;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature
 {

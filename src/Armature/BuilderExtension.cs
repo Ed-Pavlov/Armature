@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Armature.Core;
 using Armature.Core.Common;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature
 {

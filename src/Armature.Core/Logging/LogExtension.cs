@@ -13,48 +13,53 @@ namespace Armature.Core.Logging
         ? string.Format("{0}<{1}>", type.GetGenericTypeDefinition().Name, string.Join(", ", type.GenericTypeArguments.Select(_ => _.Name).ToArray()))
         : type.Name;
 
-    public static string AsLogString(this object obj) => Log.ToLogString(obj);
+    public static void ToLog(this IList<UnitInfo> buildSequence, LogLevel logLevel = LogLevel.Verbose) =>
+      logLevel.ExecuteIfEnabled(
+        () =>
+          {
+            if (buildSequence.Count == 0)
+              Log.WriteLine(logLevel, BuildsequenceIsEmpty);
+            else if (buildSequence.Count == 1)
+              Log.WriteLine(logLevel, "BuildSequence{{{0}}}", buildSequence.Last());
+            else
+              using (Log.Block(logLevel, "BuildSequence"))
+              {
+                foreach (var unitInfo in buildSequence)
+                  Log.WriteLine(logLevel, unitInfo.ToString());
+              }
+          });
 
-    public static void ToLog(this IList<UnitInfo> buildSequence, LogLevel logLevel = LogLevel.Verbose)
-    {
-      if (buildSequence.Count == 0)
-        Log.WriteLine(logLevel, BuildsequenceIsEmpty);
-      else if (buildSequence.Count == 1)
-        Log.WriteLine(logLevel, "BuildSequence{{{0}}}", buildSequence.Last());
-      else
-        using (Log.Block(logLevel, "BuildSequence"))
-        {
-          foreach (var unitInfo in buildSequence)
-            Log.WriteLine(logLevel, unitInfo.ToString());
-        }
-    }
+    public static void ToLog(this MatchedBuildActions actions, LogLevel logLevel = LogLevel.Verbose) =>
+      logLevel.ExecuteIfEnabled(
+        () =>
+          {
+            if (actions == null)
+            {
+              Log.WriteLine(logLevel, "not matched");
+              return;
+            }
 
-    public static void ToLog(this MatchedBuildActions actions, LogLevel logLevel = LogLevel.Verbose)
-    {
-      if (actions == null)
-      {
-        Log.WriteLine(logLevel, "not matched");
-        return;
-      }
+            foreach (var pair in actions)
+              LogMatchedBuildActions(pair, logLevel);
+          });
 
-      foreach (var pair in actions)
-        LogMatchedBuildActions(pair, logLevel);
-    }
+    private static void LogMatchedBuildActions(KeyValuePair<object, List<Weighted<IBuildAction>>> stagedActions, LogLevel logLevel) =>
+      logLevel.ExecuteIfEnabled(
+        () =>
 
-    private static void LogMatchedBuildActions(KeyValuePair<object, List<Weighted<IBuildAction>>> stagedActions, LogLevel logLevel)
-    {
-      var stage = stagedActions.Key;
-      var actionsList = stagedActions.Value;
+          {
+            var stage = stagedActions.Key;
+            var actionsList = stagedActions.Value;
 
-      if (actionsList.Count == 1)
-        Log.WriteLine(logLevel, "{0}: {1}", stage.AsLogString(), actionsList[0]);
-      else
-        using (Log.Block(logLevel, string.Format("[{0}]", stage)))
-        {
-          actionsList.Sort((l, r) => r.Weight.CompareTo(l.Weight)); // sort by weight descending
-          foreach (var action in actionsList)
-            Log.WriteLine(logLevel, "{0}", action);
-        }
-    }
+            if (actionsList.Count == 1)
+              Log.WriteLine(logLevel, "{0}: {1}", stage, actionsList[0]);
+            else
+              using (Log.Block(logLevel, string.Format("[{0}]", stage)))
+              {
+                actionsList.Sort((l, r) => r.Weight.CompareTo(l.Weight)); // sort by weight descending
+                foreach (var action in actionsList)
+                  Log.WriteLine(logLevel, "{0}", action);
+              }
+          });
   }
 }

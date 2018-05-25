@@ -1,6 +1,6 @@
 ﻿using System;
 using Armature.Core;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Extensibility
 {

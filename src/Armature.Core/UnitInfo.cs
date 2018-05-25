@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core
 {
@@ -44,6 +44,6 @@ namespace Armature.Core
       }
     }
 
-    public override string ToString() => string.Format("{0}, {1}", Id.AsLogString(), Token.AsLogString());
+    public override string ToString() => string.Format("{0}, {1}", Id.ToLogString(), Token.ToLogString());
   }
 }

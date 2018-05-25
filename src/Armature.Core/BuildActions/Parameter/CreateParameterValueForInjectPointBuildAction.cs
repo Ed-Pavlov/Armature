@@ -23,7 +23,7 @@ namespace Armature.Core.BuildActions.Parameter
 
       if (attribute == null)
       {
-        Log.WriteLine(LogLevel.Info, "{0}{{{1}}}", this, "No parameter marked with InjectAttribute");
+        Log.WriteLine(LogLevel.Info, () => string.Format("{0}{{{1}}}", this, "No parameter marked with InjectAttribute"));
       }
       else
       {

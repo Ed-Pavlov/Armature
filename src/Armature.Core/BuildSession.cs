@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Armature.Core.Common;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core
 {
@@ -134,7 +134,7 @@ namespace Armature.Core
 
         performedActions.Push(buildAction);
 
-        using (Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Execute action", buildAction))
+        using (Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Execute action", buildAction)))
         {
           buildAction.Process(unitBuilder);
         }
@@ -142,7 +142,7 @@ namespace Armature.Core
         if (unitBuilder.BuildResult.HasValue)
         {
           Log.WriteLine(LogLevel.Info, "");
-          Log.WriteLine(LogLevel.Info, "Build Result{{{0}:{1}}}", unitBuilder.BuildResult, unitBuilder.BuildResult.Value?.GetType().AsLogString());
+          Log.WriteLine(LogLevel.Info, () => string.Format("Build Result{{{0}:{1}}}", unitBuilder.BuildResult, unitBuilder.BuildResult.Value?.GetType().ToLogString()));
           break; // object is built, unwind called actions in reverse orders
         }
       }
@@ -150,7 +150,7 @@ namespace Armature.Core
       foreach (var buildAction in performedActions)
       {
         Log.WriteLine(LogLevel.Info, "");
-        using (Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Rewind action", buildAction))
+        using (Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Rewind action", buildAction)))
         {
           buildAction.PostProcess(unitBuilder);
         }
@@ -194,7 +194,7 @@ namespace Armature.Core
       {
         var unitBuilder = new Interface(_buildSequence, this);
 
-        using (Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Execute action", buildAction))
+        using (Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Execute action", buildAction)))
         {
           buildAction.Process(unitBuilder);
           buildAction.PostProcess(unitBuilder);
@@ -203,7 +203,7 @@ namespace Armature.Core
         if (unitBuilder.BuildResult.HasValue)
         {
           Log.WriteLine(LogLevel.Info, "");
-          Log.WriteLine(LogLevel.Info, "Build Result{{{0}:{1}}}", unitBuilder.BuildResult, unitBuilder.BuildResult.Value?.GetType().AsLogString());
+          Log.WriteLine(LogLevel.Info, () => string.Format("Build Result{{{0}:{1}}}", unitBuilder.BuildResult, unitBuilder.BuildResult.Value?.GetType().ToLogString()));
           result.Add(unitBuilder.BuildResult);
         }
       }
@@ -213,7 +213,7 @@ namespace Armature.Core
 
     private IDisposable LogBuildSessionState(UnitInfo unitInfo)
     {
-      var block = Log.Block(LogLevel.Info, LogConst.OneParameterFormat, "Build", unitInfo);
+      var block = Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Build", unitInfo));
       {
         _buildSequence.ToLog();
       }

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions.Creation
 {
@@ -29,7 +29,7 @@ namespace Armature.Core.BuildActions.Creation
     protected abstract object Execute(object[] values);
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), GetMethod().AsLogString());
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), GetMethod().ToLogString());
   }
 
   /// <inheritdoc cref="CreateByFactoryMethodBuildAction" />

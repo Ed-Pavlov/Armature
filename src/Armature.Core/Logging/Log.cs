@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.Logging
 {
@@ -11,7 +11,7 @@ namespace Armature.Core.Logging
   public static class Log
   {
     private static int _indent;
-    private static LogLevel _logLevel;
+    private static LogLevel _logLevel = LogLevel.None;
 
     /// <summary>
     ///   Set should full type name be logged or only short name w/o namespace to simplify reading.
@@ -59,6 +59,36 @@ namespace Armature.Core.Logging
     [StringFormatMethod("format")]
     public static void Verbose(string format, params object[] parameters) => WriteLine(LogLevel.Verbose, format, parameters);
 
+    /// <summary>
+    /// Executes action if <paramref name="logLevel"/> satisfies current Log level. See <see cref="Enabled"/> for details
+    /// </summary>
+    /// <param name="logLevel"></param>
+    /// <param name="action"></param>
+    public static void ExecuteIfEnabled(this LogLevel logLevel, Action action)
+    {
+      if (logLevel > _logLevel) return;
+
+      action();
+    }
+
+    public static void WriteLine<T1>(LogLevel logLevel, string format, T1 p1)
+    {
+      if (logLevel > _logLevel) return;
+      System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, p1.ToLogString()));
+    }
+    
+    public static void WriteLine<T1, T2>(LogLevel logLevel, string format, T1 p1, T2 p2)
+    {
+      if (logLevel > _logLevel) return;
+      System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, p1.ToLogString(), p2.ToLogString()));
+    }
+    
+    public static void WriteLine<T1, T2, T3>(LogLevel logLevel, string format, T1 p1, T2 p2, T3 p3)
+    {
+      if (logLevel > _logLevel) return;
+      System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, p1.ToLogString(), p2.ToLogString(), p3.ToLogString()));
+    }
+
     [StringFormatMethod("format")]
     public static void WriteLine(LogLevel logLevel, string format, params object[] parameters)
     {
@@ -67,26 +97,37 @@ namespace Armature.Core.Logging
       // ReSharper disable once CoVariantArrayConversion
       System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, parameters.Select(ToLogString).ToArray()));
     }
-    
+
+    /// <summary>
+    ///   This message calls <paramref name="createMessage"/> only if Logging is enabled for <paramref name="logLevel"/>,
+    ///   use it calculating arguments for logging takes a time.
+    /// </summary>
     [StringFormatMethod("format")]
     public static void WriteLine(LogLevel logLevel, Func<string> createMessage)
     {
       if (logLevel > _logLevel) return;
 
-      // ReSharper disable once CoVariantArrayConversion
       System.Diagnostics.Trace.WriteLine(GetIndent() + createMessage());
     }
 
     /// <summary>
     ///   Returns the name of <paramref name="type" /> respecting <see cref="LogFullTypeName" /> property
     /// </summary>
-    public static string AsLogString(this Type type) => LogFullTypeName ? type.ToString() : type.GetShortName();
+    public static string ToLogString(this Type type) => LogFullTypeName ? type.ToString() : type.GetShortName();
 
     /// <summary>
     ///   Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
     /// </summary>
-    public static string ToLogString(object obj) => obj == null ? "null" : AsLogString((dynamic)obj);
+    public static string ToLogString(this object obj)
+    {
+      if (obj == null) return "null";
 
+      // if ToString is not overriden and returns object type full name - return type.AsLogString
+      var toString = obj.ToString();
+      var type = obj.GetType();
+      return toString == GetTypeFullName(type) ? type.ToLogString() : toString;
+    }
+    
     public static void PrintBuildPlans(this BuildPlansCollection buildPlansCollection)
     {
       using (Enabled())
@@ -121,16 +162,6 @@ namespace Armature.Core.Logging
       for (var i = 0; i < _indent; i++)
         indent += "  ";
       return indent;
-    }
-
-    private static string AsLogString(object obj)
-    {
-      if (obj == null) return "null";
-
-      // if ToString is not overriden and returns object type full name - return type.AsLogString
-      var toString = obj.ToString();
-      var type = obj.GetType();
-      return toString == GetTypeFullName(type) ? type.AsLogString() : toString;
     }
 
     private static string GetTypeFullName(Type type)

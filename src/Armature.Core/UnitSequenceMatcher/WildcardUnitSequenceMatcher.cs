@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Common;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.UnitSequenceMatcher
 {

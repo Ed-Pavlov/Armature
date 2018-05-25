@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Armature.Core.Common;
 using Armature.Core.Logging;
 
 namespace Armature.Core.BuildActions
@@ -26,16 +27,18 @@ namespace Armature.Core.BuildActions
 
     public void Process(IBuildSession buildSession)
     {
+      var exceptions = new List<Exception>();
       foreach (var buildAction in _buildActions)
+      {
         try
         {
           buildAction.Process(buildSession);
-          
+
           if (!buildSession.BuildResult.HasValue)
-            Log.WriteLine(LogLevel.Trace, "{0} has not built value", buildAction);
+            Log.WriteLine(LogLevel.Trace, () => string.Format("{0} has not built value", buildAction));
           else
           {
-            Log.WriteLine(LogLevel.Info, "redirected execution to {0}", buildAction);
+            Log.WriteLine(LogLevel.Info, () => string.Format("redirected execution to {0}", buildAction));
             _effectiveBuildAction = buildAction;
             break;
           }
@@ -43,14 +46,26 @@ namespace Armature.Core.BuildActions
         catch (ArmatureException exc)
         {
           LogException(exc);
+          exceptions.Add(exc);
           // continue;
         }
         catch (Exception exc)
         {
-          Log.WriteLine(LogLevel.Trace, "User exception was throw during executing {0}", buildAction);
+          Log.WriteLine(LogLevel.Trace, () => string.Format("User exception was throw during executing {0}", buildAction));
           LogException(exc);
+          for (var i = 0; i < exceptions.Count; i++)
+            exc.AddData(i, exceptions[i]);
           throw;
         }
+      }
+
+      if (!buildSession.BuildResult.HasValue && exceptions.Count > 0)
+      {
+        var exception = new ArmatureException("Multiply exceptions occured during processing build actions");
+        for (var i = 0; i < exceptions.Count; i++)
+          exception.AddData(i, exceptions[i]);
+        throw exception;
+      }
     }
 
     public void PostProcess(IBuildSession buildSession)
@@ -58,7 +73,7 @@ namespace Armature.Core.BuildActions
       if (_effectiveBuildAction != null)
       {
         _effectiveBuildAction.PostProcess(buildSession);
-        Log.WriteLine(LogLevel.Info, "redirected execution to {0}", _effectiveBuildAction);
+        Log.WriteLine(LogLevel.Info, () => string.Format("redirected execution to {0}", _effectiveBuildAction));
         _effectiveBuildAction = null;
       }
     }
@@ -71,14 +86,16 @@ namespace Armature.Core.BuildActions
       return this;
     }
 
-    private static void LogException(Exception exc)
-    {
-      using (Log.Block(LogLevel.Trace, "Exception: {0}", exc))
-      {
-        foreach (DictionaryEntry entry in exc.Data)
-          Log.WriteLine(LogLevel.Trace, "{0}: {1}", entry.Key, entry.Value);
-      }
-    }
+    private static void LogException(Exception exc) =>
+      LogLevel.Trace.ExecuteIfEnabled(
+        () =>
+          {
+            using (Log.Block(LogLevel.Trace, "Exception: {0}", exc))
+            {
+              foreach (DictionaryEntry entry in exc.Data)
+                Log.WriteLine(LogLevel.Trace, "{0}: {1}", entry.Key, entry.Value);
+            }
+          });
 
     [DebuggerStepThrough]
     public override string ToString() => GetType().GetShortName();

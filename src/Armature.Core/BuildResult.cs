@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core
 {
@@ -22,6 +22,6 @@ namespace Armature.Core
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => Value.AsLogString();
+    public override string ToString() => Value.ToLogString();
   }
 }

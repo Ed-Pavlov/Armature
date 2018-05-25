@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions.Property
 {

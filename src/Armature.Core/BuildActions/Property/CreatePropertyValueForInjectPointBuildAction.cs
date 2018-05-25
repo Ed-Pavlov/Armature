@@ -23,7 +23,7 @@ namespace Armature.Core.BuildActions.Property
 
       if (attribute == null)
       {
-        Log.WriteLine(LogLevel.Info, "{0}{{{1}}}", this, "No Property marked with InjectAttribute");
+        Log.WriteLine(LogLevel.Info, () => string.Format("{0}{{{1}}}", this, "No Property marked with InjectAttribute"));
       }
       else
       {

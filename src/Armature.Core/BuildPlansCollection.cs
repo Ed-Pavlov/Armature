@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Armature.Core.Common;
 using Armature.Core.UnitSequenceMatcher;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core
 {

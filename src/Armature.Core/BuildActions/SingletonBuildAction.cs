@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions
 {
@@ -42,7 +42,7 @@ namespace Armature.Core.BuildActions
       public Instance([CanBeNull] object value) => Value = value;
 
       [DebuggerStepThrough]
-      public override string ToString() => Value == null ? "[no instance]" : Value.AsLogString();
+      public override string ToString() => Value == null ? "[no instance]" : Value.ToLogString();
     }
   }
 }

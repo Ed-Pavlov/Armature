@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Armature.Core.Common;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core
 {

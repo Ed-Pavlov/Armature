@@ -9,7 +9,7 @@ using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature
 {

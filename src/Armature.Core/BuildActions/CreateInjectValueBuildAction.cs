@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Logging;
-using Resharper.Annotations;
+using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions
 {
@@ -30,6 +30,6 @@ namespace Armature.Core.BuildActions
 
     protected abstract Type GetValueType(UnitInfo unitInfo);
 
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _token.AsLogString());
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _token.ToLogString());
   }
 }
