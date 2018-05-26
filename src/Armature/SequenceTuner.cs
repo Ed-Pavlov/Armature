@@ -13,11 +13,6 @@ namespace Armature
     public SequenceTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
 
     /// <summary>
-    ///   Used to make a build plan for a unit only if it is building in a context of building <typeparamref name="T" /> with token <paramref name="token" />
-    /// </summary>
-    public SequenceTuner Building<T>(object token = null) => Building(typeof(T), token);
-
-    /// <summary>
     ///   Used to make a build plan for a unit only if it is building in a context of building <paramref name="type" /> with token <paramref name="token" />
     /// </summary>
     public SequenceTuner Building([NotNull] Type type, object token = null)
@@ -28,6 +23,21 @@ namespace Armature
       return new SequenceTuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
+    /// <summary>
+    ///   Used to make a build plan for a unit only if it is building in a context of building <typeparamref name="T" /> with token <paramref name="token" />
+    /// </summary>
+    public SequenceTuner Building<T>(object token = null) => Building(typeof(T), token);
+
+    /// <summary>
+    ///   Used to make a build plan for Unit of type <paramref name="type"/>.
+    ///   How it should be treated is specified by subsequence calls using returned object.
+    /// </summary>
+    public TreatingTuner Treat([NotNull] Type type, object token = null)
+    {
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
+      return new TreatingTuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
+    }
+    
     /// <summary>
     ///   Used to make a build plan for <typeparamref name="T" />.
     ///   How <typeparamref name="T" /> should be treated is specified by subsequence calls using returned object

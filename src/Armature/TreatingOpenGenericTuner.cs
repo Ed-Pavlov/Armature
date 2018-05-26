@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using Armature.Core;
 using Armature.Core.BuildActions;
-using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
 using JetBrains.Annotations;
 
@@ -13,35 +12,21 @@ namespace Armature
     [DebuggerStepThrough]
     public TreatingOpenGenericTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
 
-    /// <param name="openGenericType"></param>
-    /// <param name="addDefaultCreateAction">
-    ///   If <see cref="AddCreateBuildAction.Yes" /> adds a build action <see cref="Default.CreationBuildAction" /> for
-    ///   <see cref="UnitInfo" />(<paramref name="openGenericType" />, null) as a creation build action.
-    /// </param>
-    public Tuner As(Type openGenericType, AddCreateBuildAction addDefaultCreateAction) => As(openGenericType, null, addDefaultCreateAction);
+    /// <summary>
+    ///   When generic type belonging to class described by open generic type passed to <see cref="BuildPlansCollectionExtension.TreatOpenGeneric"/>
+    ///   is requested to inject, object of generic type <paramref name="openGenericType"/> created by default creation strategy is created and injected.
+    ///   See <see cref="Default.CreationBuildAction"/> for details.
+    /// </summary>
+    public Tuner AsCreated(Type openGenericType, object token = null) => As(openGenericType, token).CreatedByDefault();
 
-    /// <param name="openGenericType"></param>
-    /// <param name="token"></param>
-    /// <param name="addDefaultCreateAction">
-    ///   If <see cref="AddCreateBuildAction.Yes" /> adds a build action
-    ///   <see cref="Default.CreationBuildAction" /> for <see cref="UnitInfo" />(<paramref name="openGenericType" />, <paramref name="token" />)
-    ///   as a creation build action.
-    /// </param>
-    public Tuner As(Type openGenericType, object token = null, AddCreateBuildAction addDefaultCreateAction = AddCreateBuildAction.Yes)
+    /// <summary>
+    ///   When generic type belonging to class described by open generic type passed to <see cref="BuildPlansCollectionExtension.TreatOpenGeneric"/>
+    ///   is requested to inject, object of generic type <paramref name="openGenericType"/> injected. Tune how it is created by subsequence tuner calls. 
+    /// </summary>
+    public OpenGenericCreationTuner As(Type openGenericType, object token = null)
     {
       UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectOpenGenericTypeBuildAction(openGenericType, token));
-
-      var childMatcher = UnitSequenceMatcher;
-      if (addDefaultCreateAction == AddCreateBuildAction.Yes)
-      {
-        childMatcher = new WildcardUnitSequenceMatcher(Match.OpenGenericType(openGenericType, token), UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
-
-        UnitSequenceMatcher
-          .AddOrGetUnitSequenceMatcher(childMatcher)
-          .AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
-      }
-
-      return new Tuner(childMatcher);
+      return new OpenGenericCreationTuner(UnitSequenceMatcher, openGenericType, token);
     }
 
     public Tuner AsIs()

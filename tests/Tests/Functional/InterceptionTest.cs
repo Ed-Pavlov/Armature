@@ -78,7 +78,7 @@ namespace Tests.Functional
 
               target
                 .Treat<string>()
-                .AsCreatedBy(_ => Expected);
+                .AsCreatedWith(_ => Expected);
             }))
         .SetName("RegisteredAsFactoryMethod");
     }

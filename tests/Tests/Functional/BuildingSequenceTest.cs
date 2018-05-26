@@ -19,7 +19,7 @@ namespace Tests.Functional
       // --arrange
       var target = CreateTarget();
 
-      target.Treat<ISubject>().As<Subject>();
+      target.Treat<ISubject>().AsCreated<Subject>();
 
       target.Treat<int>().AsInstance(5);
 
@@ -49,7 +49,7 @@ namespace Tests.Functional
       // --arrange
       var target = CreateTarget();
 
-      target.Treat<ISubject>(token).As<Subject>(token);
+      target.Treat<ISubject>(token).AsCreated<Subject>(token);
 
       target.Treat<int>().AsInstance(5);
 

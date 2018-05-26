@@ -6,7 +6,7 @@ namespace Armature.Core.BuildActions.Parameter
   /// <summary>
   ///   "Builds" value to inject by using <see cref="ParameterInfo.ParameterType" /> and provided token
   /// </summary>
-  public class CreateParameterValueBuildAction : CreateInjectValueBuildAction
+  public class CreateParameterValueBuildAction : CreateValueToInjectBuildAction
   {
     public static readonly IBuildAction Instance = new CreateParameterValueBuildAction();
 

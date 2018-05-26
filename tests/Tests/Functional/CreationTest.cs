@@ -17,8 +17,8 @@ namespace Tests.Functional
       var target = CreateTarget();
       target
         .Treat<ISubject1>()
-        .AsCreated<Subject>()
-        .ByDefault();
+        .As<Subject>()
+        .CreatedByDefault();
 
       // --act
       var actual = target.Build<ISubject1>();
@@ -34,8 +34,8 @@ namespace Tests.Functional
       var target = CreateTarget();
       target
         .Treat<ISubject1>()
-        .AsCreated<Subject>()
-        .ByReflection();
+        .As<Subject>()
+        .CreatedByReflection();
 
       // --act
       var actual = target.Build<ISubject1>();
@@ -67,7 +67,7 @@ namespace Tests.Functional
       var target = CreateTarget();
       target
         .Treat<ISubject1>()
-        .As<Subject>();
+        .AsCreated<Subject>();
 
       // --act
       var actual = target.Build<ISubject1>();
@@ -85,7 +85,7 @@ namespace Tests.Functional
       var target = CreateTarget();
       target
         .Treat<Subject>()
-        .AsCreatedBy(_ => expected);
+        .AsCreatedWith(_ => expected);
 
       // --act
       var actual = target.Build<Subject>();
@@ -105,7 +105,7 @@ namespace Tests.Functional
 
       target
         .Treat<Subject>()
-        .AsCreatedBy<string>(
+        .AsCreatedWith<string>(
           value =>
           {
             value.Should().Be(expectedString);
@@ -128,11 +128,11 @@ namespace Tests.Functional
 
       target
         .Treat<ISubject1>()
-        .As<Subject>(AddCreateBuildAction.No);
+        .As<Subject>();
 
       target
         .Treat<ISubject2>()
-        .As<Subject>(AddCreateBuildAction.No);
+        .As<Subject>();
 
       target
         .Treat<Subject>()
@@ -164,7 +164,7 @@ namespace Tests.Functional
 
       target
         .Treat<Subject>(token)
-        .AsCreatedBy(_ => expected);
+        .AsCreatedWith(_ => expected);
 
 
       // --act
@@ -185,7 +185,7 @@ namespace Tests.Functional
 
       target
         .Treat<ISubject1>()
-        .As<Subject>(token);
+        .AsCreated<Subject>(token);
 
       target
         .Treat<Subject>(token)
@@ -193,7 +193,7 @@ namespace Tests.Functional
 
       target
         .Treat<Subject>()
-        .AsCreatedBy(_ => createdByFactory);
+        .AsCreatedWith(_ => createdByFactory);
 
       // --act
       var actual = target.Build<ISubject1>();

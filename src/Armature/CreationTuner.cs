@@ -1,4 +1,5 @@
-﻿using Armature.Core;
+﻿using System;
+using Armature.Core;
 using Armature.Core.BuildActions.Creation;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
@@ -6,21 +7,27 @@ using JetBrains.Annotations;
 
 namespace Armature
 {
-  public class CreationTuner<T> : UnitSequenceExtensibility, IExtensibility<object>
+  public class CreationTuner : UnitSequenceExtensibility, IExtensibility<Type, object>
   {
+    protected readonly Type Type;
     protected readonly object Token;
 
-    public CreationTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher, [CanBeNull] object token) : base(unitSequenceMatcher) => Token = token;
+    public CreationTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher, [NotNull] Type type, [CanBeNull] object token) : base(unitSequenceMatcher)
+    {
+      Type = type ?? throw new ArgumentNullException(nameof(type));
+      Token = token;
+    }
 
-    object IExtensibility<object>.Item1 => Token;
+    Type IExtensibility<Type, object>.Item1 => Type;
+    object IExtensibility<Type, object>.Item2 => Token;
 
     /// <summary>
-    ///   Specifies that unit of type <typeparamref name="T" /> should be created using default creation strategy
-    ///   specified in <see cref="Default.CreationBuildAction" />
+    ///   Specifies that unit of type passed into <see cref="TreatingTuner{T}.As(System.Type,object)"/> or <see cref="TreatingTuner{T}.As{TRedirect}"/>
+    ///   should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
     /// </summary>
-    public Tuner ByDefault()
+    public Tuner CreatedByDefault()
     {
-      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type<T>(Token));
+      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type(Type, Token));
 
       UnitSequenceMatcher
         .AddOrGetUnitSequenceMatcher(sequenceMatcher)
@@ -29,12 +36,13 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Specifies that unit of type <typeparamref name="T" /> should be created using reflection
+    ///   Specifies that unit of type passed into <see cref="TreatingTuner{T}.As(System.Type,object)"/> or <see cref="TreatingTuner{T}.As{TRedirect}"/> should
+    ///   be created using reflection
     /// </summary>
     /// <returns></returns>
-    public Tuner ByReflection()
+    public Tuner CreatedByReflection()
     {
-      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type<T>(Token));
+      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type(Type, Token));
 
       UnitSequenceMatcher
         .AddOrGetUnitSequenceMatcher(sequenceMatcher)

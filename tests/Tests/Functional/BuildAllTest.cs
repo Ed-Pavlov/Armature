@@ -20,8 +20,8 @@ namespace Tests.Functional
       // --arrange
       var target = CreateTarget();
 
-      target.Treat<IDisposable>().As<SampleType1>();
-      target.Treat<IDisposable>().As<SampleType2>();
+      target.Treat<IDisposable>().AsCreated<SampleType1>();
+      target.Treat<IDisposable>().AsCreated<SampleType2>();
 
       // --act
       var actual = target.BuildAllUnits(Unit.OfType<IDisposable>());
@@ -38,8 +38,8 @@ namespace Tests.Functional
       // --arrange
       var target = CreateTarget();
 
-      target.Treat<IDisposable>().As<SampleType1>();
-      target.Treat<IDisposable>().As<SampleType2>();
+      target.Treat<IDisposable>().AsCreated<SampleType1>();
+      target.Treat<IDisposable>().AsCreated<SampleType2>();
       target.Treat<IDisposable>().AsSingleton(); // involve BuildStage.Cache for first level unit
 
       // --act
@@ -55,8 +55,8 @@ namespace Tests.Functional
       // --arrange
       var target = CreateTarget();
 
-      target.Treat<IDisposable>().As<SampleType1>().AsSingleton();
-      target.Treat<IDisposable>().As<SampleType2>();
+      target.Treat<IDisposable>().AsCreated<SampleType1>().AsSingleton();
+      target.Treat<IDisposable>().AsCreated<SampleType2>();
 
       // --precondition
       var precondition = target.BuildAllUnits(Unit.OfType<IDisposable>());

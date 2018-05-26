@@ -72,7 +72,7 @@ namespace Tests.Functional
       const string asIsParameterValue = "AsIs";
       target
         .Treat<ISubject1>()
-        .As<Subject>()
+        .AsCreated<Subject>()
         .UsingParameters(asInterfaceParameterValue);
 
       target

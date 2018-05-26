@@ -25,7 +25,7 @@ namespace Tests.Extensibility.MaybePropagation
       builder
         .Treat<Maybe<IReader>>()
         .TreatMaybeValue()
-        .As<Reader>();
+        .AsCreated<Reader>();
 
       var actual = builder.Build<Maybe<IReader>>();
 
@@ -42,7 +42,7 @@ namespace Tests.Extensibility.MaybePropagation
       builder
         .Treat<Maybe<IReader>>()
         .TreatMaybeValue()
-        .As<Reader>();
+        .AsCreated<Reader>();
 
       Action actual = () => builder.Build<Maybe<IReader>>();
 

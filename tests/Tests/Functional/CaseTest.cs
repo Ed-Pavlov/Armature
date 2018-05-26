@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.IO;
 using System.Linq;
 using Armature;
@@ -27,7 +28,7 @@ namespace Tests.Functional
       var target = CreateTarget();
       target
         .Treat<string>()
-        .AsCreatedBy(assembler => assembler.BuildSequence.First().Id.ToString());
+        .AsCreatedWith(assembler => assembler.BuildSequence.First().Id.ToString());
 
       target
         .Treat<TwoDisposableStringCtorClass>()
@@ -48,12 +49,12 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target.Treat<IDisposableValue1>()
-        .As<OneDisposableCtorClass>()
+        .AsCreated<OneDisposableCtorClass>()
         .UsingParameters(new MemoryStream());
 
       var expected = new MemoryStream();
       target.Treat<IDisposableValue2>()
-        .As<OneDisposableCtorClass>()
+        .AsCreated<OneDisposableCtorClass>()
         .UsingParameters(expected);
 
       // --act
@@ -70,8 +71,8 @@ namespace Tests.Functional
 
       var target = CreateTarget();
 
-      target.Treat<IDisposableValue1>().As<OneDisposableCtorClass>(AddCreateBuildAction.No);
-      target.Treat<IDisposableValue2>(token1).As<OneDisposableCtorClass>(AddCreateBuildAction.No);
+      target.Treat<IDisposableValue1>().As<OneDisposableCtorClass>();
+      target.Treat<IDisposableValue2>(token1).As<OneDisposableCtorClass>();
       target.Treat<OneDisposableCtorClass>().AsInstance(new OneDisposableCtorClass(null));
 
       var dep = target.Build<IDisposableValue1>();
@@ -86,11 +87,11 @@ namespace Tests.Functional
       var target = CreateTarget();
       target
         .Treat<IDisposableValue1>()
-        .As<OneDisposableCtorClass>();
+        .AsCreated<OneDisposableCtorClass>();
 
       target
         .Treat<IDisposableValue2>()
-        .As<OneDisposableCtorClass>();
+        .AsCreated<OneDisposableCtorClass>();
 
       target
         .Treat<OneDisposableCtorClass>()

@@ -13,6 +13,7 @@ using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
 using JetBrains.dotMemoryUnit;
+using JetBrains.dotMemoryUnit.Kernel;
 using NUnit.Framework;
 
 namespace Tests.Performance
@@ -55,13 +56,12 @@ namespace Tests.Performance
 
     [Test]
     [Ignore("Run manually only")]
-    [AssertTraffic(AllocatedSizeInBytes = 0)]
-//    [AssertTraffic(AllocatedObjectsCount = 3, Types = new[] { typeof(AssembleStage)})]
-    [DotMemoryUnit(SavingStrategy = SavingStrategy.OnCheckFail)]
+    [DotMemoryUnit(SavingStrategy = SavingStrategy.OnCheckFail, CollectAllocations = true)]
     public void Measure()
     {
       var parentContainer = CreateTarget();
       var expected = new MemoryStream();
+
       parentContainer
         .Treat<IDisposable>()
         .AsInstance(expected);
@@ -77,17 +77,23 @@ namespace Tests.Performance
         container
           .Building(type)
           .Treat<IDisposable>()
-          .As<MemoryStream>()
+          .AsCreated<MemoryStream>()
           .UsingParameters(0);
 
       var sw = new Stopwatch();
       sw.Start();
-      for (var i = 0; i < 100000; i++)
+      
+      var mem1 = dotMemory.Check();
+
+      for (var i = 0; i < 100_000; i++)
       {
         var obj = container.Build<IDisposable>();
         Assert.AreSame(obj, expected);
       }
 
+      dotMemory.Check(memory => Console.WriteLine(memory.GetTrafficFrom(mem1)));
+      dotMemoryApi.SaveCollectedData();
+      
       sw.Stop();
       Console.WriteLine(sw.Elapsed);
     }

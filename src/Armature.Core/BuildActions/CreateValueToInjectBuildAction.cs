@@ -8,12 +8,12 @@ namespace Armature.Core.BuildActions
   /// <summary>
   ///   Base class for build actions building values to inject
   /// </summary>
-  public abstract class CreateInjectValueBuildAction : IBuildAction
+  public abstract class CreateValueToInjectBuildAction : IBuildAction
   {
     private readonly object _token;
 
     [DebuggerStepThrough]
-    protected CreateInjectValueBuildAction([CanBeNull] object token) => _token = token;
+    protected CreateValueToInjectBuildAction([CanBeNull] object token) => _token = token;
 
     public void Process(IBuildSession buildSession)
     {

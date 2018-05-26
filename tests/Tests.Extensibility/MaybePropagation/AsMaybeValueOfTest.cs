@@ -25,8 +25,8 @@ namespace Tests.Extensibility.MaybePropagation
       builder
         .Treat<Maybe<IReader>>()
         .TreatMaybeValue()
-        .As<Reader>()
-        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().AsCreated<Maybe<Section>>());
+        .AsCreated<Reader>()
+        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>());
 
       var actual = builder.Build<Maybe<IReader>>();
 
@@ -46,8 +46,8 @@ namespace Tests.Extensibility.MaybePropagation
       builder
         .Treat<Maybe<IReader>>()
         .TreatMaybeValue()
-        .As<Reader>()
-        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().AsCreated<Maybe<Section>>());
+        .AsCreated<Reader>()
+        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>());
 
       var actual = builder.Build<Maybe<IReader>>();
 
@@ -64,8 +64,8 @@ namespace Tests.Extensibility.MaybePropagation
       builder
         .Treat<Maybe<IReader>>()
         .TreatMaybeValue()
-        .As<Reader>()
-        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().AsCreated<Maybe<Section>>());
+        .AsCreated<Reader>()
+        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>());
 
       Action actual = () => builder.Build<Maybe<IReader>>();
 
@@ -84,8 +84,8 @@ namespace Tests.Extensibility.MaybePropagation
       builder
         .Treat<Maybe<IReader>>()
         .TreatMaybeValue()
-        .As<Reader>()
-        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().AsCreated<Maybe<Section>>(token));
+        .AsCreated<Reader>()
+        .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>(token));
 
       var actual = builder.Build<Maybe<IReader>>();
 
@@ -105,12 +105,12 @@ namespace Tests.Extensibility.MaybePropagation
       builder
         .Treat<Maybe<IReader>>()
         .TreatMaybeValue()
-        .As<Reader1>()
+        .AsCreated<Reader1>()
         .BuildingWhich(
           _ => _
             .Treat<Section>(Token.Any)
             .AsMaybeValueOf()
-            .AsCreated<Maybe<Section>>(Token.Propagate))
+            .As<Maybe<Section>>(Token.Propagate))
         .UsingParameters(ForParameter.OfType<Section>().UseInjectPointIdAsToken());
 
       var actual = builder.Build<Maybe<IReader>>();

@@ -21,11 +21,11 @@ namespace Tests.Functional
 
       target
         .TreatOpenGeneric(typeof(ISubject<>))
-        .As(typeof(Subject<>));
+        .AsCreated(typeof(Subject<>));
 
       target
         .Treat<ISubject<int>>()
-        .As<Subject<int>>()
+        .AsCreated<Subject<int>>()
         .UsingParameterlessConstructor();
 
       // --act
@@ -44,7 +44,7 @@ namespace Tests.Functional
       const int expected = 5;
       target
         .TreatOpenGeneric(typeof(ISubject<>))
-        .As(typeof(Subject<>))
+        .AsCreated(typeof(Subject<>))
         .UsingParameters(expected);
 
       // --act
@@ -62,13 +62,13 @@ namespace Tests.Functional
 
       target
         .TreatOpenGeneric(typeof(ISubject<>))
-        .As(typeof(Subject<>))
+        .AsCreated(typeof(Subject<>))
         .UsingParameters("open");
 
       const string closed = "closed";
       target
         .Treat<ISubject<string>>()
-        .As<Subject<string>>()
+        .AsCreated<Subject<string>>()
         .UsingParameters(closed);
 
       // --act
@@ -86,7 +86,7 @@ namespace Tests.Functional
 
       target
         .TreatOpenGeneric(typeof(ISubject<>))
-        .As(typeof(Subject<>), AddCreateBuildAction.No);
+        .As(typeof(Subject<>));
 
       // --act
       Action actual = () => target.Build<ISubject<int>>(5);
