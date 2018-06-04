@@ -50,10 +50,6 @@ namespace Tests.Performance
       typeof(string[])
     };
 
-    // ordered tree: 100 000 times, 2.21 sec
-    // whole tree traverse: 100 000 times, 2.44 sec // TreeNode implementation
-    // whole tree traverse: 100 000 times, 1 sec // BuildAction tree implementation
-
     [Test]
     [Ignore("Run manually only")]
     [DotMemoryUnit(SavingStrategy = SavingStrategy.OnCheckFail, CollectAllocations = true)]
@@ -80,10 +76,11 @@ namespace Tests.Performance
           .AsCreated<MemoryStream>()
           .UsingParameters(0);
 
-      var sw = new Stopwatch();
-      sw.Start();
       
       var mem1 = dotMemory.Check();
+      
+      var sw = new Stopwatch();
+      sw.Start();
 
       for (var i = 0; i < 100_000; i++)
       {
@@ -91,10 +88,12 @@ namespace Tests.Performance
         Assert.AreSame(obj, expected);
       }
 
+      sw.Stop();
+      
       dotMemory.Check(memory => Console.WriteLine(memory.GetTrafficFrom(mem1)));
       dotMemoryApi.SaveCollectedData();
+
       
-      sw.Stop();
       Console.WriteLine(sw.Elapsed);
     }
 

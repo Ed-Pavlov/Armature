@@ -59,10 +59,12 @@ namespace Armature.Core.BuildActions.Creation
           }
           catch (TargetInvocationException exception)
           {
-            if (exception.InnerException != null)
-              throw new Exception("", exception.InnerException);
+            if (exception.InnerException == null) throw;
 
-            throw;
+            // extract original exception from TargetInvocationException and throw it,
+            // store original stack trace as exception data since throwing will replace it
+            exception.InnerException.AddData(ExceptionData.OriginalStackTrace, exception.StackTrace);
+            throw exception.InnerException;
           }
         }
       }

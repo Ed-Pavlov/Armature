@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using Armature.Core.Common;
 using Armature.Core.Logging;
 using JetBrains.Annotations;
@@ -108,6 +109,11 @@ namespace Armature.Core
 
           Log.WriteLine(LogLevel.Verbose, "");
           return build(actions.Merge(auxActions));
+        }
+        catch (Exception exception)
+        {
+          AddDebugData(exception);
+          throw;
         }
         finally
         {
@@ -219,5 +225,17 @@ namespace Armature.Core
       }
       return block;
     }
+    
+    private void AddDebugData(Exception exception)
+    {
+      if(exception.Data.Contains(ExceptionData.BuildSequence)) return;
+
+      var sb = new StringBuilder();
+      foreach (var unitInfo in _buildSequence)
+        sb.AppendLine(unitInfo.ToString());
+
+      exception.AddData(ExceptionData.BuildSequence, sb.ToString());
+    }
+
   }
 }
