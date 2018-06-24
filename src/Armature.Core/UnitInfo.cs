@@ -23,13 +23,25 @@ namespace Armature.Core
       Token = token;
     }
 
+    /// <summary>
+    /// Matching, unlike equality, takes into consideration <see cref="Armature.Core.Token.Any"/>. Use <see cref="Equals(UnitInfo)"/>
+    /// to add build plans and <see cref="Matches"/> to build a unit
+    /// </summary>
+    public bool Matches(UnitInfo other)
+    {
+      if (ReferenceEquals(null, other)) return false;
+      if (ReferenceEquals(this, other)) return true;
+
+      return Equals(Id, other.Id) && (Equals(Token, other.Token) || Equals(Token, Core.Token.Any) || Equals(Core.Token.Any, other.Token));
+    }
+    
     [DebuggerStepThrough]
     public bool Equals(UnitInfo other)
     {
       if (ReferenceEquals(null, other)) return false;
       if (ReferenceEquals(this, other)) return true;
 
-      return Equals(Id, other.Id) && (Equals(Token, other.Token) || Equals(Token, Core.Token.Any) || Equals(other.Token, Core.Token.Any));
+      return Equals(Id, other.Id) && Equals(Token, other.Token);
     }
 
     [DebuggerStepThrough]

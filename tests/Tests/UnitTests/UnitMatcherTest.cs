@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace Tests.UnitTests
 {
-  public class UnitMatcherTest
+  public class UnitInfoTest
   {
     [Test]
     public void should_be_equal_with_null_id()
@@ -14,6 +14,9 @@ namespace Tests.UnitTests
 
       Equals(left, right).Should().BeTrue();
       Equals(right, left).Should().BeTrue();
+      
+      left.Matches(right).Should().BeTrue();
+      right.Matches(left).Should().BeTrue();
     }
 
     [Test]
@@ -24,6 +27,9 @@ namespace Tests.UnitTests
 
       Equals(left, right).Should().BeTrue();
       Equals(right, left).Should().BeTrue();
+      
+      left.Matches(right).Should().BeTrue();
+      right.Matches(left).Should().BeTrue();
     }
 
     [Test]
@@ -34,16 +40,22 @@ namespace Tests.UnitTests
 
       Equals(left, right).Should().BeTrue();
       Equals(right, left).Should().BeTrue();
+      
+      left.Matches(right).Should().BeTrue();
+      right.Matches(left).Should().BeTrue();
     }
 
     [Test]
-    public void should_be_equal_if_token_any_provided()
+    public void should_not_be_equal_if_token_any_provided()
     {
       var left = new UnitInfo(null, "token");
       var right = new UnitInfo(null, Token.Any);
 
-      Equals(left, right).Should().BeTrue();
-      Equals(right, left).Should().BeTrue();
+      Equals(left, right).Should().BeFalse();
+      Equals(right, left).Should().BeFalse();
+      
+      left.Matches(right).Should().BeTrue();
+      right.Matches(left).Should().BeTrue();
     }
 
     [Test]
@@ -54,6 +66,9 @@ namespace Tests.UnitTests
 
       Equals(left, right).Should().BeFalse();
       Equals(right, left).Should().BeFalse();
+      
+      left.Matches(right).Should().BeFalse();
+      right.Matches(left).Should().BeFalse();
     }
 
     [Test]
@@ -64,6 +79,9 @@ namespace Tests.UnitTests
 
       Equals(left, right).Should().BeFalse();
       Equals(right, left).Should().BeFalse();
+      
+      left.Matches(right).Should().BeFalse();
+      right.Matches(left).Should().BeFalse();
     }
   }
 }

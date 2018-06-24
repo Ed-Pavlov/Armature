@@ -15,12 +15,14 @@ namespace Armature
   {
     public TreatingTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
 
+#pragma warning disable 1574
     /// <summary>
     ///   For all who depends on unit of type passed into <see cref="BuildPlansCollectionExtension.Treat"/> inject object of this type
     ///   created by default strategy.
     ///   See <see cref="Default.CreationBuildAction"/> for details.
     ///   Tune plan of building it by subsequence calls.
     /// </summary>
+#pragma warning restore 1574
     public Tuner AsIs()
     {
       UnitSequenceMatcher.AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
@@ -32,10 +34,12 @@ namespace Armature
     /// </summary>
     public void AsInstance([CanBeNull] T instance) => UnitSequenceMatcher.AddBuildAction(BuildStage.Cache, new SingletonBuildAction(instance));
 
+#pragma warning disable 1574
     /// <summary>
     ///   For all who depends on unit of type passed into <see cref="BuildPlansCollectionExtension.Treat"/> inject object of type <paramref name="type"/>.
     ///   Tune plan of creating the object by subsequence calls.
     /// </summary>
+#pragma warning restore 1574
     public CreationTuner As([NotNull] Type type, object token = null)
     {
       UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectTypeBuildAction(type, token));
@@ -48,20 +52,24 @@ namespace Armature
     /// </summary>
     public CreationTuner As<TRedirect>(object token = null) => As(typeof(TRedirect), token);
 
+#pragma warning disable 1574
     /// <summary>
     ///   For all who depends on unit of type passed into <see cref="BuildPlansCollectionExtension.Treat"/> inject object of type
     ///   <paramref name="type"/> created by default strategy.
     ///   See <see cref="Default.CreationBuildAction"/> for details.
     ///   Tune plan of building it by subsequence calls.
     /// </summary>
+#pragma warning restore 1574
     public Tuner AsCreated(Type type, object token = null) => As(type, token).CreatedByDefault();
     
+#pragma warning disable 1574
     /// <summary>
     ///   For all who depends on unit of type passed into <see cref="BuildPlansCollectionExtension.Treat"/> inject object of type
     ///   <typeparamref name="TRedirect" /> created by default strategy.
     ///   See <see cref="Default.CreationBuildAction"/> for details.
     ///   Tune plan of building it by subsequence calls.
     /// </summary>
+#pragma warning restore 1574
     public Tuner AsCreated<TRedirect>(object token = null) => AsCreated(typeof(TRedirect), token);
 
     /// <summary>

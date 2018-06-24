@@ -97,6 +97,27 @@ namespace Tests.Performance
       Console.WriteLine(sw.Elapsed);
     }
 
+    [Test, Timeout(500)]
+    public void AddOrGetUnitTestMatcherTest()
+    {
+      const int count = 50_000;
+
+      var builder = new Builder("stage");
+      for (var i = 0; i < count; i++)
+      {
+        var u1 = new UnitInfo(i, null);
+        var u2 = new UnitInfo(i, i);
+        var str = i.ToString();
+        var u3 = new UnitInfo(str, null);
+        var u4 = new UnitInfo(str, str);
+
+        builder.Treat(u1).AsCreatedWith(() => null);
+        builder.Treat(u2).AsInstance(null);
+        builder.Treat(u3).AsCreatedWith(() => null);
+        builder.Treat(u4).AsCreatedWith(() => null).AsSingleton();
+      }
+    }
+    
     private static Builder CreateTarget(Builder parent = null)
     {
       var treatAll = new AnyUnitSequenceMatcher

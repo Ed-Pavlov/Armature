@@ -15,7 +15,7 @@ namespace Armature.Core.UnitMatchers
     [DebuggerStepThrough]
     public UnitInfoMatcher([NotNull] UnitInfo unitInfo) => UnitInfo = unitInfo ?? throw new ArgumentNullException(nameof(unitInfo));
 
-    public virtual bool Matches(UnitInfo unitInfo) => UnitInfo.Equals(unitInfo);
+    public virtual bool Matches(UnitInfo unitInfo) => UnitInfo.Matches(unitInfo);
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), UnitInfo.ToLogString());
