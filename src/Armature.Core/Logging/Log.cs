@@ -103,7 +103,7 @@ namespace Armature.Core.Logging
     ///   use it calculating arguments for logging takes a time.
     /// </summary>
     [StringFormatMethod("format")]
-    public static void WriteLine(LogLevel logLevel, Func<string> createMessage)
+    public static void WriteLine(LogLevel logLevel, [InstantHandle]Func<string> createMessage)
     {
       if (logLevel > _logLevel) return;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Armature.Core.Common;
@@ -23,7 +24,7 @@ namespace Armature.Core.BuildActions
   public class OrderedBuildActionContainer : IBuildAction, IEnumerable
   {
     private readonly List<IBuildAction> _buildActions = new List<IBuildAction>();
-    private IBuildAction _effectiveBuildAction;
+    private readonly ConcurrentDictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new ConcurrentDictionary<IBuildSession, IBuildAction>();
 
     public void Process(IBuildSession buildSession)
     {
@@ -39,7 +40,7 @@ namespace Armature.Core.BuildActions
           else
           {
             Log.WriteLine(LogLevel.Info, () => string.Format("redirected execution to {0}", buildAction));
-            _effectiveBuildAction = buildAction;
+            _effectiveBuildActions.TryAdd(buildSession, buildAction);
             break;
           }
         }
@@ -70,11 +71,10 @@ namespace Armature.Core.BuildActions
 
     public void PostProcess(IBuildSession buildSession)
     {
-      if (_effectiveBuildAction != null)
+      if (_effectiveBuildActions.TryRemove(buildSession, out var effectiveBuildAction))
       {
-        _effectiveBuildAction.PostProcess(buildSession);
-        Log.WriteLine(LogLevel.Info, () => string.Format("redirected execution to {0}", _effectiveBuildAction));
-        _effectiveBuildAction = null;
+        effectiveBuildAction.PostProcess(buildSession);
+        Log.WriteLine(LogLevel.Info, () => string.Format("redirected execution to {0}", effectiveBuildAction));
       }
     }
 
