@@ -104,7 +104,7 @@ namespace Tests.Functional
         {
           // inject into constructor
           new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
+            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
 
 
           new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)

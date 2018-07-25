@@ -3,7 +3,6 @@ using System.Linq;
 using Armature;
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
-using Armature.Core.Logging;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
@@ -80,7 +79,7 @@ namespace Tests.Functional
         new AnyUnitSequenceMatcher
         {
           new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance)
+            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
         }
       };
 

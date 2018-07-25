@@ -20,7 +20,7 @@
     <DocumentationFile>bin\Debug\Armature.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <NoWarn>1591,1574</NoWarn>
+    <NoWarn>1591,0419</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Armature.Core\Armature.Core.csproj" />

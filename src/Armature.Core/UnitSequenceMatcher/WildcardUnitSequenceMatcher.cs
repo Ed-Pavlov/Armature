@@ -8,7 +8,7 @@ namespace Armature.Core.UnitSequenceMatcher
   /// <summary>
   ///   Moves along the building units sequence from left to right skipping units until it encounters a matching unit. Behaves like string search with wildcard.
   /// </summary>
-  public class WildcardUnitSequenceMatcher : UnitSequenceMathcherWithChildren, IEquatable<WildcardUnitSequenceMatcher>
+  public class WildcardUnitSequenceMatcher : UnitSequenceMatcherWithChildren, IEquatable<WildcardUnitSequenceMatcher>
   {
     private readonly IUnitMatcher _matcher;
 
@@ -39,7 +39,7 @@ namespace Armature.Core.UnitSequenceMatcher
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}.{1}", GetType().Name, _matcher);
+    public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().Name, Weight, _matcher);
 
     #region Equality
     public bool Equals(WildcardUnitSequenceMatcher other)

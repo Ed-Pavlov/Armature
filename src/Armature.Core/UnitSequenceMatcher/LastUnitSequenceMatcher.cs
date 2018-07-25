@@ -51,7 +51,7 @@ namespace Armature.Core.UnitSequenceMatcher
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}.{1}", GetType().GetShortName(), _unitMatcher);
+    public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().GetShortName(), Weight, _unitMatcher);
 
     #region Equality
     private bool Equals(LastUnitSequenceMatcher other)

@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Armature.Core.Common;
+using Armature.Core.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Core.UnitSequenceMatcher
@@ -52,5 +52,8 @@ namespace Armature.Core.UnitSequenceMatcher
 
       return result;
     }
+
+    [DebuggerStepThrough]
+    public override string ToString() => string.Format("{0}<{1:n0}>", GetType().GetShortName(), Weight);
   }
 }

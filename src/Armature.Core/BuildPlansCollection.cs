@@ -70,9 +70,9 @@ namespace Armature.Core
     public void Add([NotNull] IUnitSequenceMatcher unitSequenceMatcher) => Children.Add(unitSequenceMatcher);
 
     /// <summary>
-    ///   Reuse implementation of <see cref="UnitSequenceMathcherWithChildren" /> to implement <see cref="BuildPlansCollection" /> public interface
+    ///   Reuse implementation of <see cref="UnitSequenceMatcherWithChildren" /> to implement <see cref="BuildPlansCollection" /> public interface
     /// </summary>
-    private class Root : UnitSequenceMathcherWithChildren
+    private class Root : UnitSequenceMatcherWithChildren
     {
       [DebuggerStepThrough]
       public Root() : base(0) { }

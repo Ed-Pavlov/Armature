@@ -72,7 +72,7 @@ namespace Armature
     {
       UnitSequenceMatcher
         .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(ConstructorMatcher.Instance))
-        .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance);
+        .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance);
       return this;
     }
 

@@ -3,7 +3,6 @@ using Armature;
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
 using Armature.Core.BuildActions.Parameter;
-using Armature.Core.Logging;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitSequenceMatcher;
@@ -159,7 +158,7 @@ namespace Tests.Functional
         new AnyUnitSequenceMatcher
         {
           new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongesConstructorBuildAction.Instance),
+            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
 
           new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
             .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)

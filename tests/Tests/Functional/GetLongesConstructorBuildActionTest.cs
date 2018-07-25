@@ -43,7 +43,7 @@ namespace Tests.Functional
               new OrderedBuildActionContainer
               {
                 new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-                GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
+                GetLongestConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
               }),
         }
       };

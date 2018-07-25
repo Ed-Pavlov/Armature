@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Common;
+using Armature.Core.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Core.UnitSequenceMatcher
 {
   /// <summary>
   ///   Matches the first unit in the sequence and only if it matches pass the tail of building
-  ///   sequence to its <see cref="UnitSequenceMathcherWithChildren.Children" />
+  ///   sequence to its <see cref="UnitSequenceMatcherWithChildren.Children" />
   /// </summary>
-  public class StrictUnitSequenceMatcher : UnitSequenceMathcherWithChildren, IEquatable<StrictUnitSequenceMatcher>
+  public class StrictUnitSequenceMatcher : UnitSequenceMatcherWithChildren, IEquatable<StrictUnitSequenceMatcher>
   {
     private readonly IUnitMatcher _matcher;
 
@@ -29,7 +30,7 @@ namespace Armature.Core.UnitSequenceMatcher
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}.{1}", GetType().Name, _matcher);
+    public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().GetShortName(), Weight, _matcher);
 
     #region Equality
     public bool Equals(StrictUnitSequenceMatcher other)

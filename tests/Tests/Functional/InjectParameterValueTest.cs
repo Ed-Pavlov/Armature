@@ -188,7 +188,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource("ForParameterSource")]
-    public void should_use_resolver(ParameterValueTuner forParameter)
+    public void should_use_factory_method(ParameterValueTuner forParameter)
     {
       const int expectedInt = 392;
 
@@ -322,6 +322,31 @@ namespace Tests.Functional
     }
 
     [Test]
+    public void dependency_should_use_personal_parameter_even_if_matching_path_is_shorter()
+    {
+      const string expected = "expected";
+
+      //--arrange
+      var target = CreateTarget();
+
+      target
+        .Treat<Subject>() // short matching path 
+        .AsIs()
+        .UsingParameters(expected);
+
+      target
+        .Treat<ISubject1>() // long matching path
+        .AsCreated<LevelTwo>()
+        .BuildingWhich(_ => _.TreatAll().UsingParameters(expected + "bad"));
+
+      // --act
+      var actual = (LevelTwo) target.Build<ISubject1>();
+
+      // --assert
+      actual.LevelOne.Text.Should().Be(expected, "Because {0} is registered for {1}", expected, typeof(Subject).Name);
+    }
+
+    [Test]
     public void should_inject_default_value_into_first_parameter()
     {
       const int expectedInt = Subject.DefaultInt - 1;
@@ -410,7 +435,7 @@ namespace Tests.Functional
               new OrderedBuildActionContainer
               {
                 new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-                GetLongesConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
+                GetLongestConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
               }),
 
 

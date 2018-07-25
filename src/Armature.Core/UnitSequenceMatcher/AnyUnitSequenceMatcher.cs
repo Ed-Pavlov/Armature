@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Diagnostics;
 using Armature.Core.Common;
+using Armature.Core.Logging;
 using JetBrains.Annotations;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Armature.Core.UnitSequenceMatcher
 {
@@ -15,12 +17,12 @@ namespace Armature.Core.UnitSequenceMatcher
   ///   new AnyUnitSequenceMatcher
   ///   {
   ///   new LeafUnitSequenceMatcher(ConstructorMatcher.Instance, 0)
-  ///   .AddBuildAction(BuildStage.Create, new GetLongesConstructorBuildAction()),
+  ///   .AddBuildAction(BuildStage.Create, new GetLongestConstructorBuildAction()),
   ///   new LeafUnitSequenceMatcher(ParameterMatcher.Instance, ParameterMatchingWeight.Lowest)
   ///   .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
   ///   };
   /// </remarks>
-  public class AnyUnitSequenceMatcher : UnitSequenceMathcherWithChildren, IEnumerable
+  public class AnyUnitSequenceMatcher : UnitSequenceMatcherWithChildren, IEnumerable
   {
     public AnyUnitSequenceMatcher() : this(UnitSequenceMatchingWeight.AnyUnit) { }
 
@@ -34,9 +36,28 @@ namespace Armature.Core.UnitSequenceMatcher
     public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
       var lastItemAsTail = buildingUnitsSequence.GetTail(buildingUnitsSequence.Length - 1);
+      var ownActions = GetOwnActions(inputWeight);
+      MatchedBuildActions childrenActions;
 
-      return GetChildrenActions(inputWeight + Weight, lastItemAsTail)
-        .Merge(GetOwnActions(inputWeight));
+      
+
+      if (ownActions == null)
+      {
+        Log.WriteLine(LogLevel.Verbose, this.ToString); // pass group method, do not call ToString
+        Log.AddIndent();
+        childrenActions = GetChildrenActions(inputWeight + Weight, lastItemAsTail);
+      }
+      else
+      {
+        using (Log.Block(LogLevel.Verbose, this.ToString)) // pass group method, do not call ToString
+        {
+          // ReSharper disable once RedundantArgumentDefaultValue
+          ownActions.ToLog(LogLevel.Verbose);
+          childrenActions = GetChildrenActions(inputWeight + Weight, lastItemAsTail);
+        }
+      }
+
+      return childrenActions.Merge(ownActions);
     }
 
     public void Add([NotNull] IUnitSequenceMatcher unitSequenceMatcher) => Children.Add(unitSequenceMatcher);

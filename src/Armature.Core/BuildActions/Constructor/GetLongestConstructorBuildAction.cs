@@ -9,11 +9,11 @@ namespace Armature.Core.BuildActions.Constructor
   /// <summary>
   ///   "Builds" a constructor Unit of the currently building Unit with biggest number of parameters
   /// </summary>
-  public class GetLongesConstructorBuildAction : IBuildAction
+  public class GetLongestConstructorBuildAction : IBuildAction
   {
-    public static readonly IBuildAction Instance = new GetLongesConstructorBuildAction();
+    public static readonly IBuildAction Instance = new GetLongestConstructorBuildAction();
 
-    private GetLongesConstructorBuildAction() { }
+    private GetLongestConstructorBuildAction() { }
 
     public void Process(IBuildSession buildSession)
     {

@@ -19,8 +19,8 @@ namespace Armature.Core.UnitSequenceMatcher
   {
     protected static int Step = 100_000;
     protected static int Lowest = 0;
-    protected static int Any = Lowest - Step;
-    protected static int WildcardOpenGeneric = Any + Step;
+    protected static int Any = Lowest - Step * 10;
+    protected static int WildcardOpenGeneric = Lowest + Step;
     protected static int WildcardBaseType = WildcardOpenGeneric + Step;
     protected static int Wildcard = WildcardBaseType + Step;
     protected static int Strict = Wildcard + Step;

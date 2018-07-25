@@ -11,11 +11,11 @@ namespace Armature.Core.UnitSequenceMatcher
   /// <summary>
   ///   Base class exposing the collection of children matchers, gathering and merging build actions from children with its own.
   /// </summary>
-  public abstract class UnitSequenceMathcherWithChildren : UnitSequenceMatcher
+  public abstract class UnitSequenceMatcherWithChildren : UnitSequenceMatcher
   {
     private HashSet<IUnitSequenceMatcher> _children;
 
-    protected UnitSequenceMathcherWithChildren(int weight) : base(weight) { }
+    protected UnitSequenceMatcherWithChildren(int weight) : base(weight) { }
 
     private HashSet<IUnitSequenceMatcher> LazyChildren { [DebuggerStepThrough] get => _children ?? (_children = new HashSet<IUnitSequenceMatcher>()); }
 
