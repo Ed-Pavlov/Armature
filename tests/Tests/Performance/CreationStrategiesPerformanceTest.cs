@@ -113,7 +113,7 @@ namespace Tests.Performance
     {
       var parameters = ctor.GetParameters(); // Get the parameters of the constructor
       var args = new Expression[parameters.Length];
-      var param = Expression.Parameter(typeof(object[])); // The object[] paramter to the Func
+      var param = Expression.Parameter(typeof(object[])); // The object[] parameter to the Func
 
       // get the item from the array in the parameter and cast it to the correct type for the constructor
       for (var i = 0; i != parameters.Length; ++i)

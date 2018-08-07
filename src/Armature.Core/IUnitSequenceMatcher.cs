@@ -21,7 +21,7 @@ namespace Armature.Core
     /// </summary>
     /// <param name="buildingUnitsSequence">The sequence of units representing the context of currently building unit</param>
     /// <param name="inputWeight">The weight of matching which used by children matchers to calculate a final weight of matching</param>
-    /// <returns>Returns a collections of weighted build actions grouped by a bulding stage</returns>
+    /// <returns>Returns a collections of weighted build actions grouped by a building stage</returns>
     [CanBeNull]
     MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight);
 

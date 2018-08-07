@@ -8,7 +8,7 @@ namespace Armature
   ///   Represents predefined build stages used by Armature framework. This list can be extended or completely replaced
   ///   if another framework is implemented on an Armature.Core base
   /// </summary>
-  /// <remarks>Use objects but int or enum in order to avoid memory trafiic on boxing</remarks>
+  /// <remarks>Use objects but int or enum in order to avoid memory traffic on boxing</remarks>
   public class BuildStage
   {
     /// <summary>

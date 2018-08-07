@@ -99,7 +99,7 @@ namespace Tests.Performance
     }
 
     
-    // There were 71994021 calss of Equals on count == 3 000. Count of GetHashCode was exactly the count of IUnitSequenceMatchers added into children collection
+    // There were 71994021 class of Equals on count == 3 000. Count of GetHashCode was exactly the count of IUnitSequenceMatchers added into children collection
     // After the fix it becomes 42 of Equals and 23999 of GetHashCode 
     [Test]
     public void AddOrGetUnitTestMatcherTest()

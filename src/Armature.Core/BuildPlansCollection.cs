@@ -17,13 +17,13 @@ namespace Armature.Core
   ///   This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
   ///   new Builder(...)
   ///   {
-  ///   new AnyUnitSequenceMatcher
-  ///   {
-  ///   new LeafUnitSequenceMatcher(ConstructorMatcher.Instance, 0)
-  ///   .AddBuildAction(BuildStage.Create, new GetLongesConstructorBuildAction()),
-  ///   new LeafUnitSequenceMatcher(ParameterMatcher.Instance, ParameterMatchingWeight.Lowest)
-  ///   .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
-  ///   }
+  ///     new AnyUnitSequenceMatcher
+  ///     {
+  ///       new LeafUnitSequenceMatcher(ConstructorMatcher.Instance, 0)
+  ///         .AddBuildAction(BuildStage.Create, new GetLongestConstructorBuildAction()),
+  ///       new LeafUnitSequenceMatcher(ParameterMatcher.Instance, ParameterMatchingWeight.Lowest)
+  ///         .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
+  ///     }
   ///   };
   /// </remarks>
   public class BuildPlansCollection : IUnitSequenceMatcher, IEnumerable

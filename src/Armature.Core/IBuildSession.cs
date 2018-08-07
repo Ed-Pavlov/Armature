@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Inteface of build session to pass into <see cref="IBuildAction" />
+  ///   Interface of build session to pass into <see cref="IBuildAction" />
   /// </summary>
   public interface IBuildSession
   {

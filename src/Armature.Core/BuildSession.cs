@@ -43,7 +43,7 @@ namespace Armature.Core
     ///   Builds a Unit represented by <paramref name="unitInfo" />
     /// </summary>
     /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
-    /// <param name="buildStages">The conveyer of build stages. See <see cref="Builder" /> for details</param>
+    /// <param name="buildStages">The conveyor of build stages. See <see cref="Builder" /> for details</param>
     /// <param name="buildPlans">Build plans used to build a unit</param>
     /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method </param>
     /// <param name="parentBuilders">
@@ -61,7 +61,7 @@ namespace Armature.Core
     ///   Builds all Units represented by <paramref name="unitInfo" />
     /// </summary>
     /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
-    /// <param name="buildStages">The conveyer of build stages. See <see cref="Builder" /> for details</param>
+    /// <param name="buildStages">The conveyor of build stages. See <see cref="Builder" /> for details</param>
     /// <param name="buildPlans">Build plans used to build a unit</param>
     /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method </param>
     /// <param name="parentBuilders">
@@ -128,7 +128,7 @@ namespace Armature.Core
       if (matchedBuildActions == null)
         return BuildViaParentBuilder(_buildSequence.Last());
 
-      // builder to pass into IBuldActon.Execute
+      // builder to pass into IBuildActon.Execute
       var unitBuilder = new Interface(_buildSequence, this);
       var performedActions = new Stack<IBuildAction>();
 

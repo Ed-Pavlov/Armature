@@ -9,7 +9,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.BuildActions
 {
   /// <summary>
-  ///   This container is used mostly for "default" build actions applyed to any unit under construction.
+  ///   This container is used mostly for "default" build actions applied to any unit under construction.
   ///   For example by default we want to find attributed constructor and if there is no any get longest constructor, set these two actions in right order
   ///   into <see cref="OrderedBuildActionContainer" /> to reach such behaviour.
   /// </summary>
@@ -18,7 +18,7 @@ namespace Armature.Core.BuildActions
   ///   new OrderedBuildActionContainer
   ///   {
   ///   new GetInjectPointConstructorBuildAction(),
-  ///   new GetLongesConstructorBuildAction()
+  ///   new GetLongestConstructorBuildAction()
   ///   }
   /// </remarks>
   public class OrderedBuildActionContainer : IBuildAction, IEnumerable

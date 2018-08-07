@@ -30,7 +30,7 @@ namespace Armature.Core.UnitSequenceMatcher
         if (_matcher.Matches(unitInfo))
           return GetActions(buildingUnitsSequence.GetTail(i), realWeight);
 
-        // increase weigth on each "skipping" step, it will lead that "deeper" context has more weight then more common
+        // increase weight on each "skipping" step, it will lead that "deeper" context has more weight then more common
         // it is needed when some Unit is registered several times, Unit under construction should receive that one which is "closer" to it
         realWeight++; 
       }

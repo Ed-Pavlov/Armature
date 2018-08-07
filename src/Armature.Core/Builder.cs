@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 namespace Armature.Core
 {
   /// <summary>
-  ///   The builder of units. It is the convinient way to keep corresponding build plans (<see cref="BuildPlansCollection" />),
+  ///   The builder of units. It is the convenient way to keep corresponding build plans (<see cref="BuildPlansCollection" />),
   ///   build stages, and parent builders to pass into <see cref="BuildSession" /> which is instantiated independently.
   ///   Building a unit it goes over all "build stages", for each stage it gets a build action if any and executes it see
   ///   <see cref="Builder(IEnumerable{object}, Builder[])" /> for details.
