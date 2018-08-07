@@ -39,21 +39,21 @@ namespace Armature.Core.UnitSequenceMatcher
       var ownActions = GetOwnActions(inputWeight);
       MatchedBuildActions childrenActions;
 
-      
-
+      // decrease matching weight depending on how many unit in the sequence were skipped by this matcher
+      var unitsToSkip = buildingUnitsSequence.Length;
       if (ownActions == null)
       {
-        Log.WriteLine(LogLevel.Verbose, this.ToString); // pass group method, do not call ToString
-        Log.AddIndent();
-        childrenActions = GetChildrenActions(inputWeight + Weight, lastItemAsTail);
+        Log.WriteLine(LogLevel.Verbose, this.ToString, unitsToSkip); // pass group method, do not call ToString
+        using(Log.AddIndent())
+          childrenActions = GetChildrenActions(inputWeight + Weight * unitsToSkip, lastItemAsTail);
       }
       else
       {
-        using (Log.Block(LogLevel.Verbose, this.ToString)) // pass group method, do not call ToString
+        using (Log.Block(LogLevel.Verbose, this.ToString, unitsToSkip)) // pass group method, do not call ToString
         {
           // ReSharper disable once RedundantArgumentDefaultValue
           ownActions.ToLog(LogLevel.Verbose);
-          childrenActions = GetChildrenActions(inputWeight + Weight, lastItemAsTail);
+          childrenActions = GetChildrenActions(inputWeight + Weight * unitsToSkip, lastItemAsTail);
         }
       }
 
@@ -61,6 +61,8 @@ namespace Armature.Core.UnitSequenceMatcher
     }
 
     public void Add([NotNull] IUnitSequenceMatcher unitSequenceMatcher) => Children.Add(unitSequenceMatcher);
+
+    private string ToString(int unitsToSkip) => string.Format("{0}<x{1:n0}>", base.ToString(), unitsToSkip);
 
     #region Equality
     [DebuggerStepThrough]

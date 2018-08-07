@@ -51,6 +51,15 @@ namespace Armature.Core.Logging
     }
 
     /// <summary>
+    ///   Used to make a named and indented "block" in log data
+    /// </summary>
+    public static IDisposable Block<T1>(LogLevel logLevel, Func<T1, string> getName, T1 v1)
+    {
+      WriteLine(logLevel, getName, v1);
+      return logLevel <= _logLevel ? AddIndent(true) : new DumbDisposable();
+    }
+
+    /// <summary>
     ///   Used to make an indented "block" in log data
     /// </summary>
     public static IDisposable AddIndent(bool newBlock = false, int count = 1) => new Indenter(newBlock, count);
@@ -113,6 +122,18 @@ namespace Armature.Core.Logging
       if (logLevel > _logLevel) return;
 
       System.Diagnostics.Trace.WriteLine(GetIndent() + createMessage());
+    }
+
+    /// <summary>
+    ///   This message calls <paramref name="createMessage"/> only if Logging is enabled for <paramref name="logLevel"/>,
+    ///   use it calculating arguments for logging takes a time.
+    /// </summary>
+    [StringFormatMethod("format")]
+    public static void WriteLine<T1>(LogLevel logLevel, [InstantHandle]Func<T1, string> createMessage, T1 v1)
+    {
+      if (logLevel > _logLevel) return;
+
+      System.Diagnostics.Trace.WriteLine(GetIndent() + createMessage(v1));
     }
 
     /// <summary>
