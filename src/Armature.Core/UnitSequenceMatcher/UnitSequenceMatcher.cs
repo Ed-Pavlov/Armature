@@ -41,11 +41,10 @@ namespace Armature.Core.UnitSequenceMatcher
 
     [DebuggerStepThrough]
     [CanBeNull]
-    protected MatchedBuildActions GetOwnActions(int inputWeight)
+    protected MatchedBuildActions GetOwnActions(int matchingWeight)
     {
       if (_buildActions == null) return null;
 
-      var matchingWeight = Weight + inputWeight;
       var result = new MatchedBuildActions();
       foreach (var pair in _buildActions)
         result.Add(pair.Key, pair.Value.Select(_ => _.WithWeight(matchingWeight)).ToList());

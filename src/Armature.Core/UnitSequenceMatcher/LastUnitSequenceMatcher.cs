@@ -44,7 +44,7 @@ namespace Armature.Core.UnitSequenceMatcher
 
       using (Log.Block(LogLevel.Verbose, this.ToString)) // pass method group, do not call ToString
       {
-        var buildActions = GetOwnActions(inputWeight);
+        var buildActions = GetOwnActions(Weight + inputWeight);
         buildActions.ToLog();
         return buildActions;
       }

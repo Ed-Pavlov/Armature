@@ -50,7 +50,7 @@ namespace Armature.Core.UnitSequenceMatcher
       }
       else
       {
-        matchedBuildActions = GetOwnActions(inputWeight);
+        matchedBuildActions = GetOwnActions(Weight + inputWeight);
         if (matchedBuildActions == null)
           Log.WriteLine(LogLevel.Trace, () => string.Format("{0}{{not matched}}", this));
         else

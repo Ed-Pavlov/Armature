@@ -35,17 +35,19 @@ namespace Armature.Core.UnitSequenceMatcher
     /// </summary>
     public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
-      var lastItemAsTail = buildingUnitsSequence.GetTail(buildingUnitsSequence.Length - 1);
-      var ownActions = GetOwnActions(inputWeight);
-      MatchedBuildActions childrenActions;
-
-      // decrease matching weight depending on how many unit in the sequence were skipped by this matcher
       var unitsToSkip = buildingUnitsSequence.Length;
+      // decrease matching weight depending on how many unit in the sequence were skipped by this matcher
+      var matchingWeight = inputWeight + Weight * unitsToSkip;
+      
+      var lastItemAsTail = buildingUnitsSequence.GetTail(buildingUnitsSequence.Length - 1);
+      var ownActions = GetOwnActions(matchingWeight);
+      MatchedBuildActions childrenActions;
+      
       if (ownActions == null)
       {
         Log.WriteLine(LogLevel.Verbose, this.ToString, unitsToSkip); // pass group method, do not call ToString
         using(Log.AddIndent())
-          childrenActions = GetChildrenActions(inputWeight + Weight * unitsToSkip, lastItemAsTail);
+          childrenActions = GetChildrenActions(matchingWeight, lastItemAsTail);
       }
       else
       {
@@ -53,7 +55,7 @@ namespace Armature.Core.UnitSequenceMatcher
         {
           // ReSharper disable once RedundantArgumentDefaultValue
           ownActions.ToLog(LogLevel.Verbose);
-          childrenActions = GetChildrenActions(inputWeight + Weight * unitsToSkip, lastItemAsTail);
+          childrenActions = GetChildrenActions(matchingWeight, lastItemAsTail);
         }
       }
 

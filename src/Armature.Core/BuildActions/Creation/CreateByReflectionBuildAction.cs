@@ -62,7 +62,8 @@ namespace Armature.Core.BuildActions.Creation
 
             // extract original exception from TargetInvocationException and throw it,
             // store original stack trace as exception data since throwing will replace it
-            exception.InnerException.AddData(ExceptionData.OriginalStackTrace, exception.StackTrace);
+            exception.InnerException.AddData(ExceptionData.TargetInvocationStackTrace, exception.StackTrace);
+            exception.InnerException.AddData(ExceptionData.OriginalStackTrace, exception.InnerException.StackTrace);
             throw exception.InnerException;
           }
         }
