@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using Armature;
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
 using Armature.Core.BuildActions.Parameter;
+using Armature.Core.Common;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitSequenceMatcher;
@@ -11,7 +13,7 @@ using NUnit.Framework;
 
 namespace Tests.Functional
 {
-  public class MultiParentBuilderTest
+  public class ParentBuilderTest
   {
     [Test]
     public void should_try_build_value_via_all_parent_builders()
@@ -87,7 +89,7 @@ namespace Tests.Functional
       var actual = target.Build<string>();
 
       // --assert
-      actual.Should().Be(expected, "Expected value registered in the parent builder wich passed first");
+      actual.Should().Be(expected, "Expected value registered in the parent builder which passed first");
     }
 
     [Test]
@@ -143,13 +145,52 @@ namespace Tests.Functional
       target
         .Treat<Subject>()
         .AsIs();
-      
+
       // --act
       var actual = target.Build<Subject>();
 
       // --assert
       actual.Should().NotBeNull();
       actual.String.Should().Be(expected);
+    }
+
+    [Test]
+    public void should_report_all_exceptions_from_parent_builders()
+    {
+      var parent1 = new Builder(BuildStage.Create)
+        .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArgumentOutOfRangeException()));
+      
+      var parent2 = new Builder(BuildStage.Create)
+        .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new InvalidProgramException()));
+
+      var target = CreateTarget(parent1, parent2);
+
+      Action action = () => target.Build<string>();
+
+      action.Should()
+        .Throw<ArmatureException>()
+        .Which
+        .Data.Values.Cast<object>()
+        .With(_ => _.SingleOrDefault(exc => exc is ArgumentOutOfRangeException).Should().NotBeNull())
+        .With(_ => _.SingleOrDefault(exc => exc is InvalidProgramException).Should().NotBeNull());
+    }
+
+    [Test]
+    public void should_not_throw_exception_if_one_parent_built_unit()
+    {
+      const string expected = "parent2string";
+      
+      var parent1 = new Builder(BuildStage.Create)
+        .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArgumentOutOfRangeException()));
+
+      var parent2 = new Builder(BuildStage.Cache)
+        .With(builder => builder.Treat<string>().AsInstance(expected));
+
+      var target = CreateTarget(parent1, parent2);
+
+      var actual = target.Build<string>();
+
+      actual.Should().Be(expected);
     }
 
     private static Builder CreateTarget(params Builder[] parents) =>
@@ -159,7 +200,6 @@ namespace Tests.Functional
         {
           new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
             .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-
           new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
             .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
         }

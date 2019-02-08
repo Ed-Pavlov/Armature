@@ -169,6 +169,8 @@ namespace Armature.Core
     {
       if (_parentBuilders == null) return default(BuildResult);
 
+      var exceptions = new List<Exception>();
+
       for (var i = 0; i < _parentBuilders.Length; i++)
         try
         {
@@ -181,10 +183,14 @@ namespace Armature.Core
         }
         catch (Exception)
         {
-          // continue;
+          exceptions.Add(exc);
+          // continue
         }
 
-      return default(BuildResult);
+      var exception = new ArmatureException("Unit is not built");
+      for (var i = 0; i < exceptions.Count; i++)
+        exception.Data.Add($"Exception[{i}]", exceptions[i]);
+      throw exception;
     }
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
