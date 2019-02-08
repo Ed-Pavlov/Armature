@@ -181,7 +181,7 @@ namespace Armature.Core
               return buildResult;
           }
         }
-        catch (Exception)
+        catch (Exception exc)
         {
           exceptions.Add(exc);
           // continue
