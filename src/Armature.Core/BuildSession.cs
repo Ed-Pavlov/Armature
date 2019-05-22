@@ -187,6 +187,9 @@ namespace Armature.Core
           // continue
         }
 
+      if (exceptions.Count == 0)
+        return default(BuildResult);
+      
       var exception = new ArmatureException("Unit is not built");
       for (var i = 0; i < exceptions.Count; i++)
         exception.Data.Add($"Exception[{i}]", exceptions[i]);
