@@ -7,7 +7,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.BuildActions.Creation
 {
   /// <summary>
-  ///   Builds an Unit using reflection
+  ///   Builds a Unit using reflection
   /// </summary>
   public class CreateByReflectionBuildAction : IBuildAction
   {

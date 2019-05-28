@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Represents a result of building of an Unit, null is a valid value of the <see cref="Value" />.
+  ///   Represents a result of building of a Unit, null is a valid value of the <see cref="Value" />.
   /// </summary>
   public struct BuildResult
   {

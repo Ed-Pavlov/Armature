@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 namespace Armature.Core.BuildActions.Creation
 {
   /// <summary>
-  ///   Build action building an Unit using factory method with input parameters
+  ///   Build action building a Unit using factory method with input parameters
   /// </summary>
   public abstract class CreateByFactoryMethodBuildAction : IBuildAction
   {

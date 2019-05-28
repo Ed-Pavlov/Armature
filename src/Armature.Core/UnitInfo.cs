@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Describes an unit to build. <see cref="IUnitSequenceMatcher" /> matches with passed collection of <see cref="UnitInfo" />
+  ///   Describes a unit to build. <see cref="IUnitSequenceMatcher" /> matches with passed collection of <see cref="UnitInfo" />
   /// </summary>
   [Serializable]
   public class UnitInfo : IEquatable<UnitInfo>
