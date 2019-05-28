@@ -38,7 +38,7 @@ namespace Armature.Core
     public ICollection<IUnitSequenceMatcher> Children => _root.Children;
 
     /// <summary>
-    ///   Returns build actions which should be performed to build an unit represented by the last item of <paramref name="buildingUnitsSequence" />
+    ///   Returns build actions which should be performed to build a unit represented by the last item of <paramref name="buildingUnitsSequence" />
     /// </summary>
     /// <param name="buildingUnitsSequence">
     ///   The sequence of units representing a build session, the last one is the unit to be built,

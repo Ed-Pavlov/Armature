@@ -52,7 +52,7 @@ namespace Armature.Core
     /// </summary>
     /// <param name="unitInfo">Building unit "id"</param>
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
-    /// <returns>Returns an instance or null if null is registered as an unit.</returns>
+    /// <returns>Returns an instance or null if null is registered as a unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
     public BuildResult BuildUnit(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null) =>
       Build(unitInfo, auxBuildPlans, BuildSession.BuildUnit, _parentBuilders);
@@ -62,7 +62,7 @@ namespace Armature.Core
     /// </summary>
     /// <param name="unitInfo">Building unit "id"</param>
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
-    /// <returns>Returns an instance or null if null is registered as an unit.</returns>
+    /// <returns>Returns an instance or null if null is registered as a unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
     public IReadOnlyList<object> BuildAllUnits(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null)
     {

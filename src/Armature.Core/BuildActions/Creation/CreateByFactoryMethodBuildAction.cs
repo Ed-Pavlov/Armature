@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 namespace Armature.Core.BuildActions.Creation
 {
   /// <summary>
-  ///   Build action building an Unit using factory method
+  ///   Build action building a Unit using factory method
   /// </summary>
   public class CreateByFactoryMethodBuildAction<TR> : IBuildAction
   {

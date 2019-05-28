@@ -32,7 +32,7 @@ namespace Armature
     public static readonly BuildStage Initialize = new BuildStage("Initialize");
 
     /// <summary>
-    ///   Stage of creating an unit, injects dependencies into a constructor, due it must be called to create the unit
+    ///   Stage of creating a unit, injects dependencies into a constructor, due it must be called to create the unit
     /// </summary>
     public static readonly BuildStage Create = new BuildStage("Create");
 
