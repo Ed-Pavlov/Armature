@@ -62,7 +62,7 @@ namespace Armature.Core.BuildActions
 
       if (!buildSession.BuildResult.HasValue && exceptions.Count > 0)
       {
-        var exception = new ArmatureException("Multiply exceptions occured during processing build actions");
+        var exception = new ArmatureException("Multiple exceptions occured during build actions processing");
         for (var i = 0; i < exceptions.Count; i++)
           exception.AddData(i, exceptions[i]);
         throw exception;
