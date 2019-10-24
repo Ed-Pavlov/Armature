@@ -1,4 +1,5 @@
-﻿using Armature;
+﻿using System;
+using Armature;
 using Armature.Core;
 using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Constructor;
@@ -31,6 +32,21 @@ namespace Tests.Functional
       actual.ExpectedConstructorIsCalled.Should().BeTrue();
     }
 
+    [Test]
+    public void should_not_fail_if_no_constructors()
+    {
+      var target = CreateTarget();
+
+      // --arrange
+      target.Treat<bool>().AsIs();
+      
+      // --act
+      Action action = () => target.Build<bool>();
+     
+      // --assert
+      action.Should().Throw<Exception>().And.Message.Should().Be("Can't find appropriate constructor for type System.Boolean");
+    }
+    
     private static Builder CreateTarget() =>
       new Builder(BuildStage.Create)
       {

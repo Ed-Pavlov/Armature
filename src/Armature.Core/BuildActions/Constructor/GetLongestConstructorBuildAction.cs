@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Armature.Core.Common;
 using Armature.Core.Logging;
 
 namespace Armature.Core.BuildActions.Constructor
@@ -18,8 +19,12 @@ namespace Armature.Core.BuildActions.Constructor
     public void Process(IBuildSession buildSession)
     {
       var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
-      var ctor = GetConstructor(unitType.GetConstructors());
-      buildSession.BuildResult = new BuildResult(ctor);
+      var constructors = unitType.GetConstructors();
+      if (constructors.Length > 0)
+      {
+        var ctor = GetConstructor(constructors);
+        buildSession.BuildResult = new BuildResult(ctor);
+      }
     }
 
     [DebuggerStepThrough]
@@ -30,17 +35,17 @@ namespace Armature.Core.BuildActions.Constructor
       var suitableConstructors = new Dictionary<int, int> {{0, constructors[0].GetParameters().Length}};
       for (var i = 1; i < constructors.Length; i++)
       {
-        var paramentersCount = constructors[i].GetParameters().Length;
+        var parametersCount = constructors[i].GetParameters().Length;
 
         var maxParametersCount = suitableConstructors.First().Value;
-        if (paramentersCount == maxParametersCount)
+        if (parametersCount == maxParametersCount)
         {
-          suitableConstructors.Add(i, paramentersCount);
+          suitableConstructors.Add(i, parametersCount);
         }
-        else if (paramentersCount > maxParametersCount)
+        else if (parametersCount > maxParametersCount)
         {
           suitableConstructors.Clear();
-          suitableConstructors.Add(i, paramentersCount);
+          suitableConstructors.Add(i, parametersCount);
         }
       }
 
