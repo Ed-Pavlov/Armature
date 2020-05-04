@@ -1,6 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFrameworks>netcoreapp2.2;netcoreapp3.1;net472</TargetFrameworks>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\build\armature.public.snk</AssemblyOriginatorKeyFile>
+    <PublicSign>true</PublicSign>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.3.0" />
@@ -12,5 +15,14 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Armature.Core\Armature.Core.csproj" />
     <ProjectReference Include="..\..\src\Armature\Armature.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\build\armature.public.snk">
+      <Link>build\armature.public.snk</Link>
+    </None>
+    <None Remove="Tests.csproj.DotSettings" />
   </ItemGroup>
 </Project>
