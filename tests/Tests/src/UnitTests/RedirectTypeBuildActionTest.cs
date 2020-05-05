@@ -1,7 +1,8 @@
 ﻿using Armature.Core;
 using Armature.Core.BuildActions;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Tests.Common;
 
 namespace Tests.UnitTests
 {
@@ -12,8 +13,8 @@ namespace Tests.UnitTests
     {
       const string expectedToken = "token";
       // --arrange
-      var buildSession = MockRepository.GenerateStub<IBuildSession>();
-      buildSession.Stub(_ => _.BuildSequence).Return(new[] {new UnitInfo(null, Token.Propagate)});
+      var buildSession = A.Fake<IBuildSession>();
+      A.CallTo(() => buildSession.BuildSequence).Returns(new UnitInfo(null, Token.Propagate).AsArray());
 
       var buildAction = new RedirectTypeBuildAction(typeof(int), expectedToken);
 
@@ -21,7 +22,7 @@ namespace Tests.UnitTests
       buildAction.Process(buildSession);
 
       // --assert
-      buildSession.AssertWasCalled(_ => _.BuildUnit(new UnitInfo(typeof(int), expectedToken)));
+      A.CallTo(() => buildSession.BuildUnit(Unit.OfType<int>(expectedToken))).MustHaveHappenedOnceExactly();
     }
   }
 }

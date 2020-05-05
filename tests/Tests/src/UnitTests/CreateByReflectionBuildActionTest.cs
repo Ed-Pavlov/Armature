@@ -2,8 +2,9 @@
 using System.IO;
 using Armature.Core;
 using Armature.Core.BuildActions.Creation;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Tests.Common;
 
 namespace Tests.UnitTests
 {
@@ -15,14 +16,14 @@ namespace Tests.UnitTests
       // --arrange
       var target = CreateByReflectionBuildAction.Instance;
 
-      var buildSession = MockRepository.GenerateStub<IBuildSession>();
-      buildSession.Stub(_ => _.BuildSequence).Return(new[] {new UnitInfo(typeof(IDisposable), null)});
-
+      var buildSession = A.Fake<IBuildSession>();
+      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<IDisposable>().AsArray());
+      
       // --act
       target.Process(buildSession);
 
       // --assert
-      buildSession.AssertWasNotCalled(_ => _.BuildUnit(null), _ => _.IgnoreArguments());
+      A.CallTo(() => buildSession.BuildUnit(null)).WithAnyArguments().MustNotHaveHappened();
     }
 
     [Test]
@@ -31,14 +32,14 @@ namespace Tests.UnitTests
       // --arrange
       var target = CreateByReflectionBuildAction.Instance;
 
-      var buildSession = MockRepository.GenerateStub<IBuildSession>();
-      buildSession.Stub(_ => _.BuildSequence).Return(new[] {new UnitInfo(typeof(Stream), null)});
+      var buildSession = A.Fake<IBuildSession>();
+      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<Stream>().AsArray());
 
       // --act
       target.Process(buildSession);
 
       // --assert
-      buildSession.AssertWasNotCalled(_ => _.BuildUnit(null), _ => _.IgnoreArguments());
+      A.CallTo(() => buildSession.BuildUnit(null)).WithAnyArguments().MustNotHaveHappened();
     }
   }
 }

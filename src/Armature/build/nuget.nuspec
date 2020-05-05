@@ -21,6 +21,9 @@
     </metadata>
     <files>
         <file src="..\bin\release\netstandard2.0\Armature.dll" target="lib\netstandard2.0" />
-        <file src="..\bin\release\Armature.xml" target="lib\netstandard2.0" />
+        <file src="..\bin\release\netstandard2.0\Armature.xml" target="lib\netstandard2.0" />
+        
+        <file src="..\bin\release\net45\Armature.dll" target="lib\net45" />
+        <file src="..\bin\release\net45\Armature.xml" target="lib\net45" />
     </files>
 </package>

@@ -3,9 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
+using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Tests.Common;
 
 namespace Tests.UnitTests
 {
@@ -19,8 +20,8 @@ namespace Tests.UnitTests
       // --arrange
       var target = new GetConstructorByParameterTypesBuildAction(parameterTypes);
 
-      var buildSession = MockRepository.GenerateStub<IBuildSession>();
-      buildSession.Stub(_ => _.BuildSequence).Return(new[] {new UnitInfo(typeof(SampleType), SpecialToken.Constructor)});
+      var buildSession = A.Fake<IBuildSession>();
+      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<SampleType>(SpecialToken.Constructor).AsArray());
 
       // --act
       target.Process(buildSession);
@@ -38,8 +39,8 @@ namespace Tests.UnitTests
       // --arrange
       var target = new GetConstructorByParameterTypesBuildAction(parameterTypes);
 
-      var buildSession = MockRepository.GenerateStub<IBuildSession>();
-      buildSession.Stub(_ => _.BuildSequence).Return(new[] {new UnitInfo(typeof(SampleType), SpecialToken.Constructor)});
+      var buildSession = A.Fake<IBuildSession>();
+      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<SampleType>(SpecialToken.Constructor).AsArray());
 
       // --act
       target.Process(buildSession);
