@@ -12,23 +12,24 @@
         <WarningsAsErrors />
         <NoWarn>1591</NoWarn>
         <DocumentationFile>bin\Release\Armature.Core.xml</DocumentationFile>
+        <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DocumentationFile>bin\Debug\Armature.Core.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
         <NoWarn>1591</NoWarn>
+        <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Armature.Interface\Armature.Interface.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
-    </ItemGroup>
-    <ItemGroup>
       <None Include="..\..\build\armature.public.snk">
         <Link>build\armature.public.snk</Link>
       </None>
+      <None Remove="Armature.Core.csproj.DotSettings" />
     </ItemGroup>
     <ItemGroup>
       <Compile Include="..\GlobalAssemblyInfo.cs">

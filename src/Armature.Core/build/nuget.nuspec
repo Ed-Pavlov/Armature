@@ -9,7 +9,7 @@
         <projectUrl>https://github.com/Ed-ward/Armature</projectUrl>
         <iconUrl>https://user-images.githubusercontent.com/13353926/38953149-18aedc4a-434e-11e8-873c-d98e2e591f0b.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Armature is lightweight and extremely easily extensible dependency injection framework</description>
+        <description>The core part of Armature, can be used to make another frameworks</description>
         <copyright>Copyright © 2018 Ed Pavlov</copyright>
         <tags>dependency-injection dependencyinjection di ioc .NET</tags>
 

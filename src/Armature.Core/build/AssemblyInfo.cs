@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Armature.Core")]
-[assembly: AssemblyDescription("Core part of Armature, can be used to make another frameworks")]
+[assembly: AssemblyDescription("The core part of Armature, can be used to make another frameworks")]
 
 [assembly: InternalsVisibleTo("Tests, PublicKey=" + Public.Key)]
 [assembly: InternalsVisibleTo("Armature, PublicKey=" + Public.Key)]

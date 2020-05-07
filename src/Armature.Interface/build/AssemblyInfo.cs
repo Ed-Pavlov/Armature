@@ -1,4 +1,4 @@
 ﻿using System.Reflection;
 
 [assembly: AssemblyTitle("Armature.Interface")]
-[assembly: AssemblyDescription("Interface part of Armature framework to be used in code which doesn't need Armature implementation part")]
+[assembly: AssemblyDescription("An interface part of Armature framework to use in the code which shouldn't depend on Armature implementation part")]

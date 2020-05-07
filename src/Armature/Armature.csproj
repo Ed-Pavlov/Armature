@@ -18,6 +18,7 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
         <NoWarn>1591,0419</NoWarn>
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Armature.Core\Armature.Core.csproj" />
