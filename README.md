@@ -2,6 +2,8 @@
   <img src="https://enif.beta.teamcity.com/app/rest/builds/buildType:(id:Armature_Build)/statusIcon" alt="Build status"/>
 </a>
 
+![Nuget](https://img.shields.io/nuget/dt/Armature)
+
 # Armature
 
 Lightweight and extremely easily extensible dependency injection framework
