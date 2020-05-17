@@ -1,8 +1,8 @@
-<a href="https://enif.beta.teamcity.com/viewType.html?buildTypeId=Armature_Build&guest=1">
+| ![Nuget](https://img.shields.io/nuget/dt/Armature)|<a href="https://enif.beta.teamcity.com/viewType.html?buildTypeId=Armature_Build&guest=1">
   <img src="https://enif.beta.teamcity.com/app/rest/builds/buildType:(id:Armature_Build)/statusIcon" alt="Build status"/>
-</a>
+</a>|
 
-![Nuget](https://img.shields.io/nuget/dt/Armature)
+___
 
 # Armature
 
