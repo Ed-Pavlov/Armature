@@ -61,7 +61,16 @@ namespace Armature.Core
         if (actions[0].Weight == actions[1].Weight)
         {
           Log.WriteLine(LogLevel.Info, "Two or more building actions have the same weight.");
-          throw new ArmatureException("Two or more building actions have the same weight. Enable logging to find the reason");
+
+          throw new ArmatureException("Two or more building actions have the same weight. "
+                                    + Environment.NewLine
+                                    + $"{actions[0].ToString()}"
+                                    + Environment.NewLine
+                                    + $"{actions[1].ToString()}"
+                                    + Environment.NewLine
+                                    + "See Exception.Data for details or enable logging to find the reason")
+            .AddData(1, actions[0].ToString())
+            .AddData(2, actions[1].ToString());
         }
 
       return actions[0].Entity;

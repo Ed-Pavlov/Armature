@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Armature.Core.Common;
 using JetBrains.Annotations;
 
@@ -14,12 +15,12 @@ namespace Armature.Core
     ///   "Builds" a <see cref="ConstructorInfo" /> for a <see creaf="type" /> by building a unit represented
     ///   by <see cref="UnitInfo" />(<paramref name="type" />, <see cref="SpecialToken.Constructor" />) via current build session.
     /// </summary>
-    public static ConstructorInfo GetConstructorOf([NotNull] this IBuildSession buildSessoin, [NotNull] Type type)
+    public static ConstructorInfo GetConstructorOf([NotNull] this IBuildSession buildSession, [NotNull] Type type)
     {
-      if (buildSessoin == null) throw new ArgumentNullException(nameof(buildSessoin));
+      if (buildSession == null) throw new ArgumentNullException(nameof(buildSession));
       if (type == null) throw new ArgumentNullException(nameof(type));
 
-      var result = buildSessoin.BuildUnit(new UnitInfo(type, SpecialToken.Constructor));
+      var result = buildSession.BuildUnit(new UnitInfo(type, SpecialToken.Constructor));
       if (!result.HasValue)
         throw new Exception(string.Format("Can't find appropriate constructor for type {0}", type));
 
@@ -72,6 +73,7 @@ namespace Armature.Core
     ///   Returns the currently building Unit in the build session
     /// </summary>
     [DebuggerStepThrough]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static UnitInfo GetUnitUnderConstruction(this IBuildSession buildSession) => buildSession.BuildSequence.Last();
   }
 }

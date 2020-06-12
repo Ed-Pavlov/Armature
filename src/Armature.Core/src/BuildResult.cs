@@ -5,18 +5,18 @@ using JetBrains.Annotations;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Represents a result of building of a Unit, null is a valid value of the <see cref="Value" />.
+  /// Represents a result of building of a Unit, null is a valid value of the <see cref="Value" />.
   /// </summary>
-  public struct BuildResult
-  {
-    [CanBeNull]
+  public readonly struct BuildResult
+  { 
+    [CanBeNull] 
     public readonly object Value;
-
+    
     public readonly bool HasValue;
 
     [DebuggerStepThrough]
     public BuildResult([CanBeNull] object value)
-    {
+    { 
       HasValue = true;
       Value = value;
     }

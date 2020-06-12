@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using Armature.Core.Common;
 using Armature.Core.Logging;
 
@@ -62,7 +63,12 @@ namespace Armature.Core.BuildActions
 
       if (!buildSession.BuildResult.HasValue && exceptions.Count > 0)
       {
-        var exception = new ArmatureException("Multiply exceptions occured during processing build actions");
+        var message = new StringBuilder("One or more exceptions occured during processing build actions");
+        message.AppendLine();
+        for (var i = 0; i < exceptions.Count; i++) 
+          message.AppendLine($"Exception#{i + 1}: {exceptions[i].Message}");
+
+        var exception = new ArmatureException(message.ToString());
         for (var i = 0; i < exceptions.Count; i++)
           exception.AddData(i, exceptions[i]);
         throw exception;
