@@ -31,7 +31,7 @@ namespace Armature.Core
       where T : IUnitSequenceMatcher
     {
       if (parent.Children.Contains(unitSequenceMatcher))
-        throw new ArmatureException(string.Format("There is already matcher {0}", unitSequenceMatcher));
+        throw new ArmatureException(string.Format("There is already matcher added '{0}'", unitSequenceMatcher));
 
       parent.Children.Add(unitSequenceMatcher);
       return unitSequenceMatcher;

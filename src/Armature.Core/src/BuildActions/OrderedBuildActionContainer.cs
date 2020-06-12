@@ -62,17 +62,7 @@ namespace Armature.Core.BuildActions
       }
 
       if (!buildSession.BuildResult.HasValue && exceptions.Count > 0)
-      {
-        var message = new StringBuilder("One or more exceptions occured during processing build actions");
-        message.AppendLine();
-        for (var i = 0; i < exceptions.Count; i++) 
-          message.AppendLine($"Exception#{i + 1}: {exceptions[i].Message}");
-
-        var exception = new ArmatureException(message.ToString());
-        for (var i = 0; i < exceptions.Count; i++)
-          exception.AddData(i, exceptions[i]);
-        throw exception;
-      }
+        throw exceptions.Aggregate("One or more exceptions occured during processing build actions");
     }
 
     public void PostProcess(IBuildSession buildSession)

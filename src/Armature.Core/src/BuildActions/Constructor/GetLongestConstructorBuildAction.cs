@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Armature.Core.Common;
 using Armature.Core.Logging;
 
@@ -22,7 +24,7 @@ namespace Armature.Core.BuildActions.Constructor
       var constructors = unitType.GetConstructors();
       if (constructors.Length > 0)
       {
-        var ctor = GetConstructor(constructors);
+        var ctor = GetConstructor(constructors, unitType);
         buildSession.BuildResult = new BuildResult(ctor);
       }
     }
@@ -30,7 +32,7 @@ namespace Armature.Core.BuildActions.Constructor
     [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
 
-    private static ConstructorInfo GetConstructor(ConstructorInfo[] constructors)
+    private static ConstructorInfo GetConstructor(ConstructorInfo[] constructors, Type unitType)
     {
       var suitableConstructors = new Dictionary<int, int> {{0, constructors[0].GetParameters().Length}};
       for (var i = 1; i < constructors.Length; i++)
@@ -51,10 +53,18 @@ namespace Armature.Core.BuildActions.Constructor
 
       if (suitableConstructors.Count != 1)
       {
-        var exc = new ArmatureException("ConstructorsAmbiguty");
+        var message = new StringBuilder($"More than one constructor with max parameters count for type '{unitType.ToLogString()}' found");
+        message.AppendLine();
+        
         var counter = 0;
         foreach (var pair in suitableConstructors)
-          exc.Data.Add("Constructor" + counter++, constructors[pair.Key]);
+          message.AppendLine($"ctor#{counter++}: {constructors[pair.Key]}");
+          
+        var exc = new ArmatureException("ConstructorsAmbiguity");
+
+        counter = 0;
+        foreach (var pair in suitableConstructors)
+          exc.Data.Add(counter++, constructors[pair.Key]);
         throw exc;
       }
 

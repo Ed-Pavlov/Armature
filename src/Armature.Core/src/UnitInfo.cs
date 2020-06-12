@@ -56,6 +56,6 @@ namespace Armature.Core
       }
     }
 
-    public override string ToString() => string.Format("{0}, {1}", Id.ToLogString(), Token.ToLogString());
+    public override string ToString() => string.Format("{0}:{1}", Id.ToLogString(), Token.ToLogString());
   }
 }

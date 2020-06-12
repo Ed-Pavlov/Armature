@@ -43,7 +43,7 @@ namespace Armature.Core
     public static object GetValueForProperty(this IBuildSession buildSession, PropertyInfo propertyInfo)
     {
       var buildResult = buildSession.BuildUnit(new UnitInfo(propertyInfo, SpecialToken.InjectValue));
-      return buildResult.HasValue ? buildResult.Value : throw new ArmatureException(string.Format("Can't build value for property {0}", propertyInfo));
+      return buildResult.HasValue ? buildResult.Value : throw new ArmatureException(string.Format("Can't build value for property '{0}'", propertyInfo));
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ namespace Armature.Core
       {
         var buildResult = buildSession.BuildUnit(new UnitInfo(parameters[i], SpecialToken.InjectValue));
         if (!buildResult.HasValue)
-          throw new ArmatureException(string.Format("Can't build value for parameter {0}", parameters[i]));
+          throw new ArmatureException(string.Format("Can't build value for parameter '{0}'", parameters[i]));
 
         values[i] = buildResult.Value;
       }

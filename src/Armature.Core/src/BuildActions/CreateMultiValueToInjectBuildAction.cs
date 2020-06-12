@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Armature.Core.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions
@@ -49,14 +50,18 @@ namespace Armature.Core.BuildActions
     private static object CreateListInstance(Type listType, int capacity)
     {
       var listConstructor = listType.GetConstructor(IntTypeParam);
+      Debug.Assert(listConstructor != null, nameof(listConstructor) + " != null");
+      
       return listConstructor.Invoke(CreateParameter(capacity));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void FillList(object listInstance, Type listType, Type itemType, IReadOnlyList<BuildResult> values)
+    private static void FillList(object listInstance, Type listType, Type itemType, IEnumerable<BuildResult> values)
     {
       var addMethod = listType.GetMethod(nameof(List<object>.Add), CreateTypeParameter(itemType));
-      foreach (var buildResult in values)
+      Debug.Assert(addMethod != null, nameof(addMethod) + " != null");
+      
+      foreach (var buildResult in values) 
         addMethod.Invoke(listInstance, CreateParameter(Convert.ChangeType(buildResult.Value, itemType)));
     }
 
@@ -85,5 +90,7 @@ namespace Armature.Core.BuildActions
       listType = typeof(List<>).MakeGenericType(type.GenericTypeArguments);
       return type.IsAssignableFrom(listType);
     }
+    
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _token.ToLogString());
   }
 }

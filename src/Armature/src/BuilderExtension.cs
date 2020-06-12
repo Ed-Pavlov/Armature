@@ -49,7 +49,7 @@ namespace Armature
 
       return buildResult.HasValue 
         ? (T)buildResult.Value 
-        : throw new ArmatureException("Can't build unit").AddData("unitInfo", unitInfo);
+        : throw new ArmatureException($"Can't build unit <{unitInfo}>").AddData("unitInfo", unitInfo);
     }
 
     public struct Tokenizer

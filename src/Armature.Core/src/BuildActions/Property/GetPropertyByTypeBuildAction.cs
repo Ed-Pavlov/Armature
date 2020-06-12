@@ -21,10 +21,10 @@ namespace Armature.Core.BuildActions.Property
       var properties = unitType.GetProperties().Where(_ => _.PropertyType == _type).ToArray();
 
       if (properties.Length == 0)
-        throw new ArmatureException($"No property of type {_type.ToLogString()} in type {unitType.ToLogString()}");
+        throw new ArmatureException($"No property of type '{_type.ToLogString()}' in type '{unitType.ToLogString()}'");
 
       if (properties.Length > 1)
-        throw new ArmatureException($"Ambiguity: there are more that one property of type {_type.ToLogString()} in type {unitType.ToLogString()}");
+        throw new ArmatureException($"More than one property of type '{_type.ToLogString()}' in type '{unitType.ToLogString()}'");
 
       buildSession.BuildResult = new BuildResult(properties);
     }
