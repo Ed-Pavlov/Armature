@@ -161,8 +161,10 @@ namespace Armature.Core
           buildAction.PostProcess(unitBuilder);
         }
       }
-      
-      return unitBuilder.BuildResult;
+
+      return unitBuilder.BuildResult.HasValue
+        ? unitBuilder.BuildResult
+        : BuildViaParentBuilder(_buildSequence.Last());
     }
 
     private BuildResult BuildViaParentBuilder(UnitInfo unitInfo)

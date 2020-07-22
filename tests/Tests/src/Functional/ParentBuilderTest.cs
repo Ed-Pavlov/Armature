@@ -193,6 +193,38 @@ namespace Tests.Functional
       actual.Should().Be(expected);
     }
 
+    [Test]
+    public void should_build_via_parent_if_build_action_exists_but_did_not_built_result()
+    {
+      const string expected = "parent2string";
+      
+      var parent = new Builder(BuildStage.Cache)
+        .With(builder => builder.Treat<string>().AsInstance(expected));
+
+      var target = CreateTarget(parent);
+      
+      // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder 
+      target.AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
+        .Add(new LastUnitSequenceMatcher(AnyTypeMatcher.Instance)
+          .AddBuildAction(BuildStage.Cache, new DebugOnlyBuildAction() ));
+
+      // --act
+      var actual = target.Build<string>();
+      
+      // --assert
+      actual.Should().Be(expected);
+    }
+
+    private class DebugOnlyBuildAction : IBuildAction
+    {
+      public void Process(IBuildSession buildSession){}
+
+      public void PostProcess(IBuildSession buildSession)
+      {
+        
+      }
+    }
+    
     private static Builder CreateTarget(params Builder[] parents) =>
       new Builder(new[] {BuildStage.Cache, BuildStage.Create}, parents)
       {
