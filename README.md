@@ -1,5 +1,5 @@
 [![Nuget](https://img.shields.io/nuget/dt/Armature)](https://www.nuget.org/packages/Armature/)
-[![TeamCity](https://enif.beta.teamcity.com/app/rest/builds/buildType:(id:Armature_Build)/statusIcon)](https://enif.beta.teamcity.com/viewType.html?buildTypeId=Armature_Build&guest=1)
+[![TeamCity](https://edpavlov.beta.teamcity.com/app/rest/builds/buildType:(id:Armature_Build)/statusIcon)](https://edpavlov.beta.teamcity.com/viewType.html?buildTypeId=Armature_Build&guest=1)
 ___
 
 # Armature
