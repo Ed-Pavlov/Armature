@@ -18,6 +18,9 @@
     <dependencies>
       <dependency id="Armature.Interface" version="0.0.0"/>
       <dependency id="Armature.Core" version="0.0.0"/>
+    </dependencies>
+
+    <dependencies>
       <group targetFramework=".NETStandard2.0"/>
       <group targetFramework=".NETFramework4.5"/>
     </dependencies>
