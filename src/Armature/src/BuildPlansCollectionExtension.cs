@@ -74,10 +74,9 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Used to override a build plan for <paramref name="type"/>
-    ///   How it should be treated is specified by subsequence calls using returned object.
+    ///   Used to override a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems. 
     /// </summary>
-    public static TreatingTuner Override([NotNull] this BuildPlansCollection buildPlans, [NotNull] Type type, object token = null)
+    public static TreatingTuner TreatOverride([NotNull] this BuildPlansCollection buildPlans, [NotNull] Type type, object token = null)
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
@@ -88,12 +87,14 @@ namespace Armature
 
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(newSequenceMatcher));
     }
-    
+
+    [Obsolete("Renamed to OverrideTreat, use it instead. Will be deleted in future releases.")]
+    public static TreatingTuner<T> Override<T>([NotNull] this BuildPlansCollection buildPlans, object token = null) => OverrideTreat<T>(buildPlans, token);
+
     /// <summary>
-    ///   Used to override a build plan for <typeparamref name="T" />
-    ///   How <typeparamref name="T" /> should be treated is specified by subsequence calls using returned object.
+    ///   Used to override a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems. 
     /// </summary>
-    public static TreatingTuner<T> Override<T>([NotNull] this BuildPlansCollection buildPlans, object token = null)
+    public static TreatingTuner<T> OverrideTreat<T>([NotNull] this BuildPlansCollection buildPlans, object token = null)
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
