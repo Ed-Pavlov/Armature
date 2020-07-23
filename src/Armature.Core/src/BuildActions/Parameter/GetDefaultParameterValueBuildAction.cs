@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Armature.Core.Logging;
 
 namespace Armature.Core.BuildActions.Parameter
 {
@@ -13,5 +14,7 @@ namespace Armature.Core.BuildActions.Parameter
     }
 
     public void PostProcess(IBuildSession buildSession) { }
+    
+    public override string ToString() => GetType().GetShortName();
   }
 }

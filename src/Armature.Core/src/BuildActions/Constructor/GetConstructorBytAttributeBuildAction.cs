@@ -42,6 +42,6 @@ namespace Armature.Core.BuildActions.Constructor
       return constructorInfo;
     }
 
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _predicate);
+    public override string ToString() => GetType().GetShortName();
   }
 }

@@ -18,7 +18,7 @@ namespace Armature.Core.UnitMatchers
     public virtual bool Matches(UnitInfo unitInfo) => UnitInfo.Matches(unitInfo);
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), UnitInfo.ToLogString());
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), UnitInfo);
 
     #region Equality
     [DebuggerStepThrough]

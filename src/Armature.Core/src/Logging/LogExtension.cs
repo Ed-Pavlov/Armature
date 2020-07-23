@@ -6,7 +6,7 @@ namespace Armature.Core.Logging
 {
   public static class LogExtension
   {
-    private const string BuildsequenceIsEmpty = "BuildSequence{{empty}}";
+    private const string BuildSequenceIsEmpty = "BuildSequence{{empty}}";
 
     public static string GetShortName(this Type type) =>
       type.IsGenericType
@@ -18,7 +18,7 @@ namespace Armature.Core.Logging
         () =>
           {
             if (buildSequence.Count == 0)
-              Log.WriteLine(logLevel, BuildsequenceIsEmpty);
+              Log.WriteLine(logLevel, BuildSequenceIsEmpty);
             else if (buildSequence.Count == 1)
               Log.WriteLine(logLevel, "BuildSequence{{{0}}}", buildSequence.Last());
             else

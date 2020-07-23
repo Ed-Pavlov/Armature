@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using Armature.Core.Common;
 using Armature.Core.Logging;
 
@@ -22,7 +21,7 @@ namespace Armature.Core.BuildActions
   ///   new GetLongestConstructorBuildAction()
   ///   }
   /// </remarks>
-  public class OrderedBuildActionContainer : IBuildAction, IEnumerable
+  public class OrderedBuildActionContainer : IBuildAction, ILogable, IEnumerable
   {
     private readonly List<IBuildAction> _buildActions = new List<IBuildAction>();
     private readonly ConcurrentDictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new ConcurrentDictionary<IBuildSession, IBuildAction>();
@@ -94,6 +93,13 @@ namespace Armature.Core.BuildActions
           });
 
     [DebuggerStepThrough]
-    public override string ToString() => GetType().GetShortName();
+    public override string ToString() => GetType().ToLogString();
+
+    public void PrintToLog()
+    {
+      using (Log.Block(LogLevel.Info, "Ordered actions"))
+        foreach (var buildAction in _buildActions)
+          Log.Info(buildAction.ToString());
+    }
   }
 }

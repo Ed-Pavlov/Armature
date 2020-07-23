@@ -54,5 +54,30 @@ namespace Armature.Core.UnitSequenceMatcher
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}<{1:n0}>", GetType().GetShortName(), Weight);
+
+    public void PrintToLog()
+    {
+      ICollection<IUnitSequenceMatcher> children = null;
+      try {
+        children = Children;
+      }
+      catch { // do nothing
+      }
+      
+      if(children != null)
+        foreach (var child in children)
+          using (Log.Block(LogLevel.Info, child.ToString()))
+            child.PrintToLog();
+
+      if(_buildActions != null)
+        using (Log.Block(LogLevel.Info, "Build actions"))
+          foreach (var pair in _buildActions)
+            using (Log.Block(LogLevel.Info, "Stage: {0}", pair.Key))
+              foreach (var buildAction in pair.Value)
+                if(buildAction is ILogable printable)
+                  printable.PrintToLog();
+                else
+                  Log.Info(buildAction.ToString());
+    }
   }
 }

@@ -30,7 +30,7 @@ namespace Armature.Core.Logging
     /// <summary>
     ///   Used to make an indented "block" in log data
     /// </summary>
-    public static IDisposable Block(LogLevel logLevel) => logLevel <= _logLevel ? AddIndent(true) : new DumbDisposable();
+    public static IDisposable Block(LogLevel logLevel) => logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
 
     /// <summary>
     ///   Used to make a named and indented "block" in log data
@@ -38,7 +38,7 @@ namespace Armature.Core.Logging
     public static IDisposable Block(LogLevel logLevel, string name, params object[] parameters)
     {
       WriteLine(logLevel, name, parameters);
-      return logLevel <= _logLevel ? AddIndent(true) : new DumbDisposable();
+      return logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
     }
     
     /// <summary>
@@ -47,7 +47,7 @@ namespace Armature.Core.Logging
     public static IDisposable Block(LogLevel logLevel, Func<string> getName)
     {
       WriteLine(logLevel, getName);
-      return logLevel <= _logLevel ? AddIndent(true) : new DumbDisposable();
+      return logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ namespace Armature.Core.Logging
     public static IDisposable Block<T1>(LogLevel logLevel, Func<T1, string> getName, T1 v1)
     {
       WriteLine(logLevel, getName, v1);
-      return logLevel <= _logLevel ? AddIndent(true) : new DumbDisposable();
+      return logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
     }
 
     /// <summary>
@@ -104,6 +104,15 @@ namespace Armature.Core.Logging
     }
 
     [StringFormatMethod("format")]
+    public static void Write(LogLevel logLevel, string format, params object[] parameters)
+    {
+      if (logLevel > _logLevel) return;
+
+      // ReSharper disable once CoVariantArrayConversion
+      System.Diagnostics.Trace.Write(string.Format(format, parameters.Select(ToLogString).ToArray()));
+    }
+    
+    [StringFormatMethod("format")]
     public static void WriteLine(LogLevel logLevel, string format, params object[] parameters)
     {
       if (logLevel > _logLevel) return;
@@ -139,7 +148,7 @@ namespace Armature.Core.Logging
     /// <summary>
     ///   Returns the name of <paramref name="type" /> respecting <see cref="LogFullTypeName" /> property
     /// </summary>
-    public static string ToLogString(this Type type) => LogFullTypeName ? type.ToString() : type.GetShortName();
+    public static string ToLogString(this Type type) => LogFullTypeName ? GetTypeFullName(type) : type.GetShortName();
 
     /// <summary>
     ///   Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
@@ -148,40 +157,9 @@ namespace Armature.Core.Logging
     {
       if (obj == null) return "null";
 
-      // if ToString is not overriden and returns object type full name - return type.AsLogString
-      var toString = obj.ToString();
-      var type = obj.GetType();
-      return toString == GetTypeFullName(type) ? type.ToLogString() : toString;
+      return obj is Type type ? type.ToLogString() : obj.ToString();
     }
     
-    public static void PrintBuildPlans(this BuildPlansCollection buildPlansCollection)
-    {
-      using (Enabled())
-      {
-        foreach (var unitSequenceMatcher in buildPlansCollection.Children)
-          using (Block(LogLevel.Info, unitSequenceMatcher.ToString()))
-          {
-            Print(unitSequenceMatcher);
-          }
-      }
-    }
-
-    private static void Print(IUnitSequenceMatcher unitSequenceMatcher)
-    {
-      try
-      {
-        foreach (var child in unitSequenceMatcher.Children)
-          using (Block(LogLevel.Info, child.ToString()))
-          {
-            Print(child);
-          }
-      }
-      catch (Exception)
-      {
-        //ignore
-      }
-    }
-
     private static string GetIndent()
     {
       var indent = "";
@@ -237,6 +215,10 @@ namespace Armature.Core.Logging
 
     private class DumbDisposable : IDisposable
     {
+      public static readonly IDisposable Instance = new DumbDisposable();
+
+      private DumbDisposable() { }
+
       public void Dispose()
       {
         // dumb

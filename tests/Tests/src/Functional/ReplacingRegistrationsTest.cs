@@ -23,7 +23,7 @@ namespace Tests.Functional
         .UsingParameterlessConstructor();
 
       builder
-        .Override<Subject>()
+        .OverrideTreat<Subject>()
         .AsIs()
         .UsingParameters(10);
 
