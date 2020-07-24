@@ -1,40 +1,58 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net45;</TargetFrameworks>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\..\build\armature.public.snk</AssemblyOriginatorKeyFile>
-        <PublicSign>true</PublicSign>
-        <NuspecFile>build\nuget.nuspec</NuspecFile>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsAsErrors />
-        <NoWarn>1591</NoWarn>
-        <DocumentationFile>bin\Release\Armature.Core.xml</DocumentationFile>
-        <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <DocumentationFile>bin\Debug\Armature.Core.xml</DocumentationFile>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsAsErrors />
-        <NoWarn>1591</NoWarn>
-        <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    </PropertyGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\Armature.Interface\Armature.Interface.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <None Include="..\..\build\armature.public.snk">
-        <Link>build\armature.public.snk</Link>
-      </None>
-      <None Remove="Armature.Core.csproj.DotSettings" />
-    </ItemGroup>
-    <ItemGroup>
-      <Compile Include="..\GlobalAssemblyInfo.cs">
-        <Link>build\GlobalAssemblyInfo.cs</Link>
-      </Compile>
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net45;</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\build\armature.public.snk</AssemblyOriginatorKeyFile>
+    <PublicSign>true</PublicSign>
+  </PropertyGroup>
+
+  <PropertyGroup Label="nuspec">
+    <IsPackable>true</IsPackable>
+    <MinClientVersion>2.8</MinClientVersion>
+    <PackageVersion>0.0.0</PackageVersion>
+    <PackageProjectUrl>https://github.com/Ed-ward/Armature</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Ed-ward/Armature</RepositoryUrl>
+    <Authors>Ed Pavlov</Authors>
+    <copyright>Copyright © 2018 Ed Pavlov</copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags>dependency-injection dependencyinjection di ioc .NET</PackageTags>
+    <description>An interface part of Armature framework to use in the code which shouldn't depend on Armature implementation part</description>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <NoWarn>1591</NoWarn>
+    <DocumentationFile>bin\Release\Armature.Core.xml</DocumentationFile>
+    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DocumentationFile>bin\Debug\Armature.Core.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <NoWarn>1591</NoWarn>
+    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Armature.Interface\Armature.Interface.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\build\armature.public.snk">
+      <Link>build\armature.public.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>build\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\build\icon.png" Pack="true" PackagePath="">
+      <Link>build\icon.png</Link>
+    </None>
+  </ItemGroup>
 </Project>
