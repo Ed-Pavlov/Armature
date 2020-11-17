@@ -10,6 +10,7 @@ using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.Common;
 
 namespace Tests.Functional
 {
@@ -215,6 +216,21 @@ namespace Tests.Functional
       actual.Should().Be(expected);
     }
 
+    [Test]
+    public void should_catch_not_serializable_exception_when_building_via_parent()
+    {
+      var parent = CreateTarget();
+      parent.Treat<Subject>().AsCreatedWith(() => throw new NotSerializableException());
+
+      var target = CreateTarget(parent);
+      
+      // --act
+      Action actual = () => target.Build<Subject>();
+      
+      // --assert
+      actual.Should().ThrowExactly<ArmatureException>();
+    }
+    
     private class DebugOnlyBuildAction : IBuildAction
     {
       public void Process(IBuildSession buildSession){}
