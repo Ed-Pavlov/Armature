@@ -24,10 +24,12 @@ namespace Armature.Core.Common
       var message = new StringBuilder(baseMessage);
       message.AppendLine();
 
+      string ExceptionTitle(Exception exc) => $"{exc.GetType()}: {exc.Message}";
+
       var i = 0;
       foreach (var exc in exceptions)
       {
-        message.AppendLine($"Exception#{++i}: {exc.Message}");
+        message.AppendLine($"Exception#{++i} {ExceptionTitle(exc)}");
         message.AppendLine(exc.StackTrace);
         message.AppendLine("----------------------------------------------------");
         message.AppendLine();
@@ -37,7 +39,7 @@ namespace Armature.Core.Common
       i = 0;
       foreach (var exc in exceptions)
       {
-        var exceptionInfo = exc.Message + Environment.NewLine + exc.StackTrace;
+        var exceptionInfo = ExceptionTitle(exc) + Environment.NewLine + exc.StackTrace;
         exception.AddData(++i, exceptionInfo);
       }
       return exception;

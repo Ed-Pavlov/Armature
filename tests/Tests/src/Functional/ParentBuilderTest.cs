@@ -166,14 +166,24 @@ namespace Tests.Functional
 
       var target = CreateTarget(parent1, parent2);
 
+      try
+      {
+        target.Build<string>();
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine(e);
+        
+      }
+      
       Action action = () => target.Build<string>();
 
       action.Should()
         .Throw<ArmatureException>()
         .Which
-        .Data.Values.Cast<object>()
-        .With(_ => _.SingleOrDefault(exc => exc is ArgumentOutOfRangeException).Should().NotBeNull())
-        .With(_ => _.SingleOrDefault(exc => exc is InvalidProgramException).Should().NotBeNull());
+        .Data.Values.Cast<string>()
+        .With(values => values.SingleOrDefault(_ => _.Contains("ArgumentOutOfRangeException")).Should().NotBeNull())
+        .With(values => values.SingleOrDefault(_ => _.Contains("InvalidProgramException")).Should().NotBeNull());
     }
 
     [Test]
