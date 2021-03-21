@@ -15,7 +15,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     public void PostProcess(IBuildSession buildSession)
     {
       var result = buildSession.BuildResult;
-      if (!result.HasValue)
+      if (result is null)
         throw new ArmatureException(string.Format("Can't build value of {0}", typeof(Maybe<T>)));
 
       var maybe = (Maybe<T>) result.Value;

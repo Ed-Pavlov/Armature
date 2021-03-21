@@ -14,11 +14,14 @@ namespace Armature.Core.BuildActions.Creation
   {
     public void Process(IBuildSession buildSession)
     {
-      if (!buildSession.BuildResult.HasValue)
+      if (buildSession.BuildResult is null)
       {
-        var parameters = GetMethod().GetParameters().ToArray();
-        var result = Execute(buildSession.GetValuesForParameters(parameters));
-        buildSession.BuildResult = new BuildResult(result);
+        var parameters = GetMethod().GetParameters();
+        using (Log.Block(LogLevel.Trace, () => "Looking for parameters [" + string.Join(", ", parameters.Select(_ => _.ToString()).ToArray()) + "]"))
+        {
+          var values = buildSession.BuildValuesForParameters(parameters);
+          buildSession.BuildResult = new BuildResult(() => Execute(values.GetResolvedValues()));
+        }
       }
     }
 

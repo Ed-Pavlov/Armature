@@ -16,11 +16,7 @@ namespace Armature.Core.BuildActions.Creation
     public CreateByFactoryMethodBuildAction([NotNull] Func<IBuildSession, TR> factoryMethod) =>
       _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
 
-    public void Process(IBuildSession buildSession)
-    {
-      if (!buildSession.BuildResult.HasValue)
-        buildSession.BuildResult = new BuildResult(_factoryMethod(buildSession));
-    }
+    public void Process(IBuildSession buildSession) => buildSession.BuildResult ??= new BuildResult(_factoryMethod(buildSession));
 
     [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }

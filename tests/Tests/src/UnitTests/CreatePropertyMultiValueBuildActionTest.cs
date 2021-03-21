@@ -25,7 +25,6 @@ namespace Tests.UnitTests
 			target.Process(buildSession);
 
 			// --assert
-			buildSession.BuildResult.HasValue.Should().BeTrue();
 			buildSession.BuildResult.Value.Should().BeOfType<List<int>>();
 		}
 

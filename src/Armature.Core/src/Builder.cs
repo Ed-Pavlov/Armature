@@ -36,12 +36,9 @@ namespace Armature.Core
       if (parentBuilders != null && parentBuilders.Any(_ => _ == null)) throw new ArgumentException("Should not contain null values", nameof(parentBuilders));
 
       var array = stages.ToArray();
-      if (array.Length == 0)
-        throw new ArgumentException("empty", nameof(stages));
-      if (array.Any(stage => stage == null))
-        throw new ArgumentException("Contains null stage", nameof(stages));
-      if (array.Length != array.Distinct().Count())
-        throw new ArgumentException("Contains duplicates", nameof(stages));
+      if (array.Length == 0) throw new ArgumentException("empty", nameof(stages));
+      if (array.Any(stage => stage == null)) throw new ArgumentException("Contains null stage", nameof(stages));
+      if (array.Length != array.Distinct().Count()) throw new ArgumentException("Contains duplicates", nameof(stages));
 
       _stages = array;
       _parentBuilders = parentBuilders == null || parentBuilders.Length == 0 ? null : parentBuilders;
@@ -54,8 +51,9 @@ namespace Armature.Core
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
     /// <returns>Returns an instance or null if null is registered as a unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
-    public BuildResult BuildUnit(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null) =>
-      Build(unitInfo, auxBuildPlans, BuildSession.BuildUnit, _parentBuilders);
+    [CanBeNull]
+    public BuildResult BuildUnit(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null) 
+      => BuildSession.BuildUnit(unitInfo, _stages, this, auxBuildPlans, _parentBuilders);
 
     /// <summary>
     ///   Builds all units represented by <see cref="UnitInfo" />
@@ -64,21 +62,7 @@ namespace Armature.Core
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
     /// <returns>Returns an instance or null if null is registered as a unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
-    public IReadOnlyList<object> BuildAllUnits(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null)
-    {
-      var buildResult = Build(unitInfo, auxBuildPlans, BuildSession.BuildAllUnits, _parentBuilders);
-      return buildResult.Select(_ => _.Value).ToArray();
-    }
-
-    private T Build<T>(
-      [NotNull] UnitInfo unitInfo,
-      [CanBeNull] BuildPlansCollection auxBuildPlans,
-      [NotNull] Func<UnitInfo, IEnumerable<object>, BuildPlansCollection, BuildPlansCollection, Builder[], T> build,
-      [CanBeNull] Builder[] parentBuilders)
-    {
-      if (build is null) throw new ArgumentNullException(nameof(build));
-
-      return build(unitInfo, _stages, this, auxBuildPlans, parentBuilders);
-    }
+    public IReadOnlyList<object> BuildAllUnits(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null) 
+      => BuildSession.BuildAllUnits(unitInfo, _stages, this, auxBuildPlans, _parentBuilders).Select(_ => _.Value).ToArray();
   }
 }

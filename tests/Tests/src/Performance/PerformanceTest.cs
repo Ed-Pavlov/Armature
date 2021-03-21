@@ -21,7 +21,7 @@ namespace Tests.Performance
 {
   public sealed class PerformanceTest
   {
-    private readonly List<Type> _types = new List<Type>
+    private readonly List<Type> _types = new()
     {
       typeof(bool),
       typeof(byte),
@@ -78,7 +78,7 @@ namespace Tests.Performance
           .UsingParameters(0);
 
       
-      var mem1 = dotMemory.Check();
+      var snapshot1 = dotMemory.Check();
       
       var sw = new Stopwatch();
       sw.Start();
@@ -91,9 +91,8 @@ namespace Tests.Performance
 
       sw.Stop();
       
-      dotMemory.Check(memory => Console.WriteLine(memory.GetTrafficFrom(mem1)));
+      dotMemory.Check(memory => Console.WriteLine(memory.GetTrafficFrom(snapshot1)));
       dotMemoryApi.SaveCollectedData();
-
       
       Console.WriteLine(sw.Elapsed);
     }

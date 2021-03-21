@@ -14,27 +14,27 @@ namespace Armature
     /// <summary>
     ///   Stage of intercepting any unit returned by build process
     /// </summary>
-    public static readonly BuildStage Intercept = new BuildStage("Intercept");
+    public static readonly BuildStage Intercept = new("Intercept");
 
     /// <summary>
     ///   Stage of building when already built and cached object can be reused
     /// </summary>
-    public static readonly BuildStage Cache = new BuildStage("Cache");
+    public static readonly BuildStage Cache = new("Cache");
 
     /// <summary>
     ///   Stage of awareness that some unit was built
     /// </summary>
-    public static readonly BuildStage Aware = new BuildStage("Aware");
+    public static readonly BuildStage Aware = new("Aware");
 
     /// <summary>
     ///   Stage of injecting dependencies into newly created unit
     /// </summary>
-    public static readonly BuildStage Initialize = new BuildStage("Initialize");
+    public static readonly BuildStage Initialize = new("Initialize");
 
     /// <summary>
     ///   Stage of creating a unit, injects dependencies into a constructor, due it must be called to create the unit
     /// </summary>
-    public static readonly BuildStage Create = new BuildStage("Create");
+    public static readonly BuildStage Create = new("Create");
 
     private readonly string _name;
 

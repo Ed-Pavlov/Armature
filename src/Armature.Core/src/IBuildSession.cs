@@ -11,6 +11,7 @@ namespace Armature.Core
     /// <summary>
     ///   The result of building. Build actions can check if the unit is already built, or set the result.
     /// </summary>
+    [CanBeNull]
     BuildResult BuildResult { get; set; }
 
     /// <summary>
@@ -23,6 +24,7 @@ namespace Armature.Core
     ///   Builds a unit represented by <see cref="UnitInfo" /> in the context of the current build session
     /// </summary>
     /// <returns>Returns an instance or null if unit can't be built.</returns>
+    [CanBeNull]
     BuildResult BuildUnit([NotNull] UnitInfo unitInfo);
 
     /// <summary>

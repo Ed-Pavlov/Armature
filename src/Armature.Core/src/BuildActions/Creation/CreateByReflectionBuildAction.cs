@@ -18,7 +18,7 @@ namespace Armature.Core.BuildActions.Creation
 
     public void Process(IBuildSession buildSession)
     {
-      if (!buildSession.BuildResult.HasValue)
+      if (buildSession.BuildResult is null)
       {
         var type = buildSession.GetUnitUnderConstruction().GetUnitType();
 
@@ -38,23 +38,23 @@ namespace Armature.Core.BuildActions.Creation
 
           try
           {
-            object instance;
+            BuildResult buildResult;
             if (parameters.Length == 0)
             {
-              instance = constructor.Invoke(EmptyArray<object>.Instance);
+              buildResult = new BuildResult(constructor.Invoke(EmptyArray<object>.Instance));
             }
             else
             {
-              object[] valuesForParameters;
+              BuildResult[] values;
               using (Log.Block(LogLevel.Trace, () => "Looking for parameters [" + string.Join(", ", parameters.Select(_ => _.ToString()).ToArray()) + "]"))
               {
-                valuesForParameters = buildSession.GetValuesForParameters(parameters);
+                values = buildSession.BuildValuesForParameters(parameters);
               }
 
-              instance = constructor.Invoke(valuesForParameters);
+              buildResult = new BuildResult(() => constructor.Invoke(values.GetResolvedValues()));
             }
 
-            buildSession.BuildResult = new BuildResult(instance);
+            buildSession.BuildResult = buildResult;
           }
           catch (TargetInvocationException exception)
           {

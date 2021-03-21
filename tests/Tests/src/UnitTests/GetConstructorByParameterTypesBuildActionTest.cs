@@ -27,7 +27,6 @@ namespace Tests.UnitTests
       target.Process(buildSession);
 
       // --assert
-      buildSession.BuildResult.HasValue.Should().BeTrue();
       buildSession.BuildResult.Value.Should().Be(typeof(SampleType).GetConstructor(parameterTypes));
     }
 
@@ -46,7 +45,7 @@ namespace Tests.UnitTests
       target.Process(buildSession);
 
       // --assert
-      buildSession.BuildResult.HasValue.Should().BeFalse();
+      buildSession.BuildResult.Should().BeNull();
     }
 
     [SuppressMessage("ReSharper", "UnusedParameter.Local")]

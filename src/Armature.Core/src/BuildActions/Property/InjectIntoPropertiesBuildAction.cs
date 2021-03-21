@@ -16,7 +16,7 @@ namespace Armature.Core.BuildActions.Property
 
     public void PostProcess(IBuildSession buildSession)
     {
-      if (buildSession.BuildResult.HasValue)
+      if (buildSession.BuildResult is not null)
       {
         var unit = buildSession.BuildResult.Value;
         var type = unit.GetType();

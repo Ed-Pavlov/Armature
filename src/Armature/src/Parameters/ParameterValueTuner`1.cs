@@ -17,6 +17,6 @@ namespace Armature
     /// <summary>
     ///   Use the <paramref name="value" /> for the parameter
     /// </summary>
-    public ParameterValueBuildPlan UseValue([CanBeNull] T value) => new ParameterValueBuildPlan(UnitMatcher, new SingletonBuildAction(value), Weight);
+    public ParameterValueBuildPlan UseValue([CanBeNull] T value) => new(UnitMatcher, new SingletonBuildAction(value), Weight);
   }
 }

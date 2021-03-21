@@ -11,38 +11,27 @@ namespace Armature.Core.BuildActions
   /// </summary>
   public class SingletonBuildAction : IBuildAction
   {
-    private Instance _instance;
+    private BuildResult _instance;
 
     [DebuggerStepThrough]
     public SingletonBuildAction() { }
 
     [DebuggerStepThrough]
-    public SingletonBuildAction([CanBeNull] object value) => _instance = new Instance(value);
+    public SingletonBuildAction([CanBeNull] object value) => _instance = new BuildResult(value);
 
     public void Process(IBuildSession buildSession)
     {
-      if (_instance != null)
-        buildSession.BuildResult = new BuildResult(_instance.Value);
+      if (_instance is not null) 
+        buildSession.BuildResult = _instance;
     }
 
     public void PostProcess(IBuildSession buildSession)
     {
-      if (buildSession.BuildResult.HasValue)
-        _instance = new Instance(buildSession.BuildResult.Value);
+      if (buildSession.BuildResult is not null)
+        _instance = buildSession.BuildResult; //TODO: can this code hold some references and memory?
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().Name, (object)_instance ?? "not set");
-
-    private class Instance
-    {
-      public readonly object Value;
-
-      [DebuggerStepThrough]
-      public Instance([CanBeNull] object value) => Value = value;
-
-      [DebuggerStepThrough]
-      public override string ToString() => Value == null ? "[no instance]" : Value.ToLogString();
-    }
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().Name, _instance);
   }
 }

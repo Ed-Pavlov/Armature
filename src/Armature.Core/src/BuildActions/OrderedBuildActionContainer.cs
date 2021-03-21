@@ -23,8 +23,8 @@ namespace Armature.Core.BuildActions
   /// </remarks>
   public class OrderedBuildActionContainer : IBuildAction, ILogable, IEnumerable
   {
-    private readonly List<IBuildAction> _buildActions = new List<IBuildAction>();
-    private readonly ConcurrentDictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new ConcurrentDictionary<IBuildSession, IBuildAction>();
+    private readonly List<IBuildAction> _buildActions = new();
+    private readonly ConcurrentDictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new();
 
     public void Process(IBuildSession buildSession)
     {
@@ -35,7 +35,7 @@ namespace Armature.Core.BuildActions
         {
           buildAction.Process(buildSession);
 
-          if (!buildSession.BuildResult.HasValue)
+          if (buildSession.BuildResult is null)
             Log.WriteLine(LogLevel.Trace, () => string.Format("{0} has not built value", buildAction));
           else
           {
@@ -60,7 +60,7 @@ namespace Armature.Core.BuildActions
         }
       }
 
-      if (!buildSession.BuildResult.HasValue && exceptions.Count > 0)
+      if (buildSession.BuildResult is null && exceptions.Count > 0)
         throw exceptions.Aggregate("One or more exceptions occured during processing build actions");
     }
 

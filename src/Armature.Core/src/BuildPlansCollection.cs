@@ -29,7 +29,7 @@ namespace Armature.Core
   /// </remarks>
   public class BuildPlansCollection : IUnitSequenceMatcher, IEnumerable
   {
-    private readonly Root _root = new Root();
+    private readonly Root _root = new();
 
     /// <summary>
     ///   Forest of <see cref="IUnitSequenceMatcher" /> trees

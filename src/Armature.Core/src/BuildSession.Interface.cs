@@ -15,14 +15,13 @@ namespace Armature.Core
 
       public Interface([NotNull] IEnumerable<UnitInfo> buildSequence, [NotNull] BuildSession buildSession)
       {
-        if (buildSequence is null) throw new ArgumentNullException(nameof(buildSequence));
-        if (buildSession is null) throw new ArgumentNullException(nameof(buildSession));
-
-        _buildSession = buildSession;
-        BuildSequence = buildSequence;
+        _buildSession = buildSession ?? throw new ArgumentNullException(nameof(buildSession));
+        BuildSequence = buildSequence ?? throw new ArgumentNullException(nameof(buildSequence));
       }
 
       ///<inheritdoc />
+      /// Don't cache the value of this property during a build session, because any BuildAction able to change it at Process and PostProcess
+      [CanBeNull]
       public BuildResult BuildResult { get; set; }
 
       ///<inheritdoc />

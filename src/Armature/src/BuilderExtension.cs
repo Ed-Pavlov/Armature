@@ -12,7 +12,7 @@ namespace Armature
     ///   Use token for building a unit. See <see cref="UnitInfo" /> for details.
     /// </summary>
     [DebuggerStepThrough]
-    public static Tokenizer UsingToken([NotNull] this Builder builder, [NotNull] object token) => new Tokenizer(token, builder);
+    public static Tokenizer UsingToken([NotNull] this Builder builder, [NotNull] object token) => new(token, builder);
 
     /// <summary>
     ///   Builds a Unit registered as type <typeparamref name="T" />
@@ -47,8 +47,8 @@ namespace Armature
       var unitInfo = new UnitInfo(typeof(T), token);
       var buildResult = builder.BuildUnit(unitInfo, sessionalBuildPlans);
 
-      return buildResult.HasValue 
-        ? (T)buildResult.Value 
+      return buildResult != null 
+        ? (T)buildResult.Value
         : throw new ArmatureException($"Can't build unit <{unitInfo}>").AddData("unitInfo", unitInfo);
     }
 

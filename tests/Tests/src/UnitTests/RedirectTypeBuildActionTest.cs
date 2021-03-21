@@ -12,14 +12,15 @@ namespace Tests.UnitTests
     public void should_propagate_token()
     {
       const string expectedToken = "token";
+      
       // --arrange
-      var buildSession = A.Fake<IBuildSession>();
+      var buildSession = A.Fake<IBuildSession>(_ => _.ConfigureFake(bs => bs.BuildResult = null));
       A.CallTo(() => buildSession.BuildSequence).Returns(new UnitInfo(null, Token.Propagate).AsArray());
 
-      var buildAction = new RedirectTypeBuildAction(typeof(int), expectedToken);
+      var target = new RedirectTypeBuildAction(typeof(int), expectedToken);
 
       // --act
-      buildAction.Process(buildSession);
+      target.Process(buildSession);
 
       // --assert
       A.CallTo(() => buildSession.BuildUnit(Unit.OfType<int>(expectedToken))).MustHaveHappenedOnceExactly();

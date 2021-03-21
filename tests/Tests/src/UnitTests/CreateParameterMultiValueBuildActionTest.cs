@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Armature.Core;
-using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Parameter;
 using FakeItEasy;
 using FluentAssertions;
@@ -26,9 +24,7 @@ namespace Tests.UnitTests
 			target.Process(buildSession);
 			
 			// --assert
-			buildSession.BuildResult.HasValue.Should().BeTrue();
 			buildSession.BuildResult.Value.Should().BeOfType<List<int>>();
-
 		}
 
 		private static IEnumerable<ParameterInfo> should_build_list_of_values_for_any_collection_cases()

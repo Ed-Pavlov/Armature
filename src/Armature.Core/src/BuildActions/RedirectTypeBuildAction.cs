@@ -26,7 +26,7 @@ namespace Armature.Core.BuildActions
 
     public void Process(IBuildSession buildSession)
     {
-      if (!buildSession.BuildResult.HasValue)
+      if (buildSession.BuildResult is null)
       {
         var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
         var effectiveToken = Equals(_token, Token.Propagate) ? unitUnderConstruction.Token : _token;

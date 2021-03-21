@@ -21,6 +21,8 @@ namespace Armature.Core
     private readonly BuildPlansCollection _buildPlans;
     private readonly List<UnitInfo> _buildSequence;
     private readonly IEnumerable<object> _buildStages;
+    
+    private readonly LazyDependenciesTree _tree = new ();
 
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public BuildSession(
@@ -50,12 +52,14 @@ namespace Armature.Core
     ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
+    [CanBeNull]
     public static BuildResult BuildUnit(
       [NotNull] UnitInfo unitInfo,
       [NotNull] IEnumerable<object> buildStages,
       [NotNull] BuildPlansCollection buildPlans,
       [CanBeNull] BuildPlansCollection runtimeBuildPlans,
-      [CanBeNull] Builder[] parentBuilders) => new BuildSession(buildStages, buildPlans, runtimeBuildPlans, parentBuilders).BuildUnit(unitInfo);
+      [CanBeNull] Builder[] parentBuilders) 
+      => new BuildSession(buildStages, buildPlans, runtimeBuildPlans, parentBuilders).BuildUnit(unitInfo);
 
     /// <summary>
     ///   Builds all Units represented by <paramref name="unitInfo" />
@@ -80,17 +84,18 @@ namespace Armature.Core
     /// </summary>
     /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    public BuildResult BuildUnit(UnitInfo unitInfo) => Build(unitInfo, BuildUnit);
+    [CanBeNull]
+    public BuildResult BuildUnit(UnitInfo unitInfo) => GatherActionsAndCall(BuildUnit, unitInfo);
 
     /// <summary>
     ///   Builds all Units represented by <paramref name="unitInfo" />
     /// </summary>
     /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    public IReadOnlyList<BuildResult> BuildAllUnits(UnitInfo unitInfo) => Build(unitInfo, BuildAllUnits);
+    public IReadOnlyList<BuildResult> BuildAllUnits(UnitInfo unitInfo) => GatherActionsAndCall(BuildAllUnits, unitInfo);
 
     [CanBeNull]
-    private T Build<T>([NotNull] UnitInfo unitInfo, Func<MatchedBuildActions, T> build)
+    private T GatherActionsAndCall<T>(Func<MatchedBuildActions, T> build, [NotNull] UnitInfo unitInfo)
     {
       if (unitInfo == null) throw new ArgumentNullException(nameof(unitInfo));
 
@@ -122,7 +127,7 @@ namespace Armature.Core
       }
     }
 
-    [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
+    [CanBeNull]
     private BuildResult BuildUnit(MatchedBuildActions matchedBuildActions)
     {
       if (matchedBuildActions == null)
@@ -145,10 +150,13 @@ namespace Armature.Core
           buildAction.Process(unitBuilder);
         }
 
-        if (unitBuilder.BuildResult.HasValue)
+        if (unitBuilder.BuildResult is not null)
         {
           Log.WriteLine(LogLevel.Info, "");
           Log.WriteLine(LogLevel.Info, () => string.Format("Build Result{{{0}:{1}}}", unitBuilder.BuildResult, unitBuilder.BuildResult.Value?.GetType().ToLogString()));
+          
+          if(!unitBuilder.BuildResult.IsResolved)
+            _tree.AddTreeNode(_buildSequence.Count, unitBuilder.BuildResult);
           break; // object is built, unwind called actions in reverse orders
         }
       }
@@ -162,14 +170,16 @@ namespace Armature.Core
         }
       }
 
-      return unitBuilder.BuildResult.HasValue
-        ? unitBuilder.BuildResult
-        : BuildViaParentBuilder(_buildSequence.Last());
+      // the end of the build session, requested unit is ready to be built
+      if (_buildSequence.Count == 1)
+        _tree.ResolveInTopologicallySortedOrder();
+      
+      return unitBuilder.BuildResult ?? BuildViaParentBuilder(_buildSequence.Last());
     }
 
     private BuildResult BuildViaParentBuilder(UnitInfo unitInfo)
     {
-      if (_parentBuilders == null) return default(BuildResult);
+      if (_parentBuilders == null) return default;
 
       var exceptions = new List<Exception>();
 
@@ -179,7 +189,7 @@ namespace Armature.Core
           using (Log.Block(LogLevel.Info, "Try build via parent builder #{0}", i))
           {
             var buildResult = _parentBuilders[i].BuildUnit(unitInfo, _auxBuildPlans);
-            if (buildResult.HasValue)
+            if (buildResult is not null)
               return buildResult;
           }
         }
@@ -190,7 +200,7 @@ namespace Armature.Core
         }
 
       if (exceptions.Count == 0)
-        return default(BuildResult);
+        return default;
 
       throw exceptions.Aggregate("One or more exceptions occured during build the unit");
     }
@@ -214,7 +224,7 @@ namespace Armature.Core
           buildAction.PostProcess(unitBuilder);
         }
 
-        if (unitBuilder.BuildResult.HasValue)
+        if (unitBuilder.BuildResult is not null)
         {
           Log.WriteLine(LogLevel.Info, "");
           Log.WriteLine(LogLevel.Info, () => string.Format("Build Result{{{0}:{1}}}", unitBuilder.BuildResult, unitBuilder.BuildResult.Value?.GetType().ToLogString()));
@@ -244,6 +254,5 @@ namespace Armature.Core
 
       exception.AddData(ExceptionData.BuildSequence, sb.ToString());
     }
-
   }
 }

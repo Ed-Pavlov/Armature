@@ -20,7 +20,7 @@ namespace Tests.Functional
     public void InterceptUnit(Action<Builder> makeRegistration)
     {
       // --arrange
-      // create container with another one stage in the very beginning of conveyer
+      // create container with another one stage in the very beginning of conveyor
       var target = CreateTarget();
 
       target
@@ -84,7 +84,7 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget() =>
-      new Builder(BuildStage.Intercept, BuildStage.Cache, BuildStage.Create)
+      new(BuildStage.Intercept, BuildStage.Cache, BuildStage.Create)
       {
         new AnyUnitSequenceMatcher
         {
@@ -114,12 +114,7 @@ namespace Tests.Functional
     {
       private readonly string _postfix;
 
-      public AddPostfixToString([NotNull] string postfix)
-      {
-        if (postfix == null) throw new ArgumentNullException(nameof(postfix));
-
-        _postfix = postfix;
-      }
+      public AddPostfixToString([NotNull] string postfix) => _postfix = postfix ?? throw new ArgumentNullException(nameof(postfix));
 
       public void Process(IBuildSession buildSession)
       {
@@ -127,9 +122,12 @@ namespace Tests.Functional
 
       public void PostProcess(IBuildSession buildSession)
       {
-        var assembleResult = buildSession.BuildResult;
-        var value = (string) assembleResult.Value;
-        buildSession.BuildResult = new BuildResult(value + _postfix);
+        var buildResult = buildSession.BuildResult;
+        if(buildResult is not null)
+        {
+          var value = (string) buildResult.Value;
+          buildSession.BuildResult = new BuildResult(value + _postfix);
+        }
       }
     }
 
