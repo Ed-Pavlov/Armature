@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
+using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
 using JetBrains.Annotations;
@@ -19,7 +20,7 @@ namespace Armature
     {
       if (type == null) throw new ArgumentNullException(nameof(type));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(type, token));
       return new SequenceTuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
@@ -34,7 +35,7 @@ namespace Armature
     /// </summary>
     public TreatingTuner Treat([NotNull] Type type, object token = null)
     {
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(type, token));
       return new TreatingTuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
     
@@ -44,7 +45,7 @@ namespace Armature
     /// </summary>
     public TreatingTuner<T> Treat<T>(object token = null)
     {
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(token));
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(typeof(T), token));
       return new TreatingTuner<T>(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 

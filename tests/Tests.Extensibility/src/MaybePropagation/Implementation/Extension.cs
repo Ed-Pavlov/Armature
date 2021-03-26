@@ -1,6 +1,7 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
+using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
 
@@ -16,7 +17,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
       var treat = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
       var uniqueToken = Guid.NewGuid();
       treat.UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueToken));
-      return new TreatingTuner<T>(treat.UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(new WildcardUnitSequenceMatcher(Match.Type<T>(uniqueToken), 0)));
+      return new TreatingTuner<T>(treat.UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(new WildcardUnitSequenceMatcher(new UnitInfoMatcher(typeof(T), uniqueToken), 0)));
     }
 
     /// <summary>

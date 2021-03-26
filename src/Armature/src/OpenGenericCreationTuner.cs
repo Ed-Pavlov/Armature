@@ -1,6 +1,7 @@
 ﻿using System;
 using Armature.Core;
 using Armature.Core.BuildActions.Creation;
+using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
 using JetBrains.Annotations;
@@ -23,7 +24,7 @@ namespace Armature
 
     public Tuner CreatedByDefault()
     {
-      var childMatcher = new WildcardUnitSequenceMatcher(Match.OpenGenericType(OpenGenericType, Token), UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
+      var childMatcher = new WildcardUnitSequenceMatcher(new OpenGenericTypeMatcher(OpenGenericType, Token), UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
 
       UnitSequenceMatcher
         .AddOrGetUnitSequenceMatcher(childMatcher)
@@ -34,7 +35,7 @@ namespace Armature
 
     public Tuner CreatedByReflection()
     {
-      var childMatcher = new WildcardUnitSequenceMatcher(Match.OpenGenericType(OpenGenericType, Token), UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
+      var childMatcher = new WildcardUnitSequenceMatcher(new OpenGenericTypeMatcher(OpenGenericType, Token), UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
 
       UnitSequenceMatcher
         .AddOrGetUnitSequenceMatcher(childMatcher)

@@ -4,6 +4,7 @@ using Armature.Core;
 using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Creation;
 using Armature.Core.Common;
+using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
@@ -19,7 +20,7 @@ namespace Tests.UnitTests
       var singletonAction = new SingletonBuildAction();
 
       // --arrange
-      var matchString = new LastUnitSequenceMatcher(Match.Type<string>(null)).AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
+      var matchString = new LastUnitSequenceMatcher(new UnitInfoMatcher(typeof(string), null)).AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
       var matchAny = new AnyUnitSequenceMatcher().AddBuildAction(BuildStage.Cache, singletonAction);
 
       var target = new BuildPlansCollection();

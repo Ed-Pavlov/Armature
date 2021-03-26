@@ -17,7 +17,7 @@ namespace Armature
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(type, token));
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
     
@@ -29,22 +29,10 @@ namespace Armature
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(token));
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(typeof(T), token));
       return new TreatingTuner<T>(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
-    /// <summary>
-    ///   Used to make a build plan for <paramref name="unitInfo"/>
-    ///   How it should be treated is specified by subsequence calls using returned object.
-    /// </summary>
-    public static TreatingTuner Treat([NotNull] this BuildPlansCollection buildPlans, [NotNull] UnitInfo unitInfo)
-    {
-      if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
-
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(unitInfo));
-      return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
-    }
-    
     /// <summary>
     ///   Used to make a build plan for all inheritors of <paramref name="type"/>.
     ///   How it should be treated is specified by subsequence calls using returned object.
@@ -54,7 +42,7 @@ namespace Armature
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
-        new BaseTypeMatcher(new UnitInfo(type, token)),
+        new BaseTypeMatcher(type, token),
         UnitSequenceMatchingWeight.WildcardMatchingBaseTypeUnit);
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
@@ -68,7 +56,7 @@ namespace Armature
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
-        new BaseTypeMatcher(new UnitInfo(typeof(T), token)),
+        new BaseTypeMatcher(typeof(T), token),
         UnitSequenceMatchingWeight.WildcardMatchingBaseTypeUnit);
       return new TreatingTuner<T>(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
@@ -80,7 +68,7 @@ namespace Armature
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var newSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
+      var newSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(type, token));
       var oldSequenceMatcher = buildPlans.Children.Single(_ => _.Equals(newSequenceMatcher));
 
       buildPlans.Children.Remove(oldSequenceMatcher);
@@ -98,7 +86,7 @@ namespace Armature
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var newSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(token));
+      var newSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(typeof(T), token));
       var oldSequenceMatcher = buildPlans.Children.Single(_ => _.Equals(newSequenceMatcher));
 
       buildPlans.Children.Remove(oldSequenceMatcher);
@@ -115,7 +103,7 @@ namespace Armature
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
-        Match.OpenGenericType(openGenericType, token),
+        new OpenGenericTypeMatcher(openGenericType, token),
         UnitSequenceMatchingWeight.WildcardMatchingOpenGenericUnit);
       return new TreatingOpenGenericTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
@@ -139,7 +127,7 @@ namespace Armature
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(type, token));
       return new SequenceTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 

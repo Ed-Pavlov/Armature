@@ -54,7 +54,7 @@ namespace Armature.Core
     /// </param>
     [CanBeNull]
     public static BuildResult BuildUnit(
-      [NotNull] UnitInfo unitInfo,
+      UnitInfo unitInfo,
       [NotNull] IEnumerable<object> buildStages,
       [NotNull] BuildPlansCollection buildPlans,
       [CanBeNull] BuildPlansCollection runtimeBuildPlans,
@@ -73,7 +73,7 @@ namespace Armature.Core
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
     public static IReadOnlyList<BuildResult> BuildAllUnits(
-      [NotNull] UnitInfo unitInfo,
+      UnitInfo unitInfo,
       [NotNull] IEnumerable<object> buildStages,
       [NotNull] BuildPlansCollection buildPlans,
       [CanBeNull] BuildPlansCollection runtimeBuildPlans,
@@ -95,10 +95,8 @@ namespace Armature.Core
     public IReadOnlyList<BuildResult> BuildAllUnits(UnitInfo unitInfo) => GatherActionsAndCall(BuildAllUnits, unitInfo);
 
     [CanBeNull]
-    private T GatherActionsAndCall<T>(Func<MatchedBuildActions, T> build, [NotNull] UnitInfo unitInfo)
+    private T GatherActionsAndCall<T>(Func<MatchedBuildActions, T> build, UnitInfo unitInfo)
     {
-      if (unitInfo == null) throw new ArgumentNullException(nameof(unitInfo));
-
       using (LogBuildSessionState(unitInfo))
       {
         _buildSequence.Add(unitInfo);

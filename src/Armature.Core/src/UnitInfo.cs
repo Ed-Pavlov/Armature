@@ -6,12 +6,14 @@ using JetBrains.Annotations;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Describes a unit to build. <see cref="IUnitSequenceMatcher" /> matches with passed collection of <see cref="UnitInfo" />
+  /// Describes a unit to build. <see cref="IUnitSequenceMatcher" /> matches with passed collection of <see cref="UnitInfo" />
   /// </summary>
   [Serializable]
-  public class UnitInfo : IEquatable<UnitInfo>
+  public readonly struct UnitInfo
   {
+    [CanBeNull]
     public readonly object Id;
+    [CanBeNull]
     public readonly object Token;
 
     [DebuggerStepThrough]
@@ -23,29 +25,12 @@ namespace Armature.Core
       Token = token;
     }
 
-    /// <summary>
-    /// Matching, unlike equality, takes into consideration <see cref="Armature.Core.Token.Any"/>. Use <see cref="Equals(UnitInfo)"/>
-    /// to add build plans and <see cref="Matches"/> to build a unit
-    /// </summary>
-    public bool Matches(UnitInfo other)
-    {
-      if (ReferenceEquals(null, other)) return false;
-      if (ReferenceEquals(this, other)) return true;
-
-      return Equals(Id, other.Id) && (Equals(Token, other.Token) || Equals(Token, Core.Token.Any) || Equals(Core.Token.Any, other.Token));
-    }
-    
     [DebuggerStepThrough]
-    public bool Equals(UnitInfo other)
+    public override bool Equals(object obj)
     {
-      if (ReferenceEquals(null, other)) return false;
-      if (ReferenceEquals(this, other)) return true;
-
+      if (obj is not UnitInfo other) return false;
       return Equals(Id, other.Id) && Equals(Token, other.Token);
     }
-
-    [DebuggerStepThrough]
-    public override bool Equals(object obj) => Equals(obj as UnitInfo);
 
     [DebuggerStepThrough]
     public override int GetHashCode()

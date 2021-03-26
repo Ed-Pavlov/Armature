@@ -14,7 +14,7 @@ namespace Tests.UnitTests
       const string expectedToken = "token";
       
       // --arrange
-      var buildSession = A.Fake<IBuildSession>(_ => _.ConfigureFake(bs => bs.BuildResult = null));
+      var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.BuildSequence).Returns(new UnitInfo(null, Token.Propagate).AsArray());
 
       var target = new RedirectTypeBuildAction(typeof(int), expectedToken);

@@ -18,7 +18,7 @@ namespace Tests.UnitTests
 			var target = new CreatePropertyMultiValueToInjectBuildAction();
 			var buildSession = A.Fake<IBuildSession>();
 			A.CallTo(() => buildSession.BuildSequence).Returns(new[] {new UnitInfo(propertyInfo, null)});
-			A.CallTo(() => buildSession.BuildAllUnits(null)).WithAnyArguments()
+			A.CallTo(() => buildSession.BuildAllUnits(default)).WithAnyArguments()
 				.Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_)).ToArray());
 
 			// --act

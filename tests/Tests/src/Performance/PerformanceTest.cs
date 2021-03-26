@@ -128,7 +128,7 @@ namespace Tests.Performance
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitMatcher = new MockUnitMatcher(new UnitInfoMatcher(unitInfo));
+      var unitMatcher = new MockUnitMatcher(new UnitInfoMatcher(unitInfo.Id, unitInfo.Token));
       
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(unitMatcher);
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));

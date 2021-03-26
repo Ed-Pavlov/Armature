@@ -18,6 +18,6 @@
     private readonly string _name;
     public Token(string name) => _name = name;
 
-    public override string ToString() => string.Format(typeof(Token).Name + "." + _name);
+    public override string ToString() => string.Format(nameof(Token) + "." + _name);
   }
 }
