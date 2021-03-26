@@ -40,7 +40,7 @@ namespace Tests.UnitTests
       var actualArray = new int[actual.Length];
       for (var i = 0; i < actual.Length; i++)
         actualArray[i] = actual[i];
-      actualArray.Should().BeEquivalentTo(expected);
+      actualArray.Should().Equal(expected);
     }
 
     [Test]
