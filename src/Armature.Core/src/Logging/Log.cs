@@ -23,8 +23,8 @@ namespace Armature.Core.Logging
     /// </summary>
     public static IDisposable Enabled(LogLevel logLevel = LogLevel.Info)
     {
-      _logLevel = logLevel;
-      return new Bracket(() => _logLevel = logLevel, () => _logLevel = LogLevel.None);
+      var oldLogLevel = _logLevel;
+      return new Bracket(() => _logLevel = logLevel, () => _logLevel = oldLogLevel);
     }
 
     /// <summary>
