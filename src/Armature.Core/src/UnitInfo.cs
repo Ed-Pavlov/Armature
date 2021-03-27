@@ -24,23 +24,7 @@ namespace Armature.Core
       Id = id;
       Token = token;
     }
-
-    [DebuggerStepThrough]
-    public override bool Equals(object obj)
-    {
-      if (obj is not UnitInfo other) return false;
-      return Equals(Id, other.Id) && Equals(Token, other.Token);
-    }
-
-    [DebuggerStepThrough]
-    public override int GetHashCode()
-    {
-      unchecked
-      {
-        return ((Id != null ? Id.GetHashCode() : 0) * 397) ^ (Token != null ? Token.GetHashCode() : 0);
-      }
-    }
-
+    
     public override string ToString() => string.Format("{0}:{1}", Id.ToLogString(), Token.ToLogString());
   }
 }

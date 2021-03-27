@@ -7,7 +7,7 @@ using NUnit.Framework.Internal;
 
 namespace Tests.UnitTests
 {
-  public class UnitInfoTest
+  public class UnitInfoMatcherTest
   {
    [Test]
     public void should_match_with_null_id()

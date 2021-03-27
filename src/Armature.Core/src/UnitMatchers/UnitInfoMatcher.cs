@@ -1,49 +1,32 @@
-﻿using System;
-using System.Diagnostics;
-using Armature.Core.Logging;
-using JetBrains.Annotations;
+﻿using System.Diagnostics;
 
 namespace Armature.Core.UnitMatchers
 {
   /// <summary>
   /// Matches <see cref="UnitInfo" /> with a pattern.
   /// </summary>
-  public class UnitInfoMatcher : IUnitMatcher
+  public sealed class UnitInfoMatcher : UnitInfoMatcherBase, IUnitMatcher
   {
-    [CanBeNull]
-    private readonly object _id;
-    [CanBeNull]
-    private readonly object _token;
+    private readonly UnitInfo _unitInfo;
 
     [DebuggerStepThrough]
-    public UnitInfoMatcher([CanBeNull] object id, [CanBeNull] object token)
-    {
-      if (id == null && token == null) throw new ArgumentNullException(nameof(id), @"Either id or token should be provided");
-      
-      _id = id;
-      _token = token;
-    }
+    public UnitInfoMatcher(object id, object token) : this(new UnitInfo(id, token)){}
+    
+    [DebuggerStepThrough]
+    private UnitInfoMatcher(UnitInfo unitInfo) : base(unitInfo.Token) => _unitInfo = unitInfo;
 
-    public virtual bool Matches(UnitInfo unitInfo) => Equals(_id, unitInfo.Id) && MatchesToken(unitInfo);
-
-    protected bool MatchesToken(UnitInfo unitInfo) => Equals(_token, unitInfo.Token) || Equals(_token, Token.Any);
+    public bool Matches(UnitInfo unitInfo) => Equals(_unitInfo.Id, unitInfo.Id) && MatchesToken(unitInfo);
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.TwoParameterFormat, GetType().GetShortName(), _id.ToLogString(), _token.ToLogString());
+    public override string ToString() => _unitInfo.ToString();
 
     [DebuggerStepThrough]
-    public virtual bool Equals(IUnitMatcher obj) => obj is UnitInfoMatcher other && Equals(_id, other._id) && Equals(_token, other._token);
+    public bool Equals(IUnitMatcher obj) => obj is UnitInfoMatcher other && Equals(_unitInfo, other._unitInfo);
 
     [DebuggerStepThrough]
     public override bool Equals(object obj) => Equals(obj as UnitInfoMatcher);
 
     [DebuggerStepThrough]
-    public override int GetHashCode()
-    {
-      unchecked
-      {
-        return ((_id != null ? _id.GetHashCode() : 0) * 397) ^ (_token != null ? _token.GetHashCode() : 0);
-      }
-    }
+    public override int GetHashCode() => _unitInfo.GetHashCode();
   }
 }
