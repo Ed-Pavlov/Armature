@@ -6,7 +6,7 @@ namespace Armature.Core.UnitMatchers.Parameters
   /// <summary>
   ///   Matches parameter by name
   /// </summary>
-  public class ParameterByNameMatcher : InjectPointByNameMatcher
+  public  sealed record ParameterByNameMatcher : InjectPointByNameMatcher
   {
     [DebuggerStepThrough]
     public ParameterByNameMatcher(string name) : base(name) { }

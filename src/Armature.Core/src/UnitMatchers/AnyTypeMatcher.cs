@@ -6,7 +6,7 @@ namespace Armature.Core.UnitMatchers
   /// <summary>
   ///   Matches any type which can be instantiated
   /// </summary>
-  public class AnyTypeMatcher : IUnitMatcher
+  public sealed record AnyTypeMatcher : IUnitMatcher
   {
     public static readonly IUnitMatcher Instance = new AnyTypeMatcher();
 
@@ -20,16 +20,5 @@ namespace Armature.Core.UnitMatchers
 
     [DebuggerStepThrough]
     public override string ToString() => GetType().GetShortName();
-
-    #region Equality
-    [DebuggerStepThrough]
-    public bool Equals(IUnitMatcher? other) => ReferenceEquals(this, other);
-
-    [DebuggerStepThrough]
-    public override bool Equals(object obj) => Equals(obj as AnyTypeMatcher);
-
-    [DebuggerStepThrough]
-    public override int GetHashCode() => 0;
-    #endregion
   }
 }

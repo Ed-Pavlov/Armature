@@ -5,7 +5,7 @@ namespace Armature.Core.UnitMatchers.Properties
   /// <summary>
   ///   Matches property by name
   /// </summary>
-  public class PropertyByNameMatcher : InjectPointByNameMatcher
+  public  sealed record PropertyByNameMatcher : InjectPointByNameMatcher
   {
     public PropertyByNameMatcher(string propertyName) : base(propertyName) { }
 

@@ -3,7 +3,7 @@
   /// <summary>
   /// Reusable logic of matching a token of the <see cref="UnitInfo"/> in <see cref="IUnitMatcher"/> 
   /// </summary>
-  public abstract class UnitInfoMatcherBase
+  public abstract record UnitInfoMatcherBase
   {
     protected readonly object? Token;
 

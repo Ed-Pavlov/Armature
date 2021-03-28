@@ -5,7 +5,7 @@ namespace Armature.Core.UnitMatchers
   /// <summary>
   /// Matches <see cref="UnitInfo" /> if it is a type inherits specified base type
   /// </summary>
-  public class BaseTypeMatcher : UnitInfoByTypeMatcherBase, IUnitMatcher
+  public sealed record BaseTypeMatcher : UnitInfoByTypeMatcherBase, IUnitMatcher
   {
     public BaseTypeMatcher(Type baseType, object? token) : base(baseType, token) {} 
 

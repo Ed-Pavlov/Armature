@@ -6,7 +6,7 @@ namespace Armature.Core.UnitMatchers
   /// <summary>
   ///   Matches Unit representing "constructor" of the currently building Unit
   /// </summary>
-  public class ConstructorMatcher : IUnitMatcher
+  public  sealed record ConstructorMatcher : IUnitMatcher
   {
     public static readonly IUnitMatcher Instance = new ConstructorMatcher();
 
@@ -16,16 +16,5 @@ namespace Armature.Core.UnitMatchers
 
     [DebuggerStepThrough]
     public override string ToString() => GetType().GetShortName();
-
-    #region Equality
-    [DebuggerStepThrough]
-    public bool Equals(IUnitMatcher? other) => ReferenceEquals(this, other);
-
-    [DebuggerStepThrough]
-    public override bool Equals(object obj) => Equals(obj as ConstructorMatcher);
-
-    [DebuggerStepThrough]
-    public override int GetHashCode() => 0;
-    #endregion
   }
 }

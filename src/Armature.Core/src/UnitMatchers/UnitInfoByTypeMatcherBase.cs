@@ -7,7 +7,7 @@ namespace Armature.Core.UnitMatchers
   /// <summary>
   /// Base class for unit info matchers operating with a <see cref="Type"/> of an unit
   /// </summary>
-  public abstract class UnitInfoByTypeMatcherBase : UnitInfoMatcherBase
+  public abstract record UnitInfoByTypeMatcherBase : UnitInfoMatcherBase
   {
     /// <summary>
     /// The type of the Unit to match
@@ -19,26 +19,5 @@ namespace Armature.Core.UnitMatchers
     
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}:{1}", UnitType.ToLogString(), Token.ToLogString());
-
-    [DebuggerStepThrough]
-    public bool Equals(IUnitMatcher? obj)
-    {
-      if (obj is not UnitInfoByTypeMatcherBase other) return false;
-      if (obj.GetType() != this.GetType()) return false;
-
-      return UnitType == other.UnitType && Equals(Token, other.Token);
-    }
-
-    [DebuggerStepThrough]
-    public override bool Equals(object obj) => Equals(obj as IUnitMatcher);
-
-    [DebuggerStepThrough]
-    public override int GetHashCode()
-    {
-      unchecked
-      {
-        return (UnitType.GetHashCode() * 397) ^ (Token is not null ? Token.GetHashCode() : 0);
-      }
-    }
   }
 }

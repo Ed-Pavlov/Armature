@@ -5,7 +5,7 @@ namespace Armature.Core.UnitMatchers
   /// <summary>
   /// Matches <see cref="UnitInfo" /> with a pattern.
   /// </summary>
-  public sealed class UnitInfoMatcher : UnitInfoMatcherBase, IUnitMatcher
+  public sealed record  UnitInfoMatcher : UnitInfoMatcherBase, IUnitMatcher
   {
     private readonly UnitInfo _unitInfo;
 
@@ -19,14 +19,5 @@ namespace Armature.Core.UnitMatchers
 
     [DebuggerStepThrough]
     public override string ToString() => _unitInfo.ToString();
-
-    [DebuggerStepThrough]
-    public bool Equals(IUnitMatcher? obj) => obj is UnitInfoMatcher other && Equals(_unitInfo, other._unitInfo);
-
-    [DebuggerStepThrough]
-    public override bool Equals(object obj) => Equals(obj as UnitInfoMatcher);
-
-    [DebuggerStepThrough]
-    public override int GetHashCode() => _unitInfo.GetHashCode();
   }
 }

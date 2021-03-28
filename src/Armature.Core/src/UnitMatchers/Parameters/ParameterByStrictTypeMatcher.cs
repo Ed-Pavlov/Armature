@@ -7,7 +7,7 @@ namespace Armature.Core.UnitMatchers.Parameters
   /// <summary>
   ///   Matches parameter by exact type matching
   /// </summary>
-  public class ParameterByStrictTypeMatcher : InjectPointByStrictTypeMatcher
+  public sealed record ParameterByStrictTypeMatcher : InjectPointByStrictTypeMatcher
   {
     [DebuggerStepThrough]
     public ParameterByStrictTypeMatcher(Type parameterType) : base(parameterType) { }

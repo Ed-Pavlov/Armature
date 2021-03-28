@@ -6,7 +6,7 @@ namespace Armature.Core.UnitMatchers.Parameters
   /// <summary>
   ///   Matches parameter suited for provided value type
   /// </summary>
-  public class ParameterByValueMatcher : InjectPointByValueMatcher
+  public sealed record ParameterByValueMatcher : InjectPointByValueMatcher
   {
     public ParameterByValueMatcher(object parameterValue) : base(parameterValue) { }
 

@@ -7,7 +7,7 @@ namespace Armature.Core.UnitMatchers.Properties
   /// <summary>
   ///   Matches Unit representing "value for property" of the currently building Unit
   /// </summary>
-  public class PropertyValueMatcher : IUnitMatcher
+  public sealed record PropertyValueMatcher : IUnitMatcher
   {
     public static readonly IUnitMatcher Instance = new PropertyValueMatcher();
 
@@ -17,16 +17,5 @@ namespace Armature.Core.UnitMatchers.Properties
 
     [DebuggerStepThrough]
     public override string ToString() => GetType().GetShortName();
-
-    #region Equality
-    [DebuggerStepThrough]
-    public bool Equals(IUnitMatcher? other) => ReferenceEquals(this, other);
-
-    [DebuggerStepThrough]
-    public override bool Equals(object obj) => Equals(obj as IUnitMatcher);
-
-    [DebuggerStepThrough]
-    public override int GetHashCode() => 0;
-    #endregion
   }
 }
