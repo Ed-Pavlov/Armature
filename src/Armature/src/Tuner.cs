@@ -9,22 +9,20 @@ using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
-using JetBrains.Annotations;
 
 namespace Armature
 {
   public class Tuner : UnitSequenceExtensibility
   {
     [DebuggerStepThrough]
-    public Tuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
+    public Tuner(IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
 
     /// <summary>
     ///   Provided values will be used to inject the into created object. See <see cref="ForParameter" /> for details
     /// </summary>
-    public Tuner UsingParameters(params object[] values)
+    public Tuner UsingParameters(params object[]? values)
     {
-      if (values == null || values.Length == 0)
-        throw new Exception("null");
+      if (values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
 
       foreach (var parameter in values)
         if (parameter is IParameterValueBuildPlan buildPlan)
@@ -126,7 +124,7 @@ namespace Armature
     /// <summary>
     ///   Doing the same as <see cref="BuildPlansCollectionExtension.Building{T}" /> but w/o breaking fluent syntax
     /// </summary>
-    public Tuner BuildingWhich([NotNull] Action<SequenceTuner> tuneAction)
+    public Tuner BuildingWhich(Action<SequenceTuner> tuneAction)
     {
       if (tuneAction is null) throw new ArgumentNullException(nameof(tuneAction));
 

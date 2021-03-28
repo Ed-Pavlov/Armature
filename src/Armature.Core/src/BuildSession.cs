@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using Armature.Core.Common;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
 
 namespace Armature.Core
 {
@@ -14,10 +13,8 @@ namespace Armature.Core
   /// </summary>
   public partial class BuildSession
   {
-    [CanBeNull]
-    private readonly Builder[] _parentBuilders;
-    [CanBeNull]
-    private readonly BuildPlansCollection _auxBuildPlans;
+    private readonly Builder[]? _parentBuilders;
+    private readonly BuildPlansCollection? _auxBuildPlans;
     private readonly BuildPlansCollection _buildPlans;
     private readonly List<UnitInfo> _buildSequence;
     private readonly IEnumerable<object> _buildStages;
@@ -26,10 +23,10 @@ namespace Armature.Core
 
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public BuildSession(
-      [NotNull] IEnumerable<object> buildStages,
-      [NotNull] BuildPlansCollection buildPlans,
-      [CanBeNull] BuildPlansCollection auxBuildPlans,
-      [CanBeNull] Builder[] parentBuilders)
+      IEnumerable<object> buildStages,
+      BuildPlansCollection buildPlans,
+      BuildPlansCollection? auxBuildPlans,
+      Builder[]? parentBuilders)
     {
       if (buildStages == null) throw new ArgumentNullException(nameof(buildStages));
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
@@ -52,13 +49,12 @@ namespace Armature.Core
     ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
-    [CanBeNull]
-    public static BuildResult BuildUnit(
+    public static BuildResult? BuildUnit(
       UnitInfo unitInfo,
-      [NotNull] IEnumerable<object> buildStages,
-      [NotNull] BuildPlansCollection buildPlans,
-      [CanBeNull] BuildPlansCollection runtimeBuildPlans,
-      [CanBeNull] Builder[] parentBuilders) 
+      IEnumerable<object> buildStages,
+      BuildPlansCollection buildPlans,
+      BuildPlansCollection? runtimeBuildPlans,
+      Builder[]? parentBuilders) 
       => new BuildSession(buildStages, buildPlans, runtimeBuildPlans, parentBuilders).BuildUnit(unitInfo);
 
     /// <summary>
@@ -72,38 +68,36 @@ namespace Armature.Core
     ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
-    public static IReadOnlyList<BuildResult> BuildAllUnits(
+    public static IReadOnlyList<BuildResult>? BuildAllUnits(
       UnitInfo unitInfo,
-      [NotNull] IEnumerable<object> buildStages,
-      [NotNull] BuildPlansCollection buildPlans,
-      [CanBeNull] BuildPlansCollection runtimeBuildPlans,
-      [CanBeNull] Builder[] parentBuilders) => new BuildSession(buildStages, buildPlans, runtimeBuildPlans, parentBuilders).BuildAllUnits(unitInfo);
+      IEnumerable<object> buildStages,
+      BuildPlansCollection buildPlans,
+      BuildPlansCollection? runtimeBuildPlans,
+      Builder[]? parentBuilders) => new BuildSession(buildStages, buildPlans, runtimeBuildPlans, parentBuilders).BuildAllUnits(unitInfo);
 
     /// <summary>
     ///   Builds a Unit represented by <paramref name="unitInfo" />
     /// </summary>
     /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    [CanBeNull]
-    public BuildResult BuildUnit(UnitInfo unitInfo) => GatherActionsAndCall(BuildUnit, unitInfo);
+    public BuildResult? BuildUnit(UnitInfo unitInfo) => GatherActionsAndCall(BuildUnit, unitInfo);
 
     /// <summary>
     ///   Builds all Units represented by <paramref name="unitInfo" />
     /// </summary>
     /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    public IReadOnlyList<BuildResult> BuildAllUnits(UnitInfo unitInfo) => GatherActionsAndCall(BuildAllUnits, unitInfo);
+    public IReadOnlyList<BuildResult>? BuildAllUnits(UnitInfo unitInfo) => GatherActionsAndCall(BuildAllUnits, unitInfo);
 
-    [CanBeNull]
-    private T GatherActionsAndCall<T>(Func<MatchedBuildActions, T> build, UnitInfo unitInfo)
+    private T? GatherActionsAndCall<T>(Func<MatchedBuildActions?, T> build, UnitInfo unitInfo)
     {
       using (LogBuildSessionState(unitInfo))
       {
         _buildSequence.Add(unitInfo);
         try
         {
-          MatchedBuildActions actions;
-          MatchedBuildActions auxActions;
+          MatchedBuildActions? actions;
+          MatchedBuildActions? auxActions;
           using (Log.Block(LogLevel.Verbose, "Looking for build actions"))
           {
             actions = _buildPlans.GetBuildActions(_buildSequence.AsArrayTail());
@@ -125,8 +119,7 @@ namespace Armature.Core
       }
     }
 
-    [CanBeNull]
-    private BuildResult BuildUnit(MatchedBuildActions matchedBuildActions)
+    private BuildResult? BuildUnit(MatchedBuildActions? matchedBuildActions)
     {
       if (matchedBuildActions == null)
         return BuildViaParentBuilder(_buildSequence.Last());
@@ -175,7 +168,7 @@ namespace Armature.Core
       return unitBuilder.BuildResult ?? BuildViaParentBuilder(_buildSequence.Last());
     }
 
-    private BuildResult BuildViaParentBuilder(UnitInfo unitInfo)
+    private BuildResult? BuildViaParentBuilder(UnitInfo unitInfo)
     {
       if (_parentBuilders == null) return default;
 
@@ -204,7 +197,7 @@ namespace Armature.Core
     }
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
-    private List<BuildResult> BuildAllUnits(MatchedBuildActions matchedBuildActions)
+    private List<BuildResult>? BuildAllUnits(MatchedBuildActions? matchedBuildActions)
     {
       if (matchedBuildActions == null) return null;
 

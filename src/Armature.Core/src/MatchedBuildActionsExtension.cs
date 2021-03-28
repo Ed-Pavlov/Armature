@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Armature.Core.Common;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
 
 namespace Armature.Core
 {
@@ -13,7 +12,7 @@ namespace Armature.Core
     ///   Merges two collections into one
     /// </summary>
     [DebuggerStepThrough]
-    public static MatchedBuildActions Merge(this MatchedBuildActions left, MatchedBuildActions right)
+    public static MatchedBuildActions? Merge(this MatchedBuildActions? left, MatchedBuildActions? right)
     {
       if (left == null) return right;
       if (right == null) return left;
@@ -47,8 +46,7 @@ namespace Armature.Core
     ///   Returns the build action with biggest matching weight for the build stage
     /// </summary>
     /// <exception cref="ArmatureException">Throws if there are more than one action with equal matching weight</exception>
-    [CanBeNull]
-    public static IBuildAction GetTopmostAction([CanBeNull] this MatchedBuildActions matchedBuildActions, [NotNull] object stage)
+    public static IBuildAction? GetTopmostAction(this MatchedBuildActions? matchedBuildActions, object stage)
     {
       if (stage == null) throw new ArgumentNullException(nameof(stage));
 

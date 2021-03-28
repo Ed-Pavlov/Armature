@@ -10,7 +10,7 @@ namespace Armature.Core.UnitMatchers
     private readonly UnitInfo _unitInfo;
 
     [DebuggerStepThrough]
-    public UnitInfoMatcher(object id, object token) : this(new UnitInfo(id, token)){}
+    public UnitInfoMatcher(object? id, object? token) : this(new UnitInfo(id, token)){}
     
     [DebuggerStepThrough]
     private UnitInfoMatcher(UnitInfo unitInfo) : base(unitInfo.Token) => _unitInfo = unitInfo;
@@ -21,7 +21,7 @@ namespace Armature.Core.UnitMatchers
     public override string ToString() => _unitInfo.ToString();
 
     [DebuggerStepThrough]
-    public bool Equals(IUnitMatcher obj) => obj is UnitInfoMatcher other && Equals(_unitInfo, other._unitInfo);
+    public bool Equals(IUnitMatcher? obj) => obj is UnitInfoMatcher other && Equals(_unitInfo, other._unitInfo);
 
     [DebuggerStepThrough]
     public override bool Equals(object obj) => Equals(obj as UnitInfoMatcher);

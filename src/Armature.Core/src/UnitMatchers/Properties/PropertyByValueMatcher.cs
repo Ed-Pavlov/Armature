@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using JetBrains.Annotations;
 
 namespace Armature.Core.UnitMatchers.Properties
 {
@@ -11,8 +10,8 @@ namespace Armature.Core.UnitMatchers.Properties
   public class PropertyByValueMatcher : InjectPointByValueMatcher
   {
     [DebuggerStepThrough]
-    public PropertyByValueMatcher([NotNull] object value) : base(value) { }
+    public PropertyByValueMatcher(object value) : base(value) { }
 
-    protected override Type GetInjectPointType(UnitInfo unitInfo) => (unitInfo.Id as PropertyInfo)?.PropertyType;
+    protected override Type? GetInjectPointType(UnitInfo unitInfo) => (unitInfo.Id as PropertyInfo)?.PropertyType;
   }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Armature.Core;
 using Armature.Core.BuildActions;
-using JetBrains.Annotations;
 
 namespace Armature
 {
@@ -12,11 +11,11 @@ namespace Armature
   [SuppressMessage("ReSharper", "UnusedTypeParameter")]
   public class ParameterValueTuner<T> : ParameterValueTuner
   {
-    public ParameterValueTuner([NotNull] IUnitMatcher unitMatcher, int weight) : base(unitMatcher, weight) { }
+    public ParameterValueTuner(IUnitMatcher unitMatcher, int weight) : base(unitMatcher, weight) { }
 
     /// <summary>
     ///   Use the <paramref name="value" /> for the parameter
     /// </summary>
-    public ParameterValueBuildPlan UseValue([CanBeNull] T value) => new(UnitMatcher, new SingletonBuildAction(value), Weight);
+    public ParameterValueBuildPlan UseValue(T? value) => new(UnitMatcher, new SingletonBuildAction(value), Weight);
   }
 }

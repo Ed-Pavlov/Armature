@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using JetBrains.Annotations;
 
 namespace Armature.Core.Common
 {
@@ -14,7 +13,7 @@ namespace Armature.Core.Common
     private readonly int _startIndex;
 
     [DebuggerStepThrough]
-    public ArrayTail([NotNull] IList<T> array, int startIndex)
+    public ArrayTail(IList<T> array, int startIndex)
     {
       if (array == null) throw new ArgumentNullException(nameof(array));
       if (startIndex < 0 || startIndex >= array.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));

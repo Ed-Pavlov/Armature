@@ -114,7 +114,7 @@ namespace Tests.Functional
     {
       private readonly string _postfix;
 
-      public AddPostfixToString([NotNull] string postfix) => _postfix = postfix ?? throw new ArgumentNullException(nameof(postfix));
+      public AddPostfixToString(string postfix) => _postfix = postfix ?? throw new ArgumentNullException(nameof(postfix));
 
       public void Process(IBuildSession buildSession)
       {

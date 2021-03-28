@@ -1,4 +1,5 @@
-﻿using Armature.Core;
+﻿using System;
+using Armature.Core;
 
 namespace Armature.Extensibility
 {
@@ -9,7 +10,7 @@ namespace Armature.Extensibility
 
     public UnitMatcherExtensibility(IUnitMatcher unitMatcher, int weight)
     {
-      UnitMatcher = unitMatcher;
+      UnitMatcher = unitMatcher ?? throw new ArgumentNullException(nameof(unitMatcher));
       Weight = weight;
     }
 

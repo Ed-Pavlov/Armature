@@ -19,7 +19,7 @@ namespace Armature.Core.UnitMatchers.Properties
 
     #region Equality
     [DebuggerStepThrough]
-    public bool Equals(IUnitMatcher obj) => obj is PropertyMatcher;
+    public bool Equals(IUnitMatcher? obj) => obj is PropertyMatcher;
 
     [DebuggerStepThrough]
     public override bool Equals(object obj) => Equals(obj as IUnitMatcher);

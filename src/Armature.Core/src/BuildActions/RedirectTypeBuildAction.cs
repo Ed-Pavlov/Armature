@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions
 {
@@ -11,10 +10,10 @@ namespace Armature.Core.BuildActions
   public class RedirectTypeBuildAction : IBuildAction
   {
     private readonly Type _redirectTo;
-    private readonly object _token;
+    private readonly object? _token;
 
     [DebuggerStepThrough]
-    public RedirectTypeBuildAction([NotNull] Type redirectTo, [CanBeNull] object token)
+    public RedirectTypeBuildAction(Type redirectTo, object? token)
     {
       if (redirectTo == null) throw new ArgumentNullException(nameof(redirectTo));
       if (redirectTo.IsGenericTypeDefinition)

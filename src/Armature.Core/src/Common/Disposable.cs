@@ -1,12 +1,11 @@
 ﻿using System;
-using JetBrains.Annotations;
 
 namespace Armature.Core.Common
 {
   public static class Disposable
   {
     public static IDisposable Create(Action open, Action close) =>
-      new Impl<object>(
+      new Impl<object?>(
         () =>
           {
             open();
@@ -19,7 +18,7 @@ namespace Armature.Core.Common
       private readonly Action<T> _close;
       private readonly T _value;
 
-      public Impl([NotNull] Func<T> open, [NotNull] Action<T> close)
+      public Impl(Func<T> open, Action<T> close)
       {
         if (open is null) throw new ArgumentNullException(nameof(open));
 

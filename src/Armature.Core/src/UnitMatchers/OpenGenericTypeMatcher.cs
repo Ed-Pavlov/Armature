@@ -1,5 +1,4 @@
 ﻿using System;
-using JetBrains.Annotations;
 
 namespace Armature.Core.UnitMatchers
 {
@@ -8,7 +7,7 @@ namespace Armature.Core.UnitMatchers
   /// </summary>
   public class OpenGenericTypeMatcher : UnitInfoByTypeMatcherBase, IUnitMatcher
   {
-    public OpenGenericTypeMatcher([NotNull] Type genericType, object token) : base(genericType, token) { }
+    public OpenGenericTypeMatcher(Type genericType, object? token) : base(genericType, token) { }
 
     public  bool Matches(UnitInfo unitInfo)
     {

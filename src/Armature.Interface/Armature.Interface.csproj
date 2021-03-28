@@ -5,8 +5,9 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\build\armature.public.snk</AssemblyOriginatorKeyFile>
     <PublicSign>true</PublicSign>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>9</LangVersion>
     <RootNamespace>Armature</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Label="nuspec">

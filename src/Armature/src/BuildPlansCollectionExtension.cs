@@ -3,7 +3,6 @@ using System.Linq;
 using Armature.Core;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
-using JetBrains.Annotations;
 
 namespace Armature
 {
@@ -13,7 +12,7 @@ namespace Armature
     ///   Used to make a build plan for Unit of type <paramref name="type"/>.
     ///   How it should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public static TreatingTuner Treat([NotNull] this BuildPlansCollection buildPlans, [NotNull] Type type, object token = null)
+    public static TreatingTuner Treat(this BuildPlansCollection buildPlans, Type type, object? token = null)
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
@@ -25,7 +24,7 @@ namespace Armature
     ///   Used to make a build plan for Unit of type <typeparamref name="T" />.
     ///   How <typeparamref name="T" /> should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public static TreatingTuner<T> Treat<T>([NotNull] this BuildPlansCollection buildPlans, object token = null)
+    public static TreatingTuner<T> Treat<T>(this BuildPlansCollection buildPlans, object? token = null)
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
@@ -37,7 +36,7 @@ namespace Armature
     ///   Used to make a build plan for all inheritors of <paramref name="type"/>.
     ///   How it should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public static TreatingTuner TreatInheritorsOf([NotNull] this BuildPlansCollection buildPlans, [NotNull] Type type, object token = null)
+    public static TreatingTuner TreatInheritorsOf(this BuildPlansCollection buildPlans, Type type, object? token = null)
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
@@ -51,7 +50,7 @@ namespace Armature
     ///   Used to make a build plan for all inheritors of <typeparamref name="T" />.
     ///   How <typeparamref name="T" /> should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public static TreatingTuner<T> TreatInheritorsOf<T>([NotNull] this BuildPlansCollection buildPlans, object token = null)
+    public static TreatingTuner<T> TreatInheritorsOf<T>(this BuildPlansCollection buildPlans, object? token = null)
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
@@ -64,7 +63,7 @@ namespace Armature
     /// <summary>
     ///   Used to override a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems. 
     /// </summary>
-    public static TreatingTuner TreatOverride([NotNull] this BuildPlansCollection buildPlans, [NotNull] Type type, object token = null)
+    public static TreatingTuner TreatOverride(this BuildPlansCollection buildPlans, Type type, object? token = null)
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
@@ -77,12 +76,12 @@ namespace Armature
     }
 
     [Obsolete("Renamed to OverrideTreat, use it instead. Will be deleted in future releases.")]
-    public static TreatingTuner<T> Override<T>([NotNull] this BuildPlansCollection buildPlans, object token = null) => OverrideTreat<T>(buildPlans, token);
+    public static TreatingTuner<T> Override<T>(this BuildPlansCollection buildPlans, object? token = null) => OverrideTreat<T>(buildPlans, token);
 
     /// <summary>
     ///   Used to override a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems. 
     /// </summary>
-    public static TreatingTuner<T> OverrideTreat<T>([NotNull] this BuildPlansCollection buildPlans, object token = null)
+    public static TreatingTuner<T> OverrideTreat<T>(this BuildPlansCollection buildPlans, object? token = null)
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
@@ -98,7 +97,7 @@ namespace Armature
     ///   Used to make a build plan for whole class of open generic types.
     ///   How <paramref name="openGenericType" /> should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public static TreatingOpenGenericTuner TreatOpenGeneric([NotNull] this BuildPlansCollection buildPlans, Type openGenericType, object token = null)
+    public static TreatingOpenGenericTuner TreatOpenGeneric(this BuildPlansCollection buildPlans, Type openGenericType, object? token = null)
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
@@ -112,7 +111,7 @@ namespace Armature
     ///   Used to add some details to build plan of any building unit. E.g. to specify what constructor to use, or register a dependency needed by any type
     ///   in the system. Usually used as a part of other build plan. See <see cref="Building{T}" /> for details.
     /// </summary>
-    public static Tuner TreatAll([NotNull] this BuildPlansCollection buildPlans)
+    public static Tuner TreatAll(this BuildPlansCollection buildPlans)
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
@@ -123,7 +122,7 @@ namespace Armature
     /// <summary>
     ///   Used to make a build plan for a unit only if it is building in a context of building <paramref name="type" />.
     /// </summary>
-    public static SequenceTuner Building([NotNull] this BuildPlansCollection buildPlans, Type type, object token = null)
+    public static SequenceTuner Building(this BuildPlansCollection buildPlans, Type type, object? token = null)
     {
       if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
 
@@ -134,6 +133,6 @@ namespace Armature
     /// <summary>
     ///   Used to make a build plan for a unit only if it is building in a context of building <typeparamref name="T" />.
     /// </summary>
-    public static SequenceTuner Building<T>(this BuildPlansCollection buildPlans, object token = null) => buildPlans.Building(typeof(T), token);
+    public static SequenceTuner Building<T>(this BuildPlansCollection buildPlans, object? token = null) => buildPlans.Building(typeof(T), token);
   }
 }

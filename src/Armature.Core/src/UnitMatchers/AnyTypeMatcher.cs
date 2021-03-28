@@ -15,7 +15,7 @@ namespace Armature.Core.UnitMatchers
     public bool Matches(UnitInfo unitInfo)
     {
       var type = unitInfo.GetUnitTypeSafe();
-      return !unitInfo.Token.IsSpecial() && type != null && !type.IsAbstract && !type.IsInterface && !type.IsGenericTypeDefinition;
+      return !unitInfo.Token.IsSpecial() && type is {IsAbstract: false, IsInterface: false, IsGenericTypeDefinition: false};
     }
 
     [DebuggerStepThrough]
@@ -23,7 +23,7 @@ namespace Armature.Core.UnitMatchers
 
     #region Equality
     [DebuggerStepThrough]
-    public bool Equals(IUnitMatcher other) => ReferenceEquals(this, other);
+    public bool Equals(IUnitMatcher? other) => ReferenceEquals(this, other);
 
     [DebuggerStepThrough]
     public override bool Equals(object obj) => Equals(obj as AnyTypeMatcher);

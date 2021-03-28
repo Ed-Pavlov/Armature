@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions
 {
@@ -11,13 +10,13 @@ namespace Armature.Core.BuildActions
   /// </summary>
   public class SingletonBuildAction : IBuildAction
   {
-    private BuildResult _instance;
+    private BuildResult? _instance;
 
     [DebuggerStepThrough]
     public SingletonBuildAction() { }
 
     [DebuggerStepThrough]
-    public SingletonBuildAction([CanBeNull] object value) => _instance = new BuildResult(value);
+    public SingletonBuildAction(object? value) => _instance = new BuildResult(value);
 
     public void Process(IBuildSession buildSession)
     {

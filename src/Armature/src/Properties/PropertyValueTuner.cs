@@ -6,13 +6,12 @@ using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Creation;
 using Armature.Core.BuildActions.Property;
 using Armature.Extensibility;
-using JetBrains.Annotations;
 
 namespace Armature
 {
   public class PropertyValueTuner : BuildActionExtensibility
   {
-    public PropertyValueTuner([NotNull] IUnitMatcher propertyUnitMatcher, [NotNull] IBuildAction getPropertyAction, int weight)
+    public PropertyValueTuner(IUnitMatcher propertyUnitMatcher, IBuildAction getPropertyAction, int weight)
       : base(propertyUnitMatcher, getPropertyAction, weight)
     {
     }
@@ -20,13 +19,13 @@ namespace Armature
     /// <summary>
     ///   Inject the <paramref name="value" /> into the property
     /// </summary>
-    public PropertyValueBuildPlan UseValue([CanBeNull] object value) =>
+    public PropertyValueBuildPlan UseValue(object? value) =>
       new(UnitMatcher, BuildAction, new SingletonBuildAction(value), Weight);
 
     /// <summary>
     ///   For building a value for the property use <see cref="PropertyInfo.PropertyType" /> and <paramref name="token" />
     /// </summary>
-    public PropertyValueBuildPlan UseToken([NotNull] object token)
+    public PropertyValueBuildPlan UseToken(object token)
     {
       if (token == null) throw new ArgumentNullException(nameof(token));
 
@@ -49,7 +48,7 @@ namespace Armature
   [SuppressMessage("ReSharper", "UnusedTypeParameter")]
   public class PropertyValueTuner<T> : PropertyValueTuner
   {
-    public PropertyValueTuner([NotNull] IUnitMatcher propertyUnitMatcher, IBuildAction getPropertyAction, int weight)
+    public PropertyValueTuner(IUnitMatcher propertyUnitMatcher, IBuildAction getPropertyAction, int weight)
       : base(propertyUnitMatcher, getPropertyAction, weight)
     {
     }

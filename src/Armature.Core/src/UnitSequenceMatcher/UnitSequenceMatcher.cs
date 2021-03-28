@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using Armature.Core.Common;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
 
 namespace Armature.Core.UnitSequenceMatcher
 {
@@ -12,7 +11,7 @@ namespace Armature.Core.UnitSequenceMatcher
   /// </summary>
   public abstract class UnitSequenceMatcher : IUnitSequenceMatcher
   {
-    private Dictionary<object, List<IBuildAction>> _buildActions;
+    private Dictionary<object, List<IBuildAction>>? _buildActions;
 
     protected UnitSequenceMatcher(int weight) => Weight = weight;
 
@@ -20,13 +19,12 @@ namespace Armature.Core.UnitSequenceMatcher
 
     private Dictionary<object, List<IBuildAction>> LazyBuildAction
     {
-      [DebuggerStepThrough] get => _buildActions ?? (_buildActions = new Dictionary<object, List<IBuildAction>>());
+      [DebuggerStepThrough] get => _buildActions ??= new Dictionary<object, List<IBuildAction>>();
     }
 
     public abstract ICollection<IUnitSequenceMatcher> Children { get; }
 
-    [CanBeNull]
-    public abstract MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight);
+    public abstract MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight);
 
     [DebuggerStepThrough]
     public IUnitSequenceMatcher AddBuildAction(object buildStage, IBuildAction buildAction)
@@ -40,8 +38,7 @@ namespace Armature.Core.UnitSequenceMatcher
     public abstract bool Equals(IUnitSequenceMatcher other);
 
     [DebuggerStepThrough]
-    [CanBeNull]
-    protected MatchedBuildActions GetOwnActions(int matchingWeight)
+    protected MatchedBuildActions? GetOwnActions(int matchingWeight)
     {
       if (_buildActions == null) return null;
 
@@ -57,7 +54,7 @@ namespace Armature.Core.UnitSequenceMatcher
 
     public void PrintToLog()
     {
-      ICollection<IUnitSequenceMatcher> children = null;
+      ICollection<IUnitSequenceMatcher>? children = null;
       try {
         children = Children;
       }

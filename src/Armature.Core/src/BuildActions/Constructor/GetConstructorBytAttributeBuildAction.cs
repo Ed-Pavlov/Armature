@@ -12,11 +12,11 @@ namespace Armature.Core.BuildActions.Constructor
   /// </summary>
   public class GetConstructorBytAttributeBuildAction<T> : IBuildAction
   {
-    private readonly Predicate<T> _predicate;
+    private readonly Predicate<T>? _predicate;
 
     [SuppressMessage("ReSharper", "MemberCanBeProtected.Global")]
     [DebuggerStepThrough]
-    public GetConstructorBytAttributeBuildAction(Predicate<T> predicate = null) => _predicate = predicate;
+    public GetConstructorBytAttributeBuildAction(Predicate<T>? predicate = null) => _predicate = predicate;
 
     public void Process(IBuildSession buildSession)
     {
@@ -29,7 +29,7 @@ namespace Armature.Core.BuildActions.Constructor
     [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
 
-    private ConstructorInfo GetConstructorInfo(Type unitType)
+    private ConstructorInfo? GetConstructorInfo(Type unitType)
     {
       var constructorInfo = unitType
         .GetConstructors()

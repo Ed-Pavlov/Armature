@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Armature.Core.UnitMatchers.Parameters;
-using JetBrains.Annotations;
 
 namespace Armature
 {
@@ -20,7 +19,7 @@ namespace Armature
     /// </summary>
     /// <param name="parameterName">Matches parameter with this name</param>
     /// <returns></returns>
-    public static ParameterValueTuner Named([NotNull] string parameterName)
+    public static ParameterValueTuner Named(string parameterName)
     {
       var matcher = new ParameterByNameMatcher(parameterName);
       return new ParameterValueTuner(matcher, InjectPointMatchingWeight.NamedParameter);
@@ -33,7 +32,7 @@ namespace Armature
     ///   Matches parameter marked with <see cref="InjectAttribute" /> with <see cref="InjectAttribute.InjectionPointId" />
     ///   equals to <paramref name="injectPointId" />
     /// </param>
-    public static ParameterValueTuner WithInjectPoint([CanBeNull] object injectPointId)
+    public static ParameterValueTuner WithInjectPoint(object? injectPointId)
     {
       var matcher = new ParameterByInjectPointMatcher(injectPointId);
       return new ParameterValueTuner(matcher, InjectPointMatchingWeight.AttributedParameter);

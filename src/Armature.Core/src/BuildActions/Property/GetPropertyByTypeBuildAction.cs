@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions.Property
 {
@@ -13,7 +12,7 @@ namespace Armature.Core.BuildActions.Property
   {
     private readonly Type _type;
 
-    public GetPropertyByTypeBuildAction([NotNull] Type type) => _type = type ?? throw new ArgumentNullException(nameof(type));
+    public GetPropertyByTypeBuildAction(Type type) => _type = type ?? throw new ArgumentNullException(nameof(type));
 
     public void Process(IBuildSession buildSession)
     {

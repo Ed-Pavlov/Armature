@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using Armature.Core.Common;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
 
 namespace Armature.Core
 {
@@ -11,8 +10,7 @@ namespace Armature.Core
   /// </summary>
   public class BuildResult
   {
-    [CanBeNull] 
-    private readonly Func<object> _factory;
+    private readonly Func<object?>? _factory;
     private Maybe<object> _value = Maybe<object>.Nothing;
   
     /// <summary>
@@ -20,22 +18,20 @@ namespace Armature.Core
     /// (because in this case it would be DFS) but a lazy tree of dependencies factories is created. See <see cref="BuildSession.LazyDependenciesTree"/>.
     /// </summary>
     [DebuggerStepThrough]
-    public BuildResult([NotNull] Func<object> factory) => _factory = factory ?? throw new ArgumentNullException(nameof(factory));
+    public BuildResult(Func<object?> factory) => _factory = factory ?? throw new ArgumentNullException(nameof(factory));
 
     [DebuggerStepThrough]
-    public BuildResult([CanBeNull] object value) => _value = value.ToMaybe();
+    public BuildResult(object? value) => _value = value.ToMaybe();
 
     public bool IsResolved => _value.HasValue;
     
     public void Resolve()
     {
-      // ReSharper disable once PossibleNullReferenceException
       if (!_value.HasValue)
-        _value = _factory().ToMaybe();
+        _value = _factory!().ToMaybe();
     }
     
-    [CanBeNull] 
-    public object Value => _value.Value;
+    public object? Value => _value.Value;
 
     [DebuggerStepThrough]
     public override string ToString() => $"IsResolved: {IsResolved}" + (_value.HasValue ? $", {_value.Value.ToLogString()}" : null);

@@ -153,7 +153,7 @@ namespace Armature.Core.Logging
     /// <summary>
     ///   Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
     /// </summary>
-    public static string ToLogString(this object obj)
+    public static string ToLogString(this object? obj)
     {
       if (obj == null) return "null";
 
@@ -170,7 +170,7 @@ namespace Armature.Core.Logging
 
     private static string GetTypeFullName(Type type)
     {
-      if (!type.IsGenericType) return type.FullName;
+      if (!type.IsGenericType) return type.FullName ?? "Type w/ empty FullName";
 
       var main = type.GetGenericTypeDefinition().FullName;
       var arguments = string.Join(", ", type.GenericTypeArguments.Select(GetTypeFullName).ToArray());

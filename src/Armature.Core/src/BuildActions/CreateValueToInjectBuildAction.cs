@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions
 {
@@ -10,10 +9,10 @@ namespace Armature.Core.BuildActions
   /// </summary>
   public abstract class CreateValueToInjectBuildAction : IBuildAction
   {
-    private readonly object _token;
+    private readonly object? _token;
 
     [DebuggerStepThrough]
-    protected CreateValueToInjectBuildAction([CanBeNull] object token) => _token = token;
+    protected CreateValueToInjectBuildAction(object? token) => _token = token;
 
     public void Process(IBuildSession buildSession)
     {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions
 {
@@ -12,10 +11,10 @@ namespace Armature.Core.BuildActions
   public class RedirectOpenGenericTypeBuildAction : IBuildAction
   {
     private readonly Type _redirectTo;
-    private readonly object _token;
+    private readonly object? _token;
 
     [DebuggerStepThrough]
-    public RedirectOpenGenericTypeBuildAction([NotNull] Type redirectTo, [CanBeNull] object token)
+    public RedirectOpenGenericTypeBuildAction(Type redirectTo, object? token)
     {
       if (redirectTo == null) throw new ArgumentNullException(nameof(redirectTo));
       if (!redirectTo.IsGenericTypeDefinition) throw new ArgumentException("Must be open generic type", nameof(redirectTo));

@@ -20,7 +20,7 @@ namespace Armature.Core.UnitMatchers.Parameters
 
     #region Equality
     [DebuggerStepThrough]
-    public bool Equals(IUnitMatcher other) => ReferenceEquals(this, other);
+    public bool Equals(IUnitMatcher? other) => ReferenceEquals(this, other);
 
     [DebuggerStepThrough]
     public override bool Equals(object obj) => Equals(obj as IUnitMatcher);

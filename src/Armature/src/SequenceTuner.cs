@@ -4,19 +4,18 @@ using Armature.Core;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
-using JetBrains.Annotations;
 
 namespace Armature
 {
   public class SequenceTuner : UnitSequenceExtensibility
   {
     [DebuggerStepThrough]
-    public SequenceTuner([NotNull] IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
+    public SequenceTuner(IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
 
     /// <summary>
     ///   Used to make a build plan for a unit only if it is building in a context of building <paramref name="type" /> with token <paramref name="token" />
     /// </summary>
-    public SequenceTuner Building([NotNull] Type type, object token = null)
+    public SequenceTuner Building(Type type, object? token = null)
     {
       if (type == null) throw new ArgumentNullException(nameof(type));
 
@@ -27,13 +26,13 @@ namespace Armature
     /// <summary>
     ///   Used to make a build plan for a unit only if it is building in a context of building <typeparamref name="T" /> with token <paramref name="token" />
     /// </summary>
-    public SequenceTuner Building<T>(object token = null) => Building(typeof(T), token);
+    public SequenceTuner Building<T>(object? token = null) => Building(typeof(T), token);
 
     /// <summary>
     ///   Used to make a build plan for Unit of type <paramref name="type"/>.
     ///   How it should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public TreatingTuner Treat([NotNull] Type type, object token = null)
+    public TreatingTuner Treat(Type type, object? token = null)
     {
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(type, token));
       return new TreatingTuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
@@ -43,7 +42,7 @@ namespace Armature
     ///   Used to make a build plan for <typeparamref name="T" />.
     ///   How <typeparamref name="T" /> should be treated is specified by subsequence calls using returned object
     /// </summary>
-    public TreatingTuner<T> Treat<T>(object token = null)
+    public TreatingTuner<T> Treat<T>(object? token = null)
     {
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(typeof(T), token));
       return new TreatingTuner<T>(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));

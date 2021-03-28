@@ -10,8 +10,8 @@ namespace Armature.Core.BuildActions.Parameter
   {
     public static readonly IBuildAction Instance = new CreateParameterValueBuildAction();
 
-    public CreateParameterValueBuildAction(object token = null) : base(token) { }
+    public CreateParameterValueBuildAction(object? token = null) : base(token) { }
 
-    protected override Type GetValueType(UnitInfo unitInfo) => ((ParameterInfo)unitInfo.Id).ParameterType;
+    protected override Type GetValueType(UnitInfo unitInfo) => ((ParameterInfo)unitInfo.Id!)!.ParameterType;
   }
 }

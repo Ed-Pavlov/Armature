@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace Armature.Core
 {
@@ -11,8 +10,7 @@ namespace Armature.Core
     /// <summary>
     ///   The result of building. Build actions can check if the unit is already built, or set the result.
     /// </summary>
-    [CanBeNull]
-    BuildResult BuildResult { get; set; }
+    BuildResult? BuildResult { get; set; }
 
     /// <summary>
     ///   The sequence of units representing a build session, the last one is the unit under construction,
@@ -24,13 +22,12 @@ namespace Armature.Core
     ///   Builds a unit represented by <see cref="UnitInfo" /> in the context of the current build session
     /// </summary>
     /// <returns>Returns an instance or null if unit can't be built.</returns>
-    [CanBeNull]
-    BuildResult BuildUnit([NotNull] UnitInfo unitInfo);
+    BuildResult? BuildUnit(UnitInfo unitInfo);
 
     /// <summary>
     ///   Builds all units represented by <see cref="UnitInfo" /> in the context of the current build session
     /// </summary>
     /// <returns>Returns an instance or null if unit can't be built.</returns>
-    IReadOnlyList<BuildResult> BuildAllUnits([NotNull] UnitInfo unitInfo);
+    IReadOnlyList<BuildResult>? BuildAllUnits(UnitInfo unitInfo);
   }
 }

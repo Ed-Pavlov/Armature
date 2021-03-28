@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions.Property
 {
@@ -13,7 +12,7 @@ namespace Armature.Core.BuildActions.Property
   {
     private readonly IReadOnlyCollection<string> _names;
 
-    public GetPropertyByNameBuildAction([NotNull] params string[] names)
+    public GetPropertyByNameBuildAction(params string[] names)
     {
       if (names is null || names.Length == 0) throw new ArgumentNullException(nameof(names));
 

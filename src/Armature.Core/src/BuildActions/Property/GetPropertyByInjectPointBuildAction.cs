@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
 
 namespace Armature.Core.BuildActions.Property
 {
@@ -12,9 +11,9 @@ namespace Armature.Core.BuildActions.Property
   /// </summary>
   public class GetPropertyByInjectPointBuildAction : IBuildAction
   {
-    private readonly object[] _pointIds;
+    private readonly object?[] _pointIds;
 
-    public GetPropertyByInjectPointBuildAction([NotNull] params object[] pointIds) => _pointIds = pointIds ?? throw new ArgumentNullException(nameof(pointIds));
+    public GetPropertyByInjectPointBuildAction(params object?[] pointIds) => _pointIds = pointIds ?? throw new ArgumentNullException(nameof(pointIds));
 
     public void Process(IBuildSession buildSession)
     {

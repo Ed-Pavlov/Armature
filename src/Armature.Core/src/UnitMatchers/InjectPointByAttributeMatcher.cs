@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
 
 namespace Armature.Core.UnitMatchers
 {
@@ -10,11 +9,10 @@ namespace Armature.Core.UnitMatchers
   /// </summary>
   public abstract class InjectPointByAttributeMatcher<T> : IUnitMatcher
   {
-    [CanBeNull]
-    private readonly Predicate<T> _predicate;
+    private readonly Predicate<T>? _predicate;
 
     [DebuggerStepThrough]
-    protected InjectPointByAttributeMatcher([CanBeNull] Predicate<T> predicate) => _predicate = predicate;
+    protected InjectPointByAttributeMatcher(Predicate<T>? predicate) => _predicate = predicate;
 
     public bool Matches(UnitInfo unitInfo)
     {
@@ -24,15 +22,14 @@ namespace Armature.Core.UnitMatchers
       return attribute != null && (_predicate == null || _predicate(attribute));
     }
 
-    [CanBeNull]
-    protected abstract T GetInjectPointAttribute(UnitInfo unitInfo);
+    protected abstract T? GetInjectPointAttribute(UnitInfo unitInfo);
 
     [DebuggerStepThrough]
     public override string ToString() => GetType().GetShortName();
 
     #region Equality
     [DebuggerStepThrough]
-    public virtual bool Equals(IUnitMatcher obj) =>
+    public virtual bool Equals(IUnitMatcher? obj) =>
       obj is InjectPointByAttributeMatcher<T> other && GetType() == obj.GetType() && Equals(_predicate, other._predicate);
 
     [DebuggerStepThrough]

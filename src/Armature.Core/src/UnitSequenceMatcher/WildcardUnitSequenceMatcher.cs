@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Common;
-using JetBrains.Annotations;
 
 namespace Armature.Core.UnitSequenceMatcher
 {
@@ -12,16 +11,16 @@ namespace Armature.Core.UnitSequenceMatcher
   {
     private readonly IUnitMatcher _matcher;
 
-    public WildcardUnitSequenceMatcher([NotNull] IUnitMatcher matcher) : this(matcher, UnitSequenceMatchingWeight.WildcardMatchingUnit) { }
+    public WildcardUnitSequenceMatcher(IUnitMatcher matcher) : this(matcher, UnitSequenceMatchingWeight.WildcardMatchingUnit) { }
 
-    public WildcardUnitSequenceMatcher([NotNull] IUnitMatcher matcher, int weight) : base(weight) =>
+    public WildcardUnitSequenceMatcher(IUnitMatcher matcher, int weight) : base(weight) =>
       _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
 
     /// <summary>
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.
     ///   If it is the unit under construction, returns build actions for it, if no, pass the rest of the sequence to each child and returns merged actions.
     /// </summary>
-    public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
+    public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
       var realWeight = inputWeight;
       for (var i = 0; i < buildingUnitsSequence.Length; i++)
@@ -42,7 +41,7 @@ namespace Armature.Core.UnitSequenceMatcher
     public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().Name, Weight, _matcher);
 
     #region Equality
-    public bool Equals(WildcardUnitSequenceMatcher other)
+    public bool Equals(WildcardUnitSequenceMatcher? other)
     {
       if (ReferenceEquals(null, other)) return false;
       if (ReferenceEquals(this, other)) return true;
@@ -58,7 +57,7 @@ namespace Armature.Core.UnitSequenceMatcher
     {
       unchecked
       {
-        return ((_matcher != null ? _matcher.GetHashCode() : 0) * 397) ^ Weight;
+        return (_matcher.GetHashCode() * 397) ^ Weight;
       }
     }
     #endregion

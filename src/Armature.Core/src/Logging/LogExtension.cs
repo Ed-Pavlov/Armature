@@ -29,7 +29,7 @@ namespace Armature.Core.Logging
               }
           });
 
-    public static void ToLog(this MatchedBuildActions actions, LogLevel logLevel = LogLevel.Verbose) =>
+    public static void ToLog(this MatchedBuildActions? actions, LogLevel logLevel = LogLevel.Verbose) =>
       logLevel.ExecuteIfEnabled(
         () =>
           {

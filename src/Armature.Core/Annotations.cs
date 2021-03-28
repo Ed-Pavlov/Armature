@@ -9,6 +9,8 @@ using System.Diagnostics;
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
 
+#nullable disable
+
 // ReSharper disable once CheckNamespace
 namespace JetBrains.Annotations
 {
