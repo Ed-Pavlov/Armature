@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Armature.Core
+﻿namespace Armature.Core
 {
   /// <summary>
   ///  Represents a pattern which can be matched with an unit info.

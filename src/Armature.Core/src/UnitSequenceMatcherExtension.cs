@@ -16,7 +16,7 @@ namespace Armature.Core
       where T : IUnitSequenceMatcher
     {
       if (parent.Children.Contains(unitSequenceMatcher))
-        return (T)parent.Children.FirstOrDefault(_ => _.Equals(unitSequenceMatcher));
+        return (T)parent.Children.First(_ => _.Equals(unitSequenceMatcher));
 
       parent.Children.Add(unitSequenceMatcher);
       return unitSequenceMatcher;
