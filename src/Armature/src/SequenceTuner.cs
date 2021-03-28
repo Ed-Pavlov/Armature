@@ -17,7 +17,7 @@ namespace Armature
     /// </summary>
     public SequenceTuner Building(Type type, object? token = null)
     {
-      if (type == null) throw new ArgumentNullException(nameof(type));
+      if (type is null) throw new ArgumentNullException(nameof(type));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(type, token));
       return new SequenceTuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));

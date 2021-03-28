@@ -140,7 +140,7 @@ namespace Tests.UnitTests
     [TestCaseSource(nameof(TokensSource))]
     public void should_not_be_equal4(object token)
     {
-      if (token == null) return;
+      if (token is null) return;
       
       var matcher1 = new UnitInfoMatcher(null, token);
       var matcher2 = new UnitInfoMatcher("id2", token);

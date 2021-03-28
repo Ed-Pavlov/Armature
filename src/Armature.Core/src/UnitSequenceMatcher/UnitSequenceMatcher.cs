@@ -40,7 +40,7 @@ namespace Armature.Core.UnitSequenceMatcher
     [DebuggerStepThrough]
     protected MatchedBuildActions? GetOwnActions(int matchingWeight)
     {
-      if (_buildActions == null) return null;
+      if (_buildActions is null) return null;
 
       var result = new MatchedBuildActions();
       foreach (var pair in _buildActions)
@@ -61,12 +61,12 @@ namespace Armature.Core.UnitSequenceMatcher
       catch { // do nothing
       }
       
-      if(children != null)
+      if(children is not null)
         foreach (var child in children)
           using (Log.Block(LogLevel.Info, child.ToString()))
             child.PrintToLog();
 
-      if(_buildActions != null)
+      if(_buildActions is not null)
         using (Log.Block(LogLevel.Info, "Build actions"))
           foreach (var pair in _buildActions)
             using (Log.Block(LogLevel.Info, "Stage: {0}", pair.Key))

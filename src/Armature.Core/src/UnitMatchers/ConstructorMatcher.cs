@@ -12,7 +12,7 @@ namespace Armature.Core.UnitMatchers
 
     private ConstructorMatcher() { }
 
-    public bool Matches(UnitInfo unitInfo) => unitInfo.Token == SpecialToken.Constructor && unitInfo.GetUnitTypeSafe() != null;
+    public bool Matches(UnitInfo unitInfo) => unitInfo.Token == SpecialToken.Constructor && unitInfo.GetUnitTypeSafe() is not null;
 
     [DebuggerStepThrough]
     public override string ToString() => GetType().GetShortName();

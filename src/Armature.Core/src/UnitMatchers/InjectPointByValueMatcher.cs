@@ -17,7 +17,7 @@ namespace Armature.Core.UnitMatchers
     public bool Matches(UnitInfo unitInfo)
     {
       var type = GetInjectPointType(unitInfo);
-      return unitInfo.Token == SpecialToken.InjectValue && type != null && type.IsInstanceOfType(_value);
+      return unitInfo.Token == SpecialToken.InjectValue && type is not null && type.IsInstanceOfType(_value);
     }
 
     protected abstract Type? GetInjectPointType(UnitInfo unitInfo);

@@ -28,8 +28,8 @@ namespace Armature.Core
       BuildPlansCollection? auxBuildPlans,
       Builder[]? parentBuilders)
     {
-      if (buildStages == null) throw new ArgumentNullException(nameof(buildStages));
-      if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
+      if (buildStages is null) throw new ArgumentNullException(nameof(buildStages));
+      if (buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       _buildStages = buildStages;
       _buildPlans = buildPlans;
@@ -121,7 +121,7 @@ namespace Armature.Core
 
     private BuildResult? BuildUnit(MatchedBuildActions? matchedBuildActions)
     {
-      if (matchedBuildActions == null)
+      if (matchedBuildActions is null)
         return BuildViaParentBuilder(_buildSequence.Last());
 
       // builder to pass into IBuildActon.Execute
@@ -131,7 +131,7 @@ namespace Armature.Core
       foreach (var stage in _buildStages)
       {
         var buildAction = matchedBuildActions.GetTopmostAction(stage);
-        if (buildAction == null)
+        if (buildAction is null)
           continue;
 
         performedActions.Push(buildAction);
@@ -170,7 +170,7 @@ namespace Armature.Core
 
     private BuildResult? BuildViaParentBuilder(UnitInfo unitInfo)
     {
-      if (_parentBuilders == null) return default;
+      if (_parentBuilders is null) return default;
 
       var exceptions = new List<Exception>();
 
@@ -199,7 +199,7 @@ namespace Armature.Core
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
     private List<BuildResult>? BuildAllUnits(MatchedBuildActions? matchedBuildActions)
     {
-      if (matchedBuildActions == null) return null;
+      if (matchedBuildActions is null) return null;
 
       if (matchedBuildActions.Keys.Count > 1)
         throw new ArmatureException("Actions only for one stage should be provided for BuildAll");

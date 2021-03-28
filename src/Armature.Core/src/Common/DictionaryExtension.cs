@@ -13,9 +13,9 @@ namespace Armature.Core.Common
     [DebuggerStepThrough]
     public static TValue GetOrCreateValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TValue> createValue)
     {
-      if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
-      if (key == null) throw new ArgumentNullException(nameof(key));
-      if (createValue == null) throw new ArgumentNullException(nameof(createValue));
+      if (dictionary is null) throw new ArgumentNullException(nameof(dictionary));
+      if (key is null) throw new ArgumentNullException(nameof(key));
+      if (createValue is null) throw new ArgumentNullException(nameof(createValue));
 
       if (!dictionary.TryGetValue(key, out var value))
       {

@@ -26,7 +26,7 @@ namespace Armature.Core.BuildActions.Property
               var attribute = property.GetCustomAttribute<InjectAttribute>();
               return Tuple.Create(attribute, property);
             })
-        .Where(_ => _.Item1 != null)
+        .Where(_ => _.Item1 is not null)
         .ToArray();
 
       var properties =

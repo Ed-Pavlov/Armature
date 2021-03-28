@@ -32,7 +32,7 @@ namespace Armature
     [DebuggerStepThrough]
     private static T? Build<T>(this Builder builder, object? token, params object[]? parameters)
     {
-      if (builder == null) throw new ArgumentNullException(nameof(builder));
+      if (builder is null) throw new ArgumentNullException(nameof(builder));
 
       BuildPlansCollection? sessionalBuildPlans = null;
       if (parameters is {Length: > 0})
@@ -46,7 +46,7 @@ namespace Armature
       var unitInfo = new UnitInfo(typeof(T), token);
       var buildResult = builder.BuildUnit(unitInfo, sessionalBuildPlans);
 
-      return buildResult != null 
+      return buildResult is not null 
         ? (T?)buildResult.Value
         : throw new ArmatureException($"Can't build unit <{unitInfo}>").AddData("unitInfo", unitInfo);
     }

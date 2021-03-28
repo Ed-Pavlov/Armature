@@ -46,7 +46,7 @@ namespace Armature.Core.UnitSequenceMatcher
       else
       {
         matchedBuildActions = GetOwnActions(Weight + inputWeight);
-        if (matchedBuildActions == null)
+        if (matchedBuildActions is null)
           Log.WriteLine(LogLevel.Trace, () => string.Format("{0}{{not matched}}", this));
         else
           using (Log.Block(LogLevel.Verbose, this.ToString)) // pass group method, do not call ToString

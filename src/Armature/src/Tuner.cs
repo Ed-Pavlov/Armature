@@ -22,7 +22,7 @@ namespace Armature
     /// </summary>
     public Tuner UsingParameters(params object[]? values)
     {
-      if (values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
+      if (values is null || values.Length == 0) throw new ArgumentNullException(nameof(values));
 
       foreach (var parameter in values)
         if (parameter is IParameterValueBuildPlan buildPlan)

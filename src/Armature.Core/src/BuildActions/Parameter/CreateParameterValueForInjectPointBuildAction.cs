@@ -21,7 +21,7 @@ namespace Armature.Core.BuildActions.Parameter
         .GetCustomAttributes<InjectAttribute>()
         .SingleOrDefault();
 
-      if (attribute == null)
+      if (attribute is null)
       {
         Log.WriteLine(LogLevel.Info, () => string.Format("{0}{{{1}}}", this, "No parameter marked with InjectAttribute"));
       }

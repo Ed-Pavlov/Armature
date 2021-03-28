@@ -29,7 +29,7 @@ namespace Armature.Core.BuildActions.Property
           property =>
             {
               var attribute = property.GetCustomAttribute<T>();
-              return attribute != null && (_predicate == null || _predicate(attribute));
+              return attribute is not null && (_predicate is null || _predicate(attribute));
             })
         .ToArray();
 

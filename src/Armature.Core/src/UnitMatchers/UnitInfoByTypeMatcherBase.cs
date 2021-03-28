@@ -37,7 +37,7 @@ namespace Armature.Core.UnitMatchers
     {
       unchecked
       {
-        return (UnitType.GetHashCode() * 397) ^ (Token != null ? Token.GetHashCode() : 0);
+        return (UnitType.GetHashCode() * 397) ^ (Token is not null ? Token.GetHashCode() : 0);
       }
     }
   }

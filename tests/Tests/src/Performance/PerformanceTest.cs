@@ -129,7 +129,7 @@ namespace Tests.Performance
 
     private static TreatingTuner Treat(BuildPlansCollection buildPlans, UnitInfo unitInfo)
     {
-      if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
+      if (buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitMatcher = new MockUnitMatcher(new UnitInfoMatcher(unitInfo.Id, unitInfo.Token));
       
@@ -199,7 +199,7 @@ namespace Tests.Performance
       };
 
       var buildStages = new object[] {BuildStage.Cache, BuildStage.Initialize, BuildStage.Create};
-      var builder = parent == null ? new Builder(buildStages) : new Builder(buildStages, parent);
+      var builder = parent is null ? new Builder(buildStages) : new Builder(buildStages, parent);
       builder.Children.Add(treatAll);
       return builder;
     }

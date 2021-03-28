@@ -144,7 +144,7 @@ namespace JetBrains.Annotations
   /// <example>
   ///   <code>
   /// void Foo(string param) {
-  ///   if (param == null)
+  ///   if (param is null)
   ///     throw new ArgumentNullException("par"); // Warning: Cannot resolve symbol
   /// }
   /// </code>
@@ -334,7 +334,7 @@ namespace JetBrains.Annotations
   ///   void Test() {
   ///     var ca1 = new NoEquality();
   ///     var ca2 = new NoEquality();
-  ///     if (ca1 != null) { // OK
+  ///     if (ca1 is not null) { // OK
   ///       bool condition = ca1 == ca2; // Warning
   ///     }
   ///   }

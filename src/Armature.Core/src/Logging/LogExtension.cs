@@ -33,7 +33,7 @@ namespace Armature.Core.Logging
       logLevel.ExecuteIfEnabled(
         () =>
           {
-            if (actions == null)
+            if (actions is null)
             {
               Log.WriteLine(logLevel, "not matched");
               return;

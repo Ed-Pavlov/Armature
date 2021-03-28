@@ -32,7 +32,7 @@ namespace Armature.Core.BuildActions
         
         if(values is not null)
         {
-          if (listType == null) throw new InvalidOperationException("Use roslyn attributes when during discarding of .net 4.5 support");
+          if (listType is null) throw new InvalidOperationException("Use roslyn attributes when during discarding of .net 4.5 support");
 
           var listInstance = CreateListInstance(listType, values.Count);
           FillList(listInstance, listType, itemType, values);
@@ -53,7 +53,7 @@ namespace Armature.Core.BuildActions
     private static object CreateListInstance(Type listType, int capacity)
     {
       var listConstructor = listType.GetConstructor(IntTypeParam);
-      if (listConstructor == null) throw new InvalidOperationException($"Not constructor found in type {listType}");
+      if (listConstructor is null) throw new InvalidOperationException($"Not constructor found in type {listType}");
       
       return listConstructor.Invoke(CreateParameter(capacity));
     }
@@ -62,7 +62,7 @@ namespace Armature.Core.BuildActions
     private static void FillList(object listInstance, Type listType, Type itemType, IEnumerable<BuildResult> values)
     {
       var addMethod = listType.GetMethod(nameof(List<object>.Add), CreateTypeParameter(itemType));
-      if (addMethod == null) throw new InvalidOperationException($"No Add method found in type {listType}");
+      if (addMethod is null) throw new InvalidOperationException($"No Add method found in type {listType}");
       
       foreach (var buildResult in values) 
         addMethod.Invoke(listInstance, CreateParameter(Convert.ChangeType(buildResult.Value, itemType)));

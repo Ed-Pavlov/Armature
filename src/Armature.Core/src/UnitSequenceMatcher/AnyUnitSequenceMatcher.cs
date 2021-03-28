@@ -42,7 +42,7 @@ namespace Armature.Core.UnitSequenceMatcher
       
       MatchedBuildActions? childrenActions;
       
-      if (ownActions == null)
+      if (ownActions is null)
       {
         Log.WriteLine(LogLevel.Verbose, this.ToString, unitsToSkip); // pass group method, do not call ToString
         using(Log.AddIndent())
