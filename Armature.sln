@@ -1,16 +1,30 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Armature.Interface", "Armature.Interface\Armature.Interface.csproj", "{7425C14B-793F-4206-8FE2-418AB6FC489B}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7AB4AE97-CA3E-4260-98D3-F0320BDD7BC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Armature.Core", "Armature.Core\Armature.Core.csproj", "{5EF115EC-D008-4047-AF38-2BE0E8E9C876}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9A281A0F-63A0-4314-9A06-A2CE8C09460E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Armature", "Armature\Armature.csproj", "{A84040FE-6DAA-485A-A8DB-D7B8DAAEC2D3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Armature.Interface", "src\Armature.Interface\Armature.Interface.csproj", "{7425C14B-793F-4206-8FE2-418AB6FC489B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "..\tests", "{9A281A0F-63A0-4314-9A06-A2CE8C09460E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Armature.Core", "src\Armature.Core\Armature.Core.csproj", "{5EF115EC-D008-4047-AF38-2BE0E8E9C876}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "..\tests\Tests\Tests.csproj", "{EE3B7ACF-335C-45B2-B68D-20E66CCFE0CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Armature", "src\Armature\Armature.csproj", "{A84040FE-6DAA-485A-A8DB-D7B8DAAEC2D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Extensibility", "..\tests\Tests.Extensibility\Tests.Extensibility.csproj", "{AFA12DCC-6B53-4DA6-A5A7-990904B41E5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "tests\Tests\Tests.csproj", "{EE3B7ACF-335C-45B2-B68D-20E66CCFE0CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Extensibility", "tests\Tests.Extensibility\Tests.Extensibility.csproj", "{AFA12DCC-6B53-4DA6-A5A7-990904B41E5D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{D75094B8-1EF8-49E9-8728-F2A0B9142D4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{C14230EB-D939-40D2-A84A-7D41449F2B03}"
+ProjectSection(SolutionItems) = preProject
+	.github\workflows\build-and-test.yml = .github\workflows\build-and-test.yml
+	.github\workflows\release-to-market.yml = .github\workflows\release-to-market.yml
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{81A9B7E9-1A47-4059-BE8D-0AEB0F44EDB9}"
+ProjectSection(SolutionItems) = preProject
+	GitVersion.yml = GitVersion.yml
+EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +56,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{EE3B7ACF-335C-45B2-B68D-20E66CCFE0CF} = {9A281A0F-63A0-4314-9A06-A2CE8C09460E}
 		{AFA12DCC-6B53-4DA6-A5A7-990904B41E5D} = {9A281A0F-63A0-4314-9A06-A2CE8C09460E}
+		{A84040FE-6DAA-485A-A8DB-D7B8DAAEC2D3} = {7AB4AE97-CA3E-4260-98D3-F0320BDD7BC5}
+		{5EF115EC-D008-4047-AF38-2BE0E8E9C876} = {7AB4AE97-CA3E-4260-98D3-F0320BDD7BC5}
+		{7425C14B-793F-4206-8FE2-418AB6FC489B} = {7AB4AE97-CA3E-4260-98D3-F0320BDD7BC5}
+		{C14230EB-D939-40D2-A84A-7D41449F2B03} = {D75094B8-1EF8-49E9-8728-F2A0B9142D4B}
 	EndGlobalSection
 EndGlobal
