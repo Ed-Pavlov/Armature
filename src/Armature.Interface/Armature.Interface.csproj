@@ -11,8 +11,8 @@
     <IsPackable>true</IsPackable>
     <MinClientVersion>2.8</MinClientVersion>
     <PackageVersion>0.0.0</PackageVersion>
-    <PackageProjectUrl>https://github.com/Ed-ward/Armature</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Ed-ward/Armature</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Ed-Pavlov/Armature</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Ed-Pavlov/Armature</RepositoryUrl>
     <Authors>Ed Pavlov</Authors>
     <copyright>Copyright © 2018 Ed Pavlov</copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
