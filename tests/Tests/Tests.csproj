@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFrameworks>net45;net461;net5.0</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\build\armature.public.snk</AssemblyOriginatorKeyFile>
     <PublicSign>true</PublicSign>
     <LangVersion>9</LangVersion>
-    <TargetFrameworks>net45;net5.0;netcoreapp3.1</TargetFrameworks>
     <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>

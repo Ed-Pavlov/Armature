@@ -1,5 +1,5 @@
 [![Nuget](https://img.shields.io/nuget/dt/Armature)](https://www.nuget.org/packages/Armature/)
-[![TeamCity](https://edpavlov.beta.teamcity.com/app/rest/builds/buildType:(id:Armature_Build)/statusIcon.svg)](https://edpavlov.beta.teamcity.com/viewType.html?buildTypeId=Armature_Build&guest=1)
+[![Build & Test](https://github.com/Ed-Pavlov/Armature/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/Ed-Pavlov/Armature/actions/workflows/build-and-test.yml)
 ___
 <p align="center">
   <img src="/build/logo.svg" width="128" height="128">
