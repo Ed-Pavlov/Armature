@@ -2,7 +2,7 @@
 {
   public class Maybe<T>
   {
-    public static readonly Maybe<T> Nothing = new Maybe<T>();
+    public static readonly Maybe<T> Nothing = new();
 
     private Maybe()
     {
@@ -20,6 +20,6 @@
 
   public static class Maybe
   {
-    public static Maybe<T> ToMaybe<T>(this T value) => new Maybe<T>(value);
+    public static Maybe<T> ToMaybe<T>(this T value) => new(value);
   }
 }

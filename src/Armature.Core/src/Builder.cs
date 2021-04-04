@@ -64,13 +64,13 @@ namespace Armature.Core
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
     /// <returns>Returns an instance or null if null is registered as a unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
-    public IReadOnlyList<object?> BuildAllUnits(UnitInfo unitInfo, BuildPlansCollection? auxBuildPlans = null)
+    public IReadOnlyList<object?>? BuildAllUnits(UnitInfo unitInfo, BuildPlansCollection? auxBuildPlans = null)
     {
       var buildResult = Build(unitInfo, auxBuildPlans, BuildSession.BuildAllUnits, _parentBuilders);
-      return buildResult.Select(_ => _.Value).ToArray();
+      return buildResult?.Select(_ => _.Value).ToArray();
     }
 
-    private T Build<T>(
+    private T? Build<T>(
       UnitInfo unitInfo,
       BuildPlansCollection? auxBuildPlans,
       Func<UnitInfo, IEnumerable<object>, BuildPlansCollection, BuildPlansCollection?, Builder[]?, T> build,

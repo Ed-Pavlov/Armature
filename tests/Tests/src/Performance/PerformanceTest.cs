@@ -21,7 +21,7 @@ namespace Tests.Performance
 {
   public sealed class PerformanceTest
   {
-    private readonly List<Type> _types = new List<Type>
+    private readonly List<Type> _types = new()
     {
       typeof(bool),
       typeof(byte),

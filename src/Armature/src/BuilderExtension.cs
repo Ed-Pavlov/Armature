@@ -12,7 +12,7 @@ namespace Armature
     ///   Use token for building a unit. See <see cref="UnitInfo" /> for details.
     /// </summary>
     [DebuggerStepThrough]
-    public static Tokenizer UsingToken(this Builder builder, object token) => new Tokenizer(token, builder);
+    public static Tokenizer UsingToken(this Builder builder, object token) => new(token, builder);
 
     /// <summary>
     ///   Builds a Unit registered as type <typeparamref name="T" />

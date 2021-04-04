@@ -73,7 +73,7 @@ namespace Tests.Functional
     }
 
     private Builder CreateTarget() =>
-      new Builder(BuildStage.Create)
+      new(BuildStage.Create)
       {
         new AnyUnitSequenceMatcher
         {

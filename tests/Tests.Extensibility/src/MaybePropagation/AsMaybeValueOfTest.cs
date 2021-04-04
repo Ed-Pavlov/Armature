@@ -121,7 +121,7 @@ namespace Tests.Extensibility.MaybePropagation
     }
 
     private static Builder CreateTarget() =>
-      new Builder(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+      new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
       {
         new AnyUnitSequenceMatcher
         {

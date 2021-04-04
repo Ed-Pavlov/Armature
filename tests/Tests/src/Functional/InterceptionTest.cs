@@ -84,7 +84,7 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget() =>
-      new Builder(BuildStage.Intercept, BuildStage.Cache, BuildStage.Create)
+      new(BuildStage.Intercept, BuildStage.Cache, BuildStage.Create)
       {
         new AnyUnitSequenceMatcher
         {

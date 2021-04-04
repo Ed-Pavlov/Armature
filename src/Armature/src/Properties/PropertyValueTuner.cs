@@ -21,7 +21,7 @@ namespace Armature
     ///   Inject the <paramref name="value" /> into the property
     /// </summary>
     public PropertyValueBuildPlan UseValue(object? value) =>
-      new PropertyValueBuildPlan(UnitMatcher, BuildAction, new SingletonBuildAction(value), Weight);
+      new(UnitMatcher, BuildAction, new SingletonBuildAction(value), Weight);
 
     /// <summary>
     ///   For building a value for the property use <see cref="PropertyInfo.PropertyType" /> and <paramref name="token" />
@@ -37,13 +37,13 @@ namespace Armature
     ///   For building a value for the property use factory method />
     /// </summary>
     public PropertyValueBuildPlan UseFactoryMethod(Func<IBuildSession, object> factoryMethod) =>
-      new PropertyValueBuildPlan(UnitMatcher, BuildAction, new CreateByFactoryMethodBuildAction<object>(factoryMethod), Weight);
+      new(UnitMatcher, BuildAction, new CreateByFactoryMethodBuildAction<object>(factoryMethod), Weight);
 
     /// <summary>
     ///   For building a value for the property use <see cref="PropertyInfo.PropertyType" /> and <see cref="InjectAttribute.InjectionPointId" /> as a token
     /// </summary>
     public PropertyValueBuildPlan UseInjectPointIdAsToken() =>
-      new PropertyValueBuildPlan(UnitMatcher, BuildAction, CreatePropertyValueForInjectPointBuildAction.Instance, Weight);
+      new(UnitMatcher, BuildAction, CreatePropertyValueForInjectPointBuildAction.Instance, Weight);
   }
 
   [SuppressMessage("ReSharper", "UnusedTypeParameter")]

@@ -29,6 +29,6 @@ namespace Armature.Core.Common
     public T this[int index] { [DebuggerStepThrough] get => _array[_startIndex + index]; }
 
     [DebuggerStepThrough]
-    public ArrayTail<T> GetTail(int startIndex) => new ArrayTail<T>(_array, _startIndex + startIndex);
+    public ArrayTail<T> GetTail(int startIndex) => new(_array, _startIndex + startIndex);
   }
 }

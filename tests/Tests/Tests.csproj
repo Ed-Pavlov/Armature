@@ -4,6 +4,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\build\armature.public.snk</AssemblyOriginatorKeyFile>
     <PublicSign>true</PublicSign>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FakeItEasy" Version="6.0.1" />

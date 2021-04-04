@@ -23,8 +23,8 @@ namespace Armature.Core.BuildActions
   /// </remarks>
   public class OrderedBuildActionContainer : IBuildAction, ILogable, IEnumerable
   {
-    private readonly List<IBuildAction> _buildActions = new List<IBuildAction>();
-    private readonly ConcurrentDictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new ConcurrentDictionary<IBuildSession, IBuildAction>();
+    private readonly List<IBuildAction> _buildActions = new();
+    private readonly ConcurrentDictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new();
 
     public void Process(IBuildSession buildSession)
     {
