@@ -6,7 +6,7 @@ using Armature.Core.Logging;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
-using JetBrains.Annotations;
+
 
 namespace Armature
 {
@@ -18,7 +18,7 @@ namespace Armature
     private readonly string[] _names;
 
     [DebuggerStepThrough]
-    public InjectPropertyByNameBuildPlan([NotNull] params string[] names)
+    public InjectPropertyByNameBuildPlan(params string[] names)
     {
       if (names is null || names.Length == 0) throw new ArgumentNullException(nameof(names));
 

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core.BuildActions.Constructor
 {
@@ -14,7 +14,7 @@ namespace Armature.Core.BuildActions.Constructor
   {
     private readonly Type[] _parameterTypes;
 
-    public GetConstructorByParameterTypesBuildAction([NotNull] params Type[] parameterTypes) =>
+    public GetConstructorByParameterTypesBuildAction(params Type[] parameterTypes) =>
       _parameterTypes = parameterTypes ?? throw new ArgumentNullException(nameof(parameterTypes));
 
     public void Process(IBuildSession buildSession)
@@ -28,7 +28,7 @@ namespace Armature.Core.BuildActions.Constructor
     [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
 
-    private ConstructorInfo GetConstructor([NotNull] Type unitType) =>
+    private ConstructorInfo? GetConstructor(Type unitType) =>
       unitType.GetConstructors().FirstOrDefault(ctor => IsParametersListMatch(ctor.GetParameters(), _parameterTypes));
 
     private static bool IsParametersListMatch(ParameterInfo[] parameterInfos, Type[] parameterTypes)

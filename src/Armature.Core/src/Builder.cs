@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Armature.Core.Common;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core
 {
@@ -14,13 +14,13 @@ namespace Armature.Core
   /// </summary>
   public class Builder : BuildPlansCollection
   {
-    private readonly Builder[] _parentBuilders;
+    private readonly Builder[]? _parentBuilders;
     private readonly IEnumerable<object> _stages;
 
     public Builder() => throw new ArgumentException("Use constructor with parameters");
 
     /// <param name="stages">The ordered collection of build stages all of which are performed to build a unit</param>
-    public Builder([NotNull] params object[] stages) : this(stages, EmptyArray<Builder>.Instance)
+    public Builder(params object[] stages) : this(stages, EmptyArray<Builder>.Instance)
     {
       if(stages.Length == 0) throw new ArgumentNullException(nameof(stages));
     }
@@ -30,7 +30,7 @@ namespace Armature.Core
     ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
-    public Builder([NotNull] IEnumerable<object> stages, params Builder[] parentBuilders)
+    public Builder(IEnumerable<object> stages, params Builder[] parentBuilders)
     {
       if (stages == null) throw new ArgumentNullException(nameof(stages));
       if (parentBuilders != null && parentBuilders.Any(_ => _ == null)) throw new ArgumentException("Should not contain null values", nameof(parentBuilders));
@@ -54,7 +54,7 @@ namespace Armature.Core
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
     /// <returns>Returns an instance or null if null is registered as a unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
-    public BuildResult BuildUnit(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null) =>
+    public BuildResult BuildUnit(UnitInfo unitInfo, BuildPlansCollection? auxBuildPlans = null) =>
       Build(unitInfo, auxBuildPlans, BuildSession.BuildUnit, _parentBuilders);
 
     /// <summary>
@@ -64,17 +64,17 @@ namespace Armature.Core
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
     /// <returns>Returns an instance or null if null is registered as a unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
-    public IReadOnlyList<object> BuildAllUnits(UnitInfo unitInfo, BuildPlansCollection auxBuildPlans = null)
+    public IReadOnlyList<object?> BuildAllUnits(UnitInfo unitInfo, BuildPlansCollection? auxBuildPlans = null)
     {
       var buildResult = Build(unitInfo, auxBuildPlans, BuildSession.BuildAllUnits, _parentBuilders);
       return buildResult.Select(_ => _.Value).ToArray();
     }
 
     private T Build<T>(
-      [NotNull] UnitInfo unitInfo,
-      [CanBeNull] BuildPlansCollection auxBuildPlans,
-      [NotNull] Func<UnitInfo, IEnumerable<object>, BuildPlansCollection, BuildPlansCollection, Builder[], T> build,
-      [CanBeNull] Builder[] parentBuilders)
+      UnitInfo unitInfo,
+      BuildPlansCollection? auxBuildPlans,
+      Func<UnitInfo, IEnumerable<object>, BuildPlansCollection, BuildPlansCollection?, Builder[]?, T> build,
+      Builder[]? parentBuilders)
     {
       if (build is null) throw new ArgumentNullException(nameof(build));
 

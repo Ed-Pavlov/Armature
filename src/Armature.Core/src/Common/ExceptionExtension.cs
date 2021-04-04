@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core.Common
 {
   internal static class ExceptionExtension
   {
     [DebuggerStepThrough]
-    public static T AddData<T>([NotNull] this T exception, [NotNull] object key, [CanBeNull] object value)
+    public static T AddData<T>(this T exception, object key, object? value)
       where T : Exception
     {
       if (exception == null) throw new ArgumentNullException(nameof(exception));

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Diagnostics;
 using Armature.Core.Common;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Armature.Core.UnitSequenceMatcher
@@ -33,7 +33,7 @@ namespace Armature.Core.UnitSequenceMatcher
     /// <summary>
     ///   Matches any <see cref="UnitInfo" />, so it pass the building unit info into its children and returns merged result
     /// </summary>
-    public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
+    public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
       var unitsToSkip = buildingUnitsSequence.Length;
       // decrease matching weight depending on how many unit in the sequence were skipped by this matcher
@@ -41,7 +41,7 @@ namespace Armature.Core.UnitSequenceMatcher
       
       var lastItemAsTail = buildingUnitsSequence.GetTail(buildingUnitsSequence.Length - 1);
       var ownActions = GetOwnActions(matchingWeight);
-      MatchedBuildActions childrenActions;
+      MatchedBuildActions? childrenActions;
       
       if (ownActions == null)
       {
@@ -62,7 +62,7 @@ namespace Armature.Core.UnitSequenceMatcher
       return childrenActions.Merge(ownActions);
     }
 
-    public void Add([NotNull] IUnitSequenceMatcher unitSequenceMatcher) => Children.Add(unitSequenceMatcher);
+    public void Add(IUnitSequenceMatcher unitSequenceMatcher) => Children.Add(unitSequenceMatcher);
 
     private string ToString(int unitsToSkip) => string.Format("{0}<x{1:n0}>", base.ToString(), unitsToSkip);
 
@@ -71,7 +71,7 @@ namespace Armature.Core.UnitSequenceMatcher
     public override bool Equals(IUnitSequenceMatcher other) => Equals((object)other);
 
     [DebuggerStepThrough]
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
       if (ReferenceEquals(null, obj)) return false;
       if (ReferenceEquals(this, obj)) return true;

@@ -15,7 +15,7 @@ namespace Armature.Core.BuildActions.Property
 
     public void Process(IBuildSession buildSession)
     {
-      var propertyInfo = (PropertyInfo)buildSession.GetUnitUnderConstruction().Id;
+      var propertyInfo = (PropertyInfo)buildSession.GetUnitUnderConstruction().Id!;
 
       var attribute = propertyInfo
         .GetCustomAttributes<InjectAttribute>()

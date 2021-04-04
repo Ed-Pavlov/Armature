@@ -62,14 +62,14 @@ namespace Tests.Functional
       precondition.Should().HaveCount(2);
       precondition.Should().ContainSingle(_ => _ is SampleType1);
       precondition.Should().ContainSingle(_ => _ is SampleType2);
-      var expectedSingleton = precondition.Single(_ => _ is SampleType1);
+      var expected = precondition.Single(_ => _ is SampleType1);
 
       // --act
       var actual = target.BuildAllUnits(Unit.OfType<IDisposable>());
       actual.Should().HaveCount(2);
       actual.Should().ContainSingle(_ => _ is SampleType1);
       actual.Should().ContainSingle(_ => _ is SampleType2);
-      actual.Single(_ => _ is SampleType1).Should().BeSameAs(expectedSingleton);
+      actual.Single(_ => _ is SampleType1).Should().BeSameAs(expected);
       actual.Single(_ => _ is SampleType2).Should().NotBeSameAs(precondition.Single(_ => _ is SampleType2));
     }
 

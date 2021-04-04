@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Armature.Core.Common;
 using Armature.Core.Logging;
 
 namespace Armature.Core.BuildActions.Constructor

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Armature.Core.Common;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core.UnitSequenceMatcher
 {
@@ -19,7 +19,7 @@ namespace Armature.Core.UnitSequenceMatcher
     /// <param name="unitMatcher">Object contains the logic of matching with building unit</param>
     /// <param name="weight">The weight of matching</param>
     [DebuggerStepThrough]
-    public LastUnitSequenceMatcher([NotNull] IUnitMatcher unitMatcher, int weight = 0) : base(weight) =>
+    public LastUnitSequenceMatcher(IUnitMatcher unitMatcher, int weight = 0) : base(weight) =>
       _unitMatcher = unitMatcher ?? throw new ArgumentNullException(nameof(unitMatcher));
 
     public override ICollection<IUnitSequenceMatcher> Children => throw new NotSupportedException("LastUnitSequenceMatcher can't contain children");
@@ -29,7 +29,7 @@ namespace Armature.Core.UnitSequenceMatcher
     ///   the last one in the <paramref name="buildingUnitsSequence" />.
     /// </summary>
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
-    public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
+    public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
       if (buildingUnitsSequence.Length != 1) return null;
 
@@ -54,7 +54,7 @@ namespace Armature.Core.UnitSequenceMatcher
     public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().GetShortName(), Weight, _unitMatcher);
 
     #region Equality
-    private bool Equals(LastUnitSequenceMatcher other)
+    private bool Equals(LastUnitSequenceMatcher? other)
     {
       if (ReferenceEquals(null, other)) return false;
       if (ReferenceEquals(this, other)) return true;
@@ -70,7 +70,7 @@ namespace Armature.Core.UnitSequenceMatcher
     {
       unchecked
       {
-        return (Weight * 397) ^ (_unitMatcher != null ? _unitMatcher.GetHashCode() : 0);
+        return (Weight * 397) ^ _unitMatcher.GetHashCode();
       }
     }
     #endregion

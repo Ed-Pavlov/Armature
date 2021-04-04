@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core.UnitMatchers.Properties
 {
@@ -8,8 +8,8 @@ namespace Armature.Core.UnitMatchers.Properties
   /// </summary>
   public class PropertyByNameMatcher : InjectPointByNameMatcher
   {
-    public PropertyByNameMatcher([NotNull] string propertyName) : base(propertyName) { }
+    public PropertyByNameMatcher(string propertyName) : base(propertyName) { }
 
-    protected override string GetInjectPointName(UnitInfo unitInfo) => (unitInfo.Id as PropertyInfo)?.Name;
+    protected override string? GetInjectPointName(UnitInfo unitInfo) => (unitInfo.Id as PropertyInfo)?.Name;
   }
 }

@@ -5,7 +5,7 @@ using System.Diagnostics;
 using Armature.Core.Common;
 using Armature.Core.Logging;
 using Armature.Core.UnitSequenceMatcher;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core
 {
@@ -36,9 +36,9 @@ namespace Armature.Core
     /// </summary>
     public ICollection<IUnitSequenceMatcher> Children => _root.Children;
 
-    public void Add([NotNull] IUnitSequenceMatcher unitSequenceMatcher) => Children.Add(unitSequenceMatcher);
+    public void Add(IUnitSequenceMatcher unitSequenceMatcher) => Children.Add(unitSequenceMatcher);
 
-    public MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight = 0)
+    public MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight = 0)
     {
       if (buildingUnitsSequence.Length == 0) throw new ArgumentException(nameof(buildingUnitsSequence));
       return _root.GetBuildActions(buildingUnitsSequence, 0);
@@ -61,7 +61,7 @@ namespace Armature.Core
       public Root() : base(0) { }
 
       [DebuggerStepThrough]
-      public override MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight) =>
+      public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight) =>
         GetChildrenActions(inputWeight, buildingUnitsSequence);
 
       [DebuggerStepThrough]

@@ -45,7 +45,7 @@ namespace Armature.Core.BuildActions.Creation
             }
             else
             {
-              object[] valuesForParameters;
+              object?[] valuesForParameters;
               using (Log.Block(LogLevel.Trace, () => "Looking for parameters [" + string.Join(", ", parameters.Select(_ => _.ToString()).ToArray()) + "]"))
               {
                 valuesForParameters = buildSession.GetValuesForParameters(parameters);

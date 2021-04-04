@@ -7,10 +7,10 @@ namespace Armature.Core.BuildActions.Parameter
   {
     public static readonly CreateParameterMultiValueToInjectBuildAction Instance = new CreateParameterMultiValueToInjectBuildAction();
     
-    public CreateParameterMultiValueToInjectBuildAction(object token = null) : base(token)
+    public CreateParameterMultiValueToInjectBuildAction(object? token = null) : base(token)
     {
     }
 
-    protected override Type GetValueType(UnitInfo unitInfo) => ((ParameterInfo)unitInfo.Id).ParameterType;
+    protected override Type GetValueType(UnitInfo unitInfo) => ((ParameterInfo)unitInfo.Id!).ParameterType;
   }
 }

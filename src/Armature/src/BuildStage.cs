@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using JetBrains.Annotations;
+
 
 namespace Armature
 {
@@ -39,7 +39,7 @@ namespace Armature
     private readonly string _name;
 
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    protected BuildStage([NotNull] string name) => _name = name ?? throw new ArgumentNullException(nameof(name));
+    protected BuildStage(string name) => _name = name ?? throw new ArgumentNullException(nameof(name));
 
     public override string ToString() => _name;
   }

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Armature.Core.BuildActions.Property;
 using Armature.Core.UnitMatchers.Properties;
-using JetBrains.Annotations;
+
 
 namespace Armature
 {
@@ -20,7 +20,7 @@ namespace Armature
     /// <summary>
     ///   Matches with property with <see cref="MemberInfo.Name" /> equals to <paramref name="propertyName" />
     /// </summary>
-    public static PropertyValueTuner Named([NotNull] string propertyName)
+    public static PropertyValueTuner Named(string propertyName)
     {
       var getPropertyAction = new GetPropertyByNameBuildAction(propertyName);
       var matcher = new PropertyByNameMatcher(propertyName);
@@ -30,7 +30,7 @@ namespace Armature
     /// <summary>
     ///   Matches with property marked with <see cref="InjectAttribute" />(<paramref name="injectPointId" />)
     /// </summary>
-    public static PropertyValueTuner WithInjectPoint([CanBeNull] object injectPointId)
+    public static PropertyValueTuner WithInjectPoint(object? injectPointId)
     {
       var getPropertyAction = new GetPropertyByInjectPointBuildAction(injectPointId);
       var matcher = new PropertyByInjectPointMatcher(injectPointId);

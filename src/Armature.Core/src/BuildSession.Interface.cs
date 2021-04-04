@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core
 {
@@ -13,7 +13,7 @@ namespace Armature.Core
     {
       private readonly BuildSession _buildSession;
 
-      public Interface([NotNull] IEnumerable<UnitInfo> buildSequence, [NotNull] BuildSession buildSession)
+      public Interface(IEnumerable<UnitInfo> buildSequence, BuildSession buildSession)
       {
         if (buildSequence is null) throw new ArgumentNullException(nameof(buildSequence));
         if (buildSession is null) throw new ArgumentNullException(nameof(buildSession));
@@ -29,11 +29,10 @@ namespace Armature.Core
       public IEnumerable<UnitInfo> BuildSequence { get; }
 
       ///<inheritdoc />
-      [CanBeNull]
-      public BuildResult BuildUnit([NotNull] UnitInfo unitInfo) => _buildSession.BuildUnit(unitInfo);
+      public BuildResult BuildUnit(UnitInfo unitInfo) => _buildSession.BuildUnit(unitInfo);
 
       ///<inheritdoc />
-      public IReadOnlyList<BuildResult> BuildAllUnits(UnitInfo unitInfo) => _buildSession.BuildAllUnits(unitInfo);
+      public IReadOnlyList<BuildResult>? BuildAllUnits(UnitInfo unitInfo) => _buildSession.BuildAllUnits(unitInfo);
     }
   }
 }

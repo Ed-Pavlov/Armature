@@ -10,8 +10,8 @@ namespace Armature.Core.BuildActions.Property
   public class CreatePropertyValueBuildAction : CreateValueToInjectBuildAction
   {
     [DebuggerStepThrough]
-    public CreatePropertyValueBuildAction(object token = null) : base(token) { }
+    public CreatePropertyValueBuildAction(object? token = null) : base(token) { }
 
-    protected override Type GetValueType(UnitInfo unitInfo) => ((PropertyInfo)unitInfo.Id).PropertyType;
+    protected override Type GetValueType(UnitInfo unitInfo) => ((PropertyInfo)unitInfo.Id!).PropertyType;
   }
 }

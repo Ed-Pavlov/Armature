@@ -19,7 +19,7 @@ namespace Armature.Core.BuildActions.Property
       if (buildSession.BuildResult.HasValue)
       {
         var unit = buildSession.BuildResult.Value;
-        var type = unit.GetType();
+        var type = unit!.GetType();
         var properties = buildSession.GetPropertiesToInject(type);
 
         foreach (var property in properties)

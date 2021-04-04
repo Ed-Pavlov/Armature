@@ -1,7 +1,7 @@
 ﻿using Armature.Core;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
-using JetBrains.Annotations;
+
 
 namespace Armature
 {
@@ -10,7 +10,7 @@ namespace Armature
   /// </summary>
   public abstract class BuildValuePlan : BuildActionExtensibility, IBuildPlan
   {
-    protected BuildValuePlan([NotNull] IUnitMatcher unitMatcher, [NotNull] IBuildAction getValueAction, int weight)
+    protected BuildValuePlan(IUnitMatcher unitMatcher, IBuildAction getValueAction, int weight)
       : base(unitMatcher, getValueAction, weight)
     {
     }

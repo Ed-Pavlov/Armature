@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core.UnitMatchers.Parameters
 {
@@ -15,13 +15,13 @@ namespace Armature.Core.UnitMatchers.Parameters
   {
     [SuppressMessage("ReSharper", "MemberCanBeProtected.Global")]
     [DebuggerStepThrough]
-    public ParameterByAttributeMatcher([CanBeNull] Predicate<T> predicate) : base(predicate) { }
+    public ParameterByAttributeMatcher(Predicate<T>? predicate) : base(predicate) { }
 
-    protected override T GetInjectPointAttribute(UnitInfo unitInfo) => GetParameterAttribute(unitInfo);
+    protected override T? GetInjectPointAttribute(UnitInfo unitInfo) => GetParameterAttribute(unitInfo);
 
-    public static T GetParameterAttribute(UnitInfo unitInfo)
+    public static T? GetParameterAttribute(UnitInfo unitInfo)
     {
-      if (!(unitInfo.Id is ParameterInfo parameterInfo)) return default(T);
+      if (!(unitInfo.Id is ParameterInfo parameterInfo)) return default;
 
       return parameterInfo.GetCustomAttribute<T>();
     }

@@ -153,7 +153,7 @@ namespace Armature.Core.Logging
     /// <summary>
     ///   Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
     /// </summary>
-    public static string ToLogString(this object obj)
+    public static string ToLogString(this object? obj)
     {
       if (obj == null) return "null";
 

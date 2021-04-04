@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core.UnitMatchers
 {
@@ -13,7 +13,7 @@ namespace Armature.Core.UnitMatchers
     protected readonly UnitInfo UnitInfo;
 
     [DebuggerStepThrough]
-    public UnitInfoMatcher([NotNull] UnitInfo unitInfo) => UnitInfo = unitInfo ?? throw new ArgumentNullException(nameof(unitInfo));
+    public UnitInfoMatcher(UnitInfo unitInfo) => UnitInfo = unitInfo ?? throw new ArgumentNullException(nameof(unitInfo));
 
     public virtual bool Matches(UnitInfo unitInfo) => UnitInfo.Matches(unitInfo);
 
@@ -22,7 +22,7 @@ namespace Armature.Core.UnitMatchers
 
     #region Equality
     [DebuggerStepThrough]
-    public virtual bool Equals(IUnitMatcher obj) => obj is UnitInfoMatcher other && UnitInfo.Equals(other.UnitInfo);
+    public virtual bool Equals(IUnitMatcher? obj) => obj is UnitInfoMatcher other && UnitInfo.Equals(other.UnitInfo);
 
     [DebuggerStepThrough]
     public override bool Equals(object obj) => Equals(obj as UnitInfoMatcher);

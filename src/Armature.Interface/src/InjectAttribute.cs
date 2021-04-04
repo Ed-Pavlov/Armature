@@ -13,9 +13,9 @@ namespace Armature
     /// <summary>
     ///   Id of the injection point. Can be used to distinguishing different points.
     /// </summary>
-    public readonly object InjectionPointId;
+    public readonly object? InjectionPointId;
 
     /// <param name="injectionPointId">Id of the injection point. Can be used to distinguishing different points.</param>
-    public InjectAttribute(object injectionPointId = null) => InjectionPointId = injectionPointId;
+    public InjectAttribute(object? injectionPointId = null) => InjectionPointId = injectionPointId;
   }
 }

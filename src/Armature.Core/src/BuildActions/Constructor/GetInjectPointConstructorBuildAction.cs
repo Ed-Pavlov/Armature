@@ -6,6 +6,6 @@
   /// </summary>
   public class GetInjectPointConstructorBuildAction : GetConstructorBytAttributeBuildAction<InjectAttribute>
   {
-    public GetInjectPointConstructorBuildAction(object injectPointId = null) : base(inject => Equals(inject.InjectionPointId, injectPointId)) { }
+    public GetInjectPointConstructorBuildAction(object? injectPointId = null) : base(inject => Equals(inject.InjectionPointId, injectPointId)) { }
   }
 }

@@ -13,11 +13,11 @@ namespace Armature.Core.BuildActions.Property
   public class GetPropertyByAttributeBuildAction<T> : IBuildAction
     where T : Attribute
   {
-    private readonly Predicate<T> _predicate;
+    private readonly Predicate<T>? _predicate;
 
     [SuppressMessage("ReSharper", "MemberCanBeProtected.Global")]
     [DebuggerStepThrough]
-    public GetPropertyByAttributeBuildAction(Predicate<T> predicate = null) => _predicate = predicate;
+    public GetPropertyByAttributeBuildAction(Predicate<T>? predicate = null) => _predicate = predicate;
 
     public void Process(IBuildSession buildSession)
     {

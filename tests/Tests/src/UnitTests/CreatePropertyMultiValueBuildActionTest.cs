@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Armature.Core;
@@ -41,6 +42,7 @@ namespace Tests.UnitTests
 			yield return properties[4];
 		}
 
+		[SuppressMessage("ReSharper", "UnusedMember.Local")]
 		class TargetType
 		{
 			public IEnumerable<int> Enumerable { get; set; }

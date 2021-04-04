@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core
 {
@@ -9,13 +9,12 @@ namespace Armature.Core
   /// </summary>
   public readonly struct BuildResult
   { 
-    [CanBeNull] 
-    public readonly object Value;
+    public readonly object? Value;
     
     public readonly bool HasValue;
 
     [DebuggerStepThrough]
-    public BuildResult([CanBeNull] object value)
+    public BuildResult(object? value)
     { 
       HasValue = true;
       Value = value;

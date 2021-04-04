@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Armature.Core.Common;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core
 {
@@ -14,7 +14,6 @@ namespace Armature.Core
     /// <summary>
     ///   The collection of all child matchers, used to find existing one, add new, or replace one with another
     /// </summary>
-    [NotNull]
     ICollection<IUnitSequenceMatcher> Children { get; }
 
     /// <summary>
@@ -36,8 +35,7 @@ namespace Armature.Core
     ///   Returns all matched build actions for the <paramref name="buildingUnitsSequence" />. All actions are grouped by a building stage
     ///   and coupled with a "weight of matching". See <see cref="MatchedBuildActions" /> type declaration for details.
     /// </returns>
-    [CanBeNull]
-    MatchedBuildActions GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight);
+    MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight);
 
     /// <summary>
     ///   Adds a <see cref="IBuildAction" /> for a unit which is matched by this matcher

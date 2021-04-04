@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core
 {
@@ -11,11 +11,11 @@ namespace Armature.Core
   [Serializable]
   public class UnitInfo : IEquatable<UnitInfo>
   {
-    public readonly object Id;
-    public readonly object Token;
+    public readonly object? Id;
+    public readonly object? Token;
 
     [DebuggerStepThrough]
-    public UnitInfo([CanBeNull] object id, [CanBeNull] object token)
+    public UnitInfo(object? id, object? token)
     {
       if (id == null && token == null) throw new ArgumentNullException(nameof(id), @"Either id or token should be provided");
 
@@ -27,7 +27,7 @@ namespace Armature.Core
     /// Matching, unlike equality, takes into consideration <see cref="Armature.Core.Token.Any"/>. Use <see cref="Equals(UnitInfo)"/>
     /// to add build plans and <see cref="Matches"/> to build a unit
     /// </summary>
-    public bool Matches(UnitInfo other)
+    public bool Matches(UnitInfo? other)
     {
       if (ReferenceEquals(null, other)) return false;
       if (ReferenceEquals(this, other)) return true;
@@ -36,7 +36,7 @@ namespace Armature.Core
     }
     
     [DebuggerStepThrough]
-    public bool Equals(UnitInfo other)
+    public bool Equals(UnitInfo? other)
     {
       if (ReferenceEquals(null, other)) return false;
       if (ReferenceEquals(this, other)) return true;

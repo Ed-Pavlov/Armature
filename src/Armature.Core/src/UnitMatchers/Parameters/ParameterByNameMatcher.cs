@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core.UnitMatchers.Parameters
 {
@@ -10,8 +10,8 @@ namespace Armature.Core.UnitMatchers.Parameters
   public class ParameterByNameMatcher : InjectPointByNameMatcher
   {
     [DebuggerStepThrough]
-    public ParameterByNameMatcher([NotNull] string name) : base(name) { }
+    public ParameterByNameMatcher(string name) : base(name) { }
 
-    protected override string GetInjectPointName(UnitInfo unitInfo) => (unitInfo.Id as ParameterInfo)?.Name;
+    protected override string? GetInjectPointName(UnitInfo unitInfo) => (unitInfo.Id as ParameterInfo)?.Name;
   }
 }

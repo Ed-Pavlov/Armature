@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core.UnitMatchers
 {
@@ -13,7 +13,7 @@ namespace Armature.Core.UnitMatchers
     private readonly object _value;
 
     [DebuggerStepThrough]
-    protected InjectPointByValueMatcher([NotNull] object parameterValue) => _value = parameterValue ?? throw new ArgumentNullException(nameof(parameterValue));
+    protected InjectPointByValueMatcher(object parameterValue) => _value = parameterValue ?? throw new ArgumentNullException(nameof(parameterValue));
 
     public bool Matches(UnitInfo unitInfo)
     {
@@ -21,15 +21,14 @@ namespace Armature.Core.UnitMatchers
       return unitInfo.Token == SpecialToken.InjectValue && type != null && type.IsInstanceOfType(_value);
     }
 
-    [CanBeNull]
-    protected abstract Type GetInjectPointType(UnitInfo unitInfo);
+    protected abstract Type? GetInjectPointType(UnitInfo unitInfo);
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _value.ToLogString());
 
     #region Equality
     [DebuggerStepThrough]
-    public bool Equals(IUnitMatcher obj) => obj is InjectPointByValueMatcher other && GetType() == obj.GetType() && Equals(_value, other._value);
+    public bool Equals(IUnitMatcher? obj) => obj is InjectPointByValueMatcher other && GetType() == obj.GetType() && Equals(_value, other._value);
 
     [DebuggerStepThrough]
     public override bool Equals(object obj) => Equals(obj as IUnitMatcher);

@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core.Common
 {
   internal static class DictionaryExtension
   {
     [DebuggerStepThrough]
-    [CanBeNull]
-    public static TValue GetValueSafe<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue)) =>
+    public static TValue? GetValueSafe<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue? defaultValue = default) =>
       dictionary.TryGetValue(key, out var value) ? value : defaultValue;
 
     [DebuggerStepThrough]
     public static TValue GetOrCreateValue<TKey, TValue>(
-      [NotNull] this Dictionary<TKey, TValue> dictionary,
-      [NotNull] TKey key,
-      [NotNull] Func<TValue> createValue)
+      this Dictionary<TKey, TValue> dictionary,
+      TKey key,
+      Func<TValue> createValue)
     {
       if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
       if (key == null) throw new ArgumentNullException(nameof(key));

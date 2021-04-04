@@ -1,5 +1,5 @@
 ﻿using System;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core
 {
@@ -12,6 +12,6 @@ namespace Armature.Core
   /// </remarks>
   public interface IUnitMatcher : IEquatable<IUnitMatcher>
   {
-    bool Matches([NotNull] UnitInfo unitInfo);
+    bool Matches(UnitInfo unitInfo);
   }
 }

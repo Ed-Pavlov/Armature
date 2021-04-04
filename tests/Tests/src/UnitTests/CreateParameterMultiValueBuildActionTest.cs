@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Armature.Core;
-using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Parameter;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
+// ReSharper disable UnusedParameter.Local
 
 namespace Tests.UnitTests
 { 

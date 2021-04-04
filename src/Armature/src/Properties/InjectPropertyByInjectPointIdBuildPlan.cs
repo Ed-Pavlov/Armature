@@ -5,7 +5,7 @@ using Armature.Core.Logging;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
-using JetBrains.Annotations;
+
 
 namespace Armature
 {
@@ -14,7 +14,7 @@ namespace Armature
   /// </summary>
   public class InjectPropertyByInjectPointIdBuildPlan : IPropertyValueBuildPlan, IExtensibility<object[]>
   {
-    public InjectPropertyByInjectPointIdBuildPlan([NotNull] params object[] pointIds) => Item1 = pointIds ?? throw new ArgumentNullException(nameof(pointIds));
+    public InjectPropertyByInjectPointIdBuildPlan(params object[] pointIds) => Item1 = pointIds ?? throw new ArgumentNullException(nameof(pointIds));
 
     public object[] Item1 { get; }
 

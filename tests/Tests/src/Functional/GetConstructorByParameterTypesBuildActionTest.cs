@@ -6,6 +6,8 @@ using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedParameter.Local
 
 namespace Tests.Functional
 {

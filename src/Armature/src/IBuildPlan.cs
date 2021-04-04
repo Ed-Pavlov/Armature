@@ -1,5 +1,5 @@
 ﻿using Armature.Core;
-using JetBrains.Annotations;
+
 
 namespace Armature
 {
@@ -14,6 +14,6 @@ namespace Armature
     ///   Apply build plan to the currently building plan
     /// </summary>
     /// <param name="unitSequenceMatcher"></param>
-    void Apply([NotNull] IUnitSequenceMatcher unitSequenceMatcher);
+    void Apply(IUnitSequenceMatcher unitSequenceMatcher);
   }
 }

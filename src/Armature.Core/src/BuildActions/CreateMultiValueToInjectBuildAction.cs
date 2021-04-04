@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Armature.Core.Logging;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core.BuildActions
 {
@@ -13,11 +13,10 @@ namespace Armature.Core.BuildActions
     private static readonly Type[] TypeParamContainer = new Type[1];
     private static readonly Type[] IntTypeParam = {typeof(int)};
 
-    [CanBeNull]
-    private readonly object _token;
+    private readonly object? _token;
     
     [DebuggerStepThrough]
-    protected CreateMultiValueToInjectBuildAction([CanBeNull] object token) => _token = token;
+    protected CreateMultiValueToInjectBuildAction(object? token) => _token = token;
 
     public void Process(IBuildSession buildSession)
     {
@@ -26,16 +25,22 @@ namespace Armature.Core.BuildActions
       
       var valueType = GetValueType(unitUnderConstruction);
 
-      if (valueType != null && IsCollection(valueType, out var listType))
+      if (IsCollection(valueType, out var listType))
       {
         var itemType = valueType.GenericTypeArguments[0];
-
+        
         var values = buildSession.BuildAllUnits(new UnitInfo(itemType, effectiveToken));
+        
+        if(values is not null)
+        {
+          if (listType is null)
+            throw new InvalidOperationException("Remove this assert when support of .NET4.x will be discarded and use Roslyn analyzer attributes");
 
-        var listInstance = CreateListInstance(listType, values.Count);
-        FillList(listInstance, listType, itemType, values);
+          var listInstance = CreateListInstance(listType, values.Count);
+          FillList(listInstance, listType, itemType, values);
 
-        buildSession.BuildResult = new BuildResult(listInstance);
+          buildSession.BuildResult = new BuildResult(listInstance);
+        }
       }
     }
 
@@ -50,19 +55,16 @@ namespace Armature.Core.BuildActions
     private static object CreateListInstance(Type listType, int capacity)
     {
       var listConstructor = listType.GetConstructor(IntTypeParam);
-      Debug.Assert(listConstructor != null, nameof(listConstructor) + " != null");
-      
-      return listConstructor.Invoke(CreateParameter(capacity));
+      return listConstructor!.Invoke(CreateParameter(capacity));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void FillList(object listInstance, Type listType, Type itemType, IEnumerable<BuildResult> values)
     {
       var addMethod = listType.GetMethod(nameof(List<object>.Add), CreateTypeParameter(itemType));
-      Debug.Assert(addMethod != null, nameof(addMethod) + " != null");
       
       foreach (var buildResult in values) 
-        addMethod.Invoke(listInstance, CreateParameter(Convert.ChangeType(buildResult.Value, itemType)));
+        addMethod!.Invoke(listInstance, CreateParameter(Convert.ChangeType(buildResult.Value, itemType)));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -80,7 +82,7 @@ namespace Armature.Core.BuildActions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static bool IsCollection(Type type, out Type listType)
+    private static bool IsCollection(Type type, out Type? listType)
     {
       listType = null;
 

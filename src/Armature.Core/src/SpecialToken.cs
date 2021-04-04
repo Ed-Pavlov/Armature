@@ -22,6 +22,6 @@ namespace Armature.Core
     /// </summary>
     public static readonly object InjectValue = new Token("InjectValue");
 
-    public static bool IsSpecial(this object obj) => obj is Token token && (token == Constructor || token == Property || token == InjectValue);
+    public static bool IsSpecial(this object? obj) => obj is Token token && (token == Constructor || token == Property || token == InjectValue);
   }
 }

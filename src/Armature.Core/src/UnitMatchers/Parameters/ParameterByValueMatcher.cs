@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using JetBrains.Annotations;
+
 
 namespace Armature.Core.UnitMatchers.Parameters
 {
@@ -9,8 +9,8 @@ namespace Armature.Core.UnitMatchers.Parameters
   /// </summary>
   public class ParameterByValueMatcher : InjectPointByValueMatcher
   {
-    public ParameterByValueMatcher([NotNull] object parameterValue) : base(parameterValue) { }
+    public ParameterByValueMatcher(object parameterValue) : base(parameterValue) { }
 
-    protected override Type GetInjectPointType(UnitInfo unitInfo) => (unitInfo.Id as ParameterInfo)?.ParameterType;
+    protected override Type? GetInjectPointType(UnitInfo unitInfo) => (unitInfo.Id as ParameterInfo)?.ParameterType;
   }
 }
