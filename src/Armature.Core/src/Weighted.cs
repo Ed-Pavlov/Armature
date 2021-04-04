@@ -4,7 +4,7 @@ using Armature.Core.Logging;
 
 namespace Armature.Core
 {
-  public struct Weighted<T> : IComparable<Weighted<T>>
+  public readonly struct Weighted<T> : IComparable<Weighted<T>>
   {
     public readonly T Entity;
     public readonly int Weight;

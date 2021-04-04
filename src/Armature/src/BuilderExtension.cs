@@ -52,7 +52,7 @@ namespace Armature
         : throw new ArmatureException($"Can't build unit <{unitInfo}>").AddData("unitInfo", unitInfo);
     }
 
-    public struct Tokenizer
+    public readonly struct Tokenizer
     {
       private readonly object _token;
       private readonly Builder _builder;

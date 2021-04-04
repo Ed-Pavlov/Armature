@@ -8,7 +8,7 @@ namespace Armature.Core.Common
   /// <summary>
   ///   Data structure used to take a tail of the collection w/o memory allocations
   /// </summary>
-  public struct ArrayTail<T>
+  public readonly struct ArrayTail<T>
   {
     private readonly IList<T> _array;
     private readonly int _startIndex;
