@@ -17,9 +17,9 @@ namespace Armature.Core.UnitSequenceMatcher
 
     protected UnitSequenceMatcherWithChildren(int weight) : base(weight) { }
 
-    private HashSet<IUnitSequenceMatcher> LazyChildren { [DebuggerStepThrough] get => _children ?? (_children = new HashSet<IUnitSequenceMatcher>()); }
+    private HashSet<IUnitSequenceMatcher> LazyChildren { [DebuggerStepThrough] get => _children ??= new HashSet<IUnitSequenceMatcher>(); }
 
-    public override ICollection<IUnitSequenceMatcher> Children { [DebuggerStepThrough] get { return LazyChildren; } }
+    public override ICollection<IUnitSequenceMatcher> Children { [DebuggerStepThrough] get => LazyChildren; }
 
     /// <summary>
     ///   Gets and merges matched actions from all children matchers

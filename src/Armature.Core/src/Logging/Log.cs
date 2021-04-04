@@ -170,7 +170,7 @@ namespace Armature.Core.Logging
 
     private static string GetTypeFullName(Type type)
     {
-      if (!type.IsGenericType) return type.FullName;
+      if (!type.IsGenericType) return type.FullName!;
 
       var main = type.GetGenericTypeDefinition().FullName;
       var arguments = string.Join(", ", type.GenericTypeArguments.Select(GetTypeFullName).ToArray());

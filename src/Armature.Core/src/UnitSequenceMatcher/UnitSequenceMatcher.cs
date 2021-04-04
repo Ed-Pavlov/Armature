@@ -20,7 +20,7 @@ namespace Armature.Core.UnitSequenceMatcher
 
     private Dictionary<object, List<IBuildAction>> LazyBuildAction
     {
-      [DebuggerStepThrough] get => _buildActions ?? (_buildActions = new Dictionary<object, List<IBuildAction>>());
+      [DebuggerStepThrough] get => _buildActions ??= new Dictionary<object, List<IBuildAction>>();
     }
 
     public abstract ICollection<IUnitSequenceMatcher> Children { get; }
