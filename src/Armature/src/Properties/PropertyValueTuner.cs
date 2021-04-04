@@ -28,7 +28,7 @@ namespace Armature
     /// </summary>
     public PropertyValueBuildPlan UseToken(object token)
     {
-      if (token == null) throw new ArgumentNullException(nameof(token));
+      if (token is null) throw new ArgumentNullException(nameof(token));
 
       return new PropertyValueBuildPlan(UnitMatcher, BuildAction, new CreatePropertyValueBuildAction(token), Weight);
     }

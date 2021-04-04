@@ -38,7 +38,7 @@ namespace Armature.Core.BuildActions.Constructor
             ctor
               .GetCustomAttributes(typeof(T), false)
               .OfType<T>()
-              .SingleOrDefault(attribute => _predicate == null || _predicate(attribute)) != null);
+              .SingleOrDefault(attribute => _predicate is null || _predicate(attribute)) != null);
       return constructorInfo;
     }
 

@@ -155,7 +155,7 @@ namespace Armature.Core.Logging
     /// </summary>
     public static string ToLogString(this object? obj)
     {
-      if (obj == null) return "null";
+      if (obj is null) return "null";
 
       return obj is Type type ? type.ToLogString() : obj.ToString();
     }

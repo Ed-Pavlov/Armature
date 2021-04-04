@@ -41,7 +41,7 @@ namespace Armature.Core.UnitSequenceMatcher
     [DebuggerStepThrough]
     protected MatchedBuildActions? GetOwnActions(int matchingWeight)
     {
-      if (_buildActions == null) return null;
+      if (_buildActions is null) return null;
 
       var result = new MatchedBuildActions();
       foreach (var pair in _buildActions)

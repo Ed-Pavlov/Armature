@@ -17,8 +17,8 @@ namespace Armature.Core
     /// </summary>
     public static ConstructorInfo GetConstructorOf(this IBuildSession buildSession, Type type)
     {
-      if (buildSession == null) throw new ArgumentNullException(nameof(buildSession));
-      if (type == null) throw new ArgumentNullException(nameof(type));
+      if (buildSession is null) throw new ArgumentNullException(nameof(buildSession));
+      if (type is null) throw new ArgumentNullException(nameof(type));
 
       var result = buildSession.BuildUnit(new UnitInfo(type, SpecialToken.Constructor));
       if (!result.HasValue)
@@ -52,8 +52,8 @@ namespace Armature.Core
     /// </summary>
     public static object?[] GetValuesForParameters(this IBuildSession buildSession, ParameterInfo[] parameters)
     {
-      if (buildSession == null) throw new ArgumentNullException(nameof(buildSession));
-      if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+      if (buildSession is null) throw new ArgumentNullException(nameof(buildSession));
+      if (parameters is null) throw new ArgumentNullException(nameof(parameters));
       if (parameters.Length == 0) throw new ArgumentException("At least one parameters should be provided", nameof(parameters));
 
       var values = new object?[parameters.Length];

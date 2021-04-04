@@ -12,8 +12,8 @@ namespace Armature.Core.Common
     public static T AddData<T>(this T exception, object key, object? value)
       where T : Exception
     {
-      if (exception == null) throw new ArgumentNullException(nameof(exception));
-      if (key == null) throw new ArgumentNullException(nameof(key));
+      if (exception is null) throw new ArgumentNullException(nameof(exception));
+      if (key is null) throw new ArgumentNullException(nameof(key));
 
       exception.Data.Add(key, value);
       return exception;

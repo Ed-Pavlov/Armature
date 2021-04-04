@@ -116,7 +116,7 @@ namespace Tests.Functional
 
       public AddPostfixToString([NotNull] string postfix)
       {
-        if (postfix == null) throw new ArgumentNullException(nameof(postfix));
+        if (postfix is null) throw new ArgumentNullException(nameof(postfix));
 
         _postfix = postfix;
       }

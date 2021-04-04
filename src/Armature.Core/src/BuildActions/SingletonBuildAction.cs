@@ -42,7 +42,7 @@ namespace Armature.Core.BuildActions
       public Instance(object? value) => Value = value;
 
       [DebuggerStepThrough]
-      public override string ToString() => Value == null ? "[no instance]" : Value.ToLogString();
+      public override string ToString() => Value is null ? "[no instance]" : Value.ToLogString();
     }
   }
 }

@@ -32,19 +32,19 @@ namespace Armature.Core
     /// </param>
     public Builder(IEnumerable<object> stages, params Builder[] parentBuilders)
     {
-      if (stages == null) throw new ArgumentNullException(nameof(stages));
-      if (parentBuilders != null && parentBuilders.Any(_ => _ == null)) throw new ArgumentException("Should not contain null values", nameof(parentBuilders));
+      if (stages is null) throw new ArgumentNullException(nameof(stages));
+      if (parentBuilders != null && parentBuilders.Any(_ => _ is null)) throw new ArgumentException("Should not contain null values", nameof(parentBuilders));
 
       var array = stages.ToArray();
       if (array.Length == 0)
         throw new ArgumentException("empty", nameof(stages));
-      if (array.Any(stage => stage == null))
+      if (array.Any(stage => stage is null))
         throw new ArgumentException("Contains null stage", nameof(stages));
       if (array.Length != array.Distinct().Count())
         throw new ArgumentException("Contains duplicates", nameof(stages));
 
       _stages = array;
-      _parentBuilders = parentBuilders == null || parentBuilders.Length == 0 ? null : parentBuilders;
+      _parentBuilders = parentBuilders is null || parentBuilders.Length == 0 ? null : parentBuilders;
     }
 
     /// <summary>

@@ -23,7 +23,7 @@ namespace Armature
     [DebuggerStepThrough]
     public static IUnitMatcher Type(Type type, object? token)
     {
-      if (type == null) throw new ArgumentNullException(nameof(type));
+      if (type is null) throw new ArgumentNullException(nameof(type));
 
       return new UnitInfoMatcher(new UnitInfo(type, token));
     }

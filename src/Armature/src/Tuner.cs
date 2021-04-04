@@ -23,7 +23,7 @@ namespace Armature
     /// </summary>
     public Tuner UsingParameters(params object[] values)
     {
-      if (values == null || values.Length == 0)
+      if (values is null || values.Length == 0)
         throw new Exception("null");
 
       foreach (var parameter in values)

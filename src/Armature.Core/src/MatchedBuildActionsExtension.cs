@@ -15,8 +15,8 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public static MatchedBuildActions? Merge(this MatchedBuildActions? left, MatchedBuildActions? right)
     {
-      if (left == null) return right;
-      if (right == null) return left;
+      if (left is null) return right;
+      if (right is null) return left;
 
       var result = new MatchedBuildActions();
 
@@ -49,10 +49,10 @@ namespace Armature.Core
     /// <exception cref="ArmatureException">Throws if there are more than one action with equal matching weight</exception>
     public static IBuildAction? GetTopmostAction(this MatchedBuildActions? matchedBuildActions, object stage)
     {
-      if (stage == null) throw new ArgumentNullException(nameof(stage));
+      if (stage is null) throw new ArgumentNullException(nameof(stage));
 
       var actions = matchedBuildActions?.GetValueSafe(stage);
-      if (actions == null) return null;
+      if (actions is null) return null;
 
       actions.Sort((l, r) => r.Weight.CompareTo(l.Weight)); // sort descending
 

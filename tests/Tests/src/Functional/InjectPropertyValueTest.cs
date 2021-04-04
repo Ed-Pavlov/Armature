@@ -84,7 +84,7 @@ namespace Tests.Functional
         .Treat<Subject>()
         .AsIs()
         .InjectProperty(
-          Property.ByInjectPoint(injectPointId == null
+          Property.ByInjectPoint(injectPointId is null
             ? EmptyArray<object>.Instance
             : new[] {injectPointId})); // inject property adds a build action injecting values into property
 

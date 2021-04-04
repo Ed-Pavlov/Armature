@@ -28,7 +28,7 @@ namespace Armature
     /// </summary>
     public ParameterValueBuildPlan UseToken(object token)
     {
-      if (token == null) throw new ArgumentNullException(nameof(token));
+      if (token is null) throw new ArgumentNullException(nameof(token));
 
       return new ParameterValueBuildPlan(UnitMatcher, new CreateParameterValueBuildAction(token), Weight);
     }

@@ -58,7 +58,7 @@ namespace Armature.Core.BuildActions.Creation
           }
           catch (TargetInvocationException exception)
           {
-            if (exception.InnerException == null) throw;
+            if (exception.InnerException is null) throw;
 
             // extract original exception from TargetInvocationException and throw it,
             // store original stack trace as exception data since throwing will replace it

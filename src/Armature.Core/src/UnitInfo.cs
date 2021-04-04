@@ -17,7 +17,7 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public UnitInfo(object? id, object? token)
     {
-      if (id == null && token == null) throw new ArgumentNullException(nameof(id), @"Either id or token should be provided");
+      if (id is null && token is null) throw new ArgumentNullException(nameof(id), @"Either id or token should be provided");
 
       Id = id;
       Token = token;

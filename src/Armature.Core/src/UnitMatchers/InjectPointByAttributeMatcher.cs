@@ -20,7 +20,7 @@ namespace Armature.Core.UnitMatchers
       if (unitInfo.Token != SpecialToken.InjectValue) return false;
 
       var attribute = GetInjectPointAttribute(unitInfo);
-      return attribute != null && (_predicate == null || _predicate(attribute));
+      return attribute != null && (_predicate is null || _predicate(attribute));
     }
 
     protected abstract T? GetInjectPointAttribute(UnitInfo unitInfo);

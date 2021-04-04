@@ -15,7 +15,7 @@ namespace Armature
     /// </summary>
     public static TreatingTuner Treat(this BuildPlansCollection buildPlans, Type type, object? token = null)
     {
-      if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
+      if (buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
@@ -27,7 +27,7 @@ namespace Armature
     /// </summary>
     public static TreatingTuner<T> Treat<T>(this BuildPlansCollection buildPlans, object? token = null)
     {
-      if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
+      if (buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(token));
       return new TreatingTuner<T>(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
@@ -39,7 +39,7 @@ namespace Armature
     /// </summary>
     public static TreatingTuner Treat(this BuildPlansCollection buildPlans, UnitInfo unitInfo)
     {
-      if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
+      if (buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(unitInfo));
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
@@ -51,7 +51,7 @@ namespace Armature
     /// </summary>
     public static TreatingTuner TreatInheritorsOf(this BuildPlansCollection buildPlans, Type type, object? token = null)
     {
-      if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
+      if (buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
         new BaseTypeMatcher(new UnitInfo(type, token)),
@@ -65,7 +65,7 @@ namespace Armature
     /// </summary>
     public static TreatingTuner<T> TreatInheritorsOf<T>(this BuildPlansCollection buildPlans, object? token = null)
     {
-      if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
+      if (buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
         new BaseTypeMatcher(new UnitInfo(typeof(T), token)),
@@ -78,7 +78,7 @@ namespace Armature
     /// </summary>
     public static TreatingTuner TreatOverride(this BuildPlansCollection buildPlans, Type type, object? token = null)
     {
-      if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
+      if (buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var newSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
       var oldSequenceMatcher = buildPlans.Children.Single(_ => _.Equals(newSequenceMatcher));
@@ -96,7 +96,7 @@ namespace Armature
     /// </summary>
     public static TreatingTuner<T> OverrideTreat<T>(this BuildPlansCollection buildPlans, object? token = null)
     {
-      if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
+      if (buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var newSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(token));
       var oldSequenceMatcher = buildPlans.Children.Single(_ => _.Equals(newSequenceMatcher));
@@ -112,7 +112,7 @@ namespace Armature
     /// </summary>
     public static TreatingOpenGenericTuner TreatOpenGeneric(this BuildPlansCollection buildPlans, Type openGenericType, object? token = null)
     {
-      if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
+      if (buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
         Match.OpenGenericType(openGenericType, token),
@@ -126,7 +126,7 @@ namespace Armature
     /// </summary>
     public static Tuner TreatAll(this BuildPlansCollection buildPlans)
     {
-      if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
+      if (buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new AnyUnitSequenceMatcher();
       return new Tuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
@@ -137,7 +137,7 @@ namespace Armature
     /// </summary>
     public static SequenceTuner Building(this BuildPlansCollection buildPlans, Type type, object? token = null)
     {
-      if (buildPlans == null) throw new ArgumentNullException(nameof(buildPlans));
+      if (buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
       return new SequenceTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));

@@ -33,7 +33,7 @@ namespace Armature
     [DebuggerStepThrough]
     private static T Build<T>(this Builder builder, object? token, params object[]? parameters)
     {
-      if (builder == null) throw new ArgumentNullException(nameof(builder));
+      if (builder is null) throw new ArgumentNullException(nameof(builder));
 
       BuildPlansCollection? sessionalBuildPlans = null;
       if (parameters is {Length: > 0})
@@ -60,7 +60,7 @@ namespace Armature
       public Tokenizer(object token, Builder builder)
       {
         if (builder is null) throw new ArgumentNullException(nameof(builder));
-        if (token == null) throw new ArgumentNullException(nameof(token));
+        if (token is null) throw new ArgumentNullException(nameof(token));
 
         _token = token;
         _builder = builder;

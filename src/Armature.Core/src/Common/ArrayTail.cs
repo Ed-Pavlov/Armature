@@ -16,7 +16,7 @@ namespace Armature.Core.Common
     [DebuggerStepThrough]
     public ArrayTail(IList<T> array, int startIndex)
     {
-      if (array == null) throw new ArgumentNullException(nameof(array));
+      if (array is null) throw new ArgumentNullException(nameof(array));
       if (startIndex < 0 || startIndex >= array.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
 
       _array = array;

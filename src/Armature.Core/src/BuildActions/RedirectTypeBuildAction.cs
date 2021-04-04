@@ -16,7 +16,7 @@ namespace Armature.Core.BuildActions
     [DebuggerStepThrough]
     public RedirectTypeBuildAction(Type redirectTo, object? token)
     {
-      if (redirectTo == null) throw new ArgumentNullException(nameof(redirectTo));
+      if (redirectTo is null) throw new ArgumentNullException(nameof(redirectTo));
       if (redirectTo.IsGenericTypeDefinition)
         throw new ArgumentException("Type should not be open generic, use RedirectOpenGenericTypeBuildAction for open generics", nameof(redirectTo));
 

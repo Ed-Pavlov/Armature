@@ -29,7 +29,7 @@ namespace Armature.Core.BuildActions.Property
             name =>
               {
                 var property = unitType.GetProperty(name);
-                if (property == null)
+                if (property is null)
                   throw new ArmatureException(string.Format("There is no property '{0}' in type '{1}'", _names, unitType.ToLogString()));
 
                 return property;
