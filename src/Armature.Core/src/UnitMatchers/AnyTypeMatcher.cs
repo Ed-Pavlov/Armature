@@ -15,7 +15,7 @@ namespace Armature.Core.UnitMatchers
     public bool Matches(UnitInfo unitInfo)
     {
       var type = unitInfo.GetUnitTypeSafe();
-      return !unitInfo.Token.IsSpecial() && type != null && !type.IsAbstract && !type.IsInterface && !type.IsGenericTypeDefinition;
+      return !unitInfo.Token.IsSpecial() && type is {IsAbstract: false, IsInterface: false, IsGenericTypeDefinition: false};
     }
 
     [DebuggerStepThrough]

@@ -36,7 +36,7 @@ namespace Armature
       if (builder == null) throw new ArgumentNullException(nameof(builder));
 
       BuildPlansCollection? sessionalBuildPlans = null;
-      if (parameters != null && parameters.Length > 0)
+      if (parameters is {Length: > 0})
       {
         sessionalBuildPlans = new BuildPlansCollection();
         sessionalBuildPlans

@@ -13,7 +13,7 @@ namespace Armature.Core.UnitMatchers
     public override bool Matches(UnitInfo unitInfo)
     {
       var unitType = unitInfo.GetUnitTypeSafe();
-      return unitType != null && unitType.IsGenericType && Equals(unitType.GetGenericTypeDefinition(), UnitInfo.Id);
+      return unitType is {IsGenericType: true} && Equals(unitType.GetGenericTypeDefinition(), UnitInfo.Id);
     }
   }
 }
