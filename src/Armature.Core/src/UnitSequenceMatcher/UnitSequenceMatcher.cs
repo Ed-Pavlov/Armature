@@ -62,12 +62,12 @@ namespace Armature.Core.UnitSequenceMatcher
       catch { // do nothing
       }
       
-      if(children != null)
+      if(children is not null)
         foreach (var child in children)
           using (Log.Block(LogLevel.Info, child.ToString()))
             child.PrintToLog();
 
-      if(_buildActions != null)
+      if(_buildActions is not null)
         using (Log.Block(LogLevel.Info, "Build actions"))
           foreach (var pair in _buildActions)
             using (Log.Block(LogLevel.Info, "Stage: {0}", pair.Key))

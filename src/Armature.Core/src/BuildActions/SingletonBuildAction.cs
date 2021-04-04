@@ -21,7 +21,7 @@ namespace Armature.Core.BuildActions
 
     public void Process(IBuildSession buildSession)
     {
-      if (_instance != null)
+      if (_instance is not null)
         buildSession.BuildResult = new BuildResult(_instance.Value);
     }
 

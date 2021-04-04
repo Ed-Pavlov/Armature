@@ -22,7 +22,7 @@ namespace Armature.Core.BuildActions.Constructor
     {
       var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
       var ctor = GetConstructorInfo(unitType);
-      if (ctor != null)
+      if (ctor is not null)
         buildSession.BuildResult = new BuildResult(ctor);
     }
 
@@ -38,7 +38,7 @@ namespace Armature.Core.BuildActions.Constructor
             ctor
               .GetCustomAttributes(typeof(T), false)
               .OfType<T>()
-              .SingleOrDefault(attribute => _predicate is null || _predicate(attribute)) != null);
+              .SingleOrDefault(attribute => _predicate is null || _predicate(attribute)) is not null);
       return constructorInfo;
     }
 

@@ -20,7 +20,7 @@ namespace Armature.Core.UnitMatchers
       if (unitInfo.Token != SpecialToken.InjectValue) return false;
 
       var attribute = GetInjectPointAttribute(unitInfo);
-      return attribute != null && (_predicate is null || _predicate(attribute));
+      return attribute is not null && (_predicate is null || _predicate(attribute));
     }
 
     protected abstract T? GetInjectPointAttribute(UnitInfo unitInfo);
@@ -37,7 +37,7 @@ namespace Armature.Core.UnitMatchers
     public override bool Equals(object obj) => Equals(obj as IUnitMatcher);
 
     [DebuggerStepThrough]
-    public override int GetHashCode() => _predicate != null ? _predicate.GetHashCode() : 0;
+    public override int GetHashCode() => _predicate is not null ? _predicate.GetHashCode() : 0;
     #endregion
   }
 }

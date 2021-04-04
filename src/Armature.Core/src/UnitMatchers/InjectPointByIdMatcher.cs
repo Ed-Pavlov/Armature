@@ -22,7 +22,7 @@ namespace Armature.Core.UnitMatchers
     public override bool Equals(IUnitMatcher? obj) =>
       obj is InjectPointByIdMatcher other && GetType() == obj.GetType() && Equals(_injectPointId, other._injectPointId);
 
-    public override int GetHashCode() => _injectPointId != null ? _injectPointId.GetHashCode() : 0;
+    public override int GetHashCode() => _injectPointId is not null ? _injectPointId.GetHashCode() : 0;
     #endregion
   }
 }

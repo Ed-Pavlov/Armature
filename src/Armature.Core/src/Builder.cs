@@ -33,7 +33,7 @@ namespace Armature.Core
     public Builder(IEnumerable<object> stages, params Builder[] parentBuilders)
     {
       if (stages is null) throw new ArgumentNullException(nameof(stages));
-      if (parentBuilders != null && parentBuilders.Any(_ => _ is null)) throw new ArgumentException("Should not contain null values", nameof(parentBuilders));
+      if (parentBuilders is not null && parentBuilders.Any(_ => _ is null)) throw new ArgumentException("Should not contain null values", nameof(parentBuilders));
 
       var array = stages.ToArray();
       if (array.Length == 0)

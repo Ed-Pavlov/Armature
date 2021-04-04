@@ -52,7 +52,7 @@ namespace Armature.Core
     {
       unchecked
       {
-        return ((Id != null ? Id.GetHashCode() : 0) * 397) ^ (Token != null ? Token.GetHashCode() : 0);
+        return ((Id is not null ? Id.GetHashCode() : 0) * 397) ^ (Token is not null ? Token.GetHashCode() : 0);
       }
     }
 

@@ -12,7 +12,7 @@ namespace Armature.Core.UnitMatchers.Properties
 
     private PropertyMatcher() { }
 
-    public bool Matches(UnitInfo unitInfo) => unitInfo.Token == SpecialToken.Property && unitInfo.GetUnitTypeSafe() != null;
+    public bool Matches(UnitInfo unitInfo) => unitInfo.Token == SpecialToken.Property && unitInfo.GetUnitTypeSafe() is not null;
 
     [DebuggerStepThrough]
     public override string ToString() => GetType().GetShortName();

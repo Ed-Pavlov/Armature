@@ -21,7 +21,7 @@ namespace Armature.Core.BuildActions.Constructor
     {
       var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
       var ctor = GetConstructor(unitType);
-      if (ctor != null)
+      if (ctor is not null)
         buildSession.BuildResult = new BuildResult(ctor);
     }
 
