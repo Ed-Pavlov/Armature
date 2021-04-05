@@ -6,6 +6,7 @@ using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
+
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedParameter.Local
 
@@ -20,10 +21,10 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<Subject>()
-        .AsIs()
-        .UsingConstructorWithParameters(typeof(int), typeof(string))
-        .UsingParameters(0, "0", new object());
+       .Treat<Subject>()
+       .AsIs()
+       .UsingConstructorWithParameters(typeof(int), typeof(string))
+       .UsingParameters(0, "0", new object());
 
       // --act
       var actual = target.Build<Subject>();
@@ -39,10 +40,10 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<Subject>()
-        .AsIs()
-        .UsingParameterlessConstructor()
-        .UsingParameters(0, "0", new object());
+       .Treat<Subject>()
+       .AsIs()
+       .UsingParameterlessConstructor()
+       .UsingParameters(0, "0", new object());
 
       // --act
       var actual = target.Build<Subject>();
@@ -51,22 +52,23 @@ namespace Tests.Functional
       actual.ParameterlessCtorIsCalled.Should().BeTrue();
     }
 
-    private static Builder CreateTarget() =>
-      new(BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(
-              BuildStage.Create,
-              new OrderedBuildActionContainer
-              {
-                new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-                GetLongestConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
-              })
-        }
-      };
+    private static Builder CreateTarget()
+      => new(BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             // inject into constructor
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(
+                 BuildStage.Create,
+                 new OrderedBuildActionContainer
+                 {
+                   new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
+                   GetLongestConstructorBuildAction
+                    .Instance // constructor with largest number of parameters has less priority
+                 })
+           }
+         };
 
     private class Subject
     {
@@ -76,14 +78,10 @@ namespace Tests.Functional
       public Subject() => ParameterlessCtorIsCalled = true;
       public Subject(int i, string s) => ExpectedCtorIsCalled = true;
 
-      public Subject(string s, int i)
-      {
-      }
+      public Subject(string s, int i) { }
 
       [Inject]
-      public Subject(int i, string s, object o)
-      {
-      }
+      public Subject(int i, string s, object o) { }
     }
   }
 }

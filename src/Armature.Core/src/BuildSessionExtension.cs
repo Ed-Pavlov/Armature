@@ -17,14 +17,15 @@ namespace Armature.Core
     /// </summary>
     public static ConstructorInfo GetConstructorOf(this IBuildSession buildSession, Type type)
     {
-      if (buildSession is null) throw new ArgumentNullException(nameof(buildSession));
-      if (type is null) throw new ArgumentNullException(nameof(type));
+      if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
+      if(type is null) throw new ArgumentNullException(nameof(type));
 
       var result = buildSession.BuildUnit(new UnitInfo(type, SpecialToken.Constructor));
-      if (!result.HasValue)
+
+      if(!result.HasValue)
         throw new Exception(string.Format("Can't find appropriate constructor for type {0}", type));
 
-      return (ConstructorInfo)result.Value!;
+      return (ConstructorInfo) result.Value!;
     }
 
     /// <summary>
@@ -33,8 +34,9 @@ namespace Armature.Core
     public static IReadOnlyList<PropertyInfo> GetPropertiesToInject(this IBuildSession buildSession, Type type)
     {
       var unitInfo = new UnitInfo(type, SpecialToken.Property);
-      var result = buildSession.BuildAllUnits(unitInfo);
-      return result?.SelectMany(_ => (IReadOnlyList<PropertyInfo>)_.Value!).ToArray() ?? EmptyArray<PropertyInfo>.Instance;
+      var result   = buildSession.BuildAllUnits(unitInfo);
+
+      return result?.SelectMany(_ => (IReadOnlyList<PropertyInfo>) _.Value!).ToArray() ?? EmptyArray<PropertyInfo>.Instance;
     }
 
     /// <summary>
@@ -43,6 +45,7 @@ namespace Armature.Core
     public static object? GetValueForProperty(this IBuildSession buildSession, PropertyInfo propertyInfo)
     {
       var buildResult = buildSession.BuildUnit(new UnitInfo(propertyInfo, SpecialToken.InjectValue));
+
       return buildResult.HasValue ? buildResult.Value : throw new ArmatureException(string.Format("Can't build value for property '{0}'", propertyInfo));
     }
 
@@ -52,15 +55,17 @@ namespace Armature.Core
     /// </summary>
     public static object?[] GetValuesForParameters(this IBuildSession buildSession, ParameterInfo[] parameters)
     {
-      if (buildSession is null) throw new ArgumentNullException(nameof(buildSession));
-      if (parameters is null) throw new ArgumentNullException(nameof(parameters));
-      if (parameters.Length == 0) throw new ArgumentException("At least one parameters should be provided", nameof(parameters));
+      if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
+      if(parameters is null) throw new ArgumentNullException(nameof(parameters));
+      if(parameters.Length == 0) throw new ArgumentException("At least one parameters should be provided", nameof(parameters));
 
       var values = new object?[parameters.Length];
-      for (var i = 0; i < parameters.Length; i++)
+
+      for(var i = 0; i < parameters.Length; i++)
       {
         var buildResult = buildSession.BuildUnit(new UnitInfo(parameters[i], SpecialToken.InjectValue));
-        if (!buildResult.HasValue)
+
+        if(!buildResult.HasValue)
           throw new ArmatureException(string.Format("Can't build value for parameter '{0}'", parameters[i]));
 
         values[i] = buildResult.Value;

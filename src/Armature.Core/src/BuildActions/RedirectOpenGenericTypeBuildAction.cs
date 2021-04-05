@@ -11,23 +11,23 @@ namespace Armature.Core.BuildActions
   /// </summary>
   public class RedirectOpenGenericTypeBuildAction : IBuildAction
   {
-    private readonly Type _redirectTo;
+    private readonly Type    _redirectTo;
     private readonly object? _token;
 
     [DebuggerStepThrough]
     public RedirectOpenGenericTypeBuildAction(Type redirectTo, object? token)
     {
-      if (redirectTo is null) throw new ArgumentNullException(nameof(redirectTo));
-      if (!redirectTo.IsGenericTypeDefinition) throw new ArgumentException("Must be open generic type", nameof(redirectTo));
+      if(redirectTo is null) throw new ArgumentNullException(nameof(redirectTo));
+      if(!redirectTo.IsGenericTypeDefinition) throw new ArgumentException("Must be open generic type", nameof(redirectTo));
 
       _redirectTo = redirectTo;
-      _token = token;
+      _token      = token;
     }
 
     public void Process(IBuildSession buildSession)
     {
       var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
-      var effectiveToken = Equals(_token, Token.Propagate) ? unitUnderConstruction.Token : _token;
+      var effectiveToken        = Equals(_token, Token.Propagate) ? unitUnderConstruction.Token : _token;
 
       var genericType = _redirectTo.MakeGenericType(buildSession.GetUnitUnderConstruction().GetUnitType().GetGenericArguments());
       buildSession.BuildResult = buildSession.BuildUnit(new UnitInfo(genericType, effectiveToken));

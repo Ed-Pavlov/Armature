@@ -20,10 +20,11 @@ namespace Tests.Functional
     {
       // --arrange
       var container = CreateTarget();
+
       container
-        .Treat<Subject>()
-        .AsIs()
-        .UsingParameters(new object()); // set value to inject into ctor
+       .Treat<Subject>()
+       .AsIs()
+       .UsingParameters(new object()); // set value to inject into ctor
 
       // --act
       var instance = container.Build<Subject>();
@@ -37,10 +38,11 @@ namespace Tests.Functional
     {
       // --arrange
       var container = CreateTarget();
+
       container
-        .Treat<Subject>()
-        .AsIs()
-        .UsingInjectPointConstructor(Subject.InjectPointId);
+       .Treat<Subject>()
+       .AsIs()
+       .UsingInjectPointConstructor(Subject.InjectPointId);
 
       // --act
       var instance = container.Build<Subject>();
@@ -55,14 +57,14 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<Subject>()
-        .AsIs()
-        .UsingParameters("value");
+       .Treat<Subject>()
+       .AsIs()
+       .UsingParameters("value");
 
       target
-        .Treat<LevelTwo>()
-        .AsIs()
-        .UsingInjectPointConstructor(Subject.InjectPointId);
+       .Treat<LevelTwo>()
+       .AsIs()
+       .UsingInjectPointConstructor(Subject.InjectPointId);
 
       var actual = target.Build<LevelTwo>();
 
@@ -72,30 +74,29 @@ namespace Tests.Functional
       actual.Dependency.InjectPointWithIdConstructorIsCalled.Should().BeFalse();
     }
 
-    private Builder CreateTarget() =>
-      new(BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(
-              BuildStage.Create,
-              new OrderedBuildActionContainer
-              {
-                new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-                GetLongestConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
-              }),
-
-          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
-        }
-      };
+    private Builder CreateTarget()
+      => new(BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             // inject into constructor
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(
+                 BuildStage.Create,
+                 new OrderedBuildActionContainer
+                 {
+                   new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
+                   GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
+                 }),
+             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+           }
+         };
 
     class Subject
     {
-      public const string InjectPointId = "int";
-      public readonly bool InjectPointConstructorIsCalled;
+      public const    string InjectPointId = "int";
+      public readonly bool   InjectPointConstructorIsCalled;
 
       public readonly bool InjectPointWithIdConstructorIsCalled;
 
@@ -111,9 +112,7 @@ namespace Tests.Functional
         InjectPointConstructorIsCalled = true;
       }
 
-      public Subject(object _1, object _2)
-      {
-      }
+      public Subject(object _1, object _2) { }
     }
 
     private class LevelTwo
@@ -127,8 +126,7 @@ namespace Tests.Functional
       }
 
       public LevelTwo(string value, int digit) // longest constructor
-      {
-      }
+      { }
     }
   }
 }

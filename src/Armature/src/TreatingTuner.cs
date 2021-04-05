@@ -10,7 +10,7 @@ namespace Armature
   {
     public TreatingTuner(IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
   }
-  
+
   public class TreatingTuner<T> : Tuner
   {
     public TreatingTuner(IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
@@ -26,9 +26,10 @@ namespace Armature
     public Tuner AsIs()
     {
       UnitSequenceMatcher.AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
+
       return new Tuner(UnitSequenceMatcher);
     }
-    
+
     /// <summary>
     ///   For all who depends on <typeparamref name="T" /> inject <paramref name="instance" />.
     /// </summary>
@@ -43,6 +44,7 @@ namespace Armature
     public CreationTuner As(Type type, object? token = null)
     {
       UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectTypeBuildAction(type, token));
+
       return new CreationTuner(UnitSequenceMatcher, type, token);
     }
 
@@ -61,7 +63,7 @@ namespace Armature
     /// </summary>
 #pragma warning restore 1574
     public Tuner AsCreated(Type type, object? token = null) => As(type, token).CreatedByDefault();
-    
+
 #pragma warning disable 1574
     /// <summary>
     ///   For all who depends on unit of type passed into <see cref="BuildPlansCollectionExtension.Treat"/> inject object of type
@@ -75,39 +77,41 @@ namespace Armature
     /// <summary>
     ///   For all who depends on <typeparamref name="T" /> inject object created by specified factory method.
     /// </summary>
-    public Tuner AsCreatedWith(Func<T> factoryMethod) =>
-      new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T>(_ => factoryMethod())));
+    public Tuner AsCreatedWith(Func<T> factoryMethod)
+      => new(UnitSequenceMatcher.AddBuildAction(
+               BuildStage.Create,
+               new CreateByFactoryMethodBuildAction<T>(_ => factoryMethod())));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
-    public Tuner AsCreatedWith<T1>(Func<T1?, T?> factoryMethod) =>
-      new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T>(factoryMethod)));
+    public Tuner AsCreatedWith<T1>(Func<T1?, T?> factoryMethod)
+      => new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
-    public Tuner AsCreatedWith<T1, T2>(Func<T1?, T2?, T?> factoryMethod) =>
-      new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T>(factoryMethod)));
+    public Tuner AsCreatedWith<T1, T2>(Func<T1?, T2?, T?> factoryMethod)
+      => new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
-    public Tuner AsCreatedWith<T1, T2, T3>(Func<T1?, T2?, T3?, T?> factoryMethod) =>
-      new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod)));
+    public Tuner AsCreatedWith<T1, T2, T3>(Func<T1?, T2?, T3?, T?> factoryMethod)
+      => new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
-    public Tuner AsCreatedWith<T1, T2, T3, T4>(Func<T1?, T2?, T3?, T4?, T?> factoryMethod) =>
-      new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T>(factoryMethod)));
+    public Tuner AsCreatedWith<T1, T2, T3, T4>(Func<T1?, T2?, T3?, T4?, T?> factoryMethod)
+      => new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
-    public Tuner AsCreatedWith<T1, T2, T3, T4, T5>(Func<T1?, T2?, T3?, T4?, T5?, T?> factoryMethod) =>
-      new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T>(factoryMethod)));
+    public Tuner AsCreatedWith<T1, T2, T3, T4, T5>(Func<T1?, T2?, T3?, T4?, T5?, T?> factoryMethod)
+      => new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
-    public Tuner AsCreatedWith<T1, T2, T3, T4, T5, T6>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T?> factoryMethod) =>
-      new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T>(factoryMethod)));
+    public Tuner AsCreatedWith<T1, T2, T3, T4, T5, T6>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T?> factoryMethod)
+      => new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
-    public Tuner AsCreatedWith<T1, T2, T3, T4, T5, T6, T7>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T7?, T?> factoryMethod) =>
-      new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, T>(factoryMethod)));
+    public Tuner AsCreatedWith<T1, T2, T3, T4, T5, T6, T7>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T7?, T?> factoryMethod)
+      => new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
-    public Tuner AsCreatedWith(Func<IBuildSession, T> factoryMethod) =>
-      new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T>(factoryMethod)));
+    public Tuner AsCreatedWith(Func<IBuildSession, T> factoryMethod)
+      => new(UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T>(factoryMethod)));
   }
 }

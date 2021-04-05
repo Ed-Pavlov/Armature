@@ -13,6 +13,7 @@ namespace Tests.UnitTests
     public void should_propagate_token()
     {
       const string expectedToken = "token";
+
       // --arrange
       var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<IEnumerable<int>>(Token.Propagate).AsArray());
@@ -24,6 +25,7 @@ namespace Tests.UnitTests
 
       // --assert
       A.CallTo(() => buildSession.BuildUnit(Unit.OfType<List<int>>(expectedToken))).MustHaveHappenedOnceExactly();
+
       // buildSession.AssertWasCalled(_ => _.BuildUnit(new UnitInfo(typeof(List<int>), expectedToken)));
     }
   }

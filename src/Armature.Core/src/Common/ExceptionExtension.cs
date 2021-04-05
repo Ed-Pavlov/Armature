@@ -12,10 +12,11 @@ namespace Armature.Core.Common
     public static T AddData<T>(this T exception, object key, object? value)
       where T : Exception
     {
-      if (exception is null) throw new ArgumentNullException(nameof(exception));
-      if (key is null) throw new ArgumentNullException(nameof(key));
+      if(exception is null) throw new ArgumentNullException(nameof(exception));
+      if(key is null) throw new ArgumentNullException(nameof(key));
 
       exception.Data.Add(key, value);
+
       return exception;
     }
 
@@ -27,7 +28,8 @@ namespace Armature.Core.Common
       string ExceptionTitle(Exception exc) => $"{exc.GetType()}: {exc.Message}";
 
       var i = 0;
-      foreach (var exc in exceptions)
+
+      foreach(var exc in exceptions)
       {
         message.AppendLine($"Exception#{++i} {ExceptionTitle(exc)}");
         message.AppendLine(exc.StackTrace);
@@ -37,11 +39,13 @@ namespace Armature.Core.Common
 
       var exception = new ArmatureException(message.ToString());
       i = 0;
-      foreach (var exc in exceptions)
+
+      foreach(var exc in exceptions)
       {
         var exceptionInfo = ExceptionTitle(exc) + Environment.NewLine + exc.StackTrace;
         exception.AddData(++i, exceptionInfo);
       }
+
       return exception;
     }
   }

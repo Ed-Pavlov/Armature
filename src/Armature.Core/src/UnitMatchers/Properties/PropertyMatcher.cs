@@ -17,7 +17,8 @@ namespace Armature.Core.UnitMatchers.Properties
     [DebuggerStepThrough]
     public override string ToString() => GetType().GetShortName();
 
-    #region Equality
+#region Equality
+
     [DebuggerStepThrough]
     public bool Equals(IUnitMatcher? obj) => obj is PropertyMatcher;
 
@@ -25,6 +26,7 @@ namespace Armature.Core.UnitMatchers.Properties
     public override bool Equals(object obj) => Equals(obj as IUnitMatcher);
 
     public override int GetHashCode() => 0;
-    #endregion
+
+#endregion
   }
 }

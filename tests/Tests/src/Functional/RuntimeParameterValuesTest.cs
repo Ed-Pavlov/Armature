@@ -20,13 +20,14 @@ namespace Tests.Functional
     public void should_use_sessional_parameter_of_exact_type()
     {
       const string expected = "megastring";
+
       // --arrange
       var target = CreateTarget();
 
       target
-        .Treat<Subject>()
-        .AsIs()
-        .UsingInjectPointConstructor(Subject.StringCtor);
+       .Treat<Subject>()
+       .AsIs()
+       .UsingInjectPointConstructor(Subject.StringCtor);
 
       // --act
       var actual = target.Build<Subject>(expected);
@@ -44,9 +45,9 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<Subject>()
-        .AsIs()
-        .UsingInjectPointConstructor(Subject.DisposableCtor);
+       .Treat<Subject>()
+       .AsIs()
+       .UsingInjectPointConstructor(Subject.DisposableCtor);
 
       // --act
       var actual = target.Build<Subject>(expected);
@@ -65,12 +66,12 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<Subject>()
-        .AsIs();
+       .Treat<Subject>()
+       .AsIs();
 
       // --act
       var actual = target
-        .Build<Subject>(
+       .Build<Subject>(
           ForParameter.OfType<string>().UseValue(expectedString1),
           ForParameter.Named("string2").UseValue(expectedString2));
 
@@ -86,9 +87,9 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<Subject>()
-        .AsIs()
-        .UsingInjectPointConstructor(Subject.StringCtor);
+       .Treat<Subject>()
+       .AsIs()
+       .UsingInjectPointConstructor(Subject.StringCtor);
 
       // --act
       var actual = target.Build<Subject>(ForParameter.OfType<string>().UseValue(null));
@@ -97,29 +98,27 @@ namespace Tests.Functional
       actual.String1.Should().BeNull();
     }
 
-    private static Builder CreateTarget() =>
-      new(BuildStage.Initialize, BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-
-
-          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance) // autowiring
-        }
-      };
+    private static Builder CreateTarget()
+      => new(BuildStage.Initialize, BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             // inject into constructor
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance) // autowiring
+           }
+         };
 
     private class Subject
     {
-      public const string StringCtor = "String";
+      public const string StringCtor     = "String";
       public const string DisposableCtor = "Disposable";
 
       public readonly IDisposable Disposable;
-      public readonly string String1;
-      public readonly string String2;
+      public readonly string      String1;
+      public readonly string      String2;
 
       [Inject(StringCtor)]
       public Subject(string string1) => String1 = string1;

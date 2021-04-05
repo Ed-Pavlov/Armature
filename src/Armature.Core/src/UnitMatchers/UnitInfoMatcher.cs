@@ -20,7 +20,8 @@ namespace Armature.Core.UnitMatchers
     [DebuggerStepThrough]
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), UnitInfo);
 
-    #region Equality
+#region Equality
+
     [DebuggerStepThrough]
     public virtual bool Equals(IUnitMatcher? obj) => obj is UnitInfoMatcher other && UnitInfo.Equals(other.UnitInfo);
 
@@ -29,6 +30,7 @@ namespace Armature.Core.UnitMatchers
 
     [DebuggerStepThrough]
     public override int GetHashCode() => UnitInfo.GetHashCode();
-    #endregion
+
+#endregion
   }
 }

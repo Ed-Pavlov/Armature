@@ -17,13 +17,13 @@ namespace Armature.Core.UnitSequenceMatcher
   [SuppressMessage("ReSharper", "ConvertToConstant.Global")]
   public class UnitSequenceMatchingWeight
   {
-    protected static int Step = 100_000;
-    protected static int Lowest = 0;
-    protected static int Any = Lowest - Step * 10;
-    protected static int WildcardOpenGeneric = Lowest + Step;
-    protected static int WildcardBaseType = WildcardOpenGeneric + Step;
-    protected static int Wildcard = WildcardBaseType + Step;
-    protected static int Strict = Wildcard + Step;
+    protected static int Step                = 100_000;
+    protected static int Lowest              = 0;
+    protected static int Any                 = Lowest              - Step * 10;
+    protected static int WildcardOpenGeneric = Lowest              + Step;
+    protected static int WildcardBaseType    = WildcardOpenGeneric + Step;
+    protected static int Wildcard            = WildcardBaseType    + Step;
+    protected static int Strict              = Wildcard            + Step;
 
     /// <summary>
     ///   Is used for <see cref="AnyUnitSequenceMatcher" />

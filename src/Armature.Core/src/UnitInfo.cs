@@ -17,9 +17,9 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public UnitInfo(object? id, object? token)
     {
-      if (id is null && token is null) throw new ArgumentNullException(nameof(id), @"Either id or token should be provided");
+      if(id is null && token is null) throw new ArgumentNullException(nameof(id), @"Either id or token should be provided");
 
-      Id = id;
+      Id    = id;
       Token = token;
     }
 
@@ -29,17 +29,17 @@ namespace Armature.Core
     /// </summary>
     public bool Matches(UnitInfo? other)
     {
-      if (ReferenceEquals(null, other)) return false;
-      if (ReferenceEquals(this, other)) return true;
+      if(ReferenceEquals(null, other)) return false;
+      if(ReferenceEquals(this, other)) return true;
 
       return Equals(Id, other.Id) && (Equals(Token, other.Token) || Equals(Token, Core.Token.Any) || Equals(Core.Token.Any, other.Token));
     }
-    
+
     [DebuggerStepThrough]
     public bool Equals(UnitInfo? other)
     {
-      if (ReferenceEquals(null, other)) return false;
-      if (ReferenceEquals(this, other)) return true;
+      if(ReferenceEquals(null, other)) return false;
+      if(ReferenceEquals(this, other)) return true;
 
       return Equals(Id, other.Id) && Equals(Token, other.Token);
     }

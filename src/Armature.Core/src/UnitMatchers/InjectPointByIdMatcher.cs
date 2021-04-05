@@ -12,17 +12,19 @@ namespace Armature.Core.UnitMatchers
     private readonly object? _injectPointId;
 
     [DebuggerStepThrough]
-    protected InjectPointByIdMatcher(object? injectPointId = null) : base(attribute => Equals(attribute.InjectionPointId, injectPointId)) =>
-      _injectPointId = injectPointId;
+    protected InjectPointByIdMatcher(object? injectPointId = null) : base(attribute => Equals(attribute.InjectionPointId, injectPointId))
+      => _injectPointId = injectPointId;
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _injectPointId.ToLogString());
 
-    #region Equality
-    public override bool Equals(IUnitMatcher? obj) =>
-      obj is InjectPointByIdMatcher other && GetType() == obj.GetType() && Equals(_injectPointId, other._injectPointId);
+#region Equality
+
+    public override bool Equals(IUnitMatcher? obj)
+      => obj is InjectPointByIdMatcher other && GetType() == obj.GetType() && Equals(_injectPointId, other._injectPointId);
 
     public override int GetHashCode() => _injectPointId is not null ? _injectPointId.GetHashCode() : 0;
-    #endregion
+
+#endregion
   }
 }

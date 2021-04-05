@@ -16,13 +16,13 @@ namespace Armature.Core.BuildActions.Property
 
     public void PostProcess(IBuildSession buildSession)
     {
-      if (buildSession.BuildResult.HasValue)
+      if(buildSession.BuildResult.HasValue)
       {
-        var unit = buildSession.BuildResult.Value;
-        var type = unit!.GetType();
+        var unit       = buildSession.BuildResult.Value;
+        var type       = unit!.GetType();
         var properties = buildSession.GetPropertiesToInject(type);
 
-        foreach (var property in properties)
+        foreach(var property in properties)
         {
           var value = buildSession.GetValueForProperty(property);
           property.SetValue(unit, value);

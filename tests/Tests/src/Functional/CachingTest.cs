@@ -17,32 +17,31 @@ namespace Tests.Functional
     {
       // --arrange
       var target = CreateTarget();
+
       target
-        .Treat<Subject>()
-        .AsIs()
-        .AsSingleton();
+       .Treat<Subject>()
+       .AsIs()
+       .AsSingleton();
 
       // --act
       var expected = target.Build<Subject>();
-      var actual = target.Build<Subject>();
+      var actual   = target.Build<Subject>();
 
       // --assert
       actual.Should().BeSameAs(expected);
     }
 
-    private static Builder CreateTarget() =>
-      new(BuildStage.Cache, BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
-        }
-      };
+    private static Builder CreateTarget()
+      => new(BuildStage.Cache, BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             // inject into constructor
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
+           }
+         };
 
-    private class Subject
-    {
-    }
+    private class Subject { }
   }
 }

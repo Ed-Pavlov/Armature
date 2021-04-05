@@ -16,6 +16,7 @@ namespace Tests.Functional
     public void should_use_value_matched_with_longest_sequence()
     {
       const int expected = 9345;
+
       // --arrange
       var target = CreateTarget();
 
@@ -24,15 +25,15 @@ namespace Tests.Functional
       target.Treat<int>().AsInstance(5);
 
       target
-        .Building<Subject>()
-        .Treat<int>()
-        .AsInstance(354);
+       .Building<Subject>()
+       .Treat<int>()
+       .AsInstance(354);
 
       target
-        .Building<ISubject>()
-        .Building<Subject>()
-        .Treat<int>()
-        .AsInstance(expected);
+       .Building<ISubject>()
+       .Building<Subject>()
+       .Treat<int>()
+       .AsInstance(expected);
 
       // --act
       var actual = target.Build<ISubject>();
@@ -44,8 +45,9 @@ namespace Tests.Functional
     [Test]
     public void should_use_value_matched_with_longest_sequence_and_token()
     {
-      object token = "token";
+      object    token    = "token";
       const int expected = 9345;
+
       // --arrange
       var target = CreateTarget();
 
@@ -54,21 +56,21 @@ namespace Tests.Functional
       target.Treat<int>().AsInstance(5);
 
       target
-        .Building<Subject>(token)
-        .Treat<int>()
-        .AsInstance(354);
+       .Building<Subject>(token)
+       .Treat<int>()
+       .AsInstance(354);
 
       target
-        .Building<ISubject>(token)
-        .Building<Subject>()
-        .Treat<int>()
-        .AsInstance(986);
+       .Building<ISubject>(token)
+       .Building<Subject>()
+       .Treat<int>()
+       .AsInstance(986);
 
       target
-        .Building<ISubject>(token)
-        .Building<Subject>(token)
-        .Treat<int>()
-        .AsInstance(expected);
+       .Building<ISubject>(token)
+       .Building<Subject>(token)
+       .Treat<int>()
+       .AsInstance(expected);
 
       // --act
       var actual = target.UsingToken(token).Build<ISubject>();
@@ -77,19 +79,18 @@ namespace Tests.Functional
       actual.Value.Should().Be(expected);
     }
 
-    private static Builder CreateTarget() =>
-      new(BuildStage.Cache, BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-
-          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
-        }
-      };
+    private static Builder CreateTarget()
+      => new(BuildStage.Cache, BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             // inject into constructor
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+           }
+         };
 
     private interface ISubject
     {

@@ -31,8 +31,9 @@ namespace Armature.Core.UnitSequenceMatcher
     public IUnitSequenceMatcher AddBuildAction(object buildStage, IBuildAction buildAction)
     {
       LazyBuildAction
-        .GetOrCreateValue(buildStage, () => new List<IBuildAction>())
-        .Add(buildAction);
+       .GetOrCreateValue(buildStage, () => new List<IBuildAction>())
+       .Add(buildAction);
+
       return this;
     }
 
@@ -41,10 +42,11 @@ namespace Armature.Core.UnitSequenceMatcher
     [DebuggerStepThrough]
     protected MatchedBuildActions? GetOwnActions(int matchingWeight)
     {
-      if (_buildActions is null) return null;
+      if(_buildActions is null) return null;
 
       var result = new MatchedBuildActions();
-      foreach (var pair in _buildActions)
+
+      foreach(var pair in _buildActions)
         result.Add(pair.Key, pair.Value.Select(_ => _.WithWeight(matchingWeight)).ToList());
 
       return result;
@@ -56,26 +58,34 @@ namespace Armature.Core.UnitSequenceMatcher
     public void PrintToLog()
     {
       ICollection<IUnitSequenceMatcher>? children = null;
-      try {
+
+      try
+      {
         children = Children;
+      } catch
+      { // do nothing
       }
-      catch { // do nothing
-      }
-      
+
       if(children is not null)
-        foreach (var child in children)
-          using (Log.Block(LogLevel.Info, child.ToString()))
+        foreach(var child in children)
+          using(Log.Block(LogLevel.Info, child.ToString()))
+          {
             child.PrintToLog();
+          }
 
       if(_buildActions is not null)
-        using (Log.Block(LogLevel.Info, "Build actions"))
-          foreach (var pair in _buildActions)
-            using (Log.Block(LogLevel.Info, "Stage: {0}", pair.Key))
-              foreach (var buildAction in pair.Value)
+        using(Log.Block(LogLevel.Info, "Build actions"))
+        {
+          foreach(var pair in _buildActions)
+            using(Log.Block(LogLevel.Info, "Stage: {0}", pair.Key))
+            {
+              foreach(var buildAction in pair.Value)
                 if(buildAction is ILogable printable)
                   printable.PrintToLog();
                 else
                   Log.Info(buildAction.ToString());
+            }
+        }
     }
   }
 }

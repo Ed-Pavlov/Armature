@@ -2,8 +2,5 @@
 
 namespace Tests.Common
 {
-	public class NotSerializableException : Exception
-	{
-		
-	}
+  public class NotSerializableException : Exception { }
 }

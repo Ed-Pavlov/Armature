@@ -14,39 +14,41 @@ namespace Armature.Core.BuildActions.Constructor
   {
     private readonly Type[] _parameterTypes;
 
-    public GetConstructorByParameterTypesBuildAction(params Type[] parameterTypes) =>
-      _parameterTypes = parameterTypes ?? throw new ArgumentNullException(nameof(parameterTypes));
+    public GetConstructorByParameterTypesBuildAction(params Type[] parameterTypes)
+      => _parameterTypes = parameterTypes ?? throw new ArgumentNullException(nameof(parameterTypes));
 
     public void Process(IBuildSession buildSession)
     {
       var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
-      var ctor = GetConstructor(unitType);
-      if (ctor is not null)
+      var ctor     = GetConstructor(unitType);
+
+      if(ctor is not null)
         buildSession.BuildResult = new BuildResult(ctor);
     }
 
     [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
 
-    private ConstructorInfo? GetConstructor(Type unitType) =>
-      unitType.GetConstructors().FirstOrDefault(ctor => IsParametersListMatch(ctor.GetParameters(), _parameterTypes));
+    private ConstructorInfo? GetConstructor(Type unitType)
+      => unitType.GetConstructors().FirstOrDefault(ctor => IsParametersListMatch(ctor.GetParameters(), _parameterTypes));
 
     private static bool IsParametersListMatch(ParameterInfo[] parameterInfos, Type[] parameterTypes)
     {
-      if (parameterInfos.Length != parameterTypes.Length)
+      if(parameterInfos.Length != parameterTypes.Length)
         return false;
 
-      for (var i = 0; i < parameterInfos.Length; i++)
-        if (parameterInfos[i].ParameterType != parameterTypes[i])
+      for(var i = 0; i < parameterInfos.Length; i++)
+        if(parameterInfos[i].ParameterType != parameterTypes[i])
           return false;
 
       return true;
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(
-      LogConst.OneParameterFormat,
-      GetType().GetShortName(),
-      string.Join(", ", _parameterTypes.Select(Log.ToLogString).ToArray()));
+    public override string ToString()
+      => string.Format(
+        LogConst.OneParameterFormat,
+        GetType().GetShortName(),
+        string.Join(", ", _parameterTypes.Select(Log.ToLogString).ToArray()));
   }
 }

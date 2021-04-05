@@ -13,12 +13,12 @@ namespace Armature.Core.BuildActions.Creation
     private readonly Func<IBuildSession, TR> _factoryMethod;
 
     [DebuggerStepThrough]
-    public CreateByFactoryMethodBuildAction(Func<IBuildSession, TR> factoryMethod) =>
-      _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
+    public CreateByFactoryMethodBuildAction(Func<IBuildSession, TR> factoryMethod)
+      => _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
 
     public void Process(IBuildSession buildSession)
     {
-      if (!buildSession.BuildResult.HasValue)
+      if(!buildSession.BuildResult.HasValue)
         buildSession.BuildResult = new BuildResult(_factoryMethod(buildSession));
     }
 

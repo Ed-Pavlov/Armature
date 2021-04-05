@@ -25,12 +25,13 @@ namespace Tests.Functional
       target.Treat<int>().AsInstance(expected);
 
       target
-        .TreatInheritorsOf<SubjectBase>()
-        .InjectProperty(Property.Named(nameof(SubjectBase.InjectThere)));
+       .TreatInheritorsOf<SubjectBase>()
+       .InjectProperty(Property.Named(nameof(SubjectBase.InjectThere)));
 
       target
-        .Treat<Subject>()
-        .AsIs();
+       .Treat<Subject>()
+       .AsIs();
+
       // --act
       var actual = target.Build<Subject>();
 
@@ -49,12 +50,12 @@ namespace Tests.Functional
       target.Treat<int>().AsInstance(expected);
 
       target
-        .TreatInheritorsOf<ISubject>()
-        .InjectProperty(Property.Named(nameof(ISubject.InjectThere)));
+       .TreatInheritorsOf<ISubject>()
+       .InjectProperty(Property.Named(nameof(ISubject.InjectThere)));
 
       target
-        .Treat<Subject>()
-        .AsIs();
+       .Treat<Subject>()
+       .AsIs();
 
       // --act
       var actual = target.Build<Subject>();
@@ -74,14 +75,14 @@ namespace Tests.Functional
       target.Treat<int>().AsInstance(expected);
 
       target
-        .TreatInheritorsOf<ISubject>()
-        .InjectProperty(Property.Named(nameof(ISubject.InjectThere)));
+       .TreatInheritorsOf<ISubject>()
+       .InjectProperty(Property.Named(nameof(ISubject.InjectThere)));
 
       target
-        .Treat<Subject>()
-        .AsIs()
-        .InjectProperty(Property.Named(nameof(Subject.InjectHere)));
-      
+       .Treat<Subject>()
+       .AsIs()
+       .InjectProperty(Property.Named(nameof(Subject.InjectHere)));
+
       // --act
       var actual = target.Build<Subject>();
 
@@ -90,19 +91,22 @@ namespace Tests.Functional
       actual.InjectThere.Should().Be(expected);
     }
 
-    private static Builder CreateTarget() =>
-      new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance), // constructor with largest number of parameters has less priority
+    private static Builder CreateTarget()
+      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             // inject into constructor
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(
+                 BuildStage.Create,
+                 GetLongestConstructorBuildAction
+                  .Instance), // constructor with largest number of parameters has less priority
 
-          new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
-        }
-      };
+             new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
+           }
+         };
 
     private interface ISubject
     {

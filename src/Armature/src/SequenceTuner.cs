@@ -17,9 +17,10 @@ namespace Armature
     /// </summary>
     public SequenceTuner Building(Type type, object? token = null)
     {
-      if (type is null) throw new ArgumentNullException(nameof(type));
+      if(type is null) throw new ArgumentNullException(nameof(type));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
+
       return new SequenceTuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
@@ -35,9 +36,10 @@ namespace Armature
     public TreatingTuner Treat(Type type, object? token = null)
     {
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
+
       return new TreatingTuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
-    
+
     /// <summary>
     ///   Used to make a build plan for <typeparamref name="T" />.
     ///   How <typeparamref name="T" /> should be treated is specified by subsequence calls using returned object
@@ -45,6 +47,7 @@ namespace Armature
     public TreatingTuner<T> Treat<T>(object? token = null)
     {
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(token));
+
       return new TreatingTuner<T>(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
@@ -54,6 +57,7 @@ namespace Armature
     public Tuner TreatAll()
     {
       var unitSequenceMatcher = new AnyUnitSequenceMatcher();
+
       return new Tuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
   }

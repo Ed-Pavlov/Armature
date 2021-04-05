@@ -6,7 +6,11 @@ namespace Armature
   ///   Attribute is used to mark type member into which dependencies should be injected
   /// </summary>
   [AttributeUsage(
-    AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Field
+    AttributeTargets.Constructor
+  | AttributeTargets.Method
+  | AttributeTargets.Property
+  | AttributeTargets.Parameter
+  | AttributeTargets.Field
   | AttributeTargets.Event)]
   public class InjectAttribute : Attribute
   {

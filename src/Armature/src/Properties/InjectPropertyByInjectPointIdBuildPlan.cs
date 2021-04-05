@@ -18,8 +18,8 @@ namespace Armature
 
     public object[] Item1 { get; }
 
-    public void Apply(IUnitSequenceMatcher unitSequenceMatcher) =>
-      unitSequenceMatcher
+    public void Apply(IUnitSequenceMatcher unitSequenceMatcher)
+      => unitSequenceMatcher
         .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(PropertyMatcher.Instance))
         .AddBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction(Item1));
 

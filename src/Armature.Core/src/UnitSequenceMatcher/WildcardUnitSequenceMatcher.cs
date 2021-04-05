@@ -14,8 +14,8 @@ namespace Armature.Core.UnitSequenceMatcher
 
     public WildcardUnitSequenceMatcher(IUnitMatcher matcher) : this(matcher, UnitSequenceMatchingWeight.WildcardMatchingUnit) { }
 
-    public WildcardUnitSequenceMatcher(IUnitMatcher matcher, int weight) : base(weight) =>
-      _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
+    public WildcardUnitSequenceMatcher(IUnitMatcher matcher, int weight) : base(weight)
+      => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
 
     /// <summary>
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.
@@ -24,15 +24,17 @@ namespace Armature.Core.UnitSequenceMatcher
     public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
       var realWeight = inputWeight;
-      for (var i = 0; i < buildingUnitsSequence.Length; i++)
+
+      for(var i = 0; i < buildingUnitsSequence.Length; i++)
       {
         var unitInfo = buildingUnitsSequence[i];
-        if (_matcher.Matches(unitInfo))
+
+        if(_matcher.Matches(unitInfo))
           return GetActions(buildingUnitsSequence.GetTail(i), realWeight);
 
         // increase weight on each "skipping" step, it will lead that "deeper" context has more weight then more common
         // it is needed when some Unit is registered several times, Unit under construction should receive that one which is "closer" to it
-        realWeight++; 
+        realWeight++;
       }
 
       return null;
@@ -41,11 +43,12 @@ namespace Armature.Core.UnitSequenceMatcher
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().Name, Weight, _matcher);
 
-    #region Equality
+#region Equality
+
     public bool Equals(WildcardUnitSequenceMatcher? other)
     {
-      if (ReferenceEquals(null, other)) return false;
-      if (ReferenceEquals(this, other)) return true;
+      if(ReferenceEquals(null, other)) return false;
+      if(ReferenceEquals(this, other)) return true;
 
       return Equals(_matcher, other._matcher) && Weight == other.Weight;
     }
@@ -61,6 +64,7 @@ namespace Armature.Core.UnitSequenceMatcher
         return (_matcher.GetHashCode() * 397) ^ Weight;
       }
     }
-    #endregion
+
+#endregion
   }
 }

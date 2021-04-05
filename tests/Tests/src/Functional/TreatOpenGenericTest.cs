@@ -20,13 +20,13 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .TreatOpenGeneric(typeof(ISubject<>))
-        .AsCreated(typeof(Subject<>));
+       .TreatOpenGeneric(typeof(ISubject<>))
+       .AsCreated(typeof(Subject<>));
 
       target
-        .Treat<ISubject<int>>()
-        .AsCreated<Subject<int>>()
-        .UsingParameterlessConstructor();
+       .Treat<ISubject<int>>()
+       .AsCreated<Subject<int>>()
+       .UsingParameterlessConstructor();
 
       // --act
       var actual = target.Build<ISubject<int>>();
@@ -42,10 +42,11 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       const int expected = 5;
+
       target
-        .TreatOpenGeneric(typeof(ISubject<>))
-        .AsCreated(typeof(Subject<>))
-        .UsingParameters(expected);
+       .TreatOpenGeneric(typeof(ISubject<>))
+       .AsCreated(typeof(Subject<>))
+       .UsingParameters(expected);
 
       // --act
       var actual = target.Build<ISubject<int>>();
@@ -61,15 +62,16 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .TreatOpenGeneric(typeof(ISubject<>))
-        .AsCreated(typeof(Subject<>))
-        .UsingParameters("open");
+       .TreatOpenGeneric(typeof(ISubject<>))
+       .AsCreated(typeof(Subject<>))
+       .UsingParameters("open");
 
       const string closed = "closed";
+
       target
-        .Treat<ISubject<string>>()
-        .AsCreated<Subject<string>>()
-        .UsingParameters(closed);
+       .Treat<ISubject<string>>()
+       .AsCreated<Subject<string>>()
+       .UsingParameters(closed);
 
       // --act
       var actual = target.Build<ISubject<string>>();
@@ -85,8 +87,8 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .TreatOpenGeneric(typeof(ISubject<>))
-        .As(typeof(Subject<>));
+       .TreatOpenGeneric(typeof(ISubject<>))
+       .As(typeof(Subject<>));
 
       // --act
       Action actual = () => target.Build<ISubject<int>>(5);
@@ -95,16 +97,16 @@ namespace Tests.Functional
       actual.Should().Throw<ArmatureException>();
     }
 
-    private static Builder CreateTarget() =>
-      new(BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
-        }
-      };
+    private static Builder CreateTarget()
+      => new(BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             // inject into constructor
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
+           }
+         };
 
     private interface ISubject<out T>
     {
@@ -113,9 +115,7 @@ namespace Tests.Functional
 
     private class Subject<T> : ISubject<T>
     {
-      public Subject()
-      {
-      }
+      public Subject() { }
 
       public Subject(T value) => Value = value;
 

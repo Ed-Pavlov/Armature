@@ -18,6 +18,7 @@ namespace Armature.Core.UnitMatchers
     public bool Matches(UnitInfo unitInfo)
     {
       var type = GetInjectPointType(unitInfo);
+
       return unitInfo.Token == SpecialToken.InjectValue && type is not null && type.IsInstanceOfType(_value);
     }
 
@@ -26,7 +27,8 @@ namespace Armature.Core.UnitMatchers
     [DebuggerStepThrough]
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _value.ToLogString());
 
-    #region Equality
+#region Equality
+
     [DebuggerStepThrough]
     public bool Equals(IUnitMatcher? obj) => obj is InjectPointByValueMatcher other && GetType() == obj.GetType() && Equals(_value, other._value);
 
@@ -35,6 +37,7 @@ namespace Armature.Core.UnitMatchers
 
     [DebuggerStepThrough]
     public override int GetHashCode() => _value.GetHashCode();
-    #endregion
+
+#endregion
   }
 }

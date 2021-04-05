@@ -15,13 +15,15 @@ namespace Armature.Core.UnitMatchers
     public bool Matches(UnitInfo unitInfo)
     {
       var type = unitInfo.GetUnitTypeSafe();
+
       return !unitInfo.Token.IsSpecial() && type is {IsAbstract: false, IsInterface: false, IsGenericTypeDefinition: false};
     }
 
     [DebuggerStepThrough]
     public override string ToString() => GetType().GetShortName();
 
-    #region Equality
+#region Equality
+
     [DebuggerStepThrough]
     public bool Equals(IUnitMatcher? other) => ReferenceEquals(this, other);
 
@@ -30,6 +32,7 @@ namespace Armature.Core.UnitMatchers
 
     [DebuggerStepThrough]
     public override int GetHashCode() => 0;
-    #endregion
+
+#endregion
   }
 }

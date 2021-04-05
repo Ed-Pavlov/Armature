@@ -8,8 +8,8 @@ namespace Armature.Extensibility
   {
     protected readonly IUnitSequenceMatcher UnitSequenceMatcher;
 
-    protected UnitSequenceExtensibility(IUnitSequenceMatcher unitSequenceMatcher) =>
-      UnitSequenceMatcher = unitSequenceMatcher ?? throw new ArgumentNullException(nameof(unitSequenceMatcher));
+    protected UnitSequenceExtensibility(IUnitSequenceMatcher unitSequenceMatcher)
+      => UnitSequenceMatcher = unitSequenceMatcher ?? throw new ArgumentNullException(nameof(unitSequenceMatcher));
 
     IUnitSequenceMatcher IUnitSequenceExtensibility.UnitSequenceMatcher => UnitSequenceMatcher;
   }

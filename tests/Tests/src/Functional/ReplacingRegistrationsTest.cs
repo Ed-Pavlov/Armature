@@ -18,34 +18,32 @@ namespace Tests.Functional
       var builder = CreateTarget();
 
       builder
-        .Treat<Subject>()
-        .AsIs()
-        .UsingParameterlessConstructor();
+       .Treat<Subject>()
+       .AsIs()
+       .UsingParameterlessConstructor();
 
       builder
-        .OverrideTreat<Subject>()
-        .AsIs()
-        .UsingParameters(10);
+       .OverrideTreat<Subject>()
+       .AsIs()
+       .UsingParameters(10);
 
       builder.Build<Subject>().Should().BeOfType<Subject>().Which.Value.Should().Be(10);
     }
 
-    private static Builder CreateTarget() =>
-      new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-        }
-      };
+    private static Builder CreateTarget()
+      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             // inject into constructor
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
+           }
+         };
 
     private class Subject
     {
-      public Subject()
-      {
-      }
+      public Subject() { }
 
       public Subject(int value) => Value = value;
       public int Value { get; }

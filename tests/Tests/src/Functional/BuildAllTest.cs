@@ -73,28 +73,24 @@ namespace Tests.Functional
       actual.Single(_ => _ is SampleType2).Should().NotBeSameAs(precondition.Single(_ => _ is SampleType2));
     }
 
-    private static Builder CreateTarget() =>
-      new(BuildStage.Cache, BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
-        }
-      };
+    private static Builder CreateTarget()
+      => new(BuildStage.Cache, BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
+           }
+         };
 
     private class SampleType1 : IDisposable
     {
-      public void Dispose()
-      {
-      }
+      public void Dispose() { }
     }
 
     private class SampleType2 : IDisposable
     {
-      public void Dispose()
-      {
-      }
+      public void Dispose() { }
     }
   }
 }

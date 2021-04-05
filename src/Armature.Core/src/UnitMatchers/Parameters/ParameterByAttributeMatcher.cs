@@ -21,7 +21,7 @@ namespace Armature.Core.UnitMatchers.Parameters
 
     public static T? GetParameterAttribute(UnitInfo unitInfo)
     {
-      if (!(unitInfo.Id is ParameterInfo parameterInfo)) return default;
+      if(!(unitInfo.Id is ParameterInfo parameterInfo)) return default;
 
       return parameterInfo.GetCustomAttribute<T>();
     }

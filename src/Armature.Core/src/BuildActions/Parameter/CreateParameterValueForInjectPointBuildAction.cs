@@ -15,13 +15,13 @@ namespace Armature.Core.BuildActions.Parameter
 
     public void Process(IBuildSession buildSession)
     {
-      var parameterInfo = (ParameterInfo)buildSession.GetUnitUnderConstruction().Id!;
+      var parameterInfo = (ParameterInfo) buildSession.GetUnitUnderConstruction().Id!;
 
       var attribute = parameterInfo
-        .GetCustomAttributes<InjectAttribute>()
-        .SingleOrDefault();
+                     .GetCustomAttributes<InjectAttribute>()
+                     .SingleOrDefault();
 
-      if (attribute is null)
+      if(attribute is null)
       {
         Log.WriteLine(LogLevel.Info, () => string.Format("{0}{{{1}}}", this, "No parameter marked with InjectAttribute"));
       }

@@ -15,7 +15,7 @@ namespace Armature.Core.BuildActions.Property
 
     public GetPropertyByNameBuildAction(params string[] names)
     {
-      if (names is null || names.Length == 0) throw new ArgumentNullException(nameof(names));
+      if(names is null || names.Length == 0) throw new ArgumentNullException(nameof(names));
 
       _names = names;
     }
@@ -26,15 +26,16 @@ namespace Armature.Core.BuildActions.Property
 
       var properties =
         _names.Select(
-            name =>
-              {
-                var property = unitType.GetProperty(name);
-                if (property is null)
-                  throw new ArmatureException(string.Format("There is no property '{0}' in type '{1}'", _names, unitType.ToLogString()));
+                 name =>
+                 {
+                   var property = unitType.GetProperty(name);
 
-                return property;
-              })
-          .ToArray();
+                   if(property is null)
+                     throw new ArmatureException(string.Format("There is no property '{0}' in type '{1}'", _names, unitType.ToLogString()));
+
+                   return property;
+                 })
+              .ToArray();
 
       buildSession.BuildResult = new BuildResult(properties);
     }

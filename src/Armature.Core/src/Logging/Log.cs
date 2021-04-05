@@ -10,7 +10,7 @@ namespace Armature.Core.Logging
   /// </summary>
   public static class Log
   {
-    private static int _indent;
+    private static int      _indent;
     private static LogLevel _logLevel = LogLevel.None;
 
     /// <summary>
@@ -24,6 +24,7 @@ namespace Armature.Core.Logging
     public static IDisposable Enabled(LogLevel logLevel = LogLevel.Info)
     {
       _logLevel = logLevel;
+
       return new Bracket(() => _logLevel = logLevel, () => _logLevel = LogLevel.None);
     }
 
@@ -38,15 +39,17 @@ namespace Armature.Core.Logging
     public static IDisposable Block(LogLevel logLevel, string name, params object[] parameters)
     {
       WriteLine(logLevel, name, parameters);
+
       return logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
     }
-    
+
     /// <summary>
     ///   Used to make a named and indented "block" in log data
     /// </summary>
     public static IDisposable Block(LogLevel logLevel, Func<string> getName)
     {
       WriteLine(logLevel, getName);
+
       return logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
     }
 
@@ -56,6 +59,7 @@ namespace Armature.Core.Logging
     public static IDisposable Block<T1>(LogLevel logLevel, Func<T1, string> getName, T1 v1)
     {
       WriteLine(logLevel, getName, v1);
+
       return logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
     }
 
@@ -80,42 +84,42 @@ namespace Armature.Core.Logging
     /// <param name="action"></param>
     public static void ExecuteIfEnabled(this LogLevel logLevel, Action action)
     {
-      if (logLevel > _logLevel) return;
+      if(logLevel > _logLevel) return;
 
       action();
     }
 
     public static void WriteLine<T1>(LogLevel logLevel, string format, T1 p1)
     {
-      if (logLevel > _logLevel) return;
+      if(logLevel > _logLevel) return;
       System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, p1.ToLogString()));
     }
-    
+
     public static void WriteLine<T1, T2>(LogLevel logLevel, string format, T1 p1, T2 p2)
     {
-      if (logLevel > _logLevel) return;
+      if(logLevel > _logLevel) return;
       System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, p1.ToLogString(), p2.ToLogString()));
     }
-    
+
     public static void WriteLine<T1, T2, T3>(LogLevel logLevel, string format, T1 p1, T2 p2, T3 p3)
     {
-      if (logLevel > _logLevel) return;
+      if(logLevel > _logLevel) return;
       System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, p1.ToLogString(), p2.ToLogString(), p3.ToLogString()));
     }
 
     [StringFormatMethod("format")]
     public static void Write(LogLevel logLevel, string format, params object[] parameters)
     {
-      if (logLevel > _logLevel) return;
+      if(logLevel > _logLevel) return;
 
       // ReSharper disable once CoVariantArrayConversion
       System.Diagnostics.Trace.Write(string.Format(format, parameters.Select(ToLogString).ToArray()));
     }
-    
+
     [StringFormatMethod("format")]
     public static void WriteLine(LogLevel logLevel, string format, params object[] parameters)
     {
-      if (logLevel > _logLevel) return;
+      if(logLevel > _logLevel) return;
 
       // ReSharper disable once CoVariantArrayConversion
       System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, parameters.Select(ToLogString).ToArray()));
@@ -126,9 +130,9 @@ namespace Armature.Core.Logging
     ///   use it calculating arguments for logging takes a time.
     /// </summary>
     [StringFormatMethod("format")]
-    public static void WriteLine(LogLevel logLevel, [InstantHandle]Func<string> createMessage)
+    public static void WriteLine(LogLevel logLevel, [InstantHandle] Func<string> createMessage)
     {
-      if (logLevel > _logLevel) return;
+      if(logLevel > _logLevel) return;
 
       System.Diagnostics.Trace.WriteLine(GetIndent() + createMessage());
     }
@@ -138,9 +142,9 @@ namespace Armature.Core.Logging
     ///   use it calculating arguments for logging takes a time.
     /// </summary>
     [StringFormatMethod("format")]
-    public static void WriteLine<T1>(LogLevel logLevel, [InstantHandle]Func<T1, string> createMessage, T1 v1)
+    public static void WriteLine<T1>(LogLevel logLevel, [InstantHandle] Func<T1, string> createMessage, T1 v1)
     {
-      if (logLevel > _logLevel) return;
+      if(logLevel > _logLevel) return;
 
       System.Diagnostics.Trace.WriteLine(GetIndent() + createMessage(v1));
     }
@@ -155,47 +159,51 @@ namespace Armature.Core.Logging
     /// </summary>
     public static string ToLogString(this object? obj)
     {
-      if (obj is null) return "null";
+      if(obj is null) return "null";
 
       return obj is Type type ? type.ToLogString() : obj.ToString();
     }
-    
+
     private static string GetIndent()
     {
       var indent = "";
-      for (var i = 0; i < _indent; i++)
+
+      for(var i = 0; i < _indent; i++)
         indent += "  ";
+
       return indent;
     }
 
     private static string GetTypeFullName(Type type)
     {
-      if (!type.IsGenericType) return type.FullName!;
+      if(!type.IsGenericType) return type.FullName!;
 
-      var main = type.GetGenericTypeDefinition().FullName;
+      var main      = type.GetGenericTypeDefinition().FullName;
       var arguments = string.Join(", ", type.GenericTypeArguments.Select(GetTypeFullName).ToArray());
+
       return string.Format("{0}[{1}]", main, arguments);
     }
 
     private class Indenter : IDisposable
     {
-      private readonly int _count;
+      private readonly int  _count;
       private readonly bool _newBlock;
 
       public Indenter(bool newBlock, int count)
       {
-        if (newBlock)
+        if(newBlock)
           WriteLine(LogLevel.Info, "{{");
 
-        _newBlock = newBlock;
-        _count = count;
-        _indent += count;
+        _newBlock =  newBlock;
+        _count    =  count;
+        _indent   += count;
       }
 
       public void Dispose()
       {
         _indent -= _count;
-        if (_newBlock)
+
+        if(_newBlock)
           WriteLine(LogLevel.Info, "}}");
       }
     }
@@ -226,11 +234,5 @@ namespace Armature.Core.Logging
     }
   }
 
-  public enum LogLevel
-  {
-    None = 0,
-    Info,
-    Verbose,
-    Trace
-  }
+  public enum LogLevel { None = 0, Info, Verbose, Trace }
 }

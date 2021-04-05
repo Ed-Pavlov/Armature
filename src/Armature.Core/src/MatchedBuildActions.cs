@@ -13,10 +13,12 @@ namespace Armature.Core
     public override string ToString()
     {
       var sb = new StringBuilder(string.Format("{0} matched stages\n", Count));
-      foreach (var pair in this)
+
+      foreach(var pair in this)
       {
         sb.AppendFormat("\t{0}: ", pair.Key);
-        foreach (var action in pair.Value)
+
+        foreach(var action in pair.Value)
         {
           sb.AppendFormat("\t{0}:{1}", action.Weight, action.Entity);
           sb.AppendLine();

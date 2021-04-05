@@ -19,8 +19,8 @@ namespace Armature.Core.UnitSequenceMatcher
     /// <param name="unitMatcher">Object contains the logic of matching with building unit</param>
     /// <param name="weight">The weight of matching</param>
     [DebuggerStepThrough]
-    public LastUnitSequenceMatcher(IUnitMatcher unitMatcher, int weight = 0) : base(weight) =>
-      _unitMatcher = unitMatcher ?? throw new ArgumentNullException(nameof(unitMatcher));
+    public LastUnitSequenceMatcher(IUnitMatcher unitMatcher, int weight = 0) : base(weight)
+      => _unitMatcher = unitMatcher ?? throw new ArgumentNullException(nameof(unitMatcher));
 
     public override ICollection<IUnitSequenceMatcher> Children => throw new NotSupportedException("LastUnitSequenceMatcher can't contain children");
 
@@ -31,21 +31,23 @@ namespace Armature.Core.UnitSequenceMatcher
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
     public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
-      if (buildingUnitsSequence.Length != 1) return null;
+      if(buildingUnitsSequence.Length != 1) return null;
 
       var unitInfo = buildingUnitsSequence.Last();
-      var matches = _unitMatcher.Matches(unitInfo);
+      var matches  = _unitMatcher.Matches(unitInfo);
 
-      if (!matches)
+      if(!matches)
       {
         Log.WriteLine(LogLevel.Trace, () => string.Format("{0}{{not matched}}", this));
+
         return null;
       }
 
-      using (Log.Block(LogLevel.Verbose, this.ToString)) // pass method group, do not call ToString
+      using(Log.Block(LogLevel.Verbose, this.ToString)) // pass method group, do not call ToString
       {
         var buildActions = GetOwnActions(Weight + inputWeight);
         buildActions.ToLog();
+
         return buildActions;
       }
     }
@@ -53,11 +55,12 @@ namespace Armature.Core.UnitSequenceMatcher
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().GetShortName(), Weight, _unitMatcher);
 
-    #region Equality
+#region Equality
+
     private bool Equals(LastUnitSequenceMatcher? other)
     {
-      if (ReferenceEquals(null, other)) return false;
-      if (ReferenceEquals(this, other)) return true;
+      if(ReferenceEquals(null, other)) return false;
+      if(ReferenceEquals(this, other)) return true;
 
       return Weight == other.Weight && _unitMatcher.Equals(other._unitMatcher);
     }
@@ -73,6 +76,7 @@ namespace Armature.Core.UnitSequenceMatcher
         return (Weight * 397) ^ _unitMatcher.GetHashCode();
       }
     }
-    #endregion
+
+#endregion
   }
 }

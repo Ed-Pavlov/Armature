@@ -12,7 +12,7 @@ namespace Tests.UnitTests
     public void should_return_value()
     {
       const string expected = "one";
-      var target = new Dictionary<int, string> {{1, expected}, {2, "two"}};
+      var          target   = new Dictionary<int, string> {{1, expected}, {2, "two"}};
 
       // --act 
       var actual = target.GetValueSafe(1);

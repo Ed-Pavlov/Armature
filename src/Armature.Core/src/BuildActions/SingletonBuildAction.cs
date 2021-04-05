@@ -21,18 +21,18 @@ namespace Armature.Core.BuildActions
 
     public void Process(IBuildSession buildSession)
     {
-      if (_instance is not null)
+      if(_instance is not null)
         buildSession.BuildResult = new BuildResult(_instance.Value);
     }
 
     public void PostProcess(IBuildSession buildSession)
     {
-      if (buildSession.BuildResult.HasValue)
+      if(buildSession.BuildResult.HasValue)
         _instance = new Instance(buildSession.BuildResult.Value);
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().Name, (object?)_instance ?? "not set");
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().Name, (object?) _instance ?? "not set");
 
     private class Instance
     {

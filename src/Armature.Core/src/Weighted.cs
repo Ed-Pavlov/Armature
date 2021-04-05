@@ -6,7 +6,7 @@ namespace Armature.Core
 {
   public readonly struct Weighted<T> : IComparable<Weighted<T>>
   {
-    public readonly T Entity;
+    public readonly T   Entity;
     public readonly int Weight;
 
     [DebuggerStepThrough]

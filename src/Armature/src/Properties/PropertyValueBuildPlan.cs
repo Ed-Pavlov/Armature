@@ -14,17 +14,18 @@ namespace Armature
       IUnitMatcher propertyMatcher,
       IBuildAction getPropertyAction,
       IBuildAction getValueAction,
-      int weight)
-      : base(propertyMatcher, getValueAction, weight) =>
-      _getPropertyAction = getPropertyAction ?? throw new ArgumentNullException(nameof(getPropertyAction));
+      int          weight)
+      : base(propertyMatcher, getValueAction, weight)
+      => _getPropertyAction = getPropertyAction ?? throw new ArgumentNullException(nameof(getPropertyAction));
 
     /// <summary>
     ///   In addition to the base logic adds a logic which provides a properties to inject into
     /// </summary>
     /// <param name="unitSequenceMatcher"></param>
-    protected override void Apply(IUnitSequenceMatcher unitSequenceMatcher) =>
-      unitSequenceMatcher
-        .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(PropertyMatcher.Instance))
+    protected override void Apply(IUnitSequenceMatcher unitSequenceMatcher)
+      => unitSequenceMatcher
+        .AddOrGetUnitSequenceMatcher(
+           new LastUnitSequenceMatcher(PropertyMatcher.Instance))
         .AddBuildAction(BuildStage.Create, _getPropertyAction);
   }
 }

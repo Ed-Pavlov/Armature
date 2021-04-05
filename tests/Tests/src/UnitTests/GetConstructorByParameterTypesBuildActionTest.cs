@@ -52,9 +52,7 @@ namespace Tests.UnitTests
     [SuppressMessage("ReSharper", "UnusedParameter.Local")]
     private class SampleType
     {
-      public SampleType(int i, IDisposable d)
-      {
-      }
+      public SampleType(int i, IDisposable d) { }
     }
   }
 }

@@ -15,8 +15,8 @@ namespace Armature.Core
 
       public Interface(IEnumerable<UnitInfo> buildSequence, BuildSession buildSession)
       {
-        if (buildSequence is null) throw new ArgumentNullException(nameof(buildSequence));
-        if (buildSession is null) throw new ArgumentNullException(nameof(buildSession));
+        if(buildSequence is null) throw new ArgumentNullException(nameof(buildSequence));
+        if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
 
         _buildSession = buildSession;
         BuildSequence = buildSequence;

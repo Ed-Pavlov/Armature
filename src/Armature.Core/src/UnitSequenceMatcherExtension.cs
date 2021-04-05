@@ -15,10 +15,11 @@ namespace Armature.Core
     public static T AddOrGetUnitSequenceMatcher<T>(this IUnitSequenceMatcher parent, T unitSequenceMatcher)
       where T : IUnitSequenceMatcher
     {
-      if (parent.Children.Contains(unitSequenceMatcher))
-        return (T)parent.Children.First(_ => _.Equals(unitSequenceMatcher));
+      if(parent.Children.Contains(unitSequenceMatcher))
+        return (T) parent.Children.First(_ => _.Equals(unitSequenceMatcher));
 
       parent.Children.Add(unitSequenceMatcher);
+
       return unitSequenceMatcher;
     }
 
@@ -30,10 +31,11 @@ namespace Armature.Core
     public static T AddUniqueUnitMatcher<T>(this IUnitSequenceMatcher parent, T unitSequenceMatcher)
       where T : IUnitSequenceMatcher
     {
-      if (parent.Children.Contains(unitSequenceMatcher))
+      if(parent.Children.Contains(unitSequenceMatcher))
         throw new ArmatureException(string.Format("There is already matcher added '{0}'", unitSequenceMatcher));
 
       parent.Children.Add(unitSequenceMatcher);
+
       return unitSequenceMatcher;
     }
   }

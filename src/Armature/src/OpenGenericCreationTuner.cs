@@ -9,16 +9,16 @@ namespace Armature
 {
   public class OpenGenericCreationTuner : UnitSequenceExtensibility, IExtensibility<Type, object>
   {
-    protected readonly Type OpenGenericType;
+    protected readonly Type    OpenGenericType;
     protected readonly object? Token;
 
     public OpenGenericCreationTuner(IUnitSequenceMatcher unitSequenceMatcher, Type openGenericType, object? token) : base(unitSequenceMatcher)
     {
       OpenGenericType = openGenericType;
-      Token = token;
+      Token           = token;
     }
 
-    Type IExtensibility<Type, object>.Item1 => OpenGenericType;
+    Type IExtensibility<Type, object>.   Item1 => OpenGenericType;
     object? IExtensibility<Type, object>.Item2 => Token;
 
     public Tuner CreatedByDefault()
@@ -26,8 +26,8 @@ namespace Armature
       var childMatcher = new WildcardUnitSequenceMatcher(Match.OpenGenericType(OpenGenericType, Token), UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
 
       UnitSequenceMatcher
-        .AddOrGetUnitSequenceMatcher(childMatcher)
-        .AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
+       .AddOrGetUnitSequenceMatcher(childMatcher)
+       .AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
 
       return new Tuner(childMatcher);
     }
@@ -37,8 +37,8 @@ namespace Armature
       var childMatcher = new WildcardUnitSequenceMatcher(Match.OpenGenericType(OpenGenericType, Token), UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
 
       UnitSequenceMatcher
-        .AddOrGetUnitSequenceMatcher(childMatcher)
-        .AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
+       .AddOrGetUnitSequenceMatcher(childMatcher)
+       .AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
 
       return new Tuner(childMatcher);
     }

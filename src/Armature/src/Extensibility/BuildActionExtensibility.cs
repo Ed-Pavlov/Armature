@@ -7,8 +7,8 @@ namespace Armature.Extensibility
   {
     protected readonly IBuildAction BuildAction;
 
-    public BuildActionExtensibility(IUnitMatcher unitMatcher, IBuildAction getPropertyAction, int weight) : base(unitMatcher, weight) =>
-      BuildAction = getPropertyAction ?? throw new ArgumentNullException(nameof(getPropertyAction));
+    public BuildActionExtensibility(IUnitMatcher unitMatcher, IBuildAction getPropertyAction, int weight) : base(unitMatcher, weight)
+      => BuildAction = getPropertyAction ?? throw new ArgumentNullException(nameof(getPropertyAction));
 
     IBuildAction IBuildActionExtensibility.BuildAction => BuildAction;
   }

@@ -24,16 +24,17 @@ namespace Armature.Core.BuildActions.Property
       var type = buildSession.GetUnitUnderConstruction().GetUnitType();
 
       var propertyList = type
-        .GetProperties()
-        .Where(
-          property =>
-            {
-              var attribute = property.GetCustomAttribute<T>();
-              return attribute is not null && (_predicate is null || _predicate(attribute));
-            })
-        .ToArray();
+                        .GetProperties()
+                        .Where(
+                           property =>
+                           {
+                             var attribute = property.GetCustomAttribute<T>();
 
-      if (propertyList.Length > 0)
+                             return attribute is not null && (_predicate is null || _predicate(attribute));
+                           })
+                        .ToArray();
+
+      if(propertyList.Length > 0)
         buildSession.BuildResult = new BuildResult(propertyList);
     }
 

@@ -21,8 +21,9 @@ namespace Armature.Core.BuildActions.Constructor
     public void Process(IBuildSession buildSession)
     {
       var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
-      var ctor = GetConstructorInfo(unitType);
-      if (ctor is not null)
+      var ctor     = GetConstructorInfo(unitType);
+
+      if(ctor is not null)
         buildSession.BuildResult = new BuildResult(ctor);
     }
 
@@ -32,13 +33,14 @@ namespace Armature.Core.BuildActions.Constructor
     private ConstructorInfo? GetConstructorInfo(Type unitType)
     {
       var constructorInfo = unitType
-        .GetConstructors()
-        .SingleOrDefault(
-          ctor =>
-            ctor
-              .GetCustomAttributes(typeof(T), false)
-              .OfType<T>()
-              .SingleOrDefault(attribute => _predicate is null || _predicate(attribute)) is not null);
+                           .GetConstructors()
+                           .SingleOrDefault(
+                              ctor =>
+                                ctor
+                                 .GetCustomAttributes(typeof(T), false)
+                                 .OfType<T>()
+                                 .SingleOrDefault(attribute => _predicate is null || _predicate(attribute)) is not null);
+
       return constructorInfo;
     }
 

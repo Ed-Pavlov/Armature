@@ -36,22 +36,26 @@ namespace Armature.Core.UnitSequenceMatcher
     public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
       var unitsToSkip = buildingUnitsSequence.Length;
+
       // decrease matching weight depending on how many unit in the sequence were skipped by this matcher
       var matchingWeight = inputWeight + Weight * unitsToSkip;
-      
-      var lastItemAsTail = buildingUnitsSequence.GetTail(buildingUnitsSequence.Length - 1);
-      var ownActions = GetOwnActions(matchingWeight);
+
+      var                  lastItemAsTail = buildingUnitsSequence.GetTail(buildingUnitsSequence.Length - 1);
+      var                  ownActions     = GetOwnActions(matchingWeight);
       MatchedBuildActions? childrenActions;
-      
-      if (ownActions is null)
+
+      if(ownActions is null)
       {
         Log.WriteLine(LogLevel.Verbose, this.ToString, unitsToSkip); // pass group method, do not call ToString
+
         using(Log.AddIndent())
+        {
           childrenActions = GetChildrenActions(matchingWeight, lastItemAsTail);
+        }
       }
       else
       {
-        using (Log.Block(LogLevel.Verbose, this.ToString, unitsToSkip)) // pass group method, do not call ToString
+        using(Log.Block(LogLevel.Verbose, this.ToString, unitsToSkip)) // pass group method, do not call ToString
         {
           // ReSharper disable once RedundantArgumentDefaultValue
           ownActions.ToLog(LogLevel.Verbose);
@@ -66,21 +70,23 @@ namespace Armature.Core.UnitSequenceMatcher
 
     private string ToString(int unitsToSkip) => string.Format("{0}<x{1:n0}>", base.ToString(), unitsToSkip);
 
-    #region Equality
+#region Equality
+
     [DebuggerStepThrough]
-    public override bool Equals(IUnitSequenceMatcher other) => Equals((object)other);
+    public override bool Equals(IUnitSequenceMatcher other) => Equals((object) other);
 
     [DebuggerStepThrough]
     public override bool Equals(object? obj)
     {
-      if (ReferenceEquals(null, obj)) return false;
-      if (ReferenceEquals(this, obj)) return true;
+      if(ReferenceEquals(null, obj)) return false;
+      if(ReferenceEquals(this, obj)) return true;
 
       return obj is AnyUnitSequenceMatcher other && Weight == other.Weight;
     }
 
     [DebuggerStepThrough]
     public override int GetHashCode() => Weight.GetHashCode();
-    #endregion
+
+#endregion
   }
 }

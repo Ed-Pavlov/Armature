@@ -9,16 +9,16 @@ namespace Armature
 {
   public class CreationTuner : UnitSequenceExtensibility, IExtensibility<Type, object>
   {
-    protected readonly Type Type;
+    protected readonly Type    Type;
     protected readonly object? Token;
 
     public CreationTuner(IUnitSequenceMatcher unitSequenceMatcher, Type type, object? token) : base(unitSequenceMatcher)
     {
-      Type = type ?? throw new ArgumentNullException(nameof(type));
+      Type  = type ?? throw new ArgumentNullException(nameof(type));
       Token = token;
     }
 
-    Type IExtensibility<Type, object>.Item1 => Type;
+    Type IExtensibility<Type, object>.   Item1 => Type;
     object? IExtensibility<Type, object>.Item2 => Token;
 
     /// <summary>
@@ -30,8 +30,9 @@ namespace Armature
       var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type(Type, Token));
 
       UnitSequenceMatcher
-        .AddOrGetUnitSequenceMatcher(sequenceMatcher)
-        .AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
+       .AddOrGetUnitSequenceMatcher(sequenceMatcher)
+       .AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
+
       return new Tuner(sequenceMatcher);
     }
 
@@ -45,8 +46,9 @@ namespace Armature
       var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type(Type, Token));
 
       UnitSequenceMatcher
-        .AddOrGetUnitSequenceMatcher(sequenceMatcher)
-        .AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
+       .AddOrGetUnitSequenceMatcher(sequenceMatcher)
+       .AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
+
       return new Tuner(sequenceMatcher);
     }
   }

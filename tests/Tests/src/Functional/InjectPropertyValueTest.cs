@@ -19,26 +19,28 @@ namespace Tests.Functional
     public void value_should_be_injected_into_injectpoint_property()
     {
       const string expected = "expectedString";
+
       // --arrange
       var target = CreateTarget();
 
       target
-        .AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
-        .With( // add build action injecting values into property for any type
+       .AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
+       .With( // add build action injecting values into property for any type
           anyMatcher =>
             anyMatcher
-              .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(AnyTypeMatcher.Instance))
-              .AddBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance))
-        .With( // add build action finding properties attributed with InjectAttribute for any type 
+             .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(AnyTypeMatcher.Instance))
+             .AddBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance))
+       .With( // add build action finding properties attributed with InjectAttribute for any type 
           anyMatcher =>
             anyMatcher
-              .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(PropertyMatcher.Instance))
-              .AddBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction()));
+             .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(PropertyMatcher.Instance))
+             .AddBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction()));
 
       target.Treat<string>().AsInstance(expected);
+
       target
-        .Treat<Subject>()
-        .AsIs();
+       .Treat<Subject>()
+       .AsIs();
 
       // --act
       var actual = target.Build<Subject>();
@@ -53,14 +55,16 @@ namespace Tests.Functional
     public void value_should_be_injected_into_property_by_name()
     {
       const string expected = "expectedString";
+
       // --arrange
       var target = CreateTarget();
 
       target.Treat<string>().AsInstance(expected);
+
       target
-        .Treat<Subject>()
-        .AsIs()
-        .InjectProperty(Property.Named(nameof(Subject.StringProperty))); // inject property adds a build action injecting values into property
+       .Treat<Subject>()
+       .AsIs()
+       .InjectProperty(Property.Named(nameof(Subject.StringProperty))); // inject property adds a build action injecting values into property
 
       // --act
       var actual = target.Build<Subject>();
@@ -80,13 +84,15 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target.Treat<string>().AsInstance(expected);
+
       target
-        .Treat<Subject>()
-        .AsIs()
-        .InjectProperty(
-          Property.ByInjectPoint(injectPointId is null
-            ? EmptyArray<object>.Instance
-            : new[] {injectPointId})); // inject property adds a build action injecting values into property
+       .Treat<Subject>()
+       .AsIs()
+       .InjectProperty(
+          Property.ByInjectPoint(
+            injectPointId is null
+              ? EmptyArray<object>.Instance
+              : new[] {injectPointId})); // inject property adds a build action injecting values into property
 
       // --act
       var actual = target.Build<Subject>();
@@ -101,13 +107,14 @@ namespace Tests.Functional
     public void should_use_provided_value_for_property_by_name()
     {
       const string expected = "expectedString";
+
       // --arrange
       var target = CreateTarget();
 
       target
-        .Treat<Subject>()
-        .AsIs()
-        .InjectProperty(ForProperty.Named(nameof(Subject.StringProperty)).UseValue(expected));
+       .Treat<Subject>()
+       .AsIs()
+       .InjectProperty(ForProperty.Named(nameof(Subject.StringProperty)).UseValue(expected));
 
       // --act
       var actual = target.Build<Subject>();
@@ -121,16 +128,18 @@ namespace Tests.Functional
     [Test]
     public void should_use_provided_token_for_property_by_inject_point()
     {
-      const string token = "token";
+      const string token    = "token";
       const string expected = "expectedString";
+
       // --arrange
       var target = CreateTarget();
 
       target.Treat<string>(token).AsInstance(expected);
+
       target
-        .Treat<Subject>()
-        .AsIs()
-        .InjectProperty(ForProperty.WithInjectPoint(Subject.InjectPointId).UseToken(token));
+       .Treat<Subject>()
+       .AsIs()
+       .InjectProperty(ForProperty.WithInjectPoint(Subject.InjectPointId).UseToken(token));
 
       // --act
       var actual = target.Build<Subject>();
@@ -145,14 +154,16 @@ namespace Tests.Functional
     public void should_use_inject_point_id_as_token_for_property_by_inject_point()
     {
       const string expected = "expectedString";
+
       // --arrange
       var target = CreateTarget();
 
       target.Treat<string>(Subject.InjectPointId).AsInstance(expected);
+
       target
-        .Treat<Subject>()
-        .AsIs()
-        .InjectProperty(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsToken());
+       .Treat<Subject>()
+       .AsIs()
+       .InjectProperty(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsToken());
 
       // --act
       var actual = target.Build<Subject>();
@@ -167,13 +178,14 @@ namespace Tests.Functional
     public void should_use_resolver_for_property_by_type()
     {
       const int expected = 3254;
+
       // --arrange
       var target = CreateTarget();
 
       target
-        .Treat<Subject>()
-        .AsIs()
-        .InjectProperty(ForProperty.OfType<int>().UseFactoryMethod(_ => expected));
+       .Treat<Subject>()
+       .AsIs()
+       .InjectProperty(ForProperty.OfType<int>().UseFactoryMethod(_ => expected));
 
       // --act
       var actual = target.Build<Subject>();
@@ -183,19 +195,18 @@ namespace Tests.Functional
       actual.IntProperty.Should().Be(expected);
     }
 
-    public static Builder CreateTarget() =>
-      new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-
-          new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction()),
-        }
-      };
+    public static Builder CreateTarget()
+      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             // inject into constructor
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+             new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
+           }
+         };
 
     private class Subject
     {

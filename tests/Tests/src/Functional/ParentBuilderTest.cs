@@ -24,9 +24,10 @@ namespace Tests.Functional
       // --arrange
       var parent1 = CreateTarget();
       var parent2 = CreateTarget();
+
       parent2
-        .Treat<string>()
-        .AsInstance(expected);
+       .Treat<string>()
+       .AsInstance(expected);
 
       var target = CreateTarget(parent1, parent2);
 
@@ -40,25 +41,28 @@ namespace Tests.Functional
     [Test]
     public void should_build_value_via_child_builder_first()
     {
-      const string value1 = "1";
-      const string value2 = "2";
+      const string value1   = "1";
+      const string value2   = "2";
       const string expected = "325";
 
       // --arrange
       var parent1 = CreateTarget();
+
       parent1
-        .Treat<string>()
-        .AsInstance(value1);
+       .Treat<string>()
+       .AsInstance(value1);
 
       var parent2 = CreateTarget();
+
       parent2
-        .Treat<string>()
-        .AsInstance(value2);
+       .Treat<string>()
+       .AsInstance(value2);
 
       var target = CreateTarget(parent1, parent2);
+
       target
-        .Treat<string>()
-        .AsInstance(expected);
+       .Treat<string>()
+       .AsInstance(expected);
 
       // --act
       var actual = target.Build<string>();
@@ -71,18 +75,20 @@ namespace Tests.Functional
     public void should_build_value_via_parent_builders_in_order()
     {
       const string expected = "1";
-      const string value2 = "2";
+      const string value2   = "2";
 
       // --arrange
       var parent1 = CreateTarget();
+
       parent1
-        .Treat<string>()
-        .AsInstance(expected);
+       .Treat<string>()
+       .AsInstance(expected);
 
       var parent2 = CreateTarget();
+
       parent2
-        .Treat<string>()
-        .AsInstance(value2);
+       .Treat<string>()
+       .AsInstance(value2);
 
       var target = CreateTarget(parent1, parent2);
 
@@ -99,7 +105,7 @@ namespace Tests.Functional
       // --arrange
       var parent1 = CreateTarget();
       var parent2 = CreateTarget();
-      var target = CreateTarget(parent1, parent2);
+      var target  = CreateTarget(parent1, parent2);
 
       // --act
       Action action = () => target.Build<string>();
@@ -118,9 +124,11 @@ namespace Tests.Functional
       parentBuilder.Treat<string>().AsInstance(expected);
 
       var target = CreateTarget(parentBuilder);
+
       target
-        .Treat<Subject>()
-        .AsIs();
+       .Treat<Subject>()
+       .AsIs();
+
       // --act
       var actual = target.Build<Subject>();
 
@@ -139,13 +147,14 @@ namespace Tests.Functional
       parentBuilder.Treat<string>().AsInstance(expected + "bad");
 
       var target = CreateTarget(parentBuilder);
-      target
-        .Treat<string>()
-        .AsInstance(expected);
 
       target
-        .Treat<Subject>()
-        .AsIs();
+       .Treat<string>()
+       .AsInstance(expected);
+
+      target
+       .Treat<Subject>()
+       .AsIs();
 
       // --act
       var actual = target.Build<Subject>();
@@ -159,43 +168,41 @@ namespace Tests.Functional
     public void should_report_all_exceptions_from_parent_builders()
     {
       var parent1 = new Builder(BuildStage.Create)
-        .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArgumentOutOfRangeException()));
-      
+       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArgumentOutOfRangeException()));
+
       var parent2 = new Builder(BuildStage.Create)
-        .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new InvalidProgramException()));
+       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new InvalidProgramException()));
 
       var target = CreateTarget(parent1, parent2);
 
       try
       {
         target.Build<string>();
-      }
-      catch (Exception e)
+      } catch(Exception e)
       {
         Console.WriteLine(e);
-        
       }
-      
+
       Action action = () => target.Build<string>();
 
       action.Should()
-        .Throw<ArmatureException>()
-        .Which
-        .Data.Values.Cast<string>()
-        .With(values => values.SingleOrDefault(_ => _.Contains("ArgumentOutOfRangeException")).Should().NotBeNull())
-        .With(values => values.SingleOrDefault(_ => _.Contains("InvalidProgramException")).Should().NotBeNull());
+            .Throw<ArmatureException>()
+            .Which
+            .Data.Values.Cast<string>()
+            .With(values => values.SingleOrDefault(_ => _.Contains("ArgumentOutOfRangeException")).Should().NotBeNull())
+            .With(values => values.SingleOrDefault(_ => _.Contains("InvalidProgramException")).Should().NotBeNull());
     }
 
     [Test]
     public void should_not_throw_exception_if_one_parent_built_unit()
     {
       const string expected = "parent2string";
-      
+
       var parent1 = new Builder(BuildStage.Create)
-        .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArgumentOutOfRangeException()));
+       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArgumentOutOfRangeException()));
 
       var parent2 = new Builder(BuildStage.Cache)
-        .With(builder => builder.Treat<string>().AsInstance(expected));
+       .With(builder => builder.Treat<string>().AsInstance(expected));
 
       var target = CreateTarget(parent1, parent2);
 
@@ -208,20 +215,21 @@ namespace Tests.Functional
     public void should_build_via_parent_if_build_action_exists_but_did_not_built_result()
     {
       const string expected = "parent2string";
-      
+
       var parent = new Builder(BuildStage.Cache)
-        .With(builder => builder.Treat<string>().AsInstance(expected));
+       .With(builder => builder.Treat<string>().AsInstance(expected));
 
       var target = CreateTarget(parent);
-      
+
       // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder 
       target.AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
-        .Add(new LastUnitSequenceMatcher(AnyTypeMatcher.Instance)
-          .AddBuildAction(BuildStage.Cache, new DebugOnlyBuildAction() ));
+            .Add(
+               new LastUnitSequenceMatcher(AnyTypeMatcher.Instance)
+                .AddBuildAction(BuildStage.Cache, new DebugOnlyBuildAction()));
 
       // --act
       var actual = target.Build<string>();
-      
+
       // --assert
       actual.Should().Be(expected);
     }
@@ -233,35 +241,32 @@ namespace Tests.Functional
       parent.Treat<Subject>().AsCreatedWith(() => throw new NotSerializableException());
 
       var target = CreateTarget(parent);
-      
+
       // --act
       Action actual = () => target.Build<Subject>();
-      
+
       // --assert
       actual.Should().ThrowExactly<ArmatureException>();
     }
-    
+
     private class DebugOnlyBuildAction : IBuildAction
     {
-      public void Process(IBuildSession buildSession){}
+      public void Process(IBuildSession buildSession) { }
 
-      public void PostProcess(IBuildSession buildSession)
-      {
-        
-      }
+      public void PostProcess(IBuildSession buildSession) { }
     }
-    
-    private static Builder CreateTarget(params Builder[] parents) =>
-      new(new[] {BuildStage.Cache, BuildStage.Create}, parents)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
-        }
-      };
+
+    private static Builder CreateTarget(params Builder[] parents)
+      => new(new[] {BuildStage.Cache, BuildStage.Create}, parents)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+           }
+         };
 
     private class Subject
     {

@@ -23,9 +23,9 @@ namespace Tests.Extensibility.MaybePropagation
       builder.Treat<Section>().AsInstance(new Section());
 
       builder
-        .Treat<Maybe<IReader>>()
-        .TreatMaybeValue()
-        .AsCreated<Reader>();
+       .Treat<Maybe<IReader>>()
+       .TreatMaybeValue()
+       .AsCreated<Reader>();
 
       var actual = builder.Build<Maybe<IReader>>();
 
@@ -40,9 +40,9 @@ namespace Tests.Extensibility.MaybePropagation
 
       // --act
       builder
-        .Treat<Maybe<IReader>>()
-        .TreatMaybeValue()
-        .AsCreated<Reader>();
+       .Treat<Maybe<IReader>>()
+       .TreatMaybeValue()
+       .AsCreated<Reader>();
 
       Action actual = () => builder.Build<Maybe<IReader>>();
 
@@ -50,18 +50,17 @@ namespace Tests.Extensibility.MaybePropagation
       actual.Should().ThrowExactly<ArmatureException>();
     }
 
-    private static Builder CreateTarget() =>
-      new(BuildStage.Cache, BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-
-          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
-        }
-      };
+    private static Builder CreateTarget()
+      => new(BuildStage.Cache, BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             // inject into constructor
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+           }
+         };
   }
 }

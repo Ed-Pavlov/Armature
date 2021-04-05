@@ -19,9 +19,10 @@ namespace Armature.Core.BuildActions.Constructor
 
     public void Process(IBuildSession buildSession)
     {
-      var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
+      var unitType     = buildSession.GetUnitUnderConstruction().GetUnitType();
       var constructors = unitType.GetConstructors();
-      if (constructors.Length > 0)
+
+      if(constructors.Length > 0)
       {
         var ctor = GetConstructor(constructors, unitType);
         buildSession.BuildResult = new BuildResult(ctor);
@@ -34,36 +35,41 @@ namespace Armature.Core.BuildActions.Constructor
     private static ConstructorInfo GetConstructor(ConstructorInfo[] constructors, Type unitType)
     {
       var suitableConstructors = new Dictionary<int, int> {{0, constructors[0].GetParameters().Length}};
-      for (var i = 1; i < constructors.Length; i++)
+
+      for(var i = 1; i < constructors.Length; i++)
       {
         var parametersCount = constructors[i].GetParameters().Length;
 
         var maxParametersCount = suitableConstructors.First().Value;
-        if (parametersCount == maxParametersCount)
+
+        if(parametersCount == maxParametersCount)
         {
           suitableConstructors.Add(i, parametersCount);
         }
-        else if (parametersCount > maxParametersCount)
+        else if(parametersCount > maxParametersCount)
         {
           suitableConstructors.Clear();
           suitableConstructors.Add(i, parametersCount);
         }
       }
 
-      if (suitableConstructors.Count != 1)
+      if(suitableConstructors.Count != 1)
       {
         var message = new StringBuilder($"More than one constructor with max parameters count for type '{unitType.ToLogString()}' found");
         message.AppendLine();
-        
+
         var counter = 0;
-        foreach (var pair in suitableConstructors)
+
+        foreach(var pair in suitableConstructors)
           message.AppendLine($"ctor#{counter++}: {constructors[pair.Key]}");
-          
+
         var exc = new ArmatureException("ConstructorsAmbiguity");
 
         counter = 0;
-        foreach (var pair in suitableConstructors)
+
+        foreach(var pair in suitableConstructors)
           exc.Data.Add(counter++, constructors[pair.Key]);
+
         throw exc;
       }
 

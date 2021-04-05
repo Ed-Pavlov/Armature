@@ -18,19 +18,17 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
       try
       {
         var result = buildSession.BuildUnit(new UnitInfo(typeof(T), _uniqueToken));
-        if (!result.HasValue) throw new InvalidOperationException();
+
+        if(!result.HasValue) throw new InvalidOperationException();
 
         buildSession.BuildResult = new BuildResult(((T) result.Value).ToMaybe());
-      }
-      catch (MaybeIsNothingException)
+      } catch(MaybeIsNothingException)
       {
         buildSession.BuildResult = new BuildResult(Maybe<T>.Nothing);
       }
     }
 
-    public void PostProcess(IBuildSession buildSession)
-    {
-    }
+    public void PostProcess(IBuildSession buildSession) { }
 
     public override string ToString() => GetType().GetShortName();
   }

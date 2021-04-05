@@ -22,13 +22,13 @@ namespace Tests.UnitTests
 
       // --arrange
       var target = new WildcardUnitSequenceMatcher(Match.Type<IDisposable>(null))
-        .AddOrGetUnitSequenceMatcher(new WildcardUnitSequenceMatcher(Match.Type<MemoryStream>(null)))
-        .AddBuildAction(BuildStage.Cache, expected);
+                  .AddOrGetUnitSequenceMatcher(new WildcardUnitSequenceMatcher(Match.Type<MemoryStream>(null)))
+                  .AddBuildAction(BuildStage.Cache, expected);
 
       // --act
       var actual = target
-        .GetBuildActions(new[] {Unit.OfType<IDisposable>(), Unit.OfType<string>(), Unit.OfType<MemoryStream>()}.GetTail(0), 0)
-        .GetTopmostAction(BuildStage.Cache);
+                  .GetBuildActions(new[] {Unit.OfType<IDisposable>(), Unit.OfType<string>(), Unit.OfType<MemoryStream>()}.GetTail(0), 0)
+                  .GetTopmostAction(BuildStage.Cache);
 
       // --assert
       actual.Should().BeSameAs(expected);
@@ -41,7 +41,7 @@ namespace Tests.UnitTests
       var buildStep1 = new LastUnitSequenceMatcher(Match.Type<int>(null));
       buildStep1.AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
       var singletonAction = new SingletonBuildAction();
-      var buildStep2 = new AnyUnitSequenceMatcher();
+      var buildStep2      = new AnyUnitSequenceMatcher();
       buildStep2.AddBuildAction(BuildStage.Cache, singletonAction);
 
       var target = new WildcardUnitSequenceMatcher(Match.Type<string>(null));
@@ -53,14 +53,15 @@ namespace Tests.UnitTests
 
       // --assert
       actual.Should().NotBeNull();
+
       // ReSharper disable once PossibleNullReferenceException
       actual[BuildStage.Cache]
-        .Should()
-        .HaveCount(2)
-        .And
-        .Subject.Select(_ => _.Entity)
-        .Should()
-        .BeEquivalentTo(CreateByReflectionBuildAction.Instance, singletonAction);
+       .Should()
+       .HaveCount(2)
+       .And
+       .Subject.Select(_ => _.Entity)
+       .Should()
+       .BeEquivalentTo(CreateByReflectionBuildAction.Instance, singletonAction);
     }
   }
 }

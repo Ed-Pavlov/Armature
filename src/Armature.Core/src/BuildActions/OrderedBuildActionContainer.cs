@@ -23,50 +23,53 @@ namespace Armature.Core.BuildActions
   /// </remarks>
   public class OrderedBuildActionContainer : IBuildAction, ILogable, IEnumerable
   {
-    private readonly List<IBuildAction> _buildActions = new();
+    private readonly List<IBuildAction>                                _buildActions          = new();
     private readonly ConcurrentDictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new();
 
     public void Process(IBuildSession buildSession)
     {
       var exceptions = new List<Exception>();
-      foreach (var buildAction in _buildActions)
-      {
+
+      foreach(var buildAction in _buildActions)
         try
         {
           buildAction.Process(buildSession);
 
-          if (!buildSession.BuildResult.HasValue)
+          if(!buildSession.BuildResult.HasValue)
+          {
             Log.WriteLine(LogLevel.Trace, () => string.Format("{0} has not built value", buildAction));
+          }
           else
           {
             Log.WriteLine(LogLevel.Info, () => string.Format("redirected execution to {0}", buildAction));
             _effectiveBuildActions.TryAdd(buildSession, buildAction);
+
             break;
           }
-        }
-        catch (ArmatureException exc)
+        } catch(ArmatureException exc)
         {
           LogException(exc);
           exceptions.Add(exc);
+
           // continue;
-        }
-        catch (Exception exc)
+        } catch(Exception exc)
         {
           Log.WriteLine(LogLevel.Trace, () => string.Format("User exception was throw during executing {0}", buildAction));
           LogException(exc);
-          for (var i = 0; i < exceptions.Count; i++)
+
+          for(var i = 0; i < exceptions.Count; i++)
             exc.AddData(i, exceptions[i]);
+
           throw;
         }
-      }
 
-      if (!buildSession.BuildResult.HasValue && exceptions.Count > 0)
+      if(!buildSession.BuildResult.HasValue && exceptions.Count > 0)
         throw exceptions.Aggregate("One or more exceptions occured during processing build actions");
     }
 
     public void PostProcess(IBuildSession buildSession)
     {
-      if (_effectiveBuildActions.TryRemove(buildSession, out var effectiveBuildAction))
+      if(_effectiveBuildActions.TryRemove(buildSession, out var effectiveBuildAction))
       {
         effectiveBuildAction.PostProcess(buildSession);
         Log.WriteLine(LogLevel.Info, () => string.Format("redirected execution to {0}", effectiveBuildAction));
@@ -78,28 +81,31 @@ namespace Armature.Core.BuildActions
     public OrderedBuildActionContainer Add(IBuildAction buildAction)
     {
       _buildActions.Add(buildAction);
+
       return this;
     }
 
-    private static void LogException(Exception exc) =>
-      LogLevel.Trace.ExecuteIfEnabled(
+    private static void LogException(Exception exc)
+      => LogLevel.Trace.ExecuteIfEnabled(
         () =>
+        {
+          using(Log.Block(LogLevel.Trace, "Exception: {0}", exc))
           {
-            using (Log.Block(LogLevel.Trace, "Exception: {0}", exc))
-            {
-              foreach (DictionaryEntry entry in exc.Data)
-                Log.WriteLine(LogLevel.Trace, "{0}: {1}", entry.Key, entry.Value);
-            }
-          });
+            foreach(DictionaryEntry entry in exc.Data)
+              Log.WriteLine(LogLevel.Trace, "{0}: {1}", entry.Key, entry.Value);
+          }
+        });
 
     [DebuggerStepThrough]
     public override string ToString() => GetType().ToLogString();
 
     public void PrintToLog()
     {
-      using (Log.Block(LogLevel.Info, "Ordered actions"))
-        foreach (var buildAction in _buildActions)
+      using(Log.Block(LogLevel.Info, "Ordered actions"))
+      {
+        foreach(var buildAction in _buildActions)
           Log.Info(buildAction.ToString());
+      }
     }
   }
 }

@@ -21,22 +21,23 @@ namespace Armature.Core.BuildActions.Property
       var type = buildSession.GetUnitUnderConstruction().GetUnitType();
 
       var propertiesWithAttributes = type.GetProperties()
-        .Select(
-          property =>
-            {
-              var attribute = property.GetCustomAttribute<InjectAttribute>();
-              return Tuple.Create(attribute, property);
-            })
-        .Where(_ => _.Item1 is not null)
-        .ToArray();
+                                         .Select(
+                                            property =>
+                                            {
+                                              var attribute = property.GetCustomAttribute<InjectAttribute>();
+
+                                              return Tuple.Create(attribute, property);
+                                            })
+                                         .Where(_ => _.Item1 is not null)
+                                         .ToArray();
 
       var properties =
         (_pointIds.Length > 0
-          ? _pointIds.SelectMany(pointId => propertiesWithAttributes.Where(_ => Equals(pointId, _.Item1.InjectionPointId)).Select(_ => _.Item2)).Distinct()
-          : propertiesWithAttributes.Select(_ => _.Item2))
-        .ToArray();
+           ? _pointIds.SelectMany(pointId => propertiesWithAttributes.Where(_ => Equals(pointId, _.Item1.InjectionPointId)).Select(_ => _.Item2)).Distinct()
+           : propertiesWithAttributes.Select(_ => _.Item2))
+       .ToArray();
 
-      if (properties.Length > 0)
+      if(properties.Length > 0)
         buildSession.BuildResult = new BuildResult(properties);
     }
 

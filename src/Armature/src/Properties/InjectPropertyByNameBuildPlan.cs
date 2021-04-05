@@ -20,7 +20,7 @@ namespace Armature
     [DebuggerStepThrough]
     public InjectPropertyByNameBuildPlan(params string[] names)
     {
-      if (names is null || names.Length == 0) throw new ArgumentNullException(nameof(names));
+      if(names is null || names.Length == 0) throw new ArgumentNullException(nameof(names));
 
       _names = names;
     }
@@ -28,8 +28,8 @@ namespace Armature
     string[] IExtensibility<string[]>.Item1 => _names;
 
     [DebuggerStepThrough]
-    public void Apply(IUnitSequenceMatcher unitSequenceMatcher) =>
-      unitSequenceMatcher
+    public void Apply(IUnitSequenceMatcher unitSequenceMatcher)
+      => unitSequenceMatcher
         .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(PropertyMatcher.Instance))
         .AddBuildAction(BuildStage.Create, new GetPropertyByNameBuildAction(_names));
 

@@ -23,18 +23,18 @@ namespace Armature
     /// </summary>
     public Tuner UsingParameters(params object[] values)
     {
-      if (values is null || values.Length == 0)
+      if(values is null || values.Length == 0)
         throw new Exception("null");
 
-      foreach (var parameter in values)
-        if (parameter is IParameterValueBuildPlan buildPlan)
+      foreach(var parameter in values)
+        if(parameter is IParameterValueBuildPlan buildPlan)
           buildPlan.Apply(UnitSequenceMatcher);
-        else if (parameter is IBuildPlan)
+        else if(parameter is IBuildPlan)
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected");
         else
           UnitSequenceMatcher
-            .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new ParameterByValueMatcher(parameter), InjectPointMatchingWeight.WeakTypedParameter))
-            .AddBuildAction(BuildStage.Create, new SingletonBuildAction(parameter));
+           .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new ParameterByValueMatcher(parameter), InjectPointMatchingWeight.WeakTypedParameter))
+           .AddBuildAction(BuildStage.Create, new SingletonBuildAction(parameter));
 
       return this;
     }
@@ -47,15 +47,15 @@ namespace Armature
     {
       UnitSequenceMatcher.AddBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance);
 
-      foreach (var value in values)
-        if (value is IPropertyValueBuildPlan buildPlan)
+      foreach(var value in values)
+        if(value is IPropertyValueBuildPlan buildPlan)
           buildPlan.Apply(UnitSequenceMatcher);
-        else if (value is IBuildPlan)
+        else if(value is IBuildPlan)
           throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected");
         else
           UnitSequenceMatcher
-            .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new PropertyByValueMatcher(value), InjectPointMatchingWeight.WeakTypedParameter))
-            .AddBuildAction(BuildStage.Create, new SingletonBuildAction(value));
+           .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new PropertyByValueMatcher(value), InjectPointMatchingWeight.WeakTypedParameter))
+           .AddBuildAction(BuildStage.Create, new SingletonBuildAction(value));
 
       return this;
     }
@@ -71,8 +71,9 @@ namespace Armature
     public Tuner UsingLongestConstructor()
     {
       UnitSequenceMatcher
-        .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(ConstructorMatcher.Instance))
-        .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance);
+       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(ConstructorMatcher.Instance))
+       .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance);
+
       return this;
     }
 
@@ -82,8 +83,9 @@ namespace Armature
     public Tuner UsingInjectPointConstructor(object injectionPointId)
     {
       UnitSequenceMatcher
-        .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(ConstructorMatcher.Instance))
-        .AddBuildAction(BuildStage.Create, new GetInjectPointConstructorBuildAction(injectionPointId));
+       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(ConstructorMatcher.Instance))
+       .AddBuildAction(BuildStage.Create, new GetInjectPointConstructorBuildAction(injectionPointId));
+
       return this;
     }
 
@@ -118,8 +120,9 @@ namespace Armature
     public Tuner UsingConstructorWithParameters(params Type[] parameterTypes)
     {
       UnitSequenceMatcher
-        .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(ConstructorMatcher.Instance))
-        .AddBuildAction(BuildStage.Create, new GetConstructorByParameterTypesBuildAction(parameterTypes));
+       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(ConstructorMatcher.Instance))
+       .AddBuildAction(BuildStage.Create, new GetConstructorByParameterTypesBuildAction(parameterTypes));
+
       return this;
     }
 
@@ -128,9 +131,10 @@ namespace Armature
     /// </summary>
     public Tuner BuildingWhich(Action<SequenceTuner> tuneAction)
     {
-      if (tuneAction is null) throw new ArgumentNullException(nameof(tuneAction));
+      if(tuneAction is null) throw new ArgumentNullException(nameof(tuneAction));
 
       tuneAction(new SequenceTuner(UnitSequenceMatcher));
+
       return this;
     }
   }

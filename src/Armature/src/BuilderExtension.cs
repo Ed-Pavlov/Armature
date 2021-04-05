@@ -33,36 +33,38 @@ namespace Armature
     [DebuggerStepThrough]
     private static T Build<T>(this Builder builder, object? token, params object[]? parameters)
     {
-      if (builder is null) throw new ArgumentNullException(nameof(builder));
+      if(builder is null) throw new ArgumentNullException(nameof(builder));
 
       BuildPlansCollection? sessionalBuildPlans = null;
-      if (parameters is {Length: > 0})
+
+      if(parameters is {Length: > 0})
       {
         sessionalBuildPlans = new BuildPlansCollection();
+
         sessionalBuildPlans
-          .TreatAll()
-          .UsingParameters(parameters);
+         .TreatAll()
+         .UsingParameters(parameters);
       }
 
-      var unitInfo = new UnitInfo(typeof(T), token);
+      var unitInfo    = new UnitInfo(typeof(T), token);
       var buildResult = builder.BuildUnit(unitInfo, sessionalBuildPlans);
 
-      return buildResult.HasValue 
-        ? (T)buildResult.Value! 
-        : throw new ArmatureException($"Can't build unit <{unitInfo}>").AddData("unitInfo", unitInfo);
+      return buildResult.HasValue
+               ? (T) buildResult.Value!
+               : throw new ArmatureException($"Can't build unit <{unitInfo}>").AddData("unitInfo", unitInfo);
     }
 
     public readonly struct Tokenizer
     {
-      private readonly object _token;
+      private readonly object  _token;
       private readonly Builder _builder;
 
       public Tokenizer(object token, Builder builder)
       {
-        if (builder is null) throw new ArgumentNullException(nameof(builder));
-        if (token is null) throw new ArgumentNullException(nameof(token));
+        if(builder is null) throw new ArgumentNullException(nameof(builder));
+        if(token is null) throw new ArgumentNullException(nameof(token));
 
-        _token = token;
+        _token   = token;
         _builder = builder;
       }
 

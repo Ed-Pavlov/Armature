@@ -12,6 +12,7 @@ namespace Tests.UnitTests
     public void should_propagate_token()
     {
       const string expectedToken = "token";
+
       // --arrange
       var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.BuildSequence).Returns(new UnitInfo(null, Token.Propagate).AsArray());

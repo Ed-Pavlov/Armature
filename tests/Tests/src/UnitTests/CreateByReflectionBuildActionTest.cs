@@ -18,7 +18,7 @@ namespace Tests.UnitTests
 
       var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<IDisposable>().AsArray());
-      
+
       // --act
       target.Process(buildSession);
 

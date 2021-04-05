@@ -26,13 +26,13 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<string>()
-        .AsInstance("blogal");
+       .Treat<string>()
+       .AsInstance("blogal");
 
       target
-        .Treat<LevelOne>()
-        .AsIs()
-        .UsingParameters(expected);
+       .Treat<LevelOne>()
+       .AsIs()
+       .UsingParameters(expected);
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -45,15 +45,16 @@ namespace Tests.Functional
     public void should_pass_two_values()
     {
       // --arrange
-      const int expectedInt = 389;
+      const int    expectedInt    = 389;
       const string expectedString = "ldksjf";
 
       var target = CreateTarget();
+
       target
-        .Treat<LevelOne>()
-        .AsIs()
-        .UsingInjectPointConstructor(LevelOne.TwoParameterCtor)
-        .UsingParameters(expectedInt, expectedString);
+       .Treat<LevelOne>()
+       .AsIs()
+       .UsingInjectPointConstructor(LevelOne.TwoParameterCtor)
+       .UsingParameters(expectedInt, expectedString);
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -69,19 +70,20 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       const string asInterfaceParameterValue = "AsInterface";
-      const string asIsParameterValue = "AsIs";
-      target
-        .Treat<ISubject1>()
-        .AsCreated<LevelOne>()
-        .UsingParameters(asInterfaceParameterValue);
+      const string asIsParameterValue        = "AsIs";
 
       target
-        .Treat<LevelOne>()
-        .AsIs()
-        .UsingParameters(asIsParameterValue);
+       .Treat<ISubject1>()
+       .AsCreated<LevelOne>()
+       .UsingParameters(asInterfaceParameterValue);
+
+      target
+       .Treat<LevelOne>()
+       .AsIs()
+       .UsingParameters(asIsParameterValue);
 
       var asInterface = target.Build<ISubject1>();
-      var asIs = target.Build<LevelOne>();
+      var asIs        = target.Build<LevelOne>();
 
       // --assert
       asInterface.Text.Should().Be(asInterfaceParameterValue);
@@ -95,13 +97,13 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<string>()
-        .AsInstance("938754");
+       .Treat<string>()
+       .AsInstance("938754");
 
       target
-        .Treat<LevelOne>()
-        .AsIs()
-        .UsingParameters(forParameter.UseValue(null));
+       .Treat<LevelOne>()
+       .AsIs()
+       .UsingParameters(forParameter.UseValue(null));
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -121,9 +123,9 @@ namespace Tests.Functional
       target.Treat<string>().AsInstance("bad");
 
       target
-        .Treat<LevelOne>()
-        .AsIs()
-        .UsingParameters(forParameter.UseValue(expected), "bad");
+       .Treat<LevelOne>()
+       .AsIs()
+       .UsingParameters(forParameter.UseValue(expected), "bad");
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -135,28 +137,28 @@ namespace Tests.Functional
     [TestCaseSource("ForParameterSource")]
     public void should_build_value_for_parameter_using_parameter_type_and_token(ParameterValueTuner forParameter)
     {
-      const string token = "token398";
+      const string token    = "token398";
       const string expected = "expected 398752";
 
       // --arrange
       var target = CreateTarget();
 
       target
-        .Treat<LevelOne>()
-        .AsIs()
-        .UsingParameters(forParameter.UseToken(token), "bad");
+       .Treat<LevelOne>()
+       .AsIs()
+       .UsingParameters(forParameter.UseToken(token), "bad");
 
       target
-        .Treat<string>(token)
-        .AsInstance(expected);
+       .Treat<string>(token)
+       .AsInstance(expected);
 
       target
-        .Treat<string>("bad_token")
-        .AsInstance("bad");
+       .Treat<string>("bad_token")
+       .AsInstance("bad");
 
       target
-        .Treat<string>()
-        .AsInstance("bad");
+       .Treat<string>()
+       .AsInstance("bad");
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -172,13 +174,13 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<string>()
-        .AsInstance("09765");
+       .Treat<string>()
+       .AsInstance("09765");
 
       target
-        .Treat<LevelOne>()
-        .AsIs()
-        .UsingParameters(forParameter.UseToken("token"));
+       .Treat<LevelOne>()
+       .AsIs()
+       .UsingParameters(forParameter.UseToken("token"));
 
       // --act
       Action actual = () => target.Build<LevelOne>();
@@ -198,9 +200,9 @@ namespace Tests.Functional
       target.Treat<int>().AsInstance(expectedInt);
 
       target
-        .Treat<LevelOne>()
-        .AsIs()
-        .UsingParameters(forParameter.UseFactoryMethod<int>(intValue => intValue.ToString()));
+       .Treat<LevelOne>()
+       .AsIs()
+       .UsingParameters(forParameter.UseFactoryMethod<int>(intValue => intValue.ToString()));
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -216,10 +218,11 @@ namespace Tests.Functional
 
       // --arrange
       var target = CreateTarget();
+
       target
-        .Treat<LevelOne>()
-        .AsIs()
-        .UsingParameters(expected);
+       .Treat<LevelOne>()
+       .AsIs()
+       .UsingParameters(expected);
 
       // --act
       var actual = target.Build<LevelOne>("bad");
@@ -235,8 +238,8 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       var adjuster = target
-        .Treat<LevelOne>()
-        .AsIs();
+                    .Treat<LevelOne>()
+                    .AsIs();
 
       // --act
       Action actual = () => adjuster.UsingParameters(ForParameter.OfType<string>().UseToken("expected29083"), ForParameter.OfType<string>().UseValue("kldj"));
@@ -252,18 +255,21 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<LevelOne>()
-        .AsIs();
+       .Treat<LevelOne>()
+       .AsIs();
 
       const string expected = "expected";
+
       target
-        .Treat<LevelTwo>()
-        .AsIs()
-        .UsingParameters(expected);
+       .Treat<LevelTwo>()
+       .AsIs()
+       .UsingParameters(expected);
 
       Action actual = () => target.Build<LevelTwo>();
-      actual.Should().Throw<ArmatureException>(
-        "Register string parameter only for LevelTwo class, despite that LevelOne also requires string in its .ctor registered parameter should not be propagated into LevelOne");
+
+      actual.Should()
+            .Throw<ArmatureException>(
+               "Register string parameter only for LevelTwo class, despite that LevelOne also requires string in its .ctor registered parameter should not be propagated into LevelOne");
     }
 
     [Test]
@@ -279,8 +285,8 @@ namespace Tests.Functional
       target.Treat<LevelThree>().AsIs();
 
       target
-        .TreatAll()
-        .UsingParameters(expected);
+       .TreatAll()
+       .UsingParameters(expected);
 
       // --act
       var actual = target.Build<LevelThree>();
@@ -294,7 +300,7 @@ namespace Tests.Functional
     [Test]
     public void should_use_one_parameter_for_unit_and_other_for_dependencies()
     {
-      const string expected = "value";
+      const string expected             = "value";
       const string expectedOnLevelThree = "levelThree";
 
       //--arrange
@@ -302,15 +308,16 @@ namespace Tests.Functional
 
       target.Treat<LevelOne>().AsIs();
       target.Treat<LevelTwo>().AsIs();
-      target
-        .Treat<LevelThree>()
-        .AsIs()
-        .UsingParameters(expectedOnLevelThree);
 
       target
-        .Building<LevelThree>()
-        .TreatAll()
-        .UsingParameters(expected);
+       .Treat<LevelThree>()
+       .AsIs()
+       .UsingParameters(expectedOnLevelThree);
+
+      target
+       .Building<LevelThree>()
+       .TreatAll()
+       .UsingParameters(expected);
 
       // --act
       var actual = target.Build<LevelThree>();
@@ -330,14 +337,14 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<LevelOne>() // short matching path 
-        .AsIs()
-        .UsingParameters(expected);
+       .Treat<LevelOne>() // short matching path 
+       .AsIs()
+       .UsingParameters(expected);
 
       target
-        .Treat<ISubject1>() // long matching path
-        .AsCreated<LevelTwo>()
-        .BuildingWhich(_ => _.TreatAll().UsingParameters(expected + "bad"));
+       .Treat<ISubject1>() // long matching path
+       .AsCreated<LevelTwo>()
+       .BuildingWhich(_ => _.TreatAll().UsingParameters(expected + "bad"));
 
       // --act
       var actual = (LevelTwo) target.Build<ISubject1>();
@@ -350,12 +357,12 @@ namespace Tests.Functional
     public void should_inject_parameter_value_from_narrower_context_not_from_longer_matching_path()
     {
       const string levelThree = "levelThree";
-      const string expected = "expected";
+      const string expected   = "expected";
 
       var target = CreateTarget();
 
       target.Treat<ISubject1>().AsCreated<LevelThree>().BuildingWhich(_ => _.TreatAll().UsingParameters(levelThree)); // longer path
-      target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingParameters(expected)); // narrower context
+      target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingParameters(expected));                     // narrower context
       target.Treat<LevelOne>().AsIs();
 
       var actual = target.Build<ISubject1>();
@@ -372,10 +379,10 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<LevelOne>()
-        .AsIs()
-        .UsingInjectPointConstructor(LevelOne.TwoParameterCtor)
-        .UsingParameters(expectedInt);
+       .Treat<LevelOne>()
+       .AsIs()
+       .UsingInjectPointConstructor(LevelOne.TwoParameterCtor)
+       .UsingParameters(expectedInt);
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -384,7 +391,7 @@ namespace Tests.Functional
       actual.Text.Should().Be(LevelOne.DefaultText);
       actual.Value.Should().Be(expectedInt);
     }
-    
+
     [Test]
     public void should_inject_default_value_into_both_parameters()
     {
@@ -392,9 +399,9 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<LevelOne>()
-        .AsIs()
-        .UsingInjectPointConstructor(LevelOne.TwoParameterCtor);
+       .Treat<LevelOne>()
+       .AsIs()
+       .UsingInjectPointConstructor(LevelOne.TwoParameterCtor);
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -413,19 +420,19 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<LevelThree>()
-        .AsIs()
-        .BuildingWhich(_ => _.TreatAll().UsingParameters(expected + "three"));
+       .Treat<LevelThree>()
+       .AsIs()
+       .BuildingWhich(_ => _.TreatAll().UsingParameters(expected + "three"));
 
       target
-        .Treat<LevelTwo>()
-        .AsIs()
-        .BuildingWhich(_ => _.TreatAll().UsingParameters(expected));
+       .Treat<LevelTwo>()
+       .AsIs()
+       .BuildingWhich(_ => _.TreatAll().UsingParameters(expected));
 
       target
-        .Treat<LevelOne>()
-        .AsIs();
-      
+       .Treat<LevelOne>()
+       .AsIs();
+
       // --act
       var actual = target.Build<LevelThree>();
 
@@ -440,31 +447,27 @@ namespace Tests.Functional
       yield return new TestCaseData(ForParameter.WithInjectPoint(null)).SetName("WithInjectPoint");
     }
 
-    private static Builder CreateTarget() =>
-      new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(
-              BuildStage.Create,
-              new OrderedBuildActionContainer
-              {
-                new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-                GetLongestConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
-              }),
-
-
-          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-            .AddBuildAction(BuildStage.Create,
-              new OrderedBuildActionContainer()
-              {
-                CreateParameterValueBuildAction.Instance,
-                GetDefaultParameterValueBuildAction.Instance
-              }) // autowiring
-        }
-      };
+    private static Builder CreateTarget()
+      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             // inject into constructor
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(
+                 BuildStage.Create,
+                 new OrderedBuildActionContainer
+                 {
+                   new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
+                   GetLongestConstructorBuildAction
+                    .Instance // constructor with largest number of parameters has less priority
+                 }),
+             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+              .AddBuildAction(
+                 BuildStage.Create,
+                 new OrderedBuildActionContainer() {CreateParameterValueBuildAction.Instance, GetDefaultParameterValueBuildAction.Instance}) // autowiring
+           }
+         };
 
     private interface ISubject1
     {
@@ -479,8 +482,8 @@ namespace Tests.Functional
     private class LevelOne : ISubject1, ISubject2
     {
       public const string DefaultText = "defaultText";
-      public const int DefaultInt = 39085;
-      
+      public const int    DefaultInt  = 39085;
+
       public const string TwoParameterCtor = "2";
 
       [Inject] // default ctor
@@ -489,12 +492,12 @@ namespace Tests.Functional
       [Inject(TwoParameterCtor)]
       public LevelOne(string text = DefaultText, int value = DefaultInt)
       {
-        Text = text;
+        Text  = text;
         Value = value;
       }
-      
-      public int Value { get; }
-      public string Text { get; }
+
+      public int    Value { get; }
+      public string Text  { get; }
     }
 
     private class LevelTwo : LevelOne

@@ -17,13 +17,13 @@ namespace Armature.Core.BuildActions.Property
 
     public void Process(IBuildSession buildSession)
     {
-      var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
+      var unitType   = buildSession.GetUnitUnderConstruction().GetUnitType();
       var properties = unitType.GetProperties().Where(_ => _.PropertyType == _type).ToArray();
 
-      if (properties.Length == 0)
+      if(properties.Length == 0)
         throw new ArmatureException($"No property of type '{_type.ToLogString()}' in type '{unitType.ToLogString()}'");
 
-      if (properties.Length > 1)
+      if(properties.Length > 1)
         throw new ArmatureException($"More than one property of type '{_type.ToLogString()}' in type '{unitType.ToLogString()}'");
 
       buildSession.BuildResult = new BuildResult(properties);

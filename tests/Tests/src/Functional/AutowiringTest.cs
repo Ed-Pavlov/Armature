@@ -17,8 +17,8 @@ namespace Tests.Functional
     [Test]
     public void should_inject_registered_values()
     {
-      const string expectedText = "expected 09765";
-      const int expectedValue = 93979;
+      const string expectedText  = "expected 09765";
+      const int    expectedValue = 93979;
 
       // --arrange
       var target = CreateTarget();
@@ -27,8 +27,8 @@ namespace Tests.Functional
       target.Treat<int>().AsInstance(expectedValue);
 
       target
-        .Treat<Subject>()
-        .AsIs();
+       .Treat<Subject>()
+       .AsIs();
 
       // --act
       var actual = target.Build<Subject>();
@@ -41,15 +41,15 @@ namespace Tests.Functional
     [Test]
     public void should_inject_runtime_values()
     {
-      const string expectedText = "expected 09765";
-      const int expectedValue = 93979;
+      const string expectedText  = "expected 09765";
+      const int    expectedValue = 93979;
 
       // --arrange
       var target = CreateTarget();
 
       target
-        .Treat<Subject>()
-        .AsIs();
+       .Treat<Subject>()
+       .AsIs();
 
       // --act
       var actual = target.Build<Subject>(expectedText, expectedValue);
@@ -62,18 +62,18 @@ namespace Tests.Functional
     [Test]
     public void should_get_runtime_values_if_registered_also_presented()
     {
-      const string expectedText = "expected 09765";
-      const int expectedValue = 93979;
+      const string expectedText  = "expected 09765";
+      const int    expectedValue = 93979;
 
       // --arrange
       var target = CreateTarget();
 
       target.Treat<string>().AsInstance(expectedText + "bad");
-      target.Treat<int>().AsInstance(expectedValue + 39);
+      target.Treat<int>().AsInstance(expectedValue   + 39);
 
       target
-        .Treat<Subject>()
-        .AsIs();
+       .Treat<Subject>()
+       .AsIs();
 
       // --act
       var actual = target.Build<Subject>(expectedText, expectedValue);
@@ -86,16 +86,16 @@ namespace Tests.Functional
     [Test]
     public void should_get_one_value_from_registration_and_another_runtime()
     {
-      const string expectedText = "expected 09765";
-      const int expectedValue = 93979;
+      const string expectedText  = "expected 09765";
+      const int    expectedValue = 93979;
 
       // --arrange
       var target = CreateTarget();
       target.Treat<string>().AsInstance(expectedText);
 
       target
-        .Treat<Subject>()
-        .AsIs();
+       .Treat<Subject>()
+       .AsIs();
 
       // --act
       var actual = target.Build<Subject>(expectedValue);
@@ -117,8 +117,8 @@ namespace Tests.Functional
       target.Treat<int>().AsInstance(expectedValue);
 
       target
-        .Treat<Subject>()
-        .AsIs();
+       .Treat<Subject>()
+       .AsIs();
 
       // --act
       var actual = target.Build<Subject>();
@@ -131,8 +131,8 @@ namespace Tests.Functional
     [Test]
     public void should_use_inject_point_id_as_token()
     {
-      const string expectedText = "expected 09765";
-      const int expectedValue = 93979;
+      const string expectedText  = "expected 09765";
+      const int    expectedValue = 93979;
 
       // --arrange
       var target = CreateTarget();
@@ -141,8 +141,8 @@ namespace Tests.Functional
       target.Treat<int>().AsInstance(expectedValue);
 
       target
-        .Treat<Subject>()
-        .AsIs();
+       .Treat<Subject>()
+       .AsIs();
 
       // --act
       var actual = target.Build<Subject>();
@@ -159,12 +159,12 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<string>("token")
-        .AsInstance("09765");
+       .Treat<string>("token")
+       .AsInstance("09765");
 
       target
-        .Treat<Subject>()
-        .AsIs();
+       .Treat<Subject>()
+       .AsIs();
 
       // --act
       Action actual = () => target.Build<Subject>();
@@ -173,32 +173,27 @@ namespace Tests.Functional
       actual.Should().ThrowExactly<ArmatureException>();
     }
 
-    private static Builder CreateTarget() =>
-      new(BuildStage.Cache, BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(
-              BuildStage.Create,
-              new OrderedBuildActionContainer
-              {
-                new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-                GetLongestConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
-              }),
-
-
-          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-            .AddBuildAction(
-              BuildStage.Create,
-              new OrderedBuildActionContainer
-              {
-                CreateParameterValueForInjectPointBuildAction.Instance,
-                CreateParameterValueBuildAction.Instance
-              })
-        }
-      };
+    private static Builder CreateTarget()
+      => new(BuildStage.Cache, BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             // inject into constructor
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(
+                 BuildStage.Create,
+                 new OrderedBuildActionContainer
+                 {
+                   new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
+                   GetLongestConstructorBuildAction
+                    .Instance // constructor with largest number of parameters has less priority
+                 }),
+             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+              .AddBuildAction(
+                 BuildStage.Create,
+                 new OrderedBuildActionContainer {CreateParameterValueForInjectPointBuildAction.Instance, CreateParameterValueBuildAction.Instance})
+           }
+         };
 
     private interface ISubject1
     {
@@ -216,12 +211,12 @@ namespace Tests.Functional
 
       public Subject([Inject(TextParameterId)] string text, int value)
       {
-        Text = text;
+        Text  = text;
         Value = value;
       }
 
-      public int Value { get; }
-      public string Text { get; }
+      public int    Value { get; }
+      public string Text  { get; }
     }
   }
 }

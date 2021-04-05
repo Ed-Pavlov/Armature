@@ -40,16 +40,19 @@ namespace Armature.Core
 
     public MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight = 0)
     {
-      if (buildingUnitsSequence.Length == 0) throw new ArgumentException(nameof(buildingUnitsSequence));
+      if(buildingUnitsSequence.Length == 0) throw new ArgumentException(nameof(buildingUnitsSequence));
+
       return _root.GetBuildActions(buildingUnitsSequence, 0);
     }
 
     public void PrintToLog()
     {
-      using (Log.Enabled()) 
+      using(Log.Enabled())
+      {
         _root.PrintToLog();
+      }
     }
-    
+
     public bool Equals(IUnitSequenceMatcher other) => ReferenceEquals(this, other);
 
     /// <summary>
@@ -61,14 +64,14 @@ namespace Armature.Core
       public Root() : base(0) { }
 
       [DebuggerStepThrough]
-      public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight) =>
-        GetChildrenActions(inputWeight, buildingUnitsSequence);
+      public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
+        => GetChildrenActions(inputWeight, buildingUnitsSequence);
 
       [DebuggerStepThrough]
       public override bool Equals(IUnitSequenceMatcher other) => throw new NotSupportedException();
     }
 
-    IEnumerator IEnumerable.GetEnumerator() => throw new NotSupportedException();
+    IEnumerator IEnumerable.                  GetEnumerator()                                             => throw new NotSupportedException();
     IUnitSequenceMatcher IUnitSequenceMatcher.AddBuildAction(object buildStage, IBuildAction buildAction) => throw new NotSupportedException();
   }
 }

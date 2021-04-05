@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using Armature;
@@ -26,14 +25,15 @@ namespace Tests.Functional
     {
       // --arrange
       var target = CreateTarget();
-      target
-        .Treat<string>()
-        .AsCreatedWith(assembler => assembler.BuildSequence.First().Id.ToString());
 
       target
-        .Treat<TwoDisposableStringCtorClass>()
-        .AsIs()
-        .UsingParameters(new MemoryStream());
+       .Treat<string>()
+       .AsCreatedWith(assembler => assembler.BuildSequence.First().Id.ToString());
+
+      target
+       .Treat<TwoDisposableStringCtorClass>()
+       .AsIs()
+       .UsingParameters(new MemoryStream());
 
       // --act
       var actual = target.Build<TwoDisposableStringCtorClass>();
@@ -49,13 +49,14 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target.Treat<IDisposableValue1>()
-        .AsCreated<OneDisposableCtorClass>()
-        .UsingParameters(new MemoryStream());
+            .AsCreated<OneDisposableCtorClass>()
+            .UsingParameters(new MemoryStream());
 
       var expected = new MemoryStream();
+
       target.Treat<IDisposableValue2>()
-        .AsCreated<OneDisposableCtorClass>()
-        .UsingParameters(expected);
+            .AsCreated<OneDisposableCtorClass>()
+            .UsingParameters(expected);
 
       // --act
       var instance = target.Build<IDisposableValue2>();
@@ -75,7 +76,7 @@ namespace Tests.Functional
       target.Treat<IDisposableValue2>(token1).As<OneDisposableCtorClass>();
       target.Treat<OneDisposableCtorClass>().AsInstance(new OneDisposableCtorClass(null));
 
-      var dep = target.Build<IDisposableValue1>();
+      var dep  = target.Build<IDisposableValue1>();
       var dep1 = target.UsingToken(token1).Build<IDisposableValue2>();
 
       Assert.AreSame(dep, dep1);
@@ -85,21 +86,22 @@ namespace Tests.Functional
     public void SeparatedRegistration()
     {
       var target = CreateTarget();
-      target
-        .Treat<IDisposableValue1>()
-        .AsCreated<OneDisposableCtorClass>();
 
       target
-        .Treat<IDisposableValue2>()
-        .AsCreated<OneDisposableCtorClass>();
+       .Treat<IDisposableValue1>()
+       .AsCreated<OneDisposableCtorClass>();
 
       target
-        .Treat<OneDisposableCtorClass>()
-        .UsingParameters(new MemoryStream());
+       .Treat<IDisposableValue2>()
+       .AsCreated<OneDisposableCtorClass>();
 
       target
-        .Treat<OneDisposableCtorClass>()
-        .AsSingleton();
+       .Treat<OneDisposableCtorClass>()
+       .UsingParameters(new MemoryStream());
+
+      target
+       .Treat<OneDisposableCtorClass>()
+       .AsSingleton();
 
       var actual1 = target.Build<IDisposableValue1>();
       var actual2 = target.Build<IDisposableValue2>();
@@ -109,52 +111,40 @@ namespace Tests.Functional
       actual1.Should().BeSameAs(actual2);
     }
 
-    private static Builder CreateTarget() =>
-      new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(
-              BuildStage.Create,
-              new OrderedBuildActionContainer
-              {
-                new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-                GetLongestConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
-              }),
+    private static Builder CreateTarget()
+      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             // inject into constructor
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(
+                 BuildStage.Create,
+                 new OrderedBuildActionContainer
+                 {
+                   new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
+                   GetLongestConstructorBuildAction
+                    .Instance // constructor with largest number of parameters has less priority
+                 }),
+             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+              .AddBuildAction(
+                 BuildStage.Create,
+                 new OrderedBuildActionContainer {CreateParameterValueForInjectPointBuildAction.Instance, CreateParameterValueBuildAction.Instance}),
+             new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
+              .AddBuildAction(
+                 BuildStage.Create,
+                 new OrderedBuildActionContainer {new CreatePropertyValueBuildAction()})
+           }
+         };
 
-          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-            .AddBuildAction(
-              BuildStage.Create,
-              new OrderedBuildActionContainer
-              {
-                CreateParameterValueForInjectPointBuildAction.Instance,
-                CreateParameterValueBuildAction.Instance
-              }),
+    private interface IEmptyInterface1 { }
 
-          new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
-            .AddBuildAction(
-              BuildStage.Create,
-              new OrderedBuildActionContainer
-              {
-                new CreatePropertyValueBuildAction()
-              }),
-        }
-      };
-
-    private interface IEmptyInterface1
-    {
-    }
-
-    private interface IEmptyInterface2
-    {
-    }
+    private interface IEmptyInterface2 { }
 
     private class EmptyCtorClass : IEmptyInterface1, IEmptyInterface2
     {
-      private static int _counter = 1;
-      private readonly int _id = _counter++;
+      private static   int _counter = 1;
+      private readonly int _id      = _counter++;
 
       public override string ToString()
       {
@@ -224,9 +214,7 @@ namespace Tests.Functional
 
     private class Disposable : IDisposable
     {
-      public void Dispose()
-      {
-      }
+      public void Dispose() { }
     }
   }
 }

@@ -8,18 +8,18 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
   /// </summary>
   public class GetMaybeValueBuildAction<T> : IBuildAction
   {
-    public void Process(IBuildSession buildSession)
-    {
-    }
+    public void Process(IBuildSession buildSession) { }
 
     public void PostProcess(IBuildSession buildSession)
     {
       var result = buildSession.BuildResult;
-      if (!result.HasValue)
+
+      if(!result.HasValue)
         throw new ArmatureException(string.Format("Can't build value of {0}", typeof(Maybe<T>)));
 
       var maybe = (Maybe<T>) result.Value;
-      if (maybe.HasValue)
+
+      if(maybe.HasValue)
         buildSession.BuildResult = new BuildResult(maybe.Value);
       else
         throw new MaybeIsNothingException();

@@ -22,7 +22,8 @@ namespace Armature.Core.UnitMatchers
     [DebuggerStepThrough]
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _type.ToLogString());
 
-    #region Equality
+#region Equality
+
     [DebuggerStepThrough]
     public bool Equals(IUnitMatcher? obj) => obj is InjectPointByStrictTypeMatcher other && obj.GetType() == GetType() && _type == other._type;
 
@@ -31,6 +32,7 @@ namespace Armature.Core.UnitMatchers
 
     [DebuggerStepThrough]
     public override int GetHashCode() => _type.GetHashCode();
-    #endregion
+
+#endregion
   }
 }

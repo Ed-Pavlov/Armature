@@ -20,7 +20,7 @@ namespace Tests.UnitTests
 
       // --arrange
       var matchString = new LastUnitSequenceMatcher(Match.Type<string>(null)).AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
-      var matchAny = new AnyUnitSequenceMatcher().AddBuildAction(BuildStage.Cache, singletonAction);
+      var matchAny    = new AnyUnitSequenceMatcher().AddBuildAction(BuildStage.Cache, singletonAction);
 
       var target = new BuildPlansCollection();
       target.Children.Add(matchString);
@@ -31,12 +31,12 @@ namespace Tests.UnitTests
 
       // --assert
       actual[BuildStage.Cache]
-        .Should()
-        .HaveCount(2)
-        .And
-        .Subject.Select(_ => _.Entity)
-        .Should()
-        .Equal(CreateByReflectionBuildAction.Instance, singletonAction);
+       .Should()
+       .HaveCount(2)
+       .And
+       .Subject.Select(_ => _.Entity)
+       .Should()
+       .Equal(CreateByReflectionBuildAction.Instance, singletonAction);
     }
   }
 }

@@ -17,9 +17,15 @@ namespace Armature.Core.UnitSequenceMatcher
 
     protected UnitSequenceMatcherWithChildren(int weight) : base(weight) { }
 
-    private HashSet<IUnitSequenceMatcher> LazyChildren { [DebuggerStepThrough] get => _children ??= new HashSet<IUnitSequenceMatcher>(); }
+    private HashSet<IUnitSequenceMatcher> LazyChildren
+    {
+      [DebuggerStepThrough] get => _children ??= new HashSet<IUnitSequenceMatcher>();
+    }
 
-    public override ICollection<IUnitSequenceMatcher> Children { [DebuggerStepThrough] get => LazyChildren; }
+    public override ICollection<IUnitSequenceMatcher> Children
+    {
+      [DebuggerStepThrough] get => LazyChildren;
+    }
 
     /// <summary>
     ///   Gets and merges matched actions from all children matchers
@@ -27,19 +33,19 @@ namespace Armature.Core.UnitSequenceMatcher
     /// <param name="inputMatchingWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
     /// <param name="unitBuildingSequence">The sequence of units building in this build session.</param>
     [DebuggerStepThrough]
-    protected MatchedBuildActions? GetChildrenActions(int inputMatchingWeight, ArrayTail<UnitInfo> unitBuildingSequence) =>
-      _children?.Aggregate(
-        (MatchedBuildActions?)null,
-        (current, child) => current.Merge(child.GetBuildActions(unitBuildingSequence, inputMatchingWeight)));
+    protected MatchedBuildActions? GetChildrenActions(int inputMatchingWeight, ArrayTail<UnitInfo> unitBuildingSequence)
+      => _children?.Aggregate((MatchedBuildActions?) null, (current, child) => current.Merge(child.GetBuildActions(unitBuildingSequence, inputMatchingWeight)));
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
     protected MatchedBuildActions? GetActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
       MatchedBuildActions? matchedBuildActions;
-      if (buildingUnitsSequence.Length > 1)
+
+      if(buildingUnitsSequence.Length > 1)
       {
-        Log.WriteLine(LogLevel.Verbose, this.ToString);  // pass group method, do not call ToString
-        using (Log.AddIndent())
+        Log.WriteLine(LogLevel.Verbose, this.ToString); // pass group method, do not call ToString
+
+        using(Log.AddIndent())
         {
           matchedBuildActions = GetChildrenActions(
             inputWeight + Weight,
@@ -49,10 +55,11 @@ namespace Armature.Core.UnitSequenceMatcher
       else
       {
         matchedBuildActions = GetOwnActions(Weight + inputWeight);
-        if (matchedBuildActions is null)
+
+        if(matchedBuildActions is null)
           Log.WriteLine(LogLevel.Trace, () => string.Format("{0}{{not matched}}", this));
         else
-          using (Log.Block(LogLevel.Verbose, this.ToString)) // pass group method, do not call ToString
+          using(Log.Block(LogLevel.Verbose, this.ToString)) // pass group method, do not call ToString
           {
             // ReSharper disable once RedundantArgumentDefaultValue
             matchedBuildActions.ToLog(LogLevel.Verbose);

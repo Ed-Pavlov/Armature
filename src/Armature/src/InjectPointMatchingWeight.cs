@@ -16,12 +16,12 @@ namespace Armature
   [SuppressMessage("ReSharper", "ConvertToConstant.Global")]
   public class InjectPointMatchingWeight
   {
-    protected static int Step = 100_000;
-    protected static int Zero = 0;
-    protected static int WeakType = Zero + Step;
-    protected static int StrictType = WeakType + Step;
-    protected static int Attribute = StrictType + Step;
-    protected static int Name = Attribute + Step;
+    protected static int Step       = 100_000;
+    protected static int Zero       = 0;
+    protected static int WeakType   = Zero       + Step;
+    protected static int StrictType = WeakType   + Step;
+    protected static int Attribute  = StrictType + Step;
+    protected static int Name       = Attribute  + Step;
 
     /// <summary>
     ///   Weight of matcher matching value for parameter by assignability value to parameter.

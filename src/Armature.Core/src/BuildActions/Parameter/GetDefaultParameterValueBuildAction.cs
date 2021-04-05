@@ -6,7 +6,7 @@ namespace Armature.Core.BuildActions.Parameter
   public class GetDefaultParameterValueBuildAction : IBuildAction
   {
     public static readonly IBuildAction Instance = new GetDefaultParameterValueBuildAction();
-    
+
     public void Process(IBuildSession buildSession)
     {
       if(buildSession.GetUnitUnderConstruction().Id is ParameterInfo {HasDefaultValue: true} parameterInfo)
@@ -14,7 +14,7 @@ namespace Armature.Core.BuildActions.Parameter
     }
 
     public void PostProcess(IBuildSession buildSession) { }
-    
+
     public override string ToString() => GetType().GetShortName();
   }
 }

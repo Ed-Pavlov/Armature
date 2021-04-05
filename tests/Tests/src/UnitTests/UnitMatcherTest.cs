@@ -9,12 +9,12 @@ namespace Tests.UnitTests
     [Test]
     public void should_be_equal_with_null_id()
     {
-      var left = new UnitInfo(null, "token");
+      var left  = new UnitInfo(null, "token");
       var right = new UnitInfo(null, "token");
 
       Equals(left, right).Should().BeTrue();
       Equals(right, left).Should().BeTrue();
-      
+
       left.Matches(right).Should().BeTrue();
       right.Matches(left).Should().BeTrue();
     }
@@ -22,12 +22,12 @@ namespace Tests.UnitTests
     [Test]
     public void should_be_equal_with_null_token()
     {
-      var left = new UnitInfo("id", null);
+      var left  = new UnitInfo("id", null);
       var right = new UnitInfo("id", null);
 
       Equals(left, right).Should().BeTrue();
       Equals(right, left).Should().BeTrue();
-      
+
       left.Matches(right).Should().BeTrue();
       right.Matches(left).Should().BeTrue();
     }
@@ -35,12 +35,12 @@ namespace Tests.UnitTests
     [Test]
     public void should_be_equal()
     {
-      var left = new UnitInfo("id", "token");
+      var left  = new UnitInfo("id", "token");
       var right = new UnitInfo("id", "token");
 
       Equals(left, right).Should().BeTrue();
       Equals(right, left).Should().BeTrue();
-      
+
       left.Matches(right).Should().BeTrue();
       right.Matches(left).Should().BeTrue();
     }
@@ -48,12 +48,12 @@ namespace Tests.UnitTests
     [Test]
     public void should_not_be_equal_if_token_any_provided()
     {
-      var left = new UnitInfo(null, "token");
+      var left  = new UnitInfo(null, "token");
       var right = new UnitInfo(null, Token.Any);
 
       Equals(left, right).Should().BeFalse();
       Equals(right, left).Should().BeFalse();
-      
+
       left.Matches(right).Should().BeTrue();
       right.Matches(left).Should().BeTrue();
     }
@@ -61,12 +61,12 @@ namespace Tests.UnitTests
     [Test]
     public void should_not_be_equal_if_id_differs([Values(null, "token")] object token)
     {
-      var left = new UnitInfo("id1", token);
+      var left  = new UnitInfo("id1", token);
       var right = new UnitInfo("id2", token);
 
       Equals(left, right).Should().BeFalse();
       Equals(right, left).Should().BeFalse();
-      
+
       left.Matches(right).Should().BeFalse();
       right.Matches(left).Should().BeFalse();
     }
@@ -74,12 +74,12 @@ namespace Tests.UnitTests
     [Test]
     public void should_not_be_equal_if_token_differs([Values(null, "id")] object id)
     {
-      var left = new UnitInfo(id, "token1");
+      var left  = new UnitInfo(id, "token1");
       var right = new UnitInfo(id, "token2");
 
       Equals(left, right).Should().BeFalse();
       Equals(right, left).Should().BeFalse();
-      
+
       left.Matches(right).Should().BeFalse();
       right.Matches(left).Should().BeFalse();
     }

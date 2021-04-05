@@ -16,8 +16,7 @@ namespace Armature.Core.UnitSequenceMatcher
 
     public StrictUnitSequenceMatcher(IUnitMatcher matcher) : this(matcher, UnitSequenceMatchingWeight.StrictMatchingUnit) { }
 
-    public StrictUnitSequenceMatcher(IUnitMatcher matcher, int weight) : base(weight) =>
-      _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
+    public StrictUnitSequenceMatcher(IUnitMatcher matcher, int weight) : base(weight) => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
 
     /// <summary>
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.
@@ -26,17 +25,19 @@ namespace Armature.Core.UnitSequenceMatcher
     public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
     {
       var unitInfo = buildingUnitsSequence[0];
+
       return _matcher.Matches(unitInfo) ? GetActions(buildingUnitsSequence, inputWeight) : null;
     }
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().GetShortName(), Weight, _matcher);
 
-    #region Equality
+#region Equality
+
     public bool Equals(StrictUnitSequenceMatcher? other)
     {
-      if (ReferenceEquals(null, other)) return false;
-      if (ReferenceEquals(this, other)) return true;
+      if(ReferenceEquals(null, other)) return false;
+      if(ReferenceEquals(this, other)) return true;
 
       return Equals(_matcher, other._matcher) && Weight == other.Weight;
     }
@@ -52,6 +53,7 @@ namespace Armature.Core.UnitSequenceMatcher
         return (_matcher.GetHashCode() * 397) ^ Weight;
       }
     }
-    #endregion
+
+#endregion
   }
 }

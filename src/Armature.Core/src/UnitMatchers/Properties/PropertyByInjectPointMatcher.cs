@@ -10,7 +10,7 @@ namespace Armature.Core.UnitMatchers.Properties
     [DebuggerStepThrough]
     public PropertyByInjectPointMatcher(object? injectPointId = null) : base(injectPointId) { }
 
-    protected override InjectAttribute? GetInjectPointAttribute(UnitInfo unitInfo) =>
-      PropertyByAttributeMatcher<InjectAttribute>.GetPropertyAttribute(unitInfo);
+    protected override InjectAttribute? GetInjectPointAttribute(UnitInfo unitInfo)
+      => PropertyByAttributeMatcher<InjectAttribute>.GetPropertyAttribute(unitInfo);
   }
 }

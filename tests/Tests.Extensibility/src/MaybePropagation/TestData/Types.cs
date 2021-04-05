@@ -2,9 +2,7 @@
 
 namespace Tests.Extensibility.MaybePropagation.TestData
 {
-  internal class Section
-  {
-  }
+  internal class Section { }
 
   internal interface IReader
   {

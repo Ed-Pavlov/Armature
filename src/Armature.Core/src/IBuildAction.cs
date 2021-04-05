@@ -1,6 +1,4 @@
-﻿
-
-namespace Armature.Core
+﻿namespace Armature.Core
 {
   /// <summary>
   ///   Build action. One or more build actions should be performed to build a unit. Building is two-pass process, each build action

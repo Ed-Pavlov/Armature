@@ -8,16 +8,16 @@ namespace Armature.Core
   /// Represents a result of building of a Unit, null is a valid value of the <see cref="Value" />.
   /// </summary>
   public readonly struct BuildResult
-  { 
+  {
     public readonly object? Value;
-    
+
     public readonly bool HasValue;
 
     [DebuggerStepThrough]
     public BuildResult(object? value)
-    { 
+    {
       HasValue = true;
-      Value = value;
+      Value    = value;
     }
 
     [DebuggerStepThrough]

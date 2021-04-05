@@ -14,7 +14,7 @@ namespace Tests.Functional
   public class InterceptionTest
   {
     private const string Expected = "expected string value";
-    private const string Postfix = ".postfix";
+    private const string Postfix  = ".postfix";
 
     [TestCaseSource(nameof(InterceptUnitTestCases))]
     public void InterceptUnit(Action<Builder> makeRegistration)
@@ -24,17 +24,17 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-        .Treat<StringConsumer>()
-        .AsIs()
-        .UsingParameters(Expected);
+       .Treat<StringConsumer>()
+       .AsIs()
+       .UsingParameters(Expected);
 
       // register AddPostfixToString buildAction for any string on the very first stage
       // (postprocessing will be called last and buildAction will add a postfix to created or cached string
 
       target
-        .AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
-        .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new AnyStringMatcher()))
-        .AddBuildAction(BuildStage.Intercept, new AddPostfixToString(Postfix));
+       .AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
+       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new AnyStringMatcher()))
+       .AddBuildAction(BuildStage.Intercept, new AddPostfixToString(Postfix));
 
       // --act
       var actual = target.Build<StringConsumer>();
@@ -49,49 +49,49 @@ namespace Tests.Functional
           new Action<Builder>(
             target =>
               target
-                .Treat<StringConsumer>()
-                .AsIs()
-                .UsingParameters(Expected)))
-        .SetName("RegisteredAsParameterValue");
+               .Treat<StringConsumer>()
+               .AsIs()
+               .UsingParameters(Expected)))
+       .SetName("RegisteredAsParameterValue");
 
       yield return new TestCaseData(
           new Action<Builder>(
             target =>
             {
               target
-                .Treat<StringConsumer>()
-                .AsIs();
+               .Treat<StringConsumer>()
+               .AsIs();
 
               target
-                .Treat<string>()
-                .AsInstance(Expected);
+               .Treat<string>()
+               .AsInstance(Expected);
             }))
-        .SetName("RegisteredAsInstance");
+       .SetName("RegisteredAsInstance");
 
       yield return new TestCaseData(
           new Action<Builder>(
             target =>
             {
               target
-                .Treat<StringConsumer>()
-                .AsIs();
+               .Treat<StringConsumer>()
+               .AsIs();
 
               target
-                .Treat<string>()
-                .AsCreatedWith(_ => Expected);
+               .Treat<string>()
+               .AsCreatedWith(_ => Expected);
             }))
-        .SetName("RegisteredAsFactoryMethod");
+       .SetName("RegisteredAsFactoryMethod");
     }
 
-    private static Builder CreateTarget() =>
-      new(BuildStage.Intercept, BuildStage.Cache, BuildStage.Create)
-      {
-        new AnyUnitSequenceMatcher
-        {
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
-        }
-      };
+    private static Builder CreateTarget()
+      => new(BuildStage.Intercept, BuildStage.Cache, BuildStage.Create)
+         {
+           new AnyUnitSequenceMatcher
+           {
+             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
+           }
+         };
 
     /// <summary>
     ///   GetBuildAction with any string not depending on token
@@ -101,6 +101,7 @@ namespace Tests.Functional
       public bool Matches(UnitInfo unitInfo)
       {
         var type = unitInfo.Id is ParameterInfo parameterInfo ? parameterInfo.ParameterType : null;
+
         return type == typeof(string);
       }
 
@@ -116,19 +117,17 @@ namespace Tests.Functional
 
       public AddPostfixToString([NotNull] string postfix)
       {
-        if (postfix is null) throw new ArgumentNullException(nameof(postfix));
+        if(postfix is null) throw new ArgumentNullException(nameof(postfix));
 
         _postfix = postfix;
       }
 
-      public void Process(IBuildSession buildSession)
-      {
-      }
+      public void Process(IBuildSession buildSession) { }
 
       public void PostProcess(IBuildSession buildSession)
       {
         var assembleResult = buildSession.BuildResult;
-        var value = (string) assembleResult.Value;
+        var value          = (string) assembleResult.Value;
         buildSession.BuildResult = new BuildResult(value + _postfix);
       }
     }
