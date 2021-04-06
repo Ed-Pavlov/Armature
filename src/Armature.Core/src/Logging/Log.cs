@@ -16,16 +16,15 @@ namespace Armature.Core.Logging
     /// <summary>
     ///   Set should full type name be logged or only short name w/o namespace to simplify reading.
     /// </summary>
-    public static bool LogFullTypeName { get; } = false;
+    public static bool LogFullTypeName = false;
 
     /// <summary>
     ///   Used to enable logging in a limited scope using "using" C# keyword
     /// </summary>
     public static IDisposable Enabled(LogLevel logLevel = LogLevel.Info)
     {
-      _logLevel = logLevel;
-
-      return new Bracket(() => _logLevel = logLevel, () => _logLevel = LogLevel.None);
+      var prevLevel = _logLevel;
+      return new Bracket(() => _logLevel = logLevel, () => _logLevel = prevLevel);
     }
 
     /// <summary>
