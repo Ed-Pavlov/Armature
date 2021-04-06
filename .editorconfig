@@ -7,8 +7,8 @@ indent_size = 2
 tab_width = 2
 
 # Microsoft .NET properties
-csharp_new_line_before_catch = false
-csharp_new_line_before_finally = false
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
 csharp_preferred_modifier_order = public, private, protected, internal, new, abstract, virtual, sealed, override, static, readonly, extern, unsafe, volatile, async:suggestion
 csharp_space_after_keywords_in_control_flow_statements = false
 csharp_style_expression_bodied_accessors = true:suggestion
@@ -88,7 +88,7 @@ resharper_keep_existing_initializer_arrangement = false
 resharper_keep_existing_switch_expression_arrangement = false
 resharper_local_function_body = expression_body
 resharper_max_enum_members_on_line = 20
-resharper_nested_ternary_style = expanded
+resharper_nested_ternary_style = compact
 resharper_outdent_binary_ops = true
 resharper_outdent_statement_labels = true
 resharper_place_accessorholder_attribute_on_same_line = false
