@@ -3,6 +3,7 @@ using Armature.Core;
 using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Constructor;
 using Armature.Core.BuildActions.Parameter;
+using Armature.Core.Logging;
 using Armature.Core.UnitMatchers;
 using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitSequenceMatcher;
@@ -88,6 +89,8 @@ namespace Tests.Functional
                    new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
                    GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
                  }),
+             new LastUnitSequenceMatcher(ParametersArrayMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, CreateParametersArrayBuildAction.Instance),
              new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
               .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
            }

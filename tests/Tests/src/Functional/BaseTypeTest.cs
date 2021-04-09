@@ -1,8 +1,10 @@
 ﻿using Armature;
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
+using Armature.Core.BuildActions.Parameter;
 using Armature.Core.BuildActions.Property;
 using Armature.Core.UnitMatchers;
+using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
@@ -102,7 +104,8 @@ namespace Tests.Functional
                  BuildStage.Create,
                  GetLongestConstructorBuildAction
                   .Instance), // constructor with largest number of parameters has less priority
-
+             new LastUnitSequenceMatcher(ParametersArrayMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, CreateParametersArrayBuildAction.Instance),
              new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
               .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
            }

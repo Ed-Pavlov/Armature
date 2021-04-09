@@ -46,13 +46,15 @@ namespace Armature.Core.BuildActions
 
             break;
           }
-        } catch(ArmatureException exc)
+        }
+        catch(ArmatureException exc)
         {
           LogException(exc);
           exceptions.Add(exc);
 
           // continue;
-        } catch(Exception exc)
+        }
+        catch(Exception exc)
         {
           Log.WriteLine(LogLevel.Trace, () => string.Format("User exception was throw during executing {0}", buildAction));
           LogException(exc);

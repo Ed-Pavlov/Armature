@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Armature.Core;
 using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Constructor;
@@ -23,20 +24,24 @@ namespace Armature
     /// </summary>
     public Tuner UsingParameters(params object[] values)
     {
-      if(values is null || values.Length == 0)
-        throw new Exception("null");
+      if(values is null || values.Length == 0) throw new Exception("null");
 
+      var usm = UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(new SkipSpecialUnit(0));
+      UsingParameters(usm, values);
+      return new Tuner(usm);
+    }
+
+    public static void UsingParameters(IUnitSequenceMatcher unitSequenceMatcher, object[] values)
+    {
       foreach(var parameter in values)
         if(parameter is IParameterValueBuildPlan buildPlan)
-          buildPlan.Apply(UnitSequenceMatcher);
+          buildPlan.Apply(unitSequenceMatcher);
         else if(parameter is IBuildPlan)
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected");
         else
-          UnitSequenceMatcher
+          unitSequenceMatcher
            .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new ParameterByValueMatcher(parameter), InjectPointMatchingWeight.WeakTypedParameter))
            .AddBuildAction(BuildStage.Create, new SingletonBuildAction(parameter));
-
-      return this;
     }
 
     /// <summary>

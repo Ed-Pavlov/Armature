@@ -33,7 +33,8 @@ namespace Armature.Core.BuildActions.Property
 
       var properties =
         (_pointIds.Length > 0
-           ? _pointIds.SelectMany(pointId => propertiesWithAttributes.Where(_ => Equals(pointId, _.Item1.InjectionPointId)).Select(_ => _.Item2)).Distinct()
+           ? _pointIds.SelectMany(pointId => propertiesWithAttributes.Where(_ => Equals(pointId, _.Item1.InjectionPointId)).Select(_ => _.Item2))
+                      .Distinct()
            : propertiesWithAttributes.Select(_ => _.Item2))
        .ToArray();
 

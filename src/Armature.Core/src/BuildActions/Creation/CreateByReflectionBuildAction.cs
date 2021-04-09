@@ -7,7 +7,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.BuildActions.Creation
 {
   /// <summary>
-  ///   Builds a Unit using reflection
+  /// Instantiate an object of type using reflection 
   /// </summary>
   public class CreateByReflectionBuildAction : IBuildAction
   {
@@ -58,7 +58,8 @@ namespace Armature.Core.BuildActions.Creation
             }
 
             buildSession.BuildResult = new BuildResult(instance);
-          } catch(TargetInvocationException exception)
+          }
+          catch(TargetInvocationException exception)
           {
             if(exception.InnerException is null) throw;
 

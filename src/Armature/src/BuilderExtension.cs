@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Armature.Core;
 using Armature.Core.Common;
+using Armature.Core.UnitSequenceMatcher;
 
 
 namespace Armature
@@ -41,9 +42,8 @@ namespace Armature
       {
         sessionalBuildPlans = new BuildPlansCollection();
 
-        sessionalBuildPlans
-         .TreatAll()
-         .UsingParameters(parameters);
+        var unitSequenceMatcher = sessionalBuildPlans.AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher());
+        Tuner.UsingParameters(unitSequenceMatcher, parameters);
       }
 
       var unitInfo    = new UnitInfo(typeof(T), token);

@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Armature.Core.Common;
 
-
 namespace Armature.Core
 {
   public static class BuildSessionExtension
@@ -35,23 +34,20 @@ namespace Armature.Core
     {
       var unitInfo = new UnitInfo(type, SpecialToken.Property);
       var result   = buildSession.BuildAllUnits(unitInfo);
-
       return result?.SelectMany(_ => (IReadOnlyList<PropertyInfo>) _.Value!).ToArray() ?? EmptyArray<PropertyInfo>.Instance;
     }
 
     /// <summary>
-    ///   "Builds" a value to inject into the property representing by <paramref name="propertyInfo" />
+    /// "Builds" a value to inject into the property representing by <paramref name="propertyInfo" />
     /// </summary>
     public static object? GetValueForProperty(this IBuildSession buildSession, PropertyInfo propertyInfo)
     {
       var buildResult = buildSession.BuildUnit(new UnitInfo(propertyInfo, SpecialToken.InjectValue));
-
       return buildResult.HasValue ? buildResult.Value : throw new ArmatureException(string.Format("Can't build value for property '{0}'", propertyInfo));
     }
 
     /// <summary>
-    ///   "Builds" values for parameters by building a set of <see cref="UnitInfo" />(<paramref name="parameters" />[i], <see cref="SpecialToken.InjectValue" />)
-    ///   one by one via current build session
+    /// "Builds" a unit <see cref="ParameterInfo"/>[]
     /// </summary>
     public static object?[] GetValuesForParameters(this IBuildSession buildSession, ParameterInfo[] parameters)
     {
@@ -59,17 +55,13 @@ namespace Armature.Core
       if(parameters is null) throw new ArgumentNullException(nameof(parameters));
       if(parameters.Length == 0) throw new ArgumentException("At least one parameters should be provided", nameof(parameters));
 
-      var values = new object?[parameters.Length];
+      var result = buildSession.BuildUnit(new UnitInfo(parameters, SpecialToken.InjectValue));
+      if(!result.HasValue)
+        throw new Exception("Can't build values for parameters");
 
-      for(var i = 0; i < parameters.Length; i++)
-      {
-        var buildResult = buildSession.BuildUnit(new UnitInfo(parameters[i], SpecialToken.InjectValue));
-
-        if(!buildResult.HasValue)
-          throw new ArmatureException(string.Format("Can't build value for parameter '{0}'", parameters[i]));
-
-        values[i] = buildResult.Value;
-      }
+      var values = (object?[]) result.Value!;
+      if(values.Length != parameters.Length)
+        throw new Exception("Count of values doesn't match the count of parameters");
 
       return values;
     }

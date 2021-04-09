@@ -178,7 +178,8 @@ namespace Tests.Functional
       try
       {
         target.Build<string>();
-      } catch(Exception e)
+      }
+      catch(Exception e)
       {
         Console.WriteLine(e);
       }
@@ -263,6 +264,8 @@ namespace Tests.Functional
            {
              new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+             new LastUnitSequenceMatcher(ParametersArrayMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, CreateParametersArrayBuildAction.Instance),
              new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
               .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
            }

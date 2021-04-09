@@ -1,7 +1,9 @@
 ﻿using Armature;
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
+using Armature.Core.BuildActions.Parameter;
 using Armature.Core.UnitMatchers;
+using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
@@ -259,7 +261,9 @@ namespace Tests.Functional
              new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
               .AddBuildAction(
                  BuildStage.Create,
-                 new GetConstructorByParameterTypesBuildAction()) // use empty ctor by default in this test
+                 new GetConstructorByParameterTypesBuildAction()), // use empty ctor by default in this test
+             new LastUnitSequenceMatcher(ParametersArrayMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, CreateParametersArrayBuildAction.Instance)
            }
          };
 

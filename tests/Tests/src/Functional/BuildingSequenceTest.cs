@@ -87,6 +87,8 @@ namespace Tests.Functional
              // inject into constructor
              new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+             new LastUnitSequenceMatcher(ParametersArrayMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, CreateParametersArrayBuildAction.Instance),
              new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
               .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
            }

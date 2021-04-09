@@ -34,7 +34,9 @@ namespace Armature.Core.UnitSequenceMatcher
     /// <param name="unitBuildingSequence">The sequence of units building in this build session.</param>
     [DebuggerStepThrough]
     protected MatchedBuildActions? GetChildrenActions(int inputMatchingWeight, ArrayTail<UnitInfo> unitBuildingSequence)
-      => _children?.Aggregate((MatchedBuildActions?) null, (current, child) => current.Merge(child.GetBuildActions(unitBuildingSequence, inputMatchingWeight)));
+      => _children?.Aggregate(
+        (MatchedBuildActions?) null,
+        (current, child) => current.Merge(child.GetBuildActions(unitBuildingSequence, inputMatchingWeight)));
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
     protected MatchedBuildActions? GetActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)

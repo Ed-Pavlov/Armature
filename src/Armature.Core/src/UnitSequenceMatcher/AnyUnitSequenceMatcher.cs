@@ -40,10 +40,10 @@ namespace Armature.Core.UnitSequenceMatcher
       // decrease matching weight depending on how many unit in the sequence were skipped by this matcher
       var matchingWeight = inputWeight + Weight * unitsToSkip;
 
-      var                  lastItemAsTail = buildingUnitsSequence.GetTail(buildingUnitsSequence.Length - 1);
-      var                  ownActions     = GetOwnActions(matchingWeight);
-      MatchedBuildActions? childrenActions;
+      var lastItemAsTail = buildingUnitsSequence.GetTail(buildingUnitsSequence.Length - 1);
+      var ownActions     = GetOwnActions(matchingWeight);
 
+      MatchedBuildActions? childrenActions;
       if(ownActions is null)
       {
         Log.WriteLine(LogLevel.Verbose, this.ToString, unitsToSkip); // pass group method, do not call ToString

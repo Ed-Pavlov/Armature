@@ -1,9 +1,11 @@
 ﻿using Armature;
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
+using Armature.Core.BuildActions.Parameter;
 using Armature.Core.BuildActions.Property;
 using Armature.Core.Common;
 using Armature.Core.UnitMatchers;
+using Armature.Core.UnitMatchers.Parameters;
 using Armature.Core.UnitMatchers.Properties;
 using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
@@ -203,6 +205,8 @@ namespace Tests.Functional
              // inject into constructor
              new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+             new LastUnitSequenceMatcher(ParametersArrayMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, CreateParametersArrayBuildAction.Instance),
              new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
               .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
            }

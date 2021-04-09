@@ -126,6 +126,8 @@ namespace Tests.Functional
                    GetLongestConstructorBuildAction
                     .Instance // constructor with largest number of parameters has less priority
                  }),
+             new LastUnitSequenceMatcher(ParametersArrayMatcher.Instance)
+              .AddBuildAction(BuildStage.Create, CreateParametersArrayBuildAction.Instance),
              new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
               .AddBuildAction(
                  BuildStage.Create,

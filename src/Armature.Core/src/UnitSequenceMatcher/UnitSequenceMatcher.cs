@@ -62,7 +62,8 @@ namespace Armature.Core.UnitSequenceMatcher
       try
       {
         children = Children;
-      } catch
+      }
+      catch
       { // do nothing
       }
 

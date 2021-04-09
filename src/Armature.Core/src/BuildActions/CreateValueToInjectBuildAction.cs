@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using Armature.Core.Logging;
 
-
 namespace Armature.Core.BuildActions
 {
   /// <summary>

@@ -38,7 +38,6 @@ namespace Armature.Core.Logging
     public static IDisposable Block(LogLevel logLevel, string name, params object[] parameters)
     {
       WriteLine(logLevel, name, parameters);
-
       return logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
     }
 
@@ -48,7 +47,6 @@ namespace Armature.Core.Logging
     public static IDisposable Block(LogLevel logLevel, Func<string> getName)
     {
       WriteLine(logLevel, getName);
-
       return logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
     }
 
@@ -58,7 +56,6 @@ namespace Armature.Core.Logging
     public static IDisposable Block<T1>(LogLevel logLevel, Func<T1, string> getName, T1 v1)
     {
       WriteLine(logLevel, getName, v1);
-
       return logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
     }
 
@@ -91,18 +88,21 @@ namespace Armature.Core.Logging
     public static void WriteLine<T1>(LogLevel logLevel, string format, T1 p1)
     {
       if(logLevel > _logLevel) return;
+
       System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, p1.ToLogString()));
     }
 
     public static void WriteLine<T1, T2>(LogLevel logLevel, string format, T1 p1, T2 p2)
     {
       if(logLevel > _logLevel) return;
+
       System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, p1.ToLogString(), p2.ToLogString()));
     }
 
     public static void WriteLine<T1, T2, T3>(LogLevel logLevel, string format, T1 p1, T2 p2, T3 p3)
     {
       if(logLevel > _logLevel) return;
+
       System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, p1.ToLogString(), p2.ToLogString(), p3.ToLogString()));
     }
 
@@ -179,7 +179,6 @@ namespace Armature.Core.Logging
 
       var main      = type.GetGenericTypeDefinition().FullName;
       var arguments = string.Join(", ", type.GenericTypeArguments.Select(GetTypeFullName).ToArray());
-
       return string.Format("{0}[{1}]", main, arguments);
     }
 
