@@ -47,8 +47,7 @@ namespace Armature
     /// </summary>
     public TreatingTuner<T> Treat<T>(object? key = null)
     {
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(key));
-
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(typeof(T), key));
       return new TreatingTuner<T>(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 

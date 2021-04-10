@@ -1,6 +1,7 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
+using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
 
@@ -13,11 +14,12 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     /// </summary>
     public static TreatingTuner<T> TreatMaybeValue<T>(this TreatingTuner<Maybe<T>> treatingTuner)
     {
-      var treat       = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
+      var treat     = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
       var uniqueKey = Guid.NewGuid();
       treat.UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueKey));
 
-      return new TreatingTuner<T>(treat.UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(new WildcardUnitSequenceMatcher(Match.Type<T>(uniqueKey), 0)));
+      return new TreatingTuner<T>(
+        treat.UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(new WildcardUnitSequenceMatcher(new UnitInfoMatcher(typeof(T), uniqueKey), 0)));
     }
 
     /// <summary>

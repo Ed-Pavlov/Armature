@@ -30,7 +30,7 @@ namespace Armature
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(key));
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(typeof(T), key));
       return new TreatingTuner<T>(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
@@ -101,7 +101,7 @@ namespace Armature
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var newSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(key));
+      var newSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(typeof(T), key));
       var oldSequenceMatcher = buildPlans.Children.Single(_ => _.Equals(newSequenceMatcher));
 
       buildPlans.Children.Remove(oldSequenceMatcher);
@@ -117,7 +117,7 @@ namespace Armature
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
-        Match.OpenGenericType(openGenericType, key),
+        new OpenGenericTypeMatcher(openGenericType, key),
         UnitSequenceMatchingWeight.WildcardMatchingOpenGenericUnit);
 
       return new TreatingOpenGenericTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
