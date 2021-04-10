@@ -16,7 +16,8 @@ namespace Armature.Core.UnitSequenceMatcher
 
     public StrictUnitSequenceMatcher(IUnitMatcher matcher) : this(matcher, UnitSequenceMatchingWeight.StrictMatchingUnit) { }
 
-    public StrictUnitSequenceMatcher(IUnitMatcher matcher, int weight) : base(weight) => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
+    public StrictUnitSequenceMatcher(IUnitMatcher matcher, int weight) : base(weight)
+      => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
 
     /// <summary>
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.
@@ -32,7 +33,7 @@ namespace Armature.Core.UnitSequenceMatcher
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().GetShortName(), Weight, _matcher);
 
-#region Equality
+    #region Equality
 
     public bool Equals(StrictUnitSequenceMatcher? other)
     {
@@ -54,6 +55,6 @@ namespace Armature.Core.UnitSequenceMatcher
       }
     }
 
-#endregion
+    #endregion
   }
 }

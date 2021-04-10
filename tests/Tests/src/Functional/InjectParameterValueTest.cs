@@ -242,7 +242,9 @@ namespace Tests.Functional
                     .AsIs();
 
       // --act
-      Action actual = () => adjuster.UsingParameters(ForParameter.OfType<string>().UseToken("expected29083"), ForParameter.OfType<string>().UseValue("kldj"));
+      Action actual = () => adjuster.UsingParameters(
+                        ForParameter.OfType<string>().UseToken("expected29083"),
+                        ForParameter.OfType<string>().UseValue("kldj"));
 
       // --assert
       actual.Should().ThrowExactly<ArmatureException>();

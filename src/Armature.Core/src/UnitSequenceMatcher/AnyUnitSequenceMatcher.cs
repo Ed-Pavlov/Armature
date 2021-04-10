@@ -70,7 +70,7 @@ namespace Armature.Core.UnitSequenceMatcher
 
     private string ToString(int unitsToSkip) => string.Format("{0}<x{1:n0}>", base.ToString(), unitsToSkip);
 
-#region Equality
+    #region Equality
 
     [DebuggerStepThrough]
     public override bool Equals(IUnitSequenceMatcher other) => Equals((object) other);
@@ -87,6 +87,6 @@ namespace Armature.Core.UnitSequenceMatcher
     [DebuggerStepThrough]
     public override int GetHashCode() => Weight.GetHashCode();
 
-#endregion
+    #endregion
   }
 }

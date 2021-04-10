@@ -13,12 +13,13 @@ namespace Armature.Core.UnitMatchers.UnitType
     /// The type of the Unit to match
     /// </summary>
     protected readonly Type UnitType;
+
     protected readonly object? Token;
 
     protected UnitInfoByTypeMatcherBase(Type type, object? token)
     {
       UnitType = type ?? throw new ArgumentNullException(nameof(type));
-      Token   = token;
+      Token    = token;
     }
 
     [DebuggerStepThrough]

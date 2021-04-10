@@ -13,14 +13,14 @@ namespace Armature.Core.UnitMatchers
     private readonly object? _token;
 
     [DebuggerStepThrough]
-    public UnitInfoMatcher(UnitInfo unitInfo) : this(unitInfo.Id, unitInfo.Token){ }
-    
+    public UnitInfoMatcher(UnitInfo unitInfo) : this(unitInfo.Id, unitInfo.Token) { }
+
     [DebuggerStepThrough]
     public UnitInfoMatcher(object? unitId, object? token)
     {
       if(unitId is null && token is null) throw new ArgumentNullException(nameof(unitId), @"Either id or token should be provided");
       _unitId = unitId;
-      _token       = token;
+      _token  = token;
     }
 
     /// <inheritdoc />

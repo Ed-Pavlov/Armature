@@ -81,7 +81,9 @@ namespace Tests.Functional
                  BuildStage.Create,
                  new OrderedBuildActionContainer()
                  {
-                   CreateParameterValueBuildAction.Instance, CreateParameterMultiValueToInjectBuildAction.Instance, GetDefaultParameterValueBuildAction.Instance
+                   CreateParameterValueBuildAction.Instance,
+                   CreateParameterMultiValueToInjectBuildAction.Instance,
+                   GetDefaultParameterValueBuildAction.Instance
                  }) // autowiring
            }
          };

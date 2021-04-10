@@ -98,7 +98,8 @@ namespace Armature.Core.BuildActions.Creation
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object? Execute(object?[] values) => _factoryMethod((T1?) values[0], (T2?) values[1], (T3?) values[2], (T4?) values[3], (T5?) values[4]);
+    protected override object? Execute(object?[] values)
+      => _factoryMethod((T1?) values[0], (T2?) values[1], (T3?) values[2], (T4?) values[3], (T5?) values[4]);
   }
 
   /// <inheritdoc cref="CreateByFactoryMethodBuildAction" />

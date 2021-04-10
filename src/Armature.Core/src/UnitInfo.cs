@@ -6,7 +6,7 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Describes a unit to build. <see cref="IUnitSequenceMatcher" /> matches with passed collection of <see cref="UnitInfo" />
+  ///   Describes a unit to be built.
   /// </summary>
   [Serializable]
   public readonly struct UnitInfo
@@ -23,6 +23,10 @@ namespace Armature.Core
       Token = token;
     }
 
+    public override string ToString() => string.Format("{0}({1}, {2})", nameof(UnitInfo), Id.ToLogString(), Token.ToLogString());
+
+    #region Equality implementation
+
     [DebuggerStepThrough]
     public bool Equals(UnitInfo other) => Equals(Id, other.Id) && Equals(Token, other.Token);
 
@@ -38,6 +42,6 @@ namespace Armature.Core
       }
     }
 
-    public override string ToString() => string.Format("{0}({1}, {2})", nameof(UnitInfo), Id.ToLogString(), Token.ToLogString());
+    #endregion
   }
 }

@@ -43,7 +43,7 @@ namespace Armature.Core.UnitSequenceMatcher
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().Name, Weight, _matcher);
 
-#region Equality
+    #region Equality
 
     public bool Equals(WildcardUnitSequenceMatcher? other)
     {
@@ -65,6 +65,6 @@ namespace Armature.Core.UnitSequenceMatcher
       }
     }
 
-#endregion
+    #endregion
   }
 }
