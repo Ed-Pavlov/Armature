@@ -11,10 +11,10 @@ namespace Tests.UnitTests
     {
       // --arrange
       const int arrayLength = 3;
-      var       array       = new int[arrayLength];
+      const int startIndex  = 1;
 
-      const int startIndex = 1;
-      var       arrayTail  = array.GetTail(startIndex);
+      var array     = new int[arrayLength];
+      var arrayTail = array.GetTail(startIndex);
 
       // --assert
       arrayTail.Length.Should().Be(arrayLength - startIndex);
@@ -33,7 +33,6 @@ namespace Tests.UnitTests
       for(var i = startIndex; i < array.Length; i++)
         expected[i - startIndex] = array[i];
 
-
       // --act
       var actual = array.GetTail(startIndex);
 
@@ -43,7 +42,7 @@ namespace Tests.UnitTests
       for(var i = 0; i < actual.Length; i++)
         actualArray[i] = actual[i];
 
-      actualArray.Should().BeEquivalentTo(expected);
+      actualArray.Should().Equal(expected);
     }
 
     [Test]
@@ -52,7 +51,8 @@ namespace Tests.UnitTests
       // --arrange
       const int startIndex = 2;
       const int lastItem   = 23;
-      var       array      = new[] {0, 1, 2, lastItem};
+
+      var array = new[] {0, 1, 2, lastItem};
 
       // --act
       var actual = array.GetTail(startIndex);
