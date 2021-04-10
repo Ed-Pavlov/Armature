@@ -10,7 +10,7 @@ namespace Armature
   /// </summary>
   public abstract class BuildValuePlan : BuildActionExtensibility, IBuildPlan
   {
-    protected BuildValuePlan(IUnitMatcher unitMatcher, IBuildAction getValueAction, int weight)
+    protected BuildValuePlan(IUnitIdMatcher unitMatcher, IBuildAction getValueAction, int weight)
       : base(unitMatcher, getValueAction, weight) { }
 
     void IBuildPlan.Apply(IUnitSequenceMatcher unitSequenceMatcher)

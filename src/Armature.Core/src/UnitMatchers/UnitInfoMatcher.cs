@@ -7,7 +7,7 @@ namespace Armature.Core.UnitMatchers
   /// <summary>
   ///   Matches one <see cref="UnitId" /> with stored Unit id and key.
   /// </summary>
-  public record UnitInfoMatcher : IUnitMatcher
+  public record UnitInfoMatcher : IUnitIdMatcher
   {
     private readonly object? _unitId;
     private readonly object? _key;

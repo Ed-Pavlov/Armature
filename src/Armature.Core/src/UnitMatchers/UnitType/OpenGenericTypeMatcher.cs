@@ -6,7 +6,7 @@ namespace Armature.Core.UnitMatchers.UnitType
   /// <summary>
   ///   Matches <see cref="UnitId" /> with an open generic type
   /// </summary>
-  public record OpenGenericTypeMatcher : UnitInfoByTypeMatcherBase, IUnitMatcher
+  public record OpenGenericTypeMatcher : UnitInfoByTypeMatcherBase, IUnitIdMatcher
   {
     [DebuggerStepThrough]
     public OpenGenericTypeMatcher(Type type, object? key) : base(type, key)

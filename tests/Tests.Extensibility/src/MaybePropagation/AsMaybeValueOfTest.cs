@@ -126,7 +126,7 @@ namespace Tests.Extensibility.MaybePropagation
            new AnyUnitSequenceMatcher
            {
              // inject into constructor
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
              new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
               .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)

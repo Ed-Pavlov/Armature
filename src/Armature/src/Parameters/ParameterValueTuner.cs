@@ -12,7 +12,7 @@ namespace Armature
   public class ParameterValueTuner : UnitMatcherExtensibility
   {
     [DebuggerStepThrough]
-    public ParameterValueTuner(IUnitMatcher unitMatcher, int weight)
+    public ParameterValueTuner(IUnitIdMatcher unitMatcher, int weight)
       : base(unitMatcher, weight) { }
 
     /// <summary>

@@ -12,11 +12,11 @@ namespace Armature.Core.UnitSequenceMatcher
   /// </summary>
   public class StrictUnitSequenceMatcher : UnitSequenceMatcherWithChildren, IEquatable<StrictUnitSequenceMatcher>
   {
-    private readonly IUnitMatcher _matcher;
+    private readonly IUnitIdMatcher _matcher;
 
-    public StrictUnitSequenceMatcher(IUnitMatcher matcher) : this(matcher, UnitSequenceMatchingWeight.StrictMatchingUnit) { }
+    public StrictUnitSequenceMatcher(IUnitIdMatcher matcher) : this(matcher, UnitSequenceMatchingWeight.StrictMatchingUnit) { }
 
-    public StrictUnitSequenceMatcher(IUnitMatcher matcher, int weight) : base(weight)
+    public StrictUnitSequenceMatcher(IUnitIdMatcher matcher, int weight) : base(weight)
       => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
 
     /// <summary>

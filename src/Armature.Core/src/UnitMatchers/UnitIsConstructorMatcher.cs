@@ -3,11 +3,11 @@
   /// <summary>
   ///   Matches Unit representing "constructor" of the currently building Unit
   /// </summary>
-  public record ConstructorMatcher : UnitMatcherBase, IUnitMatcher
+  public record UnitIsConstructorMatcher : SimpleToStringImpl, IUnitIdMatcher
   {
-    public static readonly IUnitMatcher Instance = new ConstructorMatcher();
+    public static readonly IUnitIdMatcher Instance = new UnitIsConstructorMatcher();
 
-    private ConstructorMatcher() { }
+    private UnitIsConstructorMatcher() { }
 
     public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Constructor && unitId.GetUnitTypeSafe() is not null;
   }

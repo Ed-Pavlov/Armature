@@ -71,7 +71,7 @@ namespace Armature
     public Tuner UsingLongestConstructor()
     {
       UnitSequenceMatcher
-       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(ConstructorMatcher.Instance))
+       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance))
        .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance);
 
       return this;
@@ -83,7 +83,7 @@ namespace Armature
     public Tuner UsingInjectPointConstructor(object injectionPointId)
     {
       UnitSequenceMatcher
-       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(ConstructorMatcher.Instance))
+       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance))
        .AddBuildAction(BuildStage.Create, new GetInjectPointConstructorBuildAction(injectionPointId));
 
       return this;
@@ -120,7 +120,7 @@ namespace Armature
     public Tuner UsingConstructorWithParameters(params Type[] parameterTypes)
     {
       UnitSequenceMatcher
-       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(ConstructorMatcher.Instance))
+       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance))
        .AddBuildAction(BuildStage.Create, new GetConstructorByParameterTypesBuildAction(parameterTypes));
 
       return this;

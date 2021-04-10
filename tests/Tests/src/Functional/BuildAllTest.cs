@@ -78,7 +78,7 @@ namespace Tests.Functional
          {
            new AnyUnitSequenceMatcher
            {
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
            }
          };

@@ -3,9 +3,9 @@
   /// <summary>
   ///   Matches Unit representing "property" of the currently building Unit
   /// </summary>
-  public record PropertyMatcher : UnitMatcherBase, IUnitMatcher
+  public record PropertyMatcher : SimpleToStringImpl, IUnitIdMatcher
   {
-    public static readonly IUnitMatcher Instance = new PropertyMatcher();
+    public static readonly IUnitIdMatcher Instance = new PropertyMatcher();
 
     private PropertyMatcher() { }
 

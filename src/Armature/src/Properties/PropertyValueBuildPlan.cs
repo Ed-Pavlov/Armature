@@ -11,7 +11,7 @@ namespace Armature
     private readonly IBuildAction _getPropertyAction;
 
     public PropertyValueBuildPlan(
-      IUnitMatcher propertyMatcher,
+      IUnitIdMatcher propertyMatcher,
       IBuildAction getPropertyAction,
       IBuildAction getValueAction,
       int          weight)

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using Armature.Core.Logging;
 
 namespace Armature.Core.UnitMatchers
 {
   /// <summary>
   ///   Base class for matchers matching an "inject point" marked with attribute which satisfies user provided conditions
   /// </summary>
-  public abstract record InjectPointByAttributeMatcher<T> : UnitMatcherBase, IUnitMatcher
+  public abstract record InjectPointByAttributeMatcher<T> : IUnitIdMatcher
   {
     private readonly Predicate<T>? _predicate;
 
@@ -22,5 +23,7 @@ namespace Armature.Core.UnitMatchers
     }
 
     protected abstract T? GetInjectPointAttribute(UnitId unitId);
+    
+    public override string ToString() => GetType().GetShortName();
   }
 }

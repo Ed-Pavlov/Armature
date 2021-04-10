@@ -28,7 +28,6 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     public static TreatingTuner<Maybe<T>> AsMaybeValueOf<T>(this TreatingTuner<T> treatingTuner)
     {
       var treat = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
-
       return new TreatingTuner<Maybe<T>>(treat.UnitSequenceMatcher.AddBuildAction(BuildStage.Initialize, new GetMaybeValueBuildAction<T>()));
     }
   }

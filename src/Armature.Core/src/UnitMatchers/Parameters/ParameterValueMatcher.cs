@@ -5,9 +5,9 @@ namespace Armature.Core.UnitMatchers.Parameters
   /// <summary>
   ///   Matches Unit representing "value for parameter" for the currently building Unit
   /// </summary>
-  public record ParameterValueMatcher : UnitMatcherBase, IUnitMatcher
+  public record ParameterValueMatcher : SimpleToStringImpl, IUnitIdMatcher
   {
-    public static readonly IUnitMatcher Instance = new ParameterValueMatcher();
+    public static readonly IUnitIdMatcher Instance = new ParameterValueMatcher();
 
     private ParameterValueMatcher() { }
 

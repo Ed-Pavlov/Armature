@@ -12,7 +12,7 @@ namespace Armature
   [SuppressMessage("ReSharper", "UnusedTypeParameter")]
   public class ParameterValueTuner<T> : ParameterValueTuner
   {
-    public ParameterValueTuner(IUnitMatcher unitMatcher, int weight) : base(unitMatcher, weight) { }
+    public ParameterValueTuner(IUnitIdMatcher unitMatcher, int weight) : base(unitMatcher, weight) { }
 
     /// <summary>
     ///   Use the <paramref name="value" /> for the parameter

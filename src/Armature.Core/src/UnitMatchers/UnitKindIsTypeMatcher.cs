@@ -3,11 +3,11 @@
   /// <summary>
   ///   Matches any type which can be instantiated
   /// </summary>
-  public record AnyTypeMatcher : UnitMatcherBase, IUnitMatcher
+  public record UnitKindIsTypeMatcher : SimpleToStringImpl, IUnitIdMatcher
   {
-    public static readonly IUnitMatcher Instance = new AnyTypeMatcher();
+    public static readonly IUnitIdMatcher Instance = new UnitKindIsTypeMatcher();
 
-    private AnyTypeMatcher() { }
+    private UnitKindIsTypeMatcher() { }
 
     public bool Matches(UnitId unitId)
     {

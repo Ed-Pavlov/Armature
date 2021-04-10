@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 namespace Tests.Common
 {
   /// <summary>
-  ///   Utility class to simplify the reading of the code creates different <see cref="IUnitMatcher" />s.
+  ///   Utility class to simplify the reading of the code creates different <see cref="IUnitIdMatcher" />s.
   /// </summary>
   public static class Match
   {
@@ -14,6 +14,6 @@ namespace Tests.Common
     ///   Creates a type matcher with <see cref="UnitId" />(typeof(<typeparamref name="T" />), <paramref name="key" />)
     /// </summary>
     [DebuggerStepThrough]
-    public static IUnitMatcher Type<T>([CanBeNull]object key) => new UnitInfoMatcher(new UnitId(typeof(T), key));
+    public static IUnitIdMatcher Type<T>([CanBeNull]object key) => new UnitInfoMatcher(new UnitId(typeof(T), key));
   }
 }

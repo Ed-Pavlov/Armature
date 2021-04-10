@@ -88,7 +88,7 @@ namespace Tests.Functional
          {
            new AnyUnitSequenceMatcher
            {
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
            }
          };
@@ -96,7 +96,7 @@ namespace Tests.Functional
     /// <summary>
     ///   GetBuildAction with any string not depending on key
     /// </summary>
-    private class AnyStringMatcher : IUnitMatcher
+    private class AnyStringMatcher : IUnitIdMatcher
     {
       public bool Matches(UnitId unitId)
       {
@@ -105,7 +105,7 @@ namespace Tests.Functional
         return type == typeof(string);
       }
 
-      public bool Equals(IUnitMatcher other) => throw new NotSupportedException();
+      public bool Equals(IUnitIdMatcher other) => throw new NotSupportedException();
     }
 
     /// <summary>

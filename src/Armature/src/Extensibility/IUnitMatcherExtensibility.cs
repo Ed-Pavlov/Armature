@@ -4,7 +4,7 @@ namespace Armature.Extensibility
 {
   public interface IUnitMatcherExtensibility
   {
-    IUnitMatcher UnitMatcher { get; }
+    IUnitIdMatcher UnitMatcher { get; }
     int          Weight      { get; }
   }
 }

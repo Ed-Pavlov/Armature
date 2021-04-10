@@ -28,7 +28,7 @@ namespace Tests.Functional
        .With( // add build action injecting values into property for any type
           anyMatcher =>
             anyMatcher
-             .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(AnyTypeMatcher.Instance))
+             .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(UnitKindIsTypeMatcher.Instance))
              .AddBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance))
        .With( // add build action finding properties attributed with InjectAttribute for any type 
           anyMatcher =>
@@ -201,7 +201,7 @@ namespace Tests.Functional
            new AnyUnitSequenceMatcher
            {
              // inject into constructor
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
              new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
               .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())

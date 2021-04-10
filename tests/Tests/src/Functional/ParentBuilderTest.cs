@@ -225,7 +225,7 @@ namespace Tests.Functional
       // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder 
       target.AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
             .Add(
-               new LastUnitSequenceMatcher(AnyTypeMatcher.Instance)
+               new LastUnitSequenceMatcher(UnitKindIsTypeMatcher.Instance)
                 .AddBuildAction(BuildStage.Cache, new DebugOnlyBuildAction()));
 
       // --act
@@ -262,7 +262,7 @@ namespace Tests.Functional
          {
            new AnyUnitSequenceMatcher
            {
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
              new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
               .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)

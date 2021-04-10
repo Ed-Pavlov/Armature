@@ -138,18 +138,18 @@ namespace Tests.Performance
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
-    private class MockUnitMatcher : IUnitMatcher
+    private class MockUnitMatcher : IUnitIdMatcher
     {
-      private readonly IUnitMatcher _impl;
+      private readonly IUnitIdMatcher _impl;
 
-      public MockUnitMatcher(IUnitMatcher impl) => _impl = impl;
+      public MockUnitMatcher(IUnitIdMatcher impl) => _impl = impl;
 
       public static long EqualsCallsCount      { get; private set; }
       public static long GetHashCodeCallsCount { get; private set; }
 
       public bool Matches(UnitId unitId) => _impl.Matches(unitId);
 
-      public bool Equals(IUnitMatcher other)
+      public bool Equals(IUnitIdMatcher other)
       {
         EqualsCallsCount++;
 
@@ -172,7 +172,7 @@ namespace Tests.Performance
       var treatAll = new AnyUnitSequenceMatcher
                      {
                        // inject into constructor
-                       new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+                       new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
                         .AddBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer

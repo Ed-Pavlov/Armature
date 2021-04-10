@@ -12,7 +12,7 @@ namespace Armature
 {
   public class PropertyValueTuner : BuildActionExtensibility
   {
-    public PropertyValueTuner(IUnitMatcher propertyUnitMatcher, IBuildAction getPropertyAction, int weight)
+    public PropertyValueTuner(IUnitIdMatcher propertyUnitMatcher, IBuildAction getPropertyAction, int weight)
       : base(propertyUnitMatcher, getPropertyAction, weight) { }
 
     /// <summary>
@@ -46,7 +46,7 @@ namespace Armature
   [SuppressMessage("ReSharper", "UnusedTypeParameter")]
   public class PropertyValueTuner<T> : PropertyValueTuner
   {
-    public PropertyValueTuner(IUnitMatcher propertyUnitMatcher, IBuildAction getPropertyAction, int weight)
+    public PropertyValueTuner(IUnitIdMatcher propertyUnitMatcher, IBuildAction getPropertyAction, int weight)
       : base(propertyUnitMatcher, getPropertyAction, weight) { }
   }
 }

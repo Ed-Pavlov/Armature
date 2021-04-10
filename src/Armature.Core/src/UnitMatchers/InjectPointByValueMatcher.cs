@@ -7,7 +7,7 @@ namespace Armature.Core.UnitMatchers
   /// <summary>
   ///   Base class for matchers matching an "inject point" suited for provided value type
   /// </summary>
-  public abstract record InjectPointByValueMatcher : IUnitMatcher
+  public abstract record InjectPointByValueMatcher : IUnitIdMatcher
   {
     private readonly object _value;
 

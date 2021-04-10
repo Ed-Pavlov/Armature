@@ -10,11 +10,11 @@ namespace Armature.Core.UnitSequenceMatcher
   /// </summary>
   public class WildcardUnitSequenceMatcher : UnitSequenceMatcherWithChildren, IEquatable<WildcardUnitSequenceMatcher>
   {
-    private readonly IUnitMatcher _matcher;
+    private readonly IUnitIdMatcher _matcher;
 
-    public WildcardUnitSequenceMatcher(IUnitMatcher matcher) : this(matcher, UnitSequenceMatchingWeight.WildcardMatchingUnit) { }
+    public WildcardUnitSequenceMatcher(IUnitIdMatcher matcher) : this(matcher, UnitSequenceMatchingWeight.WildcardMatchingUnit) { }
 
-    public WildcardUnitSequenceMatcher(IUnitMatcher matcher, int weight) : base(weight)
+    public WildcardUnitSequenceMatcher(IUnitIdMatcher matcher, int weight) : base(weight)
       => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
 
     /// <summary>

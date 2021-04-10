@@ -256,7 +256,7 @@ namespace Tests.Functional
            new AnyUnitSequenceMatcher
            {
              // inject into constructor
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
+             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(
                  BuildStage.Create,
                  new GetConstructorByParameterTypesBuildAction()) // use empty ctor by default in this test

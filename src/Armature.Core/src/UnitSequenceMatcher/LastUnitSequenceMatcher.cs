@@ -9,17 +9,17 @@ using Armature.Core.Logging;
 namespace Armature.Core.UnitSequenceMatcher
 {
   /// <summary>
-  ///   Matches only unit under construction in the sequence and applies passed <see cref="IUnitMatcher" /> to it.
-  ///   See <see cref="LastUnitSequenceMatcher(Armature.Core.IUnitMatcher,int)" /> and <see cref="GetBuildActions" /> for details
+  ///   Matches only unit under construction in the sequence and applies passed <see cref="IUnitIdMatcher" /> to it.
+  ///   See <see cref="LastUnitSequenceMatcher(IUnitIdMatcher,int)" /> and <see cref="GetBuildActions" /> for details
   /// </summary>
   public class LastUnitSequenceMatcher : UnitSequenceMatcher
   {
-    private readonly IUnitMatcher _unitMatcher;
+    private readonly IUnitIdMatcher _unitMatcher;
 
     /// <param name="unitMatcher">Object contains the logic of matching with building unit</param>
     /// <param name="weight">The weight of matching</param>
     [DebuggerStepThrough]
-    public LastUnitSequenceMatcher(IUnitMatcher unitMatcher, int weight = 0) : base(weight)
+    public LastUnitSequenceMatcher(IUnitIdMatcher unitMatcher, int weight = 0) : base(weight)
       => _unitMatcher = unitMatcher ?? throw new ArgumentNullException(nameof(unitMatcher));
 
     public override ICollection<IUnitSequenceMatcher> Children => throw new NotSupportedException("LastUnitSequenceMatcher can't contain children");

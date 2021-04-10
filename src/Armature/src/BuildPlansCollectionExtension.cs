@@ -47,15 +47,15 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Used to make a build plan for all inheritors of <paramref name="type"/>.
+    ///   Used to make a build plan for all inheritors of <paramref name="baseType"/>.
     ///   How it should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public static TreatingTuner TreatInheritorsOf(this BuildPlansCollection buildPlans, Type type, object? key = null)
+    public static TreatingTuner TreatInheritorsOf(this BuildPlansCollection buildPlans, Type baseType, object? key = null)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
-        new BaseTypeMatcher(type, key),
+        new UnitIsSubTypeOfMatcher(baseType, key),
         UnitSequenceMatchingWeight.WildcardMatchingBaseTypeUnit);
 
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
@@ -70,7 +70,7 @@ namespace Armature
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
-        new BaseTypeMatcher(typeof(T), key),
+        new UnitIsSubTypeOfMatcher(typeof(T), key),
         UnitSequenceMatchingWeight.WildcardMatchingBaseTypeUnit);
 
       return new TreatingTuner<T>(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
