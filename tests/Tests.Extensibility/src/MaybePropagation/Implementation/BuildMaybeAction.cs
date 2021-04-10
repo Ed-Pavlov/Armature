@@ -22,7 +22,8 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
         if(!result.HasValue) throw new InvalidOperationException();
 
         buildSession.BuildResult = new BuildResult(((T) result.Value).ToMaybe());
-      } catch(MaybeIsNothingException)
+      }
+      catch(MaybeIsNothingException)
       {
         buildSession.BuildResult = new BuildResult(Maybe<T>.Nothing);
       }

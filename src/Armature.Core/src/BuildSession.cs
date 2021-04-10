@@ -111,12 +111,14 @@ namespace Armature.Core
           Log.WriteLine(LogLevel.Verbose, "");
 
           return build(actions.Merge(auxActions));
-        } catch(Exception exception)
+        }
+        catch(Exception exception)
         {
           AddDebugData(exception);
 
           throw;
-        } finally
+        }
+        finally
         {
           _buildSequence.RemoveAt(_buildSequence.Count - 1);
         }
@@ -190,7 +192,8 @@ namespace Armature.Core
             if(buildResult.HasValue)
               return buildResult;
           }
-        } catch(Exception exc)
+        }
+        catch(Exception exc)
         {
           exceptions.Add(exc);
 

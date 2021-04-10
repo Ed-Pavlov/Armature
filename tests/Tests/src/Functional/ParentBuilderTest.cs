@@ -178,7 +178,8 @@ namespace Tests.Functional
       try
       {
         target.Build<string>();
-      } catch(Exception e)
+      }
+      catch(Exception e)
       {
         Console.WriteLine(e);
       }

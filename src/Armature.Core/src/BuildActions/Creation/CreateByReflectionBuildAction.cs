@@ -58,7 +58,8 @@ namespace Armature.Core.BuildActions.Creation
             }
 
             buildSession.BuildResult = new BuildResult(instance);
-          } catch(TargetInvocationException exception)
+          }
+          catch(TargetInvocationException exception)
           {
             if(exception.InnerException is null) throw;
 
