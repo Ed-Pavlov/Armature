@@ -10,27 +10,27 @@ namespace Tests.UnitTests
   public class BaseTypeMatcherTest
   {
     [Test]
-    public void should_match_exact_type([Values(null, "token")] object token)
+    public void should_match_exact_type([Values(null, "key")] object key)
     {
-      var target = new BaseTypeMatcher(typeof(int), token);
+      var target = new BaseTypeMatcher(typeof(int), key);
 
-      target.Matches(Unit.OfType<int>(token)).Should().BeTrue();
+      target.Matches(Unit.OfType<int>(key)).Should().BeTrue();
     }
 
     [Test]
-    public void should_match_base_type([Values(null, "token")] object token)
+    public void should_match_base_type([Values(null, "key")] object key)
     {
-      var target = new BaseTypeMatcher(typeof(Stream), token);
+      var target = new BaseTypeMatcher(typeof(Stream), key);
 
-      target.Matches(Unit.OfType<MemoryStream>(token)).Should().BeTrue();
+      target.Matches(Unit.OfType<MemoryStream>(key)).Should().BeTrue();
     }
 
     [Test]
-    public void should_match_interface([Values(null, "token")] object token)
+    public void should_match_interface([Values(null, "key")] object key)
     {
-      var target = new BaseTypeMatcher(typeof(IDisposable), token);
+      var target = new BaseTypeMatcher(typeof(IDisposable), key);
 
-      target.Matches(Unit.OfType<MemoryStream>(token)).Should().BeTrue();
+      target.Matches(Unit.OfType<MemoryStream>(key)).Should().BeTrue();
     }
   }
 }

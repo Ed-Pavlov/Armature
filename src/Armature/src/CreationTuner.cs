@@ -10,16 +10,16 @@ namespace Armature
   public class CreationTuner : UnitSequenceExtensibility, IExtensibility<Type, object>
   {
     protected readonly Type    Type;
-    protected readonly object? Token;
+    protected readonly object? Key;
 
-    public CreationTuner(IUnitSequenceMatcher unitSequenceMatcher, Type type, object? token) : base(unitSequenceMatcher)
+    public CreationTuner(IUnitSequenceMatcher unitSequenceMatcher, Type type, object? key) : base(unitSequenceMatcher)
     {
       Type  = type ?? throw new ArgumentNullException(nameof(type));
-      Token = token;
+      Key = key;
     }
 
     Type IExtensibility<Type, object>.   Item1 => Type;
-    object? IExtensibility<Type, object>.Item2 => Token;
+    object? IExtensibility<Type, object>.Item2 => Key;
 
     /// <summary>
     ///   Specifies that unit of type passed into <see cref="TreatingTuner{T}.As(System.Type,object)"/> or <see cref="TreatingTuner{T}.As{TRedirect}"/>
@@ -27,7 +27,7 @@ namespace Armature
     /// </summary>
     public Tuner CreatedByDefault()
     {
-      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type(Type, Token));
+      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type(Type, Key));
 
       UnitSequenceMatcher
        .AddOrGetUnitSequenceMatcher(sequenceMatcher)
@@ -43,7 +43,7 @@ namespace Armature
     /// <returns></returns>
     public Tuner CreatedByReflection()
     {
-      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type(Type, Token));
+      var sequenceMatcher = new StrictUnitSequenceMatcher(Match.Type(Type, Key));
 
       UnitSequenceMatcher
        .AddOrGetUnitSequenceMatcher(sequenceMatcher)

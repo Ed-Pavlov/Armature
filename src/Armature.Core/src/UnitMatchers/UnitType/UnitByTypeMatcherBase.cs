@@ -14,15 +14,15 @@ namespace Armature.Core.UnitMatchers.UnitType
     /// </summary>
     protected readonly Type UnitType;
 
-    protected readonly object? Token;
+    protected readonly object? Key;
 
-    protected UnitInfoByTypeMatcherBase(Type type, object? token)
+    protected UnitInfoByTypeMatcherBase(Type type, object? key)
     {
       UnitType = type ?? throw new ArgumentNullException(nameof(type));
-      Token    = token;
+      Key    = key;
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}:{1}", UnitType.ToLogString(), Token.ToLogString());
+    public override string ToString() => string.Format("{0}:{1}", UnitType.ToLogString(), Key.ToLogString());
   }
 }

@@ -43,37 +43,37 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_value_matched_with_longest_sequence_and_token()
+    public void should_use_value_matched_with_longest_sequence_and_key()
     {
-      object    token    = "token";
+      object    key    = "key";
       const int expected = 9345;
 
       // --arrange
       var target = CreateTarget();
 
-      target.Treat<ISubject>(token).AsCreated<Subject>(token);
+      target.Treat<ISubject>(key).AsCreated<Subject>(key);
 
       target.Treat<int>().AsInstance(5);
 
       target
-       .Building<Subject>(token)
+       .Building<Subject>(key)
        .Treat<int>()
        .AsInstance(354);
 
       target
-       .Building<ISubject>(token)
+       .Building<ISubject>(key)
        .Building<Subject>()
        .Treat<int>()
        .AsInstance(986);
 
       target
-       .Building<ISubject>(token)
-       .Building<Subject>(token)
+       .Building<ISubject>(key)
+       .Building<Subject>(key)
        .Treat<int>()
        .AsInstance(expected);
 
       // --act
-      var actual = target.UsingToken(token).Build<ISubject>();
+      var actual = target.UsingKey(key).Build<ISubject>();
 
       // --assert
       actual.Value.Should().Be(expected);

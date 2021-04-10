@@ -5,7 +5,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.BuildActions.Parameter
 {
   /// <summary>
-  ///   Builds value to inject by using <see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute.InjectionPointId" /> as token
+  ///   Builds value to inject by using <see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute.InjectionPointId" /> as key
   /// </summary>
   public class CreateParameterValueForInjectPointBuildAction : IBuildAction
   {

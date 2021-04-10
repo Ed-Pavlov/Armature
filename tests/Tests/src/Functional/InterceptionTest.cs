@@ -94,7 +94,7 @@ namespace Tests.Functional
          };
 
     /// <summary>
-    ///   GetBuildAction with any string not depending on token
+    ///   GetBuildAction with any string not depending on key
     /// </summary>
     private class AnyStringMatcher : IUnitMatcher
     {

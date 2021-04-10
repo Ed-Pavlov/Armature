@@ -11,10 +11,10 @@ namespace Armature.Core.BuildActions
   public class RedirectTypeBuildAction : IBuildAction
   {
     private readonly Type    _redirectTo;
-    private readonly object? _token;
+    private readonly object? _key;
 
     [DebuggerStepThrough]
-    public RedirectTypeBuildAction(Type redirectTo, object? token)
+    public RedirectTypeBuildAction(Type redirectTo, object? key)
     {
       if(redirectTo is null) throw new ArgumentNullException(nameof(redirectTo));
 
@@ -22,7 +22,7 @@ namespace Armature.Core.BuildActions
         throw new ArgumentException("Type should not be open generic, use RedirectOpenGenericTypeBuildAction for open generics", nameof(redirectTo));
 
       _redirectTo = redirectTo;
-      _token      = token;
+      _key      = key;
     }
 
     public void Process(IBuildSession buildSession)
@@ -30,9 +30,9 @@ namespace Armature.Core.BuildActions
       if(!buildSession.BuildResult.HasValue)
       {
         var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
-        var effectiveToken        = Equals(_token, UnitKey.Propagate) ? unitUnderConstruction.Key : _token;
+        var effectiveKey        = Equals(_key, UnitKey.Propagate) ? unitUnderConstruction.Key : _key;
 
-        var unitInfo = new UnitId(_redirectTo, effectiveToken);
+        var unitInfo = new UnitId(_redirectTo, effectiveKey);
         buildSession.BuildResult = buildSession.BuildUnit(unitInfo);
       }
     }

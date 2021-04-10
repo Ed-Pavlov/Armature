@@ -3,9 +3,9 @@
 namespace Armature.Core
 {
   /// <summary>
-  ///   These tokens are used by Armature framework to distinguish internal units to be built  from possible users for the same types
+  ///   These keys are used by Armature framework to distinguish internal units to be built  from possible users for the same types
   /// </summary>
-  public static class SpecialToken
+  public static class SpecialKey
   {
     /// <summary>
     ///   Is used to "build" a <see cref="ConstructorInfo" /> for a type
@@ -22,6 +22,6 @@ namespace Armature.Core
     /// </summary>
     public static readonly object InjectValue = new UnitKey("InjectValue");
 
-    public static bool IsSpecial(this object? obj) => obj is UnitKey token && (token == Constructor || token == Property || token == InjectValue);
+    public static bool IsSpecial(this object? obj) => obj is UnitKey key && (key == Constructor || key == Property || key == InjectValue);
   }
 }

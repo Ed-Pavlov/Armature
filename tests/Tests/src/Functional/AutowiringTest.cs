@@ -129,7 +129,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_inject_point_id_as_token()
+    public void should_use_inject_point_id_as_key()
     {
       const string expectedText  = "expected 09765";
       const int    expectedValue = 93979;
@@ -153,13 +153,13 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_fail_if_there_is_no_value_wo_token_registered()
+    public void should_fail_if_there_is_no_value_wo_key_registered()
     {
       // --arrange
       var target = CreateTarget();
 
       target
-       .Treat<string>("token")
+       .Treat<string>("key")
        .AsInstance("09765");
 
       target

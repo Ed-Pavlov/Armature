@@ -66,18 +66,18 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void SameClassForMultipleTokenAsSingleton()
+    public void SameClassForMultipleKeyAsSingleton()
     {
-      const string token1 = "t1";
+      const string key1 = "t1";
 
       var target = CreateTarget();
 
       target.Treat<IDisposableValue1>().As<OneDisposableCtorClass>();
-      target.Treat<IDisposableValue2>(token1).As<OneDisposableCtorClass>();
+      target.Treat<IDisposableValue2>(key1).As<OneDisposableCtorClass>();
       target.Treat<OneDisposableCtorClass>().AsInstance(new OneDisposableCtorClass(null));
 
       var dep  = target.Build<IDisposableValue1>();
-      var dep1 = target.UsingToken(token1).Build<IDisposableValue2>();
+      var dep1 = target.UsingKey(key1).Build<IDisposableValue2>();
 
       Assert.AreSame(dep, dep1);
     }

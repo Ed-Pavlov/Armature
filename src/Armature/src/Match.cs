@@ -12,26 +12,26 @@ namespace Armature
   public static class Match
   {
     /// <summary>
-    ///   Creates a type matcher with <see cref="UnitId" />(typeof(<typeparamref name="T" />), <paramref name="token" />)
+    ///   Creates a type matcher with <see cref="UnitId" />(typeof(<typeparamref name="T" />), <paramref name="key" />)
     /// </summary>
     [DebuggerStepThrough]
-    public static IUnitMatcher Type<T>(object? token) => Type(typeof(T), token);
+    public static IUnitMatcher Type<T>(object? key) => Type(typeof(T), key);
 
     /// <summary>
-    ///   Creates a type matcher with <see cref="UnitId" />(<paramref name="type" />, <paramref name="token" />)
+    ///   Creates a type matcher with <see cref="UnitId" />(<paramref name="type" />, <paramref name="key" />)
     /// </summary>
     [DebuggerStepThrough]
-    public static IUnitMatcher Type(Type type, object? token)
+    public static IUnitMatcher Type(Type type, object? key)
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      return new UnitInfoMatcher(new UnitId(type, token));
+      return new UnitInfoMatcher(new UnitId(type, key));
     }
 
     /// <summary>
-    ///   Creates a open generic type matcher with <see cref="UnitId" />(<paramref name="type" />, <paramref name="token" />)
+    ///   Creates a open generic type matcher with <see cref="UnitId" />(<paramref name="type" />, <paramref name="key" />)
     /// </summary>
     [DebuggerStepThrough]
-    public static IUnitMatcher OpenGenericType(Type type, object? token) => new OpenGenericTypeMatcher(type, token);
+    public static IUnitMatcher OpenGenericType(Type type, object? key) => new OpenGenericTypeMatcher(type, key);
   }
 }

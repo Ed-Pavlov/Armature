@@ -41,18 +41,18 @@ namespace Armature
     ///   Tune plan of creating the object by subsequence calls.
     /// </summary>
 #pragma warning restore 1574
-    public CreationTuner As(Type type, object? token = null)
+    public CreationTuner As(Type type, object? key = null)
     {
-      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectTypeBuildAction(type, token));
+      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectTypeBuildAction(type, key));
 
-      return new CreationTuner(UnitSequenceMatcher, type, token);
+      return new CreationTuner(UnitSequenceMatcher, type, key);
     }
 
     /// <summary>
     ///   For all who depends on unit of type <typeparamref name="T" /> inject object of type <typeparamref name="TRedirect" />.
     ///   Tune plan of creating the object by subsequence calls.
     /// </summary>
-    public CreationTuner As<TRedirect>(object? token = null) => As(typeof(TRedirect), token);
+    public CreationTuner As<TRedirect>(object? key = null) => As(typeof(TRedirect), key);
 
 #pragma warning disable 1574
     /// <summary>
@@ -62,7 +62,7 @@ namespace Armature
     ///   Tune plan of building it by subsequence calls.
     /// </summary>
 #pragma warning restore 1574
-    public Tuner AsCreated(Type type, object? token = null) => As(type, token).CreatedByDefault();
+    public Tuner AsCreated(Type type, object? key = null) => As(type, key).CreatedByDefault();
 
 #pragma warning disable 1574
     /// <summary>
@@ -72,7 +72,7 @@ namespace Armature
     ///   Tune plan of building it by subsequence calls.
     /// </summary>
 #pragma warning restore 1574
-    public Tuner AsCreated<TRedirect>(object? token = null) => AsCreated(typeof(TRedirect), token);
+    public Tuner AsCreated<TRedirect>(object? key = null) => AsCreated(typeof(TRedirect), key);
 
     /// <summary>
     ///   For all who depends on <typeparamref name="T" /> inject object created by specified factory method.

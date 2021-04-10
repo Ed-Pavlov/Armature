@@ -10,19 +10,19 @@ namespace Armature.Core.BuildActions
   /// </summary>
   public abstract class CreateValueToInjectBuildAction : IBuildAction
   {
-    private readonly object? _token;
+    private readonly object? _key;
 
     [DebuggerStepThrough]
-    protected CreateValueToInjectBuildAction(object? token) => _token = token;
+    protected CreateValueToInjectBuildAction(object? key) => _key = key;
 
     public void Process(IBuildSession buildSession)
     {
       var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
 
-      var effectiveToken = _token == UnitKey.Propagate ? unitUnderConstruction.Key : _token;
+      var effectiveKey = _key == UnitKey.Propagate ? unitUnderConstruction.Key : _key;
 
       var valueType = GetValueType(unitUnderConstruction);
-      buildSession.BuildResult = buildSession.BuildUnit(new UnitId(valueType, effectiveToken));
+      buildSession.BuildResult = buildSession.BuildUnit(new UnitId(valueType, effectiveKey));
     }
 
     [DebuggerStepThrough]
@@ -30,6 +30,6 @@ namespace Armature.Core.BuildActions
 
     protected abstract Type GetValueType(UnitId unitId);
 
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _token.ToLogString());
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _key.ToLogString());
   }
 }

@@ -10,21 +10,21 @@ namespace Armature
   public class OpenGenericCreationTuner : UnitSequenceExtensibility, IExtensibility<Type, object>
   {
     protected readonly Type    OpenGenericType;
-    protected readonly object? Token;
+    protected readonly object? Key;
 
-    public OpenGenericCreationTuner(IUnitSequenceMatcher unitSequenceMatcher, Type openGenericType, object? token) : base(unitSequenceMatcher)
+    public OpenGenericCreationTuner(IUnitSequenceMatcher unitSequenceMatcher, Type openGenericType, object? key) : base(unitSequenceMatcher)
     {
       OpenGenericType = openGenericType;
-      Token           = token;
+      Key           = key;
     }
 
     Type IExtensibility<Type, object>.   Item1 => OpenGenericType;
-    object? IExtensibility<Type, object>.Item2 => Token;
+    object? IExtensibility<Type, object>.Item2 => Key;
 
     public Tuner CreatedByDefault()
     {
       var childMatcher = new WildcardUnitSequenceMatcher(
-        Match.OpenGenericType(OpenGenericType, Token),
+        Match.OpenGenericType(OpenGenericType, Key),
         UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
 
       UnitSequenceMatcher
@@ -37,7 +37,7 @@ namespace Armature
     public Tuner CreatedByReflection()
     {
       var childMatcher = new WildcardUnitSequenceMatcher(
-        Match.OpenGenericType(OpenGenericType, Token),
+        Match.OpenGenericType(OpenGenericType, Key),
         UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
 
       UnitSequenceMatcher

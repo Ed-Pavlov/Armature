@@ -14,11 +14,11 @@ namespace Armature
     ///   Used to make a build plan for Unit of type <paramref name="type"/>.
     ///   How it should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public static TreatingTuner Treat(this BuildPlansCollection buildPlans, Type type, object? token = null)
+    public static TreatingTuner Treat(this BuildPlansCollection buildPlans, Type type, object? key = null)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, key));
 
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
@@ -27,11 +27,11 @@ namespace Armature
     ///   Used to make a build plan for Unit of type <typeparamref name="T" />.
     ///   How <typeparamref name="T" /> should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public static TreatingTuner<T> Treat<T>(this BuildPlansCollection buildPlans, object? token = null)
+    public static TreatingTuner<T> Treat<T>(this BuildPlansCollection buildPlans, object? key = null)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(token));
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(key));
 
       return new TreatingTuner<T>(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
@@ -53,12 +53,12 @@ namespace Armature
     ///   Used to make a build plan for all inheritors of <paramref name="type"/>.
     ///   How it should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public static TreatingTuner TreatInheritorsOf(this BuildPlansCollection buildPlans, Type type, object? token = null)
+    public static TreatingTuner TreatInheritorsOf(this BuildPlansCollection buildPlans, Type type, object? key = null)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
-        new BaseTypeMatcher(type, token),
+        new BaseTypeMatcher(type, key),
         UnitSequenceMatchingWeight.WildcardMatchingBaseTypeUnit);
 
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
@@ -68,12 +68,12 @@ namespace Armature
     ///   Used to make a build plan for all inheritors of <typeparamref name="T" />.
     ///   How <typeparamref name="T" /> should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public static TreatingTuner<T> TreatInheritorsOf<T>(this BuildPlansCollection buildPlans, object? token = null)
+    public static TreatingTuner<T> TreatInheritorsOf<T>(this BuildPlansCollection buildPlans, object? key = null)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
-        new BaseTypeMatcher(typeof(T), token),
+        new BaseTypeMatcher(typeof(T), key),
         UnitSequenceMatchingWeight.WildcardMatchingBaseTypeUnit);
 
       return new TreatingTuner<T>(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
@@ -82,11 +82,11 @@ namespace Armature
     /// <summary>
     ///   Used to override a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems. 
     /// </summary>
-    public static TreatingTuner TreatOverride(this BuildPlansCollection buildPlans, Type type, object? token = null)
+    public static TreatingTuner TreatOverride(this BuildPlansCollection buildPlans, Type type, object? key = null)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var newSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
+      var newSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, key));
       var oldSequenceMatcher = buildPlans.Children.Single(_ => _.Equals(newSequenceMatcher));
 
       buildPlans.Children.Remove(oldSequenceMatcher);
@@ -95,16 +95,16 @@ namespace Armature
     }
 
     [Obsolete("Renamed to OverrideTreat, use it instead. Will be deleted in future releases.")]
-    public static TreatingTuner<T> Override<T>(this BuildPlansCollection buildPlans, object? token = null) => OverrideTreat<T>(buildPlans, token);
+    public static TreatingTuner<T> Override<T>(this BuildPlansCollection buildPlans, object? key = null) => OverrideTreat<T>(buildPlans, key);
 
     /// <summary>
     ///   Used to override a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems. 
     /// </summary>
-    public static TreatingTuner<T> OverrideTreat<T>(this BuildPlansCollection buildPlans, object? token = null)
+    public static TreatingTuner<T> OverrideTreat<T>(this BuildPlansCollection buildPlans, object? key = null)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var newSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(token));
+      var newSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(key));
       var oldSequenceMatcher = buildPlans.Children.Single(_ => _.Equals(newSequenceMatcher));
 
       buildPlans.Children.Remove(oldSequenceMatcher);
@@ -116,12 +116,12 @@ namespace Armature
     ///   Used to make a build plan for whole class of open generic types.
     ///   How <paramref name="openGenericType" /> should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public static TreatingOpenGenericTuner TreatOpenGeneric(this BuildPlansCollection buildPlans, Type openGenericType, object? token = null)
+    public static TreatingOpenGenericTuner TreatOpenGeneric(this BuildPlansCollection buildPlans, Type openGenericType, object? key = null)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
-        Match.OpenGenericType(openGenericType, token),
+        Match.OpenGenericType(openGenericType, key),
         UnitSequenceMatchingWeight.WildcardMatchingOpenGenericUnit);
 
       return new TreatingOpenGenericTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
@@ -143,11 +143,11 @@ namespace Armature
     /// <summary>
     ///   Used to make a build plan for a unit only if it is building in a context of building <paramref name="type" />.
     /// </summary>
-    public static SequenceTuner Building(this BuildPlansCollection buildPlans, Type type, object? token = null)
+    public static SequenceTuner Building(this BuildPlansCollection buildPlans, Type type, object? key = null)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, token));
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, key));
 
       return new SequenceTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
@@ -155,6 +155,6 @@ namespace Armature
     /// <summary>
     ///   Used to make a build plan for a unit only if it is building in a context of building <typeparamref name="T" />.
     /// </summary>
-    public static SequenceTuner Building<T>(this BuildPlansCollection buildPlans, object? token = null) => buildPlans.Building(typeof(T), token);
+    public static SequenceTuner Building<T>(this BuildPlansCollection buildPlans, object? key = null) => buildPlans.Building(typeof(T), key);
   }
 }

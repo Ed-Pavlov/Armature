@@ -21,13 +21,13 @@ namespace Armature
     public PropertyValueBuildPlan UseValue(object? value) => new(UnitMatcher, BuildAction, new SingletonBuildAction(value), Weight);
 
     /// <summary>
-    ///   For building a value for the property use <see cref="PropertyInfo.PropertyType" /> and <paramref name="token" />
+    ///   For building a value for the property use <see cref="PropertyInfo.PropertyType" /> and <paramref name="key" />
     /// </summary>
-    public PropertyValueBuildPlan UseToken(object token)
+    public PropertyValueBuildPlan UseKey(object key)
     {
-      if(token is null) throw new ArgumentNullException(nameof(token));
+      if(key is null) throw new ArgumentNullException(nameof(key));
 
-      return new PropertyValueBuildPlan(UnitMatcher, BuildAction, new CreatePropertyValueBuildAction(token), Weight);
+      return new PropertyValueBuildPlan(UnitMatcher, BuildAction, new CreatePropertyValueBuildAction(key), Weight);
     }
 
     /// <summary>
@@ -37,9 +37,9 @@ namespace Armature
       => new(UnitMatcher, BuildAction, new CreateByFactoryMethodBuildAction<object>(factoryMethod), Weight);
 
     /// <summary>
-    ///   For building a value for the property use <see cref="PropertyInfo.PropertyType" /> and <see cref="InjectAttribute.InjectionPointId" /> as a token
+    ///   For building a value for the property use <see cref="PropertyInfo.PropertyType" /> and <see cref="InjectAttribute.InjectionPointId" /> as a key
     /// </summary>
-    public PropertyValueBuildPlan UseInjectPointIdAsToken()
+    public PropertyValueBuildPlan UseInjectPointIdAsKey()
       => new(UnitMatcher, BuildAction, CreatePropertyValueForInjectPointBuildAction.Instance, Weight);
   }
 

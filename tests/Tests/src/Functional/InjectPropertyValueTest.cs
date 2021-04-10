@@ -126,20 +126,20 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_provided_token_for_property_by_inject_point()
+    public void should_use_provided_key_for_property_by_inject_point()
     {
-      const string token    = "token";
+      const string key    = "key";
       const string expected = "expectedString";
 
       // --arrange
       var target = CreateTarget();
 
-      target.Treat<string>(token).AsInstance(expected);
+      target.Treat<string>(key).AsInstance(expected);
 
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectProperty(ForProperty.WithInjectPoint(Subject.InjectPointId).UseToken(token));
+       .InjectProperty(ForProperty.WithInjectPoint(Subject.InjectPointId).UseKey(key));
 
       // --act
       var actual = target.Build<Subject>();
@@ -151,7 +151,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_inject_point_id_as_token_for_property_by_inject_point()
+    public void should_use_inject_point_id_as_key_for_property_by_inject_point()
     {
       const string expected = "expectedString";
 
@@ -163,7 +163,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectProperty(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsToken());
+       .InjectProperty(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsKey());
 
       // --act
       var actual = target.Build<Subject>();

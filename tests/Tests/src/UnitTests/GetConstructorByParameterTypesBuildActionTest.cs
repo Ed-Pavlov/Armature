@@ -21,7 +21,7 @@ namespace Tests.UnitTests
       var target = new GetConstructorByParameterTypesBuildAction(parameterTypes);
 
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<SampleType>(SpecialToken.Constructor).AsArray());
+      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<SampleType>(SpecialKey.Constructor).AsArray());
 
       // --act
       target.Process(buildSession);
@@ -40,7 +40,7 @@ namespace Tests.UnitTests
       var target = new GetConstructorByParameterTypesBuildAction(parameterTypes);
 
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<SampleType>(SpecialToken.Constructor).AsArray());
+      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<SampleType>(SpecialKey.Constructor).AsArray());
 
       // --act
       target.Process(buildSession);

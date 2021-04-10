@@ -3,16 +3,15 @@ using System.Diagnostics;
 using Armature.Core;
 using Armature.Core.Common;
 
-
 namespace Armature
 {
   public static class BuilderExtension
   {
     /// <summary>
-    ///   Use token for building a unit. See <see cref="UnitId" /> for details.
+    ///   Use key for building a unit. See <see cref="UnitId" /> for details.
     /// </summary>
     [DebuggerStepThrough]
-    public static Tokenizer UsingToken(this Builder builder, object token) => new(token, builder);
+    public static Keyer UsingKey(this Builder builder, object key) => new(key, builder);
 
     /// <summary>
     ///   Builds a Unit registered as type <typeparamref name="T" />
@@ -31,7 +30,7 @@ namespace Armature
     ///   All other Build... methods should delegate to this one. This is the real implementation
     /// </summary>
     [DebuggerStepThrough]
-    private static T Build<T>(this Builder builder, object? token, params object[]? parameters)
+    private static T Build<T>(this Builder builder, object? key, params object[]? parameters)
     {
       if(builder is null) throw new ArgumentNullException(nameof(builder));
 
@@ -46,7 +45,7 @@ namespace Armature
          .UsingParameters(parameters);
       }
 
-      var unitInfo    = new UnitId(typeof(T), token);
+      var unitInfo    = new UnitId(typeof(T), key);
       var buildResult = builder.BuildUnit(unitInfo, sessionalBuildPlans);
 
       return buildResult.HasValue
@@ -54,31 +53,31 @@ namespace Armature
                : throw new ArmatureException($"Can't build unit <{unitInfo}>").AddData("unitInfo", unitInfo);
     }
 
-    public readonly struct Tokenizer
+    public readonly struct Keyer
     {
-      private readonly object  _token;
+      private readonly object  _key;
       private readonly Builder _builder;
 
-      public Tokenizer(object token, Builder builder)
+      public Keyer(object key, Builder builder)
       {
         if(builder is null) throw new ArgumentNullException(nameof(builder));
-        if(token is null) throw new ArgumentNullException(nameof(token));
+        if(key is null) throw new ArgumentNullException(nameof(key));
 
-        _token   = token;
+        _key   = key;
         _builder = builder;
       }
 
       /// <summary>
-      ///   Calls <see cref="BuilderExtension.Build{T}(Builder, object, object[])" /> with <see cref="_token" /> as token
+      ///   Calls <see cref="BuilderExtension.Build{T}(Builder, object, object[])" /> with <see cref="_key" /> as key
       /// </summary>
       [DebuggerStepThrough]
-      public T Build<T>() => _builder.Build<T>(_token);
+      public T Build<T>() => _builder.Build<T>(_key);
 
       /// <summary>
-      ///   Calls <see cref="BuilderExtension.Build{T}(Builder, object, object[])" /> with <see cref="_token" /> as token
+      ///   Calls <see cref="BuilderExtension.Build{T}(Builder, object, object[])" /> with <see cref="_key" /> as key
       /// </summary>
       [DebuggerStepThrough]
-      public T Build<T>(params object[] parameters) => _builder.Build<T>(_token, parameters);
+      public T Build<T>(params object[] parameters) => _builder.Build<T>(_key, parameters);
     }
   }
 }

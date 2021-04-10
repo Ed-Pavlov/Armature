@@ -3,17 +3,17 @@
 namespace Armature.Core
 {
   /// <summary>
-  ///   No equality member are needed for this class, <see cref="_name" /> is used only for debug purpose, tokens should be equal by reference.
+  ///   No equality member are needed for this class, <see cref="_name" /> is used only for debug purpose, keys should be equal by reference.
   /// </summary>
   public class UnitKey
   {
     /// <summary>
-    ///   Means "any token"
+    ///   Means "any key"
     /// </summary>
     public static readonly UnitKey Any = new("Any");
 
     /// <summary>
-    ///   Used to propagate token to building dependencies
+    ///   Used to propagate key to building dependencies
     /// </summary>
     public static readonly UnitKey Propagate = new("Propagate");
 

@@ -135,9 +135,9 @@ namespace Tests.Functional
     }
 
     [TestCaseSource("ForParameterSource")]
-    public void should_build_value_for_parameter_using_parameter_type_and_token(ParameterValueTuner forParameter)
+    public void should_build_value_for_parameter_using_parameter_type_and_key(ParameterValueTuner forParameter)
     {
-      const string token    = "token398";
+      const string key    = "key398";
       const string expected = "expected 398752";
 
       // --arrange
@@ -146,14 +146,14 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingParameters(forParameter.UseToken(token), "bad");
+       .UsingParameters(forParameter.UseKey(key), "bad");
 
       target
-       .Treat<string>(token)
+       .Treat<string>(key)
        .AsInstance(expected);
 
       target
-       .Treat<string>("bad_token")
+       .Treat<string>("bad_key")
        .AsInstance("bad");
 
       target
@@ -168,7 +168,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource("ForParameterSource")]
-    public void should_fail_if_there_is_no_value_w_token_registered(ParameterValueTuner forParameter)
+    public void should_fail_if_there_is_no_value_w_key_registered(ParameterValueTuner forParameter)
     {
       // --arrange
       var target = CreateTarget();
@@ -180,7 +180,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingParameters(forParameter.UseToken("token"));
+       .UsingParameters(forParameter.UseKey("key"));
 
       // --act
       Action actual = () => target.Build<LevelOne>();
@@ -243,7 +243,7 @@ namespace Tests.Functional
 
       // --act
       Action actual = () => adjuster.UsingParameters(
-                        ForParameter.OfType<string>().UseToken("expected29083"),
+                        ForParameter.OfType<string>().UseKey("expected29083"),
                         ForParameter.OfType<string>().UseValue("kldj"));
 
       // --assert

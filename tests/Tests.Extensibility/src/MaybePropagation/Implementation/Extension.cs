@@ -14,10 +14,10 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     public static TreatingTuner<T> TreatMaybeValue<T>(this TreatingTuner<Maybe<T>> treatingTuner)
     {
       var treat       = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
-      var uniqueToken = Guid.NewGuid();
-      treat.UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueToken));
+      var uniqueKey = Guid.NewGuid();
+      treat.UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueKey));
 
-      return new TreatingTuner<T>(treat.UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(new WildcardUnitSequenceMatcher(Match.Type<T>(uniqueToken), 0)));
+      return new TreatingTuner<T>(treat.UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(new WildcardUnitSequenceMatcher(Match.Type<T>(uniqueKey), 0)));
     }
 
     /// <summary>

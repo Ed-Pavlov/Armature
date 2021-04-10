@@ -9,21 +9,21 @@ namespace Tests.UnitTests
   public class RedirectTypeBuildActionTest
   {
     [Test]
-    public void should_propagate_token()
+    public void should_propagate_key()
     {
-      const string expectedToken = "token";
+      const string expectedKey = "key";
 
       // --arrange
       var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.BuildSequence).Returns(new UnitId(null, UnitKey.Propagate).AsArray());
 
-      var buildAction = new RedirectTypeBuildAction(typeof(int), expectedToken);
+      var buildAction = new RedirectTypeBuildAction(typeof(int), expectedKey);
 
       // --act
       buildAction.Process(buildSession);
 
       // --assert
-      A.CallTo(() => buildSession.BuildUnit(Unit.OfType<int>(expectedToken))).MustHaveHappenedOnceExactly();
+      A.CallTo(() => buildSession.BuildUnit(Unit.OfType<int>(expectedKey))).MustHaveHappenedOnceExactly();
     }
   }
 }

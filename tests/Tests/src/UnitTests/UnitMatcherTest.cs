@@ -11,17 +11,17 @@ namespace Tests.UnitTests
     [Test]
     public void should_match_with_null_id()
     {
-      const string token = "token";
+      const string key = "key";
 
-      var unitInfo = new UnitId(null, token);
-      var matcher  = new UnitInfoMatcher(null, token);
+      var unitInfo = new UnitId(null, key);
+      var matcher  = new UnitInfoMatcher(null, key);
 
       // --assert
       matcher.Matches(unitInfo).Should().BeTrue();
     }
 
     [Test]
-    public void should_match_with_null_token()
+    public void should_match_with_null_key()
     {
       const string id = "id";
 
@@ -36,19 +36,19 @@ namespace Tests.UnitTests
     public void should_match()
     {
       const string id    = "id";
-      const string token = "token";
+      const string key = "key";
 
-      var unitInfo = new UnitId(id, token);
-      var matcher  = new UnitInfoMatcher(id, token);
+      var unitInfo = new UnitId(id, key);
+      var matcher  = new UnitInfoMatcher(id, key);
 
       // --assert
       matcher.Matches(unitInfo).Should().BeTrue();
     }
 
     [Test]
-    public void should_match_if_token_any_provided([Values(null, "id")] object id)
+    public void should_match_if_key_any_provided([Values(null, "id")] object id)
     {
-      var unitInfo = new UnitId(id, "token");
+      var unitInfo = new UnitId(id, "key");
       var matcher  = new UnitInfoMatcher(id, UnitKey.Any);
 
       // --assert
@@ -56,20 +56,20 @@ namespace Tests.UnitTests
     }
 
     [Test]
-    public void should_not_match_if_id_differs([Values(null, "token")] object token)
+    public void should_not_match_if_id_differs([Values(null, "key")] object key)
     {
-      var unitInfo = new UnitId("id1", token);
-      var matcher  = new UnitInfoMatcher("id2", token);
+      var unitInfo = new UnitId("id1", key);
+      var matcher  = new UnitInfoMatcher("id2", key);
 
       // --assert
       matcher.Matches(unitInfo).Should().BeFalse();
     }
 
     [Test]
-    public void should_not_match_if_token_differs([Values(null, "id")] object id)
+    public void should_not_match_if_key_differs([Values(null, "id")] object id)
     {
-      var unitInfo = new UnitId(id, "token1");
-      var matcher  = new UnitInfoMatcher(id, "token2");
+      var unitInfo = new UnitId(id, "key1");
+      var matcher  = new UnitInfoMatcher(id, "key2");
 
       // --assert
       matcher.Matches(unitInfo).Should().BeFalse();
@@ -78,23 +78,23 @@ namespace Tests.UnitTests
     [Test]
     public void should_be_equal1([Values(null, "id")] object id)
     {
-      const string token = "token";
+      const string key = "key";
 
-      var matcher1 = new UnitInfoMatcher(id, token);
-      var matcher2 = new UnitInfoMatcher(id, token);
+      var matcher1 = new UnitInfoMatcher(id, key);
+      var matcher2 = new UnitInfoMatcher(id, key);
 
       // --assert
       matcher1.Equals(matcher2).Should().BeTrue();
       matcher2.Equals(matcher1).Should().BeTrue();
     }
 
-    [TestCaseSource(nameof(TokensSource))]
-    public void should_be_equal2(object token)
+    [TestCaseSource(nameof(KeysSource))]
+    public void should_be_equal2(object key)
     {
       const string id = "id";
 
-      var matcher1 = new UnitInfoMatcher(id, token);
-      var matcher2 = new UnitInfoMatcher(id, token);
+      var matcher1 = new UnitInfoMatcher(id, key);
+      var matcher2 = new UnitInfoMatcher(id, key);
 
       // --assert
       matcher1.Equals(matcher2).Should().BeTrue();
@@ -104,7 +104,7 @@ namespace Tests.UnitTests
     [Test]
     public void should_not_be_equal1([Values(null, "id")] object id)
     {
-      var matcher1 = new UnitInfoMatcher(id, "token");
+      var matcher1 = new UnitInfoMatcher(id, "key");
       var matcher2 = new UnitInfoMatcher(id, UnitKey.Any);
 
       // --assert
@@ -125,34 +125,34 @@ namespace Tests.UnitTests
       matcher2.Equals(matcher1).Should().BeFalse();
     }
 
-    [TestCaseSource(nameof(TokensSource))]
-    public void should_not_be_equal3(object token)
+    [TestCaseSource(nameof(KeysSource))]
+    public void should_not_be_equal3(object key)
     {
-      var matcher1 = new UnitInfoMatcher("id1", token);
-      var matcher2 = new UnitInfoMatcher("id2", token);
+      var matcher1 = new UnitInfoMatcher("id1", key);
+      var matcher2 = new UnitInfoMatcher("id2", key);
 
       // --assert
       matcher1.Equals(matcher2).Should().BeFalse();
       matcher2.Equals(matcher1).Should().BeFalse();
     }
 
-    [TestCaseSource(nameof(TokensSource))]
-    public void should_not_be_equal4(object token)
+    [TestCaseSource(nameof(KeysSource))]
+    public void should_not_be_equal4(object key)
     {
-      if(token == null) return;
+      if(key == null) return;
 
-      var matcher1 = new UnitInfoMatcher(null, token);
-      var matcher2 = new UnitInfoMatcher("id2", token);
+      var matcher1 = new UnitInfoMatcher(null, key);
+      var matcher2 = new UnitInfoMatcher("id2", key);
 
       // --assert
       matcher1.Equals(matcher2).Should().BeFalse();
       matcher2.Equals(matcher1).Should().BeFalse();
     }
 
-    private static IEnumerable<object> TokensSource()
+    private static IEnumerable<object> KeysSource()
     {
       yield return null;
-      yield return "token";
+      yield return "key";
       yield return UnitKey.Any;
     }
   }

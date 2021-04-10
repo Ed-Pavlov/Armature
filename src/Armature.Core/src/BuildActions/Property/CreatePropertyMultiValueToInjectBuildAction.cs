@@ -5,7 +5,7 @@ namespace Armature.Core.BuildActions.Property
 {
   public class CreatePropertyMultiValueToInjectBuildAction : CreateMultiValueToInjectBuildAction
   {
-    public CreatePropertyMultiValueToInjectBuildAction(object? token = null) : base(token) { }
+    public CreatePropertyMultiValueToInjectBuildAction(object? key = null) : base(key) { }
 
     protected override Type GetValueType(UnitId unitId) => ((PropertyInfo) unitId.Kind!).PropertyType;
   }

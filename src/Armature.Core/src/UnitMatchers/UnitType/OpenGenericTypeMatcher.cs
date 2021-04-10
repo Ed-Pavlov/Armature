@@ -9,7 +9,7 @@ namespace Armature.Core.UnitMatchers.UnitType
   public record OpenGenericTypeMatcher : UnitInfoByTypeMatcherBase, IUnitMatcher
   {
     [DebuggerStepThrough]
-    public OpenGenericTypeMatcher(Type type, object? token) : base(type, token)
+    public OpenGenericTypeMatcher(Type type, object? key) : base(type, key)
     {
       if(!type.IsGenericTypeDefinition) throw new ArgumentException("Provide open generic type", nameof(type));
     }
@@ -17,7 +17,7 @@ namespace Armature.Core.UnitMatchers.UnitType
     public bool Matches(UnitId unitId)
     {
       var unitType = unitId.GetUnitTypeSafe();
-      return unitType is {IsGenericType: true} && unitType.GetGenericTypeDefinition() == UnitType && Token.Matches(unitId.Key);
+      return unitType is {IsGenericType: true} && unitType.GetGenericTypeDefinition() == UnitType && Key.Matches(unitId.Key);
     }
   }
 }

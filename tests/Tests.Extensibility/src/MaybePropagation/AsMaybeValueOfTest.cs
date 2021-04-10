@@ -74,18 +74,18 @@ namespace Tests.Extensibility.MaybePropagation
     }
 
     [Test]
-    public void should_build_maybe_use_token_for_dependency()
+    public void should_build_maybe_use_key_for_dependency()
     {
       var builder = CreateTarget();
 
-      const string token = "token";
-      builder.Treat<Maybe<Section>>(token).AsInstance(new Section().ToMaybe());
+      const string key = "key";
+      builder.Treat<Maybe<Section>>(key).AsInstance(new Section().ToMaybe());
 
       builder
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
        .AsCreated<Reader>()
-       .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>(token));
+       .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>(key));
 
       var actual = builder.Build<Maybe<IReader>>();
 
@@ -95,12 +95,12 @@ namespace Tests.Extensibility.MaybePropagation
     }
 
     [Test]
-    public void should_build_maybe_use_inject_point_id_as_token_for_dependency()
+    public void should_build_maybe_use_inject_point_id_as_key_for_dependency()
     {
       var builder = CreateTarget();
 
-      const string token = Reader1.InjectPointId;
-      builder.Treat<Maybe<Section>>(token).AsInstance(new Section().ToMaybe());
+      const string key = Reader1.InjectPointId;
+      builder.Treat<Maybe<Section>>(key).AsInstance(new Section().ToMaybe());
 
       builder
        .Treat<Maybe<IReader>>()
@@ -111,7 +111,7 @@ namespace Tests.Extensibility.MaybePropagation
               .Treat<Section>(UnitKey.Any)
               .AsMaybeValueOf()
               .As<Maybe<Section>>(UnitKey.Propagate))
-       .UsingParameters(ForParameter.OfType<Section>().UseInjectPointIdAsToken());
+       .UsingParameters(ForParameter.OfType<Section>().UseInjectPointIdAsKey());
 
       var actual = builder.Build<Maybe<IReader>>();
 

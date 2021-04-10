@@ -158,9 +158,9 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_creation_strategy_registered_with_token()
+    public void should_use_creation_strategy_registered_with_key()
     {
-      const string token    = "token";
+      const string key    = "key";
       var          expected = new Subject();
 
       // --arrange
@@ -171,21 +171,21 @@ namespace Tests.Functional
        .AsIs();
 
       target
-       .Treat<Subject>(token)
+       .Treat<Subject>(key)
        .AsCreatedWith(_ => expected);
 
 
       // --act
-      var actual = target.UsingToken(token).Build<Subject>();
+      var actual = target.UsingKey(key).Build<Subject>();
 
       // --assert
       actual.Should().Be(expected);
     }
 
     [Test]
-    public void should_pass_token_to_creation_strategy()
+    public void should_pass_key_to_creation_strategy()
     {
-      const string token            = "token";
+      const string key            = "key";
       var          createdByFactory = new Subject();
 
       // --arrange
@@ -193,10 +193,10 @@ namespace Tests.Functional
 
       target
        .Treat<ISubject1>()
-       .AsCreated<Subject>(token);
+       .AsCreated<Subject>(key);
 
       target
-       .Treat<Subject>(token)
+       .Treat<Subject>(key)
        .AsIs();
 
       target
@@ -230,21 +230,21 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_runtime_parameters_when_build_with_token()
+    public void should_use_runtime_parameters_when_build_with_key()
     {
-      const string token    = "token";
+      const string key    = "key";
       const int    expected = 98347;
 
       // --arrange
       var target = CreateTarget();
 
       target
-       .Treat<Subject>(token)
+       .Treat<Subject>(key)
        .AsIs()
        .UsingConstructorWithParameters<int>();
 
       // --act
-      var actual = target.UsingToken(token).Build<Subject>(expected);
+      var actual = target.UsingKey(key).Build<Subject>(expected);
 
       // --assert
       actual.Value.Should().Be(expected);

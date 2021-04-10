@@ -21,19 +21,19 @@ namespace Armature
     public ParameterValueBuildPlan UseValue(object? value) => new(UnitMatcher, new SingletonBuildAction(value), Weight);
 
     /// <summary>
-    ///   For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <paramref name="token" />
+    ///   For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <paramref name="key" />
     /// </summary>
-    public ParameterValueBuildPlan UseToken(object token)
+    public ParameterValueBuildPlan UseKey(object key)
     {
-      if(token is null) throw new ArgumentNullException(nameof(token));
+      if(key is null) throw new ArgumentNullException(nameof(key));
 
-      return new ParameterValueBuildPlan(UnitMatcher, new CreateParameterValueBuildAction(token), Weight);
+      return new ParameterValueBuildPlan(UnitMatcher, new CreateParameterValueBuildAction(key), Weight);
     }
 
     /// <summary>
-    ///   For building a value for the parameter use the type of parameter and <see cref="InjectAttribute.InjectionPointId" /> as token
+    ///   For building a value for the parameter use the type of parameter and <see cref="InjectAttribute.InjectionPointId" /> as key
     /// </summary>
-    public ParameterValueBuildPlan UseInjectPointIdAsToken() => new(UnitMatcher, CreateParameterValueForInjectPointBuildAction.Instance, Weight);
+    public ParameterValueBuildPlan UseInjectPointIdAsKey() => new(UnitMatcher, CreateParameterValueForInjectPointBuildAction.Instance, Weight);
 
     /// <summary>
     ///   For building a value for the parameter use <paramref name="factoryMethod" /> factory method

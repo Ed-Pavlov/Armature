@@ -5,7 +5,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.BuildActions.Property
 {
   /// <summary>
-  ///   Builds value to inject by using <see cref="PropertyInfo.PropertyType" /> and <see cref="InjectAttribute.InjectionPointId" /> as token
+  ///   Builds value to inject by using <see cref="PropertyInfo.PropertyType" /> and <see cref="InjectAttribute.InjectionPointId" /> as key
   /// </summary>
   public class CreatePropertyValueForInjectPointBuildAction : IBuildAction
   {

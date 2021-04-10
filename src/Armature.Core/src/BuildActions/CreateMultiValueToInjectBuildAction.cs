@@ -13,15 +13,15 @@ namespace Armature.Core.BuildActions
     private static readonly Type[]   TypeParamContainer = new Type[1];
     private static readonly Type[]   IntTypeParam       = {typeof(int)};
 
-    private readonly object? _token;
+    private readonly object? _key;
 
     [DebuggerStepThrough]
-    protected CreateMultiValueToInjectBuildAction(object? token) => _token = token;
+    protected CreateMultiValueToInjectBuildAction(object? key) => _key = key;
 
     public void Process(IBuildSession buildSession)
     {
       var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
-      var effectiveToken        = _token == UnitKey.Propagate ? unitUnderConstruction.Key : _token;
+      var effectiveKey        = _key == UnitKey.Propagate ? unitUnderConstruction.Key : _key;
 
       var valueType = GetValueType(unitUnderConstruction);
 
@@ -29,7 +29,7 @@ namespace Armature.Core.BuildActions
       {
         var itemType = valueType.GenericTypeArguments[0];
 
-        var values = buildSession.BuildAllUnits(new UnitId(itemType, effectiveToken));
+        var values = buildSession.BuildAllUnits(new UnitId(itemType, effectiveKey));
 
         if(values is not null)
         {
@@ -97,6 +97,6 @@ namespace Armature.Core.BuildActions
       return type.IsAssignableFrom(listType);
     }
 
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _token.ToLogString());
+    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _key.ToLogString());
   }
 }

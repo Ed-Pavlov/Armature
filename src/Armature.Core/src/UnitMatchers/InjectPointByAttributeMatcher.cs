@@ -15,7 +15,7 @@ namespace Armature.Core.UnitMatchers
 
     public bool Matches(UnitId unitId)
     {
-      if(unitId.Key != SpecialToken.InjectValue) return false;
+      if(unitId.Key != SpecialKey.InjectValue) return false;
 
       var attribute = GetInjectPointAttribute(unitId);
       return attribute is not null && (_predicate is null || _predicate(attribute));

@@ -9,6 +9,6 @@
 
     private PropertyMatcher() { }
 
-    public bool Matches(UnitId unitId) => unitId.Key == SpecialToken.Property && unitId.GetUnitTypeSafe() is not null;
+    public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Property && unitId.GetUnitTypeSafe() is not null;
   }
 }

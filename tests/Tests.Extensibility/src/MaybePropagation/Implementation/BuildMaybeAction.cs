@@ -9,15 +9,15 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
   /// </summary>
   internal class BuildMaybeAction<T> : IBuildAction
   {
-    private readonly Guid _uniqueToken;
+    private readonly Guid _uniqueKey;
 
-    public BuildMaybeAction(Guid uniqueToken) => _uniqueToken = uniqueToken;
+    public BuildMaybeAction(Guid uniqueKey) => _uniqueKey = uniqueKey;
 
     public void Process(IBuildSession buildSession)
     {
       try
       {
-        var result = buildSession.BuildUnit(new UnitId(typeof(T), _uniqueToken));
+        var result = buildSession.BuildUnit(new UnitId(typeof(T), _uniqueKey));
 
         if(!result.HasValue) throw new InvalidOperationException();
 
