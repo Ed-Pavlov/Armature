@@ -27,7 +27,7 @@ namespace Armature.Core.BuildActions
     public void Process(IBuildSession buildSession)
     {
       var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
-      var effectiveToken        = Equals(_token, Token.Propagate) ? unitUnderConstruction.Key : _token;
+      var effectiveToken        = Equals(_token, UnitKey.Propagate) ? unitUnderConstruction.Key : _token;
 
       var genericType = _redirectTo.MakeGenericType(buildSession.GetUnitUnderConstruction().GetUnitType().GetGenericArguments());
       buildSession.BuildResult = buildSession.BuildUnit(new UnitId(genericType, effectiveToken));

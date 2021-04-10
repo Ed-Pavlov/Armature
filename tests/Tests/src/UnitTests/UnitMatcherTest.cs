@@ -49,7 +49,7 @@ namespace Tests.UnitTests
     public void should_match_if_token_any_provided([Values(null, "id")] object id)
     {
       var unitInfo = new UnitId(id, "token");
-      var matcher  = new UnitInfoMatcher(id, Token.Any);
+      var matcher  = new UnitInfoMatcher(id, UnitKey.Any);
 
       // --assert
       matcher.Matches(unitInfo).Should().BeTrue();
@@ -105,7 +105,7 @@ namespace Tests.UnitTests
     public void should_not_be_equal1([Values(null, "id")] object id)
     {
       var matcher1 = new UnitInfoMatcher(id, "token");
-      var matcher2 = new UnitInfoMatcher(id, Token.Any);
+      var matcher2 = new UnitInfoMatcher(id, UnitKey.Any);
 
       // --assert
       matcher1.Equals(matcher2).Should().BeFalse();
@@ -118,7 +118,7 @@ namespace Tests.UnitTests
       const string id = "id";
 
       var matcher1 = new UnitInfoMatcher(id, null);
-      var matcher2 = new UnitInfoMatcher(id, Token.Any);
+      var matcher2 = new UnitInfoMatcher(id, UnitKey.Any);
 
       // --assert
       matcher1.Equals(matcher2).Should().BeFalse();
@@ -153,7 +153,7 @@ namespace Tests.UnitTests
     {
       yield return null;
       yield return "token";
-      yield return Token.Any;
+      yield return UnitKey.Any;
     }
   }
 }

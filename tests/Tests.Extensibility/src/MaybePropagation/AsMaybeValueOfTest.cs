@@ -108,9 +108,9 @@ namespace Tests.Extensibility.MaybePropagation
        .AsCreated<Reader1>()
        .BuildingWhich(
           _ => _
-              .Treat<Section>(Token.Any)
+              .Treat<Section>(UnitKey.Any)
               .AsMaybeValueOf()
-              .As<Maybe<Section>>(Token.Propagate))
+              .As<Maybe<Section>>(UnitKey.Propagate))
        .UsingParameters(ForParameter.OfType<Section>().UseInjectPointIdAsToken());
 
       var actual = builder.Build<Maybe<IReader>>();

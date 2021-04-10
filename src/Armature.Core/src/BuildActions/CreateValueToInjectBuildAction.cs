@@ -19,7 +19,7 @@ namespace Armature.Core.BuildActions
     {
       var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
 
-      var effectiveToken = _token == Token.Propagate ? unitUnderConstruction.Key : _token;
+      var effectiveToken = _token == UnitKey.Propagate ? unitUnderConstruction.Key : _token;
 
       var valueType = GetValueType(unitUnderConstruction);
       buildSession.BuildResult = buildSession.BuildUnit(new UnitId(valueType, effectiveToken));

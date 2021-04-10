@@ -30,7 +30,7 @@ namespace Armature.Core.BuildActions
       if(!buildSession.BuildResult.HasValue)
       {
         var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
-        var effectiveToken        = Equals(_token, Token.Propagate) ? unitUnderConstruction.Key : _token;
+        var effectiveToken        = Equals(_token, UnitKey.Propagate) ? unitUnderConstruction.Key : _token;
 
         var unitInfo = new UnitId(_redirectTo, effectiveToken);
         buildSession.BuildResult = buildSession.BuildUnit(unitInfo);

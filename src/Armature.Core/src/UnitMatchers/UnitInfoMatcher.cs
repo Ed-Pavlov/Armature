@@ -24,7 +24,7 @@ namespace Armature.Core.UnitMatchers
     }
 
     /// <inheritdoc />
-    /// <remarks>Matching, unlike equality, takes into consideration <see cref="Armature.Core.Token.Any"/>.</remarks>
+    /// <remarks>Matching, unlike equality, takes into consideration <see cref="UnitKey.Any"/>.</remarks>
     public virtual bool Matches(UnitId unit)
     {
       if(ReferenceEquals(null, unit)) return false;
