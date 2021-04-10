@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
+using Armature.Core.UnitMatchers;
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
 
@@ -18,9 +19,8 @@ namespace Armature
     public SequenceTuner Building(Type type, object? key = null)
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
-
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, key));
-
+      
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(type, key));
       return new SequenceTuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
@@ -35,7 +35,8 @@ namespace Armature
     /// </summary>
     public TreatingTuner Treat(Type type, object? key = null)
     {
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, key));
+      if(type is null) throw new ArgumentNullException(nameof(type));
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(new UnitId(type, key)));
 
       return new TreatingTuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }

@@ -5,7 +5,6 @@ using Armature.Core.UnitMatchers;
 using Armature.Core.UnitMatchers.UnitType;
 using Armature.Core.UnitSequenceMatcher;
 
-
 namespace Armature
 {
   public static class BuildPlansCollectionExtension
@@ -17,9 +16,9 @@ namespace Armature
     public static TreatingTuner Treat(this BuildPlansCollection buildPlans, Type type, object? key = null)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
+      if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, key));
-
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(new UnitId(type, key)));
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
@@ -32,7 +31,6 @@ namespace Armature
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type<T>(key));
-
       return new TreatingTuner<T>(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
@@ -45,7 +43,6 @@ namespace Armature
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(unitId));
-
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
@@ -85,12 +82,12 @@ namespace Armature
     public static TreatingTuner TreatOverride(this BuildPlansCollection buildPlans, Type type, object? key = null)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
+      if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var newSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, key));
+      var newSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(type, key));
       var oldSequenceMatcher = buildPlans.Children.Single(_ => _.Equals(newSequenceMatcher));
 
       buildPlans.Children.Remove(oldSequenceMatcher);
-
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(newSequenceMatcher));
     }
 
@@ -108,7 +105,6 @@ namespace Armature
       var oldSequenceMatcher = buildPlans.Children.Single(_ => _.Equals(newSequenceMatcher));
 
       buildPlans.Children.Remove(oldSequenceMatcher);
-
       return new TreatingTuner<T>(buildPlans.AddOrGetUnitSequenceMatcher(newSequenceMatcher));
     }
 
@@ -136,7 +132,6 @@ namespace Armature
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new AnyUnitSequenceMatcher();
-
       return new Tuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 
@@ -146,9 +141,9 @@ namespace Armature
     public static SequenceTuner Building(this BuildPlansCollection buildPlans, Type type, object? key = null)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
+      if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(Match.Type(type, key));
-
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(type, key));
       return new SequenceTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }
 

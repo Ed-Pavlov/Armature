@@ -15,14 +15,9 @@ namespace Armature
     ///   Creates a type matcher with <see cref="UnitId" />(typeof(<typeparamref name="T" />), <paramref name="key" />)
     /// </summary>
     [DebuggerStepThrough]
-    public static IUnitMatcher Type<T>(object? key) => Type(typeof(T), key);
-
-    /// <summary>
-    ///   Creates a type matcher with <see cref="UnitId" />(<paramref name="type" />, <paramref name="key" />)
-    /// </summary>
-    [DebuggerStepThrough]
-    public static IUnitMatcher Type(Type type, object? key)
+    public static IUnitMatcher Type<T>(object? key)
     {
+      Type type = typeof(T);
       if(type is null) throw new ArgumentNullException(nameof(type));
 
       return new UnitInfoMatcher(new UnitId(type, key));
