@@ -13,14 +13,14 @@ namespace Armature.Core.UnitMatchers
     [DebuggerStepThrough]
     protected InjectPointByAttributeMatcher(Predicate<T>? predicate) => _predicate = predicate;
 
-    public bool Matches(UnitInfo unitInfo)
+    public bool Matches(UnitId unitId)
     {
-      if(unitInfo.Token != SpecialToken.InjectValue) return false;
+      if(unitId.Key != SpecialToken.InjectValue) return false;
 
-      var attribute = GetInjectPointAttribute(unitInfo);
+      var attribute = GetInjectPointAttribute(unitId);
       return attribute is not null && (_predicate is null || _predicate(attribute));
     }
 
-    protected abstract T? GetInjectPointAttribute(UnitInfo unitInfo);
+    protected abstract T? GetInjectPointAttribute(UnitId unitId);
   }
 }

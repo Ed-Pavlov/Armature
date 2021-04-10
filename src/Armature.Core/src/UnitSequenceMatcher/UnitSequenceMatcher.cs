@@ -25,7 +25,7 @@ namespace Armature.Core.UnitSequenceMatcher
 
     public abstract ICollection<IUnitSequenceMatcher> Children { get; }
 
-    public abstract MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight);
+    public abstract MatchedBuildActions? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight);
 
     [DebuggerStepThrough]
     public IUnitSequenceMatcher AddBuildAction(object buildStage, IBuildAction buildAction)

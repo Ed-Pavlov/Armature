@@ -37,14 +37,14 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Used to make a build plan for <paramref name="unitInfo"/>
+    ///   Used to make a build plan for <paramref name="unitId"/>
     ///   How it should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public static TreatingTuner Treat(this BuildPlansCollection buildPlans, UnitInfo unitInfo)
+    public static TreatingTuner Treat(this BuildPlansCollection buildPlans, UnitId unitId)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(unitInfo));
+      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(unitId));
 
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
     }

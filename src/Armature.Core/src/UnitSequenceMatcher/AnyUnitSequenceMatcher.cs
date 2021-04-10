@@ -31,9 +31,9 @@ namespace Armature.Core.UnitSequenceMatcher
     IEnumerator IEnumerable.GetEnumerator() => throw new NotSupportedException();
 
     /// <summary>
-    ///   Matches any <see cref="UnitInfo" />, so it pass the building unit info into its children and returns merged result
+    ///   Matches any <see cref="UnitId" />, so it pass the building unit info into its children and returns merged result
     /// </summary>
-    public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
+    public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
     {
       var unitsToSkip = buildingUnitsSequence.Length;
 

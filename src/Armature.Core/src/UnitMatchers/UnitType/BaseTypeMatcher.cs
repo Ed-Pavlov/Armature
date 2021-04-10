@@ -6,6 +6,6 @@ namespace Armature.Core.UnitMatchers.UnitType
   {
     public BaseTypeMatcher(Type baseType, object? token) : base(baseType, token) { }
 
-    public bool Matches(UnitInfo unitInfo) => UnitType.IsAssignableFrom(unitInfo.GetUnitTypeSafe()) && Token.Matches(unitInfo.Token);
+    public bool Matches(UnitId unitId) => UnitType.IsAssignableFrom(unitId.GetUnitTypeSafe()) && Token.Matches(unitId.Key);
   }
 }

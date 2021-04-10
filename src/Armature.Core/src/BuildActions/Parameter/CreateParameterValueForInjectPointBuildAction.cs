@@ -15,7 +15,7 @@ namespace Armature.Core.BuildActions.Parameter
 
     public void Process(IBuildSession buildSession)
     {
-      var parameterInfo = (ParameterInfo) buildSession.GetUnitUnderConstruction().Id!;
+      var parameterInfo = (ParameterInfo) buildSession.GetUnitUnderConstruction().Kind!;
 
       var attribute = parameterInfo
                      .GetCustomAttributes<InjectAttribute>()
@@ -27,7 +27,7 @@ namespace Armature.Core.BuildActions.Parameter
       }
       else
       {
-        var unitInfo = new UnitInfo(parameterInfo.ParameterType, attribute.InjectionPointId);
+        var unitInfo = new UnitId(parameterInfo.ParameterType, attribute.InjectionPointId);
         buildSession.BuildResult = buildSession.BuildUnit(unitInfo);
       }
     }

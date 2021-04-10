@@ -29,7 +29,7 @@ namespace Armature.Core.UnitSequenceMatcher
     ///   the last one in the <paramref name="buildingUnitsSequence" />.
     /// </summary>
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
-    public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
+    public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
     {
       if(buildingUnitsSequence.Length != 1) return null;
 

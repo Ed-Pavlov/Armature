@@ -14,9 +14,9 @@ namespace Armature.Core.UnitMatchers
     [DebuggerStepThrough]
     protected InjectPointByNameMatcher(string name) => _name = name ?? throw new ArgumentNullException(nameof(name));
 
-    public bool Matches(UnitInfo unitInfo) => unitInfo.Token == SpecialToken.InjectValue && GetInjectPointName(unitInfo) == _name;
+    public bool Matches(UnitId unitId) => unitId.Key == SpecialToken.InjectValue && GetInjectPointName(unitId) == _name;
 
-    protected abstract string? GetInjectPointName(UnitInfo unitInfo);
+    protected abstract string? GetInjectPointName(UnitId unitId);
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _name);

@@ -14,9 +14,9 @@ namespace Armature.Core.UnitMatchers.Parameters
     [DebuggerStepThrough]
     public ParameterByAttributeMatcher(Predicate<T>? predicate) : base(predicate) { }
 
-    protected override T? GetInjectPointAttribute(UnitInfo unitInfo) => GetParameterAttribute(unitInfo);
+    protected override T? GetInjectPointAttribute(UnitId unitId) => GetParameterAttribute(unitId);
 
-    public static T? GetParameterAttribute(UnitInfo unitInfo)
-      => unitInfo.Id is ParameterInfo parameterInfo ? parameterInfo.GetCustomAttribute<T>() : default;
+    public static T? GetParameterAttribute(UnitId unitId)
+      => unitId.Kind is ParameterInfo parameterInfo ? parameterInfo.GetCustomAttribute<T>() : default;
   }
 }

@@ -13,14 +13,14 @@ namespace Armature.Core
   {
     /// <summary>
     ///   "Builds" a <see cref="ConstructorInfo" /> for a <see creaf="type" /> by building a unit represented
-    ///   by <see cref="UnitInfo" />(<paramref name="type" />, <see cref="SpecialToken.Constructor" />) via current build session.
+    ///   by <see cref="UnitId" />(<paramref name="type" />, <see cref="SpecialToken.Constructor" />) via current build session.
     /// </summary>
     public static ConstructorInfo GetConstructorOf(this IBuildSession buildSession, Type type)
     {
       if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var result = buildSession.BuildUnit(new UnitInfo(type, SpecialToken.Constructor));
+      var result = buildSession.BuildUnit(new UnitId(type, SpecialToken.Constructor));
 
       if(!result.HasValue)
         throw new Exception(string.Format("Can't find appropriate constructor for type {0}", type));
@@ -33,7 +33,7 @@ namespace Armature.Core
     /// </summary>
     public static IReadOnlyList<PropertyInfo> GetPropertiesToInject(this IBuildSession buildSession, Type type)
     {
-      var unitInfo = new UnitInfo(type, SpecialToken.Property);
+      var unitInfo = new UnitId(type, SpecialToken.Property);
       var result   = buildSession.BuildAllUnits(unitInfo);
 
       return result?.SelectMany(_ => (IReadOnlyList<PropertyInfo>) _.Value!).ToArray() ?? EmptyArray<PropertyInfo>.Instance;
@@ -44,13 +44,13 @@ namespace Armature.Core
     /// </summary>
     public static object? GetValueForProperty(this IBuildSession buildSession, PropertyInfo propertyInfo)
     {
-      var buildResult = buildSession.BuildUnit(new UnitInfo(propertyInfo, SpecialToken.InjectValue));
+      var buildResult = buildSession.BuildUnit(new UnitId(propertyInfo, SpecialToken.InjectValue));
 
       return buildResult.HasValue ? buildResult.Value : throw new ArmatureException(string.Format("Can't build value for property '{0}'", propertyInfo));
     }
 
     /// <summary>
-    ///   "Builds" values for parameters by building a set of <see cref="UnitInfo" />(<paramref name="parameters" />[i], <see cref="SpecialToken.InjectValue" />)
+    ///   "Builds" values for parameters by building a set of <see cref="UnitId" />(<paramref name="parameters" />[i], <see cref="SpecialToken.InjectValue" />)
     ///   one by one via current build session
     /// </summary>
     public static object?[] GetValuesForParameters(this IBuildSession buildSession, ParameterInfo[] parameters)
@@ -63,7 +63,7 @@ namespace Armature.Core
 
       for(var i = 0; i < parameters.Length; i++)
       {
-        var buildResult = buildSession.BuildUnit(new UnitInfo(parameters[i], SpecialToken.InjectValue));
+        var buildResult = buildSession.BuildUnit(new UnitId(parameters[i], SpecialToken.InjectValue));
 
         if(!buildResult.HasValue)
           throw new ArmatureException(string.Format("Can't build value for parameter '{0}'", parameters[i]));
@@ -79,6 +79,6 @@ namespace Armature.Core
     /// </summary>
     [DebuggerStepThrough]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static UnitInfo GetUnitUnderConstruction(this IBuildSession buildSession) => buildSession.BuildSequence.Last();
+    public static UnitId GetUnitUnderConstruction(this IBuildSession buildSession) => buildSession.BuildSequence.Last();
   }
 }

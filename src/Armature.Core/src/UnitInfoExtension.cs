@@ -7,15 +7,15 @@ namespace Armature.Core
   public static class UnitInfoExtension
   {
     /// <summary>
-    ///   Returns a <see cref="Type" /> if <see cref="UnitInfo.Id" /> is a type, otherwise throws exception.
+    ///   Returns a <see cref="Type" /> if <see cref="UnitId.Kind" /> is a type, otherwise throws exception.
     /// </summary>
     [DebuggerStepThrough]
-    public static Type GetUnitType(this UnitInfo unitInfo) => (Type) unitInfo.Id! ?? throw new ArgumentNullException(nameof(unitInfo));
+    public static Type GetUnitType(this UnitId unitId) => (Type) unitId.Kind! ?? throw new ArgumentNullException(nameof(unitId));
 
     /// <summary>
-    ///   Returns a <see cref="Type" /> if <see cref="UnitInfo.Id" /> is a type, otherwise null.
+    ///   Returns a <see cref="Type" /> if <see cref="UnitId.Kind" /> is a type, otherwise null.
     /// </summary>
     [DebuggerStepThrough]
-    public static Type? GetUnitTypeSafe(this UnitInfo unitInfo) => unitInfo.Id as Type;
+    public static Type? GetUnitTypeSafe(this UnitId unitId) => unitId.Kind as Type;
   }
 }

@@ -23,7 +23,7 @@ namespace Armature.Core.UnitSequenceMatcher
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.
     ///   If it is the unit under construction, returns build actions for it, if no, pass the rest of the sequence to each child and returns merged actions.
     /// </summary>
-    public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
+    public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
     {
       var unitInfo = buildingUnitsSequence[0];
 

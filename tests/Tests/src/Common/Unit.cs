@@ -4,6 +4,6 @@ namespace Tests.Common
 {
   internal static class Unit
   {
-    public static UnitInfo OfType<T>(object token = null) => new(typeof(T), token);
+    public static UnitId OfType<T>(object token = null) => new(typeof(T), token);
   }
 }

@@ -12,6 +12,6 @@ namespace Armature.Core.UnitMatchers.Parameters
     [DebuggerStepThrough]
     public ParameterByStrictTypeMatcher(Type parameterType) : base(parameterType) { }
 
-    protected override Type? GetInjectPointType(UnitInfo unitInfo) => (unitInfo.Id as ParameterInfo)?.ParameterType;
+    protected override Type? GetInjectPointType(UnitId unitId) => (unitId.Kind as ParameterInfo)?.ParameterType;
   }
 }

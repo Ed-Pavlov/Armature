@@ -9,6 +9,6 @@ namespace Armature.Core.UnitMatchers.Properties
   {
     public PropertyByNameMatcher(string propertyName) : base(propertyName) { }
 
-    protected override string? GetInjectPointName(UnitInfo unitInfo) => (unitInfo.Id as PropertyInfo)?.Name;
+    protected override string? GetInjectPointName(UnitId unitId) => (unitId.Kind as PropertyInfo)?.Name;
   }
 }

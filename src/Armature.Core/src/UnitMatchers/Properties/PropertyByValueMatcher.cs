@@ -12,6 +12,6 @@ namespace Armature.Core.UnitMatchers.Properties
     [DebuggerStepThrough]
     public PropertyByValueMatcher(object value) : base(value) { }
 
-    protected override Type? GetInjectPointType(UnitInfo unitInfo) => (unitInfo.Id as PropertyInfo)?.PropertyType;
+    protected override Type? GetInjectPointType(UnitId unitId) => (unitId.Kind as PropertyInfo)?.PropertyType;
   }
 }

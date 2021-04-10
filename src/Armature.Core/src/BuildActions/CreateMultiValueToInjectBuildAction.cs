@@ -21,7 +21,7 @@ namespace Armature.Core.BuildActions
     public void Process(IBuildSession buildSession)
     {
       var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
-      var effectiveToken        = _token == Token.Propagate ? unitUnderConstruction.Token : _token;
+      var effectiveToken        = _token == Token.Propagate ? unitUnderConstruction.Key : _token;
 
       var valueType = GetValueType(unitUnderConstruction);
 
@@ -29,7 +29,7 @@ namespace Armature.Core.BuildActions
       {
         var itemType = valueType.GenericTypeArguments[0];
 
-        var values = buildSession.BuildAllUnits(new UnitInfo(itemType, effectiveToken));
+        var values = buildSession.BuildAllUnits(new UnitId(itemType, effectiveToken));
 
         if(values is not null)
         {
@@ -49,7 +49,7 @@ namespace Armature.Core.BuildActions
     public void PostProcess(IBuildSession buildSession) { }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract Type GetValueType(UnitInfo unitInfo);
+    protected abstract Type GetValueType(UnitId unitId);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static object CreateListInstance(Type listType, int capacity)

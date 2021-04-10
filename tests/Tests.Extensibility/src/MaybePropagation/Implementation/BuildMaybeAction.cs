@@ -17,7 +17,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     {
       try
       {
-        var result = buildSession.BuildUnit(new UnitInfo(typeof(T), _uniqueToken));
+        var result = buildSession.BuildUnit(new UnitId(typeof(T), _uniqueToken));
 
         if(!result.HasValue) throw new InvalidOperationException();
 

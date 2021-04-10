@@ -17,7 +17,7 @@ namespace Armature.Core
     private readonly Builder[]?            _parentBuilders;
     private readonly BuildPlansCollection? _auxBuildPlans;
     private readonly BuildPlansCollection  _buildPlans;
-    private readonly List<UnitInfo>        _buildSequence;
+    private readonly List<UnitId>        _buildSequence;
     private readonly IEnumerable<object>   _buildStages;
 
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
@@ -33,14 +33,14 @@ namespace Armature.Core
       _buildStages    = buildStages;
       _buildPlans     = buildPlans;
       _auxBuildPlans  = auxBuildPlans;
-      _buildSequence  = new List<UnitInfo>(4);
+      _buildSequence  = new List<UnitId>(4);
       _parentBuilders = parentBuilders;
     }
 
     /// <summary>
-    ///   Builds a Unit represented by <paramref name="unitInfo" />
+    ///   Builds a Unit represented by <paramref name="unitId" />
     /// </summary>
-    /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
+    /// <param name="unitId">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
     /// <param name="buildStages">The conveyor of build stages. See <see cref="Builder" /> for details</param>
     /// <param name="buildPlans">Build plans used to build a unit</param>
     /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method </param>
@@ -49,17 +49,17 @@ namespace Armature.Core
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
     public static BuildResult BuildUnit(
-      UnitInfo              unitInfo,
+      UnitId              unitId,
       IEnumerable<object>   buildStages,
       BuildPlansCollection  buildPlans,
       BuildPlansCollection? runtimeBuildPlans,
       Builder[]?            parentBuilders)
-      => new BuildSession(buildStages, buildPlans, runtimeBuildPlans, parentBuilders).BuildUnit(unitInfo);
+      => new BuildSession(buildStages, buildPlans, runtimeBuildPlans, parentBuilders).BuildUnit(unitId);
 
     /// <summary>
-    ///   Builds all Units represented by <paramref name="unitInfo" />
+    ///   Builds all Units represented by <paramref name="unitId" />
     /// </summary>
-    /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
+    /// <param name="unitId">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
     /// <param name="buildStages">The conveyor of build stages. See <see cref="Builder" /> for details</param>
     /// <param name="buildPlans">Build plans used to build a unit</param>
     /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method </param>
@@ -68,32 +68,32 @@ namespace Armature.Core
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
     public static IReadOnlyList<BuildResult>? BuildAllUnits(
-      UnitInfo              unitInfo,
+      UnitId              unitId,
       IEnumerable<object>   buildStages,
       BuildPlansCollection  buildPlans,
       BuildPlansCollection? runtimeBuildPlans,
       Builder[]?            parentBuilders)
-      => new BuildSession(buildStages, buildPlans, runtimeBuildPlans, parentBuilders).BuildAllUnits(unitInfo);
+      => new BuildSession(buildStages, buildPlans, runtimeBuildPlans, parentBuilders).BuildAllUnits(unitId);
 
     /// <summary>
-    ///   Builds a Unit represented by <paramref name="unitInfo" />
+    ///   Builds a Unit represented by <paramref name="unitId" />
     /// </summary>
-    /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
+    /// <param name="unitId">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    public BuildResult BuildUnit(UnitInfo unitInfo) => Build(unitInfo, BuildUnit);
+    public BuildResult BuildUnit(UnitId unitId) => Build(unitId, BuildUnit);
 
     /// <summary>
-    ///   Builds all Units represented by <paramref name="unitInfo" />
+    ///   Builds all Units represented by <paramref name="unitId" />
     /// </summary>
-    /// <param name="unitInfo">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
+    /// <param name="unitId">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    public IReadOnlyList<BuildResult>? BuildAllUnits(UnitInfo unitInfo) => Build(unitInfo, BuildAllUnits);
+    public IReadOnlyList<BuildResult>? BuildAllUnits(UnitId unitId) => Build(unitId, BuildAllUnits);
 
-    private T? Build<T>(UnitInfo unitInfo, Func<MatchedBuildActions?, T> build)
+    private T? Build<T>(UnitId unitId, Func<MatchedBuildActions?, T> build)
     {
-      using(LogBuildSessionState(unitInfo))
+      using(LogBuildSessionState(unitId))
       {
-        _buildSequence.Add(unitInfo);
+        _buildSequence.Add(unitId);
 
         try
         {
@@ -174,7 +174,7 @@ namespace Armature.Core
                : BuildViaParentBuilder(_buildSequence.Last());
     }
 
-    private BuildResult BuildViaParentBuilder(UnitInfo unitInfo)
+    private BuildResult BuildViaParentBuilder(UnitId unitId)
     {
       if(_parentBuilders is null) return default;
 
@@ -185,7 +185,7 @@ namespace Armature.Core
         {
           using(Log.Block(LogLevel.Info, "Try build via parent builder #{0}", i))
           {
-            var buildResult = _parentBuilders[i].BuildUnit(unitInfo, _auxBuildPlans);
+            var buildResult = _parentBuilders[i].BuildUnit(unitId, _auxBuildPlans);
 
             if(buildResult.HasValue)
               return buildResult;
@@ -239,9 +239,9 @@ namespace Armature.Core
       return result;
     }
 
-    private IDisposable LogBuildSessionState(UnitInfo unitInfo)
+    private IDisposable LogBuildSessionState(UnitId unitId)
     {
-      var block = Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Build", unitInfo));
+      var block = Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Build", unitId));
 
       {
         _buildSequence.ToLog();

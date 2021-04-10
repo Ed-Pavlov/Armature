@@ -14,14 +14,14 @@ namespace Armature.Core.UnitMatchers
     [DebuggerStepThrough]
     protected InjectPointByValueMatcher(object parameterValue) => _value = parameterValue ?? throw new ArgumentNullException(nameof(parameterValue));
 
-    public bool Matches(UnitInfo unitInfo)
+    public bool Matches(UnitId unitId)
     {
-      var type = GetInjectPointType(unitInfo);
+      var type = GetInjectPointType(unitId);
 
-      return unitInfo.Token == SpecialToken.InjectValue && type is not null && type.IsInstanceOfType(_value);
+      return unitId.Key == SpecialToken.InjectValue && type is not null && type.IsInstanceOfType(_value);
     }
 
-    protected abstract Type? GetInjectPointType(UnitInfo unitInfo);
+    protected abstract Type? GetInjectPointType(UnitId unitId);
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _value.ToLogString());

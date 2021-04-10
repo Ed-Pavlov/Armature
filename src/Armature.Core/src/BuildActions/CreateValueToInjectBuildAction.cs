@@ -19,16 +19,16 @@ namespace Armature.Core.BuildActions
     {
       var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
 
-      var effectiveToken = _token == Token.Propagate ? unitUnderConstruction.Token : _token;
+      var effectiveToken = _token == Token.Propagate ? unitUnderConstruction.Key : _token;
 
       var valueType = GetValueType(unitUnderConstruction);
-      buildSession.BuildResult = buildSession.BuildUnit(new UnitInfo(valueType, effectiveToken));
+      buildSession.BuildResult = buildSession.BuildUnit(new UnitId(valueType, effectiveToken));
     }
 
     [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
 
-    protected abstract Type GetValueType(UnitInfo unitInfo);
+    protected abstract Type GetValueType(UnitId unitId);
 
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _token.ToLogString());
   }

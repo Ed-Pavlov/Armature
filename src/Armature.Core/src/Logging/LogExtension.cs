@@ -16,7 +16,7 @@ namespace Armature.Core.Logging
              string.Join(", ", type.GenericTypeArguments.Select(_ => _.Name).ToArray()))
            : type.Name;
 
-    public static void ToLog(this IList<UnitInfo> buildSequence, LogLevel logLevel = LogLevel.Verbose)
+    public static void ToLog(this IList<UnitId> buildSequence, LogLevel logLevel = LogLevel.Verbose)
       => logLevel.ExecuteIfEnabled(
         () =>
         {

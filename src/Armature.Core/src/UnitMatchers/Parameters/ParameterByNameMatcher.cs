@@ -11,6 +11,6 @@ namespace Armature.Core.UnitMatchers.Parameters
     [DebuggerStepThrough]
     public ParameterByNameMatcher(string name) : base(name) { }
 
-    protected override string? GetInjectPointName(UnitInfo unitInfo) => (unitInfo.Id as ParameterInfo)?.Name;
+    protected override string? GetInjectPointName(UnitId unitId) => (unitId.Kind as ParameterInfo)?.Name;
   }
 }

@@ -9,7 +9,7 @@ namespace Armature.Core.BuildActions.Parameter
 
     public void Process(IBuildSession buildSession)
     {
-      if(buildSession.GetUnitUnderConstruction().Id is ParameterInfo {HasDefaultValue: true} parameterInfo)
+      if(buildSession.GetUnitUnderConstruction().Kind is ParameterInfo {HasDefaultValue: true} parameterInfo)
         buildSession.BuildResult = new BuildResult(parameterInfo.DefaultValue);
     }
 

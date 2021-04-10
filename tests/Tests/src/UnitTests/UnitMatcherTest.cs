@@ -13,7 +13,7 @@ namespace Tests.UnitTests
     {
       const string token = "token";
 
-      var unitInfo = new UnitInfo(null, token);
+      var unitInfo = new UnitId(null, token);
       var matcher  = new UnitInfoMatcher(null, token);
 
       // --assert
@@ -25,7 +25,7 @@ namespace Tests.UnitTests
     {
       const string id = "id";
 
-      var unitInfo = new UnitInfo(id, null);
+      var unitInfo = new UnitId(id, null);
       var matcher  = new UnitInfoMatcher(id, null);
 
       // --assert
@@ -38,7 +38,7 @@ namespace Tests.UnitTests
       const string id    = "id";
       const string token = "token";
 
-      var unitInfo = new UnitInfo(id, token);
+      var unitInfo = new UnitId(id, token);
       var matcher  = new UnitInfoMatcher(id, token);
 
       // --assert
@@ -48,7 +48,7 @@ namespace Tests.UnitTests
     [Test]
     public void should_match_if_token_any_provided([Values(null, "id")] object id)
     {
-      var unitInfo = new UnitInfo(id, "token");
+      var unitInfo = new UnitId(id, "token");
       var matcher  = new UnitInfoMatcher(id, Token.Any);
 
       // --assert
@@ -58,7 +58,7 @@ namespace Tests.UnitTests
     [Test]
     public void should_not_match_if_id_differs([Values(null, "token")] object token)
     {
-      var unitInfo = new UnitInfo("id1", token);
+      var unitInfo = new UnitId("id1", token);
       var matcher  = new UnitInfoMatcher("id2", token);
 
       // --assert
@@ -68,7 +68,7 @@ namespace Tests.UnitTests
     [Test]
     public void should_not_match_if_token_differs([Values(null, "id")] object id)
     {
-      var unitInfo = new UnitInfo(id, "token1");
+      var unitInfo = new UnitId(id, "token1");
       var matcher  = new UnitInfoMatcher(id, "token2");
 
       // --assert

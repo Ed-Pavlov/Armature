@@ -17,18 +17,18 @@ namespace Armature.Core
     ///   The sequence of units representing a build session, the last one is the unit under construction,
     ///   the previous are the context of the build session. Each next unit info is the dependency of the previous one.
     /// </summary>
-    IEnumerable<UnitInfo> BuildSequence { get; }
+    IEnumerable<UnitId> BuildSequence { get; }
 
     /// <summary>
-    ///   Builds a unit represented by <see cref="UnitInfo" /> in the context of the current build session
+    ///   Builds a unit represented by <see cref="UnitId" /> in the context of the current build session
     /// </summary>
     /// <returns>Returns an instance or null if unit can't be built.</returns>
-    BuildResult BuildUnit(UnitInfo unitInfo);
+    BuildResult BuildUnit(UnitId unitId);
 
     /// <summary>
-    ///   Builds all units represented by <see cref="UnitInfo" /> in the context of the current build session
+    ///   Builds all units represented by <see cref="UnitId" /> in the context of the current build session
     /// </summary>
     /// <returns>Returns an instance or null if unit can't be built.</returns>
-    IReadOnlyList<BuildResult>? BuildAllUnits(UnitInfo unitInfo);
+    IReadOnlyList<BuildResult>? BuildAllUnits(UnitId unitId);
   }
 }

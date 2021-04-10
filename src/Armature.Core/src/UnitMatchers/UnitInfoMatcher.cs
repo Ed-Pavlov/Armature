@@ -5,7 +5,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.UnitMatchers
 {
   /// <summary>
-  ///   Matches one <see cref="UnitInfo" /> with stored Unit id and token.
+  ///   Matches one <see cref="UnitId" /> with stored Unit id and token.
   /// </summary>
   public record UnitInfoMatcher : IUnitMatcher
   {
@@ -13,7 +13,7 @@ namespace Armature.Core.UnitMatchers
     private readonly object? _token;
 
     [DebuggerStepThrough]
-    public UnitInfoMatcher(UnitInfo unitInfo) : this(unitInfo.Id, unitInfo.Token) { }
+    public UnitInfoMatcher(UnitId unitId) : this(unitId.Kind, unitId.Key) { }
 
     [DebuggerStepThrough]
     public UnitInfoMatcher(object? unitId, object? token)
@@ -25,10 +25,10 @@ namespace Armature.Core.UnitMatchers
 
     /// <inheritdoc />
     /// <remarks>Matching, unlike equality, takes into consideration <see cref="Armature.Core.Token.Any"/>.</remarks>
-    public virtual bool Matches(UnitInfo unit)
+    public virtual bool Matches(UnitId unit)
     {
       if(ReferenceEquals(null, unit)) return false;
-      return Equals(_unitId, unit.Id) && _token.Matches(unit.Token);
+      return Equals(_unitId, unit.Kind) && _token.Matches(unit.Key);
     }
 
     [DebuggerStepThrough]

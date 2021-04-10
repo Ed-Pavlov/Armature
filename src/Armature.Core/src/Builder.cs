@@ -53,38 +53,38 @@ namespace Armature.Core
     }
 
     /// <summary>
-    ///   Builds a unit represented by <see cref="UnitInfo" />
+    ///   Builds a unit represented by <see cref="UnitId" />
     /// </summary>
-    /// <param name="unitInfo">Building unit "id"</param>
+    /// <param name="unitId">Building unit "id"</param>
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
     /// <returns>Returns an instance or null if null is registered as a unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
-    public BuildResult BuildUnit(UnitInfo unitInfo, BuildPlansCollection? auxBuildPlans = null)
-      => Build(unitInfo, auxBuildPlans, BuildSession.BuildUnit, _parentBuilders);
+    public BuildResult BuildUnit(UnitId unitId, BuildPlansCollection? auxBuildPlans = null)
+      => Build(unitId, auxBuildPlans, BuildSession.BuildUnit, _parentBuilders);
 
     /// <summary>
-    ///   Builds all units represented by <see cref="UnitInfo" />
+    ///   Builds all units represented by <see cref="UnitId" />
     /// </summary>
-    /// <param name="unitInfo">Building unit "id"</param>
+    /// <param name="unitId">Building unit "id"</param>
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
     /// <returns>Returns an instance or null if null is registered as a unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
-    public IReadOnlyList<object?>? BuildAllUnits(UnitInfo unitInfo, BuildPlansCollection? auxBuildPlans = null)
+    public IReadOnlyList<object?>? BuildAllUnits(UnitId unitId, BuildPlansCollection? auxBuildPlans = null)
     {
-      var buildResult = Build(unitInfo, auxBuildPlans, BuildSession.BuildAllUnits, _parentBuilders);
+      var buildResult = Build(unitId, auxBuildPlans, BuildSession.BuildAllUnits, _parentBuilders);
 
       return buildResult?.Select(_ => _.Value).ToArray();
     }
 
     private T? Build<T>(
-      UnitInfo                                                                                        unitInfo,
+      UnitId                                                                                        unitId,
       BuildPlansCollection?                                                                           auxBuildPlans,
-      Func<UnitInfo, IEnumerable<object>, BuildPlansCollection, BuildPlansCollection?, Builder[]?, T> build,
+      Func<UnitId, IEnumerable<object>, BuildPlansCollection, BuildPlansCollection?, Builder[]?, T> build,
       Builder[]?                                                                                      parentBuilders)
     {
       if(build is null) throw new ArgumentNullException(nameof(build));
 
-      return build(unitInfo, _stages, this, auxBuildPlans, parentBuilders);
+      return build(unitId, _stages, this, auxBuildPlans, parentBuilders);
     }
   }
 }

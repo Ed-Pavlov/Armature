@@ -14,9 +14,9 @@ namespace Armature.Core.UnitMatchers
     [DebuggerStepThrough]
     protected InjectPointByStrictTypeMatcher(Type parameterType) => _type = parameterType ?? throw new ArgumentNullException(nameof(parameterType));
 
-    public bool Matches(UnitInfo unitInfo) => unitInfo.Token == SpecialToken.InjectValue && GetInjectPointType(unitInfo) == _type;
+    public bool Matches(UnitId unitId) => unitId.Key == SpecialToken.InjectValue && GetInjectPointType(unitId) == _type;
 
-    protected abstract Type? GetInjectPointType(UnitInfo unitInfo);
+    protected abstract Type? GetInjectPointType(UnitId unitId);
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _type.ToLogString());

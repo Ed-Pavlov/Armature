@@ -98,9 +98,9 @@ namespace Tests.Functional
     /// </summary>
     private class AnyStringMatcher : IUnitMatcher
     {
-      public bool Matches(UnitInfo unitInfo)
+      public bool Matches(UnitId unitId)
       {
-        var type = unitInfo.Id is ParameterInfo parameterInfo ? parameterInfo.ParameterType : null;
+        var type = unitId.Kind is ParameterInfo parameterInfo ? parameterInfo.ParameterType : null;
 
         return type == typeof(string);
       }

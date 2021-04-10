@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace Armature.Core.UnitMatchers.UnitType
 {
   /// <summary>
-  ///   Matches <see cref="UnitInfo" /> with an open generic type
+  ///   Matches <see cref="UnitId" /> with an open generic type
   /// </summary>
   public record OpenGenericTypeMatcher : UnitInfoByTypeMatcherBase, IUnitMatcher
   {
@@ -14,10 +14,10 @@ namespace Armature.Core.UnitMatchers.UnitType
       if(!type.IsGenericTypeDefinition) throw new ArgumentException("Provide open generic type", nameof(type));
     }
 
-    public bool Matches(UnitInfo unitInfo)
+    public bool Matches(UnitId unitId)
     {
-      var unitType = unitInfo.GetUnitTypeSafe();
-      return unitType is {IsGenericType: true} && unitType.GetGenericTypeDefinition() == UnitType && Token.Matches(unitInfo.Token);
+      var unitType = unitId.GetUnitTypeSafe();
+      return unitType is {IsGenericType: true} && unitType.GetGenericTypeDefinition() == UnitType && Token.Matches(unitId.Key);
     }
   }
 }

@@ -10,6 +10,6 @@ namespace Armature.Core.UnitMatchers.Parameters
   {
     public ParameterByValueMatcher(object parameterValue) : base(parameterValue) { }
 
-    protected override Type? GetInjectPointType(UnitInfo unitInfo) => (unitInfo.Id as ParameterInfo)?.ParameterType;
+    protected override Type? GetInjectPointType(UnitId unitId) => (unitId.Kind as ParameterInfo)?.ParameterType;
   }
 }

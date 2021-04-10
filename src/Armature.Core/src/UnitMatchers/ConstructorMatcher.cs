@@ -9,6 +9,6 @@
 
     private ConstructorMatcher() { }
 
-    public bool Matches(UnitInfo unitInfo) => unitInfo.Token == SpecialToken.Constructor && unitInfo.GetUnitTypeSafe() is not null;
+    public bool Matches(UnitId unitId) => unitId.Key == SpecialToken.Constructor && unitId.GetUnitTypeSafe() is not null;
   }
 }

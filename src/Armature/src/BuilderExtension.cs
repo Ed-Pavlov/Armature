@@ -9,7 +9,7 @@ namespace Armature
   public static class BuilderExtension
   {
     /// <summary>
-    ///   Use token for building a unit. See <see cref="UnitInfo" /> for details.
+    ///   Use token for building a unit. See <see cref="UnitId" /> for details.
     /// </summary>
     [DebuggerStepThrough]
     public static Tokenizer UsingToken(this Builder builder, object token) => new(token, builder);
@@ -46,7 +46,7 @@ namespace Armature
          .UsingParameters(parameters);
       }
 
-      var unitInfo    = new UnitInfo(typeof(T), token);
+      var unitInfo    = new UnitId(typeof(T), token);
       var buildResult = builder.BuildUnit(unitInfo, sessionalBuildPlans);
 
       return buildResult.HasValue

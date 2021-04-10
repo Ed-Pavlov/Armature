@@ -38,7 +38,7 @@ namespace Armature.Core
 
     public void Add(IUnitSequenceMatcher unitSequenceMatcher) => Children.Add(unitSequenceMatcher);
 
-    public MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight = 0)
+    public MatchedBuildActions? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight = 0)
     {
       if(buildingUnitsSequence.Length == 0) throw new ArgumentException(nameof(buildingUnitsSequence));
 
@@ -64,7 +64,7 @@ namespace Armature.Core
       public Root() : base(0) { }
 
       [DebuggerStepThrough]
-      public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
+      public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
         => GetChildrenActions(inputWeight, buildingUnitsSequence);
 
       [DebuggerStepThrough]

@@ -9,10 +9,10 @@
 
     private AnyTypeMatcher() { }
 
-    public bool Matches(UnitInfo unitInfo)
+    public bool Matches(UnitId unitId)
     {
-      var type = unitInfo.GetUnitTypeSafe();
-      return !unitInfo.Token.IsSpecial() && type is {IsAbstract: false, IsInterface: false, IsGenericTypeDefinition: false};
+      var type = unitId.GetUnitTypeSafe();
+      return !unitId.Key.IsSpecial() && type is {IsAbstract: false, IsInterface: false, IsGenericTypeDefinition: false};
     }
   }
 }

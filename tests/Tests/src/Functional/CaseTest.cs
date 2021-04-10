@@ -28,7 +28,7 @@ namespace Tests.Functional
 
       target
        .Treat<string>()
-       .AsCreatedWith(assembler => assembler.BuildSequence.First().Id.ToString());
+       .AsCreatedWith(assembler => assembler.BuildSequence.First().Kind.ToString());
 
       target
        .Treat<TwoDisposableStringCtorClass>()

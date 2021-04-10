@@ -33,13 +33,13 @@ namespace Armature.Core.UnitSequenceMatcher
     /// <param name="inputMatchingWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
     /// <param name="unitBuildingSequence">The sequence of units building in this build session.</param>
     [DebuggerStepThrough]
-    protected MatchedBuildActions? GetChildrenActions(int inputMatchingWeight, ArrayTail<UnitInfo> unitBuildingSequence)
+    protected MatchedBuildActions? GetChildrenActions(int inputMatchingWeight, ArrayTail<UnitId> unitBuildingSequence)
       => _children?.Aggregate(
         (MatchedBuildActions?) null,
         (current, child) => current.Merge(child.GetBuildActions(unitBuildingSequence, inputMatchingWeight)));
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
-    protected MatchedBuildActions? GetActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight)
+    protected MatchedBuildActions? GetActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
     {
       MatchedBuildActions? matchedBuildActions;
 

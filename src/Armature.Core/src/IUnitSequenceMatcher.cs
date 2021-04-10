@@ -35,7 +35,7 @@ namespace Armature.Core
     ///   Returns all matched build actions for the <paramref name="buildingUnitsSequence" />. All actions are grouped by a building stage
     ///   and coupled with a "weight of matching". See <see cref="MatchedBuildActions" /> type declaration for details.
     /// </returns>
-    MatchedBuildActions? GetBuildActions(ArrayTail<UnitInfo> buildingUnitsSequence, int inputWeight);
+    MatchedBuildActions? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight);
 
     /// <summary>
     ///   Adds a <see cref="IBuildAction" /> for a unit which is matched by this matcher

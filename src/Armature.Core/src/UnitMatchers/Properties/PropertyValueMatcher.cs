@@ -11,6 +11,6 @@ namespace Armature.Core.UnitMatchers.Properties
 
     private PropertyValueMatcher() { }
 
-    public bool Matches(UnitInfo unitInfo) => unitInfo.Token == SpecialToken.InjectValue && unitInfo.Id is PropertyInfo;
+    public bool Matches(UnitId unitId) => unitId.Key == SpecialToken.InjectValue && unitId.Kind is PropertyInfo;
   }
 }

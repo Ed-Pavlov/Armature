@@ -12,6 +12,6 @@ namespace Armature.Core.BuildActions.Parameter
 
     public CreateParameterValueBuildAction(object? token = null) : base(token) { }
 
-    protected override Type GetValueType(UnitInfo unitInfo) => ((ParameterInfo) unitInfo.Id!).ParameterType;
+    protected override Type GetValueType(UnitId unitId) => ((ParameterInfo) unitId.Kind!).ParameterType;
   }
 }

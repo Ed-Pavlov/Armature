@@ -111,11 +111,11 @@ namespace Tests.Performance
 
       for(var i = 0; i < count; i++)
       {
-        var u1  = new UnitInfo(i, null);
-        var u2  = new UnitInfo(i, i);
+        var u1  = new UnitId(i, null);
+        var u2  = new UnitId(i, i);
         var str = i.ToString();
-        var u3  = new UnitInfo(str, null);
-        var u4  = new UnitInfo(str, str);
+        var u3  = new UnitId(str, null);
+        var u4  = new UnitId(str, str);
 
         Treat(builder, u1).AsCreatedWith(() => null);
         Treat(builder, u2).AsInstance(null);
@@ -127,11 +127,11 @@ namespace Tests.Performance
       MockUnitMatcher.GetHashCodeCallsCount.Should().BeLessThan(250_000);
     }
 
-    private static TreatingTuner Treat(BuildPlansCollection buildPlans, UnitInfo unitInfo)
+    private static TreatingTuner Treat(BuildPlansCollection buildPlans, UnitId unitId)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitMatcher = new MockUnitMatcher(new UnitInfoMatcher(unitInfo));
+      var unitMatcher = new MockUnitMatcher(new UnitInfoMatcher(unitId));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(unitMatcher);
 
@@ -147,7 +147,7 @@ namespace Tests.Performance
       public static long EqualsCallsCount      { get; private set; }
       public static long GetHashCodeCallsCount { get; private set; }
 
-      public bool Matches(UnitInfo unitInfo) => _impl.Matches(unitInfo);
+      public bool Matches(UnitId unitId) => _impl.Matches(unitId);
 
       public bool Equals(IUnitMatcher other)
       {
