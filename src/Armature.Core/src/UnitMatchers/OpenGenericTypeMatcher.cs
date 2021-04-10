@@ -5,7 +5,7 @@ namespace Armature.Core.UnitMatchers
   /// <summary>
   ///   Matches <see cref="UnitInfo" /> with an open generic type
   /// </summary>
-  public class OpenGenericTypeMatcher : UnitInfoMatcher
+  public record OpenGenericTypeMatcher : UnitInfoMatcher
   {
     [DebuggerStepThrough]
     public OpenGenericTypeMatcher(UnitInfo unitInfo) : base(unitInfo) { }

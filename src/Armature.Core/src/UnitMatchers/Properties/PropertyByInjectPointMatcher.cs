@@ -5,7 +5,7 @@ namespace Armature.Core.UnitMatchers.Properties
   /// <summary>
   ///   Matches property marked with <see cref="InjectAttribute" /> with specified <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
-  public class PropertyByInjectPointMatcher : InjectPointByIdMatcher
+  public record PropertyByInjectPointMatcher : InjectPointByIdMatcher
   {
     [DebuggerStepThrough]
     public PropertyByInjectPointMatcher(object? injectPointId = null) : base(injectPointId) { }

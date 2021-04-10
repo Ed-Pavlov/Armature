@@ -10,7 +10,7 @@ namespace Armature.Core.UnitMatchers.Properties
   ///   Matches property marked with attribute which satisfies user provided conditions
   /// </summary>
   [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-  public class PropertyByAttributeMatcher<T> : InjectPointByAttributeMatcher<T>
+  public record PropertyByAttributeMatcher<T> : InjectPointByAttributeMatcher<T>
     where T : Attribute
   {
     [SuppressMessage("ReSharper", "MemberCanBeProtected.Global")]
@@ -19,11 +19,6 @@ namespace Armature.Core.UnitMatchers.Properties
 
     protected override T? GetInjectPointAttribute(UnitInfo unitInfo) => GetPropertyAttribute(unitInfo);
 
-    public static T? GetPropertyAttribute(UnitInfo unitInfo)
-    {
-      if(!(unitInfo.Id is PropertyInfo propertyInfo)) return default;
-
-      return propertyInfo.GetCustomAttribute<T>();
-    }
+    public static T? GetPropertyAttribute(UnitInfo unitInfo) => unitInfo.Id is PropertyInfo propertyInfo ? propertyInfo.GetCustomAttribute<T>() : default;
   }
 }

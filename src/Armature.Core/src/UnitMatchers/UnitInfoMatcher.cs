@@ -2,13 +2,12 @@
 using System.Diagnostics;
 using Armature.Core.Logging;
 
-
 namespace Armature.Core.UnitMatchers
 {
   /// <summary>
   ///   Matches one <see cref="UnitInfo" /> with other.
   /// </summary>
-  public class UnitInfoMatcher : IUnitMatcher
+  public record UnitInfoMatcher : IUnitMatcher
   {
     protected readonly UnitInfo UnitInfo;
 
@@ -19,18 +18,5 @@ namespace Armature.Core.UnitMatchers
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), UnitInfo);
-
-#region Equality
-
-    [DebuggerStepThrough]
-    public virtual bool Equals(IUnitMatcher? obj) => obj is UnitInfoMatcher other && UnitInfo.Equals(other.UnitInfo);
-
-    [DebuggerStepThrough]
-    public override bool Equals(object obj) => Equals(obj as UnitInfoMatcher);
-
-    [DebuggerStepThrough]
-    public override int GetHashCode() => UnitInfo.GetHashCode();
-
-#endregion
   }
 }

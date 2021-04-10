@@ -2,13 +2,12 @@
 using System.Diagnostics;
 using Armature.Core.Logging;
 
-
 namespace Armature.Core.UnitMatchers
 {
   /// <summary>
   ///   Base class for matchers matching an "inject point" by name
   /// </summary>
-  public abstract class InjectPointByNameMatcher : IUnitMatcher
+  public abstract record InjectPointByNameMatcher : UnitMatcherBase, IUnitMatcher
   {
     private readonly string _name;
 
@@ -21,18 +20,5 @@ namespace Armature.Core.UnitMatchers
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _name);
-
-#region Equality
-
-    [DebuggerStepThrough]
-    public bool Equals(IUnitMatcher? obj) => obj is InjectPointByNameMatcher other && GetType() == obj.GetType() && _name == other._name;
-
-    [DebuggerStepThrough]
-    public override bool Equals(object obj) => Equals(obj as IUnitMatcher);
-
-    [DebuggerStepThrough]
-    public override int GetHashCode() => _name.GetHashCode();
-
-#endregion
   }
 }

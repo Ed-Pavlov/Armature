@@ -1,13 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 
-
 namespace Armature.Core.UnitMatchers.Parameters
 {
   /// <summary>
   ///   Matches parameter by name
   /// </summary>
-  public class ParameterByNameMatcher : InjectPointByNameMatcher
+  public record ParameterByNameMatcher : InjectPointByNameMatcher
   {
     [DebuggerStepThrough]
     public ParameterByNameMatcher(string name) : base(name) { }

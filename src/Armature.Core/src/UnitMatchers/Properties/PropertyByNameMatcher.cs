@@ -1,12 +1,11 @@
 ﻿using System.Reflection;
 
-
 namespace Armature.Core.UnitMatchers.Properties
 {
   /// <summary>
   ///   Matches property by name
   /// </summary>
-  public class PropertyByNameMatcher : InjectPointByNameMatcher
+  public record PropertyByNameMatcher : InjectPointByNameMatcher
   {
     public PropertyByNameMatcher(string propertyName) : base(propertyName) { }
 

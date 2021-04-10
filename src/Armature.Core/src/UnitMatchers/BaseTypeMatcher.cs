@@ -3,7 +3,7 @@
 
 namespace Armature.Core.UnitMatchers
 {
-  public class BaseTypeMatcher : UnitInfoMatcher
+  public record BaseTypeMatcher : UnitInfoMatcher
   {
     private readonly Type _type;
     public BaseTypeMatcher(UnitInfo unitInfo) : base(unitInfo) => _type = unitInfo.GetUnitType();
