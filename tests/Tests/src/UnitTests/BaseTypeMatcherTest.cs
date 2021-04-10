@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Armature.Core.UnitMatchers;
+using Armature.Core.UnitMatchers.UnitType;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
@@ -12,7 +12,7 @@ namespace Tests.UnitTests
     [Test]
     public void should_match_exact_type([Values(null, "token")] object token)
     {
-      var target = new BaseTypeMatcher(Unit.OfType<int>(token));
+      var target = new BaseTypeMatcher(typeof(int), token);
 
       target.Matches(Unit.OfType<int>(token)).Should().BeTrue();
     }
@@ -20,7 +20,7 @@ namespace Tests.UnitTests
     [Test]
     public void should_match_base_type([Values(null, "token")] object token)
     {
-      var target = new BaseTypeMatcher(Unit.OfType<Stream>(token));
+      var target = new BaseTypeMatcher(typeof(Stream), token);
 
       target.Matches(Unit.OfType<MemoryStream>(token)).Should().BeTrue();
     }
@@ -28,7 +28,7 @@ namespace Tests.UnitTests
     [Test]
     public void should_match_interface([Values(null, "token")] object token)
     {
-      var target = new BaseTypeMatcher(Unit.OfType<IDisposable>(token));
+      var target = new BaseTypeMatcher(typeof(IDisposable), token);
 
       target.Matches(Unit.OfType<MemoryStream>(token)).Should().BeTrue();
     }

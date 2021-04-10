@@ -46,19 +46,6 @@ namespace Tests.UnitTests
     }
 
     [Test]
-    public void should_not_be_equal_if_token_any_provided()
-    {
-      var left  = new UnitInfo(null, "token");
-      var right = new UnitInfo(null, Token.Any);
-
-      Equals(left, right).Should().BeFalse();
-      Equals(right, left).Should().BeFalse();
-
-      left.Matches(right).Should().BeTrue();
-      right.Matches(left).Should().BeTrue();
-    }
-
-    [Test]
     public void should_not_be_equal_if_id_differs([Values(null, "token")] object token)
     {
       var left  = new UnitInfo("id1", token);

@@ -9,6 +9,7 @@
   /// </remarks>
   public interface IUnitMatcher
   {
+    /// <returns>True if an implemented logic matches specified <paramref name="unitInfo"/></returns>
     bool Matches(UnitInfo unitInfo);
   }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Armature.Core;
 using Armature.Core.UnitMatchers;
+using Armature.Core.UnitMatchers.UnitType;
 using Armature.Core.UnitSequenceMatcher;
 
 
@@ -57,7 +58,7 @@ namespace Armature
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
-        new BaseTypeMatcher(new UnitInfo(type, token)),
+        new BaseTypeMatcher(type, token),
         UnitSequenceMatchingWeight.WildcardMatchingBaseTypeUnit);
 
       return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
@@ -72,7 +73,7 @@ namespace Armature
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
-        new BaseTypeMatcher(new UnitInfo(typeof(T), token)),
+        new BaseTypeMatcher(typeof(T), token),
         UnitSequenceMatchingWeight.WildcardMatchingBaseTypeUnit);
 
       return new TreatingTuner<T>(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));

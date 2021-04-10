@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Armature.Core;
 using Armature.Core.UnitMatchers;
-
+using Armature.Core.UnitMatchers.UnitType;
 
 namespace Armature
 {
@@ -32,6 +32,6 @@ namespace Armature
     ///   Creates a open generic type matcher with <see cref="UnitInfo" />(<paramref name="type" />, <paramref name="token" />)
     /// </summary>
     [DebuggerStepThrough]
-    public static IUnitMatcher OpenGenericType(Type type, object? token) => new OpenGenericTypeMatcher(new UnitInfo(type, token));
+    public static IUnitMatcher OpenGenericType(Type type, object? token) => new OpenGenericTypeMatcher(type, token);
   }
 }
