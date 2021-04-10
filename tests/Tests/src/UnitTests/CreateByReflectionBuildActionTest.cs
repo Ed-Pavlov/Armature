@@ -23,7 +23,7 @@ namespace Tests.UnitTests
       target.Process(buildSession);
 
       // --assert
-      A.CallTo(() => buildSession.BuildUnit(null)).WithAnyArguments().MustNotHaveHappened();
+      A.CallTo(() => buildSession.BuildUnit(default)).WithAnyArguments().MustNotHaveHappened();
     }
 
     [Test]
@@ -39,7 +39,7 @@ namespace Tests.UnitTests
       target.Process(buildSession);
 
       // --assert
-      A.CallTo(() => buildSession.BuildUnit(null)).WithAnyArguments().MustNotHaveHappened();
+      A.CallTo(() => buildSession.BuildUnit(default)).WithAnyArguments().MustNotHaveHappened();
     }
   }
 }

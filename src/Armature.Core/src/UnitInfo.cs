@@ -9,7 +9,7 @@ namespace Armature.Core
   ///   Describes a unit to build. <see cref="IUnitSequenceMatcher" /> matches with passed collection of <see cref="UnitInfo" />
   /// </summary>
   [Serializable]
-  public class UnitInfo : IEquatable<UnitInfo>
+  public readonly struct UnitInfo
   {
     public readonly object? Id;
     public readonly object? Token;
@@ -24,16 +24,10 @@ namespace Armature.Core
     }
 
     [DebuggerStepThrough]
-    public bool Equals(UnitInfo? other)
-    {
-      if(ReferenceEquals(null, other)) return false;
-      if(ReferenceEquals(this, other)) return true;
-
-      return Equals(Id, other.Id) && Equals(Token, other.Token);
-    }
+    public bool Equals(UnitInfo other) => Equals(Id, other.Id) && Equals(Token, other.Token);
 
     [DebuggerStepThrough]
-    public override bool Equals(object obj) => Equals(obj as UnitInfo);
+    public override bool Equals(object obj) => obj is UnitInfo other && Equals(other.Id, Id) && Equals(other.Token, Token);
 
     [DebuggerStepThrough]
     public override int GetHashCode()
@@ -44,6 +38,6 @@ namespace Armature.Core
       }
     }
 
-    public override string ToString() => string.Format("{0}:{1}", Id.ToLogString(), Token.ToLogString());
+    public override string ToString() => string.Format("{0}({1}, {2})", nameof(UnitInfo), Id.ToLogString(), Token.ToLogString());
   }
 }

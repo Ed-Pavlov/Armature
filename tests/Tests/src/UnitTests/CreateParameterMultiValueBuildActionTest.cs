@@ -20,7 +20,7 @@ namespace Tests.UnitTests
       var target       = new CreateParameterMultiValueToInjectBuildAction();
       var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.BuildSequence).Returns(new[] {new UnitInfo(parameterInfo, null)});
-      A.CallTo(() => buildSession.BuildAllUnits(null)).WithAnyArguments().Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_)).ToArray());
+      A.CallTo(() => buildSession.BuildAllUnits(default)).WithAnyArguments().Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_)).ToArray());
 
       // --act
       target.Process(buildSession);

@@ -16,11 +16,6 @@ namespace Armature.Core
     ///   Returns a <see cref="Type" /> if <see cref="UnitInfo.Id" /> is a type, otherwise null.
     /// </summary>
     [DebuggerStepThrough]
-    public static Type? GetUnitTypeSafe(this UnitInfo unitInfo)
-    {
-      if(unitInfo is null) throw new ArgumentNullException(nameof(unitInfo));
-
-      return unitInfo.Id as Type;
-    }
+    public static Type? GetUnitTypeSafe(this UnitInfo unitInfo) => unitInfo.Id as Type;
   }
 }

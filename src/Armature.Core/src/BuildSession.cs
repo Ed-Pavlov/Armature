@@ -91,8 +91,6 @@ namespace Armature.Core
 
     private T? Build<T>(UnitInfo unitInfo, Func<MatchedBuildActions?, T> build)
     {
-      if(unitInfo is null) throw new ArgumentNullException(nameof(unitInfo));
-
       using(LogBuildSessionState(unitInfo))
       {
         _buildSequence.Add(unitInfo);
