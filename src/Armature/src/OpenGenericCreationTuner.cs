@@ -25,7 +25,7 @@ namespace Armature
     public Tuner CreatedByDefault()
     {
       var childMatcher = new WildcardUnitSequenceMatcher(
-        new OpenGenericTypeMatcher(OpenGenericType, Key),
+        new UnitKindIsOpenGenericTypeMatcher(OpenGenericType, Key),
         UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
 
       UnitSequenceMatcher
@@ -38,7 +38,7 @@ namespace Armature
     public Tuner CreatedByReflection()
     {
       var childMatcher = new WildcardUnitSequenceMatcher(
-        new OpenGenericTypeMatcher(OpenGenericType, Key),
+        new UnitKindIsOpenGenericTypeMatcher(OpenGenericType, Key),
         UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
 
       UnitSequenceMatcher

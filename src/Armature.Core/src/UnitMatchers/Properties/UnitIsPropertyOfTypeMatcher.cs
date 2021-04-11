@@ -7,10 +7,10 @@ namespace Armature.Core.UnitMatchers.Properties
   /// <summary>
   ///   Matches property by exact type matching
   /// </summary>
-  public record PropertyByStrictTypeMatcher : InjectPointByStrictTypeMatcher
+  public record UnitIsPropertyOfTypeMatcher : UnitIsInjectPointOfTypeMatcher
   {
     [DebuggerStepThrough]
-    public PropertyByStrictTypeMatcher(Type propertyType) : base(propertyType) { }
+    public UnitIsPropertyOfTypeMatcher(Type propertyType) : base(propertyType) { }
 
     protected override Type? GetInjectPointType(UnitId unitId) => (unitId.Kind as PropertyInfo)?.PropertyType;
   }

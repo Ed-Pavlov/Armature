@@ -2,7 +2,7 @@
 
 namespace Armature.Core.UnitMatchers.UnitType
 {
-  public record UnitIsSubTypeOfMatcher : UnitInfoByTypeMatcherBase, IUnitIdMatcher
+  public record UnitIsSubTypeOfMatcher : UnitByTypeMatcherBase, IUnitIdMatcher
   {
     public UnitIsSubTypeOfMatcher(Type baseType, object? key) : base(baseType, key) { }
 

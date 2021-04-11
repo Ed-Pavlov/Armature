@@ -30,7 +30,7 @@ namespace Armature
     [DebuggerStepThrough]
     public void Apply(IUnitSequenceMatcher unitSequenceMatcher)
       => unitSequenceMatcher
-        .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(PropertyMatcher.Instance))
+        .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(UnitIsPropertyMatcher.Instance))
         .AddBuildAction(BuildStage.Create, new GetPropertyByNameBuildAction(_names));
 
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", _names));

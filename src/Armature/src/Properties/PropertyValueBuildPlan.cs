@@ -25,7 +25,7 @@ namespace Armature
     protected override void Apply(IUnitSequenceMatcher unitSequenceMatcher)
       => unitSequenceMatcher
         .AddOrGetUnitSequenceMatcher(
-           new LastUnitSequenceMatcher(PropertyMatcher.Instance))
+           new LastUnitSequenceMatcher(UnitIsPropertyMatcher.Instance))
         .AddBuildAction(BuildStage.Create, _getPropertyAction);
   }
 }

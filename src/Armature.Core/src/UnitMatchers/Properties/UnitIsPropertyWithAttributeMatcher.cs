@@ -10,14 +10,13 @@ namespace Armature.Core.UnitMatchers.Properties
   ///   Matches property marked with attribute which satisfies user provided conditions
   /// </summary>
   [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-  public record PropertyByAttributeMatcher<T> : InjectPointByAttributeMatcher<T>
-    where T : Attribute
+  public record UnitIsPropertyWithAttributeMatcher<T> : UnitByAttributeMatcherBase<T> where T : Attribute
   {
     [SuppressMessage("ReSharper", "MemberCanBeProtected.Global")]
     [DebuggerStepThrough]
-    public PropertyByAttributeMatcher(Predicate<T>? predicate) : base(predicate) { }
+    public UnitIsPropertyWithAttributeMatcher(Predicate<T>? predicate) : base(predicate) { }
 
-    protected override T? GetInjectPointAttribute(UnitId unitId) => GetPropertyAttribute(unitId);
+    protected override T? GetAttribute(UnitId unitId) => GetPropertyAttribute(unitId);
 
     public static T? GetPropertyAttribute(UnitId unitId) => unitId.Kind is PropertyInfo propertyInfo ? propertyInfo.GetCustomAttribute<T>() : default;
   }

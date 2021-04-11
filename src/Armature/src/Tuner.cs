@@ -33,7 +33,7 @@ namespace Armature
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected");
         else
           UnitSequenceMatcher
-           .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new ParameterByValueMatcher(parameter), InjectPointMatchingWeight.WeakTypedParameter))
+           .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new ParameterAcceptsArgumentMatcher(parameter), InjectPointMatchingWeight.WeakTypedParameter))
            .AddBuildAction(BuildStage.Create, new SingletonBuildAction(parameter));
 
       return this;
@@ -54,7 +54,7 @@ namespace Armature
           throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected");
         else
           UnitSequenceMatcher
-           .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new PropertyByValueMatcher(value), InjectPointMatchingWeight.WeakTypedParameter))
+           .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new PropertyAcceptsArgumentMatcher(value), InjectPointMatchingWeight.WeakTypedParameter))
            .AddBuildAction(BuildStage.Create, new SingletonBuildAction(value));
 
       return this;

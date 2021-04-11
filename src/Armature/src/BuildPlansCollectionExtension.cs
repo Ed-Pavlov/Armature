@@ -117,7 +117,7 @@ namespace Armature
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitSequenceMatcher = new WildcardUnitSequenceMatcher(
-        new OpenGenericTypeMatcher(openGenericType, key),
+        new UnitKindIsOpenGenericTypeMatcher(openGenericType, key),
         UnitSequenceMatchingWeight.WildcardMatchingOpenGenericUnit);
 
       return new TreatingOpenGenericTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));

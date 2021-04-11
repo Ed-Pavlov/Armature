@@ -5,11 +5,11 @@ namespace Armature.Core.UnitMatchers.Parameters
   /// <summary>
   ///   Matches Unit representing "value for parameter" for the currently building Unit
   /// </summary>
-  public record ParameterValueMatcher : SimpleToStringImpl, IUnitIdMatcher
+  public record UnitIsParameterMatcher : SimpleToStringImpl, IUnitIdMatcher
   {
-    public static readonly IUnitIdMatcher Instance = new ParameterValueMatcher();
+    public static readonly IUnitIdMatcher Instance = new UnitIsParameterMatcher();
 
-    private ParameterValueMatcher() { }
+    private UnitIsParameterMatcher() { }
 
     public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.InjectValue && unitId.Kind is ParameterInfo;
   }

@@ -6,12 +6,12 @@ namespace Armature.Core.UnitMatchers
   /// <summary>
   ///   Base class for matchers matching an "inject point" marked with <see cref="InjectAttribute" /> with specified <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
-  public abstract record InjectPointByIdMatcher : InjectPointByAttributeMatcher<InjectAttribute>
+  public abstract record UnitByInjectPointIdMatcherBase : UnitByAttributeMatcherBase<InjectAttribute>
   {
     private readonly object? _injectPointId;
 
     [DebuggerStepThrough]
-    protected InjectPointByIdMatcher(object? injectPointId = null) : base(attribute => Equals(attribute.InjectionPointId, injectPointId))
+    protected UnitByInjectPointIdMatcherBase(object? injectPointId = null) : base(attribute => Equals(attribute.InjectionPointId, injectPointId))
       => _injectPointId = injectPointId;
 
     [DebuggerStepThrough]

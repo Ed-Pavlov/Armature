@@ -33,7 +33,7 @@ namespace Tests.Functional
        .With( // add build action finding properties attributed with InjectAttribute for any type 
           anyMatcher =>
             anyMatcher
-             .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(PropertyMatcher.Instance))
+             .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(UnitIsPropertyMatcher.Instance))
              .AddBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction()));
 
       target.Treat<string>().AsInstance(expected);

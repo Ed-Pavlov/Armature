@@ -9,12 +9,12 @@ namespace Armature.Core.UnitMatchers.Parameters
   ///   Matches parameter marked with attribute which satisfies user provided conditions
   /// </summary>
   [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-  public record ParameterByAttributeMatcher<T> : InjectPointByAttributeMatcher<T> where T : Attribute
+  public record UnitIsParameterWithAttributeMatcher<T> : UnitByAttributeMatcherBase<T> where T : Attribute
   {
     [DebuggerStepThrough]
-    public ParameterByAttributeMatcher(Predicate<T>? predicate) : base(predicate) { }
+    public UnitIsParameterWithAttributeMatcher(Predicate<T>? predicate) : base(predicate) { }
 
-    protected override T? GetInjectPointAttribute(UnitId unitId) => GetParameterAttribute(unitId);
+    protected override T? GetAttribute(UnitId unitId) => GetParameterAttribute(unitId);
 
     public static T? GetParameterAttribute(UnitId unitId)
       => unitId.Kind is ParameterInfo parameterInfo ? parameterInfo.GetCustomAttribute<T>() : default;

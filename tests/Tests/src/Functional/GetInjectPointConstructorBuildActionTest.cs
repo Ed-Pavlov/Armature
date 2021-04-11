@@ -88,7 +88,7 @@ namespace Tests.Functional
                    new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
                    GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
                  }),
-             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+             new LastUnitSequenceMatcher(UnitIsParameterMatcher.Instance)
               .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
            }
          };

@@ -20,16 +20,16 @@ namespace Armature.Core.BuildActions.Property
     {
       var type = buildSession.GetUnitUnderConstruction().GetUnitType();
 
-      var propertiesWithAttributes = type.GetProperties()
-                                         .Select(
-                                            property =>
-                                            {
-                                              var attribute = property.GetCustomAttribute<InjectAttribute>();
-
-                                              return Tuple.Create(attribute, property);
-                                            })
-                                         .Where(_ => _.Item1 is not null)
-                                         .ToArray();
+      var propertiesWithAttributes =
+        type.GetProperties()
+            .Select(
+               property =>
+               {
+                 var attribute = property.GetCustomAttribute<InjectAttribute>();
+                 return Tuple.Create(attribute, property);
+               })
+            .Where(_ => _.Item1 is not null)
+            .ToArray();
 
       var properties =
         (_pointIds.Length > 0

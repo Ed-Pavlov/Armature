@@ -264,7 +264,7 @@ namespace Tests.Functional
            {
              new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
+             new LastUnitSequenceMatcher(UnitIsParameterMatcher.Instance)
               .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
            }
          };

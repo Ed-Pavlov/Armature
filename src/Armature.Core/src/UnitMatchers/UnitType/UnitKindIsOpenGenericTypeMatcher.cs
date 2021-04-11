@@ -6,12 +6,12 @@ namespace Armature.Core.UnitMatchers.UnitType
   /// <summary>
   ///   Matches <see cref="UnitId" /> with an open generic type
   /// </summary>
-  public record OpenGenericTypeMatcher : UnitInfoByTypeMatcherBase, IUnitIdMatcher
+  public record UnitKindIsOpenGenericTypeMatcher : UnitByTypeMatcherBase, IUnitIdMatcher
   {
     [DebuggerStepThrough]
-    public OpenGenericTypeMatcher(Type type, object? key) : base(type, key)
+    public UnitKindIsOpenGenericTypeMatcher(Type openType, object? key) : base(openType, key)
     {
-      if(!type.IsGenericTypeDefinition) throw new ArgumentException("Provide open generic type", nameof(type));
+      if(!openType.IsGenericTypeDefinition) throw new ArgumentException("Provide open generic type", nameof(openType));
     }
 
     public bool Matches(UnitId unitId)

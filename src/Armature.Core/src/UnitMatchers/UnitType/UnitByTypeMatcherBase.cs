@@ -7,7 +7,7 @@ namespace Armature.Core.UnitMatchers.UnitType
   /// <summary>
   /// Base class for unit info matchers operating with a <see cref="Type"/> of an unit
   /// </summary>
-  public abstract record UnitInfoByTypeMatcherBase
+  public abstract record UnitByTypeMatcherBase
   {
     /// <summary>
     /// The type of the Unit to match
@@ -16,7 +16,7 @@ namespace Armature.Core.UnitMatchers.UnitType
 
     protected readonly object? Key;
 
-    protected UnitInfoByTypeMatcherBase(Type type, object? key)
+    protected UnitByTypeMatcherBase(Type type, object? key)
     {
       UnitType = type ?? throw new ArgumentNullException(nameof(type));
       Key    = key;

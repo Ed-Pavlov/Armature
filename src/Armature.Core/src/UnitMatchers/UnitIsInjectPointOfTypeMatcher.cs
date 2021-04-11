@@ -7,12 +7,12 @@ namespace Armature.Core.UnitMatchers
   /// <summary>
   ///   Base class for matchers matching an "inject point" by exact type matching
   /// </summary>
-  public abstract record InjectPointByStrictTypeMatcher : IUnitIdMatcher
+  public abstract record UnitIsInjectPointOfTypeMatcher : IUnitIdMatcher
   {
     private readonly Type _type;
 
     [DebuggerStepThrough]
-    protected InjectPointByStrictTypeMatcher(Type parameterType) => _type = parameterType ?? throw new ArgumentNullException(nameof(parameterType));
+    protected UnitIsInjectPointOfTypeMatcher(Type parameterType) => _type = parameterType ?? throw new ArgumentNullException(nameof(parameterType));
 
     public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.InjectValue && GetInjectPointType(unitId) == _type;
 

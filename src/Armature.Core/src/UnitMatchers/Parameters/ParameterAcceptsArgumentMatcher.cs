@@ -6,9 +6,9 @@ namespace Armature.Core.UnitMatchers.Parameters
   /// <summary>
   ///   Matches parameter suited for provided value type
   /// </summary>
-  public record ParameterByValueMatcher : InjectPointByValueMatcher
+  public record ParameterAcceptsArgumentMatcher : InjectPointAcceptsArgumentMatcher
   {
-    public ParameterByValueMatcher(object parameterValue) : base(parameterValue) { }
+    public ParameterAcceptsArgumentMatcher(object argument) : base(argument) { }
 
     protected override Type? GetInjectPointType(UnitId unitId) => (unitId.Kind as ParameterInfo)?.ParameterType;
   }
