@@ -10,28 +10,28 @@ namespace Armature.Core.UnitSequenceMatcher
 {
   /// <summary>
   ///   Matches only unit under construction in the sequence and applies passed <see cref="IUnitIdMatcher" /> to it.
-  ///   See <see cref="LastUnitSequenceMatcher(IUnitIdMatcher,int)" /> and <see cref="GetBuildActions" /> for details
+  ///   See <see cref="IfLastUnitIs(Armature.Core.IUnitIdMatcher,int)" /> and <see cref="GetBuildActions" /> for details
   /// </summary>
-  public class LastUnitSequenceMatcher : UnitSequenceMatcher
+  public class IfLastUnitIs : ScannerTree
   {
     private readonly IUnitIdMatcher _unitMatcher;
 
     /// <param name="unitMatcher">Object contains the logic of matching with building unit</param>
     /// <param name="weight">The weight of matching</param>
     [DebuggerStepThrough]
-    public LastUnitSequenceMatcher(IUnitIdMatcher unitMatcher, int weight = 0) : base(weight)
+    public IfLastUnitIs(IUnitIdMatcher unitMatcher, int weight = UnitSequenceMatchingWeight.Any) : base(weight)
       => _unitMatcher = unitMatcher ?? throw new ArgumentNullException(nameof(unitMatcher));
 
-    public override ICollection<IUnitSequenceMatcher> Children => throw new NotSupportedException("LastUnitSequenceMatcher can't contain children");
+    public override ICollection<IScannerTree> Children => throw new NotSupportedException("LastUnitSequenceMatcher can't contain children");
 
     /// <summary>
     ///   If <paramref name="buildingUnitsSequence" /> contains more then one element return null. This matcher matches only unit under construction which is
     ///   the last one in the <paramref name="buildingUnitsSequence" />.
     /// </summary>
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
-    public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
+    public override BuildActionBag? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
     {
-      if(buildingUnitsSequence.Length != 1) return null;
+      if(buildingUnitsSequence.Length > 1) return null;
 
       var unitInfo = buildingUnitsSequence.Last();
       var matches  = _unitMatcher.Matches(unitInfo);
@@ -57,7 +57,7 @@ namespace Armature.Core.UnitSequenceMatcher
 
     #region Equality
 
-    private bool Equals(LastUnitSequenceMatcher? other)
+    private bool Equals(IfLastUnitIs? other)
     {
       if(ReferenceEquals(null, other)) return false;
       if(ReferenceEquals(this, other)) return true;
@@ -65,9 +65,9 @@ namespace Armature.Core.UnitSequenceMatcher
       return Weight == other.Weight && _unitMatcher.Equals(other._unitMatcher);
     }
 
-    public override bool Equals(IUnitSequenceMatcher obj) => Equals(obj as LastUnitSequenceMatcher);
+    public override bool Equals(IScannerTree obj) => Equals(obj as IfLastUnitIs);
 
-    public override bool Equals(object obj) => Equals(obj as LastUnitSequenceMatcher);
+    public override bool Equals(object obj) => Equals(obj as IfLastUnitIs);
 
     public override int GetHashCode()
     {

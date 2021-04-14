@@ -7,18 +7,18 @@ using Armature.Core.Logging;
 
 namespace Armature.Core
 {
-  public static class MatchedBuildActionsExtension
+  public static class BuildActionBagExtension
   {
     /// <summary>
     ///   Merges two collections into one
     /// </summary>
     [DebuggerStepThrough]
-    public static MatchedBuildActions? Merge(this MatchedBuildActions? left, MatchedBuildActions? right)
+    public static BuildActionBag? Merge(this BuildActionBag? left, BuildActionBag? right)
     {
       if(left is null) return right;
       if(right is null) return left;
 
-      var result = new MatchedBuildActions();
+      var result = new BuildActionBag();
 
       foreach(var pair in left)
       {
@@ -48,11 +48,11 @@ namespace Armature.Core
     ///   Returns the build action with biggest matching weight for the build stage
     /// </summary>
     /// <exception cref="ArmatureException">Throws if there are more than one action with equal matching weight</exception>
-    public static IBuildAction? GetTopmostAction(this MatchedBuildActions? matchedBuildActions, object stage)
+    public static IBuildAction? GetTopmostAction(this BuildActionBag? BuildActionBag, object stage)
     {
       if(stage is null) throw new ArgumentNullException(nameof(stage));
 
-      var actions = matchedBuildActions?.GetValueSafe(stage);
+      var actions = BuildActionBag?.GetValueSafe(stage);
 
       if(actions is null) return null;
 

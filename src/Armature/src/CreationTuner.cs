@@ -12,10 +12,10 @@ namespace Armature
     protected readonly Type    Type;
     protected readonly object? Key;
 
-    public CreationTuner(IUnitSequenceMatcher unitSequenceMatcher, Type type, object? key) : base(unitSequenceMatcher)
+    public CreationTuner(IScannerTree scannerTree, Type type, object? key) : base(scannerTree)
     {
-      Type  = type ?? throw new ArgumentNullException(nameof(type));
-      Key = key;
+      Type = type ?? throw new ArgumentNullException(nameof(type));
+      Key  = key;
     }
 
     Type IExtensibility<Type, object>.   Item1 => Type;
@@ -26,15 +26,11 @@ namespace Armature
     ///   should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
     /// </summary>
     public Tuner CreatedByDefault()
-    {
-      var sequenceMatcher = new StrictUnitSequenceMatcher(new UnitInfoMatcher(Type, Key));
-
-      UnitSequenceMatcher
-       .AddOrGetUnitSequenceMatcher(sequenceMatcher)
-       .AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
-
-      return new Tuner(sequenceMatcher);
-    }
+      => new(ScannerTree
+              .AddItem(
+                 new IfFirstUnitIs(new UnitIdMatcher(Type, Key))
+                  .AddBuildAction(BuildStage.Create, Default.CreationBuildAction))
+      );
 
     /// <summary>
     ///   Specifies that unit of type passed into <see cref="TreatingTuner{T}.As(System.Type,object)"/> or <see cref="TreatingTuner{T}.As{TRedirect}"/> should
@@ -43,10 +39,10 @@ namespace Armature
     /// <returns></returns>
     public Tuner CreatedByReflection()
     {
-      var sequenceMatcher = new StrictUnitSequenceMatcher(new UnitInfoMatcher(Type, Key));
+      var sequenceMatcher = new IfFirstUnitIs(new UnitIdMatcher(Type, Key));
 
-      UnitSequenceMatcher
-       .AddOrGetUnitSequenceMatcher(sequenceMatcher)
+      ScannerTree
+       .AddItem(sequenceMatcher)
        .AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
 
       return new Tuner(sequenceMatcher);

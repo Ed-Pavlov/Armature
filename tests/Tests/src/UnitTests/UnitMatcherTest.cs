@@ -14,7 +14,7 @@ namespace Tests.UnitTests
       const string key = "key";
 
       var unitInfo = new UnitId(null, key);
-      var matcher  = new UnitInfoMatcher(null, key);
+      var matcher  = new UnitIdMatcher(null, key);
 
       // --assert
       matcher.Matches(unitInfo).Should().BeTrue();
@@ -26,7 +26,7 @@ namespace Tests.UnitTests
       const string id = "id";
 
       var unitInfo = new UnitId(id, null);
-      var matcher  = new UnitInfoMatcher(id, null);
+      var matcher  = new UnitIdMatcher(id, null);
 
       // --assert
       matcher.Matches(unitInfo).Should().BeTrue();
@@ -39,7 +39,7 @@ namespace Tests.UnitTests
       const string key = "key";
 
       var unitInfo = new UnitId(id, key);
-      var matcher  = new UnitInfoMatcher(id, key);
+      var matcher  = new UnitIdMatcher(id, key);
 
       // --assert
       matcher.Matches(unitInfo).Should().BeTrue();
@@ -49,7 +49,7 @@ namespace Tests.UnitTests
     public void should_match_if_key_any_provided([Values(null, "id")] object id)
     {
       var unitInfo = new UnitId(id, "key");
-      var matcher  = new UnitInfoMatcher(id, UnitKey.Any);
+      var matcher  = new UnitIdMatcher(id, UnitKey.Any);
 
       // --assert
       matcher.Matches(unitInfo).Should().BeTrue();
@@ -59,7 +59,7 @@ namespace Tests.UnitTests
     public void should_not_match_if_id_differs([Values(null, "key")] object key)
     {
       var unitInfo = new UnitId("id1", key);
-      var matcher  = new UnitInfoMatcher("id2", key);
+      var matcher  = new UnitIdMatcher("id2", key);
 
       // --assert
       matcher.Matches(unitInfo).Should().BeFalse();
@@ -69,7 +69,7 @@ namespace Tests.UnitTests
     public void should_not_match_if_key_differs([Values(null, "id")] object id)
     {
       var unitInfo = new UnitId(id, "key1");
-      var matcher  = new UnitInfoMatcher(id, "key2");
+      var matcher  = new UnitIdMatcher(id, "key2");
 
       // --assert
       matcher.Matches(unitInfo).Should().BeFalse();
@@ -80,8 +80,8 @@ namespace Tests.UnitTests
     {
       const string key = "key";
 
-      var matcher1 = new UnitInfoMatcher(id, key);
-      var matcher2 = new UnitInfoMatcher(id, key);
+      var matcher1 = new UnitIdMatcher(id, key);
+      var matcher2 = new UnitIdMatcher(id, key);
 
       // --assert
       matcher1.Equals(matcher2).Should().BeTrue();
@@ -93,8 +93,8 @@ namespace Tests.UnitTests
     {
       const string id = "id";
 
-      var matcher1 = new UnitInfoMatcher(id, key);
-      var matcher2 = new UnitInfoMatcher(id, key);
+      var matcher1 = new UnitIdMatcher(id, key);
+      var matcher2 = new UnitIdMatcher(id, key);
 
       // --assert
       matcher1.Equals(matcher2).Should().BeTrue();
@@ -104,8 +104,8 @@ namespace Tests.UnitTests
     [Test]
     public void should_not_be_equal1([Values(null, "id")] object id)
     {
-      var matcher1 = new UnitInfoMatcher(id, "key");
-      var matcher2 = new UnitInfoMatcher(id, UnitKey.Any);
+      var matcher1 = new UnitIdMatcher(id, "key");
+      var matcher2 = new UnitIdMatcher(id, UnitKey.Any);
 
       // --assert
       matcher1.Equals(matcher2).Should().BeFalse();
@@ -117,8 +117,8 @@ namespace Tests.UnitTests
     {
       const string id = "id";
 
-      var matcher1 = new UnitInfoMatcher(id, null);
-      var matcher2 = new UnitInfoMatcher(id, UnitKey.Any);
+      var matcher1 = new UnitIdMatcher(id, null);
+      var matcher2 = new UnitIdMatcher(id, UnitKey.Any);
 
       // --assert
       matcher1.Equals(matcher2).Should().BeFalse();
@@ -128,8 +128,8 @@ namespace Tests.UnitTests
     [TestCaseSource(nameof(KeysSource))]
     public void should_not_be_equal3(object key)
     {
-      var matcher1 = new UnitInfoMatcher("id1", key);
-      var matcher2 = new UnitInfoMatcher("id2", key);
+      var matcher1 = new UnitIdMatcher("id1", key);
+      var matcher2 = new UnitIdMatcher("id2", key);
 
       // --assert
       matcher1.Equals(matcher2).Should().BeFalse();
@@ -141,8 +141,8 @@ namespace Tests.UnitTests
     {
       if(key == null) return;
 
-      var matcher1 = new UnitInfoMatcher(null, key);
-      var matcher2 = new UnitInfoMatcher("id2", key);
+      var matcher1 = new UnitIdMatcher(null, key);
+      var matcher2 = new UnitIdMatcher("id2", key);
 
       // --assert
       matcher1.Equals(matcher2).Should().BeFalse();

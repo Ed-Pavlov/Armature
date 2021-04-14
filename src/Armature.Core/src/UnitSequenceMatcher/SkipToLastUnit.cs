@@ -9,7 +9,7 @@ using Armature.Core.Logging;
 namespace Armature.Core.UnitSequenceMatcher
 {
   /// <summary>
-  ///   Matches any sequence of building units, thus passing the unit under construction to <see cref="IUnitSequenceMatcher.Children" /> and merge their
+  ///   Matches any sequence of building units, thus passing the unit under construction to <see cref="IScannerTree.Children" /> and merge their
   ///   build actions with its own.
   /// </summary>
   /// <remarks>
@@ -22,27 +22,27 @@ namespace Armature.Core.UnitSequenceMatcher
   ///   .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
   ///   };
   /// </remarks>
-  public class AnyUnitSequenceMatcher : UnitSequenceMatcherWithChildren, IEnumerable
+  public class SkipToLastUnit : ScannerTreeWithChildren, IEnumerable
   {
-    public AnyUnitSequenceMatcher() : this(UnitSequenceMatchingWeight.AnyUnit) { }
+    public SkipToLastUnit() : this(UnitSequenceMatchingWeight.AnyUnit) { }
 
-    public AnyUnitSequenceMatcher(int weight) : base(weight) { }
+    public SkipToLastUnit(int weight) : base(weight) { }
 
     IEnumerator IEnumerable.GetEnumerator() => throw new NotSupportedException();
 
     /// <summary>
     ///   Matches any <see cref="UnitId" />, so it pass the building unit info into its children and returns merged result
     /// </summary>
-    public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
+    public override BuildActionBag? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
     {
       var unitsToSkip = buildingUnitsSequence.Length;
 
       // decrease matching weight depending on how many unit in the sequence were skipped by this matcher
       var matchingWeight = inputWeight + Weight * unitsToSkip;
 
-      var                  lastItemAsTail = buildingUnitsSequence.GetTail(buildingUnitsSequence.Length - 1);
-      var                  ownActions     = GetOwnActions(matchingWeight);
-      MatchedBuildActions? childrenActions;
+      var             lastItemAsTail = buildingUnitsSequence.GetTail(buildingUnitsSequence.Length - 1);
+      var             ownActions     = GetOwnActions(matchingWeight);
+      BuildActionBag? childrenActions;
 
       if(ownActions is null)
       {
@@ -66,14 +66,14 @@ namespace Armature.Core.UnitSequenceMatcher
       return childrenActions.Merge(ownActions);
     }
 
-    public void Add(IUnitSequenceMatcher unitSequenceMatcher) => Children.Add(unitSequenceMatcher);
+    public void Add(IScannerTree unitSequenceMatcher) => Children.Add(unitSequenceMatcher);
 
     private string ToString(int unitsToSkip) => string.Format("{0}<x{1:n0}>", base.ToString(), unitsToSkip);
 
     #region Equality
 
     [DebuggerStepThrough]
-    public override bool Equals(IUnitSequenceMatcher other) => Equals((object) other);
+    public override bool Equals(IScannerTree other) => Equals((object) other);
 
     [DebuggerStepThrough]
     public override bool Equals(object? obj)
@@ -81,7 +81,7 @@ namespace Armature.Core.UnitSequenceMatcher
       if(ReferenceEquals(null, obj)) return false;
       if(ReferenceEquals(this, obj)) return true;
 
-      return obj is AnyUnitSequenceMatcher other && Weight == other.Weight;
+      return obj is SkipToLastUnit other && Weight == other.Weight;
     }
 
     [DebuggerStepThrough]

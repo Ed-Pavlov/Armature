@@ -7,16 +7,16 @@ namespace Armature.Core.UnitMatchers
   /// <summary>
   ///   Matches one <see cref="UnitId" /> with stored Unit id and key.
   /// </summary>
-  public record UnitInfoMatcher : IUnitIdMatcher
+  public record UnitIdMatcher : IUnitIdMatcher
   {
     private readonly object? _unitId;
     private readonly object? _key;
 
     [DebuggerStepThrough]
-    public UnitInfoMatcher(UnitId unitId) : this(unitId.Kind, unitId.Key) { }
+    public UnitIdMatcher(UnitId unitId) : this(unitId.Kind, unitId.Key) { }
 
     [DebuggerStepThrough]
-    public UnitInfoMatcher(object? unitId, object? key)
+    public UnitIdMatcher(object? unitId, object? key)
     {
       if(unitId is null && key is null) throw new ArgumentNullException(nameof(unitId), @"Either id or key should be provided");
       _unitId = unitId;

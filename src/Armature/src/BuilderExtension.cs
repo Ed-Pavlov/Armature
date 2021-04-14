@@ -41,8 +41,8 @@ namespace Armature
         sessionalBuildPlans = new BuildPlansCollection();
 
         sessionalBuildPlans
-         .TreatAll()
-         .UsingParameters(parameters);
+        .TreatAll()
+        .UsingParameters(parameters);
       }
 
       var unitInfo    = new UnitId(typeof(T), key);

@@ -123,12 +123,12 @@ namespace Tests.Extensibility.MaybePropagation
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipToLastUnit
            {
              // inject into constructor
-             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
+             new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-             new LastUnitSequenceMatcher(UnitIsParameterMatcher.Instance)
+             new IfLastUnitIs(UnitIsParameterMatcher.Instance)
               .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
            }
          };

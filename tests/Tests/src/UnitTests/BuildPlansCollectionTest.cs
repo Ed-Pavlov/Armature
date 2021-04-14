@@ -19,8 +19,8 @@ namespace Tests.UnitTests
       var singletonAction = new SingletonBuildAction();
 
       // --arrange
-      var matchString = new LastUnitSequenceMatcher(Match.Type<string>(null)).AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
-      var matchAny    = new AnyUnitSequenceMatcher().AddBuildAction(BuildStage.Cache, singletonAction);
+      var matchString = new IfLastUnitIs(Match.Type<string>(null)).AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
+      var matchAny    = new SkipToLastUnit().AddBuildAction(BuildStage.Cache, singletonAction);
 
       var target = new BuildPlansCollection();
       target.Children.Add(matchString);

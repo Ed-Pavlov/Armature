@@ -32,8 +32,8 @@ namespace Tests.Functional
       // (postprocessing will be called last and buildAction will add a postfix to created or cached string
 
       target
-       .AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
-       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new AnyStringMatcher()))
+       .AddItem(new SkipToLastUnit())
+       .AddItem(new IfLastUnitIs(new AnyStringMatcher()))
        .AddBuildAction(BuildStage.Intercept, new AddPostfixToString(Postfix));
 
       // --act
@@ -86,9 +86,9 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Intercept, BuildStage.Cache, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipToLastUnit
            {
-             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
+             new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
            }
          };

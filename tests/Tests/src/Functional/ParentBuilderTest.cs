@@ -223,9 +223,9 @@ namespace Tests.Functional
       var target = CreateTarget(parent);
 
       // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder 
-      target.AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
+      target.AddItem(new SkipToLastUnit())
             .Add(
-               new LastUnitSequenceMatcher(UnitKindIsTypeMatcher.Instance)
+               new IfLastUnitIs(UnitKindIsTypeMatcher.Instance)
                 .AddBuildAction(BuildStage.Cache, new DebugOnlyBuildAction()));
 
       // --act
@@ -260,11 +260,11 @@ namespace Tests.Functional
     private static Builder CreateTarget(params Builder[] parents)
       => new(new[] {BuildStage.Cache, BuildStage.Create}, parents)
          {
-           new AnyUnitSequenceMatcher
+           new SkipToLastUnit
            {
-             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
+             new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-             new LastUnitSequenceMatcher(UnitIsParameterMatcher.Instance)
+             new IfLastUnitIs(UnitIsParameterMatcher.Instance)
               .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
            }
          };

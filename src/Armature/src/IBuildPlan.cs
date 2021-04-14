@@ -13,7 +13,7 @@ namespace Armature
     /// <summary>
     ///   Apply build plan to the currently building plan
     /// </summary>
-    /// <param name="unitSequenceMatcher"></param>
-    void Apply(IUnitSequenceMatcher unitSequenceMatcher);
+    /// <param name="scannerTree"></param>
+    void Apply(IScannerTree scannerTree);
   }
 }

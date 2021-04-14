@@ -32,7 +32,7 @@ namespace Armature.Core.Logging
             }
         });
 
-    public static void ToLog(this MatchedBuildActions? actions, LogLevel logLevel = LogLevel.Verbose)
+    public static void ToLog(this BuildActionBag? actions, LogLevel logLevel = LogLevel.Verbose)
       => logLevel.ExecuteIfEnabled(
         () =>
         {
@@ -44,10 +44,10 @@ namespace Armature.Core.Logging
           }
 
           foreach(var pair in actions)
-            LogMatchedBuildActions(pair, logLevel);
+            LogBuildActionBag(pair, logLevel);
         });
 
-    private static void LogMatchedBuildActions(KeyValuePair<object, List<Weighted<IBuildAction>>> stagedActions, LogLevel logLevel)
+    private static void LogBuildActionBag(KeyValuePair<object, List<Weighted<IBuildAction>>> stagedActions, LogLevel logLevel)
       => logLevel.ExecuteIfEnabled(
         () =>
 

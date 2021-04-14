@@ -12,7 +12,7 @@ namespace Armature.Core
   /// <summary>
   ///   The collection of build plans. Build plan of the unit is the tree of units sequence matchers containing build actions.
   ///   All build plans are contained as a forest of trees.
-  ///   See <see cref="IUnitSequenceMatcher" /> for details.
+  ///   See <see cref="IScannerTree" /> for details.
   /// </summary>
   /// <remarks>
   ///   This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
@@ -27,18 +27,18 @@ namespace Armature.Core
   ///     }
   ///   };
   /// </remarks>
-  public class BuildPlansCollection : IUnitSequenceMatcher, IEnumerable
+  public class BuildPlansCollection : IScannerTree, IEnumerable
   {
     private readonly Root _root = new();
 
     /// <summary>
-    ///   Forest of <see cref="IUnitSequenceMatcher" /> trees
+    ///   Forest of <see cref="IScannerTree" /> trees
     /// </summary>
-    public ICollection<IUnitSequenceMatcher> Children => _root.Children;
+    public ICollection<IScannerTree> Children => _root.Children;
 
-    public void Add(IUnitSequenceMatcher unitSequenceMatcher) => Children.Add(unitSequenceMatcher);
+    public void Add(IScannerTree scannerTree) => Children.Add(scannerTree);
 
-    public MatchedBuildActions? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight = 0)
+    public BuildActionBag? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight = 0)
     {
       if(buildingUnitsSequence.Length == 0) throw new ArgumentException(nameof(buildingUnitsSequence));
 
@@ -53,25 +53,25 @@ namespace Armature.Core
       }
     }
 
-    public bool Equals(IUnitSequenceMatcher other) => ReferenceEquals(this, other);
+    public bool Equals(IScannerTree other) => ReferenceEquals(this, other);
 
     /// <summary>
-    ///   Reuse implementation of <see cref="UnitSequenceMatcherWithChildren" /> to implement <see cref="BuildPlansCollection" /> public interface
+    ///   Reuse implementation of <see cref="ScannerTreeWithChildren" /> to implement <see cref="BuildPlansCollection" /> public interface
     /// </summary>
-    private class Root : UnitSequenceMatcherWithChildren
+    private class Root : ScannerTreeWithChildren
     {
       [DebuggerStepThrough]
       public Root() : base(0) { }
 
       [DebuggerStepThrough]
-      public override MatchedBuildActions? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
+      public override BuildActionBag? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
         => GetChildrenActions(inputWeight, buildingUnitsSequence);
 
       [DebuggerStepThrough]
-      public override bool Equals(IUnitSequenceMatcher other) => throw new NotSupportedException();
+      public override bool Equals(IScannerTree other) => throw new NotSupportedException();
     }
 
-    IEnumerator IEnumerable.                  GetEnumerator()                                             => throw new NotSupportedException();
-    IUnitSequenceMatcher IUnitSequenceMatcher.AddBuildAction(object buildStage, IBuildAction buildAction) => throw new NotSupportedException();
+    IEnumerator IEnumerable.  GetEnumerator()                                             => throw new NotSupportedException();
+    IScannerTree IScannerTree.AddBuildAction(object buildStage, IBuildAction buildAction) => throw new NotSupportedException();
   }
 }

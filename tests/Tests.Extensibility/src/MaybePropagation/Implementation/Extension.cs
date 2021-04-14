@@ -16,10 +16,10 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     {
       var treat     = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
       var uniqueKey = Guid.NewGuid();
-      treat.UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueKey));
+      treat.ScannerTree.AddBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueKey));
 
       return new TreatingTuner<T>(
-        treat.UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(new WildcardUnitSequenceMatcher(new UnitInfoMatcher(typeof(T), uniqueKey), 0)));
+        treat.ScannerTree.AddItem(new SkipToUnit(new UnitIdMatcher(typeof(T), uniqueKey), 0)));
     }
 
     /// <summary>
@@ -28,7 +28,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     public static TreatingTuner<Maybe<T>> AsMaybeValueOf<T>(this TreatingTuner<T> treatingTuner)
     {
       var treat = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
-      return new TreatingTuner<Maybe<T>>(treat.UnitSequenceMatcher.AddBuildAction(BuildStage.Initialize, new GetMaybeValueBuildAction<T>()));
+      return new TreatingTuner<Maybe<T>>(treat.ScannerTree.AddBuildAction(BuildStage.Initialize, new GetMaybeValueBuildAction<T>()));
     }
   }
 }

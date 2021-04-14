@@ -76,9 +76,9 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipToLastUnit
            {
-             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
+             new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
            }
          };

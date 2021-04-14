@@ -53,14 +53,11 @@ namespace Tests.Extensibility.MaybePropagation
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
-           {
-             // inject into constructor
-             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-             new LastUnitSequenceMatcher(UnitIsParameterMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
-           }
+           // inject into constructor
+           new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+           new IfLastUnitIs(UnitIsParameterMatcher.Instance)
+            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
          };
   }
 }

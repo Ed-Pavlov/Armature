@@ -16,7 +16,7 @@ namespace Armature
   public class Tuner : UnitSequenceExtensibility
   {
     [DebuggerStepThrough]
-    public Tuner(IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
+    public Tuner(IScannerTree scannerTree) : base(scannerTree) { }
 
     /// <summary>
     ///   Provided values will be used to inject the into created object. See <see cref="ForParameter" /> for details
@@ -28,33 +28,33 @@ namespace Armature
 
       foreach(var parameter in values)
         if(parameter is IParameterValueBuildPlan buildPlan)
-          buildPlan.Apply(UnitSequenceMatcher);
+          buildPlan.Apply(ScannerTree);
         else if(parameter is IBuildPlan)
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected");
         else
-          UnitSequenceMatcher
-           .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new ParameterAcceptsArgumentMatcher(parameter), InjectPointMatchingWeight.WeakTypedParameter))
+          ScannerTree
+           .AddItem(new IfLastUnitIs(new ParameterAcceptsArgumentMatcher(parameter), InjectPointMatchingWeight.WeakTypedParameter))
            .AddBuildAction(BuildStage.Create, new SingletonBuildAction(parameter));
 
       return this;
     }
-
+    
     /// <summary>
     ///   Provided values will be injected into properties of the created object.  See <see cref="ForProperty" /> for details.
     ///   Also value can be a build plan returned by one of the method of the <see cref="Property" /> class, which specifies properties to inject dependencies.
     /// </summary>
     public Tuner InjectProperty(params object[] values)
     {
-      UnitSequenceMatcher.AddBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance);
+      ScannerTree.AddBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance);
 
       foreach(var value in values)
         if(value is IPropertyValueBuildPlan buildPlan)
-          buildPlan.Apply(UnitSequenceMatcher);
+          buildPlan.Apply(ScannerTree);
         else if(value is IBuildPlan)
           throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected");
         else
-          UnitSequenceMatcher
-           .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new PropertyAcceptsArgumentMatcher(value), InjectPointMatchingWeight.WeakTypedParameter))
+          ScannerTree
+           .AddItem(new IfLastUnitIs(new PropertyAcceptsArgumentMatcher(value), InjectPointMatchingWeight.WeakTypedParameter))
            .AddBuildAction(BuildStage.Create, new SingletonBuildAction(value));
 
       return this;
@@ -63,15 +63,15 @@ namespace Armature
     /// <summary>
     ///   Register Unit as an eternal singleton <see cref="SingletonBuildAction" /> for details
     /// </summary>
-    public void AsSingleton() => UnitSequenceMatcher.AddBuildAction(BuildStage.Cache, new SingletonBuildAction());
+    public void AsSingleton() => ScannerTree.AddBuildAction(BuildStage.Cache, new SingletonBuildAction());
 
     /// <summary>
     ///   Instantiate a Unit using a constructor with the biggest number of parameters
     /// </summary>
     public Tuner UsingLongestConstructor()
     {
-      UnitSequenceMatcher
-       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance))
+      ScannerTree
+       .AddItem(new IfLastUnitIs(UnitIsConstructorMatcher.Instance))
        .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance);
 
       return this;
@@ -82,8 +82,8 @@ namespace Armature
     /// </summary>
     public Tuner UsingInjectPointConstructor(object injectionPointId)
     {
-      UnitSequenceMatcher
-       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance))
+      ScannerTree
+       .AddItem(new IfLastUnitIs(UnitIsConstructorMatcher.Instance))
        .AddBuildAction(BuildStage.Create, new GetInjectPointConstructorBuildAction(injectionPointId));
 
       return this;
@@ -119,8 +119,8 @@ namespace Armature
     /// </summary>
     public Tuner UsingConstructorWithParameters(params Type[] parameterTypes)
     {
-      UnitSequenceMatcher
-       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance))
+      ScannerTree
+       .AddItem(new IfLastUnitIs(UnitIsConstructorMatcher.Instance))
        .AddBuildAction(BuildStage.Create, new GetConstructorByParameterTypesBuildAction(parameterTypes));
 
       return this;
@@ -133,7 +133,7 @@ namespace Armature
     {
       if(tuneAction is null) throw new ArgumentNullException(nameof(tuneAction));
 
-      tuneAction(new SequenceTuner(UnitSequenceMatcher));
+      tuneAction(new SequenceTuner(ScannerTree));
 
       return this;
     }

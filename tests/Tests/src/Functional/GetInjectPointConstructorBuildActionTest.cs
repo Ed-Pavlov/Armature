@@ -77,10 +77,10 @@ namespace Tests.Functional
     private Builder CreateTarget()
       => new(BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipToLastUnit
            {
              // inject into constructor
-             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
+             new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(
                  BuildStage.Create,
                  new OrderedBuildActionContainer
@@ -88,7 +88,7 @@ namespace Tests.Functional
                    new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
                    GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
                  }),
-             new LastUnitSequenceMatcher(UnitIsParameterMatcher.Instance)
+             new IfLastUnitIs(UnitIsParameterMatcher.Instance)
               .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
            }
          };

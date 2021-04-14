@@ -21,8 +21,8 @@ namespace Tests.UnitTests
       var expected = new SingletonBuildAction();
 
       // --arrange
-      var target = new WildcardUnitSequenceMatcher(Match.Type<IDisposable>(null))
-                  .AddOrGetUnitSequenceMatcher(new WildcardUnitSequenceMatcher(Match.Type<MemoryStream>(null)))
+      var target = new SkipToUnit(Match.Type<IDisposable>(null))
+                  .AddItem(new SkipToUnit(Match.Type<MemoryStream>(null)))
                   .AddBuildAction(BuildStage.Cache, expected);
 
       // --act
@@ -38,15 +38,15 @@ namespace Tests.UnitTests
     public void should_return_children_merged_actions()
     {
       // --arrange
-      var buildStep1 = new LastUnitSequenceMatcher(Match.Type<int>(null));
+      var buildStep1 = new IfLastUnitIs(Match.Type<int>(null));
       buildStep1.AddBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
       var singletonAction = new SingletonBuildAction();
-      var buildStep2      = new AnyUnitSequenceMatcher();
+      var buildStep2      = new SkipToLastUnit();
       buildStep2.AddBuildAction(BuildStage.Cache, singletonAction);
 
-      var target = new WildcardUnitSequenceMatcher(Match.Type<string>(null));
-      target.AddOrGetUnitSequenceMatcher(buildStep1);
-      target.AddOrGetUnitSequenceMatcher(buildStep2);
+      var target = new SkipToUnit(Match.Type<string>(null));
+      target.AddItem(buildStep1);
+      target.AddItem(buildStep2);
 
       // --act
       var actual = target.GetBuildActions(new[] {Unit.OfType<string>(), Unit.OfType<int>()}.GetTail(0), 0);

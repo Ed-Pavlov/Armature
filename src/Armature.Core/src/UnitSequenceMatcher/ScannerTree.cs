@@ -10,11 +10,11 @@ namespace Armature.Core.UnitSequenceMatcher
   /// <summary>
   ///   Base class implementing the logic of adding build actions
   /// </summary>
-  public abstract class UnitSequenceMatcher : IUnitSequenceMatcher
+  public abstract class ScannerTree : IScannerTree
   {
     private Dictionary<object, List<IBuildAction>>? _buildActions;
 
-    protected UnitSequenceMatcher(int weight) => Weight = weight;
+    protected ScannerTree(int weight) => Weight = weight;
 
     protected int Weight { get; }
 
@@ -23,12 +23,12 @@ namespace Armature.Core.UnitSequenceMatcher
       [DebuggerStepThrough] get => _buildActions ??= new Dictionary<object, List<IBuildAction>>();
     }
 
-    public abstract ICollection<IUnitSequenceMatcher> Children { get; }
+    public abstract ICollection<IScannerTree> Children { get; }
 
-    public abstract MatchedBuildActions? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight);
+    public abstract BuildActionBag? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight);
 
     [DebuggerStepThrough]
-    public IUnitSequenceMatcher AddBuildAction(object buildStage, IBuildAction buildAction)
+    public IScannerTree AddBuildAction(object buildStage, IBuildAction buildAction)
     {
       LazyBuildAction
        .GetOrCreateValue(buildStage, () => new List<IBuildAction>())
@@ -37,14 +37,14 @@ namespace Armature.Core.UnitSequenceMatcher
       return this;
     }
 
-    public abstract bool Equals(IUnitSequenceMatcher other);
+    public abstract bool Equals(IScannerTree other);
 
     [DebuggerStepThrough]
-    protected MatchedBuildActions? GetOwnActions(int matchingWeight)
+    protected BuildActionBag? GetOwnActions(int matchingWeight)
     {
       if(_buildActions is null) return null;
 
-      var result = new MatchedBuildActions();
+      var result = new BuildActionBag();
 
       foreach(var pair in _buildActions)
         result.Add(pair.Key, pair.Value.Select(_ => _.WithWeight(matchingWeight)).ToList());
@@ -57,7 +57,7 @@ namespace Armature.Core.UnitSequenceMatcher
 
     public void PrintToLog()
     {
-      ICollection<IUnitSequenceMatcher>? children = null;
+      ICollection<IScannerTree>? children = null;
 
       try
       {

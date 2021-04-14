@@ -17,36 +17,36 @@ namespace Armature.Core.UnitSequenceMatcher
   [SuppressMessage("ReSharper", "ConvertToConstant.Global")]
   public class UnitSequenceMatchingWeight
   {
-    protected static int Step                = 100_000;
-    protected static int Lowest              = 0;
-    protected static int Any                 = Lowest              - Step * 10;
-    protected static int WildcardOpenGeneric = Lowest              + Step;
-    protected static int WildcardBaseType    = WildcardOpenGeneric + Step;
-    protected static int Wildcard            = WildcardBaseType    + Step;
-    protected static int Strict              = Wildcard            + Step;
+    protected const int Step                = 100_000;
+    protected const int Lowest              = 0;
+    public const int Any                 = Lowest              - Step * 10;
+    protected const int WildcardOpenGeneric = Lowest              + Step;
+    protected const int WildcardBaseType    = WildcardOpenGeneric + Step;
+    protected const int Wildcard            = WildcardBaseType    + Step;
+    protected const int Strict              = Wildcard            + Step;
 
     /// <summary>
-    ///   Is used for <see cref="AnyUnitSequenceMatcher" />
+    ///   Is used for <see cref="SkipToLastUnit" />
     /// </summary>
     public static int AnyUnit => Any;
 
     /// <summary>
-    ///   Used for <see cref="WildcardUnitSequenceMatcher" /> which matches with a <see cref="UnitId" /> contains open generic type
+    ///   Used for <see cref="SkipToUnit" /> which matches with a <see cref="UnitId" /> contains open generic type
     /// </summary>
     public static int WildcardMatchingOpenGenericUnit => WildcardOpenGeneric;
 
     /// <summary>
-    ///   Used for <see cref="WildcardUnitSequenceMatcher" /> which matches with a <see cref="UnitId" /> contains inheritors of a type
+    ///   Used for <see cref="SkipToUnit" /> which matches with a <see cref="UnitId" /> contains inheritors of a type
     /// </summary>
     public static int WildcardMatchingBaseTypeUnit => WildcardBaseType;
 
     /// <summary>
-    ///   Used for <see cref="WildcardUnitSequenceMatcher" /> which matches with a <see cref="UnitId" /> contains a <see cref="Type" />
+    ///   Used for <see cref="SkipToUnit" /> which matches with a <see cref="UnitId" /> contains a <see cref="Type" />
     /// </summary>
     public static int WildcardMatchingUnit => Wildcard;
 
     /// <summary>
-    ///   Used for <see cref="StrictUnitSequenceMatcher" /> which matches with a <see cref="UnitId" /> contains a <see cref="Type" />
+    ///   Used for <see cref="IfFirstUnitIs" /> which matches with a <see cref="UnitId" /> contains a <see cref="Type" />
     /// </summary>
     public static int StrictMatchingUnit => Strict;
   }

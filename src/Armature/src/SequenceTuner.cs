@@ -11,7 +11,7 @@ namespace Armature
   public class SequenceTuner : UnitSequenceExtensibility
   {
     [DebuggerStepThrough]
-    public SequenceTuner(IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
+    public SequenceTuner(IScannerTree scannerTree) : base(scannerTree) { }
 
     /// <summary>
     ///   Used to make a build plan for a unit only if it is building in a context of building <paramref name="type" /> with key <paramref name="key" />
@@ -20,8 +20,8 @@ namespace Armature
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
       
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(type, key));
-      return new SequenceTuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
+      var unitSequenceMatcher = new SkipToUnit(new UnitIdMatcher(type, key));
+      return new SequenceTuner(ScannerTree.AddItem(unitSequenceMatcher));
     }
 
     /// <summary>
@@ -36,9 +36,9 @@ namespace Armature
     public TreatingTuner Treat(Type type, object? key = null)
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(new UnitId(type, key)));
+      var unitSequenceMatcher = new SkipToUnit(new UnitIdMatcher(new UnitId(type, key)));
 
-      return new TreatingTuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
+      return new TreatingTuner(ScannerTree.AddItem(unitSequenceMatcher));
     }
 
     /// <summary>
@@ -47,8 +47,8 @@ namespace Armature
     /// </summary>
     public TreatingTuner<T> Treat<T>(object? key = null)
     {
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(new UnitInfoMatcher(typeof(T), key));
-      return new TreatingTuner<T>(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
+      var unitSequenceMatcher = new SkipToUnit(new UnitIdMatcher(typeof(T), key));
+      return new TreatingTuner<T>(ScannerTree.AddItem(unitSequenceMatcher));
     }
 
     /// <summary>
@@ -56,9 +56,9 @@ namespace Armature
     /// </summary>
     public Tuner TreatAll()
     {
-      var unitSequenceMatcher = new AnyUnitSequenceMatcher();
+      var unitSequenceMatcher = new SkipToLastUnit();
 
-      return new Tuner(UnitSequenceMatcher.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
+      return new Tuner(ScannerTree.AddItem(unitSequenceMatcher));
     }
   }
 }

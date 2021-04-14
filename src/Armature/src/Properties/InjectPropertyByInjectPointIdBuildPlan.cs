@@ -18,9 +18,9 @@ namespace Armature
 
     public object[] Item1 { get; }
 
-    public void Apply(IUnitSequenceMatcher unitSequenceMatcher)
-      => unitSequenceMatcher
-        .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(UnitIsPropertyMatcher.Instance))
+    public void Apply(IScannerTree scannerTree)
+      => scannerTree
+        .AddItem(new IfLastUnitIs(UnitIsPropertyMatcher.Instance))
         .AddBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction(Item1));
 
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", Item1));

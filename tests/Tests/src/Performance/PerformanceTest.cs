@@ -131,11 +131,11 @@ namespace Tests.Performance
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitMatcher = new MockUnitMatcher(new UnitInfoMatcher(unitId));
+      var unitMatcher = new MockUnitMatcher(new UnitIdMatcher(unitId));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(unitMatcher);
+      var unitSequenceMatcher = new SkipToUnit(unitMatcher);
 
-      return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
+      return new TreatingTuner(buildPlans.AddItem(unitSequenceMatcher));
     }
 
     private class MockUnitMatcher : IUnitIdMatcher
@@ -164,15 +164,15 @@ namespace Tests.Performance
         return _impl.GetHashCode();
       }
 
-      public override bool Equals(object obj) => Equals(obj as UnitInfoMatcher);
+      public override bool Equals(object obj) => Equals(obj as UnitIdMatcher);
     }
 
     private static Builder CreateTarget(Builder parent = null)
     {
-      var treatAll = new AnyUnitSequenceMatcher
+      var treatAll = new SkipToLastUnit
                      {
                        // inject into constructor
-                       new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
+                       new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
                         .AddBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer
@@ -180,14 +180,14 @@ namespace Tests.Performance
                              new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
                              GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
                            }),
-                       new LastUnitSequenceMatcher(UnitIsParameterMatcher.Instance)
+                       new IfLastUnitIs(UnitIsParameterMatcher.Instance)
                         .AddBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer
                            {
                              CreateParameterValueForInjectPointBuildAction.Instance, CreateParameterValueBuildAction.Instance
                            }),
-                       new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
+                       new IfLastUnitIs(PropertyValueMatcher.Instance)
                         .AddBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer {new CreatePropertyValueBuildAction()})

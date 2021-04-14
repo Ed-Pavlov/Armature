@@ -2,7 +2,6 @@
 using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
 
-
 namespace Armature
 {
   /// <summary>
@@ -13,18 +12,18 @@ namespace Armature
     protected BuildValuePlan(IUnitIdMatcher unitMatcher, IBuildAction getValueAction, int weight)
       : base(unitMatcher, getValueAction, weight) { }
 
-    void IBuildPlan.Apply(IUnitSequenceMatcher unitSequenceMatcher)
+    void IBuildPlan.Apply(IScannerTree scannerTree)
     {
-      unitSequenceMatcher
-       .AddUniqueUnitMatcher(new LastUnitSequenceMatcher(UnitMatcher, Weight))
+      scannerTree
+       .AddItem(new IfLastUnitIs(UnitMatcher, Weight), false)
        .AddBuildAction(BuildStage.Create, BuildAction);
 
-      Apply(unitSequenceMatcher);
+      Apply(scannerTree);
     }
 
     /// <summary>
     ///   Can be overriden to add extra logic in addition to implemented in <see cref="IBuildPlan.Apply" />
     /// </summary>
-    protected virtual void Apply(IUnitSequenceMatcher unitSequenceMatcher) { }
+    protected virtual void Apply(IScannerTree scannerTree) { }
   }
 }

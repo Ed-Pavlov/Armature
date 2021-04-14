@@ -11,18 +11,18 @@ namespace Armature.Core.UnitSequenceMatcher
   /// <summary>
   ///   Base class exposing the collection of children matchers, gathering and merging build actions from children with its own.
   /// </summary>
-  public abstract class UnitSequenceMatcherWithChildren : UnitSequenceMatcher
+  public abstract class ScannerTreeWithChildren : ScannerTree
   {
-    private HashSet<IUnitSequenceMatcher>? _children;
+    private HashSet<IScannerTree>? _children;
 
-    protected UnitSequenceMatcherWithChildren(int weight) : base(weight) { }
+    protected ScannerTreeWithChildren(int weight) : base(weight) { }
 
-    private HashSet<IUnitSequenceMatcher> LazyChildren
+    private HashSet<IScannerTree> LazyChildren
     {
-      [DebuggerStepThrough] get => _children ??= new HashSet<IUnitSequenceMatcher>();
+      [DebuggerStepThrough] get => _children ??= new HashSet<IScannerTree>();
     }
 
-    public override ICollection<IUnitSequenceMatcher> Children
+    public override ICollection<IScannerTree> Children
     {
       [DebuggerStepThrough] get => LazyChildren;
     }
@@ -33,15 +33,15 @@ namespace Armature.Core.UnitSequenceMatcher
     /// <param name="inputMatchingWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
     /// <param name="unitBuildingSequence">The sequence of units building in this build session.</param>
     [DebuggerStepThrough]
-    protected MatchedBuildActions? GetChildrenActions(int inputMatchingWeight, ArrayTail<UnitId> unitBuildingSequence)
+    protected BuildActionBag? GetChildrenActions(int inputMatchingWeight, ArrayTail<UnitId> unitBuildingSequence)
       => _children?.Aggregate(
-        (MatchedBuildActions?) null,
+        (BuildActionBag?) null,
         (current, child) => current.Merge(child.GetBuildActions(unitBuildingSequence, inputMatchingWeight)));
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
-    protected MatchedBuildActions? GetActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
+    protected BuildActionBag? GetActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
     {
-      MatchedBuildActions? matchedBuildActions;
+      BuildActionBag? BuildActionBag;
 
       if(buildingUnitsSequence.Length > 1)
       {
@@ -49,26 +49,26 @@ namespace Armature.Core.UnitSequenceMatcher
 
         using(Log.AddIndent())
         {
-          matchedBuildActions = GetChildrenActions(
+          BuildActionBag = GetChildrenActions(
             inputWeight + Weight,
             buildingUnitsSequence.GetTail(1)); // pass the rest of the sequence to children and return their actions
         }
       }
       else
       {
-        matchedBuildActions = GetOwnActions(Weight + inputWeight);
+        BuildActionBag = GetOwnActions(Weight + inputWeight);
 
-        if(matchedBuildActions is null)
+        if(BuildActionBag is null)
           Log.WriteLine(LogLevel.Trace, () => string.Format("{0}{{not matched}}", this));
         else
           using(Log.Block(LogLevel.Verbose, this.ToString)) // pass group method, do not call ToString
           {
             // ReSharper disable once RedundantArgumentDefaultValue
-            matchedBuildActions.ToLog(LogLevel.Verbose);
+            BuildActionBag.ToLog(LogLevel.Verbose);
           }
       }
 
-      return matchedBuildActions;
+      return BuildActionBag;
     }
   }
 }

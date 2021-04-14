@@ -10,7 +10,7 @@ namespace Armature
   public class TreatingOpenGenericTuner : UnitSequenceExtensibility
   {
     [DebuggerStepThrough]
-    public TreatingOpenGenericTuner(IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
+    public TreatingOpenGenericTuner(IScannerTree scannerTree) : base(scannerTree) { }
 
     /// <summary>
     ///   When generic type belonging to class described by open generic type passed to <see cref="BuildPlansCollectionExtension.TreatOpenGeneric"/>
@@ -25,16 +25,16 @@ namespace Armature
     /// </summary>
     public OpenGenericCreationTuner As(Type openGenericType, object? key = null)
     {
-      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectOpenGenericTypeBuildAction(openGenericType, key));
+      ScannerTree.AddBuildAction(BuildStage.Create, new RedirectOpenGenericTypeBuildAction(openGenericType, key));
 
-      return new OpenGenericCreationTuner(UnitSequenceMatcher, openGenericType, key);
+      return new OpenGenericCreationTuner(ScannerTree, openGenericType, key);
     }
 
     public Tuner AsIs()
     {
-      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
+      ScannerTree.AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
 
-      return new Tuner(UnitSequenceMatcher);
+      return new Tuner(ScannerTree);
     }
   }
 }

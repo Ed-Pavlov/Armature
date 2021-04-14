@@ -40,7 +40,7 @@ namespace Armature.Core
     /// <summary>
     ///   Builds a Unit represented by <paramref name="unitId" />
     /// </summary>
-    /// <param name="unitId">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
+    /// <param name="unitId">"Id" of the unit to build. See <see cref="IScannerTree" /> for details</param>
     /// <param name="buildStages">The conveyor of build stages. See <see cref="Builder" /> for details</param>
     /// <param name="buildPlans">Build plans used to build a unit</param>
     /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method </param>
@@ -59,7 +59,7 @@ namespace Armature.Core
     /// <summary>
     ///   Builds all Units represented by <paramref name="unitId" />
     /// </summary>
-    /// <param name="unitId">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
+    /// <param name="unitId">"Id" of the unit to build. See <see cref="IScannerTree" /> for details</param>
     /// <param name="buildStages">The conveyor of build stages. See <see cref="Builder" /> for details</param>
     /// <param name="buildPlans">Build plans used to build a unit</param>
     /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method </param>
@@ -78,18 +78,18 @@ namespace Armature.Core
     /// <summary>
     ///   Builds a Unit represented by <paramref name="unitId" />
     /// </summary>
-    /// <param name="unitId">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
+    /// <param name="unitId">"Id" of the unit to build. See <see cref="IScannerTree" /> for details</param>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public BuildResult BuildUnit(UnitId unitId) => Build(unitId, BuildUnit);
 
     /// <summary>
     ///   Builds all Units represented by <paramref name="unitId" />
     /// </summary>
-    /// <param name="unitId">"Id" of the unit to build. See <see cref="IUnitSequenceMatcher" /> for details</param>
+    /// <param name="unitId">"Id" of the unit to build. See <see cref="IScannerTree" /> for details</param>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public IReadOnlyList<BuildResult>? BuildAllUnits(UnitId unitId) => Build(unitId, BuildAllUnits);
 
-    private T? Build<T>(UnitId unitId, Func<MatchedBuildActions?, T> build)
+    private T? Build<T>(UnitId unitId, Func<BuildActionBag?, T> build)
     {
       using(LogBuildSessionState(unitId))
       {
@@ -97,8 +97,8 @@ namespace Armature.Core
 
         try
         {
-          MatchedBuildActions? actions;
-          MatchedBuildActions? auxActions;
+          BuildActionBag? actions;
+          BuildActionBag? auxActions;
 
           using(Log.Block(LogLevel.Verbose, "Looking for build actions"))
           {
@@ -124,9 +124,9 @@ namespace Armature.Core
     }
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
-    private BuildResult BuildUnit(MatchedBuildActions? matchedBuildActions)
+    private BuildResult BuildUnit(BuildActionBag? BuildActionBag)
     {
-      if(matchedBuildActions is null)
+      if(BuildActionBag is null)
         return BuildViaParentBuilder(_buildSequence.Last());
 
       // builder to pass into IBuildActon.Execute
@@ -135,7 +135,7 @@ namespace Armature.Core
 
       foreach(var stage in _buildStages)
       {
-        var buildAction = matchedBuildActions.GetTopmostAction(stage);
+        var buildAction = BuildActionBag.GetTopmostAction(stage);
 
         if(buildAction is null)
           continue;
@@ -205,16 +205,16 @@ namespace Armature.Core
     }
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
-    private List<BuildResult>? BuildAllUnits(MatchedBuildActions? matchedBuildActions)
+    private List<BuildResult>? BuildAllUnits(BuildActionBag? BuildActionBag)
     {
-      if(matchedBuildActions is null) return null;
+      if(BuildActionBag is null) return null;
 
-      if(matchedBuildActions.Keys.Count > 1)
+      if(BuildActionBag.Keys.Count > 1)
         throw new ArmatureException("Actions only for one stage should be provided for BuildAll");
 
       var result = new List<BuildResult>();
 
-      foreach(var buildAction in matchedBuildActions.Values.Single().Select(_ => _.Entity))
+      foreach(var buildAction in BuildActionBag.Values.Single().Select(_ => _.Entity))
       {
         var unitBuilder = new Interface(_buildSequence, this);
 

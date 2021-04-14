@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   ///   Collection of build actions from matched build plans grouped by the build stage
   /// </summary>
-  public class MatchedBuildActions : Dictionary<object, List<Weighted<IBuildAction>>>
+  public class BuildActionBag : Dictionary<object, List<Weighted<IBuildAction>>>
   {
     [DebuggerStepThrough]
     public override string ToString()

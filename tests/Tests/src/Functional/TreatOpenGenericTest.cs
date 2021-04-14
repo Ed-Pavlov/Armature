@@ -100,10 +100,10 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipToLastUnit
            {
              // inject into constructor
-             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
+             new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
            }
          };

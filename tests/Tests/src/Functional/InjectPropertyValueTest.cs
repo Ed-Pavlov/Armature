@@ -24,16 +24,16 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-       .AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
+       .AddItem(new SkipToLastUnit())
        .With( // add build action injecting values into property for any type
           anyMatcher =>
             anyMatcher
-             .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(UnitKindIsTypeMatcher.Instance))
+             .AddItem(new IfLastUnitIs(UnitKindIsTypeMatcher.Instance))
              .AddBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance))
        .With( // add build action finding properties attributed with InjectAttribute for any type 
           anyMatcher =>
             anyMatcher
-             .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(UnitIsPropertyMatcher.Instance))
+             .AddItem(new IfLastUnitIs(UnitIsPropertyMatcher.Instance))
              .AddBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction()));
 
       target.Treat<string>().AsInstance(expected);
@@ -198,12 +198,12 @@ namespace Tests.Functional
     public static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipToLastUnit
            {
              // inject into constructor
-             new LastUnitSequenceMatcher(UnitIsConstructorMatcher.Instance)
+             new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
               .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-             new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
+             new IfLastUnitIs(PropertyValueMatcher.Instance)
               .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
            }
          };
