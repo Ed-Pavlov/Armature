@@ -20,11 +20,7 @@ namespace Armature
     /// <param name="parameterName">Matches parameter with this name</param>
     /// <returns></returns>
     public static ParameterValueTuner Named(string parameterName)
-    {
-      var matcher = new UnitIsParameterWithNameMatcher(parameterName);
-
-      return new ParameterValueTuner(matcher, InjectPointMatchingWeight.NamedParameter);
-    }
+      => new(new IsParameterWithNameMatcher(parameterName), InjectPointMatchingWeight.NamedParameter);
 
     /// <summary>
     ///   Matches with parameter marked with <see cref="InjectAttribute" />(<paramref name="injectPointId" />)

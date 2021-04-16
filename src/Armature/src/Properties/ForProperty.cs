@@ -23,7 +23,7 @@ namespace Armature
     public static PropertyValueTuner Named(string propertyName)
     {
       var getPropertyAction = new GetPropertyByNameBuildAction(propertyName);
-      var matcher           = new UnitIsPropertyWithNameMatcher(propertyName);
+      var matcher           = new IsPropertyWithNameMatcher(propertyName);
 
       return new PropertyValueTuner(matcher, getPropertyAction, InjectPointMatchingWeight.NamedParameter);
     }
