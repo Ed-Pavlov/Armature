@@ -6,13 +6,13 @@ using System.Reflection;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Matches parameter marked with attribute which satisfies user provided conditions
+  /// Matches if a building unit is an argument for a parameter marked with attribute which satisfies conditions checked by the predicate
   /// </summary>
   [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-  public record UnitIsParameterWithAttributeMatcher<T> : UnitByAttributeMatcherBase<T> where T : Attribute
+  public record IsParameterWithAttributeMatcher<T> : IsInjectPointByAttributeMatcher<T> where T : Attribute
   {
     [DebuggerStepThrough]
-    public UnitIsParameterWithAttributeMatcher(Predicate<T>? predicate) : base(predicate) { }
+    public IsParameterWithAttributeMatcher(Predicate<T>? predicate) : base(predicate) { }
 
     protected override T? GetAttribute(UnitId unitId) => GetParameterAttribute(unitId);
 

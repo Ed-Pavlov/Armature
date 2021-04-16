@@ -29,7 +29,7 @@ namespace Armature
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected");
         else
           Query
-           .AddSubQuery(new IfLastUnitIs(new ParameterAssignableFromMatcher(parameter.GetType()), InjectPointMatchingWeight.WeakTypedParameter))
+           .AddSubQuery(new IfLastUnit(new IsParameterAssignableFromMatcher(parameter.GetType()), InjectPointMatchingWeight.WeakTypedParameter))
            .UseBuildAction(BuildStage.Create, new SingletonBuildAction(parameter));
 
       return this;
@@ -50,7 +50,7 @@ namespace Armature
           throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected");
         else
           Query
-           .AddSubQuery(new IfLastUnitIs(new PropertyAssignableFromMatcher(value.GetType()), InjectPointMatchingWeight.WeakTypedParameter))
+           .AddSubQuery(new IfLastUnit(new IsPropertyAssignableFromMatcher(value.GetType()), InjectPointMatchingWeight.WeakTypedParameter))
            .UseBuildAction(BuildStage.Create, new SingletonBuildAction(value));
 
       return this;
@@ -67,7 +67,7 @@ namespace Armature
     public Tuner UsingLongestConstructor()
     {
       Query
-       .AddSubQuery(new IfLastUnitIs(UnitIsConstructorMatcher.Instance))
+       .AddSubQuery(new IfLastUnit(UnitIsConstructorMatcher.Instance))
        .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance);
 
       return this;
@@ -79,7 +79,7 @@ namespace Armature
     public Tuner UsingInjectPointConstructor(object injectionPointId)
     {
       Query
-       .AddSubQuery(new IfLastUnitIs(UnitIsConstructorMatcher.Instance))
+       .AddSubQuery(new IfLastUnit(UnitIsConstructorMatcher.Instance))
        .UseBuildAction(BuildStage.Create, new GetInjectPointConstructorBuildAction(injectionPointId));
 
       return this;
@@ -116,7 +116,7 @@ namespace Armature
     public Tuner UsingConstructorWithParameters(params Type[] parameterTypes)
     {
       Query
-       .AddSubQuery(new IfLastUnitIs(UnitIsConstructorMatcher.Instance))
+       .AddSubQuery(new IfLastUnit(UnitIsConstructorMatcher.Instance))
        .UseBuildAction(BuildStage.Create, new GetConstructorByParameterTypesBuildAction(parameterTypes));
 
       return this;

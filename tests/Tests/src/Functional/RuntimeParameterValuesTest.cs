@@ -101,9 +101,9 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
+             new IfLastUnit(UnitIsConstructorMatcher.Instance)
               .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-             new IfLastUnitIs(UnitIsParameterMatcher.Instance)
+             new IfLastUnit(UnitIsParameterMatcher.Instance)
               .UseBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance) // autowiring
            }
          };

@@ -14,7 +14,7 @@ namespace Armature
     void IBuildPlan.Apply(IQuery query)
     {
       query
-       .AddSubQuery(new IfLastUnitIs(UnitMatcher, Weight), false)
+       .AddSubQuery(new IfLastUnit(UnitMatcher, Weight), false)
        .UseBuildAction(BuildStage.Create, BuildAction);
 
       Apply(query);

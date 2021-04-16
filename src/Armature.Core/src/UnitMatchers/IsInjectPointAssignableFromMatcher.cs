@@ -5,14 +5,14 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Base class for matchers matching if an "inject point" can accept argument of the specified type
+  /// Base class for matchers matching if a building unit is an argument for an "inject point"
   /// </summary>
-  public abstract record InjectPointAssignableFromMatcher : IUnitIdMatcher
+  public abstract record IsInjectPointAssignableFromMatcher : IUnitIdMatcher
   {
     private readonly Type _type;
 
     [DebuggerStepThrough]
-    protected InjectPointAssignableFromMatcher(Type type) => _type = type ?? throw new ArgumentNullException(nameof(type));
+    protected IsInjectPointAssignableFromMatcher(Type type) => _type = type ?? throw new ArgumentNullException(nameof(type));
 
     public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.InjectValue && GetInjectPointType(unitId)?.IsAssignableFrom(_type) == true;
 

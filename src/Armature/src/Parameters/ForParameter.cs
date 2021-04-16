@@ -36,7 +36,7 @@ namespace Armature
     /// </param>
     public static ParameterValueTuner WithInjectPoint(object? injectPointId)
     {
-      var matcher = new UnitIsParameterWithInjectIdMatcher(injectPointId);
+      var matcher = new IsParameterWithInjectIdMatcher(injectPointId);
 
       return new ParameterValueTuner(matcher, InjectPointMatchingWeight.AttributedParameter);
     }

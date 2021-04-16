@@ -8,16 +8,16 @@ namespace Armature.Core
 {
   /// <summary>
   ///   Matches only unit under construction in the sequence and applies passed <see cref="IUnitIdMatcher" /> to it.
-  ///   See <see cref="IfLastUnitIs(Armature.Core.IUnitIdMatcher,int)" /> and <see cref="GatherBuildActions" /> for details
+  ///   See <see cref="IfLastUnit(IUnitIdMatcher,int)" /> and <see cref="GatherBuildActions" /> for details
   /// </summary>
-  public class IfLastUnitIs : Query
+  public class IfLastUnit : Query
   {
     private readonly IUnitIdMatcher _unitMatcher;
 
     /// <param name="unitMatcher">Object contains the logic of matching with building unit</param>
     /// <param name="weight">The weight of matching</param>
     [DebuggerStepThrough]
-    public IfLastUnitIs(IUnitIdMatcher unitMatcher, int weight = QueryWeight.Any) : base(weight)
+    public IfLastUnit(IUnitIdMatcher unitMatcher, int weight = QueryWeight.Any) : base(weight)
       => _unitMatcher = unitMatcher ?? throw new ArgumentNullException(nameof(unitMatcher));
 
     public override ICollection<IQuery> Children => throw new NotSupportedException("LastUnitSequenceMatcher can't contain children");
@@ -55,7 +55,7 @@ namespace Armature.Core
 
     #region Equality
 
-    private bool Equals(IfLastUnitIs? other)
+    private bool Equals(IfLastUnit? other)
     {
       if(ReferenceEquals(null, other)) return false;
       if(ReferenceEquals(this, other)) return true;
@@ -63,9 +63,9 @@ namespace Armature.Core
       return Weight == other.Weight && _unitMatcher.Equals(other._unitMatcher);
     }
 
-    public override bool Equals(IQuery obj) => Equals(obj as IfLastUnitIs);
+    public override bool Equals(IQuery obj) => Equals(obj as IfLastUnit);
 
-    public override bool Equals(object obj) => Equals(obj as IfLastUnitIs);
+    public override bool Equals(object obj) => Equals(obj as IfLastUnit);
 
     public override int GetHashCode()
     {

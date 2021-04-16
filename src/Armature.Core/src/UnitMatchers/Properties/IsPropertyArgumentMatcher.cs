@@ -5,11 +5,11 @@ namespace Armature.Core
   /// <summary>
   ///   Matches Unit representing "value for property" of the currently building Unit
   /// </summary>
-  public record PropertyValueMatcher : SimpleToStringImpl, IUnitIdMatcher
+  public record IsPropertyArgumentMatcher : SimpleToStringImpl, IUnitIdMatcher
   {
-    public static readonly IUnitIdMatcher Instance = new PropertyValueMatcher();
+    public static readonly IUnitIdMatcher Instance = new IsPropertyArgumentMatcher();
 
-    private PropertyValueMatcher() { }
+    private IsPropertyArgumentMatcher() { }
 
     public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.InjectValue && unitId.Kind is PropertyInfo;
   }

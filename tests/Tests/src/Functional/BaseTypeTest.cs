@@ -94,13 +94,10 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
-              .UseBuildAction(
-                 BuildStage.Create,
-                 GetLongestConstructorBuildAction
-                  .Instance), // constructor with largest number of parameters has less priority
+             new IfLastUnit(UnitIsConstructorMatcher.Instance)
+              .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
 
-             new IfLastUnitIs(PropertyValueMatcher.Instance)
+             new IfLastUnit(IsPropertyArgumentMatcher.Instance)
               .UseBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
            }
          };

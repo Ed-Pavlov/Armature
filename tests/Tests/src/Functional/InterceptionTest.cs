@@ -31,7 +31,7 @@ namespace Tests.Functional
 
       target
        .AddSubQuery(new SkipToLastUnit())
-       .AddSubQuery(new IfLastUnitIs(new AnyStringMatcher()))
+       .AddSubQuery(new IfLastUnit(new AnyStringMatcher()))
        .UseBuildAction(BuildStage.Intercept, new AddPostfixToString(Postfix));
 
       // --act
@@ -86,7 +86,7 @@ namespace Tests.Functional
          {
            new SkipToLastUnit
            {
-             new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
+             new IfLastUnit(UnitIsConstructorMatcher.Instance)
               .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
            }
          };

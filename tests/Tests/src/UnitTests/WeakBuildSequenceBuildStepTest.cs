@@ -37,7 +37,7 @@ namespace Tests.UnitTests
     {
       // --arrange
       var unitIdMatcher = Match.Type<int>(null);
-      var buildStep1    = new IfLastUnitIs(unitIdMatcher);
+      var buildStep1    = new IfLastUnit(unitIdMatcher);
       buildStep1.UseBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
       var singletonAction = new SingletonBuildAction();
       var buildStep2      = new FindFirstUnit(unitIdMatcher);

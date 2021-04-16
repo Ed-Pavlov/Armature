@@ -6,9 +6,9 @@ namespace Armature.Core
   /// <summary>
   ///   Checks if a building unit is an argument to inject into method or constructor
   /// </summary>
-  public record ParameterAssignableFromMatcher : InjectPointAssignableFromMatcher
+  public record IsParameterAssignableFromMatcher : IsInjectPointAssignableFromMatcher
   {
-    public ParameterAssignableFromMatcher(Type type) : base(type) { }
+    public IsParameterAssignableFromMatcher(Type type) : base(type) { }
 
     protected override Type? GetInjectPointType(UnitId unitId) => (unitId.Kind as ParameterInfo)?.ParameterType;
   }

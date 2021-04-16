@@ -46,7 +46,7 @@ namespace Armature.Core
     public static int WildcardMatchingUnit => Wildcard;
 
     /// <summary>
-    ///   Used for <see cref="IfFirstUnitIs" /> which matches with a <see cref="UnitId" /> contains a <see cref="Type" />
+    ///   Used for <see cref="IfFirstUnit" /> which matches with a <see cref="UnitId" /> contains a <see cref="Type" />
     /// </summary>
     public static int StrictMatchingUnit => Strict;
   }

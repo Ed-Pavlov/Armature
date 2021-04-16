@@ -28,7 +28,7 @@ namespace Armature
     [DebuggerStepThrough]
     public void Apply(IQuery query)
       => query
-        .AddSubQuery(new IfLastUnitIs(UnitIsPropertyMatcher.Instance))
+        .AddSubQuery(new IfLastUnit(UnitIsPropertyMatcher.Instance))
         .UseBuildAction(BuildStage.Create, new GetPropertyByNameBuildAction(_names));
 
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", _names));

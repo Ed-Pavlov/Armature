@@ -25,7 +25,7 @@ namespace Armature
     /// </summary>
     public Tuner CreatedByDefault()
       => new(Query.AddSubQuery(
-               new IfFirstUnitIs(new UnitIdMatcher(Type, Key))
+               new IfFirstUnit(new UnitIdMatcher(Type, Key))
                 .UseBuildAction(BuildStage.Create, Default.CreationBuildAction)
              )
       );
@@ -37,7 +37,7 @@ namespace Armature
     /// <returns></returns>
     public Tuner CreatedByReflection()
       => new(Query.AddSubQuery(
-               new IfFirstUnitIs(new UnitIdMatcher(Type, Key))
+               new IfFirstUnit(new UnitIdMatcher(Type, Key))
                 .UseBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance)
              )
       );
