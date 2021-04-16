@@ -12,8 +12,7 @@ namespace Armature.Core
 
     public FindFirstUnit(IUnitIdMatcher matcher) : this(matcher, QueryWeight.WildcardMatchingUnit) { }
 
-    public FindFirstUnit(IUnitIdMatcher matcher, int weight) : base(weight)
-      => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
+    public FindFirstUnit(IUnitIdMatcher matcher, int weight) : base(weight) => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
 
     /// <summary>
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.

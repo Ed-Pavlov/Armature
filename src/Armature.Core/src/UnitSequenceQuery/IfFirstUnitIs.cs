@@ -14,8 +14,7 @@ namespace Armature.Core
 
     public IfFirstUnitIs(IUnitIdMatcher matcher) : this(matcher, QueryWeight.StrictMatchingUnit) { }
 
-    public IfFirstUnitIs(IUnitIdMatcher matcher, int weight) : base(weight)
-      => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
+    public IfFirstUnitIs(IUnitIdMatcher matcher, int weight) : base(weight) => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
 
     /// <summary>
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.

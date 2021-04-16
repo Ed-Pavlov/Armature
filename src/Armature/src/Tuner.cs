@@ -34,7 +34,7 @@ namespace Armature
 
       return this;
     }
-    
+
     /// <summary>
     ///   Provided values will be injected into properties of the created object.  See <see cref="ForProperty" /> for details.
     ///   Also value can be a build plan returned by one of the method of the <see cref="Property" /> class, which specifies properties to inject dependencies.

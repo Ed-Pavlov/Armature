@@ -14,7 +14,7 @@ namespace Armature
     public OpenGenericCreationTuner(IQuery query, Type openGenericType, object? key) : base(query)
     {
       OpenGenericType = openGenericType;
-      Key           = key;
+      Key             = key;
     }
 
     Type IExtensibility<Type, object>.   Item1 => OpenGenericType;
@@ -23,7 +23,8 @@ namespace Armature
     public Tuner CreatedByDefault()
     {
       var childMatcher = new FindFirstUnit(
-        new UnitKindIsOpenGenericTypeMatcher(OpenGenericType, Key), QueryWeight.WildcardMatchingUnit - 1);
+        new UnitKindIsOpenGenericTypeMatcher(OpenGenericType, Key),
+        QueryWeight.WildcardMatchingUnit - 1);
 
       Query
        .AddSubQuery(childMatcher)

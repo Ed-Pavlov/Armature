@@ -134,7 +134,7 @@ namespace Tests.Functional
     [TestCaseSource("ForParameterSource")]
     public void should_build_value_for_parameter_using_parameter_type_and_key(ParameterValueTuner forParameter)
     {
-      const string key    = "key398";
+      const string key      = "key398";
       const string expected = "expected 398752";
 
       // --arrange

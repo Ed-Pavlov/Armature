@@ -126,7 +126,7 @@ namespace Tests.Functional
     [Test]
     public void should_use_provided_key_for_property_by_inject_point()
     {
-      const string key    = "key";
+      const string key      = "key";
       const string expected = "expectedString";
 
       // --arrange

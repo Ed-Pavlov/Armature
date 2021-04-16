@@ -17,7 +17,7 @@ namespace Armature
     public SequenceTuner Building(Type type, object? key = null)
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
-      
+
       var query = new FindFirstUnit(new UnitIdMatcher(type, key));
       return new SequenceTuner(Query.AddSubQuery(query));
     }

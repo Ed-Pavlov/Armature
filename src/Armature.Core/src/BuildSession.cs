@@ -17,7 +17,7 @@ namespace Armature.Core
     private readonly Builder[]?            _parentBuilders;
     private readonly BuildPlansCollection? _auxBuildPlans;
     private readonly BuildPlansCollection  _buildPlans;
-    private readonly List<UnitId>        _buildSequence;
+    private readonly List<UnitId>          _buildSequence;
     private readonly IEnumerable<object>   _buildStages;
 
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
@@ -49,7 +49,7 @@ namespace Armature.Core
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
     public static BuildResult BuildUnit(
-      UnitId              unitId,
+      UnitId                unitId,
       IEnumerable<object>   buildStages,
       BuildPlansCollection  buildPlans,
       BuildPlansCollection? runtimeBuildPlans,
@@ -68,7 +68,7 @@ namespace Armature.Core
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
     public static IReadOnlyList<BuildResult>? BuildAllUnits(
-      UnitId              unitId,
+      UnitId                unitId,
       IEnumerable<object>   buildStages,
       BuildPlansCollection  buildPlans,
       BuildPlansCollection? runtimeBuildPlans,

@@ -19,8 +19,8 @@ namespace Armature.Core
     {
       if(kind is null && key is null) throw new ArgumentNullException(nameof(kind), $"Either {nameof(kind)} or {nameof(key)} should be provided");
 
-      Kind    = kind;
-      Key = key;
+      Kind = kind;
+      Key  = key;
     }
 
     public override string ToString() => string.Format("{0}({1}, {2})", nameof(UnitId), Kind.ToLogString(), Key.ToLogString());

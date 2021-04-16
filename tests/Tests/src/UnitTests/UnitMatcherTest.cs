@@ -34,7 +34,7 @@ namespace Tests.UnitTests
     [Test]
     public void should_match()
     {
-      const string id    = "id";
+      const string id  = "id";
       const string key = "key";
 
       var unitInfo = new UnitId(id, key);

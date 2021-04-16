@@ -20,7 +20,7 @@ namespace Armature.Core
     {
       if(unitId is null && key is null) throw new ArgumentNullException(nameof(unitId), @"Either id or key should be provided");
       _unitId = unitId;
-      _key  = key;
+      _key    = key;
     }
 
     /// <inheritdoc />

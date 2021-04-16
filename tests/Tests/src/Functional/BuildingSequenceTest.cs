@@ -42,7 +42,7 @@ namespace Tests.Functional
     [Test]
     public void should_use_value_matched_with_longest_sequence_and_key()
     {
-      object    key    = "key";
+      object    key      = "key";
       const int expected = 9345;
 
       // --arrange

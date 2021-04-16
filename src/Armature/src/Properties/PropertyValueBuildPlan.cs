@@ -10,9 +10,9 @@ namespace Armature
 
     public PropertyValueBuildPlan(
       IUnitIdMatcher propertyMatcher,
-      IBuildAction getPropertyAction,
-      IBuildAction getValueAction,
-      int          weight)
+      IBuildAction   getPropertyAction,
+      IBuildAction   getValueAction,
+      int            weight)
       : base(propertyMatcher, getValueAction, weight)
       => _getPropertyAction = getPropertyAction ?? throw new ArgumentNullException(nameof(getPropertyAction));
 

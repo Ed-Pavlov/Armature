@@ -22,7 +22,7 @@ namespace Armature.Core.BuildActions
         throw new ArgumentException("Type should not be open generic, use RedirectOpenGenericTypeBuildAction for open generics", nameof(redirectTo));
 
       _redirectTo = redirectTo;
-      _key      = key;
+      _key        = key;
     }
 
     public void Process(IBuildSession buildSession)
@@ -30,7 +30,7 @@ namespace Armature.Core.BuildActions
       if(!buildSession.BuildResult.HasValue)
       {
         var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
-        var effectiveKey        = Equals(_key, UnitKey.Propagate) ? unitUnderConstruction.Key : _key;
+        var effectiveKey          = Equals(_key, UnitKey.Propagate) ? unitUnderConstruction.Key : _key;
 
         var unitInfo = new UnitId(_redirectTo, effectiveKey);
         buildSession.BuildResult = buildSession.BuildUnit(unitInfo);

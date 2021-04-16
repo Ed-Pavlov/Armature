@@ -19,7 +19,7 @@ namespace Armature.Core
   {
     protected const int Step                = 100_000;
     protected const int Lowest              = 0;
-    public const int Any                 = Lowest              - Step * 10;
+    public const    int Any                 = Lowest              - Step * 10;
     protected const int WildcardOpenGeneric = Lowest              + Step;
     protected const int WildcardBaseType    = WildcardOpenGeneric + Step;
     protected const int Wildcard            = WildcardBaseType    + Step;

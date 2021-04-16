@@ -19,7 +19,7 @@ namespace Armature.Core
     protected UnitByTypeMatcherBase(Type type, object? key)
     {
       UnitType = type ?? throw new ArgumentNullException(nameof(type));
-      Key    = key;
+      Key      = key;
     }
 
     [DebuggerStepThrough]

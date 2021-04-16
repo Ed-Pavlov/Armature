@@ -78,9 +78,9 @@ namespace Armature.Core
 
     private T? Build<T>(
       UnitId                                                                                        unitId,
-      BuildPlansCollection?                                                                           auxBuildPlans,
+      BuildPlansCollection?                                                                         auxBuildPlans,
       Func<UnitId, IEnumerable<object>, BuildPlansCollection, BuildPlansCollection?, Builder[]?, T> build,
-      Builder[]?                                                                                      parentBuilders)
+      Builder[]?                                                                                    parentBuilders)
     {
       if(build is null) throw new ArgumentNullException(nameof(build));
 

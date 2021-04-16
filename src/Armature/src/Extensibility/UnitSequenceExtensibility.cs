@@ -8,8 +8,7 @@ namespace Armature.Extensibility
   {
     protected readonly IQuery Query;
 
-    protected UnitSequenceExtensibility(IQuery query)
-      => Query = query ?? throw new ArgumentNullException(nameof(query));
+    protected UnitSequenceExtensibility(IQuery query) => Query = query ?? throw new ArgumentNullException(nameof(query));
 
     IQuery IUnitSequenceExtensibility.Query => Query;
   }

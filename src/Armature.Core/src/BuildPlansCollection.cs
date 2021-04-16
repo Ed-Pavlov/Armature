@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Armature.Core.Common;
 using Armature.Core.Logging;
 
 
@@ -63,14 +62,13 @@ namespace Armature.Core
       public Root() : base(0) { }
 
       [DebuggerStepThrough]
-      public override BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
-        => GetChildrenActions(inputWeight, unitSequence);
+      public override BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight) => GetChildrenActions(inputWeight, unitSequence);
 
       [DebuggerStepThrough]
       public override bool Equals(IQuery other) => throw new NotSupportedException();
     }
 
-    IEnumerator IEnumerable.  GetEnumerator()                                             => throw new NotSupportedException();
-    IQuery IQuery.UseBuildAction(object buildStage, IBuildAction buildAction) => throw new NotSupportedException();
+    IEnumerator IEnumerable.GetEnumerator()                                             => throw new NotSupportedException();
+    IQuery IQuery.          UseBuildAction(object buildStage, IBuildAction buildAction) => throw new NotSupportedException();
   }
 }

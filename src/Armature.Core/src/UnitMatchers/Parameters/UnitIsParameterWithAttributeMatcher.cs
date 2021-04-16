@@ -16,7 +16,6 @@ namespace Armature.Core
 
     protected override T? GetAttribute(UnitId unitId) => GetParameterAttribute(unitId);
 
-    public static T? GetParameterAttribute(UnitId unitId)
-      => unitId.Kind is ParameterInfo parameterInfo ? parameterInfo.GetCustomAttribute<T>() : default;
+    public static T? GetParameterAttribute(UnitId unitId) => unitId.Kind is ParameterInfo parameterInfo ? parameterInfo.GetCustomAttribute<T>() : default;
   }
 }

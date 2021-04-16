@@ -158,7 +158,7 @@ namespace Tests.Functional
     [Test]
     public void should_use_creation_strategy_registered_with_key()
     {
-      const string key    = "key";
+      const string key      = "key";
       var          expected = new Subject();
 
       // --arrange
@@ -183,7 +183,7 @@ namespace Tests.Functional
     [Test]
     public void should_pass_key_to_creation_strategy()
     {
-      const string key            = "key";
+      const string key              = "key";
       var          createdByFactory = new Subject();
 
       // --arrange
@@ -230,7 +230,7 @@ namespace Tests.Functional
     [Test]
     public void should_use_runtime_parameters_when_build_with_key()
     {
-      const string key    = "key";
+      const string key      = "key";
       const int    expected = 98347;
 
       // --arrange

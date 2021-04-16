@@ -39,8 +39,7 @@ namespace Armature
     /// <summary>
     ///   For building a value for the property use <see cref="PropertyInfo.PropertyType" /> and <see cref="InjectAttribute.InjectionPointId" /> as a key
     /// </summary>
-    public PropertyValueBuildPlan UseInjectPointIdAsKey()
-      => new(UnitMatcher, BuildAction, CreatePropertyValueForInjectPointBuildAction.Instance, Weight);
+    public PropertyValueBuildPlan UseInjectPointIdAsKey() => new(UnitMatcher, BuildAction, CreatePropertyValueForInjectPointBuildAction.Instance, Weight);
   }
 
   [SuppressMessage("ReSharper", "UnusedTypeParameter")]

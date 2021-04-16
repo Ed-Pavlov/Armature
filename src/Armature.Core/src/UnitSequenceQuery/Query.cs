@@ -44,7 +44,7 @@ namespace Armature.Core
       LazyBuildAction
        .GetOrCreateValue(buildStage, () => new List<IBuildAction>())
        .Add(buildAction);
-      
+
       return this;
     }
 
@@ -99,7 +99,7 @@ namespace Armature.Core
             }
         }
     }
-    
+
     #region Syntax sugar
 
     public void             Add(IQuery query) => Children.Add(query);

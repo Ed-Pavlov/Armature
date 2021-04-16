@@ -41,8 +41,8 @@ namespace Armature
         sessionalBuildPlans = new BuildPlansCollection();
 
         sessionalBuildPlans
-        .TreatAll()
-        .UsingParameters(parameters);
+         .TreatAll()
+         .UsingParameters(parameters);
       }
 
       var unitInfo    = new UnitId(typeof(T), key);
@@ -63,7 +63,7 @@ namespace Armature
         if(builder is null) throw new ArgumentNullException(nameof(builder));
         if(key is null) throw new ArgumentNullException(nameof(key));
 
-        _key   = key;
+        _key     = key;
         _builder = builder;
       }
 

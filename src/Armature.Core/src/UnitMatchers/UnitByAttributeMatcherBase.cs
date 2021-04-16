@@ -23,7 +23,7 @@ namespace Armature.Core
     }
 
     protected abstract T? GetAttribute(UnitId unitId);
-    
+
     public override string ToString() => GetType().GetShortName();
   }
 }
