@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Armature.Core.Common
+namespace Armature.Core
 {
   public static class ArrayTailExtension
   {

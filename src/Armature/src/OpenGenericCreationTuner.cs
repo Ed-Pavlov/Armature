@@ -1,8 +1,6 @@
 ﻿using System;
 using Armature.Core;
 using Armature.Core.BuildActions.Creation;
-using Armature.Core.UnitMatchers.UnitType;
-using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
 
 
@@ -13,7 +11,7 @@ namespace Armature
     protected readonly Type    OpenGenericType;
     protected readonly object? Key;
 
-    public OpenGenericCreationTuner(IScannerTree scannerTree, Type openGenericType, object? key) : base(scannerTree)
+    public OpenGenericCreationTuner(IQuery query, Type openGenericType, object? key) : base(query)
     {
       OpenGenericType = openGenericType;
       Key           = key;
@@ -24,25 +22,25 @@ namespace Armature
 
     public Tuner CreatedByDefault()
     {
-      var childMatcher = new SkipToUnit(
-        new UnitKindIsOpenGenericTypeMatcher(OpenGenericType, Key), UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
+      var childMatcher = new FindFirstUnit(
+        new UnitKindIsOpenGenericTypeMatcher(OpenGenericType, Key), QueryWeight.WildcardMatchingUnit - 1);
 
-      ScannerTree
-       .AddItem(childMatcher)
-       .AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
+      Query
+       .AddSubQuery(childMatcher)
+       .UseBuildAction(BuildStage.Create, Default.CreationBuildAction);
 
       return new Tuner(childMatcher);
     }
 
     public Tuner CreatedByReflection()
     {
-      var childMatcher = new SkipToUnit(
+      var childMatcher = new FindFirstUnit(
         new UnitKindIsOpenGenericTypeMatcher(OpenGenericType, Key),
-        UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
+        QueryWeight.WildcardMatchingUnit - 1);
 
-      ScannerTree
-       .AddItem(childMatcher)
-       .AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
+      Query
+       .AddSubQuery(childMatcher)
+       .UseBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
 
       return new Tuner(childMatcher);
     }

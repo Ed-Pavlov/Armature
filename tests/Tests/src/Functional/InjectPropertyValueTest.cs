@@ -3,11 +3,9 @@ using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
 using Armature.Core.BuildActions.Property;
 using Armature.Core.Common;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitMatchers.Properties;
-using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.Common;
 
 // Resharper disable all
 
@@ -24,17 +22,17 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-       .AddItem(new SkipToLastUnit())
+       .AddSubQuery(new SkipToLastUnit())
        .With( // add build action injecting values into property for any type
           anyMatcher =>
             anyMatcher
-             .AddItem(new IfLastUnitIs(UnitKindIsTypeMatcher.Instance))
-             .AddBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance))
+             .AddSubQuery(new IfLastUnitIs(UnitKindIsTypeMatcher.Instance))
+             .UseBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance))
        .With( // add build action finding properties attributed with InjectAttribute for any type 
           anyMatcher =>
             anyMatcher
-             .AddItem(new IfLastUnitIs(UnitIsPropertyMatcher.Instance))
-             .AddBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction()));
+             .AddSubQuery(new IfLastUnitIs(UnitIsPropertyMatcher.Instance))
+             .UseBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction()));
 
       target.Treat<string>().AsInstance(expected);
 
@@ -202,9 +200,9 @@ namespace Tests.Functional
            {
              // inject into constructor
              new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+              .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
              new IfLastUnitIs(PropertyValueMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
+              .UseBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
            }
          };
 

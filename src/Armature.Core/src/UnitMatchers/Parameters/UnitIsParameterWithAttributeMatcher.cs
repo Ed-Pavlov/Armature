@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Armature.Core.UnitMatchers.Parameters
+namespace Armature.Core
 {
   /// <summary>
   ///   Matches parameter marked with attribute which satisfies user provided conditions

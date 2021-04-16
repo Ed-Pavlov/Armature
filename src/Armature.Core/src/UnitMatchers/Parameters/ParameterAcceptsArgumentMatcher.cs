@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Armature.Core.UnitMatchers.Parameters
+namespace Armature.Core
 {
   /// <summary>
   ///   Matches parameter suited for provided value type

@@ -1,4 +1,4 @@
-﻿namespace Armature.Core.UnitMatchers.Properties
+﻿namespace Armature.Core
 {
   /// <summary>
   ///   Matches Unit representing "property" of the currently building Unit

@@ -40,7 +40,7 @@ namespace Armature.Core
     /// <summary>
     ///   Builds a Unit represented by <paramref name="unitId" />
     /// </summary>
-    /// <param name="unitId">"Id" of the unit to build. See <see cref="IScannerTree" /> for details</param>
+    /// <param name="unitId">"Id" of the unit to build. See <see cref="IQuery" /> for details</param>
     /// <param name="buildStages">The conveyor of build stages. See <see cref="Builder" /> for details</param>
     /// <param name="buildPlans">Build plans used to build a unit</param>
     /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method </param>
@@ -59,7 +59,7 @@ namespace Armature.Core
     /// <summary>
     ///   Builds all Units represented by <paramref name="unitId" />
     /// </summary>
-    /// <param name="unitId">"Id" of the unit to build. See <see cref="IScannerTree" /> for details</param>
+    /// <param name="unitId">"Id" of the unit to build. See <see cref="IQuery" /> for details</param>
     /// <param name="buildStages">The conveyor of build stages. See <see cref="Builder" /> for details</param>
     /// <param name="buildPlans">Build plans used to build a unit</param>
     /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method </param>
@@ -78,14 +78,14 @@ namespace Armature.Core
     /// <summary>
     ///   Builds a Unit represented by <paramref name="unitId" />
     /// </summary>
-    /// <param name="unitId">"Id" of the unit to build. See <see cref="IScannerTree" /> for details</param>
+    /// <param name="unitId">"Id" of the unit to build. See <see cref="IQuery" /> for details</param>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public BuildResult BuildUnit(UnitId unitId) => Build(unitId, BuildUnit);
 
     /// <summary>
     ///   Builds all Units represented by <paramref name="unitId" />
     /// </summary>
-    /// <param name="unitId">"Id" of the unit to build. See <see cref="IScannerTree" /> for details</param>
+    /// <param name="unitId">"Id" of the unit to build. See <see cref="IQuery" /> for details</param>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public IReadOnlyList<BuildResult>? BuildAllUnits(UnitId unitId) => Build(unitId, BuildAllUnits);
 
@@ -102,8 +102,8 @@ namespace Armature.Core
 
           using(Log.Block(LogLevel.Verbose, "Looking for build actions"))
           {
-            actions    = _buildPlans.GetBuildActions(_buildSequence.AsArrayTail());
-            auxActions = _auxBuildPlans?.GetBuildActions(_buildSequence.AsArrayTail());
+            actions    = _buildPlans.GatherBuildActions(_buildSequence.AsArrayTail());
+            auxActions = _auxBuildPlans?.GatherBuildActions(_buildSequence.AsArrayTail());
           }
 
           Log.WriteLine(LogLevel.Verbose, "");

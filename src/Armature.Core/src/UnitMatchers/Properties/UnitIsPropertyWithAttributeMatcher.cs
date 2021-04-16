@@ -3,8 +3,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-
-namespace Armature.Core.UnitMatchers.Properties
+namespace Armature.Core
 {
   /// <summary>
   ///   Matches property marked with attribute which satisfies user provided conditions

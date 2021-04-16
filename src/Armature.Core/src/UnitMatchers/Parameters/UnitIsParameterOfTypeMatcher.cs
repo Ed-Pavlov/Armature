@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Armature.Core.UnitMatchers.Parameters
+namespace Armature.Core
 {
   /// <summary>
   ///   Matches parameter by exact type matching

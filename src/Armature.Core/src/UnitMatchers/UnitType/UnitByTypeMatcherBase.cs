@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Armature.Core.Logging;
 
-namespace Armature.Core.UnitMatchers.UnitType
+namespace Armature.Core
 {
   /// <summary>
   /// Base class for unit info matchers operating with a <see cref="Type"/> of an unit

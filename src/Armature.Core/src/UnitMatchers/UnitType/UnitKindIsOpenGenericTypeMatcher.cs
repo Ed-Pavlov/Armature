@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Armature.Core.UnitMatchers.UnitType
+namespace Armature.Core
 {
   /// <summary>
   ///   Matches <see cref="UnitId" /> with an open generic type

@@ -2,8 +2,6 @@
 using Armature.Core;
 using Armature.Core.BuildActions.Property;
 using Armature.Core.Logging;
-using Armature.Core.UnitMatchers.Properties;
-using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
 
 
@@ -18,10 +16,10 @@ namespace Armature
 
     public object[] Item1 { get; }
 
-    public void Apply(IScannerTree scannerTree)
-      => scannerTree
-        .AddItem(new IfLastUnitIs(UnitIsPropertyMatcher.Instance))
-        .AddBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction(Item1));
+    public void Apply(IQuery query)
+      => query
+        .AddSubQuery(new IfLastUnitIs(UnitIsPropertyMatcher.Instance))
+        .UseBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction(Item1));
 
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", Item1));
   }

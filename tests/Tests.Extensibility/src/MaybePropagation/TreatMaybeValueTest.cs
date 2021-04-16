@@ -3,9 +3,7 @@ using Armature;
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
 using Armature.Core.BuildActions.Parameter;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitMatchers.Parameters;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Extensibility.MaybePropagation.Implementation;
@@ -53,11 +51,13 @@ namespace Tests.Extensibility.MaybePropagation
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {
-           // inject into constructor
-           new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-           new IfLastUnitIs(UnitIsParameterMatcher.Instance)
-            .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+           new SkipToLastUnit
+           { // inject into constructor
+             new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
+              .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+             new IfLastUnitIs(UnitIsParameterMatcher.Instance)
+              .UseBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+           }
          };
   }
 }

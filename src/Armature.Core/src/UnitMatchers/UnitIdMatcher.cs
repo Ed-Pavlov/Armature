@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Armature.Core.Logging;
 
-namespace Armature.Core.UnitMatchers
+namespace Armature.Core
 {
   /// <summary>
   ///   Matches one <see cref="UnitId" /> with stored Unit id and key.

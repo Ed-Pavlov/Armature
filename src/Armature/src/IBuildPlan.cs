@@ -13,7 +13,7 @@ namespace Armature
     /// <summary>
     ///   Apply build plan to the currently building plan
     /// </summary>
-    /// <param name="scannerTree"></param>
-    void Apply(IScannerTree scannerTree);
+    /// <param name="query"></param>
+    void Apply(IQuery query);
   }
 }

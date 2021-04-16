@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Armature.Core;
-using Armature.Core.UnitMatchers;
 using JetBrains.Annotations;
 
 namespace Tests.Common

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Armature.Core.Logging;
 
-namespace Armature.Core.UnitMatchers
+namespace Armature.Core
 {
   /// <summary>
   ///   Base class for matchers matching an "inject point" marked with <see cref="InjectAttribute" /> with specified <see cref="InjectAttribute.InjectionPointId" />

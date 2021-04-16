@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
 
 
@@ -11,7 +9,7 @@ namespace Armature
   public class SequenceTuner : UnitSequenceExtensibility
   {
     [DebuggerStepThrough]
-    public SequenceTuner(IScannerTree scannerTree) : base(scannerTree) { }
+    public SequenceTuner(IQuery query) : base(query) { }
 
     /// <summary>
     ///   Used to make a build plan for a unit only if it is building in a context of building <paramref name="type" /> with key <paramref name="key" />
@@ -20,8 +18,8 @@ namespace Armature
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
       
-      var unitSequenceMatcher = new SkipToUnit(new UnitIdMatcher(type, key));
-      return new SequenceTuner(ScannerTree.AddItem(unitSequenceMatcher));
+      var query = new FindFirstUnit(new UnitIdMatcher(type, key));
+      return new SequenceTuner(Query.AddSubQuery(query));
     }
 
     /// <summary>
@@ -36,9 +34,9 @@ namespace Armature
     public TreatingTuner Treat(Type type, object? key = null)
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
-      var unitSequenceMatcher = new SkipToUnit(new UnitIdMatcher(new UnitId(type, key)));
+      var query = new FindFirstUnit(new UnitIdMatcher(new UnitId(type, key)));
 
-      return new TreatingTuner(ScannerTree.AddItem(unitSequenceMatcher));
+      return new TreatingTuner(Query.AddSubQuery(query));
     }
 
     /// <summary>
@@ -47,8 +45,8 @@ namespace Armature
     /// </summary>
     public TreatingTuner<T> Treat<T>(object? key = null)
     {
-      var unitSequenceMatcher = new SkipToUnit(new UnitIdMatcher(typeof(T), key));
-      return new TreatingTuner<T>(ScannerTree.AddItem(unitSequenceMatcher));
+      var query = new FindFirstUnit(new UnitIdMatcher(typeof(T), key));
+      return new TreatingTuner<T>(Query.AddSubQuery(query));
     }
 
     /// <summary>
@@ -56,9 +54,9 @@ namespace Armature
     /// </summary>
     public Tuner TreatAll()
     {
-      var unitSequenceMatcher = new SkipToLastUnit();
+      var query = new SkipToLastUnit();
 
-      return new Tuner(ScannerTree.AddItem(unitSequenceMatcher));
+      return new Tuner(Query.AddSubQuery(query));
     }
   }
 }

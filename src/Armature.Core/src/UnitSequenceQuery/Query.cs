@@ -1,20 +1,31 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Armature.Core.Common;
 using Armature.Core.Logging;
 
-
-namespace Armature.Core.UnitSequenceMatcher
+namespace Armature.Core
 {
   /// <summary>
   ///   Base class implementing the logic of adding build actions
   /// </summary>
-  public abstract class ScannerTree : IScannerTree
+  /// <remarks>
+  /// This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
+  /// new FooQuery
+  /// {
+  ///   new SubQuery(ConstructorMatcher.Instance, 0)
+  ///     .UseBuildAction(BuildStage.Create, new GetLongestConstructorBuildAction()),
+  ///   new SubQuery(ParameterMatcher.Instance, ParameterMatchingWeight.Lowest)
+  ///     .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
+  /// };
+  /// </remarks>
+  public abstract class Query : IQuery, IEnumerable
   {
     private Dictionary<object, List<IBuildAction>>? _buildActions;
 
-    protected ScannerTree(int weight) => Weight = weight;
+    protected Query(int weight) => Weight = weight;
 
     protected int Weight { get; }
 
@@ -23,21 +34,21 @@ namespace Armature.Core.UnitSequenceMatcher
       [DebuggerStepThrough] get => _buildActions ??= new Dictionary<object, List<IBuildAction>>();
     }
 
-    public abstract ICollection<IScannerTree> Children { get; }
+    public abstract ICollection<IQuery> Children { get; }
 
-    public abstract BuildActionBag? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight);
+    public abstract BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight);
 
     [DebuggerStepThrough]
-    public IScannerTree AddBuildAction(object buildStage, IBuildAction buildAction)
+    public virtual IQuery UseBuildAction(object buildStage, IBuildAction buildAction)
     {
       LazyBuildAction
        .GetOrCreateValue(buildStage, () => new List<IBuildAction>())
        .Add(buildAction);
-
+      
       return this;
     }
 
-    public abstract bool Equals(IScannerTree other);
+    public abstract bool Equals(IQuery other);
 
     [DebuggerStepThrough]
     protected BuildActionBag? GetOwnActions(int matchingWeight)
@@ -57,7 +68,7 @@ namespace Armature.Core.UnitSequenceMatcher
 
     public void PrintToLog()
     {
-      ICollection<IScannerTree>? children = null;
+      ICollection<IQuery>? children = null;
 
       try
       {
@@ -88,5 +99,12 @@ namespace Armature.Core.UnitSequenceMatcher
             }
         }
     }
+    
+    #region Syntax sugar
+
+    public void             Add(IQuery query) => Children.Add(query);
+    IEnumerator IEnumerable.GetEnumerator()   => throw new NotSupportedException();
+
+    #endregion
   }
 }

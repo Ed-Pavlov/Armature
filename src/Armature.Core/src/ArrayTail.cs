@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-
-namespace Armature.Core.Common
+namespace Armature.Core
 {
   /// <summary>
   ///   Data structure used to take a tail of the collection w/o memory allocations

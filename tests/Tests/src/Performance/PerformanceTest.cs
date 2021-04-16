@@ -8,10 +8,6 @@ using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Constructor;
 using Armature.Core.BuildActions.Parameter;
 using Armature.Core.BuildActions.Property;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitMatchers.Parameters;
-using Armature.Core.UnitMatchers.Properties;
-using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using JetBrains.dotMemoryUnit;
 using JetBrains.dotMemoryUnit.Kernel;
@@ -133,9 +129,9 @@ namespace Tests.Performance
 
       var unitMatcher = new MockUnitMatcher(new UnitIdMatcher(unitId));
 
-      var unitSequenceMatcher = new SkipToUnit(unitMatcher);
+      var query = new FindFirstUnit(unitMatcher);
 
-      return new TreatingTuner(buildPlans.AddItem(unitSequenceMatcher));
+      return new TreatingTuner(buildPlans.AddSubQuery(query));
     }
 
     private class MockUnitMatcher : IUnitIdMatcher
@@ -173,7 +169,7 @@ namespace Tests.Performance
                      {
                        // inject into constructor
                        new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
-                        .AddBuildAction(
+                        .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer
                            {
@@ -181,14 +177,14 @@ namespace Tests.Performance
                              GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
                            }),
                        new IfLastUnitIs(UnitIsParameterMatcher.Instance)
-                        .AddBuildAction(
+                        .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer
                            {
                              CreateParameterValueForInjectPointBuildAction.Instance, CreateParameterValueBuildAction.Instance
                            }),
                        new IfLastUnitIs(PropertyValueMatcher.Instance)
-                        .AddBuildAction(
+                        .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer {new CreatePropertyValueBuildAction()})
                      };

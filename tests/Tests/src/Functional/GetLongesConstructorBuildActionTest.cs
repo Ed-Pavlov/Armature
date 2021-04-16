@@ -3,8 +3,6 @@ using Armature;
 using Armature.Core;
 using Armature.Core.BuildActions;
 using Armature.Core.BuildActions.Constructor;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -54,7 +52,7 @@ namespace Tests.Functional
            {
              // inject into constructor
              new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
-              .AddBuildAction(
+              .UseBuildAction(
                  BuildStage.Create,
                  new OrderedBuildActionContainer
                  {

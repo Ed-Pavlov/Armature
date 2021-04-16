@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Armature.Core.UnitMatchers.Properties
+namespace Armature.Core
 {
   /// <summary>
   ///   Matches property suited for provided value type

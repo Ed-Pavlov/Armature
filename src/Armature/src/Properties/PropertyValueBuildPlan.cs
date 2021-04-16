@@ -1,7 +1,5 @@
 ﻿using System;
 using Armature.Core;
-using Armature.Core.UnitMatchers.Properties;
-using Armature.Core.UnitSequenceMatcher;
 
 
 namespace Armature
@@ -21,11 +19,10 @@ namespace Armature
     /// <summary>
     ///   In addition to the base logic adds a logic which provides a properties to inject into
     /// </summary>
-    /// <param name="scannerTree"></param>
-    protected override void Apply(IScannerTree scannerTree)
-      => scannerTree
-        .AddItem(
-           new IfLastUnitIs(UnitIsPropertyMatcher.Instance))
-        .AddBuildAction(BuildStage.Create, _getPropertyAction);
+    /// <param name="query"></param>
+    protected override void Apply(IQuery query)
+      => query
+        .AddSubQuery(new IfLastUnitIs(UnitIsPropertyMatcher.Instance))
+        .UseBuildAction(BuildStage.Create, _getPropertyAction);
   }
 }

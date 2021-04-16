@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Armature.Core.UnitMatchers.UnitType
+namespace Armature.Core
 {
   public record UnitIsSubTypeOfMatcher : UnitByTypeMatcherBase, IUnitIdMatcher
   {

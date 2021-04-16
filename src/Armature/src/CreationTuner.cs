@@ -1,8 +1,6 @@
 ﻿using System;
 using Armature.Core;
 using Armature.Core.BuildActions.Creation;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
 
 namespace Armature
@@ -12,7 +10,7 @@ namespace Armature
     protected readonly Type    Type;
     protected readonly object? Key;
 
-    public CreationTuner(IScannerTree scannerTree, Type type, object? key) : base(scannerTree)
+    public CreationTuner(IQuery query, Type type, object? key) : base(query)
     {
       Type = type ?? throw new ArgumentNullException(nameof(type));
       Key  = key;
@@ -26,10 +24,10 @@ namespace Armature
     ///   should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
     /// </summary>
     public Tuner CreatedByDefault()
-      => new(ScannerTree
-              .AddItem(
-                 new IfFirstUnitIs(new UnitIdMatcher(Type, Key))
-                  .AddBuildAction(BuildStage.Create, Default.CreationBuildAction))
+      => new(Query.AddSubQuery(
+               new IfFirstUnitIs(new UnitIdMatcher(Type, Key))
+                .UseBuildAction(BuildStage.Create, Default.CreationBuildAction)
+             )
       );
 
     /// <summary>
@@ -38,14 +36,10 @@ namespace Armature
     /// </summary>
     /// <returns></returns>
     public Tuner CreatedByReflection()
-    {
-      var sequenceMatcher = new IfFirstUnitIs(new UnitIdMatcher(Type, Key));
-
-      ScannerTree
-       .AddItem(sequenceMatcher)
-       .AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
-
-      return new Tuner(sequenceMatcher);
-    }
+      => new(Query.AddSubQuery(
+               new IfFirstUnitIs(new UnitIdMatcher(Type, Key))
+                .UseBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance)
+             )
+      );
   }
 }

@@ -5,9 +5,6 @@ using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
 using Armature.Core.BuildActions.Parameter;
 using Armature.Core.Common;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitMatchers.Parameters;
-using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
@@ -223,10 +220,10 @@ namespace Tests.Functional
       var target = CreateTarget(parent);
 
       // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder 
-      target.AddItem(new SkipToLastUnit())
+      target.AddSubQuery(new SkipToLastUnit())
             .Add(
                new IfLastUnitIs(UnitKindIsTypeMatcher.Instance)
-                .AddBuildAction(BuildStage.Cache, new DebugOnlyBuildAction()));
+                .UseBuildAction(BuildStage.Cache, new DebugOnlyBuildAction()));
 
       // --act
       var actual = target.Build<string>();
@@ -263,9 +260,9 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+              .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
              new IfLastUnitIs(UnitIsParameterMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+              .UseBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
            }
          };
 

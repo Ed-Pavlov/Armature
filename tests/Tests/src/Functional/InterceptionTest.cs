@@ -4,8 +4,6 @@ using System.Reflection;
 using Armature;
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitSequenceMatcher;
 using NUnit.Framework;
 using JetBrains.Annotations;
 
@@ -32,9 +30,9 @@ namespace Tests.Functional
       // (postprocessing will be called last and buildAction will add a postfix to created or cached string
 
       target
-       .AddItem(new SkipToLastUnit())
-       .AddItem(new IfLastUnitIs(new AnyStringMatcher()))
-       .AddBuildAction(BuildStage.Intercept, new AddPostfixToString(Postfix));
+       .AddSubQuery(new SkipToLastUnit())
+       .AddSubQuery(new IfLastUnitIs(new AnyStringMatcher()))
+       .UseBuildAction(BuildStage.Intercept, new AddPostfixToString(Postfix));
 
       // --act
       var actual = target.Build<StringConsumer>();
@@ -89,7 +87,7 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
+              .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
            }
          };
 

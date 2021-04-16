@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Armature.Core.UnitSequenceMatcher
+namespace Armature.Core
 {
   /// <summary>
   ///   Weights which are added to the build action by unit sequence matchers of certain kind.
@@ -15,7 +15,7 @@ namespace Armature.Core.UnitSequenceMatcher
   [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
   [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
   [SuppressMessage("ReSharper", "ConvertToConstant.Global")]
-  public class UnitSequenceMatchingWeight
+  public class QueryWeight
   {
     protected const int Step                = 100_000;
     protected const int Lowest              = 0;
@@ -31,17 +31,17 @@ namespace Armature.Core.UnitSequenceMatcher
     public static int AnyUnit => Any;
 
     /// <summary>
-    ///   Used for <see cref="SkipToUnit" /> which matches with a <see cref="UnitId" /> contains open generic type
+    ///   Used for <see cref="FindFirstUnit" /> which matches with a <see cref="UnitId" /> contains open generic type
     /// </summary>
     public static int WildcardMatchingOpenGenericUnit => WildcardOpenGeneric;
 
     /// <summary>
-    ///   Used for <see cref="SkipToUnit" /> which matches with a <see cref="UnitId" /> contains inheritors of a type
+    ///   Used for <see cref="FindFirstUnit" /> which matches with a <see cref="UnitId" /> contains inheritors of a type
     /// </summary>
     public static int WildcardMatchingBaseTypeUnit => WildcardBaseType;
 
     /// <summary>
-    ///   Used for <see cref="SkipToUnit" /> which matches with a <see cref="UnitId" /> contains a <see cref="Type" />
+    ///   Used for <see cref="FindFirstUnit" /> which matches with a <see cref="UnitId" /> contains a <see cref="Type" />
     /// </summary>
     public static int WildcardMatchingUnit => Wildcard;
 

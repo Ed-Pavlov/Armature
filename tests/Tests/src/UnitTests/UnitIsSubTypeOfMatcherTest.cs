@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Armature.Core.UnitMatchers.UnitType;
+using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Armature.Core.UnitMatchers.Parameters
+namespace Armature.Core
 {
   /// <summary>
   ///   Matches parameter marked with <see cref="InjectAttribute" /> with specified <see cref="InjectAttribute.InjectionPointId" />

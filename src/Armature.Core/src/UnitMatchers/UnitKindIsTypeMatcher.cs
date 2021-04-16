@@ -1,4 +1,4 @@
-﻿namespace Armature.Core.UnitMatchers
+﻿namespace Armature.Core
 {
   /// <summary>
   ///   Matches any type which can be instantiated

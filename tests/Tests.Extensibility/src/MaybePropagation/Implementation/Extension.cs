@@ -1,8 +1,6 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitSequenceMatcher;
 using Armature.Extensibility;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
@@ -16,10 +14,10 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     {
       var treat     = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
       var uniqueKey = Guid.NewGuid();
-      treat.ScannerTree.AddBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueKey));
+      treat.Query.UseBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueKey));
 
       return new TreatingTuner<T>(
-        treat.ScannerTree.AddItem(new SkipToUnit(new UnitIdMatcher(typeof(T), uniqueKey), 0)));
+        treat.Query.AddSubQuery(new FindFirstUnit(new UnitIdMatcher(typeof(T), uniqueKey), 0)));
     }
 
     /// <summary>
@@ -28,7 +26,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     public static TreatingTuner<Maybe<T>> AsMaybeValueOf<T>(this TreatingTuner<T> treatingTuner)
     {
       var treat = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
-      return new TreatingTuner<Maybe<T>>(treat.ScannerTree.AddBuildAction(BuildStage.Initialize, new GetMaybeValueBuildAction<T>()));
+      return new TreatingTuner<Maybe<T>>(treat.Query.UseBuildAction(BuildStage.Initialize, new GetMaybeValueBuildAction<T>()));
     }
   }
 }

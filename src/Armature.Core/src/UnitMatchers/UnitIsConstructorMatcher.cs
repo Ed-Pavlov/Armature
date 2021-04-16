@@ -1,4 +1,4 @@
-﻿namespace Armature.Core.UnitMatchers
+﻿namespace Armature.Core
 {
   /// <summary>
   ///   Matches Unit representing "constructor" of the currently building Unit

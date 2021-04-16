@@ -1,36 +1,34 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Core.Common;
 
-
-namespace Armature.Core.UnitSequenceMatcher
+namespace Armature.Core
 {
   /// <summary>
   ///   Moves along the building units sequence from left to right skipping units until it encounters a matching unit. Behaves like string search with wildcard.
   /// </summary>
-  public class SkipToUnit : ScannerTreeWithChildren, IEquatable<SkipToUnit>
+  public class FindFirstUnit : QueryWithChildren, IEquatable<FindFirstUnit>
   {
     private readonly IUnitIdMatcher _matcher;
 
-    public SkipToUnit(IUnitIdMatcher matcher) : this(matcher, UnitSequenceMatchingWeight.WildcardMatchingUnit) { }
+    public FindFirstUnit(IUnitIdMatcher matcher) : this(matcher, QueryWeight.WildcardMatchingUnit) { }
 
-    public SkipToUnit(IUnitIdMatcher matcher, int weight) : base(weight)
+    public FindFirstUnit(IUnitIdMatcher matcher, int weight) : base(weight)
       => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
 
     /// <summary>
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.
     ///   If it is the unit under construction, returns build actions for it, if no, pass the rest of the sequence to each child and returns merged actions.
     /// </summary>
-    public override BuildActionBag? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
+    public override BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {
       var realWeight = inputWeight;
 
-      for(var i = 0; i < buildingUnitsSequence.Length; i++)
+      for(var i = 0; i < unitSequence.Length; i++)
       {
-        var unitInfo = buildingUnitsSequence[i];
+        var unitInfo = unitSequence[i];
 
         if(_matcher.Matches(unitInfo))
-          return GetActions(buildingUnitsSequence.GetTail(i), realWeight);
+          return GetActions(unitSequence.GetTail(i), realWeight);
 
         // increase weight on each "skipping" step, it will lead that "deeper" context has more weight then more common
         // it is needed when some Unit is registered several times, Unit under construction should receive that one which is "closer" to it
@@ -45,7 +43,7 @@ namespace Armature.Core.UnitSequenceMatcher
 
     #region Equality
 
-    public bool Equals(SkipToUnit? other)
+    public bool Equals(FindFirstUnit? other)
     {
       if(ReferenceEquals(null, other)) return false;
       if(ReferenceEquals(this, other)) return true;
@@ -53,9 +51,9 @@ namespace Armature.Core.UnitSequenceMatcher
       return Equals(_matcher, other._matcher) && Weight == other.Weight;
     }
 
-    public override bool Equals(IScannerTree other) => Equals(other as SkipToUnit);
+    public override bool Equals(IQuery other) => Equals(other as FindFirstUnit);
 
-    public override bool Equals(object obj) => Equals(obj as SkipToUnit);
+    public override bool Equals(object obj) => Equals(obj as FindFirstUnit);
 
     public override int GetHashCode()
     {

@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Core.Common;
 using Armature.Core.Logging;
 
-
-namespace Armature.Core.UnitSequenceMatcher
+namespace Armature.Core
 {
   /// <summary>
   ///   Matches the first unit in the sequence and only if it matches pass the tail of building
-  ///   sequence to its <see cref="ScannerTreeWithChildren.Children" />
+  ///   sequence to its <see cref="QueryWithChildren.Children" />
   /// </summary>
-  public class IfFirstUnitIs : ScannerTreeWithChildren, IEquatable<IfFirstUnitIs>
+  public class IfFirstUnitIs : QueryWithChildren, IEquatable<IfFirstUnitIs>
   {
     private readonly IUnitIdMatcher _matcher;
 
-    public IfFirstUnitIs(IUnitIdMatcher matcher) : this(matcher, UnitSequenceMatchingWeight.StrictMatchingUnit) { }
+    public IfFirstUnitIs(IUnitIdMatcher matcher) : this(matcher, QueryWeight.StrictMatchingUnit) { }
 
     public IfFirstUnitIs(IUnitIdMatcher matcher, int weight) : base(weight)
       => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
@@ -23,11 +21,11 @@ namespace Armature.Core.UnitSequenceMatcher
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.
     ///   If it is the unit under construction, returns build actions for it, if no, pass the rest of the sequence to each child and returns merged actions.
     /// </summary>
-    public override BuildActionBag? GetBuildActions(ArrayTail<UnitId> buildingUnitsSequence, int inputWeight)
+    public override BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {
-      var unitInfo = buildingUnitsSequence[0];
+      var unitInfo = unitSequence[0];
 
-      return _matcher.Matches(unitInfo) ? GetActions(buildingUnitsSequence, inputWeight) : null;
+      return _matcher.Matches(unitInfo) ? GetActions(unitSequence, inputWeight) : null;
     }
 
     [DebuggerStepThrough]
@@ -43,7 +41,7 @@ namespace Armature.Core.UnitSequenceMatcher
       return Equals(_matcher, other._matcher) && Weight == other.Weight;
     }
 
-    public override bool Equals(IScannerTree other) => Equals(other as IfFirstUnitIs);
+    public override bool Equals(IQuery other) => Equals(other as IfFirstUnitIs);
 
     public override bool Equals(object obj) => Equals(obj as IfFirstUnitIs);
 

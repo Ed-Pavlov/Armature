@@ -4,8 +4,8 @@
   ///   Represents a matcher which matches the unit with a pattern.
   /// </summary>
   /// <remarks>
-  ///   Unlike <see cref="IScannerTree" /> which represent a logic how the units sequence is treated, this matcher matches one unit.
-  ///   Using to reuse logic of matching one unit in different <see cref="IScannerTree" />
+  ///   Unlike <see cref="IQuery" /> which represent a logic how the units sequence is treated, this matcher matches one unit.
+  ///   Using to reuse logic of matching one unit in different <see cref="IQuery" />
   /// </remarks>
   public interface IUnitIdMatcher
   {

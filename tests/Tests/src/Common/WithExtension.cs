@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Armature.Core.Common
+namespace Tests.Common
 {
   public static class WithExtension
   {

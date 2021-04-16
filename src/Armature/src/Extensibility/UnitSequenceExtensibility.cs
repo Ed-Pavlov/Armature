@@ -6,11 +6,11 @@ namespace Armature.Extensibility
 {
   public abstract class UnitSequenceExtensibility : IUnitSequenceExtensibility
   {
-    protected readonly IScannerTree ScannerTree;
+    protected readonly IQuery Query;
 
-    protected UnitSequenceExtensibility(IScannerTree scannerTree)
-      => ScannerTree = scannerTree ?? throw new ArgumentNullException(nameof(scannerTree));
+    protected UnitSequenceExtensibility(IQuery query)
+      => Query = query ?? throw new ArgumentNullException(nameof(query));
 
-    IScannerTree IUnitSequenceExtensibility.ScannerTree => ScannerTree;
+    IQuery IUnitSequenceExtensibility.Query => Query;
   }
 }

@@ -3,8 +3,6 @@ using System.Linq;
 using Armature;
 using Armature.Core;
 using Armature.Core.BuildActions.Constructor;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitSequenceMatcher;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
@@ -79,7 +77,7 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              new IfLastUnitIs(UnitIsConstructorMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
+              .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
            }
          };
 
