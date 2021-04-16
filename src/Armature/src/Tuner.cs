@@ -29,7 +29,7 @@ namespace Armature
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected");
         else
           Query
-           .AddSubQuery(new IfLastUnit(new IsParameterAssignableFromMatcher(parameter.GetType()), InjectPointMatchingWeight.WeakTypedParameter))
+           .AddSubQuery(new IfLastUnit(new IsParameterOfTypeMatcher(parameter.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
            .UseBuildAction(BuildStage.Create, new SingletonBuildAction(parameter));
 
       return this;
@@ -50,7 +50,7 @@ namespace Armature
           throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected");
         else
           Query
-           .AddSubQuery(new IfLastUnit(new IsPropertyAssignableFromMatcher(value.GetType()), InjectPointMatchingWeight.WeakTypedParameter))
+           .AddSubQuery(new IfLastUnit(new IsPropertyOfTypeMatcher(value.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
            .UseBuildAction(BuildStage.Create, new SingletonBuildAction(value));
 
       return this;

@@ -7,10 +7,10 @@ namespace Armature.Core
   /// <summary>
   ///   Checks if a building unit is an argument to inject into a property
   /// </summary>
-  public record IsPropertyAssignableFromMatcher : IsInjectPointAssignableFromMatcher
+  public record IsPropertyOfTypeMatcher : IsInjectPointOfTypeMatcher
   {
     [DebuggerStepThrough]
-    public IsPropertyAssignableFromMatcher(Type type) : base(type) { }
+    public IsPropertyOfTypeMatcher(Type type, bool exactMatch) : base(type, exactMatch) { }
 
     protected override Type? GetInjectPointType(UnitId unitId) => (unitId.Kind as PropertyInfo)?.PropertyType;
   }
