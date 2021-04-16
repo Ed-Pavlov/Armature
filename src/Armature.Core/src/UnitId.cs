@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using Armature.Core.Logging;
 
-
 namespace Armature.Core
 {
   /// <summary>
@@ -31,7 +30,7 @@ namespace Armature.Core
     public bool Equals(UnitId other) => Equals(Kind, other.Kind) && Equals(Key, other.Key);
 
     [DebuggerStepThrough]
-    public override bool Equals(object obj) => obj is UnitId other && Equals(other.Kind, Kind) && Equals(other.Key, Key);
+    public override bool Equals(object obj) => obj is UnitId other && Equals(other);
 
     [DebuggerStepThrough]
     public override int GetHashCode()

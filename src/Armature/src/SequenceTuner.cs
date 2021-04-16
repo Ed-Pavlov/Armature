@@ -34,7 +34,7 @@ namespace Armature
     public TreatingTuner Treat(Type type, object? key = null)
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
-      var query = new FindFirstUnit(new UnitIdMatcher(new UnitId(type, key)));
+      var query = new FindFirstUnit(new UnitIdMatcher(type, key));
 
       return new TreatingTuner(Query.AddSubQuery(query));
     }

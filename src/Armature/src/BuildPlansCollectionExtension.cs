@@ -39,7 +39,7 @@ namespace Armature
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var query = new FindFirstUnit(new UnitIdMatcher(unitId));
+      var query = new FindFirstUnit(new UnitIdMatcher(unitId.Kind, unitId.Key));
       return new TreatingTuner(buildPlans.AddSubQuery(query));
     }
 

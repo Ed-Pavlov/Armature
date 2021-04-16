@@ -127,7 +127,7 @@ namespace Tests.Performance
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitMatcher = new MockUnitMatcher(new UnitIdMatcher(unitId));
+      var unitMatcher = new MockUnitMatcher(new UnitIdMatcher(unitId.Kind, unitId.Key));
 
       var query = new FindFirstUnit(unitMatcher);
 

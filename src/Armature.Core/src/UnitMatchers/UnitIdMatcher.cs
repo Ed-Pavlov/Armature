@@ -5,33 +5,26 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Matches one <see cref="UnitId" /> with stored Unit id and key.
+  ///   Matches a <see cref="UnitId" /> with stored pattern consist of a unit id and a key.
   /// </summary>
-  public record UnitIdMatcher : IUnitIdMatcher
+  public sealed record UnitIdMatcher : IUnitIdMatcher
   {
-    private readonly object? _unitId;
+    private readonly object? _unitKind;
     private readonly object? _key;
 
     [DebuggerStepThrough]
-    public UnitIdMatcher(UnitId unitId) : this(unitId.Kind, unitId.Key) { }
-
-    [DebuggerStepThrough]
-    public UnitIdMatcher(object? unitId, object? key)
+    public UnitIdMatcher(object? unitKind, object? key)
     {
-      if(unitId is null && key is null) throw new ArgumentNullException(nameof(unitId), @"Either id or key should be provided");
-      _unitId = unitId;
+      if(unitKind is null && key is null) throw new ArgumentNullException(nameof(unitKind), @"Either id or key should be provided");
+
+      _unitKind = unitKind;
       _key    = key;
     }
 
     /// <inheritdoc />
-    /// <remarks>Matching, unlike equality, takes into consideration <see cref="UnitKey.Any"/>.</remarks>
-    public virtual bool Matches(UnitId unit)
-    {
-      if(ReferenceEquals(null, unit)) return false;
-      return Equals(_unitId, unit.Kind) && _key.Matches(unit.Key);
-    }
+    public bool Matches(UnitId unitId) => Equals(_unitKind, unitId.Kind) && _key.Matches(unitId.Key);
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}({1}:{2})", GetType().GetShortName(), _unitId.ToLogString(), _key.ToLogString());
+    public override string ToString() => string.Format("{0}({1}:{2})", GetType().GetShortName(), _unitKind.ToLogString(), _key.ToLogString());
   }
 }
