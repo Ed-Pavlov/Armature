@@ -254,7 +254,7 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnit(UnitIsConstructorMatcher.Instance)
+             new IfLastUnit(IsConstructorMatcher.Instance)
               .UseBuildAction(
                  BuildStage.Create,
                  new GetConstructorByParameterTypesBuildAction()) // use empty ctor by default in this test

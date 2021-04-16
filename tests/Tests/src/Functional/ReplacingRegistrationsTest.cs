@@ -34,7 +34,7 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnit(UnitIsConstructorMatcher.Instance)
+             new IfLastUnit(IsConstructorMatcher.Instance)
               .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
            }
          };

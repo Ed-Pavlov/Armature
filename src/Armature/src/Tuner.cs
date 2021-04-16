@@ -67,7 +67,7 @@ namespace Armature
     public Tuner UsingLongestConstructor()
     {
       Query
-       .AddSubQuery(new IfLastUnit(UnitIsConstructorMatcher.Instance))
+       .AddSubQuery(new IfLastUnit(IsConstructorMatcher.Instance))
        .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance);
 
       return this;
@@ -79,7 +79,7 @@ namespace Armature
     public Tuner UsingInjectPointConstructor(object injectionPointId)
     {
       Query
-       .AddSubQuery(new IfLastUnit(UnitIsConstructorMatcher.Instance))
+       .AddSubQuery(new IfLastUnit(IsConstructorMatcher.Instance))
        .UseBuildAction(BuildStage.Create, new GetInjectPointConstructorBuildAction(injectionPointId));
 
       return this;
@@ -116,7 +116,7 @@ namespace Armature
     public Tuner UsingConstructorWithParameters(params Type[] parameterTypes)
     {
       Query
-       .AddSubQuery(new IfLastUnit(UnitIsConstructorMatcher.Instance))
+       .AddSubQuery(new IfLastUnit(IsConstructorMatcher.Instance))
        .UseBuildAction(BuildStage.Create, new GetConstructorByParameterTypesBuildAction(parameterTypes));
 
       return this;
