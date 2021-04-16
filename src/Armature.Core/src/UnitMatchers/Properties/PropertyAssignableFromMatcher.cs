@@ -5,12 +5,12 @@ using System.Reflection;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Matches property suited for provided value type
+  ///   Checks if a building unit is an argument to inject into a property
   /// </summary>
-  public record PropertyAcceptsArgumentMatcher : InjectPointAcceptsArgumentMatcher
+  public record PropertyAssignableFromMatcher : InjectPointAssignableFromMatcher
   {
     [DebuggerStepThrough]
-    public PropertyAcceptsArgumentMatcher(object value) : base(value) { }
+    public PropertyAssignableFromMatcher(Type type) : base(type) { }
 
     protected override Type? GetInjectPointType(UnitId unitId) => (unitId.Kind as PropertyInfo)?.PropertyType;
   }
