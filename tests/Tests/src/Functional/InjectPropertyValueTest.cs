@@ -26,12 +26,12 @@ namespace Tests.Functional
        .With( // add build action injecting values into property for any type
           anyMatcher =>
             anyMatcher
-             .AddSubQuery(new IfLastUnit(UnitKindIsTypeMatcher.Instance))
+             .AddSubQuery(new IfLastUnit(CanBeInstantiatedMatcher.Instance))
              .UseBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance))
        .With( // add build action finding properties attributed with InjectAttribute for any type 
           anyMatcher =>
             anyMatcher
-             .AddSubQuery(new IfLastUnit(UnitIsPropertyMatcher.Instance))
+             .AddSubQuery(new IfLastUnit(IsPropertyMatcher.Instance))
              .UseBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction()));
 
       target.Treat<string>().AsInstance(expected);

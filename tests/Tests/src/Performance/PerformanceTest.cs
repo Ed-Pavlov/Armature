@@ -119,26 +119,26 @@ namespace Tests.Performance
         Treat(builder, u4).AsCreatedWith(() => null).AsSingleton();
       }
 
-      MockUnitMatcher.EqualsCallsCount.Should().BeLessThan(1_000);
-      MockUnitMatcher.GetHashCodeCallsCount.Should().BeLessThan(250_000);
+      UnitMatcherWrapper.EqualsCallsCount.Should().BeLessThan(1_000);
+      UnitMatcherWrapper.GetHashCodeCallsCount.Should().BeLessThan(250_000);
     }
 
     private static TreatingTuner Treat(BuildPlansCollection buildPlans, UnitId unitId)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitMatcher = new MockUnitMatcher(new UnitIdMatcher(unitId.Kind, unitId.Key));
+      var unitMatcher = new UnitMatcherWrapper(new UnitIdMatcher(unitId.Kind, unitId.Key));
 
       var query = new FindFirstUnit(unitMatcher);
 
       return new TreatingTuner(buildPlans.AddSubQuery(query));
     }
 
-    private class MockUnitMatcher : IUnitIdMatcher
+    private class UnitMatcherWrapper : IUnitIdMatcher
     {
       private readonly IUnitIdMatcher _impl;
 
-      public MockUnitMatcher(IUnitIdMatcher impl) => _impl = impl;
+      public UnitMatcherWrapper(IUnitIdMatcher impl) => _impl = impl;
 
       public static long EqualsCallsCount      { get; private set; }
       public static long GetHashCodeCallsCount { get; private set; }
@@ -176,7 +176,7 @@ namespace Tests.Performance
                              new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
                              GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
                            }),
-                       new IfLastUnit(UnitIsParameterMatcher.Instance)
+                       new IfLastUnit(IsParameterMatcher.Instance)
                         .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer

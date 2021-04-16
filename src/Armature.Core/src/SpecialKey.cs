@@ -13,7 +13,7 @@ namespace Armature.Core
     public static readonly object Constructor = new UnitKey("Constructor");
 
     /// <summary>
-    ///   Is used to build a <see cref="PropertyInfo" />
+    /// Is used to build a <see cref="PropertyInfo" />
     /// </summary>
     public static readonly object Property = new UnitKey("Property");
 

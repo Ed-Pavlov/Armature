@@ -22,7 +22,7 @@ namespace Armature
     /// <param name="query"></param>
     protected override void Apply(IQuery query)
       => query
-        .AddSubQuery(new IfLastUnit(UnitIsPropertyMatcher.Instance))
+        .AddSubQuery(new IfLastUnit(IsPropertyMatcher.Instance))
         .UseBuildAction(BuildStage.Create, _getPropertyAction);
   }
 }

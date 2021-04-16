@@ -84,7 +84,7 @@ namespace Tests.Functional
              // inject into constructor
              new IfLastUnit(IsConstructorMatcher.Instance)
               .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-             new IfLastUnit(UnitIsParameterMatcher.Instance)
+             new IfLastUnit(IsParameterMatcher.Instance)
               .UseBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
            }
          };

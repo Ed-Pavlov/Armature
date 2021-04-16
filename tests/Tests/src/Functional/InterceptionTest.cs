@@ -31,7 +31,7 @@ namespace Tests.Functional
 
       target
        .AddSubQuery(new SkipToLastUnit())
-       .AddSubQuery(new IfLastUnit(new AnyStringMatcher()))
+       .AddSubQuery(new IfLastUnit(new IsParameterOfTypeStringMatcher()))
        .UseBuildAction(BuildStage.Intercept, new AddPostfixToString(Postfix));
 
       // --act
@@ -94,7 +94,7 @@ namespace Tests.Functional
     /// <summary>
     ///   GetBuildAction with any string not depending on key
     /// </summary>
-    private class AnyStringMatcher : IUnitIdMatcher
+    private class IsParameterOfTypeStringMatcher : IUnitIdMatcher
     {
       public bool Matches(UnitId unitId)
       {

@@ -18,7 +18,7 @@ namespace Armature
 
     public void Apply(IQuery query)
       => query
-        .AddSubQuery(new IfLastUnit(UnitIsPropertyMatcher.Instance))
+        .AddSubQuery(new IfLastUnit(IsPropertyMatcher.Instance))
         .UseBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction(Item1));
 
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", Item1));

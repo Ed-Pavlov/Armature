@@ -1,13 +1,13 @@
 ﻿namespace Armature.Core
 {
   /// <summary>
-  ///   Matches any type which can be instantiated
+  /// Matches that unit is of type which can be instantiated
   /// </summary>
-  public record UnitKindIsTypeMatcher : SimpleToStringImpl, IUnitIdMatcher
+  public record CanBeInstantiatedMatcher : SimpleToStringImpl, IUnitIdMatcher
   {
-    public static readonly IUnitIdMatcher Instance = new UnitKindIsTypeMatcher();
+    public static readonly IUnitIdMatcher Instance = new CanBeInstantiatedMatcher();
 
-    private UnitKindIsTypeMatcher() { }
+    private CanBeInstantiatedMatcher() { }
 
     public bool Matches(UnitId unitId)
     {
