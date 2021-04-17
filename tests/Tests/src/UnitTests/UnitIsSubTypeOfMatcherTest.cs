@@ -12,7 +12,7 @@ namespace Tests.UnitTests
     [Test]
     public void should_match_exact_type([Values(null, "key")] object key)
     {
-      var target = new IsAssignableFromMatcher(typeof(int), key);
+      var target = new IsSubtypeMatcher(typeof(int), key);
 
       target.Matches(Unit.OfType<int>(key)).Should().BeTrue();
     }
@@ -20,7 +20,7 @@ namespace Tests.UnitTests
     [Test]
     public void should_match_base_type([Values(null, "key")] object key)
     {
-      var target = new IsAssignableFromMatcher(typeof(Stream), key);
+      var target = new IsSubtypeMatcher(typeof(Stream), key);
 
       target.Matches(Unit.OfType<MemoryStream>(key)).Should().BeTrue();
     }
@@ -28,7 +28,7 @@ namespace Tests.UnitTests
     [Test]
     public void should_match_interface([Values(null, "key")] object key)
     {
-      var target = new IsAssignableFromMatcher(typeof(IDisposable), key);
+      var target = new IsSubtypeMatcher(typeof(IDisposable), key);
 
       target.Matches(Unit.OfType<MemoryStream>(key)).Should().BeTrue();
     }

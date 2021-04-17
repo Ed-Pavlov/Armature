@@ -51,7 +51,7 @@ namespace Armature
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var query = new FindFirstUnit(new IsAssignableFromMatcher(baseType, key), QueryWeight.WildcardMatchingBaseTypeUnit);
+      var query = new FindFirstUnit(new IsSubtypeMatcher(baseType, key), QueryWeight.WildcardMatchingBaseTypeUnit);
       return new TreatingTuner(buildPlans.AddSubQuery(query));
     }
 
@@ -63,7 +63,7 @@ namespace Armature
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var query = new FindFirstUnit(new IsAssignableFromMatcher(typeof(T), key), QueryWeight.WildcardMatchingBaseTypeUnit);
+      var query = new FindFirstUnit(new IsSubtypeMatcher(typeof(T), key), QueryWeight.WildcardMatchingBaseTypeUnit);
 
       return new TreatingTuner<T>(buildPlans.AddSubQuery(query));
     }
