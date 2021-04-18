@@ -4,16 +4,16 @@ namespace Armature.Extensibility
 {
   public class UnitMatcherExtensibility : IUnitMatcherExtensibility
   {
-    protected readonly IUnitIdPattern UnitPattern;
+    protected readonly IUnitPattern UnitPattern;
     protected readonly int            Weight;
 
-    public UnitMatcherExtensibility(IUnitIdPattern unitPattern, int weight)
+    public UnitMatcherExtensibility(IUnitPattern unitPattern, int weight)
     {
       UnitPattern = unitPattern;
       Weight      = weight;
     }
 
-    IUnitIdPattern IUnitMatcherExtensibility.UnitPattern => UnitPattern;
+    IUnitPattern IUnitMatcherExtensibility.UnitPattern => UnitPattern;
     int IUnitMatcherExtensibility.           Weight      => Weight;
   }
 }

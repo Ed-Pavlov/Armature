@@ -7,17 +7,17 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Matches only unit under construction in the sequence and applies passed <see cref="IUnitIdPattern" /> to it.
-  ///   See <see cref="IfLastUnitMatches(Armature.Core.IUnitIdPattern,int)" /> and <see cref="GatherBuildActions" /> for details
+  ///   Matches only unit under construction in the sequence and applies passed <see cref="IUnitPattern" /> to it.
+  ///   See <see cref="IfLastUnitMatches(IUnitPattern,int)" /> and <see cref="GatherBuildActions" /> for details
   /// </summary>
   public class IfLastUnitMatches : PatternTreeNode
   {
-    private readonly IUnitIdPattern _unitPattern;
+    private readonly IUnitPattern _unitPattern;
 
     /// <param name="unitPattern">Object contains the logic of matching with building unit</param>
     /// <param name="weight">The weight of matching</param>
     [DebuggerStepThrough]
-    public IfLastUnitMatches(IUnitIdPattern unitPattern, int weight = QueryWeight.Any) : base(weight)
+    public IfLastUnitMatches(IUnitPattern unitPattern, int weight = QueryWeight.Any) : base(weight)
       => _unitPattern = unitPattern ?? throw new ArgumentNullException(nameof(unitPattern));
 
     public override ICollection<IPatternTreeNode> Children => throw new NotSupportedException("LastUnitSequenceMatcher can't contain children");

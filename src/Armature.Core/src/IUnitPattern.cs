@@ -7,7 +7,7 @@
   /// Unlike <see cref="IPatternTreeNode" /> which works on unit sequence at whole, this pattern is used to match one unit id.
   /// Reuses logic of matching one unit in different <see cref="IPatternTreeNode" />
   /// </remarks>
-  public interface IUnitIdPattern
+  public interface IUnitPattern
   {
     /// <summary> Checks if passed <paramref name="unitId"/> matches the pattern </summary>
     bool Matches(UnitId unitId);

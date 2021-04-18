@@ -4,12 +4,12 @@ using System.Diagnostics;
 namespace Armature.Core
 {
   /// <summary>
-  /// Matches <see cref="UnitId" /> with an open generic type
+  /// Checks if a building is of an open generic type.
   /// </summary>
-  public record IsOpenGenericTypePattern : UnitIdByTypeMatcherBase, IUnitIdPattern
+  public record OpenGenericTypePattern : TypePatternBase, IUnitPattern
   {
     [DebuggerStepThrough]
-    public IsOpenGenericTypePattern(Type openType, object? key) : base(openType, key)
+    public OpenGenericTypePattern(Type openType, object? key) : base(openType, key)
     {
       if(!openType.IsGenericTypeDefinition) throw new ArgumentException("Provide open generic type", nameof(openType));
     }

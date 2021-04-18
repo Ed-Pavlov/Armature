@@ -56,7 +56,7 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnitMatches(IsConstructorPattern.Instance)
+             new IfLastUnitMatches(ConstructorPattern.Instance)
               .UseBuildAction(
                  BuildStage.Create,
                  new OrderedBuildActionContainer

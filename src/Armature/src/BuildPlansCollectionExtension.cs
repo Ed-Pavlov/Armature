@@ -15,7 +15,7 @@ namespace Armature
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var patternMatcher = new FindUnitMatches(new UnitIdPattern(type, key));
+      var patternMatcher = new FindUnitMatches(new Pattern(type, key));
       return new TreatingTuner(buildPlans.GetOrAddNode(patternMatcher));
     }
 
@@ -27,7 +27,7 @@ namespace Armature
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var patternMatcher = new FindUnitMatches(new UnitIdPattern(typeof(T), key));
+      var patternMatcher = new FindUnitMatches(new Pattern(typeof(T), key));
       return new TreatingTuner<T>(buildPlans.GetOrAddNode(patternMatcher));
     }
 
@@ -39,7 +39,7 @@ namespace Armature
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var patternMatcher = new FindUnitMatches(new UnitIdPattern(unitId.Kind, unitId.Key));
+      var patternMatcher = new FindUnitMatches(new Pattern(unitId.Kind, unitId.Key));
       return new TreatingTuner(buildPlans.GetOrAddNode(patternMatcher));
     }
 
@@ -51,7 +51,7 @@ namespace Armature
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var patternMatcher = new FindUnitMatches(new IsSubtypePattern(baseType, key), QueryWeight.WildcardMatchingBaseTypeUnit);
+      var patternMatcher = new FindUnitMatches(new SubtypePattern(baseType, key), QueryWeight.WildcardMatchingBaseTypeUnit);
       return new TreatingTuner(buildPlans.GetOrAddNode(patternMatcher));
     }
 
@@ -63,7 +63,7 @@ namespace Armature
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var patternMatcher = new FindUnitMatches(new IsSubtypePattern(typeof(T), key), QueryWeight.WildcardMatchingBaseTypeUnit);
+      var patternMatcher = new FindUnitMatches(new SubtypePattern(typeof(T), key), QueryWeight.WildcardMatchingBaseTypeUnit);
 
       return new TreatingTuner<T>(buildPlans.GetOrAddNode(patternMatcher));
     }
@@ -76,7 +76,7 @@ namespace Armature
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var newPatternMatcher = new FindUnitMatches(new UnitIdPattern(type, key));
+      var newPatternMatcher = new FindUnitMatches(new Pattern(type, key));
       var oldPatternMatcher = buildPlans.Children.Single(_ => _.Equals(newPatternMatcher));
 
       buildPlans.Children.Remove(oldPatternMatcher);
@@ -93,7 +93,7 @@ namespace Armature
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var newPatternMatcher = new FindUnitMatches(new UnitIdPattern(typeof(T), key));
+      var newPatternMatcher = new FindUnitMatches(new Pattern(typeof(T), key));
       var oldPatternMatcher = buildPlans.Children.Single(_ => _.Equals(newPatternMatcher));
 
       buildPlans.Children.Remove(oldPatternMatcher);
@@ -108,7 +108,7 @@ namespace Armature
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var patternMatcher = new FindUnitMatches(new IsOpenGenericTypePattern(openGenericType, key), QueryWeight.WildcardMatchingOpenGenericUnit);
+      var patternMatcher = new FindUnitMatches(new OpenGenericTypePattern(openGenericType, key), QueryWeight.WildcardMatchingOpenGenericUnit);
       return new TreatingOpenGenericTuner(buildPlans.GetOrAddNode(patternMatcher));
     }
 
@@ -132,7 +132,7 @@ namespace Armature
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var patternMatcher = new FindUnitMatches(new UnitIdPattern(type, key));
+      var patternMatcher = new FindUnitMatches(new Pattern(type, key));
       return new SequenceTuner(buildPlans.GetOrAddNode(patternMatcher));
     }
 

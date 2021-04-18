@@ -5,15 +5,15 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Matches a <see cref="UnitId" /> with stored pattern consist of a unit id and a key.
+  /// Checks if a unit matches with the specified kind and a key.
   /// </summary>
-  public sealed record UnitIdPattern : IUnitIdPattern
+  public sealed record Pattern : IUnitPattern
   {
     private readonly object? _unitKind;
     private readonly object? _key;
 
     [DebuggerStepThrough]
-    public UnitIdPattern(object? unitKind, object? key)
+    public Pattern(object? unitKind, object? key)
     {
       if(unitKind is null && key is null) throw new ArgumentNullException(nameof(unitKind), @"Either id or key should be provided");
 

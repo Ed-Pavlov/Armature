@@ -10,11 +10,11 @@ namespace Armature.Core
   /// </summary>
   public class IfFirstUnitMatches : PatternTreeNodeWithChildren, IEquatable<IfFirstUnitMatches>
   {
-    private readonly IUnitIdPattern _pattern;
+    private readonly IUnitPattern _pattern;
 
-    public IfFirstUnitMatches(IUnitIdPattern pattern) : this(pattern, QueryWeight.StrictMatchingUnit) { }
+    public IfFirstUnitMatches(IUnitPattern pattern) : this(pattern, QueryWeight.StrictMatchingUnit) { }
 
-    public IfFirstUnitMatches(IUnitIdPattern pattern, int weight) : base(weight) => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
+    public IfFirstUnitMatches(IUnitPattern pattern, int weight) : base(weight) => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
     /// <summary>
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.

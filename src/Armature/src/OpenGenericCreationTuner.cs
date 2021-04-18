@@ -23,7 +23,7 @@ namespace Armature
     public Tuner CreatedByDefault()
     {
       var childMatcher = new FindUnitMatches(
-        new IsOpenGenericTypePattern(OpenGenericType, Key),
+        new OpenGenericTypePattern(OpenGenericType, Key),
         QueryWeight.WildcardMatchingUnit - 1);
 
       PatternTreeNode
@@ -36,7 +36,7 @@ namespace Armature
     public Tuner CreatedByReflection()
     {
       var childMatcher = new FindUnitMatches(
-        new IsOpenGenericTypePattern(OpenGenericType, Key),
+        new OpenGenericTypePattern(OpenGenericType, Key),
         QueryWeight.WildcardMatchingUnit - 1);
 
       PatternTreeNode

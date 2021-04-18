@@ -25,7 +25,7 @@ namespace Armature
     /// </summary>
     public Tuner CreatedByDefault()
       => new(PatternTreeNode.GetOrAddNode(
-               new IfFirstUnitMatches(new UnitIdPattern(Type, Key))
+               new IfFirstUnitMatches(new Pattern(Type, Key))
                 .UseBuildAction(BuildStage.Create, Default.CreationBuildAction)
              )
       );
@@ -37,7 +37,7 @@ namespace Armature
     /// <returns></returns>
     public Tuner CreatedByReflection()
       => new(PatternTreeNode.GetOrAddNode(
-               new IfFirstUnitMatches(new UnitIdPattern(Type, Key))
+               new IfFirstUnitMatches(new Pattern(Type, Key))
                 .UseBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance)
              )
       );

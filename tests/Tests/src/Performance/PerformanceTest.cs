@@ -127,25 +127,25 @@ namespace Tests.Performance
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitMatcher = new UnitPatternWrapper(new UnitIdPattern(unitId.Kind, unitId.Key));
+      var unitMatcher = new UnitPatternWrapper(new Pattern(unitId.Kind, unitId.Key));
 
       var query = new FindUnitMatches(unitMatcher);
 
       return new TreatingTuner(buildPlans.GetOrAddNode(query));
     }
 
-    private class UnitPatternWrapper : IUnitIdPattern
+    private class UnitPatternWrapper : IUnitPattern
     {
-      private readonly IUnitIdPattern _impl;
+      private readonly IUnitPattern _impl;
 
-      public UnitPatternWrapper(IUnitIdPattern impl) => _impl = impl;
+      public UnitPatternWrapper(IUnitPattern impl) => _impl = impl;
 
       public static long EqualsCallsCount      { get; private set; }
       public static long GetHashCodeCallsCount { get; private set; }
 
       public bool Matches(UnitId unitId) => _impl.Matches(unitId);
 
-      public bool Equals(IUnitIdPattern other)
+      public bool Equals(IUnitPattern other)
       {
         EqualsCallsCount++;
 
@@ -160,7 +160,7 @@ namespace Tests.Performance
         return _impl.GetHashCode();
       }
 
-      public override bool Equals(object obj) => Equals(obj as UnitIdPattern);
+      public override bool Equals(object obj) => Equals(obj as Pattern);
     }
 
     private static Builder CreateTarget(Builder parent = null)
@@ -168,7 +168,7 @@ namespace Tests.Performance
       var treatAll = new SkipToLastUnit
                      {
                        // inject into constructor
-                       new IfLastUnitMatches(IsConstructorPattern.Instance)
+                       new IfLastUnitMatches(ConstructorPattern.Instance)
                         .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer
@@ -176,14 +176,14 @@ namespace Tests.Performance
                              new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
                              GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
                            }),
-                       new IfLastUnitMatches(IsParameterPattern.Instance)
+                       new IfLastUnitMatches(MethodArgumentPattern.Instance)
                         .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer
                            {
                              CreateParameterValueForInjectPointBuildAction.Instance, CreateParameterValueBuildAction.Instance
                            }),
-                       new IfLastUnitMatches(IsPropertyArgumentPattern.Instance)
+                       new IfLastUnitMatches(PropertyArgumentPattern.Instance)
                         .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer {new CreatePropertyValueBuildAction()})

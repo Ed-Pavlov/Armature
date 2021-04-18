@@ -1,11 +1,11 @@
 ﻿namespace Armature.Core
 {
   /// <summary>
-  /// Matches that unit is of type which can be instantiated
+  /// Checks if <see cref="UnitId.Kind"/> is a type which can be instantiated.
   /// </summary>
-  public record CanBeInstantiatedPattern : SimpleToStringImpl, IUnitIdPattern
+  public record CanBeInstantiatedPattern : SimpleToStringImpl, IUnitPattern
   {
-    public static readonly IUnitIdPattern Instance = new CanBeInstantiatedPattern();
+    public static readonly IUnitPattern Instance = new CanBeInstantiatedPattern();
 
     private CanBeInstantiatedPattern() { }
 

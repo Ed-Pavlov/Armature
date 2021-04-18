@@ -177,7 +177,7 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnitMatches(IsConstructorPattern.Instance)
+             new IfLastUnitMatches(ConstructorPattern.Instance)
               .UseBuildAction(
                  BuildStage.Create,
                  new OrderedBuildActionContainer
@@ -186,7 +186,7 @@ namespace Tests.Functional
                    GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
                  }),
              
-             new IfLastUnitMatches(IsParameterPattern.Instance)
+             new IfLastUnitMatches(MethodArgumentPattern.Instance)
               .UseBuildAction(
                  BuildStage.Create,
                  new OrderedBuildActionContainer

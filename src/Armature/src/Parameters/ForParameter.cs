@@ -10,7 +10,7 @@ namespace Armature
     /// </summary>
     public static ParameterValueTuner<T> OfType<T>()
     {
-      var matcher = new IsParameterOfTypePattern(typeof(T), true);
+      var matcher = new ParameterOfTypePattern(typeof(T), true);
       return new ParameterValueTuner<T>(matcher, InjectPointMatchingWeight.TypedParameter);
     }
 
@@ -20,7 +20,7 @@ namespace Armature
     /// <param name="parameterName">Matches parameter with this name</param>
     /// <returns></returns>
     public static ParameterValueTuner Named(string parameterName)
-      => new(new IsParameterWithNamePattern(parameterName), InjectPointMatchingWeight.NamedParameter);
+      => new(new ParameterWithNamePattern(parameterName), InjectPointMatchingWeight.NamedParameter);
 
     /// <summary>
     ///   Matches with parameter marked with <see cref="InjectAttribute" />(<paramref name="injectPointId" />)
@@ -31,7 +31,7 @@ namespace Armature
     /// </param>
     public static ParameterValueTuner WithInjectPoint(object? injectPointId)
     {
-      var matcher = new IsParameterWithInjectIdPattern(injectPointId);
+      var matcher = new ParameterWithInjectIdPattern(injectPointId);
 
       return new ParameterValueTuner(matcher, InjectPointMatchingWeight.AttributedParameter);
     }

@@ -28,7 +28,7 @@ namespace Armature
     [DebuggerStepThrough]
     public void Apply(IPatternTreeNode patternTreeNode)
       => patternTreeNode
-        .GetOrAddNode(new IfLastUnitMatches(IsPropertyPattern.Instance))
+        .GetOrAddNode(new IfLastUnitMatches(PropertiesListPattern.Instance))
         .UseBuildAction(BuildStage.Create, new GetPropertyByNameBuildAction(_names));
 
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", _names));

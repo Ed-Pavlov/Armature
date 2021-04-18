@@ -8,7 +8,7 @@ namespace Armature
   /// </summary>
   public abstract class BuildValuePlan : BuildActionExtensibility, IBuildPlan
   {
-    protected BuildValuePlan(IUnitIdPattern unitPattern, IBuildAction getValueAction, int weight)
+    protected BuildValuePlan(IUnitPattern unitPattern, IBuildAction getValueAction, int weight)
       : base(unitPattern, getValueAction, weight) { }
 
     void IBuildPlan.Apply(IPatternTreeNode patternTreeNode)

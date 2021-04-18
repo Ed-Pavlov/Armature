@@ -7,12 +7,12 @@ namespace Armature.Core
   /// <summary>
   /// Base class for matchers matching unit with a <see cref="System.Type"/> pattern
   /// </summary>
-  public abstract record UnitIdByTypeMatcherBase
+  public abstract record TypePatternBase
   {
     protected readonly Type    Type;
     protected readonly object? Key;
 
-    protected UnitIdByTypeMatcherBase(Type type, object? key)
+    protected TypePatternBase(Type type, object? key)
     {
       Type = type ?? throw new ArgumentNullException(nameof(type));
       Key  = key;

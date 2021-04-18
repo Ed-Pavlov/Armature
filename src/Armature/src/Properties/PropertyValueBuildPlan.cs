@@ -9,7 +9,7 @@ namespace Armature
     private readonly IBuildAction _getPropertyAction;
 
     public PropertyValueBuildPlan(
-      IUnitIdPattern propertyPattern,
+      IUnitPattern propertyPattern,
       IBuildAction   getPropertyAction,
       IBuildAction   getValueAction,
       int            weight)
@@ -22,7 +22,7 @@ namespace Armature
     /// <param name="patternTreeNode"></param>
     protected override void Apply(IPatternTreeNode patternTreeNode)
       => patternTreeNode
-        .GetOrAddNode(new IfLastUnitMatches(IsPropertyPattern.Instance))
+        .GetOrAddNode(new IfLastUnitMatches(PropertiesListPattern.Instance))
         .UseBuildAction(BuildStage.Create, _getPropertyAction);
   }
 }

@@ -31,7 +31,7 @@ namespace Tests.Functional
 
       target
        .GetOrAddNode(new SkipToLastUnit())
-       .AddNode(new IfLastUnitMatches(new IsStringParameterPattern()))
+       .AddNode(new IfLastUnitMatches(new StringParameterPattern()))
        .UseBuildAction(BuildStage.Intercept, new AddPostfixToString(Postfix));
 
       // --act
@@ -86,15 +86,15 @@ namespace Tests.Functional
          {
            new SkipToLastUnit
            {
-             new IfLastUnitMatches(IsConstructorPattern.Instance)
+             new IfLastUnitMatches(ConstructorPattern.Instance)
               .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
            }
          };
 
     /// <summary>
-    /// Matches that <see cref="UnitId.Kind"/> is <see cref="ParameterInfo"/> with <see cref="ParameterInfo.ParameterType"/> is <see cref="string"/>
+    /// Checks if <see cref="UnitId.Kind"/> is <see cref="ParameterInfo"/> with <see cref="ParameterInfo.ParameterType"/> is <see cref="string"/>
     /// </summary>
-    private class IsStringParameterPattern : IUnitIdPattern
+    private class StringParameterPattern : IUnitPattern
     {
       public bool Matches(UnitId unitId) => unitId.Kind is ParameterInfo parameterInfo && parameterInfo.ParameterType == typeof(string);
     }
