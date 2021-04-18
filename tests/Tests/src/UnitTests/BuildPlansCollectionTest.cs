@@ -18,8 +18,8 @@ namespace Tests.UnitTests
 
       // --arrange
       var unitIdMatcher = Match.Type<string>(null);
-      var matchString   = new IfLastUnit(unitIdMatcher).UseBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
-      var matchAny      = new FindFirstUnit(unitIdMatcher).UseBuildAction(BuildStage.Cache, singletonAction);
+      var matchString   = new IfLastUnitMatches(unitIdMatcher).UseBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
+      var matchAny      = new FindUnitMatches(unitIdMatcher).UseBuildAction(BuildStage.Cache, singletonAction);
 
       var target = new BuildPlansCollection();
       target.Children.Add(matchString);

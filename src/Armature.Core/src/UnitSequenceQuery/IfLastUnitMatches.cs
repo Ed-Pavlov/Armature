@@ -8,19 +8,19 @@ namespace Armature.Core
 {
   /// <summary>
   ///   Matches only unit under construction in the sequence and applies passed <see cref="IUnitIdPattern" /> to it.
-  ///   See <see cref="IfLastUnit(IUnitIdPattern,int)" /> and <see cref="GatherBuildActions" /> for details
+  ///   See <see cref="IfLastUnitMatches(Armature.Core.IUnitIdPattern,int)" /> and <see cref="GatherBuildActions" /> for details
   /// </summary>
-  public class IfLastUnit : Query
+  public class IfLastUnitMatches : PatternTreeNode
   {
     private readonly IUnitIdPattern _unitPattern;
 
     /// <param name="unitPattern">Object contains the logic of matching with building unit</param>
     /// <param name="weight">The weight of matching</param>
     [DebuggerStepThrough]
-    public IfLastUnit(IUnitIdPattern unitPattern, int weight = QueryWeight.Any) : base(weight)
+    public IfLastUnitMatches(IUnitIdPattern unitPattern, int weight = QueryWeight.Any) : base(weight)
       => _unitPattern = unitPattern ?? throw new ArgumentNullException(nameof(unitPattern));
 
-    public override ICollection<IQuery> Children => throw new NotSupportedException("LastUnitSequenceMatcher can't contain children");
+    public override ICollection<IPatternTreeNode> Children => throw new NotSupportedException("LastUnitSequenceMatcher can't contain children");
 
     /// <summary>
     ///   If <paramref name="unitSequence" /> contains more then one element return null. This matcher matches only unit under construction which is
@@ -55,7 +55,7 @@ namespace Armature.Core
 
     #region Equality
 
-    private bool Equals(IfLastUnit? other)
+    private bool Equals(IfLastUnitMatches? other)
     {
       if(ReferenceEquals(null, other)) return false;
       if(ReferenceEquals(this, other)) return true;
@@ -63,9 +63,9 @@ namespace Armature.Core
       return Weight == other.Weight && _unitPattern.Equals(other._unitPattern);
     }
 
-    public override bool Equals(IQuery obj) => Equals(obj as IfLastUnit);
+    public override bool Equals(IPatternTreeNode obj) => Equals(obj as IfLastUnitMatches);
 
-    public override bool Equals(object obj) => Equals(obj as IfLastUnit);
+    public override bool Equals(object obj) => Equals(obj as IfLastUnitMatches);
 
     public override int GetHashCode()
     {

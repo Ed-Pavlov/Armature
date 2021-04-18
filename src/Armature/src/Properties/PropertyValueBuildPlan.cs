@@ -19,10 +19,10 @@ namespace Armature
     /// <summary>
     ///   In addition to the base logic adds a logic which provides a properties to inject into
     /// </summary>
-    /// <param name="query"></param>
-    protected override void Apply(IQuery query)
-      => query
-        .AddSubQuery(new IfLastUnit(IsPropertyPattern.Instance))
+    /// <param name="patternTreeNode"></param>
+    protected override void Apply(IPatternTreeNode patternTreeNode)
+      => patternTreeNode
+        .AddSubQuery(new IfLastUnitMatches(IsPropertyPattern.Instance))
         .UseBuildAction(BuildStage.Create, _getPropertyAction);
   }
 }

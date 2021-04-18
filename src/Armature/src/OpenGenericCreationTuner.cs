@@ -11,7 +11,7 @@ namespace Armature
     protected readonly Type    OpenGenericType;
     protected readonly object? Key;
 
-    public OpenGenericCreationTuner(IQuery query, Type openGenericType, object? key) : base(query)
+    public OpenGenericCreationTuner(IPatternTreeNode patternTreeNode, Type openGenericType, object? key) : base(patternTreeNode)
     {
       OpenGenericType = openGenericType;
       Key             = key;
@@ -22,11 +22,11 @@ namespace Armature
 
     public Tuner CreatedByDefault()
     {
-      var childMatcher = new FindFirstUnit(
+      var childMatcher = new FindUnitMatches(
         new IsOpenGenericTypePattern(OpenGenericType, Key),
         QueryWeight.WildcardMatchingUnit - 1);
 
-      Query
+      PatternTreeNode
        .AddSubQuery(childMatcher)
        .UseBuildAction(BuildStage.Create, Default.CreationBuildAction);
 
@@ -35,11 +35,11 @@ namespace Armature
 
     public Tuner CreatedByReflection()
     {
-      var childMatcher = new FindFirstUnit(
+      var childMatcher = new FindUnitMatches(
         new IsOpenGenericTypePattern(OpenGenericType, Key),
         QueryWeight.WildcardMatchingUnit - 1);
 
-      Query
+      PatternTreeNode
        .AddSubQuery(childMatcher)
        .UseBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
 

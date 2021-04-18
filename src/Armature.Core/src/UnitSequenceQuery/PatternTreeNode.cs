@@ -21,11 +21,11 @@ namespace Armature.Core
   ///     .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
   /// };
   /// </remarks>
-  public abstract class Query : IQuery, IEnumerable
+  public abstract class PatternTreeNode : IPatternTreeNode, IEnumerable
   {
     private Dictionary<object, List<IBuildAction>>? _buildActions;
 
-    protected Query(int weight) => Weight = weight;
+    protected PatternTreeNode(int weight) => Weight = weight;
 
     protected int Weight { get; }
 
@@ -34,12 +34,12 @@ namespace Armature.Core
       [DebuggerStepThrough] get => _buildActions ??= new Dictionary<object, List<IBuildAction>>();
     }
 
-    public abstract ICollection<IQuery> Children { get; }
+    public abstract ICollection<IPatternTreeNode> Children { get; }
 
     public abstract BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight);
 
     [DebuggerStepThrough]
-    public virtual IQuery UseBuildAction(object buildStage, IBuildAction buildAction)
+    public virtual IPatternTreeNode UseBuildAction(object buildStage, IBuildAction buildAction)
     {
       LazyBuildAction
        .GetOrCreateValue(buildStage, () => new List<IBuildAction>())
@@ -48,7 +48,7 @@ namespace Armature.Core
       return this;
     }
 
-    public abstract bool Equals(IQuery other);
+    public abstract bool Equals(IPatternTreeNode other);
 
     [DebuggerStepThrough]
     protected BuildActionBag? GetOwnActions(int matchingWeight)
@@ -68,7 +68,7 @@ namespace Armature.Core
 
     public void PrintToLog()
     {
-      ICollection<IQuery>? children = null;
+      ICollection<IPatternTreeNode>? children = null;
 
       try
       {
@@ -102,7 +102,7 @@ namespace Armature.Core
 
     #region Syntax sugar
 
-    public void             Add(IQuery query) => Children.Add(query);
+    public void             Add(IPatternTreeNode patternTreeNode) => Children.Add(patternTreeNode);
     IEnumerator IEnumerable.GetEnumerator()   => throw new NotSupportedException();
 
     #endregion

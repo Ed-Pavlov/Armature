@@ -5,15 +5,15 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Matches any sequence of building units, thus passing the unit under construction to <see cref="IQuery.Children" /> and merge their
+  ///   Matches any sequence of building units, thus passing the unit under construction to <see cref="IPatternTreeNode.Children" /> and merge their
   ///   build actions with its own.
   /// </summary>
-  public class SkipToLastUnit : QueryWithChildren
+  public class SkipToLastUnit : PatternTreeNodeWithChildren
   {
     public SkipToLastUnit(int weight) : base(weight) { }
     public SkipToLastUnit() : this(QueryWeight.AnyUnit) { }
 
-    public override IQuery UseBuildAction(object buildStage, IBuildAction buildAction)
+    public override IPatternTreeNode UseBuildAction(object buildStage, IBuildAction buildAction)
       => throw new NotSupportedException(
            "This query is used to skip unit sequence to the end and pass the unit under construction to sub queries."
          + "It can't contain build actions due to they are used to build the unit under construction only."
@@ -41,7 +41,7 @@ namespace Armature.Core
     #region Equality
 
     [DebuggerStepThrough]
-    public override bool Equals(IQuery other) => Equals((object) other);
+    public override bool Equals(IPatternTreeNode other) => Equals((object) other);
 
     [DebuggerStepThrough]
     public override bool Equals(object? obj)

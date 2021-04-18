@@ -31,22 +31,22 @@ namespace Armature.Core
     public static int AnyUnit => Any;
 
     /// <summary>
-    ///   Used for <see cref="FindFirstUnit" /> which matches with a <see cref="UnitId" /> contains open generic type
+    ///   Used for <see cref="FindUnitMatches" /> which matches with a <see cref="UnitId" /> contains open generic type
     /// </summary>
     public static int WildcardMatchingOpenGenericUnit => WildcardOpenGeneric;
 
     /// <summary>
-    ///   Used for <see cref="FindFirstUnit" /> which matches with a <see cref="UnitId" /> contains inheritors of a type
+    ///   Used for <see cref="FindUnitMatches" /> which matches with a <see cref="UnitId" /> contains inheritors of a type
     /// </summary>
     public static int WildcardMatchingBaseTypeUnit => WildcardBaseType;
 
     /// <summary>
-    ///   Used for <see cref="FindFirstUnit" /> which matches with a <see cref="UnitId" /> contains a <see cref="Type" />
+    ///   Used for <see cref="FindUnitMatches" /> which matches with a <see cref="UnitId" /> contains a <see cref="Type" />
     /// </summary>
     public static int WildcardMatchingUnit => Wildcard;
 
     /// <summary>
-    ///   Used for <see cref="IfFirstUnit" /> which matches with a <see cref="UnitId" /> contains a <see cref="Type" />
+    ///   Used for <see cref="IfFirstUnitMatches" /> which matches with a <see cref="UnitId" /> contains a <see cref="Type" />
     /// </summary>
     public static int StrictMatchingUnit => Strict;
   }

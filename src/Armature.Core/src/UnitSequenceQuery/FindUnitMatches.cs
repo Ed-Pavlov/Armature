@@ -6,13 +6,13 @@ namespace Armature.Core
   /// <summary>
   ///   Moves along the building units sequence from left to right skipping units until it encounters a matching unit. Behaves like string search with wildcard.
   /// </summary>
-  public class FindFirstUnit : QueryWithChildren, IEquatable<FindFirstUnit>
+  public class FindUnitMatches : PatternTreeNodeWithChildren, IEquatable<FindUnitMatches>
   {
     private readonly IUnitIdPattern _pattern;
 
-    public FindFirstUnit(IUnitIdPattern pattern) : this(pattern, QueryWeight.WildcardMatchingUnit) { }
+    public FindUnitMatches(IUnitIdPattern pattern) : this(pattern, QueryWeight.WildcardMatchingUnit) { }
 
-    public FindFirstUnit(IUnitIdPattern pattern, int weight) : base(weight) => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
+    public FindUnitMatches(IUnitIdPattern pattern, int weight) : base(weight) => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
     /// <summary>
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.
@@ -42,7 +42,7 @@ namespace Armature.Core
 
     #region Equality
 
-    public bool Equals(FindFirstUnit? other)
+    public bool Equals(FindUnitMatches? other)
     {
       if(ReferenceEquals(null, other)) return false;
       if(ReferenceEquals(this, other)) return true;
@@ -50,9 +50,9 @@ namespace Armature.Core
       return Equals(_pattern, other._pattern) && Weight == other.Weight;
     }
 
-    public override bool Equals(IQuery other) => Equals(other as FindFirstUnit);
+    public override bool Equals(IPatternTreeNode other) => Equals(other as FindUnitMatches);
 
-    public override bool Equals(object obj) => Equals(obj as FindFirstUnit);
+    public override bool Equals(object obj) => Equals(obj as FindUnitMatches);
 
     public override int GetHashCode()
     {

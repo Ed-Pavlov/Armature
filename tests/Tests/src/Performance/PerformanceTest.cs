@@ -129,7 +129,7 @@ namespace Tests.Performance
 
       var unitMatcher = new UnitPatternWrapper(new UnitIdPattern(unitId.Kind, unitId.Key));
 
-      var query = new FindFirstUnit(unitMatcher);
+      var query = new FindUnitMatches(unitMatcher);
 
       return new TreatingTuner(buildPlans.AddSubQuery(query));
     }
@@ -168,7 +168,7 @@ namespace Tests.Performance
       var treatAll = new SkipToLastUnit
                      {
                        // inject into constructor
-                       new IfLastUnit(IsConstructorPattern.Instance)
+                       new IfLastUnitMatches(IsConstructorPattern.Instance)
                         .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer
@@ -176,14 +176,14 @@ namespace Tests.Performance
                              new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
                              GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
                            }),
-                       new IfLastUnit(IsParameterPattern.Instance)
+                       new IfLastUnitMatches(IsParameterPattern.Instance)
                         .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer
                            {
                              CreateParameterValueForInjectPointBuildAction.Instance, CreateParameterValueBuildAction.Instance
                            }),
-                       new IfLastUnit(IsPropertyArgumentPattern.Instance)
+                       new IfLastUnitMatches(IsPropertyArgumentPattern.Instance)
                         .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer {new CreatePropertyValueBuildAction()})

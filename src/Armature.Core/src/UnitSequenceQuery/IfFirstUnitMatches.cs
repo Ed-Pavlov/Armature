@@ -6,15 +6,15 @@ namespace Armature.Core
 {
   /// <summary>
   ///   Matches the first unit in the sequence and only if it matches pass the tail of building
-  ///   sequence to its <see cref="QueryWithChildren.Children" />
+  ///   sequence to its <see cref="PatternTreeNodeWithChildren.Children" />
   /// </summary>
-  public class IfFirstUnit : QueryWithChildren, IEquatable<IfFirstUnit>
+  public class IfFirstUnitMatches : PatternTreeNodeWithChildren, IEquatable<IfFirstUnitMatches>
   {
     private readonly IUnitIdPattern _pattern;
 
-    public IfFirstUnit(IUnitIdPattern pattern) : this(pattern, QueryWeight.StrictMatchingUnit) { }
+    public IfFirstUnitMatches(IUnitIdPattern pattern) : this(pattern, QueryWeight.StrictMatchingUnit) { }
 
-    public IfFirstUnit(IUnitIdPattern pattern, int weight) : base(weight) => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
+    public IfFirstUnitMatches(IUnitIdPattern pattern, int weight) : base(weight) => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
     /// <summary>
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.
@@ -32,7 +32,7 @@ namespace Armature.Core
 
     #region Equality
 
-    public bool Equals(IfFirstUnit? other)
+    public bool Equals(IfFirstUnitMatches? other)
     {
       if(ReferenceEquals(null, other)) return false;
       if(ReferenceEquals(this, other)) return true;
@@ -40,9 +40,9 @@ namespace Armature.Core
       return Equals(_pattern, other._pattern) && Weight == other.Weight;
     }
 
-    public override bool Equals(IQuery other) => Equals(other as IfFirstUnit);
+    public override bool Equals(IPatternTreeNode other) => Equals(other as IfFirstUnitMatches);
 
-    public override bool Equals(object obj) => Equals(obj as IfFirstUnit);
+    public override bool Equals(object obj) => Equals(obj as IfFirstUnitMatches);
 
     public override int GetHashCode()
     {

@@ -8,12 +8,12 @@ namespace Armature
 {
   public class TreatingTuner : TreatingTuner<object>
   {
-    public TreatingTuner(IQuery query) : base(query) { }
+    public TreatingTuner(IPatternTreeNode patternTreeNode) : base(patternTreeNode) { }
   }
 
   public class TreatingTuner<T> : Tuner
   {
-    public TreatingTuner(IQuery query) : base(query) { }
+    public TreatingTuner(IPatternTreeNode patternTreeNode) : base(patternTreeNode) { }
 
 #pragma warning disable 1574
     /// <summary>
@@ -25,15 +25,15 @@ namespace Armature
 #pragma warning restore 1574
     public Tuner AsIs()
     {
-      Query.UseBuildAction(BuildStage.Create, Default.CreationBuildAction);
+      PatternTreeNode.UseBuildAction(BuildStage.Create, Default.CreationBuildAction);
 
-      return new Tuner(Query);
+      return new Tuner(PatternTreeNode);
     }
 
     /// <summary>
     ///   For all who depends on <typeparamref name="T" /> inject <paramref name="instance" />.
     /// </summary>
-    public void AsInstance(T? instance) => Query.UseBuildAction(BuildStage.Cache, new SingletonBuildAction(instance));
+    public void AsInstance(T? instance) => PatternTreeNode.UseBuildAction(BuildStage.Cache, new SingletonBuildAction(instance));
 
 #pragma warning disable 1574
     /// <summary>
@@ -43,9 +43,9 @@ namespace Armature
 #pragma warning restore 1574
     public CreationTuner As(Type type, object? key = null)
     {
-      Query.UseBuildAction(BuildStage.Create, new RedirectTypeBuildAction(type, key));
+      PatternTreeNode.UseBuildAction(BuildStage.Create, new RedirectTypeBuildAction(type, key));
 
-      return new CreationTuner(Query, type, key);
+      return new CreationTuner(PatternTreeNode, type, key);
     }
 
     /// <summary>
@@ -78,40 +78,40 @@ namespace Armature
     ///   For all who depends on <typeparamref name="T" /> inject object created by specified factory method.
     /// </summary>
     public Tuner AsCreatedWith(Func<T> factoryMethod)
-      => new(Query.UseBuildAction(
+      => new(PatternTreeNode.UseBuildAction(
                BuildStage.Create,
                new CreateByFactoryMethodBuildAction<T>(_ => factoryMethod())));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1>(Func<T1?, T?> factoryMethod)
-      => new(Query.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T>(factoryMethod)));
+      => new(PatternTreeNode.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1, T2>(Func<T1?, T2?, T?> factoryMethod)
-      => new(Query.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T>(factoryMethod)));
+      => new(PatternTreeNode.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1, T2, T3>(Func<T1?, T2?, T3?, T?> factoryMethod)
-      => new(Query.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod)));
+      => new(PatternTreeNode.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1, T2, T3, T4>(Func<T1?, T2?, T3?, T4?, T?> factoryMethod)
-      => new(Query.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T>(factoryMethod)));
+      => new(PatternTreeNode.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1, T2, T3, T4, T5>(Func<T1?, T2?, T3?, T4?, T5?, T?> factoryMethod)
-      => new(Query.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T>(factoryMethod)));
+      => new(PatternTreeNode.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1, T2, T3, T4, T5, T6>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T?> factoryMethod)
-      => new(Query.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T>(factoryMethod)));
+      => new(PatternTreeNode.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1, T2, T3, T4, T5, T6, T7>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T7?, T?> factoryMethod)
-      => new(Query.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, T>(factoryMethod)));
+      => new(PatternTreeNode.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, T>(factoryMethod)));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith(Func<IBuildSession, T> factoryMethod)
-      => new(Query.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T>(factoryMethod)));
+      => new(PatternTreeNode.UseBuildAction(BuildStage.Create, new CreateByFactoryMethodBuildAction<T>(factoryMethod)));
   }
 }

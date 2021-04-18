@@ -8,15 +8,15 @@ namespace Armature.Core
   /// <summary>
   ///   Base class exposing the collection of children matchers, gathering and merging build actions from children with its own.
   /// </summary>
-  public abstract class QueryWithChildren : Query
+  public abstract class PatternTreeNodeWithChildren : PatternTreeNode
   {
-    private HashSet<IQuery>? _children;
+    private HashSet<IPatternTreeNode>? _children;
 
-    protected QueryWithChildren(int weight) : base(weight) { }
+    protected PatternTreeNodeWithChildren(int weight) : base(weight) { }
 
-    private HashSet<IQuery> LazyChildren => _children ??= new HashSet<IQuery>();
+    private HashSet<IPatternTreeNode> LazyChildren => _children ??= new HashSet<IPatternTreeNode>();
 
-    public override ICollection<IQuery> Children => LazyChildren;
+    public override ICollection<IPatternTreeNode> Children => LazyChildren;
 
     /// <summary>
     ///   Gets and merges matched actions from all children matchers

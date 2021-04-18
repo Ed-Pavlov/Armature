@@ -10,7 +10,7 @@ namespace Armature
     protected readonly Type    Type;
     protected readonly object? Key;
 
-    public CreationTuner(IQuery query, Type type, object? key) : base(query)
+    public CreationTuner(IPatternTreeNode patternTreeNode, Type type, object? key) : base(patternTreeNode)
     {
       Type = type ?? throw new ArgumentNullException(nameof(type));
       Key  = key;
@@ -24,8 +24,8 @@ namespace Armature
     ///   should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
     /// </summary>
     public Tuner CreatedByDefault()
-      => new(Query.AddSubQuery(
-               new IfFirstUnit(new UnitIdPattern(Type, Key))
+      => new(PatternTreeNode.AddSubQuery(
+               new IfFirstUnitMatches(new UnitIdPattern(Type, Key))
                 .UseBuildAction(BuildStage.Create, Default.CreationBuildAction)
              )
       );
@@ -36,8 +36,8 @@ namespace Armature
     /// </summary>
     /// <returns></returns>
     public Tuner CreatedByReflection()
-      => new(Query.AddSubQuery(
-               new IfFirstUnit(new UnitIdPattern(Type, Key))
+      => new(PatternTreeNode.AddSubQuery(
+               new IfFirstUnitMatches(new UnitIdPattern(Type, Key))
                 .UseBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance)
              )
       );

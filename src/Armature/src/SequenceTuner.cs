@@ -9,7 +9,7 @@ namespace Armature
   public class SequenceTuner : UnitSequenceExtensibility
   {
     [DebuggerStepThrough]
-    public SequenceTuner(IQuery query) : base(query) { }
+    public SequenceTuner(IPatternTreeNode patternTreeNode) : base(patternTreeNode) { }
 
     /// <summary>
     ///   Used to make a build plan for a unit only if it is building in a context of building <paramref name="type" /> with key <paramref name="key" />
@@ -18,8 +18,8 @@ namespace Armature
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var query = new FindFirstUnit(new UnitIdPattern(type, key));
-      return new SequenceTuner(Query.AddSubQuery(query));
+      var query = new FindUnitMatches(new UnitIdPattern(type, key));
+      return new SequenceTuner(PatternTreeNode.AddSubQuery(query));
     }
 
     /// <summary>
@@ -34,9 +34,9 @@ namespace Armature
     public TreatingTuner Treat(Type type, object? key = null)
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
-      var query = new FindFirstUnit(new UnitIdPattern(type, key));
+      var query = new FindUnitMatches(new UnitIdPattern(type, key));
 
-      return new TreatingTuner(Query.AddSubQuery(query));
+      return new TreatingTuner(PatternTreeNode.AddSubQuery(query));
     }
 
     /// <summary>
@@ -45,8 +45,8 @@ namespace Armature
     /// </summary>
     public TreatingTuner<T> Treat<T>(object? key = null)
     {
-      var query = new FindFirstUnit(new UnitIdPattern(typeof(T), key));
-      return new TreatingTuner<T>(Query.AddSubQuery(query));
+      var query = new FindUnitMatches(new UnitIdPattern(typeof(T), key));
+      return new TreatingTuner<T>(PatternTreeNode.AddSubQuery(query));
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ namespace Armature
     {
       var query = new SkipToLastUnit();
 
-      return new Tuner(Query.AddSubQuery(query));
+      return new Tuner(PatternTreeNode.AddSubQuery(query));
     }
   }
 }

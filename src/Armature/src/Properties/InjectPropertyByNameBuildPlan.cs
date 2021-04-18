@@ -26,9 +26,9 @@ namespace Armature
     string[] IExtensibility<string[]>.Item1 => _names;
 
     [DebuggerStepThrough]
-    public void Apply(IQuery query)
-      => query
-        .AddSubQuery(new IfLastUnit(IsPropertyPattern.Instance))
+    public void Apply(IPatternTreeNode patternTreeNode)
+      => patternTreeNode
+        .AddSubQuery(new IfLastUnitMatches(IsPropertyPattern.Instance))
         .UseBuildAction(BuildStage.Create, new GetPropertyByNameBuildAction(_names));
 
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", _names));

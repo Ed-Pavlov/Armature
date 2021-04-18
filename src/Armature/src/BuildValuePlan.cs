@@ -11,18 +11,18 @@ namespace Armature
     protected BuildValuePlan(IUnitIdPattern unitPattern, IBuildAction getValueAction, int weight)
       : base(unitPattern, getValueAction, weight) { }
 
-    void IBuildPlan.Apply(IQuery query)
+    void IBuildPlan.Apply(IPatternTreeNode patternTreeNode)
     {
-      query
-       .AddSubQuery(new IfLastUnit(UnitPattern, Weight), false)
+      patternTreeNode
+       .AddSubQuery(new IfLastUnitMatches(UnitPattern, Weight), false)
        .UseBuildAction(BuildStage.Create, BuildAction);
 
-      Apply(query);
+      Apply(patternTreeNode);
     }
 
     /// <summary>
     ///   Can be overriden to add extra logic in addition to implemented in <see cref="IBuildPlan.Apply" />
     /// </summary>
-    protected virtual void Apply(IQuery query) { }
+    protected virtual void Apply(IPatternTreeNode patternTreeNode) { }
   }
 }

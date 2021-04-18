@@ -10,7 +10,7 @@ namespace Armature.Core
   /// <summary>
   ///   The collection of build plans. Build plan of the unit is the tree of units sequence matchers containing build actions.
   ///   All build plans are contained as a forest of trees.
-  ///   See <see cref="IQuery" /> for details.
+  ///   See <see cref="IPatternTreeNode" /> for details.
   /// </summary>
   /// <remarks>
   ///   This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
@@ -25,16 +25,16 @@ namespace Armature.Core
   ///     }
   ///   };
   /// </remarks>
-  public class BuildPlansCollection : IQuery, IEnumerable
+  public class BuildPlansCollection : IPatternTreeNode, IEnumerable
   {
     private readonly Root _root = new();
 
     /// <summary>
-    ///   Forest of <see cref="IQuery" /> trees
+    ///   Forest of <see cref="IPatternTreeNode" /> trees
     /// </summary>
-    public ICollection<IQuery> Children => _root.Children;
+    public ICollection<IPatternTreeNode> Children => _root.Children;
 
-    public void Add(IQuery query) => Children.Add(query);
+    public void Add(IPatternTreeNode patternTreeNode) => Children.Add(patternTreeNode);
 
     public BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight = 0)
     {
@@ -51,12 +51,12 @@ namespace Armature.Core
       }
     }
 
-    public bool Equals(IQuery other) => ReferenceEquals(this, other);
+    public bool Equals(IPatternTreeNode other) => ReferenceEquals(this, other);
 
     /// <summary>
-    ///   Reuse implementation of <see cref="QueryWithChildren" /> to implement <see cref="BuildPlansCollection" /> public interface
+    ///   Reuse implementation of <see cref="PatternTreeNodeWithChildren" /> to implement <see cref="BuildPlansCollection" /> public interface
     /// </summary>
-    private class Root : QueryWithChildren
+    private class Root : PatternTreeNodeWithChildren
     {
       [DebuggerStepThrough]
       public Root() : base(0) { }
@@ -65,10 +65,10 @@ namespace Armature.Core
       public override BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight) => GetChildrenActions(inputWeight, unitSequence);
 
       [DebuggerStepThrough]
-      public override bool Equals(IQuery other) => throw new NotSupportedException();
+      public override bool Equals(IPatternTreeNode other) => throw new NotSupportedException();
     }
 
     IEnumerator IEnumerable.GetEnumerator()                                             => throw new NotSupportedException();
-    IQuery IQuery.          UseBuildAction(object buildStage, IBuildAction buildAction) => throw new NotSupportedException();
+    IPatternTreeNode IPatternTreeNode.          UseBuildAction(object buildStage, IBuildAction buildAction) => throw new NotSupportedException();
   }
 }

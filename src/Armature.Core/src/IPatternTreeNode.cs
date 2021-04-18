@@ -7,12 +7,12 @@ namespace Armature.Core
   /// <summary>
   ///   Represents a query applied to a sequence of building units in order to find build actions needed to build a unit
   /// </summary>
-  public interface IQuery : IEquatable<IQuery>, ILogable
+  public interface IPatternTreeNode : IEquatable<IPatternTreeNode>, ILogable
   {
     /// <summary>
     ///   The collection of all child sub queries, used to find existing one, add new, or replace one with another
     /// </summary>
-    ICollection<IQuery> Children { get; }
+    ICollection<IPatternTreeNode> Children { get; }
 
     /// <summary>
     ///   Returns build actions which should be performed to build a unit represented by the last item of <paramref name="unitSequence" />
@@ -40,6 +40,6 @@ namespace Armature.Core
     /// <param name="buildStage">Build stage in which the build action is executed</param>
     /// <param name="buildAction">Build action</param>
     /// <returns>Returns 'this' in order to use fluent syntax</returns>
-    IQuery UseBuildAction(object buildStage, IBuildAction buildAction);
+    IPatternTreeNode UseBuildAction(object buildStage, IBuildAction buildAction);
   }
 }
