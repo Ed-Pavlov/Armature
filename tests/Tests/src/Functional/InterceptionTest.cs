@@ -31,7 +31,7 @@ namespace Tests.Functional
 
       target
        .AddSubQuery(new SkipToLastUnit())
-       .AddSubQuery(new IfLastUnit(new IsParameterOfTypeStringMatcher()))
+       .AddSubQuery(new IfLastUnit(new IsParameterOfTypeStringPattern()))
        .UseBuildAction(BuildStage.Intercept, new AddPostfixToString(Postfix));
 
       // --act
@@ -86,7 +86,7 @@ namespace Tests.Functional
          {
            new SkipToLastUnit
            {
-             new IfLastUnit(IsConstructorMatcher.Instance)
+             new IfLastUnit(IsConstructorPattern.Instance)
               .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
            }
          };
@@ -94,7 +94,7 @@ namespace Tests.Functional
     /// <summary>
     ///   GetBuildAction with any string not depending on key
     /// </summary>
-    private class IsParameterOfTypeStringMatcher : IUnitIdMatcher
+    private class IsParameterOfTypeStringPattern : IUnitIdPattern
     {
       public bool Matches(UnitId unitId)
       {
@@ -103,7 +103,7 @@ namespace Tests.Functional
         return type == typeof(string);
       }
 
-      public bool Equals(IUnitIdMatcher other) => throw new NotSupportedException();
+      public bool Equals(IUnitIdPattern other) => throw new NotSupportedException();
     }
 
     /// <summary>

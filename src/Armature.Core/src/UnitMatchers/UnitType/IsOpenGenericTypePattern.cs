@@ -6,10 +6,10 @@ namespace Armature.Core
   /// <summary>
   /// Matches <see cref="UnitId" /> with an open generic type
   /// </summary>
-  public record IsOpenGenericTypeMatcher : UnitIdByTypeMatcherBase, IUnitIdMatcher
+  public record IsOpenGenericTypePattern : UnitIdByTypeMatcherBase, IUnitIdPattern
   {
     [DebuggerStepThrough]
-    public IsOpenGenericTypeMatcher(Type openType, object? key) : base(openType, key)
+    public IsOpenGenericTypePattern(Type openType, object? key) : base(openType, key)
     {
       if(!openType.IsGenericTypeDefinition) throw new ArgumentException("Provide open generic type", nameof(openType));
     }

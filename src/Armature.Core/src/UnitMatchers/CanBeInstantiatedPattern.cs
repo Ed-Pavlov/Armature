@@ -3,11 +3,11 @@
   /// <summary>
   /// Matches that unit is of type which can be instantiated
   /// </summary>
-  public record CanBeInstantiatedMatcher : SimpleToStringImpl, IUnitIdMatcher
+  public record CanBeInstantiatedPattern : SimpleToStringImpl, IUnitIdPattern
   {
-    public static readonly IUnitIdMatcher Instance = new CanBeInstantiatedMatcher();
+    public static readonly IUnitIdPattern Instance = new CanBeInstantiatedPattern();
 
-    private CanBeInstantiatedMatcher() { }
+    private CanBeInstantiatedPattern() { }
 
     public bool Matches(UnitId unitId)
     {

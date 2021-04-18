@@ -7,13 +7,13 @@ namespace Armature.Core
   /// Base class for matchers matching if a building unit is an argument for an "inject point" marked with with <see cref="InjectAttribute" />
   /// with specified <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
-  public abstract record IsInjectPointAttributeMatcher : IsInjectPointByAttributeMatcher<InjectAttribute>
+  public abstract record IsInjectPointAttributePattern : IsInjectPointByAttributePattern<InjectAttribute>
   {
     private readonly object? _injectPointId;
 
     /// <param name="injectPointId">An optional id of the inject point. <see cref="InjectAttribute"/> for details.</param>
     [DebuggerStepThrough]
-    protected IsInjectPointAttributeMatcher(object? injectPointId = null) : base(attribute => Equals(attribute.InjectionPointId, injectPointId))
+    protected IsInjectPointAttributePattern(object? injectPointId = null) : base(attribute => Equals(attribute.InjectionPointId, injectPointId))
       => _injectPointId = injectPointId;
 
     [DebuggerStepThrough]

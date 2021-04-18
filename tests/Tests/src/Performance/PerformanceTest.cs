@@ -119,33 +119,33 @@ namespace Tests.Performance
         Treat(builder, u4).AsCreatedWith(() => null).AsSingleton();
       }
 
-      UnitMatcherWrapper.EqualsCallsCount.Should().BeLessThan(1_000);
-      UnitMatcherWrapper.GetHashCodeCallsCount.Should().BeLessThan(250_000);
+      UnitPatternWrapper.EqualsCallsCount.Should().BeLessThan(1_000);
+      UnitPatternWrapper.GetHashCodeCallsCount.Should().BeLessThan(250_000);
     }
 
     private static TreatingTuner Treat(BuildPlansCollection buildPlans, UnitId unitId)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitMatcher = new UnitMatcherWrapper(new UnitIdMatcher(unitId.Kind, unitId.Key));
+      var unitMatcher = new UnitPatternWrapper(new UnitIdPattern(unitId.Kind, unitId.Key));
 
       var query = new FindFirstUnit(unitMatcher);
 
       return new TreatingTuner(buildPlans.AddSubQuery(query));
     }
 
-    private class UnitMatcherWrapper : IUnitIdMatcher
+    private class UnitPatternWrapper : IUnitIdPattern
     {
-      private readonly IUnitIdMatcher _impl;
+      private readonly IUnitIdPattern _impl;
 
-      public UnitMatcherWrapper(IUnitIdMatcher impl) => _impl = impl;
+      public UnitPatternWrapper(IUnitIdPattern impl) => _impl = impl;
 
       public static long EqualsCallsCount      { get; private set; }
       public static long GetHashCodeCallsCount { get; private set; }
 
       public bool Matches(UnitId unitId) => _impl.Matches(unitId);
 
-      public bool Equals(IUnitIdMatcher other)
+      public bool Equals(IUnitIdPattern other)
       {
         EqualsCallsCount++;
 
@@ -160,7 +160,7 @@ namespace Tests.Performance
         return _impl.GetHashCode();
       }
 
-      public override bool Equals(object obj) => Equals(obj as UnitIdMatcher);
+      public override bool Equals(object obj) => Equals(obj as UnitIdPattern);
     }
 
     private static Builder CreateTarget(Builder parent = null)
@@ -168,7 +168,7 @@ namespace Tests.Performance
       var treatAll = new SkipToLastUnit
                      {
                        // inject into constructor
-                       new IfLastUnit(IsConstructorMatcher.Instance)
+                       new IfLastUnit(IsConstructorPattern.Instance)
                         .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer
@@ -176,14 +176,14 @@ namespace Tests.Performance
                              new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
                              GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
                            }),
-                       new IfLastUnit(IsParameterMatcher.Instance)
+                       new IfLastUnit(IsParameterPattern.Instance)
                         .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer
                            {
                              CreateParameterValueForInjectPointBuildAction.Instance, CreateParameterValueBuildAction.Instance
                            }),
-                       new IfLastUnit(IsPropertyArgumentMatcher.Instance)
+                       new IfLastUnit(IsPropertyArgumentPattern.Instance)
                         .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer {new CreatePropertyValueBuildAction()})

@@ -23,7 +23,7 @@ namespace Armature
     public Tuner CreatedByDefault()
     {
       var childMatcher = new FindFirstUnit(
-        new IsOpenGenericTypeMatcher(OpenGenericType, Key),
+        new IsOpenGenericTypePattern(OpenGenericType, Key),
         QueryWeight.WildcardMatchingUnit - 1);
 
       Query
@@ -36,7 +36,7 @@ namespace Armature
     public Tuner CreatedByReflection()
     {
       var childMatcher = new FindFirstUnit(
-        new IsOpenGenericTypeMatcher(OpenGenericType, Key),
+        new IsOpenGenericTypePattern(OpenGenericType, Key),
         QueryWeight.WildcardMatchingUnit - 1);
 
       Query

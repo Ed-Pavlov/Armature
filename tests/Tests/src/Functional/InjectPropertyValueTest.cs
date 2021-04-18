@@ -26,12 +26,12 @@ namespace Tests.Functional
        .With( // add build action injecting values into property for any type
           anyMatcher =>
             anyMatcher
-             .AddSubQuery(new IfLastUnit(CanBeInstantiatedMatcher.Instance))
+             .AddSubQuery(new IfLastUnit(CanBeInstantiatedPattern.Instance))
              .UseBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance))
        .With( // add build action finding properties attributed with InjectAttribute for any type 
           anyMatcher =>
             anyMatcher
-             .AddSubQuery(new IfLastUnit(IsPropertyMatcher.Instance))
+             .AddSubQuery(new IfLastUnit(IsPropertyPattern.Instance))
              .UseBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction()));
 
       target.Treat<string>().AsInstance(expected);
@@ -199,9 +199,9 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnit(IsConstructorMatcher.Instance)
+             new IfLastUnit(IsConstructorPattern.Instance)
               .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-             new IfLastUnit(IsPropertyArgumentMatcher.Instance)
+             new IfLastUnit(IsPropertyArgumentPattern.Instance)
               .UseBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
            }
          };

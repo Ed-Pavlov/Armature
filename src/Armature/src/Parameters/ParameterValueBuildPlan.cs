@@ -5,7 +5,7 @@ namespace Armature
 {
   public class ParameterValueBuildPlan : BuildValuePlan, IParameterValueBuildPlan
   {
-    public ParameterValueBuildPlan(IUnitIdMatcher parameterMatcher, IBuildAction getValueAction, int weight)
-      : base(parameterMatcher, getValueAction, weight) { }
+    public ParameterValueBuildPlan(IUnitIdPattern parameterPattern, IBuildAction getValueAction, int weight)
+      : base(parameterPattern, getValueAction, weight) { }
   }
 }

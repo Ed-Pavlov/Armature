@@ -9,11 +9,11 @@ namespace Armature
     private readonly IBuildAction _getPropertyAction;
 
     public PropertyValueBuildPlan(
-      IUnitIdMatcher propertyMatcher,
+      IUnitIdPattern propertyPattern,
       IBuildAction   getPropertyAction,
       IBuildAction   getValueAction,
       int            weight)
-      : base(propertyMatcher, getValueAction, weight)
+      : base(propertyPattern, getValueAction, weight)
       => _getPropertyAction = getPropertyAction ?? throw new ArgumentNullException(nameof(getPropertyAction));
 
     /// <summary>
@@ -22,7 +22,7 @@ namespace Armature
     /// <param name="query"></param>
     protected override void Apply(IQuery query)
       => query
-        .AddSubQuery(new IfLastUnit(IsPropertyMatcher.Instance))
+        .AddSubQuery(new IfLastUnit(IsPropertyPattern.Instance))
         .UseBuildAction(BuildStage.Create, _getPropertyAction);
   }
 }

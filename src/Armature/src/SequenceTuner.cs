@@ -18,7 +18,7 @@ namespace Armature
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var query = new FindFirstUnit(new UnitIdMatcher(type, key));
+      var query = new FindFirstUnit(new UnitIdPattern(type, key));
       return new SequenceTuner(Query.AddSubQuery(query));
     }
 
@@ -34,7 +34,7 @@ namespace Armature
     public TreatingTuner Treat(Type type, object? key = null)
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
-      var query = new FindFirstUnit(new UnitIdMatcher(type, key));
+      var query = new FindFirstUnit(new UnitIdPattern(type, key));
 
       return new TreatingTuner(Query.AddSubQuery(query));
     }
@@ -45,7 +45,7 @@ namespace Armature
     /// </summary>
     public TreatingTuner<T> Treat<T>(object? key = null)
     {
-      var query = new FindFirstUnit(new UnitIdMatcher(typeof(T), key));
+      var query = new FindFirstUnit(new UnitIdPattern(typeof(T), key));
       return new TreatingTuner<T>(Query.AddSubQuery(query));
     }
 

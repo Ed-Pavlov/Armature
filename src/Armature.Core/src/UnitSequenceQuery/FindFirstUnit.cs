@@ -8,11 +8,11 @@ namespace Armature.Core
   /// </summary>
   public class FindFirstUnit : QueryWithChildren, IEquatable<FindFirstUnit>
   {
-    private readonly IUnitIdMatcher _matcher;
+    private readonly IUnitIdPattern _pattern;
 
-    public FindFirstUnit(IUnitIdMatcher matcher) : this(matcher, QueryWeight.WildcardMatchingUnit) { }
+    public FindFirstUnit(IUnitIdPattern pattern) : this(pattern, QueryWeight.WildcardMatchingUnit) { }
 
-    public FindFirstUnit(IUnitIdMatcher matcher, int weight) : base(weight) => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
+    public FindFirstUnit(IUnitIdPattern pattern, int weight) : base(weight) => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
     /// <summary>
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.
@@ -26,7 +26,7 @@ namespace Armature.Core
       {
         var unitInfo = unitSequence[i];
 
-        if(_matcher.Matches(unitInfo))
+        if(_pattern.Matches(unitInfo))
           return GetActions(unitSequence.GetTail(i), realWeight);
 
         // increase weight on each "skipping" step, it will lead that "deeper" context has more weight then more common
@@ -38,7 +38,7 @@ namespace Armature.Core
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().Name, Weight, _matcher);
+    public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().Name, Weight, _pattern);
 
     #region Equality
 
@@ -47,7 +47,7 @@ namespace Armature.Core
       if(ReferenceEquals(null, other)) return false;
       if(ReferenceEquals(this, other)) return true;
 
-      return Equals(_matcher, other._matcher) && Weight == other.Weight;
+      return Equals(_pattern, other._pattern) && Weight == other.Weight;
     }
 
     public override bool Equals(IQuery other) => Equals(other as FindFirstUnit);
@@ -58,7 +58,7 @@ namespace Armature.Core
     {
       unchecked
       {
-        return (_matcher.GetHashCode() * 397) ^ Weight;
+        return (_pattern.GetHashCode() * 397) ^ Weight;
       }
     }
 

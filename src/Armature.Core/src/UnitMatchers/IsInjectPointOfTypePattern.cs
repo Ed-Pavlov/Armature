@@ -7,13 +7,13 @@ namespace Armature.Core
   /// <summary>
   /// Base class for matchers matching if a building unit is an argument for an "inject point"
   /// </summary>
-  public abstract record IsInjectPointOfTypeMatcher : IUnitIdMatcher
+  public abstract record IsInjectPointOfTypePattern : IUnitIdPattern
   {
     private readonly Type _type;
     private readonly bool _exactMatch;
 
     [DebuggerStepThrough]
-    protected IsInjectPointOfTypeMatcher(Type type, bool exactMatch)
+    protected IsInjectPointOfTypePattern(Type type, bool exactMatch)
     {
       _type       = type ?? throw new ArgumentNullException(nameof(type));
       _exactMatch = exactMatch;

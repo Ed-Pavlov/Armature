@@ -12,11 +12,11 @@ namespace Armature
   [SuppressMessage("ReSharper", "UnusedTypeParameter")]
   public class ParameterValueTuner<T> : ParameterValueTuner
   {
-    public ParameterValueTuner(IUnitIdMatcher unitMatcher, int weight) : base(unitMatcher, weight) { }
+    public ParameterValueTuner(IUnitIdPattern unitPattern, int weight) : base(unitPattern, weight) { }
 
     /// <summary>
     ///   Use the <paramref name="value" /> for the parameter
     /// </summary>
-    public ParameterValueBuildPlan UseValue(T? value) => new(UnitMatcher, new SingletonBuildAction(value), Weight);
+    public ParameterValueBuildPlan UseValue(T? value) => new(UnitPattern, new SingletonBuildAction(value), Weight);
   }
 }

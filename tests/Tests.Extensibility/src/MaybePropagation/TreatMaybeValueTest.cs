@@ -52,9 +52,9 @@ namespace Tests.Extensibility.MaybePropagation
          {
            new SkipToLastUnit
            { // inject into constructor
-             new IfLastUnit(IsConstructorMatcher.Instance)
+             new IfLastUnit(IsConstructorPattern.Instance)
               .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-             new IfLastUnit(IsParameterMatcher.Instance)
+             new IfLastUnit(IsParameterPattern.Instance)
               .UseBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
            }
          };

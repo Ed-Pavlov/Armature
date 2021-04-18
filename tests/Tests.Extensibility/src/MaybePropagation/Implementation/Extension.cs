@@ -17,7 +17,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
       treat.Query.UseBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueKey));
 
       return new TreatingTuner<T>(
-        treat.Query.AddSubQuery(new FindFirstUnit(new UnitIdMatcher(typeof(T), uniqueKey), 0)));
+        treat.Query.AddSubQuery(new FindFirstUnit(new UnitIdPattern(typeof(T), uniqueKey), 0)));
     }
 
     /// <summary>

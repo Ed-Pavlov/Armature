@@ -7,18 +7,18 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Matches only unit under construction in the sequence and applies passed <see cref="IUnitIdMatcher" /> to it.
-  ///   See <see cref="IfLastUnit(IUnitIdMatcher,int)" /> and <see cref="GatherBuildActions" /> for details
+  ///   Matches only unit under construction in the sequence and applies passed <see cref="IUnitIdPattern" /> to it.
+  ///   See <see cref="IfLastUnit(IUnitIdPattern,int)" /> and <see cref="GatherBuildActions" /> for details
   /// </summary>
   public class IfLastUnit : Query
   {
-    private readonly IUnitIdMatcher _unitMatcher;
+    private readonly IUnitIdPattern _unitPattern;
 
-    /// <param name="unitMatcher">Object contains the logic of matching with building unit</param>
+    /// <param name="unitPattern">Object contains the logic of matching with building unit</param>
     /// <param name="weight">The weight of matching</param>
     [DebuggerStepThrough]
-    public IfLastUnit(IUnitIdMatcher unitMatcher, int weight = QueryWeight.Any) : base(weight)
-      => _unitMatcher = unitMatcher ?? throw new ArgumentNullException(nameof(unitMatcher));
+    public IfLastUnit(IUnitIdPattern unitPattern, int weight = QueryWeight.Any) : base(weight)
+      => _unitPattern = unitPattern ?? throw new ArgumentNullException(nameof(unitPattern));
 
     public override ICollection<IQuery> Children => throw new NotSupportedException("LastUnitSequenceMatcher can't contain children");
 
@@ -32,7 +32,7 @@ namespace Armature.Core
       if(unitSequence.Length > 1) return null;
 
       var unitInfo = unitSequence.Last();
-      var matches  = _unitMatcher.Matches(unitInfo);
+      var matches  = _unitPattern.Matches(unitInfo);
 
       if(!matches)
       {
@@ -51,7 +51,7 @@ namespace Armature.Core
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().GetShortName(), Weight, _unitMatcher);
+    public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().GetShortName(), Weight, _unitPattern);
 
     #region Equality
 
@@ -60,7 +60,7 @@ namespace Armature.Core
       if(ReferenceEquals(null, other)) return false;
       if(ReferenceEquals(this, other)) return true;
 
-      return Weight == other.Weight && _unitMatcher.Equals(other._unitMatcher);
+      return Weight == other.Weight && _unitPattern.Equals(other._unitPattern);
     }
 
     public override bool Equals(IQuery obj) => Equals(obj as IfLastUnit);
@@ -71,7 +71,7 @@ namespace Armature.Core
     {
       unchecked
       {
-        return (Weight * 397) ^ _unitMatcher.GetHashCode();
+        return (Weight * 397) ^ _unitPattern.GetHashCode();
       }
     }
 

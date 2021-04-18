@@ -6,12 +6,12 @@ namespace Armature.Core
   /// Matches if a building unit is an argument for a parameter marked with <see cref="InjectAttribute"/> attribute
   /// with specified <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
-  public record IsParameterWithInjectIdMatcher : IsInjectPointAttributeMatcher
+  public record IsParameterWithInjectIdPattern : IsInjectPointAttributePattern
   {
     /// <inheritdoc />
     [DebuggerStepThrough]
-    public IsParameterWithInjectIdMatcher(object? injectPointId = null) : base(injectPointId) { }
+    public IsParameterWithInjectIdPattern(object? injectPointId = null) : base(injectPointId) { }
 
-    protected override InjectAttribute? GetAttribute(UnitId unitId) => IsParameterWithAttributeMatcher<InjectAttribute>.GetParameterAttribute(unitId);
+    protected override InjectAttribute? GetAttribute(UnitId unitId) => IsParameterWithAttributePattern<InjectAttribute>.GetParameterAttribute(unitId);
   }
 }

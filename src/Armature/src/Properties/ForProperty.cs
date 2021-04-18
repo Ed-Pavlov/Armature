@@ -12,7 +12,7 @@ namespace Armature
     public static PropertyValueTuner<T> OfType<T>()
     {
       var getPropertyAction = new GetPropertyByTypeBuildAction(typeof(T));
-      var matcher           = new IsPropertyOfTypeMatcher(typeof(T), true);
+      var matcher           = new IsPropertyOfTypePattern(typeof(T), true);
 
       return new PropertyValueTuner<T>(matcher, getPropertyAction, InjectPointMatchingWeight.TypedParameter);
     }
@@ -23,7 +23,7 @@ namespace Armature
     public static PropertyValueTuner Named(string propertyName)
     {
       var getPropertyAction = new GetPropertyByNameBuildAction(propertyName);
-      var matcher           = new IsPropertyWithNameMatcher(propertyName);
+      var matcher           = new IsPropertyWithNamePattern(propertyName);
 
       return new PropertyValueTuner(matcher, getPropertyAction, InjectPointMatchingWeight.NamedParameter);
     }
@@ -34,7 +34,7 @@ namespace Armature
     public static PropertyValueTuner WithInjectPoint(object? injectPointId)
     {
       var getPropertyAction = new GetPropertyByInjectPointBuildAction(injectPointId);
-      var matcher           = new IsPropertyWithInjectIdMatcher(injectPointId);
+      var matcher           = new IsPropertyWithInjectIdPattern(injectPointId);
 
       return new PropertyValueTuner(matcher, getPropertyAction, InjectPointMatchingWeight.AttributedParameter);
     }

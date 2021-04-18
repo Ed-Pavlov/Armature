@@ -10,11 +10,11 @@ namespace Armature.Core
   /// </summary>
   public class IfFirstUnit : QueryWithChildren, IEquatable<IfFirstUnit>
   {
-    private readonly IUnitIdMatcher _matcher;
+    private readonly IUnitIdPattern _pattern;
 
-    public IfFirstUnit(IUnitIdMatcher matcher) : this(matcher, QueryWeight.StrictMatchingUnit) { }
+    public IfFirstUnit(IUnitIdPattern pattern) : this(pattern, QueryWeight.StrictMatchingUnit) { }
 
-    public IfFirstUnit(IUnitIdMatcher matcher, int weight) : base(weight) => _matcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
+    public IfFirstUnit(IUnitIdPattern pattern, int weight) : base(weight) => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
     /// <summary>
     ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.
@@ -24,11 +24,11 @@ namespace Armature.Core
     {
       var unitInfo = unitSequence[0];
 
-      return _matcher.Matches(unitInfo) ? GetActions(unitSequence, inputWeight) : null;
+      return _pattern.Matches(unitInfo) ? GetActions(unitSequence, inputWeight) : null;
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().GetShortName(), Weight, _matcher);
+    public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().GetShortName(), Weight, _pattern);
 
     #region Equality
 
@@ -37,7 +37,7 @@ namespace Armature.Core
       if(ReferenceEquals(null, other)) return false;
       if(ReferenceEquals(this, other)) return true;
 
-      return Equals(_matcher, other._matcher) && Weight == other.Weight;
+      return Equals(_pattern, other._pattern) && Weight == other.Weight;
     }
 
     public override bool Equals(IQuery other) => Equals(other as IfFirstUnit);
@@ -48,7 +48,7 @@ namespace Armature.Core
     {
       unchecked
       {
-        return (_matcher.GetHashCode() * 397) ^ Weight;
+        return (_pattern.GetHashCode() * 397) ^ Weight;
       }
     }
 

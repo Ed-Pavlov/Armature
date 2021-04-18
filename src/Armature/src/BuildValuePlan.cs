@@ -8,13 +8,13 @@ namespace Armature
   /// </summary>
   public abstract class BuildValuePlan : BuildActionExtensibility, IBuildPlan
   {
-    protected BuildValuePlan(IUnitIdMatcher unitMatcher, IBuildAction getValueAction, int weight)
-      : base(unitMatcher, getValueAction, weight) { }
+    protected BuildValuePlan(IUnitIdPattern unitPattern, IBuildAction getValueAction, int weight)
+      : base(unitPattern, getValueAction, weight) { }
 
     void IBuildPlan.Apply(IQuery query)
     {
       query
-       .AddSubQuery(new IfLastUnit(UnitMatcher, Weight), false)
+       .AddSubQuery(new IfLastUnit(UnitPattern, Weight), false)
        .UseBuildAction(BuildStage.Create, BuildAction);
 
       Apply(query);

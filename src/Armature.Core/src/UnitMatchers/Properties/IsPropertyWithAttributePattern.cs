@@ -9,10 +9,10 @@ namespace Armature.Core
   /// Matches if a building unit is an argument for a property marked with attribute which satisfies conditions checked by the predicate
   /// </summary>
   [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-  public record IsPropertyWithAttributeMatcher<T> : IsInjectPointByAttributeMatcher<T> where T : Attribute
+  public record IsPropertyWithAttributePattern<T> : IsInjectPointByAttributePattern<T> where T : Attribute
   {
     [DebuggerStepThrough]
-    public IsPropertyWithAttributeMatcher(Predicate<T>? predicate) : base(predicate) { }
+    public IsPropertyWithAttributePattern(Predicate<T>? predicate) : base(predicate) { }
 
     protected override T? GetAttribute(UnitId unitId) => GetPropertyAttribute(unitId);
 
