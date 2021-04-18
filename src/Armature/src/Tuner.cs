@@ -13,7 +13,7 @@ namespace Armature
     /// <summary>
     ///   Provided values will be used to inject the into created object. See <see cref="ForParameter" /> for details
     /// </summary>
-    public Tuner UsingParameters(params object[] values)
+    public Tuner UsingArguments(params object[] values)
     {
       if(values is null || values.Length == 0)
         throw new Exception("null");

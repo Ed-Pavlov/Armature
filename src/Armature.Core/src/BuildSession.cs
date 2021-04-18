@@ -66,7 +66,7 @@ namespace Armature.Core
     ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
-    public static IReadOnlyList<BuildResult>? BuildAllUnits(
+    public static IReadOnlyList<BuildResult> BuildAllUnits(
       UnitId                unitId,
       IEnumerable<object>   buildStages,
       BuildPlansCollection  buildPlans,
@@ -86,9 +86,10 @@ namespace Armature.Core
     /// </summary>
     /// <param name="unitId">"Id" of the unit to build. See <see cref="IPatternTreeNode" /> for details</param>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    public IReadOnlyList<BuildResult>? BuildAllUnits(UnitId unitId) => Build(unitId, BuildAllUnits);
+    public IReadOnlyList<BuildResult> BuildAllUnits(UnitId unitId) => Build(unitId, BuildAllUnits);
 
-    private T? Build<T>(UnitId unitId, Func<BuildActionBag?, T> build)
+    //TODO: check nullability
+    private T Build<T>(UnitId unitId, Func<BuildActionBag?, T> build)
     {
       using(LogBuildSessionState(unitId))
       {
@@ -204,9 +205,9 @@ namespace Armature.Core
     }
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
-    private List<BuildResult>? BuildAllUnits(BuildActionBag? buildActionBag)
+    private List<BuildResult> BuildAllUnits(BuildActionBag? buildActionBag)
     {
-      if(buildActionBag is null) return null;
+      if(buildActionBag is null) return Empty<BuildResult>.List;
 
       if(buildActionBag.Keys.Count > 1)
         throw new ArmatureException("Actions only for one stage should be provided for BuildAll");

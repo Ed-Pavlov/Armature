@@ -35,7 +35,7 @@ namespace Armature.Core
       var unitInfo = new UnitId(type, SpecialKey.Property);
       var result   = buildSession.BuildAllUnits(unitInfo);
 
-      return result?.SelectMany(_ => (IReadOnlyList<PropertyInfo>) _.Value!).ToArray() ?? EmptyArray<PropertyInfo>.Instance;
+      return result?.SelectMany(_ => (IReadOnlyList<PropertyInfo>) _.Value!).ToArray() ?? Empty<PropertyInfo>.Array;
     }
 
     /// <summary>

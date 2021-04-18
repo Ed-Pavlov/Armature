@@ -20,7 +20,7 @@ namespace Tests.Functional
        .Treat<Subject>()
        .AsIs()
        .UsingConstructorWithParameters(typeof(int), typeof(string))
-       .UsingParameters(0, "0", new object());
+       .UsingArguments(0, "0", new object());
 
       // --act
       var actual = target.Build<Subject>();
@@ -39,7 +39,7 @@ namespace Tests.Functional
        .Treat<Subject>()
        .AsIs()
        .UsingParameterlessConstructor()
-       .UsingParameters(0, "0", new object());
+       .UsingArguments(0, "0", new object());
 
       // --act
       var actual = target.Build<Subject>();

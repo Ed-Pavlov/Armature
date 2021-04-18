@@ -20,7 +20,7 @@ namespace Tests.Functional
       target.Treat<IDisposable>().AsCreated<SampleType2>();
 
       // --act
-      var actual = target.BuildAllUnits(Unit.OfType<IDisposable>());
+      var actual = target.BuildAll<IDisposable>();
 
       // --assert
       actual.Should().HaveCount(2);
@@ -55,14 +55,14 @@ namespace Tests.Functional
       target.Treat<IDisposable>().AsCreated<SampleType2>();
 
       // --precondition
-      var precondition = target.BuildAllUnits(Unit.OfType<IDisposable>());
+      var precondition = target.BuildAll<IDisposable>();
       precondition.Should().HaveCount(2);
       precondition.Should().ContainSingle(_ => _ is SampleType1);
       precondition.Should().ContainSingle(_ => _ is SampleType2);
       var expected = precondition.Single(_ => _ is SampleType1);
 
       // --act
-      var actual = target.BuildAllUnits(Unit.OfType<IDisposable>());
+      var actual = target.BuildAll<IDisposable>();
       actual.Should().HaveCount(2);
       actual.Should().ContainSingle(_ => _ is SampleType1);
       actual.Should().ContainSingle(_ => _ is SampleType2);

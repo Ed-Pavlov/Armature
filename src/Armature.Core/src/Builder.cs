@@ -7,9 +7,7 @@ namespace Armature.Core
 {
   /// <summary>
   ///   The builder of units. It is the convenient way to keep corresponding build plans (<see cref="BuildPlansCollection" />),
-  ///   build stages, and parent builders to pass into <see cref="BuildSession" /> which is instantiated independently.
-  ///   Building a unit it goes over all "build stages", for each stage it gets a build action if any and executes it see
-  ///   <see cref="Builder(object[], Builder[])" /> for details.
+  ///   build stages, and parent builders to pass into <see cref="BuildSession" /> which can be instantiated independently.
   /// </summary>
   public class Builder : BuildPlansCollection
   {
@@ -19,7 +17,7 @@ namespace Armature.Core
     public Builder() => throw new ArgumentException("Provide stages");
 
     /// <param name="stages">The ordered collection of build stages all of which are performed to build a unit.</param>
-    public Builder(params object[] stages) : this(stages, EmptyArray<Builder>.Instance)
+    public Builder(params object[] stages) : this(stages, Empty<Builder>.Array)
     {
       if(stages.Length == 0) throw new ArgumentNullException(nameof(stages));
     }
@@ -54,34 +52,19 @@ namespace Armature.Core
     /// </summary>
     /// <param name="unitId">The id of the unit to build.</param>
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies.</param>
-    /// <returns>Returns an instance or null if null is registered as a unit.</returns>
-    /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
+    /// <returns>Returns build result with <see cref="BuildResult.HasValue"/> set to false if unit is not built.</returns>
+    //TODO: what about exceptions? if buildResult.HasValue == false does it mean that there is no a registration, or it can be some runtime problems? 
     public BuildResult BuildUnit(UnitId unitId, BuildPlansCollection? auxBuildPlans = null)
-      => Build(unitId, auxBuildPlans, BuildSession.BuildUnit, _parentBuilders);
+      => BuildSession.BuildUnit(unitId, _stages, this, auxBuildPlans, _parentBuilders);
 
     /// <summary>
-    ///   Builds all units represented by <see cref="UnitId" />
+    ///   Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
+    ///   This can be useful to build all implementers of an interface.
     /// </summary>
     /// <param name="unitId">Building unit "id"</param>
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
-    /// <returns>Returns an instance or null if null is registered as a unit.</returns>
-    /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
-    public IReadOnlyList<object?>? BuildAllUnits(UnitId unitId, BuildPlansCollection? auxBuildPlans = null)
-    {
-      var buildResult = Build(unitId, auxBuildPlans, BuildSession.BuildAllUnits, _parentBuilders);
-
-      return buildResult?.Select(_ => _.Value).ToArray();
-    }
-
-    private T? Build<T>(
-      UnitId                                                                                        unitId,
-      BuildPlansCollection?                                                                         auxBuildPlans,
-      Func<UnitId, IEnumerable<object>, BuildPlansCollection, BuildPlansCollection?, Builder[]?, T> build,
-      Builder[]?                                                                                    parentBuilders)
-    {
-      if(build is null) throw new ArgumentNullException(nameof(build));
-
-      return build(unitId, _stages, this, auxBuildPlans, parentBuilders);
-    }
+    /// <returns>Returns <see cref="Empty{BuildResult}.List"/> if no units were built. </returns>
+    public IReadOnlyList<BuildResult> BuildAllUnits(UnitId unitId, BuildPlansCollection? auxBuildPlans = null) 
+      => BuildSession.BuildAllUnits(unitId, _stages, this, auxBuildPlans, _parentBuilders);
   }
 }

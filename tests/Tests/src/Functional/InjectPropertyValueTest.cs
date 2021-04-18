@@ -86,7 +86,7 @@ namespace Tests.Functional
        .InjectProperty(
           Property.ByInjectPoint(
             injectPointId is null
-              ? EmptyArray<object>.Instance
+              ? Empty<object>.Array
               : new[] {injectPointId})); // inject property adds a build action injecting values into property
 
       // --act

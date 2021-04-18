@@ -41,7 +41,7 @@ namespace Armature.Core
 
             if(parameters.Length == 0)
             {
-              instance = constructor.Invoke(EmptyArray<object>.Instance);
+              instance = constructor.Invoke(Empty<object>.Array);
             }
             else
             {

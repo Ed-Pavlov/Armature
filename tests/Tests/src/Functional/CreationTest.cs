@@ -116,7 +116,7 @@ namespace Tests.Functional
 
             return expected;
           })
-       .UsingParameters(expectedString);
+       .UsingArguments(expectedString);
 
       // --act
       var actual = target.Build<Subject>();
