@@ -10,7 +10,7 @@ namespace Armature
     /// </summary>
     public static ParameterValueTuner<T> OfType<T>()
     {
-      var matcher = new ParameterOfTypePattern(typeof(T), true);
+      var matcher = new MethodParameterByTypePattern(typeof(T), true);
       return new ParameterValueTuner<T>(matcher, InjectPointMatchingWeight.TypedParameter);
     }
 

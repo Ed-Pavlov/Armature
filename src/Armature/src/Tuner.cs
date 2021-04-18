@@ -25,7 +25,7 @@ namespace Armature
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected");
         else
           PatternTreeNode
-           .GetOrAddNode(new IfLastUnitMatches(new ParameterOfTypePattern(parameter.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
+           .GetOrAddNode(new IfLastUnitMatches(new MethodParameterByTypePattern(parameter.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
            .UseBuildAction(BuildStage.Create, new Singleton(parameter));
 
       return this;
@@ -46,7 +46,7 @@ namespace Armature
           throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected");
         else
           PatternTreeNode
-           .GetOrAddNode(new IfLastUnitMatches(new PropertyOfTypePattern(value.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
+           .GetOrAddNode(new IfLastUnitMatches(new PropertyByTypePattern(value.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
            .UseBuildAction(BuildStage.Create, new Singleton(value));
 
       return this;

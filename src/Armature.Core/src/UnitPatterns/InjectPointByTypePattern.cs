@@ -7,13 +7,13 @@ namespace Armature.Core
   /// <summary>
   /// Base class for patterns check if a unit is an argument for an "inject point" requires argument of the specified type.
   /// </summary>
-  public abstract record InjectPointOfTypePattern : IUnitPattern
+  public abstract record InjectPointByTypePattern : IUnitPattern
   {
     private readonly Type _type;
     private readonly bool _exactMatch;
 
     [DebuggerStepThrough]
-    protected InjectPointOfTypePattern(Type type, bool exactMatch)
+    protected InjectPointByTypePattern(Type type, bool exactMatch)
     {
       _type       = type ?? throw new ArgumentNullException(nameof(type));
       _exactMatch = exactMatch;

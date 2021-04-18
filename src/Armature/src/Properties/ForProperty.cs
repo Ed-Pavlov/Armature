@@ -11,7 +11,7 @@ namespace Armature
     public static PropertyValueTuner<T> OfType<T>()
     {
       var getPropertyAction = new GetPropertyByTypeBuildAction(typeof(T));
-      var matcher           = new PropertyOfTypePattern(typeof(T), true);
+      var matcher           = new PropertyByTypePattern(typeof(T), true);
 
       return new PropertyValueTuner<T>(matcher, getPropertyAction, InjectPointMatchingWeight.TypedParameter);
     }
