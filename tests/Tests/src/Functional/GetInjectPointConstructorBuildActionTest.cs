@@ -18,7 +18,7 @@ namespace Tests.Functional
       container
        .Treat<Subject>()
        .AsIs()
-       .UsingArguments(new object()); // set value to inject into ctor
+       .UsingMethodArguments(new object()); // set value to inject into ctor
 
       // --act
       var instance = container.Build<Subject>();
@@ -53,7 +53,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingArguments("value");
+       .UsingMethodArguments("value");
 
       target
        .Treat<LevelTwo>()

@@ -1,5 +1,6 @@
 ﻿namespace Armature
 {
+  //TODO: what is the difference with ForProperty
   public static class Property
   {
     /// <summary>

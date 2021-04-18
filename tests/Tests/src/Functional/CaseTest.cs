@@ -25,7 +25,7 @@ namespace Tests.Functional
       target
        .Treat<TwoDisposableStringCtorClass>()
        .AsIs()
-       .UsingArguments(new MemoryStream());
+       .UsingMethodArguments(new MemoryStream());
 
       // --act
       var actual = target.Build<TwoDisposableStringCtorClass>();
@@ -42,13 +42,13 @@ namespace Tests.Functional
 
       target.Treat<IDisposableValue1>()
             .AsCreated<OneDisposableCtorClass>()
-            .UsingArguments(new MemoryStream());
+            .UsingMethodArguments(new MemoryStream());
 
       var expected = new MemoryStream();
 
       target.Treat<IDisposableValue2>()
             .AsCreated<OneDisposableCtorClass>()
-            .UsingArguments(expected);
+            .UsingMethodArguments(expected);
 
       // --act
       var instance = target.Build<IDisposableValue2>();
@@ -89,7 +89,7 @@ namespace Tests.Functional
 
       target
        .Treat<OneDisposableCtorClass>()
-       .UsingArguments(new MemoryStream());
+       .UsingMethodArguments(new MemoryStream());
 
       target
        .Treat<OneDisposableCtorClass>()

@@ -26,7 +26,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingArguments(expected);
+       .UsingMethodArguments(expected);
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -48,7 +48,7 @@ namespace Tests.Functional
        .Treat<LevelOne>()
        .AsIs()
        .UsingInjectPointConstructor(LevelOne.TwoParameterCtor)
-       .UsingArguments(expectedInt, expectedString);
+       .UsingMethodArguments(expectedInt, expectedString);
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -69,12 +69,12 @@ namespace Tests.Functional
       target
        .Treat<ISubject1>()
        .AsCreated<LevelOne>()
-       .UsingArguments(asInterfaceParameterValue);
+       .UsingMethodArguments(asInterfaceParameterValue);
 
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingArguments(asIsParameterValue);
+       .UsingMethodArguments(asIsParameterValue);
 
       var asInterface = target.Build<ISubject1>();
       var asIs        = target.Build<LevelOne>();
@@ -97,7 +97,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingArguments(forParameter.UseValue(null));
+       .UsingMethodArguments(forParameter.UseValue(null));
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -119,7 +119,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingArguments(forParameter.UseValue(expected), "bad");
+       .UsingMethodArguments(forParameter.UseValue(expected), "bad");
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -140,7 +140,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingArguments(forParameter.UseKey(key), "bad");
+       .UsingMethodArguments(forParameter.UseKey(key), "bad");
 
       target
        .Treat<string>(key)
@@ -174,7 +174,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingArguments(forParameter.UseKey("key"));
+       .UsingMethodArguments(forParameter.UseKey("key"));
 
       // --act
       Action actual = () => target.Build<LevelOne>();
@@ -196,7 +196,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingArguments(forParameter.UseFactoryMethod<int>(intValue => intValue.ToString()));
+       .UsingMethodArguments(forParameter.UseFactoryMethod<int>(intValue => intValue.ToString()));
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -216,7 +216,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingArguments(expected);
+       .UsingMethodArguments(expected);
 
       // --act
       var actual = target.Build<LevelOne>("bad");
@@ -236,7 +236,7 @@ namespace Tests.Functional
                     .AsIs();
 
       // --act
-      Action actual = () => adjuster.UsingArguments(
+      Action actual = () => adjuster.UsingMethodArguments(
                         ForParameter.OfType<string>().UseKey("expected29083"),
                         ForParameter.OfType<string>().UseValue("kldj"));
 
@@ -259,7 +259,7 @@ namespace Tests.Functional
       target
        .Treat<LevelTwo>()
        .AsIs()
-       .UsingArguments(expected);
+       .UsingMethodArguments(expected);
 
       Action actual = () => target.Build<LevelTwo>();
 
@@ -282,7 +282,7 @@ namespace Tests.Functional
 
       target
        .TreatAll()
-       .UsingArguments(expected);
+       .UsingMethodArguments(expected);
 
       // --act
       var actual = target.Build<LevelThree>();
@@ -308,12 +308,12 @@ namespace Tests.Functional
       target
        .Treat<LevelThree>()
        .AsIs()
-       .UsingArguments(expectedOnLevelThree);
+       .UsingMethodArguments(expectedOnLevelThree);
 
       target
        .Building<LevelThree>()
        .TreatAll()
-       .UsingArguments(expected);
+       .UsingMethodArguments(expected);
 
       // --act
       var actual = target.Build<LevelThree>();
@@ -335,12 +335,12 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>() // short matching path 
        .AsIs()
-       .UsingArguments(expected);
+       .UsingMethodArguments(expected);
 
       target
        .Treat<ISubject1>() // long matching path
        .AsCreated<LevelTwo>()
-       .BuildingWhich(_ => _.TreatAll().UsingArguments(expected + "bad"));
+       .BuildingWhich(_ => _.TreatAll().UsingMethodArguments(expected + "bad"));
 
       // --act
       var actual = (LevelTwo) target.Build<ISubject1>();
@@ -357,8 +357,8 @@ namespace Tests.Functional
 
       var target = CreateTarget();
 
-      target.Treat<ISubject1>().AsCreated<LevelThree>().BuildingWhich(_ => _.TreatAll().UsingArguments(levelThree)); // longer path
-      target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected));                     // narrower context
+      target.Treat<ISubject1>().AsCreated<LevelThree>().BuildingWhich(_ => _.TreatAll().UsingMethodArguments(levelThree)); // longer path
+      target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingMethodArguments(expected));                     // narrower context
       target.Treat<LevelOne>().AsIs();
 
       var actual = target.Build<ISubject1>();
@@ -378,7 +378,7 @@ namespace Tests.Functional
        .Treat<LevelOne>()
        .AsIs()
        .UsingInjectPointConstructor(LevelOne.TwoParameterCtor)
-       .UsingArguments(expectedInt);
+       .UsingMethodArguments(expectedInt);
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -418,12 +418,12 @@ namespace Tests.Functional
       target
        .Treat<LevelThree>()
        .AsIs()
-       .BuildingWhich(_ => _.TreatAll().UsingArguments(expected + "three"));
+       .BuildingWhich(_ => _.TreatAll().UsingMethodArguments(expected + "three"));
 
       target
        .Treat<LevelTwo>()
        .AsIs()
-       .BuildingWhich(_ => _.TreatAll().UsingArguments(expected));
+       .BuildingWhich(_ => _.TreatAll().UsingMethodArguments(expected));
 
       target
        .Treat<LevelOne>()

@@ -8,61 +8,61 @@ namespace Armature
   public class Tuner : UnitSequenceExtensibility
   {
     [DebuggerStepThrough]
-    public Tuner(IPatternTreeNode patternTreeNode) : base(patternTreeNode) { }
+    public Tuner(IPatternTreeNode treeNode) : base(treeNode) { }
 
     /// <summary>
-    ///   Provided values will be used to inject the into created object. See <see cref="ForParameter" /> for details
+    ///   Provides arguments to inject into building units constructor and methods. See <see cref="ForParameter" /> for details.
     /// </summary>
-    public Tuner UsingArguments(params object[] values)
+    public Tuner UsingMethodArguments(params object[] arguments)
     {
-      if(values is null || values.Length == 0)
-        throw new Exception("null");
+      if(arguments is null || arguments.Length == 0) throw new ArgumentNullException(nameof(arguments));
 
-      foreach(var parameter in values)
-        if(parameter is IParameterValueBuildPlan buildPlan)
-          buildPlan.Apply(PatternTreeNode);
-        else if(parameter is IBuildPlan)
+      foreach(var argument in arguments)
+        if(argument is IParameterValueBuildPlan buildPlan)
+          buildPlan.Apply(ParentNode);
+        else if(argument is IBuildPlan)
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected");
         else
-          PatternTreeNode
-           .GetOrAddNode(new IfLastUnitMatches(new MethodParameterByTypePattern(parameter.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
-           .UseBuildAction(BuildStage.Create, new Singleton(parameter));
+          ParentNode
+           .GetOrAddNode(new IfLastUnitMatches(new MethodParameterByTypePattern(argument.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
+           .UseBuildAction(BuildStage.Create, new Singleton(argument));
 
       return this;
     }
 
     /// <summary>
-    ///   Provided values will be injected into properties of the created object.  See <see cref="ForProperty" /> for details.
-    ///   Also value can be a build plan returned by one of the method of the <see cref="Property" /> class, which specifies properties to inject dependencies.
+    ///   Provides arguments to inject into building units properties.   See <see cref="ForProperty" /> for details.
+    ///   Also value can be a build plan returned by one of the method of the <see cref="Property" /> class,
+    /// which specifies properties to inject dependencies.
     /// </summary>
-    public Tuner InjectProperty(params object[] values)
+    public Tuner UsingPropertyArguments(params object[] arguments)
     {
-      PatternTreeNode.UseBuildAction(BuildStage.Initialize, InjectIntoProperties.Instance);
+      ParentNode.UseBuildAction(BuildStage.Initialize, InjectIntoProperties.Instance);
 
-      foreach(var value in values)
-        if(value is IPropertyValueBuildPlan buildPlan)
-          buildPlan.Apply(PatternTreeNode);
-        else if(value is IBuildPlan)
+      foreach(var argument in arguments)
+        if(argument is IPropertyValueBuildPlan buildPlan)
+          buildPlan.Apply(ParentNode);
+        else if(argument is IBuildPlan)
           throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected");
         else
-          PatternTreeNode
-           .GetOrAddNode(new IfLastUnitMatches(new PropertyByTypePattern(value.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
-           .UseBuildAction(BuildStage.Create, new Singleton(value));
+          ParentNode
+           .GetOrAddNode(new IfLastUnitMatches(new PropertyByTypePattern(argument.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
+           .UseBuildAction(BuildStage.Create, new Singleton(argument));
 
       return this;
     }
 
     /// <summary>
-    ///   Register Unit as an eternal singleton <see cref="Singleton" /> for details
+    ///   Register Unit as an singleton with a lifetime equal to parent <see cref="BuildPlanCollection"/>. See <see cref="Singleton" /> for details
     /// </summary>
-    public void AsSingleton() => PatternTreeNode.UseBuildAction(BuildStage.Cache, new Singleton());
+    public void AsSingleton() => ParentNode.UseBuildAction(BuildStage.Cache, new Singleton());
 
     /// <summary>
     ///   Instantiate a Unit using a constructor with the biggest number of parameters
     /// </summary>
     public Tuner UsingLongestConstructor()
     {
-      PatternTreeNode
+      ParentNode
        .GetOrAddNode(new IfLastUnitMatches(ConstructorPattern.Instance))
        .UseBuildAction(BuildStage.Create, GetLongestConstructor.Instance);
 
@@ -72,9 +72,9 @@ namespace Armature
     /// <summary>
     ///   Instantiate a Unit using a constructor marked with <see cref="InjectAttribute" />(<paramref name="injectionPointId" />)
     /// </summary>
-    public Tuner UsingInjectPointConstructor(object injectionPointId)
+    public Tuner UsingInjectPointConstructor(object? injectionPointId)
     {
-      PatternTreeNode
+      ParentNode
        .GetOrAddNode(new IfLastUnitMatches(ConstructorPattern.Instance))
        .UseBuildAction(BuildStage.Create, new GetConstructorByInjectPointId(injectionPointId));
 
@@ -107,11 +107,11 @@ namespace Armature
     public Tuner UsingConstructorWithParameters<T1, T2, T3, T4>() => UsingConstructorWithParameters(typeof(T1), typeof(T2), typeof(T3), typeof(T4));
 
     /// <summary>
-    ///   Instantiate a Unit using constructor with exact set of parameters as provided in <paramref name="parameterTypes" />
+    ///   Instantiate a Unit using constructor with exact set of parameters specified in <paramref name="parameterTypes" />
     /// </summary>
     public Tuner UsingConstructorWithParameters(params Type[] parameterTypes)
     {
-      PatternTreeNode
+      ParentNode
        .GetOrAddNode(new IfLastUnitMatches(ConstructorPattern.Instance))
        .UseBuildAction(BuildStage.Create, new GetConstructorByParameterTypes(parameterTypes));
 
@@ -125,7 +125,7 @@ namespace Armature
     {
       if(tuneAction is null) throw new ArgumentNullException(nameof(tuneAction));
 
-      tuneAction(new SequenceTuner(PatternTreeNode));
+      tuneAction(new SequenceTuner(ParentNode));
 
       return this;
     }

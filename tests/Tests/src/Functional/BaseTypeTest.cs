@@ -21,7 +21,7 @@ namespace Tests.Functional
 
       target
        .TreatInheritorsOf<SubjectBase>()
-       .InjectProperty(Property.Named(nameof(SubjectBase.InjectThere)));
+       .UsingPropertyArguments(Property.Named(nameof(SubjectBase.InjectThere)));
 
       target
        .Treat<Subject>()
@@ -46,7 +46,7 @@ namespace Tests.Functional
 
       target
        .TreatInheritorsOf<ISubject>()
-       .InjectProperty(Property.Named(nameof(ISubject.InjectThere)));
+       .UsingPropertyArguments(Property.Named(nameof(ISubject.InjectThere)));
 
       target
        .Treat<Subject>()
@@ -71,12 +71,12 @@ namespace Tests.Functional
 
       target
        .TreatInheritorsOf<ISubject>()
-       .InjectProperty(Property.Named(nameof(ISubject.InjectThere)));
+       .UsingPropertyArguments(Property.Named(nameof(ISubject.InjectThere)));
 
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectProperty(Property.Named(nameof(Subject.InjectHere)));
+       .UsingPropertyArguments(Property.Named(nameof(Subject.InjectHere)));
 
       // --act
       var actual = target.Build<Subject>();

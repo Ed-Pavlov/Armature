@@ -9,7 +9,7 @@ namespace Armature
   public class SequenceTuner : UnitSequenceExtensibility
   {
     [DebuggerStepThrough]
-    public SequenceTuner(IPatternTreeNode patternTreeNode) : base(patternTreeNode) { }
+    public SequenceTuner(IPatternTreeNode treeNode) : base(treeNode) { }
 
     /// <summary>
     ///   Used to make a build plan for a unit only if it is building in a context of building <paramref name="type" /> with key <paramref name="key" />
@@ -19,7 +19,7 @@ namespace Armature
       if(type is null) throw new ArgumentNullException(nameof(type));
 
       var query = new FindUnitMatches(new Pattern(type, key));
-      return new SequenceTuner(PatternTreeNode.GetOrAddNode(query));
+      return new SequenceTuner(ParentNode.GetOrAddNode(query));
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ namespace Armature
       if(type is null) throw new ArgumentNullException(nameof(type));
       var query = new FindUnitMatches(new Pattern(type, key));
 
-      return new TreatingTuner(PatternTreeNode.GetOrAddNode(query));
+      return new TreatingTuner(ParentNode.GetOrAddNode(query));
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ namespace Armature
     public TreatingTuner<T> Treat<T>(object? key = null)
     {
       var query = new FindUnitMatches(new Pattern(typeof(T), key));
-      return new TreatingTuner<T>(PatternTreeNode.GetOrAddNode(query));
+      return new TreatingTuner<T>(ParentNode.GetOrAddNode(query));
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ namespace Armature
     {
       var query = new SkipToLastUnit();
 
-      return new Tuner(PatternTreeNode.GetOrAddNode(query));
+      return new Tuner(ParentNode.GetOrAddNode(query));
     }
   }
 }

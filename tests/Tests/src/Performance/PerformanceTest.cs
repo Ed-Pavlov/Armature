@@ -68,7 +68,7 @@ namespace Tests.Performance
          .Building(type)
          .Treat<IDisposable>()
          .AsCreated<MemoryStream>()
-         .UsingArguments(0);
+         .UsingMethodArguments(0);
 
 
       var mem1 = dotMemory.Check();

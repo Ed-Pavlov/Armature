@@ -59,7 +59,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectProperty(Property.Named(nameof(Subject.StringProperty))); // inject property adds a build action injecting values into property
+       .UsingPropertyArguments(Property.Named(nameof(Subject.StringProperty))); // inject property adds a build action injecting values into property
 
       // --act
       var actual = target.Build<Subject>();
@@ -83,7 +83,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectProperty(
+       .UsingPropertyArguments(
           Property.ByInjectPoint(
             injectPointId is null
               ? Empty<object>.Array
@@ -109,7 +109,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectProperty(ForProperty.Named(nameof(Subject.StringProperty)).UseValue(expected));
+       .UsingPropertyArguments(ForProperty.Named(nameof(Subject.StringProperty)).UseValue(expected));
 
       // --act
       var actual = target.Build<Subject>();
@@ -134,7 +134,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectProperty(ForProperty.WithInjectPoint(Subject.InjectPointId).UseKey(key));
+       .UsingPropertyArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseKey(key));
 
       // --act
       var actual = target.Build<Subject>();
@@ -158,7 +158,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectProperty(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsKey());
+       .UsingPropertyArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsKey());
 
       // --act
       var actual = target.Build<Subject>();
@@ -180,7 +180,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectProperty(ForProperty.OfType<int>().UseFactoryMethod(_ => expected));
+       .UsingPropertyArguments(ForProperty.OfType<int>().UseFactoryMethod(_ => expected));
 
       // --act
       var actual = target.Build<Subject>();

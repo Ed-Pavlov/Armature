@@ -6,10 +6,10 @@ namespace Armature.Extensibility
 {
   public abstract class UnitSequenceExtensibility : IUnitSequenceExtensibility
   {
-    protected readonly IPatternTreeNode PatternTreeNode;
+    protected readonly IPatternTreeNode ParentNode;
 
-    protected UnitSequenceExtensibility(IPatternTreeNode patternTreeNode) => PatternTreeNode = patternTreeNode ?? throw new ArgumentNullException(nameof(patternTreeNode));
+    protected UnitSequenceExtensibility(IPatternTreeNode treeNode) => ParentNode = treeNode ?? throw new ArgumentNullException(nameof(treeNode));
 
-    IPatternTreeNode IUnitSequenceExtensibility.PatternTreeNode => PatternTreeNode;
+    IPatternTreeNode IUnitSequenceExtensibility.PatternTreeNode => ParentNode;
   }
 }

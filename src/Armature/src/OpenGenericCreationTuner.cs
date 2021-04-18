@@ -10,7 +10,7 @@ namespace Armature
     protected readonly Type    OpenGenericType;
     protected readonly object? Key;
 
-    public OpenGenericCreationTuner(IPatternTreeNode patternTreeNode, Type openGenericType, object? key) : base(patternTreeNode)
+    public OpenGenericCreationTuner(IPatternTreeNode treeNode, Type openGenericType, object? key) : base(treeNode)
     {
       OpenGenericType = openGenericType;
       Key             = key;
@@ -25,7 +25,7 @@ namespace Armature
         new OpenGenericTypePattern(OpenGenericType, Key),
         QueryWeight.WildcardMatchingUnit - 1);
 
-      PatternTreeNode
+      ParentNode
        .GetOrAddNode(childMatcher)
        .UseBuildAction(BuildStage.Create, Default.CreationBuildAction);
 
@@ -38,7 +38,7 @@ namespace Armature
         new OpenGenericTypePattern(OpenGenericType, Key),
         QueryWeight.WildcardMatchingUnit - 1);
 
-      PatternTreeNode
+      ParentNode
        .GetOrAddNode(childMatcher)
        .UseBuildAction(BuildStage.Create, CreateByReflection.Instance);
 

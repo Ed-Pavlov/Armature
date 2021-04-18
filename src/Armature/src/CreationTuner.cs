@@ -9,7 +9,7 @@ namespace Armature
     protected readonly Type    Type;
     protected readonly object? Key;
 
-    public CreationTuner(IPatternTreeNode patternTreeNode, Type type, object? key) : base(patternTreeNode)
+    public CreationTuner(IPatternTreeNode treeNode, Type type, object? key) : base(treeNode)
     {
       Type = type ?? throw new ArgumentNullException(nameof(type));
       Key  = key;
@@ -23,7 +23,7 @@ namespace Armature
     ///   should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
     /// </summary>
     public Tuner CreatedByDefault()
-      => new(PatternTreeNode.GetOrAddNode(
+      => new(ParentNode.GetOrAddNode(
                new IfFirstUnitMatches(new Pattern(Type, Key))
                 .UseBuildAction(BuildStage.Create, Default.CreationBuildAction)
              )
@@ -35,7 +35,7 @@ namespace Armature
     /// </summary>
     /// <returns></returns>
     public Tuner CreatedByReflection()
-      => new(PatternTreeNode.GetOrAddNode(
+      => new(ParentNode.GetOrAddNode(
                new IfFirstUnitMatches(new Pattern(Type, Key))
                 .UseBuildAction(BuildStage.Create, CreateByReflection.Instance)
              )
