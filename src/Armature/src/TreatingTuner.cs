@@ -21,7 +21,7 @@ namespace Armature
     public Tuner AsIs()
     {
       ParentNode.UseBuildAction(BuildStage.Create, Default.CreationBuildAction);
-      return new Tuner(ParentNode);
+      return this;
     }
 
     /// <summary>
@@ -36,7 +36,6 @@ namespace Armature
     public CreationTuner As(Type type, object? key = null)
     {
       ParentNode.UseBuildAction(BuildStage.Create, new RedirectType(type, key));
-
       return new CreationTuner(ParentNode, type, key);
     }
 

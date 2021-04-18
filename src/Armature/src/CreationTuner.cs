@@ -15,30 +15,19 @@ namespace Armature
       Key  = key;
     }
 
-    Type IExtensibility<Type, object>.   Item1 => Type;
-    object? IExtensibility<Type, object>.Item2 => Key;
-
     /// <summary>
-    ///   Specifies that unit of type passed into <see cref="TreatingTuner{T}.As(System.Type,object)"/> or <see cref="TreatingTuner{T}.As{TRedirect}"/>
-    ///   should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
+    ///   Specifies that unit should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
     /// </summary>
     public Tuner CreatedByDefault()
-      => new(ParentNode.GetOrAddNode(
-               new IfFirstUnitMatches(new Pattern(Type, Key))
-                .UseBuildAction(BuildStage.Create, Default.CreationBuildAction)
-             )
-      );
+      => new(ParentNode.GetOrAddNode(new IfFirstUnitMatches(new Pattern(Type, Key)).UseBuildAction(BuildStage.Create, Default.CreationBuildAction)));
 
     /// <summary>
-    ///   Specifies that unit of type passed into <see cref="TreatingTuner{T}.As(System.Type,object)"/> or <see cref="TreatingTuner{T}.As{TRedirect}"/> should
-    ///   be created using reflection
+    ///   Specifies that unit should be created using reflection.
     /// </summary>
-    /// <returns></returns>
     public Tuner CreatedByReflection()
-      => new(ParentNode.GetOrAddNode(
-               new IfFirstUnitMatches(new Pattern(Type, Key))
-                .UseBuildAction(BuildStage.Create, CreateByReflection.Instance)
-             )
-      );
+      => new(ParentNode.GetOrAddNode(new IfFirstUnitMatches(new Pattern(Type, Key)).UseBuildAction(BuildStage.Create, CreateByReflection.Instance)));
+    
+    Type IExtensibility<Type, object>.   Item1 => Type;
+    object? IExtensibility<Type, object>.Item2 => Key;
   }
 }
