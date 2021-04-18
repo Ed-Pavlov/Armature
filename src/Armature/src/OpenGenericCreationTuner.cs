@@ -40,7 +40,7 @@ namespace Armature
 
       PatternTreeNode
        .GetOrAddNode(childMatcher)
-       .UseBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
+       .UseBuildAction(BuildStage.Create, CreateByReflection.Instance);
 
       return new Tuner(childMatcher);
     }

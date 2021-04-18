@@ -93,10 +93,10 @@ namespace Tests.Functional
            {
              // inject into constructor
              new IfLastUnitMatches(ConstructorPattern.Instance)
-              .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+              .UseBuildAction(BuildStage.Create, GetLongestConstructor.Instance),
 
              new IfLastUnitMatches(PropertyArgumentPattern.Instance)
-              .UseBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
+              .UseBuildAction(BuildStage.Create, new BuildArgumentForProperty())
            }
          };
 

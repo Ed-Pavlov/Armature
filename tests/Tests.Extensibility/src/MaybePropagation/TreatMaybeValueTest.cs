@@ -51,9 +51,9 @@ namespace Tests.Extensibility.MaybePropagation
            new SkipToLastUnit
            { // inject into constructor
              new IfLastUnitMatches(ConstructorPattern.Instance)
-              .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
+              .UseBuildAction(BuildStage.Create, GetLongestConstructor.Instance),
              new IfLastUnitMatches(MethodArgumentPattern.Instance)
-              .UseBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+              .UseBuildAction(BuildStage.Create, BuildArgumentForMethodParameter.Instance)
            }
          };
   }

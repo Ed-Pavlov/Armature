@@ -5,13 +5,14 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Builds value to inject by using <see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute.InjectionPointId" /> as key
+  ///   Builds an argument for the method parameter marked with <see cref="InjectAttribute"/> using <see cref="InjectAttribute.InjectionPointId"/> as
+  ///   the <see cref="UnitId.Key"/>
   /// </summary>
-  public class CreateParameterValueForInjectPointBuildAction : IBuildAction
+  public class BuildArgumentForMethodWithPointIdAsKey : IBuildAction
   {
-    public static readonly IBuildAction Instance = new CreateParameterValueForInjectPointBuildAction();
+    public static readonly IBuildAction Instance = new BuildArgumentForMethodWithPointIdAsKey();
 
-    private CreateParameterValueForInjectPointBuildAction() { }
+    private BuildArgumentForMethodWithPointIdAsKey() { }
 
     public void Process(IBuildSession buildSession)
     {

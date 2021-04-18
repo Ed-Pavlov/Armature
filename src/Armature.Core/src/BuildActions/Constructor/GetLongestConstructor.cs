@@ -9,13 +9,13 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   "Builds" a constructor Unit of the currently building Unit with biggest number of parameters
+  ///   Gets a constructor of type with biggest number of parameters.
   /// </summary>
-  public class GetLongestConstructorBuildAction : IBuildAction
+  public class GetLongestConstructor : IBuildAction
   {
-    public static readonly IBuildAction Instance = new GetLongestConstructorBuildAction();
+    public static readonly IBuildAction Instance = new GetLongestConstructor();
 
-    private GetLongestConstructorBuildAction() { }
+    private GetLongestConstructor() { }
 
     public void Process(IBuildSession buildSession)
     {

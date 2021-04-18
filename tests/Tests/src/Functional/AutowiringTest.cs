@@ -178,8 +178,8 @@ namespace Tests.Functional
                  BuildStage.Create,
                  new OrderedBuildActionContainer
                  {
-                   new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-                   GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
+                   new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
+                   GetLongestConstructor.Instance   // constructor with largest number of parameters has less priority
                  }),
              
              new IfLastUnitMatches(MethodArgumentPattern.Instance)
@@ -187,8 +187,8 @@ namespace Tests.Functional
                  BuildStage.Create,
                  new OrderedBuildActionContainer
                  {
-                   CreateParameterValueForInjectPointBuildAction.Instance, 
-                   CreateParameterValueBuildAction.Instance
+                   BuildArgumentForMethodWithPointIdAsKey.Instance, 
+                   BuildArgumentForMethodParameter.Instance
                  })
            }
          };

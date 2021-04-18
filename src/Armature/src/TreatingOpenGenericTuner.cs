@@ -24,7 +24,7 @@ namespace Armature
     /// </summary>
     public OpenGenericCreationTuner As(Type openGenericType, object? key = null)
     {
-      PatternTreeNode.UseBuildAction(BuildStage.Create, new RedirectOpenGenericTypeBuildAction(openGenericType, key));
+      PatternTreeNode.UseBuildAction(BuildStage.Create, new RedirectOpenGenericType(openGenericType, key));
 
       return new OpenGenericCreationTuner(PatternTreeNode, openGenericType, key);
     }

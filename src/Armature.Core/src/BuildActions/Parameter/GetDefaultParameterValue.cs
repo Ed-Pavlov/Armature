@@ -3,9 +3,12 @@ using Armature.Core.Logging;
 
 namespace Armature.Core
 {
-  public class GetDefaultParameterValueBuildAction : IBuildAction
+  /// <summary>
+  /// Gets a default parameter value of the method parameter.
+  /// </summary>
+  public class GetDefaultParameterValue : IBuildAction
   {
-    public static readonly IBuildAction Instance = new GetDefaultParameterValueBuildAction();
+    public static readonly IBuildAction Instance = new GetDefaultParameterValue();
 
     public void Process(IBuildSession buildSession)
     {

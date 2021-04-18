@@ -6,14 +6,13 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   "Builds" a list of properties Unit of the currently building Unit marked with <see cref="InjectAttribute" /> with
-  ///   specified <see cref="InjectAttribute.InjectionPointId" />
+  ///   Gets a list of  properties marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
-  public class GetPropertyByInjectPointBuildAction : IBuildAction
+  public class GetPropertyListByInjectPointId : IBuildAction
   {
     private readonly object?[] _pointIds;
 
-    public GetPropertyByInjectPointBuildAction(params object?[] pointIds) => _pointIds = pointIds ?? throw new ArgumentNullException(nameof(pointIds));
+    public GetPropertyListByInjectPointId(params object?[] pointIds) => _pointIds = pointIds ?? throw new ArgumentNullException(nameof(pointIds));
 
     public void Process(IBuildSession buildSession)
     {

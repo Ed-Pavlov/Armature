@@ -5,15 +5,15 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Build action redirects building of unit of one type to the unit of another type. E.g. redirecting interface to the implementation
+  ///   Redirects building of a unit of one type to the unit of another type. E.g. redirecting interface to the implementation.
   /// </summary>
-  public class RedirectTypeBuildAction : IBuildAction
+  public class RedirectType : IBuildAction
   {
     private readonly Type    _redirectTo;
     private readonly object? _key;
 
     [DebuggerStepThrough]
-    public RedirectTypeBuildAction(Type redirectTo, object? key)
+    public RedirectType(Type redirectTo, object? key)
     {
       if(redirectTo is null) throw new ArgumentNullException(nameof(redirectTo));
 

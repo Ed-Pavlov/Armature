@@ -5,11 +5,11 @@ namespace Armature.Core
   /// <summary>
   ///   Injects values into building Unit properties specified for injection
   /// </summary>
-  public class InjectIntoPropertiesBuildAction : IBuildAction
+  public class InjectIntoProperties : IBuildAction
   {
-    public static readonly IBuildAction Instance = new InjectIntoPropertiesBuildAction();
+    public static readonly IBuildAction Instance = new InjectIntoProperties();
 
-    private InjectIntoPropertiesBuildAction() { }
+    private InjectIntoProperties() { }
 
     [DebuggerStepThrough]
     public void Process(IBuildSession buildSession) { }

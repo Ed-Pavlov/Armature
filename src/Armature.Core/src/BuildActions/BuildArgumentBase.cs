@@ -5,14 +5,14 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Base class for build actions building values to inject
+  ///   Base class for build actions build arguments to inject.
   /// </summary>
-  public abstract class CreateValueToInjectBuildAction : IBuildAction
+  public abstract class BuildArgumentBase : IBuildAction
   {
     private readonly object? _key;
 
     [DebuggerStepThrough]
-    protected CreateValueToInjectBuildAction(object? key) => _key = key;
+    protected BuildArgumentBase(object? key) => _key = key;
 
     public void Process(IBuildSession buildSession)
     {

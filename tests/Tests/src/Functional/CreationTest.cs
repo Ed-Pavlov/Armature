@@ -256,7 +256,7 @@ namespace Tests.Functional
              new IfLastUnitMatches(ConstructorPattern.Instance)
               .UseBuildAction(
                  BuildStage.Create,
-                 new GetConstructorByParameterTypesBuildAction()) // use empty ctor by default in this test
+                 new GetConstructorByParameterTypes()) // use empty ctor by default in this test
            }
          };
 

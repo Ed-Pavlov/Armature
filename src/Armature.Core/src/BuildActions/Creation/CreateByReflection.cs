@@ -7,14 +7,13 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Builds a Unit using reflection
+  ///   Creates a Unit using reflection.
   /// </summary>
-  public class CreateByReflectionBuildAction : IBuildAction
+  public class CreateByReflection : IBuildAction
   {
-    // it has no state, so use a singleton
-    public static readonly IBuildAction Instance = new CreateByReflectionBuildAction();
+    public static readonly IBuildAction Instance = new CreateByReflection();
 
-    private CreateByReflectionBuildAction() { }
+    private CreateByReflection() { }
 
     public void Process(IBuildSession buildSession)
     {

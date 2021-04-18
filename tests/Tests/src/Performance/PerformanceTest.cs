@@ -169,20 +169,20 @@ namespace Tests.Performance
                            BuildStage.Create,
                            new OrderedBuildActionContainer
                            {
-                             new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-                             GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
+                             new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
+                             GetLongestConstructor.Instance   // constructor with largest number of parameters has less priority
                            }),
                        new IfLastUnitMatches(MethodArgumentPattern.Instance)
                         .UseBuildAction(
                            BuildStage.Create,
                            new OrderedBuildActionContainer
                            {
-                             CreateParameterValueForInjectPointBuildAction.Instance, CreateParameterValueBuildAction.Instance
+                             BuildArgumentForMethodWithPointIdAsKey.Instance, BuildArgumentForMethodParameter.Instance
                            }),
                        new IfLastUnitMatches(PropertyArgumentPattern.Instance)
                         .UseBuildAction(
                            BuildStage.Create,
-                           new OrderedBuildActionContainer {new CreatePropertyValueBuildAction()})
+                           new OrderedBuildActionContainer {new BuildArgumentForProperty()})
                      };
 
       var buildStages = new object[] {BuildStage.Cache, BuildStage.Initialize, BuildStage.Create};

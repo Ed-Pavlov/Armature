@@ -5,14 +5,14 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Build action building a Unit using factory method
+  ///   Creates a Unit using specified factory method.
   /// </summary>
-  public class CreateByFactoryMethodBuildAction<TR> : IBuildAction
+  public class CreateWithFactoryMethod<TR> : IBuildAction
   {
     private readonly Func<IBuildSession, TR> _factoryMethod;
 
     [DebuggerStepThrough]
-    public CreateByFactoryMethodBuildAction(Func<IBuildSession, TR> factoryMethod)
+    public CreateWithFactoryMethod(Func<IBuildSession, TR> factoryMethod)
       => _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
 
     public void Process(IBuildSession buildSession)

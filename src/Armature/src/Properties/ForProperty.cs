@@ -32,7 +32,7 @@ namespace Armature
     /// </summary>
     public static PropertyValueTuner WithInjectPoint(object? injectPointId)
     {
-      var getPropertyAction = new GetPropertyByInjectPointBuildAction(injectPointId);
+      var getPropertyAction = new GetPropertyListByInjectPointId(injectPointId);
       var matcher           = new PropertyWithInjectIdPattern(injectPointId);
 
       return new PropertyValueTuner(matcher, getPropertyAction, InjectPointMatchingWeight.AttributedParameter);

@@ -26,7 +26,7 @@ namespace Armature
         else
           PatternTreeNode
            .GetOrAddNode(new IfLastUnitMatches(new ParameterOfTypePattern(parameter.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
-           .UseBuildAction(BuildStage.Create, new SingletonBuildAction(parameter));
+           .UseBuildAction(BuildStage.Create, new Singleton(parameter));
 
       return this;
     }
@@ -37,7 +37,7 @@ namespace Armature
     /// </summary>
     public Tuner InjectProperty(params object[] values)
     {
-      PatternTreeNode.UseBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance);
+      PatternTreeNode.UseBuildAction(BuildStage.Initialize, InjectIntoProperties.Instance);
 
       foreach(var value in values)
         if(value is IPropertyValueBuildPlan buildPlan)
@@ -47,15 +47,15 @@ namespace Armature
         else
           PatternTreeNode
            .GetOrAddNode(new IfLastUnitMatches(new PropertyOfTypePattern(value.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
-           .UseBuildAction(BuildStage.Create, new SingletonBuildAction(value));
+           .UseBuildAction(BuildStage.Create, new Singleton(value));
 
       return this;
     }
 
     /// <summary>
-    ///   Register Unit as an eternal singleton <see cref="SingletonBuildAction" /> for details
+    ///   Register Unit as an eternal singleton <see cref="Singleton" /> for details
     /// </summary>
-    public void AsSingleton() => PatternTreeNode.UseBuildAction(BuildStage.Cache, new SingletonBuildAction());
+    public void AsSingleton() => PatternTreeNode.UseBuildAction(BuildStage.Cache, new Singleton());
 
     /// <summary>
     ///   Instantiate a Unit using a constructor with the biggest number of parameters
@@ -64,7 +64,7 @@ namespace Armature
     {
       PatternTreeNode
        .GetOrAddNode(new IfLastUnitMatches(ConstructorPattern.Instance))
-       .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance);
+       .UseBuildAction(BuildStage.Create, GetLongestConstructor.Instance);
 
       return this;
     }
@@ -76,7 +76,7 @@ namespace Armature
     {
       PatternTreeNode
        .GetOrAddNode(new IfLastUnitMatches(ConstructorPattern.Instance))
-       .UseBuildAction(BuildStage.Create, new GetInjectPointConstructorBuildAction(injectionPointId));
+       .UseBuildAction(BuildStage.Create, new GetConstructorByInjectPointId(injectionPointId));
 
       return this;
     }
@@ -113,7 +113,7 @@ namespace Armature
     {
       PatternTreeNode
        .GetOrAddNode(new IfLastUnitMatches(ConstructorPattern.Instance))
-       .UseBuildAction(BuildStage.Create, new GetConstructorByParameterTypesBuildAction(parameterTypes));
+       .UseBuildAction(BuildStage.Create, new GetConstructorByParameterTypes(parameterTypes));
 
       return this;
     }

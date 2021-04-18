@@ -8,15 +8,15 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   "Builds" a constructor Unit of the currently building Unit marked with attribute which satisfies user provided conditions
+  ///   Gets a constructor of type marked with attribute which satisfies user provided conditions.
   /// </summary>
-  public class GetConstructorBytAttributeBuildAction<T> : IBuildAction
+  public class GetConstructorBytAttribute<T> : IBuildAction
   {
     private readonly Predicate<T>? _predicate;
 
     [SuppressMessage("ReSharper", "MemberCanBeProtected.Global")]
     [DebuggerStepThrough]
-    public GetConstructorBytAttributeBuildAction(Predicate<T>? predicate = null) => _predicate = predicate;
+    public GetConstructorBytAttribute(Predicate<T>? predicate = null) => _predicate = predicate;
 
     public void Process(IBuildSession buildSession)
     {

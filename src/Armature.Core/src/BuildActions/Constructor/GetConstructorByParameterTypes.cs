@@ -7,13 +7,13 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   "Builds" a constructor Unit of the currently building Unit by parameter types
+  ///   Gets a constructor of type which matches specified parameter types list.
   /// </summary>
-  public class GetConstructorByParameterTypesBuildAction : IBuildAction
+  public class GetConstructorByParameterTypes : IBuildAction
   {
     private readonly Type[] _parameterTypes;
 
-    public GetConstructorByParameterTypesBuildAction(params Type[] parameterTypes)
+    public GetConstructorByParameterTypes(params Type[] parameterTypes)
       => _parameterTypes = parameterTypes ?? throw new ArgumentNullException(nameof(parameterTypes));
 
     public void Process(IBuildSession buildSession)

@@ -15,7 +15,7 @@ namespace Tests.UnitTests
     public void should_build_list_of_values_for_any_collection(PropertyInfo propertyInfo)
     {
       // --arrange
-      var target       = new CreatePropertyMultiValueToInjectBuildAction();
+      var target       = new BuildListArgumentForProperty();
       var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.BuildSequence).Returns(new[] {new UnitId(propertyInfo, null)});
 

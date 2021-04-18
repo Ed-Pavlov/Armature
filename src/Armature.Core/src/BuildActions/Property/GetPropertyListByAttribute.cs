@@ -8,16 +8,16 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   "Builds" a property Unit of the currently building Unit marked with attribute which satisfies user provided conditions
+  ///   Gets a list of  properties marked with attribute which satisfies user provided conditions.
   /// </summary>
-  public class GetPropertyByAttributeBuildAction<T> : IBuildAction
+  public class GetPropertyListByAttribute<T> : IBuildAction
     where T : Attribute
   {
     private readonly Predicate<T>? _predicate;
 
     [SuppressMessage("ReSharper", "MemberCanBeProtected.Global")]
     [DebuggerStepThrough]
-    public GetPropertyByAttributeBuildAction(Predicate<T>? predicate = null) => _predicate = predicate;
+    public GetPropertyListByAttribute(Predicate<T>? predicate = null) => _predicate = predicate;
 
     public void Process(IBuildSession buildSession)
     {

@@ -15,7 +15,7 @@ namespace Armature
     /// <summary>
     ///   Inject the <paramref name="value" /> into the property
     /// </summary>
-    public PropertyValueBuildPlan UseValue(object? value) => new(UnitPattern, BuildAction, new SingletonBuildAction(value), Weight);
+    public PropertyValueBuildPlan UseValue(object? value) => new(UnitPattern, BuildAction, new Singleton(value), Weight);
 
     /// <summary>
     ///   For building a value for the property use <see cref="PropertyInfo.PropertyType" /> and <paramref name="key" />
@@ -24,19 +24,19 @@ namespace Armature
     {
       if(key is null) throw new ArgumentNullException(nameof(key));
 
-      return new PropertyValueBuildPlan(UnitPattern, BuildAction, new CreatePropertyValueBuildAction(key), Weight);
+      return new PropertyValueBuildPlan(UnitPattern, BuildAction, new BuildArgumentForProperty(key), Weight);
     }
 
     /// <summary>
     ///   For building a value for the property use factory method />
     /// </summary>
     public PropertyValueBuildPlan UseFactoryMethod(Func<IBuildSession, object> factoryMethod)
-      => new(UnitPattern, BuildAction, new CreateByFactoryMethodBuildAction<object>(factoryMethod), Weight);
+      => new(UnitPattern, BuildAction, new CreateWithFactoryMethod<object>(factoryMethod), Weight);
 
     /// <summary>
     ///   For building a value for the property use <see cref="PropertyInfo.PropertyType" /> and <see cref="InjectAttribute.InjectionPointId" /> as a key
     /// </summary>
-    public PropertyValueBuildPlan UseInjectPointIdAsKey() => new(UnitPattern, BuildAction, CreatePropertyValueForInjectPointBuildAction.Instance, Weight);
+    public PropertyValueBuildPlan UseInjectPointIdAsKey() => new(UnitPattern, BuildAction, BuildArgumentForPropertyWithInjectPointIdAsKey.Instance, Weight);
   }
 
   [SuppressMessage("ReSharper", "UnusedTypeParameter")]

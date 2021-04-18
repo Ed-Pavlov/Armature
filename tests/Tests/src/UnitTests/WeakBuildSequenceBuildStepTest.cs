@@ -14,7 +14,7 @@ namespace Tests.UnitTests
     [Test]
     public void should_match_build_sequence_weak()
     {
-      var expected = new SingletonBuildAction();
+      var expected = new Singleton();
 
       // --arrange
       var target = new FindUnitMatches(Match.Type<IDisposable>(null))
@@ -36,8 +36,8 @@ namespace Tests.UnitTests
       // --arrange
       var unitIdMatcher = Match.Type<int>(null);
       var buildStep1    = new IfLastUnitMatches(unitIdMatcher);
-      buildStep1.UseBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
-      var singletonAction = new SingletonBuildAction();
+      buildStep1.UseBuildAction(BuildStage.Cache, CreateByReflection.Instance);
+      var singletonAction = new Singleton();
       var buildStep2      = new FindUnitMatches(unitIdMatcher);
       buildStep2.UseBuildAction(BuildStage.Cache, singletonAction);
 
@@ -58,7 +58,7 @@ namespace Tests.UnitTests
        .And
        .Subject.Select(_ => _.Entity)
        .Should()
-       .BeEquivalentTo(CreateByReflectionBuildAction.Instance, singletonAction);
+       .BeEquivalentTo(CreateByReflection.Instance, singletonAction);
     }
   }
 }

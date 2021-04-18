@@ -4,19 +4,18 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Build action which caches built unit in <see cref="PostProcess" /> and then set it as
-  ///   <see cref="BuildResult" /> in <see cref="Process" />.
+  ///   Caches built unit in <see cref="PostProcess" /> and then set it as <see cref="BuildResult" /> in <see cref="Process" />.
   ///   Simplest eternal singleton.
   /// </summary>
-  public class SingletonBuildAction : IBuildAction
+  public class Singleton : IBuildAction
   {
     private Instance? _instance;
 
     [DebuggerStepThrough]
-    public SingletonBuildAction() { }
+    public Singleton() { }
 
     [DebuggerStepThrough]
-    public SingletonBuildAction(object? value) => _instance = new Instance(value);
+    public Singleton(object? value) => _instance = new Instance(value);
 
     public void Process(IBuildSession buildSession)
     {

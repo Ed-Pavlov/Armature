@@ -12,11 +12,11 @@ namespace Tests.UnitTests
     [Test]
     public void should_return_all_merged_actions()
     {
-      var singletonAction = new SingletonBuildAction();
+      var singletonAction = new Singleton();
 
       // --arrange
       var unitIdMatcher = Match.Type<string>(null);
-      var matchString   = new IfLastUnitMatches(unitIdMatcher).UseBuildAction(BuildStage.Cache, CreateByReflectionBuildAction.Instance);
+      var matchString   = new IfLastUnitMatches(unitIdMatcher).UseBuildAction(BuildStage.Cache, CreateByReflection.Instance);
       var matchAny      = new FindUnitMatches(unitIdMatcher).UseBuildAction(BuildStage.Cache, singletonAction);
 
       var target = new BuildPlansCollection();
@@ -33,7 +33,7 @@ namespace Tests.UnitTests
        .And
        .Subject.Select(_ => _.Entity)
        .Should()
-       .Equal(CreateByReflectionBuildAction.Instance, singletonAction);
+       .Equal(CreateByReflection.Instance, singletonAction);
     }
   }
 }

@@ -6,7 +6,10 @@ using Armature.Core.Logging;
 
 namespace Armature.Core
 {
-  public abstract class CreateMultiValueToInjectBuildAction : IBuildAction
+  /// <summary>
+  /// Base class for build actions build a list of arguments by using <see cref="IBuildSession.BuildAllUnits"/> method.
+  /// </summary>
+  public abstract class BuildListArgument : IBuildAction
   {
     private static readonly object[] ParamContainer     = new object[1];
     private static readonly Type[]   TypeParamContainer = new Type[1];
@@ -15,28 +18,28 @@ namespace Armature.Core
     private readonly object? _key;
 
     [DebuggerStepThrough]
-    protected CreateMultiValueToInjectBuildAction(object? key) => _key = key;
+    protected BuildListArgument(object? key) => _key = key;
 
     public void Process(IBuildSession buildSession)
     {
       var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
       var effectiveKey          = _key == SpecialKey.Propagate ? unitUnderConstruction.Key : _key;
 
-      var valueType = GetValueType(unitUnderConstruction);
+      var argumentType = GetArgumentType(unitUnderConstruction);
 
-      if(IsCollection(valueType, out var listType))
+      if(IsCollection(argumentType, out var listType))
       {
-        var itemType = valueType.GenericTypeArguments[0];
+        var itemType = argumentType.GenericTypeArguments[0];
 
-        var values = buildSession.BuildAllUnits(new UnitId(itemType, effectiveKey));
+        var arguments = buildSession.BuildAllUnits(new UnitId(itemType, effectiveKey));
 
-        if(values is not null)
+        if(arguments is not null)
         {
           if(listType is null)
             throw new InvalidOperationException("Remove this assert when support of .NET4.x will be discarded and use Roslyn analyzer attributes");
 
-          var listInstance = CreateListInstance(listType, values.Count);
-          FillList(listInstance, listType, itemType, values);
+          var listInstance = CreateListInstance(listType, arguments.Count);
+          FillList(listInstance, listType, itemType, arguments);
 
           buildSession.BuildResult = new BuildResult(listInstance);
         }
@@ -48,7 +51,7 @@ namespace Armature.Core
     public void PostProcess(IBuildSession buildSession) { }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected abstract Type GetValueType(UnitId unitId);
+    protected abstract Type GetArgumentType(UnitId unitId);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static object CreateListInstance(Type listType, int capacity)

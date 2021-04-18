@@ -17,7 +17,7 @@ namespace Tests.UnitTests
       var parameterTypes = new[] {typeof(int), typeof(IDisposable)};
 
       // --arrange
-      var target = new GetConstructorByParameterTypesBuildAction(parameterTypes);
+      var target = new GetConstructorByParameterTypes(parameterTypes);
 
       var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<SampleType>(SpecialKey.Constructor).AsArray());
@@ -36,7 +36,7 @@ namespace Tests.UnitTests
       var parameterTypes = new[] {typeof(int), typeof(MemoryStream)};
 
       // --arrange
-      var target = new GetConstructorByParameterTypesBuildAction(parameterTypes);
+      var target = new GetConstructorByParameterTypes(parameterTypes);
 
       var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<SampleType>(SpecialKey.Constructor).AsArray());

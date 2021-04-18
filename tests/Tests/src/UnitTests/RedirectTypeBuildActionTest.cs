@@ -16,7 +16,7 @@ namespace Tests.UnitTests
       var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.BuildSequence).Returns(new UnitId(null, SpecialKey.Propagate).AsArray());
 
-      var buildAction = new RedirectTypeBuildAction(typeof(int), expectedKey);
+      var buildAction = new RedirectType(typeof(int), expectedKey);
 
       // --act
       buildAction.Process(buildSession);

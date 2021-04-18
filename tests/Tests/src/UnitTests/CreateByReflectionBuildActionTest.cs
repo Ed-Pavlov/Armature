@@ -13,7 +13,7 @@ namespace Tests.UnitTests
     public void should_not_create_interface_type()
     {
       // --arrange
-      var target = CreateByReflectionBuildAction.Instance;
+      var target = CreateByReflection.Instance;
 
       var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<IDisposable>().AsArray());
@@ -29,7 +29,7 @@ namespace Tests.UnitTests
     public void should_not_create_abstract_type()
     {
       // --arrange
-      var target = CreateByReflectionBuildAction.Instance;
+      var target = CreateByReflection.Instance;
 
       var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<Stream>().AsArray());

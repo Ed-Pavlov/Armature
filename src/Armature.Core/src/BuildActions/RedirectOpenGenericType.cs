@@ -5,16 +5,16 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Build action redirects building of unit of one open generic type to the unit of another open generic type.
+  ///   Redirects building of a unit of one open generic type to the unit of another open generic type.
   ///   E.g. redirecting interface to the implementation
   /// </summary>
-  public class RedirectOpenGenericTypeBuildAction : IBuildAction
+  public class RedirectOpenGenericType : IBuildAction
   {
     private readonly Type    _redirectTo;
     private readonly object? _key;
 
     [DebuggerStepThrough]
-    public RedirectOpenGenericTypeBuildAction(Type redirectTo, object? key)
+    public RedirectOpenGenericType(Type redirectTo, object? key)
     {
       if(redirectTo is null) throw new ArgumentNullException(nameof(redirectTo));
       if(!redirectTo.IsGenericTypeDefinition) throw new ArgumentException("Must be open generic type", nameof(redirectTo));
