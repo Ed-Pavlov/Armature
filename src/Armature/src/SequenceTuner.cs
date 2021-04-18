@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Armature.Core;
 using Armature.Extensibility;
 
@@ -12,51 +13,53 @@ namespace Armature
     public SequenceTuner(IPatternTreeNode parentNode) : base(parentNode) { }
 
     /// <summary>
-    ///   Used to make a build plan for a unit only if it is building in a context of building <paramref name="type" /> with key <paramref name="key" />
+    ///   Configure build plans for the unit representing by <paramref name="type"/>.
     /// </summary>
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public SequenceTuner Building(Type type, object? key = null)
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var query = new FindUnitMatches(new Pattern(type, key));
-      return new SequenceTuner(ParentNode.GetOrAddNode(query));
+      var patternMatcher = new FindUnitMatches(new Pattern(type, key));
+      return new SequenceTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
 
     /// <summary>
-    ///   Used to make a build plan for a unit only if it is building in a context of building <typeparamref name="T" /> with key <paramref name="key" />
+    ///   Configure build plans for the unit representing by type <typeparamref name="T"/>
+    ///   See <see cref="BuildSession"/> for details.
     /// </summary>
     public SequenceTuner Building<T>(object? key = null) => Building(typeof(T), key);
 
     /// <summary>
-    ///   Used to make a build plan for Unit of type <paramref name="type"/>.
+    ///   Configure build plans for Unit of type <paramref name="type"/>.
     ///   How it should be treated is specified by subsequence calls using returned object.
     /// </summary>
     public TreatingTuner Treat(Type type, object? key = null)
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
-      var query = new FindUnitMatches(new Pattern(type, key));
 
-      return new TreatingTuner(ParentNode.GetOrAddNode(query));
+      var patternMatcher = new FindUnitMatches(new Pattern(type, key));
+      return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
 
     /// <summary>
-    ///   Used to make a build plan for <typeparamref name="T" />.
-    ///   How <typeparamref name="T" /> should be treated is specified by subsequence calls using returned object
+    ///   Configure build plans for Unit of type <typeparamref name="T"/>.
+    ///   How it should be treated is specified by subsequence calls using returned object.
     /// </summary>
     public TreatingTuner<T> Treat<T>(object? key = null)
     {
-      var query = new FindUnitMatches(new Pattern(typeof(T), key));
-      return new TreatingTuner<T>(ParentNode.GetOrAddNode(query));
+      var patternMatcher = new FindUnitMatches(new Pattern(typeof(T), key));
+      return new TreatingTuner<T>(ParentNode.GetOrAddNode(patternMatcher));
     }
 
     /// <summary>
-    ///   Used to add some details to build plan of any building unit in context of currently building one
+    ///   Configure build plans for any unit building in context of the unit.
+    ///   See <see cref="BuildSession"/> for details.
     /// </summary>
     public Tuner TreatAll()
     {
-      var query = new SkipToLastUnit();
-
-      return new Tuner(ParentNode.GetOrAddNode(query));
+      var patternMatcher = new SkipToLastUnit();
+      return new Tuner(ParentNode.GetOrAddNode(patternMatcher));
     }
   }
 }

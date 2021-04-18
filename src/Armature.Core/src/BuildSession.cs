@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using Armature.Core.Logging;
 
-
 namespace Armature.Core
 {
   /// <summary>
   ///   Represents whole build session of the one Unit, all dependency of the built unit are built in context of one build session.
   /// </summary>
+  /// <remarks>It could be for example IA -> A -> IB -> B -> int. This sequence means that for now unit of type int is under construction
+  /// but it is built in "context" of all the sequence of dependencies.</remarks>
   public partial class BuildSession
   {
     private readonly object[]              _buildStages;
