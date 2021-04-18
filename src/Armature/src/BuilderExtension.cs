@@ -50,7 +50,7 @@ namespace Armature
     private static IReadOnlyList<object?> BuildAll<T>(this Builder builder, object? key, params object[]? arguments)
     {
       var unitId     = new UnitId(typeof(T), key);
-      var buildPlans = CreateAuxBuildPlansCollection<T>(arguments);
+      var buildPlans = CreateAuxBuildPlansCollection(arguments);
 
       var list = builder.BuildAllUnits(unitId, buildPlans);
       return ReferenceEquals(list, Empty<BuildResult>.List) ? Empty<object?>.List : list.Select(buildResult => buildResult.Value).ToArray();
@@ -65,7 +65,7 @@ namespace Armature
       if(builder is null) throw new ArgumentNullException(nameof(builder));
 
       var unitId      = new UnitId(typeof(T), key);
-      var buildPlans  = CreateAuxBuildPlansCollection<T>(arguments);
+      var buildPlans  = CreateAuxBuildPlansCollection(arguments);
       var buildResult = builder.BuildUnit(unitId, buildPlans);
 
       return buildResult.HasValue
@@ -73,7 +73,7 @@ namespace Armature
                : throw new ArmatureException($"Can't build unit <{unitId}>").AddData("unitInfo", unitId);
     }
 
-    private static BuildPlanCollection? CreateAuxBuildPlansCollection<T>(object[]? arguments)
+    private static IPatternTreeNode? CreateAuxBuildPlansCollection(object[]? arguments)
     {
       if(arguments is not {Length: > 0}) return null;
 

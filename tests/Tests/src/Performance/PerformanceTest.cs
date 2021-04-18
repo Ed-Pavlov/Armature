@@ -119,7 +119,7 @@ namespace Tests.Performance
       UnitPatternWrapper.GetHashCodeCallsCount.Should().BeLessThan(250_000);
     }
 
-    private static TreatingTuner Treat(BuildPlanCollection buildPlans, UnitId unitId)
+    private static TreatingTuner Treat(IPatternTreeNode buildPlans, UnitId unitId)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 

@@ -14,13 +14,13 @@ namespace Armature.Core
   public partial class BuildSession
   {
     private readonly object[]              _buildStages;
-    private readonly BuildPlanCollection  _buildPlans;
-    private readonly BuildPlanCollection? _auxBuildPlans;
+    private readonly IPatternTreeNode  _buildPlans;
+    private readonly IPatternTreeNode? _auxBuildPlans;
     private readonly Builder[]?            _parentBuilders;
     private readonly List<UnitId>          _buildSequence;
 
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    public BuildSession(object[] buildStages, BuildPlanCollection buildPlans, BuildPlanCollection? auxBuildPlans, Builder[]? parentBuilders)
+    public BuildSession(object[] buildStages, IPatternTreeNode buildPlans, IPatternTreeNode? auxBuildPlans, Builder[]? parentBuilders)
     {
       _buildStages    = buildStages ?? throw new ArgumentNullException(nameof(buildStages));
       _buildPlans     = buildPlans  ?? throw new ArgumentNullException(nameof(buildPlans));
@@ -44,8 +44,8 @@ namespace Armature.Core
     public static BuildResult BuildUnit(
       UnitId                unitId,
       object[]              buildStages,
-      BuildPlanCollection  buildPlans,
-      BuildPlanCollection? auxBuildPlans,
+      IPatternTreeNode  buildPlans,
+      IPatternTreeNode? auxBuildPlans,
       Builder[]?            parentBuilders)
       => new BuildSession(buildStages, buildPlans, auxBuildPlans, parentBuilders).BuildUnit(unitId);
 
@@ -64,8 +64,8 @@ namespace Armature.Core
     public static IReadOnlyList<BuildResult> BuildAllUnits(
       UnitId                unitId,
       object[]              buildStages,
-      BuildPlanCollection  buildPlans,
-      BuildPlanCollection? auxBuildPlans,
+      IPatternTreeNode  buildPlans,
+      IPatternTreeNode? auxBuildPlans,
       Builder[]?            parentBuilders)
       => new BuildSession(buildStages, buildPlans, auxBuildPlans, parentBuilders).BuildAllUnits(unitId);
 
@@ -99,8 +99,8 @@ namespace Armature.Core
 
           using(Log.Block(LogLevel.Verbose, "Looking for build actions"))
           {
-            actions    = _buildPlans.GatherBuildActions(_buildSequence.AsArrayTail());
-            auxActions = _auxBuildPlans?.GatherBuildActions(_buildSequence.AsArrayTail());
+            actions    = _buildPlans.GatherBuildActions(_buildSequence.AsArrayTail(), 0);
+            auxActions = _auxBuildPlans?.GatherBuildActions(_buildSequence.AsArrayTail(), 0);
           }
 
           Log.WriteLine(LogLevel.Verbose, "");

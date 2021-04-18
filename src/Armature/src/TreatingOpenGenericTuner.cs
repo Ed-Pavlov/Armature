@@ -12,14 +12,14 @@ namespace Armature
     public TreatingOpenGenericTuner(IPatternTreeNode patternTreeNode) : base(patternTreeNode) { }
 
     /// <summary>
-    ///   When generic type belonging to class described by open generic type passed to <see cref="BuildPlansCollectionExtension.TreatOpenGeneric"/>
+    ///   When generic type belonging to class described by open generic type passed to <see cref="PatternTreeTunerExtension.TreatOpenGeneric"/>
     ///   is requested to inject, object of generic type <paramref name="openGenericType"/> created by default creation strategy is created and injected.
     ///   See <see cref="Default.CreationBuildAction"/> for details.
     /// </summary>
     public Tuner AsCreated(Type openGenericType, object? key = null) => As(openGenericType, key).CreatedByDefault();
 
     /// <summary>
-    ///   When generic type belonging to class described by open generic type passed to <see cref="BuildPlansCollectionExtension.TreatOpenGeneric"/>
+    ///   When generic type belonging to class described by open generic type passed to <see cref="PatternTreeTunerExtension.TreatOpenGeneric"/>
     ///   is requested to inject, object of generic type <paramref name="openGenericType"/> injected. Tune how it is created by subsequence tuner calls. 
     /// </summary>
     public OpenGenericCreationTuner As(Type openGenericType, object? key = null)

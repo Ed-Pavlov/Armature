@@ -119,7 +119,7 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Doing the same as <see cref="BuildPlansCollectionExtension.Building{T}" /> but w/o breaking fluent syntax
+    ///   Doing the same as <see cref="PatternTreeTunerExtension.Building{T}" /> but w/o breaking fluent syntax
     /// </summary>
     public Tuner BuildingWhich(Action<SequenceTuner> tuneAction)
     {

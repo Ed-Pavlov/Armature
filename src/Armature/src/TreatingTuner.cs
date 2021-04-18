@@ -15,7 +15,7 @@ namespace Armature
 
 #pragma warning disable 1574
     /// <summary>
-    ///   For all who depends on unit of type passed into <see cref="BuildPlansCollectionExtension.Treat"/> inject object of this type
+    ///   For all who depends on unit of type passed into <see cref="PatternTreeTunerExtension.Treat"/> inject object of this type
     ///   created by default strategy.
     ///   See <see cref="Default.CreationBuildAction"/> for details.
     ///   Tune plan of building it by subsequence calls.
@@ -35,7 +35,7 @@ namespace Armature
 
 #pragma warning disable 1574
     /// <summary>
-    ///   For all who depends on unit of type passed into <see cref="BuildPlansCollectionExtension.Treat"/> inject object of type <paramref name="type"/>.
+    ///   For all who depends on unit of type passed into <see cref="PatternTreeTunerExtension.Treat"/> inject object of type <paramref name="type"/>.
     ///   Tune plan of creating the object by subsequence calls.
     /// </summary>
 #pragma warning restore 1574
@@ -54,7 +54,7 @@ namespace Armature
 
 #pragma warning disable 1574
     /// <summary>
-    ///   For all who depends on unit of type passed into <see cref="BuildPlansCollectionExtension.Treat"/> inject object of type
+    ///   For all who depends on unit of type passed into <see cref="PatternTreeTunerExtension.Treat"/> inject object of type
     ///   <paramref name="type"/> created by default strategy.
     ///   See <see cref="Default.CreationBuildAction"/> for details.
     ///   Tune plan of building it by subsequence calls.
@@ -64,7 +64,7 @@ namespace Armature
 
 #pragma warning disable 1574
     /// <summary>
-    ///   For all who depends on unit of type passed into <see cref="BuildPlansCollectionExtension.Treat"/> inject object of type
+    ///   For all who depends on unit of type passed into <see cref="PatternTreeTunerExtension.Treat"/> inject object of type
     ///   <typeparamref name="TRedirect" /> created by default strategy.
     ///   See <see cref="Default.CreationBuildAction"/> for details.
     ///   Tune plan of building it by subsequence calls.
