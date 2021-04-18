@@ -7,19 +7,17 @@ namespace Armature.Core
   public partial class BuildSession
   {
     /// <summary>
-    ///   This is an restricted interface of the <see cref="BuildSession" /> passed to <see cref="IBuildAction.Process" /> and <see cref="IBuildAction.PostProcess" />
+    ///   This is an restricted interface of the <see cref="BuildSession" /> passed
+    ///   to <see cref="IBuildAction.Process" /> and <see cref="IBuildAction.PostProcess" />
     /// </summary>
     private class Interface : IBuildSession
     {
       private readonly BuildSession _buildSession;
 
-      public Interface(IEnumerable<UnitId> buildSequence, BuildSession buildSession)
+      public Interface(BuildSession buildSession, IEnumerable<UnitId> buildSequence)
       {
-        if(buildSequence is null) throw new ArgumentNullException(nameof(buildSequence));
-        if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
-
-        _buildSession = buildSession;
-        BuildSequence = buildSequence;
+        BuildSequence = buildSequence ?? throw new ArgumentNullException(nameof(buildSequence));
+        _buildSession = buildSession  ?? throw new ArgumentNullException(nameof(buildSession));
       }
 
       ///<inheritdoc />

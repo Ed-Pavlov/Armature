@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-
-namespace Armature.Core.Common
+namespace Armature.Core
 {
   internal static class DictionaryExtension
   {

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Armature.Core.Common;
 using Armature.Core.Logging;
 
 
 namespace Armature.Core
 {
+  /// <summary>
+  /// These methods are implemented as extensions instead of class members in order to be able to operation with 'null' BuildActionBag
+  /// </summary>
   public static class BuildActionBagExtension
   {
     /// <summary>
@@ -48,11 +50,11 @@ namespace Armature.Core
     ///   Returns the build action with biggest matching weight for the build stage
     /// </summary>
     /// <exception cref="ArmatureException">Throws if there are more than one action with equal matching weight</exception>
-    public static IBuildAction? GetTopmostAction(this BuildActionBag? BuildActionBag, object stage)
+    public static IBuildAction? GetTopmostAction(this BuildActionBag? buildActionBag, object stage)
     {
       if(stage is null) throw new ArgumentNullException(nameof(stage));
 
-      var actions = BuildActionBag?.GetValueSafe(stage);
+      var actions = buildActionBag?.GetValueSafe(stage);
 
       if(actions is null) return null;
 

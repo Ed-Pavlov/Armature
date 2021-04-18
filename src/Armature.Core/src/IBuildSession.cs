@@ -22,7 +22,6 @@ namespace Armature.Core
     /// <summary>
     ///   Builds a unit represented by <see cref="UnitId" /> in the context of the current build session
     /// </summary>
-    /// <returns>Returns an instance or null if unit can't be built.</returns>
     BuildResult BuildUnit(UnitId unitId);
 
     /// <summary>

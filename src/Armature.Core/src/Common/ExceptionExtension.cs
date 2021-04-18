@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Armature.Core.Common
+namespace Armature.Core
 {
   internal static class ExceptionExtension
   {

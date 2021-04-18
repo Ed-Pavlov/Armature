@@ -1,6 +1,7 @@
 ﻿using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.Common;
 
 namespace Tests.UnitTests
 {

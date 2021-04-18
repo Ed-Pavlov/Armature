@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Armature.Core.Common;
+using Armature.Core;
 using NUnit.Framework;
 
 namespace Tests.Performance

@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Armature.Core
 {
-  public static class UnitInfoExtension
+  public static class UnitIdExtension
   {
     /// <summary>
     ///   Returns a <see cref="Type" /> if <see cref="UnitId.Kind" /> is a type, otherwise throws exception.

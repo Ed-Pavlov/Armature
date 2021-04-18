@@ -8,12 +8,12 @@
   {
     /// <summary>
     ///   This method is called first for all matched actions in direct order.
-    ///   Once <see cref="IBuildSession.BuildResult" /> is set by any action, no other actions <see cref="Process" /> are called.
+    ///   Once <see cref="IBuildSession.BuildResult" /> is set by any action, no other matched actions are called.
     /// </summary>
     void Process(IBuildSession buildSession);
 
     /// <summary>
-    ///   This method is called when all actions for which <see cref="Process" /> was called are rewind after the unit is just built
+    ///   This method is called when all actions for which <see cref="Process" /> was called are rewind back after the unit is just built.
     /// </summary>
     void PostProcess(IBuildSession buildSession);
   }

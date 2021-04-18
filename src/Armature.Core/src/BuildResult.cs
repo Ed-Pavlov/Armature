@@ -5,7 +5,7 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  /// Represents a result of building of a Unit, null is a valid value of the <see cref="Value" />.
+  /// A result of building of a Unit, null is a valid value of the <see cref="Value" />.
   /// </summary>
   public readonly struct BuildResult
   {

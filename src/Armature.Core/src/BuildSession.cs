@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using Armature.Core.Common;
 using Armature.Core.Logging;
 
 
@@ -124,18 +123,18 @@ namespace Armature.Core
     }
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
-    private BuildResult BuildUnit(BuildActionBag? BuildActionBag)
+    private BuildResult BuildUnit(BuildActionBag? buildActionBag)
     {
-      if(BuildActionBag is null)
+      if(buildActionBag is null)
         return BuildViaParentBuilder(_buildSequence.Last());
 
       // builder to pass into IBuildActon.Execute
-      var unitBuilder      = new Interface(_buildSequence, this);
+      var unitBuilder      = new Interface(this, _buildSequence);
       var performedActions = new Stack<IBuildAction>();
 
       foreach(var stage in _buildStages)
       {
-        var buildAction = BuildActionBag.GetTopmostAction(stage);
+        var buildAction = buildActionBag.GetTopmostAction(stage);
 
         if(buildAction is null)
           continue;
@@ -205,18 +204,18 @@ namespace Armature.Core
     }
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
-    private List<BuildResult>? BuildAllUnits(BuildActionBag? BuildActionBag)
+    private List<BuildResult>? BuildAllUnits(BuildActionBag? buildActionBag)
     {
-      if(BuildActionBag is null) return null;
+      if(buildActionBag is null) return null;
 
-      if(BuildActionBag.Keys.Count > 1)
+      if(buildActionBag.Keys.Count > 1)
         throw new ArmatureException("Actions only for one stage should be provided for BuildAll");
 
       var result = new List<BuildResult>();
 
-      foreach(var buildAction in BuildActionBag.Values.Single().Select(_ => _.Entity))
+      foreach(var buildAction in buildActionBag.Values.Single().Select(_ => _.Entity))
       {
-        var unitBuilder = new Interface(_buildSequence, this);
+        var unitBuilder = new Interface(this, _buildSequence);
 
         using(Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Execute action", buildAction)))
         {

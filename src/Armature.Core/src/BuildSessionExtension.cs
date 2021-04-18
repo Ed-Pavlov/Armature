@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Armature.Core.Common;
 
 
 namespace Armature.Core
@@ -12,7 +11,7 @@ namespace Armature.Core
   public static class BuildSessionExtension
   {
     /// <summary>
-    ///   "Builds" a <see cref="ConstructorInfo" /> for a <see creaf="type" /> by building a unit represented
+    ///   Builds a <see cref="ConstructorInfo" /> for a <see creaf="type" /> by building a unit represented
     ///   by <see cref="UnitId" />(<paramref name="type" />, <see cref="SpecialKey.Constructor" />) via current build session.
     /// </summary>
     public static ConstructorInfo GetConstructorOf(this IBuildSession buildSession, Type type)
@@ -29,7 +28,7 @@ namespace Armature.Core
     }
 
     /// <summary>
-    ///   "Builds" a list of properties of currently building Unit (<paramref name="type" />) for injecting dependencies
+    ///   Builds a list of properties of currently building Unit (<paramref name="type" />) for injecting dependencies
     /// </summary>
     public static IReadOnlyList<PropertyInfo> GetPropertiesToInject(this IBuildSession buildSession, Type type)
     {
@@ -40,12 +39,11 @@ namespace Armature.Core
     }
 
     /// <summary>
-    ///   "Builds" a value to inject into the property representing by <paramref name="propertyInfo" />
+    ///   "Builds" an argument to inject into the property representing by <paramref name="propertyInfo" />
     /// </summary>
     public static object? GetValueForProperty(this IBuildSession buildSession, PropertyInfo propertyInfo)
     {
       var buildResult = buildSession.BuildUnit(new UnitId(propertyInfo, SpecialKey.Argument));
-
       return buildResult.HasValue ? buildResult.Value : throw new ArmatureException(string.Format("Can't build value for property '{0}'", propertyInfo));
     }
 

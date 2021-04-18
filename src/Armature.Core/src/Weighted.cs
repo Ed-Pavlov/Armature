@@ -4,6 +4,9 @@ using Armature.Core.Logging;
 
 namespace Armature.Core
 {
+  /// <summary>
+  /// Couples an entity with a weight
+  /// </summary>
   public readonly struct Weighted<T> : IComparable<Weighted<T>>
   {
     public readonly T   Entity;
@@ -21,5 +24,11 @@ namespace Armature.Core
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}, Weight={1:n0}", Entity.ToLogString(), Weight);
+  }
+  
+  public static class WeightedExtension
+  {
+    [DebuggerStepThrough]
+    public static Weighted<T> WithWeight<T>(this T entity, int weight) => new(entity, weight);
   }
 }

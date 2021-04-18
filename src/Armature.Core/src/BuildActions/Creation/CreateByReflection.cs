@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Armature.Core.Common;
 using Armature.Core.Logging;
 
 namespace Armature.Core
