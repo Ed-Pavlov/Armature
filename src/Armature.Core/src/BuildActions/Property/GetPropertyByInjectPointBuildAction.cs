@@ -3,8 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
 
-
-namespace Armature.Core.BuildActions.Property
+namespace Armature.Core
 {
   /// <summary>
   ///   "Builds" a list of properties Unit of the currently building Unit marked with <see cref="InjectAttribute" /> with

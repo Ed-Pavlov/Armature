@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Armature.Core;
-using Armature.Core.BuildActions.Constructor;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;

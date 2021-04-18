@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics;
 using Armature.Core.Logging;
 
-
-namespace Armature.Core.BuildActions
+namespace Armature.Core
 {
   /// <summary>
   ///   Build action which caches built unit in <see cref="PostProcess" /> and then set it as

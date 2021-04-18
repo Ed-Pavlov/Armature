@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Armature.Core.BuildActions.Property
+namespace Armature.Core
 {
   /// <summary>
   ///   Injects values into building Unit properties specified for injection

@@ -1,4 +1,4 @@
-﻿namespace Armature.Core.BuildActions.Constructor
+﻿namespace Armature.Core
 {
   /// <summary>
   ///   "Builds" a constructor Unit of the currently building Unit marked with <see cref="InjectAttribute" /> with

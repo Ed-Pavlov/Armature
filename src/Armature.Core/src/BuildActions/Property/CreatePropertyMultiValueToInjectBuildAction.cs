@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Armature.Core.BuildActions.Property
+namespace Armature.Core
 {
   public class CreatePropertyMultiValueToInjectBuildAction : CreateMultiValueToInjectBuildAction
   {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
 
-namespace Armature.Core.BuildActions.Property
+namespace Armature.Core
 {
   /// <summary>
   ///   "Builds" a property Unit of the currently building Unit marked with attribute which satisfies user provided conditions

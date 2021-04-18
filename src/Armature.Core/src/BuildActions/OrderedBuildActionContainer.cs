@@ -6,7 +6,7 @@ using System.Diagnostics;
 using Armature.Core.Common;
 using Armature.Core.Logging;
 
-namespace Armature.Core.BuildActions
+namespace Armature.Core
 {
   /// <summary>
   ///   This container is used mostly for "default" build actions applied to any unit under construction.

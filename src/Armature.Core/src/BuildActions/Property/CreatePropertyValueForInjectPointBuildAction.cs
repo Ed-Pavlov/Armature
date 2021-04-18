@@ -2,7 +2,7 @@
 using System.Reflection;
 using Armature.Core.Logging;
 
-namespace Armature.Core.BuildActions.Property
+namespace Armature.Core
 {
   /// <summary>
   ///   Builds value to inject by using <see cref="PropertyInfo.PropertyType" /> and <see cref="InjectAttribute.InjectionPointId" /> as key

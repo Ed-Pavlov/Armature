@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Armature.Core.Logging;
 
-
-namespace Armature.Core.BuildActions.Property
+namespace Armature.Core
 {
   /// <summary>
   ///   "Builds" a constructor Unit of the currently building Unit with provided names

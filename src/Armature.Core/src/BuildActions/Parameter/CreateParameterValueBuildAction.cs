@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Armature.Core.BuildActions.Parameter
+namespace Armature.Core
 {
   /// <summary>
   ///   "Builds" value to inject by using <see cref="ParameterInfo.ParameterType" /> and provided key

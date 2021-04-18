@@ -4,8 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
 
-
-namespace Armature.Core.BuildActions.Constructor
+namespace Armature.Core
 {
   /// <summary>
   ///   "Builds" a constructor Unit of the currently building Unit by parameter types

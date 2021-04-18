@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Armature.Core;
-using Armature.Core.BuildActions.Creation;
 using FakeItEasy;
 using NUnit.Framework;
 using Tests.Common;

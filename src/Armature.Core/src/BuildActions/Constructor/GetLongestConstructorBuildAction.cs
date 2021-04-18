@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using Armature.Core.Logging;
 
-namespace Armature.Core.BuildActions.Constructor
+namespace Armature.Core
 {
   /// <summary>
   ///   "Builds" a constructor Unit of the currently building Unit with biggest number of parameters

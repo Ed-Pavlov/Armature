@@ -4,7 +4,7 @@ using System.Reflection;
 using Armature.Core.Common;
 using Armature.Core.Logging;
 
-namespace Armature.Core.BuildActions.Creation
+namespace Armature.Core
 {
   /// <summary>
   ///   Builds a Unit using reflection

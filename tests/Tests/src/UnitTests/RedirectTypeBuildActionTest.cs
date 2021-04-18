@@ -1,5 +1,4 @@
 ﻿using Armature.Core;
-using Armature.Core.BuildActions;
 using FakeItEasy;
 using NUnit.Framework;
 using Tests.Common;

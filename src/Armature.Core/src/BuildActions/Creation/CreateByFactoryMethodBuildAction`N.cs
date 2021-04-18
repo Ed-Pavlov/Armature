@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
 
-namespace Armature.Core.BuildActions.Creation
+namespace Armature.Core
 {
   /// <summary>
   ///   Build action building a Unit using factory method with input parameters

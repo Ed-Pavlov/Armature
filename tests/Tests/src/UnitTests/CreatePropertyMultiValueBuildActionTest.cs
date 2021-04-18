@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Armature.Core;
-using Armature.Core.BuildActions.Property;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;

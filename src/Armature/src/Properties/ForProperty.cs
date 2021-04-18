@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Armature.Core;
-using Armature.Core.BuildActions.Property;
 
 namespace Armature
 {

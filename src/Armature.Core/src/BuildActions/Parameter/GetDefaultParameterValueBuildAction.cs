@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Armature.Core.Logging;
 
-namespace Armature.Core.BuildActions.Parameter
+namespace Armature.Core
 {
   public class GetDefaultParameterValueBuildAction : IBuildAction
   {

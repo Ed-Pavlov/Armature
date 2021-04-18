@@ -2,8 +2,7 @@
 using System.Diagnostics;
 using Armature.Core.Logging;
 
-
-namespace Armature.Core.BuildActions
+namespace Armature.Core
 {
   /// <summary>
   ///   Base class for build actions building values to inject

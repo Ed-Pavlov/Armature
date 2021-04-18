@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
-using Armature.Core.BuildActions.Property;
 using Armature.Core.Logging;
 using Armature.Extensibility;
 

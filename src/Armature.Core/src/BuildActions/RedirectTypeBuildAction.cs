@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using Armature.Core.Logging;
 
-namespace Armature.Core.BuildActions
+namespace Armature.Core
 {
   /// <summary>
   ///   Build action redirects building of unit of one type to the unit of another type. E.g. redirecting interface to the implementation

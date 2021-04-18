@@ -2,8 +2,7 @@
 using System.Diagnostics;
 using Armature.Core.Logging;
 
-
-namespace Armature.Core.BuildActions
+namespace Armature.Core
 {
   /// <summary>
   ///   Build action redirects building of unit of one open generic type to the unit of another open generic type.

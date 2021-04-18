@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Armature.Core.BuildActions.Parameter
+namespace Armature.Core
 {
   public class CreateParameterMultiValueToInjectBuildAction : CreateMultiValueToInjectBuildAction
   {

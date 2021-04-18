@@ -4,8 +4,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Armature.Core.Logging;
 
-
-namespace Armature.Core.BuildActions
+namespace Armature.Core
 {
   public abstract class CreateMultiValueToInjectBuildAction : IBuildAction
   {
