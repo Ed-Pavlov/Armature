@@ -19,7 +19,7 @@ namespace Tests.UnitTests
       var matchString   = new IfLastUnitMatches(unitIdMatcher).UseBuildAction(BuildStage.Cache, CreateByReflection.Instance);
       var matchAny      = new FindUnitMatches(unitIdMatcher).UseBuildAction(BuildStage.Cache, singletonAction);
 
-      var target = new BuildPlansCollection();
+      var target = new BuildPlanCollection();
       target.Children.Add(matchString);
       target.Children.Add(matchAny);
 

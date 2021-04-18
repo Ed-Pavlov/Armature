@@ -73,11 +73,11 @@ namespace Armature
                : throw new ArmatureException($"Can't build unit <{unitId}>").AddData("unitInfo", unitId);
     }
 
-    private static BuildPlansCollection? CreateAuxBuildPlansCollection<T>(object[]? arguments)
+    private static BuildPlanCollection? CreateAuxBuildPlansCollection<T>(object[]? arguments)
     {
       if(arguments is not {Length: > 0}) return null;
 
-      var buildPlans = new BuildPlansCollection();
+      var buildPlans = new BuildPlanCollection();
 
       buildPlans
        .TreatAll()

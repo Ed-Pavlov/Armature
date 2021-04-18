@@ -9,70 +9,65 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Represents whole build session of the one Unit, all dependency of the built unit are built in context of one build session
+  ///   Represents whole build session of the one Unit, all dependency of the built unit are built in context of one build session.
   /// </summary>
   public partial class BuildSession
   {
+    private readonly object[]              _buildStages;
+    private readonly BuildPlanCollection  _buildPlans;
+    private readonly BuildPlanCollection? _auxBuildPlans;
     private readonly Builder[]?            _parentBuilders;
-    private readonly BuildPlansCollection? _auxBuildPlans;
-    private readonly BuildPlansCollection  _buildPlans;
     private readonly List<UnitId>          _buildSequence;
-    private readonly IEnumerable<object>   _buildStages;
 
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    public BuildSession(
-      IEnumerable<object>   buildStages,
-      BuildPlansCollection  buildPlans,
-      BuildPlansCollection? auxBuildPlans,
-      Builder[]?            parentBuilders)
+    public BuildSession(object[] buildStages, BuildPlanCollection buildPlans, BuildPlanCollection? auxBuildPlans, Builder[]? parentBuilders)
     {
-      if(buildStages is null) throw new ArgumentNullException(nameof(buildStages));
-      if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
-
-      _buildStages    = buildStages;
-      _buildPlans     = buildPlans;
+      _buildStages    = buildStages ?? throw new ArgumentNullException(nameof(buildStages));
+      _buildPlans     = buildPlans  ?? throw new ArgumentNullException(nameof(buildPlans));
       _auxBuildPlans  = auxBuildPlans;
-      _buildSequence  = new List<UnitId>(4);
       _parentBuilders = parentBuilders;
+      _buildSequence  = new List<UnitId>(4);
     }
 
     /// <summary>
     ///   Builds a Unit represented by <paramref name="unitId" />
     /// </summary>
-    /// <param name="unitId">"Id" of the unit to build. See <see cref="IPatternTreeNode" /> for details</param>
-    /// <param name="buildStages">The conveyor of build stages. See <see cref="Builder" /> for details</param>
-    /// <param name="buildPlans">Build plans used to build a unit</param>
-    /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method </param>
+    /// <param name="unitId">"Id" of the unit to build.</param>
+    /// <param name="buildStages">The sequence of build stages. See <see cref="Builder" /> for details.</param>
+    /// <param name="buildPlans">Build plans used to find build actions to build a unit.</param>
+    /// <param name="auxBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method
+    /// they are passed to <paramref name="parentBuilders"/> in opposite to <paramref name="buildPlans"/> </param>
     /// <param name="parentBuilders">
     ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
     public static BuildResult BuildUnit(
       UnitId                unitId,
-      IEnumerable<object>   buildStages,
-      BuildPlansCollection  buildPlans,
-      BuildPlansCollection? runtimeBuildPlans,
+      object[]              buildStages,
+      BuildPlanCollection  buildPlans,
+      BuildPlanCollection? auxBuildPlans,
       Builder[]?            parentBuilders)
-      => new BuildSession(buildStages, buildPlans, runtimeBuildPlans, parentBuilders).BuildUnit(unitId);
+      => new BuildSession(buildStages, buildPlans, auxBuildPlans, parentBuilders).BuildUnit(unitId);
 
     /// <summary>
     ///   Builds all Units represented by <paramref name="unitId" />
     /// </summary>
     /// <param name="unitId">"Id" of the unit to build. See <see cref="IPatternTreeNode" /> for details</param>
-    /// <param name="buildStages">The conveyor of build stages. See <see cref="Builder" /> for details</param>
-    /// <param name="buildPlans">Build plans used to build a unit</param>
-    /// <param name="runtimeBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method </param>
+    /// <param name="buildStages">The sequence of build stages. See <see cref="Builder" /> for details</param>
+    /// <param name="buildPlans">Build plans used to find build actions to build a unit.</param>
+    /// <param name="auxBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method
+    /// they are passed to <paramref name="parentBuilders"/> in opposite to <paramref name="buildPlans"/> </param>
     /// <param name="parentBuilders">
     ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
     public static IReadOnlyList<BuildResult> BuildAllUnits(
       UnitId                unitId,
-      IEnumerable<object>   buildStages,
-      BuildPlansCollection  buildPlans,
-      BuildPlansCollection? runtimeBuildPlans,
+      object[]              buildStages,
+      BuildPlanCollection  buildPlans,
+      BuildPlanCollection? auxBuildPlans,
       Builder[]?            parentBuilders)
-      => new BuildSession(buildStages, buildPlans, runtimeBuildPlans, parentBuilders).BuildAllUnits(unitId);
+      => new BuildSession(buildStages, buildPlans, auxBuildPlans, parentBuilders).BuildAllUnits(unitId);
 
     /// <summary>
     ///   Builds a Unit represented by <paramref name="unitId" />
@@ -82,13 +77,15 @@ namespace Armature.Core
     public BuildResult BuildUnit(UnitId unitId) => Build(unitId, BuildUnit);
 
     /// <summary>
-    ///   Builds all Units represented by <paramref name="unitId" />
+    ///   Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
+    ///   This can be useful to build all implementers of an interface.
     /// </summary>
-    /// <param name="unitId">"Id" of the unit to build. See <see cref="IPatternTreeNode" /> for details</param>
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public IReadOnlyList<BuildResult> BuildAllUnits(UnitId unitId) => Build(unitId, BuildAllUnits);
 
-    //TODO: check nullability
+    /// <summary>
+    /// Common logic to build one or all units
+    /// </summary>
     private T Build<T>(UnitId unitId, Func<BuildActionBag?, T> build)
     {
       using(LogBuildSessionState(unitId))
@@ -113,7 +110,6 @@ namespace Armature.Core
         catch(Exception exception)
         {
           AddDebugData(exception);
-
           throw;
         }
         finally
@@ -123,14 +119,13 @@ namespace Armature.Core
       }
     }
 
-    [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
     private BuildResult BuildUnit(BuildActionBag? buildActionBag)
     {
       if(buildActionBag is null)
         return BuildViaParentBuilder(_buildSequence.Last());
 
       // builder to pass into IBuildActon.Execute
-      var unitBuilder      = new Interface(this, _buildSequence);
+      var buildSession     = new Interface(this, _buildSequence);
       var performedActions = new Stack<IBuildAction>();
 
       foreach(var stage in _buildStages)
@@ -144,16 +139,16 @@ namespace Armature.Core
 
         using(Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Execute action", buildAction)))
         {
-          buildAction.Process(unitBuilder);
+          buildAction.Process(buildSession);
         }
 
-        if(unitBuilder.BuildResult.HasValue)
+        if(buildSession.BuildResult.HasValue)
         {
           Log.WriteLine(LogLevel.Info, "");
 
           Log.WriteLine(
             LogLevel.Info,
-            () => string.Format("Build Result{{{0}:{1}}}", unitBuilder.BuildResult, unitBuilder.BuildResult.Value?.GetType().ToLogString()));
+            () => string.Format("Build Result{{{0}:{1}}}", buildSession.BuildResult, buildSession.BuildResult.Value?.GetType().ToLogString()));
 
           break; // object is built, unwind called actions in reverse orders
         }
@@ -165,13 +160,47 @@ namespace Armature.Core
 
         using(Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Rewind action", buildAction)))
         {
-          buildAction.PostProcess(unitBuilder);
+          buildAction.PostProcess(buildSession);
         }
       }
 
-      return unitBuilder.BuildResult.HasValue
-               ? unitBuilder.BuildResult
+      return buildSession.BuildResult.HasValue
+               ? buildSession.BuildResult
                : BuildViaParentBuilder(_buildSequence.Last());
+    }
+
+    private List<BuildResult> BuildAllUnits(BuildActionBag? buildActionBag)
+    {
+      if(buildActionBag is null) return Empty<BuildResult>.List;
+
+      if(buildActionBag.Keys.Count > 1)
+        throw new ArmatureException($"Actions only for one stage should be provided for {nameof(BuildAllUnits)}");
+
+      var result = new List<BuildResult>();
+
+      foreach(var buildAction in buildActionBag.Values.Single().Select(_ => _.Entity))
+      {
+        var buildSession = new Interface(this, _buildSequence);
+
+        using(Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Execute action", buildAction)))
+        {
+          buildAction.Process(buildSession);
+          buildAction.PostProcess(buildSession);
+        }
+
+        if(buildSession.BuildResult.HasValue)
+        {
+          Log.WriteLine(LogLevel.Info, "");
+
+          Log.WriteLine(
+            LogLevel.Info,
+            () => string.Format("Build Result{{{0}:{1}}}", buildSession.BuildResult, buildSession.BuildResult.Value?.GetType().ToLogString()));
+
+          result.Add(buildSession.BuildResult);
+        }
+      }
+
+      return result;
     }
 
     private BuildResult BuildViaParentBuilder(UnitId unitId)
@@ -202,41 +231,6 @@ namespace Armature.Core
         return default;
 
       throw exceptions.Aggregate("One or more exceptions occured during build the unit");
-    }
-
-    [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
-    private List<BuildResult> BuildAllUnits(BuildActionBag? buildActionBag)
-    {
-      if(buildActionBag is null) return Empty<BuildResult>.List;
-
-      if(buildActionBag.Keys.Count > 1)
-        throw new ArmatureException("Actions only for one stage should be provided for BuildAll");
-
-      var result = new List<BuildResult>();
-
-      foreach(var buildAction in buildActionBag.Values.Single().Select(_ => _.Entity))
-      {
-        var unitBuilder = new Interface(this, _buildSequence);
-
-        using(Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Execute action", buildAction)))
-        {
-          buildAction.Process(unitBuilder);
-          buildAction.PostProcess(unitBuilder);
-        }
-
-        if(unitBuilder.BuildResult.HasValue)
-        {
-          Log.WriteLine(LogLevel.Info, "");
-
-          Log.WriteLine(
-            LogLevel.Info,
-            () => string.Format("Build Result{{{0}:{1}}}", unitBuilder.BuildResult, unitBuilder.BuildResult.Value?.GetType().ToLogString()));
-
-          result.Add(unitBuilder.BuildResult);
-        }
-      }
-
-      return result;
     }
 
     private IDisposable LogBuildSessionState(UnitId unitId)

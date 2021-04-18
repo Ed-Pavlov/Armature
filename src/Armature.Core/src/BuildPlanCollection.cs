@@ -24,7 +24,7 @@ namespace Armature.Core
   ///     }
   ///   };
   /// </remarks>
-  public class BuildPlansCollection : IPatternTreeNode, IEnumerable
+  public class BuildPlanCollection : IPatternTreeNode, IEnumerable
   {
     private readonly TreeRoot _treeRoot = new();
 
@@ -49,7 +49,7 @@ namespace Armature.Core
     #endregion
 
     /// <summary>
-    ///   Reuse implementation of <see cref="PatternTreeNodeWithChildren" /> to implement <see cref="BuildPlansCollection" /> public interface
+    ///   Reuse implementation of <see cref="PatternTreeNodeWithChildren" /> to implement <see cref="BuildPlanCollection" /> public interface
     /// </summary>
     private class TreeRoot : PatternTreeNodeWithChildren
     {
