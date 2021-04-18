@@ -24,7 +24,7 @@ namespace Armature
     ///   should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
     /// </summary>
     public Tuner CreatedByDefault()
-      => new(PatternTreeNode.AddSubQuery(
+      => new(PatternTreeNode.GetOrAddNode(
                new IfFirstUnitMatches(new UnitIdPattern(Type, Key))
                 .UseBuildAction(BuildStage.Create, Default.CreationBuildAction)
              )
@@ -36,7 +36,7 @@ namespace Armature
     /// </summary>
     /// <returns></returns>
     public Tuner CreatedByReflection()
-      => new(PatternTreeNode.AddSubQuery(
+      => new(PatternTreeNode.GetOrAddNode(
                new IfFirstUnitMatches(new UnitIdPattern(Type, Key))
                 .UseBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance)
              )

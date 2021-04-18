@@ -30,8 +30,8 @@ namespace Tests.Functional
       // (postprocessing will be called last and buildAction will add a postfix to created or cached string
 
       target
-       .AddSubQuery(new SkipToLastUnit())
-       .AddSubQuery(new IfLastUnitMatches(new IsParameterOfTypeStringPattern()))
+       .GetOrAddNode(new SkipToLastUnit())
+       .AddNode(new IfLastUnitMatches(new IsStringParameterPattern()))
        .UseBuildAction(BuildStage.Intercept, new AddPostfixToString(Postfix));
 
       // --act
@@ -92,18 +92,11 @@ namespace Tests.Functional
          };
 
     /// <summary>
-    ///   GetBuildAction with any string not depending on key
+    /// Matches that <see cref="UnitId.Kind"/> is <see cref="ParameterInfo"/> with <see cref="ParameterInfo.ParameterType"/> is <see cref="string"/>
     /// </summary>
-    private class IsParameterOfTypeStringPattern : IUnitIdPattern
+    private class IsStringParameterPattern : IUnitIdPattern
     {
-      public bool Matches(UnitId unitId)
-      {
-        var type = unitId.Kind is ParameterInfo parameterInfo ? parameterInfo.ParameterType : null;
-
-        return type == typeof(string);
-      }
-
-      public bool Equals(IUnitIdPattern other) => throw new NotSupportedException();
+      public bool Matches(UnitId unitId) => unitId.Kind is ParameterInfo parameterInfo && parameterInfo.ParameterType == typeof(string);
     }
 
     /// <summary>
@@ -113,20 +106,18 @@ namespace Tests.Functional
     {
       private readonly string _postfix;
 
-      public AddPostfixToString([NotNull] string postfix)
-      {
-        if(postfix is null) throw new ArgumentNullException(nameof(postfix));
-
-        _postfix = postfix;
-      }
+      public AddPostfixToString([NotNull] string postfix) => _postfix = postfix ?? throw new ArgumentNullException(nameof(postfix));
 
       public void Process(IBuildSession buildSession) { }
 
       public void PostProcess(IBuildSession buildSession)
       {
-        var assembleResult = buildSession.BuildResult;
-        var value          = (string) assembleResult.Value;
-        buildSession.BuildResult = new BuildResult(value + _postfix);
+        var buildResult = buildSession.BuildResult;
+        if(buildResult.HasValue)
+        {
+          var value = (string) buildResult.Value;
+          buildSession.BuildResult = new BuildResult(value + _postfix);
+        }
       }
     }
 

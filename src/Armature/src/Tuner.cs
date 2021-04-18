@@ -29,7 +29,7 @@ namespace Armature
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected");
         else
           PatternTreeNode
-           .AddSubQuery(new IfLastUnitMatches(new IsParameterOfTypePattern(parameter.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
+           .GetOrAddNode(new IfLastUnitMatches(new IsParameterOfTypePattern(parameter.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
            .UseBuildAction(BuildStage.Create, new SingletonBuildAction(parameter));
 
       return this;
@@ -50,7 +50,7 @@ namespace Armature
           throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected");
         else
           PatternTreeNode
-           .AddSubQuery(new IfLastUnitMatches(new IsPropertyOfTypePattern(value.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
+           .GetOrAddNode(new IfLastUnitMatches(new IsPropertyOfTypePattern(value.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
            .UseBuildAction(BuildStage.Create, new SingletonBuildAction(value));
 
       return this;
@@ -67,7 +67,7 @@ namespace Armature
     public Tuner UsingLongestConstructor()
     {
       PatternTreeNode
-       .AddSubQuery(new IfLastUnitMatches(IsConstructorPattern.Instance))
+       .GetOrAddNode(new IfLastUnitMatches(IsConstructorPattern.Instance))
        .UseBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance);
 
       return this;
@@ -79,7 +79,7 @@ namespace Armature
     public Tuner UsingInjectPointConstructor(object injectionPointId)
     {
       PatternTreeNode
-       .AddSubQuery(new IfLastUnitMatches(IsConstructorPattern.Instance))
+       .GetOrAddNode(new IfLastUnitMatches(IsConstructorPattern.Instance))
        .UseBuildAction(BuildStage.Create, new GetInjectPointConstructorBuildAction(injectionPointId));
 
       return this;
@@ -116,7 +116,7 @@ namespace Armature
     public Tuner UsingConstructorWithParameters(params Type[] parameterTypes)
     {
       PatternTreeNode
-       .AddSubQuery(new IfLastUnitMatches(IsConstructorPattern.Instance))
+       .GetOrAddNode(new IfLastUnitMatches(IsConstructorPattern.Instance))
        .UseBuildAction(BuildStage.Create, new GetConstructorByParameterTypesBuildAction(parameterTypes));
 
       return this;

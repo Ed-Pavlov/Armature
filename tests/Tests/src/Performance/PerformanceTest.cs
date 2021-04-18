@@ -131,7 +131,7 @@ namespace Tests.Performance
 
       var query = new FindUnitMatches(unitMatcher);
 
-      return new TreatingTuner(buildPlans.AddSubQuery(query));
+      return new TreatingTuner(buildPlans.GetOrAddNode(query));
     }
 
     private class UnitPatternWrapper : IUnitIdPattern

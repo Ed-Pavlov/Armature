@@ -27,7 +27,7 @@ namespace Armature
         QueryWeight.WildcardMatchingUnit - 1);
 
       PatternTreeNode
-       .AddSubQuery(childMatcher)
+       .GetOrAddNode(childMatcher)
        .UseBuildAction(BuildStage.Create, Default.CreationBuildAction);
 
       return new Tuner(childMatcher);
@@ -40,7 +40,7 @@ namespace Armature
         QueryWeight.WildcardMatchingUnit - 1);
 
       PatternTreeNode
-       .AddSubQuery(childMatcher)
+       .GetOrAddNode(childMatcher)
        .UseBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
 
       return new Tuner(childMatcher);

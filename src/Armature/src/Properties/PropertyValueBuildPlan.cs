@@ -22,7 +22,7 @@ namespace Armature
     /// <param name="patternTreeNode"></param>
     protected override void Apply(IPatternTreeNode patternTreeNode)
       => patternTreeNode
-        .AddSubQuery(new IfLastUnitMatches(IsPropertyPattern.Instance))
+        .GetOrAddNode(new IfLastUnitMatches(IsPropertyPattern.Instance))
         .UseBuildAction(BuildStage.Create, _getPropertyAction);
   }
 }

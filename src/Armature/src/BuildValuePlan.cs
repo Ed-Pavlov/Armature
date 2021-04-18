@@ -14,7 +14,7 @@ namespace Armature
     void IBuildPlan.Apply(IPatternTreeNode patternTreeNode)
     {
       patternTreeNode
-       .AddSubQuery(new IfLastUnitMatches(UnitPattern, Weight), false)
+       .AddNode(new IfLastUnitMatches(UnitPattern, Weight))
        .UseBuildAction(BuildStage.Create, BuildAction);
 
       Apply(patternTreeNode);

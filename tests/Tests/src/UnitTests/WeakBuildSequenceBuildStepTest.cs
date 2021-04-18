@@ -20,7 +20,7 @@ namespace Tests.UnitTests
 
       // --arrange
       var target = new FindUnitMatches(Match.Type<IDisposable>(null))
-                  .AddSubQuery(new FindUnitMatches(Match.Type<MemoryStream>(null)))
+                  .GetOrAddNode(new FindUnitMatches(Match.Type<MemoryStream>(null)))
                   .UseBuildAction(BuildStage.Cache, expected);
 
       // --act
@@ -44,8 +44,8 @@ namespace Tests.UnitTests
       buildStep2.UseBuildAction(BuildStage.Cache, singletonAction);
 
       var target = new FindUnitMatches(Match.Type<string>(null));
-      target.AddSubQuery(buildStep1);
-      target.AddSubQuery(buildStep2);
+      target.GetOrAddNode(buildStep1);
+      target.GetOrAddNode(buildStep2);
 
       // --act
       var actual = target.GatherBuildActions(new[] {Unit.OfType<string>(), Unit.OfType<int>()}.GetTail(0), 0);

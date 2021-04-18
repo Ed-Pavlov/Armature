@@ -22,16 +22,16 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-       .AddSubQuery(new SkipToLastUnit())
+       .GetOrAddNode(new SkipToLastUnit())
        .With( // add build action injecting values into property for any type
-          anyMatcher =>
-            anyMatcher
-             .AddSubQuery(new IfLastUnitMatches(CanBeInstantiatedPattern.Instance))
+          skipToLastUnit =>
+            skipToLastUnit
+             .AddNode(new IfLastUnitMatches(CanBeInstantiatedPattern.Instance))
              .UseBuildAction(BuildStage.Initialize, InjectIntoPropertiesBuildAction.Instance))
        .With( // add build action finding properties attributed with InjectAttribute for any type 
-          anyMatcher =>
-            anyMatcher
-             .AddSubQuery(new IfLastUnitMatches(IsPropertyPattern.Instance))
+          skipToLastUnit =>
+            skipToLastUnit
+             .AddNode(new IfLastUnitMatches(IsPropertyPattern.Instance))
              .UseBuildAction(BuildStage.Create, new GetPropertyByInjectPointBuildAction()));
 
       target.Treat<string>().AsInstance(expected);

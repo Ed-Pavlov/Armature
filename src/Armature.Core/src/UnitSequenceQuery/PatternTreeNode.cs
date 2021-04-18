@@ -102,7 +102,7 @@ namespace Armature.Core
 
     #region Syntax sugar
 
-    public void             Add(IPatternTreeNode patternTreeNode) => Children.Add(patternTreeNode);
+    public void Add(IPatternTreeNode patternTreeNode) => Children.Add(patternTreeNode);
     IEnumerator IEnumerable.GetEnumerator()   => throw new NotSupportedException();
 
     #endregion

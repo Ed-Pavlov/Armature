@@ -17,7 +17,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
       treat.PatternTreeNode.UseBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueKey));
 
       return new TreatingTuner<T>(
-        treat.PatternTreeNode.AddSubQuery(new FindUnitMatches(new UnitIdPattern(typeof(T), uniqueKey), 0)));
+        treat.PatternTreeNode.GetOrAddNode(new FindUnitMatches(new UnitIdPattern(typeof(T), uniqueKey), 0)));
     }
 
     /// <summary>

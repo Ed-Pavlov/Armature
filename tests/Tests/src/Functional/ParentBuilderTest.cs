@@ -219,10 +219,10 @@ namespace Tests.Functional
       var target = CreateTarget(parent);
 
       // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder 
-      target.AddSubQuery(new SkipToLastUnit())
-            .Add(
-               new IfLastUnitMatches(CanBeInstantiatedPattern.Instance)
-                .UseBuildAction(BuildStage.Cache, new DebugOnlyBuildAction()));
+      target
+       .GetOrAddNode(new SkipToLastUnit())
+       .AddNode(new IfLastUnitMatches(CanBeInstantiatedPattern.Instance))
+       .UseBuildAction(BuildStage.Cache, new DebugOnlyBuildAction());
 
       // --act
       var actual = target.Build<string>();
