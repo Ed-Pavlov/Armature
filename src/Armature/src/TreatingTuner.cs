@@ -6,39 +6,33 @@ namespace Armature
 {
   public class TreatingTuner : TreatingTuner<object>
   {
-    public TreatingTuner(IPatternTreeNode treeNode) : base(treeNode) { }
+    public TreatingTuner(IPatternTreeNode parentNode) : base(parentNode) { }
   }
 
   public class TreatingTuner<T> : Tuner
   {
-    public TreatingTuner(IPatternTreeNode treeNode) : base(treeNode) { }
+    public TreatingTuner(IPatternTreeNode parentNode) : base(parentNode) { }
 
-#pragma warning disable 1574
+
     /// <summary>
-    ///   For all who depends on unit of type passed into <see cref="PatternTreeTunerExtension.Treat"/> inject object of this type
-    ///   created by default strategy.
-    ///   See <see cref="Default.CreationBuildAction"/> for details.
+    ///   Use default creation strategy for a unit. See <see cref="Default.CreationBuildAction"/> for details.
     ///   Tune plan of building it by subsequence calls.
     /// </summary>
-#pragma warning restore 1574
     public Tuner AsIs()
     {
       ParentNode.UseBuildAction(BuildStage.Create, Default.CreationBuildAction);
-
       return new Tuner(ParentNode);
     }
 
     /// <summary>
-    ///   For all who depends on <typeparamref name="T" /> inject <paramref name="instance" />.
+    ///   Use specified <paramref name="instance"/> as a unit.
     /// </summary>
     public void AsInstance(T? instance) => ParentNode.UseBuildAction(BuildStage.Cache, new Singleton(instance));
 
-#pragma warning disable 1574
     /// <summary>
-    ///   For all who depends on unit of type passed into <see cref="PatternTreeTunerExtension.Treat"/> inject object of type <paramref name="type"/>.
+    ///   Build an object of the specified <paramref name="type"/> instead.
     ///   Tune plan of creating the object by subsequence calls.
     /// </summary>
-#pragma warning restore 1574
     public CreationTuner As(Type type, object? key = null)
     {
       ParentNode.UseBuildAction(BuildStage.Create, new RedirectType(type, key));
@@ -47,38 +41,30 @@ namespace Armature
     }
 
     /// <summary>
-    ///   For all who depends on unit of type <typeparamref name="T" /> inject object of type <typeparamref name="TRedirect" />.
+    ///   Build an object of the <typeparamref name="TRedirect"/> type instead.
     ///   Tune plan of creating the object by subsequence calls.
     /// </summary>
     public CreationTuner As<TRedirect>(object? key = null) => As(typeof(TRedirect), key);
 
-#pragma warning disable 1574
     /// <summary>
-    ///   For all who depends on unit of type passed into <see cref="PatternTreeTunerExtension.Treat"/> inject object of type
-    ///   <paramref name="type"/> created by default strategy.
+    ///   Build an object of the specified <paramref name="type"/> instead. Also use default creation strategy for that type.
     ///   See <see cref="Default.CreationBuildAction"/> for details.
     ///   Tune plan of building it by subsequence calls.
     /// </summary>
-#pragma warning restore 1574
     public Tuner AsCreated(Type type, object? key = null) => As(type, key).CreatedByDefault();
 
-#pragma warning disable 1574
     /// <summary>
-    ///   For all who depends on unit of type passed into <see cref="PatternTreeTunerExtension.Treat"/> inject object of type
-    ///   <typeparamref name="TRedirect" /> created by default strategy.
+    ///   Build an object of the <typeparamref name="TRedirect"/> type instead. Also use default creation strategy for that type.
     ///   See <see cref="Default.CreationBuildAction"/> for details.
     ///   Tune plan of building it by subsequence calls.
     /// </summary>
-#pragma warning restore 1574
     public Tuner AsCreated<TRedirect>(object? key = null) => AsCreated(typeof(TRedirect), key);
 
     /// <summary>
-    ///   For all who depends on <typeparamref name="T" /> inject object created by specified factory method.
+    ///   Use specified <paramref name="factoryMethod"/> to create a unit.
     /// </summary>
     public Tuner AsCreatedWith(Func<T> factoryMethod)
-      => new(ParentNode.UseBuildAction(
-               BuildStage.Create,
-               new CreateWithFactoryMethod<T>(_ => factoryMethod())));
+      => new(ParentNode.UseBuildAction(BuildStage.Create, new CreateWithFactoryMethod<T>(_ => factoryMethod())));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1>(Func<T1?, T?> factoryMethod)

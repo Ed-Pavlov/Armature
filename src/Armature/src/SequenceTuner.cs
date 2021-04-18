@@ -9,7 +9,7 @@ namespace Armature
   public class SequenceTuner : UnitSequenceExtensibility
   {
     [DebuggerStepThrough]
-    public SequenceTuner(IPatternTreeNode treeNode) : base(treeNode) { }
+    public SequenceTuner(IPatternTreeNode parentNode) : base(parentNode) { }
 
     /// <summary>
     ///   Used to make a build plan for a unit only if it is building in a context of building <paramref name="type" /> with key <paramref name="key" />

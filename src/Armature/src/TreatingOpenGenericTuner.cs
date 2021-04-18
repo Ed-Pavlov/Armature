@@ -9,7 +9,7 @@ namespace Armature
   public class TreatingOpenGenericTuner : UnitSequenceExtensibility
   {
     [DebuggerStepThrough]
-    public TreatingOpenGenericTuner(IPatternTreeNode treeNode) : base(treeNode) { }
+    public TreatingOpenGenericTuner(IPatternTreeNode parentNode) : base(parentNode) { }
 
     /// <summary>
     ///   When generic type belonging to class described by open generic type passed to <see cref="PatternTreeTunerExtension.TreatOpenGeneric"/>

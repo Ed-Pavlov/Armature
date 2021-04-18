@@ -8,7 +8,7 @@ namespace Armature.Extensibility
   {
     protected readonly IPatternTreeNode ParentNode;
 
-    protected UnitSequenceExtensibility(IPatternTreeNode treeNode) => ParentNode = treeNode ?? throw new ArgumentNullException(nameof(treeNode));
+    protected UnitSequenceExtensibility(IPatternTreeNode parentNode) => ParentNode = parentNode ?? throw new ArgumentNullException(nameof(parentNode));
 
     IPatternTreeNode IUnitSequenceExtensibility.PatternTreeNode => ParentNode;
   }

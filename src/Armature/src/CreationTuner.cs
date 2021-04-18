@@ -9,7 +9,7 @@ namespace Armature
     protected readonly Type    Type;
     protected readonly object? Key;
 
-    public CreationTuner(IPatternTreeNode treeNode, Type type, object? key) : base(treeNode)
+    public CreationTuner(IPatternTreeNode parentNode, Type type, object? key) : base(parentNode)
     {
       Type = type ?? throw new ArgumentNullException(nameof(type));
       Key  = key;

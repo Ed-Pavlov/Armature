@@ -10,7 +10,7 @@ namespace Armature
     protected readonly Type    OpenGenericType;
     protected readonly object? Key;
 
-    public OpenGenericCreationTuner(IPatternTreeNode treeNode, Type openGenericType, object? key) : base(treeNode)
+    public OpenGenericCreationTuner(IPatternTreeNode parentNode, Type openGenericType, object? key) : base(parentNode)
     {
       OpenGenericType = openGenericType;
       Key             = key;

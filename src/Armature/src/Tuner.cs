@@ -8,7 +8,7 @@ namespace Armature
   public class Tuner : UnitSequenceExtensibility
   {
     [DebuggerStepThrough]
-    public Tuner(IPatternTreeNode treeNode) : base(treeNode) { }
+    public Tuner(IPatternTreeNode parentNode) : base(parentNode) { }
 
     /// <summary>
     ///   Provides arguments to inject into building units constructor and methods. See <see cref="ForParameter" /> for details.
