@@ -1,49 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using Armature.Core.Logging;
 
 namespace Armature.Core
 {
   /// <summary>
-  ///   Matches only unit under construction in the sequence and applies passed <see cref="IUnitPattern" /> to it.
-  ///   See <see cref="IfLastUnitMatches(IUnitPattern,int)" /> and <see cref="GatherBuildActions" /> for details
+  ///   Checks if a building unit sequence contains the only unit under construction and it matches the specified unit pattern.
   /// </summary>
   public class IfLastUnitMatches : PatternTreeNode
   {
     private readonly IUnitPattern _unitPattern;
 
-    /// <param name="unitPattern">Object contains the logic of matching with building unit</param>
-    /// <param name="weight">The weight of matching</param>
     [DebuggerStepThrough]
     public IfLastUnitMatches(IUnitPattern unitPattern, int weight = QueryWeight.Any) : base(weight)
       => _unitPattern = unitPattern ?? throw new ArgumentNullException(nameof(unitPattern));
 
-    public override ICollection<IPatternTreeNode> Children => throw new NotSupportedException("LastUnitSequenceMatcher can't contain children");
+    public override ICollection<IPatternTreeNode> Children => throw new NotSupportedException("This pattern can't contain children");
 
-    /// <summary>
-    ///   If <paramref name="unitSequence" /> contains more then one element return null. This matcher matches only unit under construction which is
-    ///   the last one in the <paramref name="unitSequence" />.
-    /// </summary>
-    [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
     public override BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {
       if(unitSequence.Length > 1) return null;
 
-      var unitInfo = unitSequence.Last();
-      var matches  = _unitPattern.Matches(unitInfo);
-
-      if(!matches)
+      if(!_unitPattern.Matches(unitSequence.Last()))
       {
         Log.WriteLine(LogLevel.Trace, () => string.Format("{0}{{not matched}}", this));
-
         return null;
       }
 
-      using(Log.Block(LogLevel.Verbose, this.ToString)) // pass method group, do not call ToString
+      using(Log.Block(LogLevel.Verbose, ToString)) // pass method group, do not call ToString
       {
-        var buildActions = GetOwnActions(Weight + inputWeight);
+        var buildActions = GetOwnBuildActions(Weight + inputWeight);
         buildActions.ToLog();
 
         return buildActions;

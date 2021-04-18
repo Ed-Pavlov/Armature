@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Armature.Core.Logging;
 
-
 namespace Armature.Core
 {
   /// <summary>
@@ -16,59 +15,52 @@ namespace Armature.Core
   ///   This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
   ///   new Builder(...)
   ///   {
-  ///     new AnyUnitSequenceMatcher
+  ///     new SkipToLastUnit
   ///     {
-  ///       new LeafUnitSequenceMatcher(ConstructorMatcher.Instance, 0)
+  ///       new IfLastUnitMatches(new ConstructorPattern(), 0)
   ///         .AddBuildAction(BuildStage.Create, new GetLongestConstructorBuildAction()),
-  ///       new LeafUnitSequenceMatcher(ParameterMatcher.Instance, ParameterMatchingWeight.Lowest)
+  ///       new IfLastUnitMatches(new MethodArgumentPattern(), ParameterMatchingWeight.Lowest)
   ///         .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
   ///     }
   ///   };
   /// </remarks>
   public class BuildPlansCollection : IPatternTreeNode, IEnumerable
   {
-    private readonly Root _root = new();
+    private readonly TreeRoot _treeRoot = new();
 
-    /// <summary>
-    ///   Forest of <see cref="IPatternTreeNode" /> trees
-    /// </summary>
-    public ICollection<IPatternTreeNode> Children => _root.Children;
-
-    public void Add(IPatternTreeNode patternTreeNode) => Children.Add(patternTreeNode);
-
-    public BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight = 0)
-    {
-      if(unitSequence.Length == 0) throw new ArgumentException(nameof(unitSequence));
-
-      return _root.GatherBuildActions(unitSequence, 0);
-    }
+    public ICollection<IPatternTreeNode> Children => _treeRoot.Children;
+    
+    public BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight = 0) => _treeRoot.GatherBuildActions(unitSequence, 0);
 
     public void PrintToLog()
     {
       using(Log.Enabled())
-      {
-        _root.PrintToLog();
-      }
+        _treeRoot.PrintToLog();
     }
 
-    public bool Equals(IPatternTreeNode other) => ReferenceEquals(this, other);
+    public bool                       Equals(IPatternTreeNode other)                                => throw new NotSupportedException();
+    IPatternTreeNode IPatternTreeNode.UseBuildAction(object   buildStage, IBuildAction buildAction) => throw new NotSupportedException();
+
+    #region Syntax sugar
+
+    public void             Add(IPatternTreeNode patternTreeNode) => Children.Add(patternTreeNode);
+    IEnumerator IEnumerable.GetEnumerator()                       => throw new NotSupportedException();
+
+    #endregion
 
     /// <summary>
     ///   Reuse implementation of <see cref="PatternTreeNodeWithChildren" /> to implement <see cref="BuildPlansCollection" /> public interface
     /// </summary>
-    private class Root : PatternTreeNodeWithChildren
+    private class TreeRoot : PatternTreeNodeWithChildren
     {
       [DebuggerStepThrough]
-      public Root() : base(0) { }
+      public TreeRoot() : base(0) { }
 
       [DebuggerStepThrough]
-      public override BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight) => GetChildrenActions(inputWeight, unitSequence);
+      public override BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight) => GetChildrenActions(unitSequence, inputWeight);
 
       [DebuggerStepThrough]
       public override bool Equals(IPatternTreeNode other) => throw new NotSupportedException();
     }
-
-    IEnumerator IEnumerable.GetEnumerator()                                             => throw new NotSupportedException();
-    IPatternTreeNode IPatternTreeNode.          UseBuildAction(object buildStage, IBuildAction buildAction) => throw new NotSupportedException();
   }
 }

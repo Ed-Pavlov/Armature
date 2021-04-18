@@ -13,31 +13,25 @@ namespace Armature.Core
   /// </summary>
   /// <remarks>
   /// This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
-  /// new FooQuery
+  /// new FooNode
   /// {
-  ///   new SubQuery(ConstructorMatcher.Instance, 0)
+  ///   new SubNode(Pattern1.Instance, 0)
   ///     .UseBuildAction(BuildStage.Create, new GetLongestConstructorBuildAction()),
-  ///   new SubQuery(ParameterMatcher.Instance, ParameterMatchingWeight.Lowest)
+  ///   new SubNode(Pattern2.Instance, ParameterMatchingWeight.Lowest)
   ///     .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
   /// };
   /// </remarks>
   public abstract class PatternTreeNode : IPatternTreeNode, IEnumerable
   {
     private Dictionary<object, List<IBuildAction>>? _buildActions;
+    private Dictionary<object, List<IBuildAction>>  LazyBuildAction => _buildActions ??= new Dictionary<object, List<IBuildAction>>();
 
     protected PatternTreeNode(int weight) => Weight = weight;
 
-    protected int Weight { get; }
-
-    private Dictionary<object, List<IBuildAction>> LazyBuildAction
-    {
-      [DebuggerStepThrough] get => _buildActions ??= new Dictionary<object, List<IBuildAction>>();
-    }
-
     public abstract ICollection<IPatternTreeNode> Children { get; }
+    public abstract BuildActionBag?               GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight);
 
-    public abstract BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight);
-
+    /// <inheritdoc />
     [DebuggerStepThrough]
     public virtual IPatternTreeNode UseBuildAction(object buildStage, IBuildAction buildAction)
     {
@@ -48,10 +42,10 @@ namespace Armature.Core
       return this;
     }
 
-    public abstract bool Equals(IPatternTreeNode other);
+    protected int Weight { [DebuggerStepThrough] get; }
 
     [DebuggerStepThrough]
-    protected BuildActionBag? GetOwnActions(int matchingWeight)
+    protected BuildActionBag? GetOwnBuildActions(int matchingWeight)
     {
       if(_buildActions is null) return null;
 
@@ -65,6 +59,8 @@ namespace Armature.Core
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}<{1:n0}>", GetType().GetShortName(), Weight);
+
+    public abstract bool Equals(IPatternTreeNode other);
 
     public void PrintToLog()
     {
@@ -102,8 +98,8 @@ namespace Armature.Core
 
     #region Syntax sugar
 
-    public void Add(IPatternTreeNode patternTreeNode) => Children.Add(patternTreeNode);
-    IEnumerator IEnumerable.GetEnumerator()   => throw new NotSupportedException();
+    public void             Add(IPatternTreeNode patternTreeNode) => Children.Add(patternTreeNode);
+    IEnumerator IEnumerable.GetEnumerator()                       => throw new NotSupportedException();
 
     #endregion
   }

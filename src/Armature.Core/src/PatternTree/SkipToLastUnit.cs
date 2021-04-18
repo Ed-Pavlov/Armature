@@ -10,29 +10,27 @@ namespace Armature.Core
   /// </summary>
   public class SkipToLastUnit : PatternTreeNodeWithChildren
   {
-    public SkipToLastUnit(int weight) : base(weight) { }
     public SkipToLastUnit() : this(QueryWeight.AnyUnit) { }
+    public SkipToLastUnit(int weight) : base(weight) { }
 
     public override IPatternTreeNode UseBuildAction(object buildStage, IBuildAction buildAction)
       => throw new NotSupportedException(
-           "This query is used to skip unit sequence to the end and pass the unit under construction to sub queries."
+           "This pattern is used to skip a building unit sequence to the last unit and pass the unit under construction to children."
          + "It can't contain build actions due to they are used to build the unit under construction only."
          );
 
     /// <summary>
-    ///   Matches any <see cref="UnitId" />, so it pass the building unit info into its children and returns merged result
+    ///   Decreases the matching weight by each skipped unit then pass unit under construction to children nodes
     /// </summary>
     public override BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {
       var unitsToSkipCount = unitSequence.Length;
-
-      // decrease matching weight depending on how many unit in the sequence were skipped by this matcher
       var matchingWeight = inputWeight + Weight * unitsToSkipCount;
 
       using(Log.Block(LogLevel.Verbose, ToString, unitsToSkipCount)) // pass group method, do not call ToString method
       {
         var lastUnitAsTail = unitSequence.GetTail(unitSequence.Length - 1);
-        return GetChildrenActions(matchingWeight, lastUnitAsTail);
+        return GetChildrenActions(lastUnitAsTail, matchingWeight);
       }
     }
 

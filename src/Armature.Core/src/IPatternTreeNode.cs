@@ -5,12 +5,13 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Represents a query applied to a sequence of building units in order to find build actions needed to build a unit
+  /// A pattern used to match a unit in the building unit sequence.
   /// </summary>
   public interface IPatternTreeNode : IEquatable<IPatternTreeNode>, ILogable
   {
     /// <summary>
-    ///   The collection of all child sub queries, used to find existing one, add new, or replace one with another
+    /// The collection of all children nodes used to find existing one, add new, or replace one with another.
+    /// All nodes with their children are a pattern tree.  
     /// </summary>
     ICollection<IPatternTreeNode> Children { get; }
 
@@ -23,7 +24,6 @@ namespace Armature.Core
     /// </param>
     /// <param name="inputWeight">
     ///   The weight of matching which used by children matchers to calculate a final weight of matching
-    ///   Not applicable to BuildPlansCollection in common case
     /// </param>
     /// <remarks>
     ///   If there is type A which depends on class B, during building A, B should be built and build sequence will be [A, B] in this case.
@@ -35,10 +35,11 @@ namespace Armature.Core
     BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight);
 
     /// <summary>
-    ///   Adds a <see cref="IBuildAction" /> for a "to be built" unit which is matched by this query
+    ///   Adds a <see cref="IBuildAction" /> for a "to be built" unit which is matched by the branch of the pattern tree represented by this node
+    ///   with its parents. 
     /// </summary>
-    /// <param name="buildStage">Build stage in which the build action is executed</param>
-    /// <param name="buildAction">Build action</param>
+    /// <param name="buildStage">A build stage in which the build action is executed.</param>
+    /// <param name="buildAction">A build action.</param>
     /// <returns>Returns 'this' in order to use fluent syntax</returns>
     IPatternTreeNode UseBuildAction(object buildStage, IBuildAction buildAction);
   }

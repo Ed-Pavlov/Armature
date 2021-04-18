@@ -11,11 +11,10 @@ namespace Armature.Core
     private readonly IUnitPattern _pattern;
 
     public FindUnitMatches(IUnitPattern pattern) : this(pattern, QueryWeight.WildcardMatchingUnit) { }
-
     public FindUnitMatches(IUnitPattern pattern, int weight) : base(weight) => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
     /// <summary>
-    ///   Moves along the unit building sequence from left to right skipping units until it encounters a matching unit.
+    ///   Moves along the building unit sequence skipping units until it finds the matching unit.
     ///   If it is the unit under construction, returns build actions for it, if no, pass the rest of the sequence to each child and returns merged actions.
     /// </summary>
     public override BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
@@ -27,10 +26,10 @@ namespace Armature.Core
         var unitInfo = unitSequence[i];
 
         if(_pattern.Matches(unitInfo))
-          return GetActions(unitSequence.GetTail(i), realWeight);
+          return GetOwnOrChildrenBuildActions(unitSequence.GetTail(i), realWeight);
 
         // increase weight on each "skipping" step, it will lead that "deeper" context has more weight then more common
-        // it is needed when some Unit is registered several times, Unit under construction should receive that one which is "closer" to it
+        // it is needed when some Unit is registered several times
         realWeight++;
       }
 
