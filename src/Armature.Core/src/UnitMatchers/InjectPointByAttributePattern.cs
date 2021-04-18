@@ -16,7 +16,7 @@ namespace Armature.Core
 
     public bool Matches(UnitId unitId)
     {
-      if(unitId.Key != SpecialKey.InjectValue) return false;
+      if(unitId.Key != SpecialKey.Argument) return false;
 
       var attribute = GetAttribute(unitId);
       return attribute is not null && (_predicate is null || _predicate(attribute));

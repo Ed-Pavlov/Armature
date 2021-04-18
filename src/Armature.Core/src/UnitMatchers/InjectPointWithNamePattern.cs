@@ -14,7 +14,7 @@ namespace Armature.Core
     [DebuggerStepThrough]
     protected InjectPointWithNamePattern(string name) => _name = name ?? throw new ArgumentNullException(nameof(name));
 
-    public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.InjectValue && GetInjectPointName(unitId) == _name;
+    public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Argument && GetInjectPointName(unitId) == _name;
 
     protected abstract string? GetInjectPointName(UnitId unitId);
 

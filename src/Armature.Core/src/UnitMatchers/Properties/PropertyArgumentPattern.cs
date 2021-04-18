@@ -11,6 +11,6 @@ namespace Armature.Core
 
     private PropertyArgumentPattern() { }
 
-    public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.InjectValue && unitId.Kind is PropertyInfo;
+    public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Argument && unitId.Kind is PropertyInfo;
   }
 }

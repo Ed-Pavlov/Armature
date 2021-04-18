@@ -16,7 +16,7 @@ namespace Tests.UnitTests
 
       // --arrange
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<IEnumerable<int>>(UnitKey.Propagate).AsArray());
+      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<IEnumerable<int>>(SpecialKey.Propagate).AsArray());
 
       var buildAction = new RedirectOpenGenericTypeBuildAction(typeof(List<>), expectedKey);
 

@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using Armature.Core.Logging;
 
-
 namespace Armature.Core.BuildActions
 {
   /// <summary>
@@ -30,7 +29,7 @@ namespace Armature.Core.BuildActions
       if(!buildSession.BuildResult.HasValue)
       {
         var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
-        var effectiveKey          = Equals(_key, UnitKey.Propagate) ? unitUnderConstruction.Key : _key;
+        var effectiveKey          = Equals(_key, SpecialKey.Propagate) ? unitUnderConstruction.Key : _key;
 
         var unitInfo = new UnitId(_redirectTo, effectiveKey);
         buildSession.BuildResult = buildSession.BuildUnit(unitInfo);

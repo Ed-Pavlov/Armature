@@ -20,7 +20,7 @@ namespace Armature.Core
     }
 
     public bool Matches(UnitId unitId)
-      => unitId.Key == SpecialKey.InjectValue
+      => unitId.Key == SpecialKey.Argument
       && _exactMatch
            ? GetInjectPointType(unitId)                          == _type
            : GetInjectPointType(unitId)?.IsAssignableFrom(_type) == true;

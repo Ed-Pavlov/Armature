@@ -21,7 +21,7 @@ namespace Armature.Core.BuildActions
     public void Process(IBuildSession buildSession)
     {
       var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
-      var effectiveKey          = _key == UnitKey.Propagate ? unitUnderConstruction.Key : _key;
+      var effectiveKey          = _key == SpecialKey.Propagate ? unitUnderConstruction.Key : _key;
 
       var valueType = GetValueType(unitUnderConstruction);
 
