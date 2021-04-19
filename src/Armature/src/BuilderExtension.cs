@@ -24,7 +24,7 @@ namespace Armature
 
     /// <summary>
     ///   Builds a Unit registered as type <typeparamref name="T" /> passing additional <paramref name="arguments" /> they can be values or
-    ///   implementation of <see cref="IBuildPlan" />. See <see cref="ForParameter" /> for details.
+    ///   implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> for details.
     /// </summary>
     /// <returns>Returns an instance or null if null is registered as a unit.</returns>
     /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
@@ -106,7 +106,7 @@ namespace Armature
       /// <summary>
       ///   Builds a Unit registered as type <typeparamref name="T" /> with an additional key passed into <see cref="BuilderExtension.UsingKey"/> method
       ///   passing additional <paramref name="arguments" /> they can be values or
-      ///   implementation of <see cref="IBuildPlan" />. See <see cref="ForParameter" /> for details.
+      ///   implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> for details.
       /// </summary>
       [DebuggerStepThrough]
       public T? Build<T>(params object[] arguments) => _builder.Build<T>(_key, arguments);
@@ -126,7 +126,7 @@ namespace Armature
       /// <summary>
       ///   Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight with an additional
       ///   key passed into <see cref="BuilderExtension.UsingKey"/> method passing additional <paramref name="arguments" /> they can be values or
-      ///   implementation of <see cref="IBuildPlan" />. See <see cref="ForParameter" /> for details.
+      ///   implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> for details.
       ///   This can be useful to build all implementers of an interface.
       /// </summary>
       /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>

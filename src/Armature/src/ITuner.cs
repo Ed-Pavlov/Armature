@@ -4,11 +4,11 @@
 namespace Armature
 {
   /// <summary>
-  ///   Used for simplifying framework syntax, in order to be able create an object which doesn't have an access to the currently being tuned build plan and
-  ///   apply the plan later.
+  ///   Used for simplifying framework syntax, in order to be able create an object which doesn't have an access to the currently being
+  /// tuned build plan and apply the plan later.
   ///   See usages for details.
   /// </summary>
-  public interface IBuildPlan
+  public interface ITuner
   {
     /// <summary>
     ///   Apply build plan to the currently building plan

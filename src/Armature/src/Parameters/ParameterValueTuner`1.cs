@@ -9,13 +9,13 @@ namespace Armature
   /// </summary>
   /// <typeparam name="T">The type of parameter</typeparam>
   [SuppressMessage("ReSharper", "UnusedTypeParameter")]
-  public class ParameterValueTuner<T> : ParameterValueTuner
+  public class MethodArgumentTuner<T> : MethodArgumentTuner
   {
-    public ParameterValueTuner(IUnitPattern unitPattern, int weight) : base(unitPattern, weight) { }
+    public MethodArgumentTuner(IUnitPattern unitPattern, int weight) : base(unitPattern, weight) { }
 
     /// <summary>
     ///   Use the <paramref name="value" /> for the parameter
     /// </summary>
-    public ParameterValueBuildPlan UseValue(T? value) => new(UnitPattern, new Singleton(value), Weight);
+    public ITuner UseValue(T? value) => new LastUnitTuner(UnitPattern, new Singleton(value), Weight);
   }
 }

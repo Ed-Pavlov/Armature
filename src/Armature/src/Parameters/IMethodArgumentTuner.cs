@@ -1,8 +1,8 @@
 ﻿namespace Armature
 {
-  /// <inheritdoc cref="IBuildPlan" />
+  /// <inheritdoc cref="ITuner" />
   /// <summary>
   ///   Contains plan of building value to inject into a parameter
   /// </summary>
-  public interface IParameterValueBuildPlan : IBuildPlan { }
+  public interface IMethodArgumentTuner : ITuner { }
 }

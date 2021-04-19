@@ -3,37 +3,26 @@ using Armature.Core;
 
 namespace Armature
 {
+  /// <summary>
+  /// This class provides methods to tune up how to build arguments for method parameters.
+  /// </summary>
   public static class ForParameter
   {
     /// <summary>
-    ///   Matches with parameter with <see cref="ParameterInfo.ParameterType" /> equals to <typeparamref name="T" />
+    ///   Tunes up what argument inject into method parameter of type <typeparamref name="T" />.
     /// </summary>
-    public static ParameterValueTuner<T> OfType<T>()
-    {
-      var matcher = new MethodParameterByTypePattern(typeof(T), true);
-      return new ParameterValueTuner<T>(matcher, InjectPointMatchingWeight.TypedParameter);
-    }
+    public static MethodArgumentTuner<T> OfType<T>() => new(new MethodParameterByTypePattern(typeof(T), true), InjectPointMatchingWeight.TypedParameter);
 
     /// <summary>
-    ///   Matches with parameter with <see cref="ParameterInfo.Name" /> equals to <paramref name="parameterName" />
+    ///   Tunes up what argument inject into method parameter with the specified <paramref name="parameterName"/>.
     /// </summary>
-    /// <param name="parameterName">Matches parameter with this name</param>
-    /// <returns></returns>
-    public static ParameterValueTuner Named(string parameterName)
+    public static MethodArgumentTuner Named(string parameterName)
       => new(new ParameterWithNamePattern(parameterName), InjectPointMatchingWeight.NamedParameter);
 
     /// <summary>
-    ///   Matches with parameter marked with <see cref="InjectAttribute" />(<paramref name="injectPointId" />)
+    ///   Tunes up what argument inject into method parameter marked with <see cref="InjectAttribute"/> with the specified <paramref name="injectPointId"/>. 
     /// </summary>
-    /// <param name="injectPointId">
-    ///   Matches parameter marked with <see cref="InjectAttribute" /> with <see cref="InjectAttribute.InjectionPointId" />
-    ///   equals to <paramref name="injectPointId" />
-    /// </param>
-    public static ParameterValueTuner WithInjectPoint(object? injectPointId)
-    {
-      var matcher = new ParameterWithInjectIdPattern(injectPointId);
-
-      return new ParameterValueTuner(matcher, InjectPointMatchingWeight.AttributedParameter);
-    }
+    public static MethodArgumentTuner WithInjectPoint(object? injectPointId)
+      => new MethodArgumentTuner(new ParameterWithInjectIdPattern(injectPointId), InjectPointMatchingWeight.AttributedParameter);
   }
 }

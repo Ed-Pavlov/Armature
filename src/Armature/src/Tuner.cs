@@ -18,9 +18,9 @@ namespace Armature
       if(arguments is null || arguments.Length == 0) throw new ArgumentNullException(nameof(arguments));
 
       foreach(var argument in arguments)
-        if(argument is IParameterValueBuildPlan buildPlan)
+        if(argument is IMethodArgumentTuner buildPlan)
           buildPlan.Apply(ParentNode);
-        else if(argument is IBuildPlan)
+        else if(argument is ITuner)
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected");
         else
           ParentNode
@@ -42,7 +42,7 @@ namespace Armature
       foreach(var argument in arguments)
         if(argument is IPropertyValueBuildPlan buildPlan)
           buildPlan.Apply(ParentNode);
-        else if(argument is IBuildPlan)
+        else if(argument is ITuner)
           throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected");
         else
           ParentNode

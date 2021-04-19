@@ -4,16 +4,16 @@ using Armature.Core;
 
 namespace Armature
 {
-  public class PropertyValueBuildPlan : BuildValuePlan, IPropertyValueBuildPlan
+  public class PropertyValueBuildPlan : LastUnitTuner, IPropertyValueBuildPlan
   {
     private readonly IBuildAction _getPropertyAction;
 
     public PropertyValueBuildPlan(
       IUnitPattern propertyPattern,
       IBuildAction   getPropertyAction,
-      IBuildAction   getValueAction,
+      IBuildAction   buildArgument,
       int            weight)
-      : base(propertyPattern, getValueAction, weight)
+      : base(propertyPattern, buildArgument, weight)
       => _getPropertyAction = getPropertyAction ?? throw new ArgumentNullException(nameof(getPropertyAction));
 
     /// <summary>
