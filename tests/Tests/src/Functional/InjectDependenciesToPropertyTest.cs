@@ -8,7 +8,7 @@ using Tests.Common;
 
 namespace Tests.Functional
 {
-  public class InjectPropertyValueTest
+  public class InjectDependenciesToPropertyTest
   {
     [Test]
     public void value_should_be_injected_into_injectpoint_property()

@@ -28,6 +28,6 @@ namespace Armature.Core
     ///   Builds all units represented by <see cref="UnitId" /> in the context of the current build session
     /// </summary>
     /// <returns>Returns an instance or null if unit can't be built.</returns>
-    IReadOnlyList<BuildResult>? BuildAllUnits(UnitId unitId);
+    IReadOnlyList<BuildResult> BuildAllUnits(UnitId unitId);
   }
 }

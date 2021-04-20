@@ -28,20 +28,9 @@ namespace Armature.Core
     }
 
     /// <summary>
-    ///   Builds a list of properties of currently building Unit (<paramref name="type" />) for injecting dependencies
+    ///   Builds an argument to inject into the property representing by <paramref name="propertyInfo" />
     /// </summary>
-    public static IReadOnlyList<PropertyInfo> GetPropertiesToInject(this IBuildSession buildSession, Type type)
-    {
-      var unitInfo = new UnitId(type, SpecialKey.Property);
-      var result   = buildSession.BuildAllUnits(unitInfo);
-
-      return result?.SelectMany(_ => (IReadOnlyList<PropertyInfo>) _.Value!).ToArray() ?? Empty<PropertyInfo>.Array;
-    }
-
-    /// <summary>
-    ///   "Builds" an argument to inject into the property representing by <paramref name="propertyInfo" />
-    /// </summary>
-    public static object? GetValueForProperty(this IBuildSession buildSession, PropertyInfo propertyInfo)
+    public static object? BuildArgument(this IBuildSession buildSession, PropertyInfo propertyInfo)
     {
       var buildResult = buildSession.BuildUnit(new UnitId(propertyInfo, SpecialKey.Argument));
       return buildResult.HasValue ? buildResult.Value : throw new ArmatureException(string.Format("Can't build value for property '{0}'", propertyInfo));

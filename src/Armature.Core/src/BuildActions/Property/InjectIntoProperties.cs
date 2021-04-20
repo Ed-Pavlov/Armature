@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 
 namespace Armature.Core
 {
@@ -18,14 +19,18 @@ namespace Armature.Core
     {
       if(buildSession.BuildResult.HasValue)
       {
-        var unit       = buildSession.BuildResult.Value;
-        var type       = unit!.GetType();
-        var properties = buildSession.GetPropertiesToInject(type);
+        var unit = buildSession.BuildResult.Value;
+        var type = unit!.GetType();
 
-        foreach(var property in properties)
+        var unitInfo = new UnitId(type, SpecialKey.Property);
+        var list     = buildSession.BuildAllUnits(unitInfo);
+
+        foreach(var buildResult in list)
         {
-          var value = buildSession.GetValueForProperty(property);
-          property.SetValue(unit, value);
+          var property = (PropertyInfo) buildResult.Value!;
+
+          var argument = buildSession.BuildArgument(property);
+          property.SetValue(unit, argument);
         }
       }
     }

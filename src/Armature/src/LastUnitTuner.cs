@@ -8,8 +8,8 @@ namespace Armature
   /// </summary>
   public class LastUnitTuner : BuildActionExtensibility, ITuner
   {
-    public LastUnitTuner(IUnitPattern unitPattern, IBuildAction buildArgument, int weight)
-      : base(unitPattern, buildArgument, weight) { }
+    public LastUnitTuner(IUnitPattern unitPattern, IBuildAction action, int weight)
+      : base(unitPattern, action, weight) { }
 
     void ITuner.Apply(IPatternTreeNode patternTreeNode)
     {

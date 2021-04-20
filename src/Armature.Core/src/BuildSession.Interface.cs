@@ -30,7 +30,7 @@ namespace Armature.Core
       public BuildResult BuildUnit(UnitId unitId) => _buildSession.BuildUnit(unitId);
 
       ///<inheritdoc />
-      public IReadOnlyList<BuildResult>? BuildAllUnits(UnitId unitId) => _buildSession.BuildAllUnits(unitId);
+      public IReadOnlyList<BuildResult> BuildAllUnits(UnitId unitId) => _buildSession.BuildAllUnits(unitId);
     }
   }
 }

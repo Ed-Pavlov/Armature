@@ -19,13 +19,13 @@ namespace Armature.Core
       var unitType   = buildSession.GetUnitUnderConstruction().GetUnitType();
       var properties = unitType.GetProperties().Where(_ => _.PropertyType == _type).ToArray();
 
-      if(properties.Length == 0)
-        throw new ArmatureException($"No property of type '{_type.ToLogString()}' in type '{unitType.ToLogString()}'");
-
-      if(properties.Length > 1)
-        throw new ArmatureException($"More than one property of type '{_type.ToLogString()}' in type '{unitType.ToLogString()}'");
-
-      buildSession.BuildResult = new BuildResult(properties);
+      buildSession.BuildResult =
+        properties.Length switch
+        {
+          0   => throw new ArmatureException($"No property of type '{_type.ToLogString()}' in type '{unitType.ToLogString()}'"),
+          > 1 => throw new ArmatureException($"More than one property of type '{_type.ToLogString()}' in type '{unitType.ToLogString()}'"),
+          _   => new BuildResult(properties)
+        };
     }
 
     public void PostProcess(IBuildSession buildSession) { }

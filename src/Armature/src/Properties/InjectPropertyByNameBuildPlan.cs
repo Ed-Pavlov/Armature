@@ -10,7 +10,7 @@ namespace Armature
   /// <summary>
   ///   Adds a plan injecting dependencies into properties with corresponding names
   /// </summary>
-  public class InjectPropertyByNameBuildPlan : IPropertyValueBuildPlan, IExtensibility<string[]>
+  public class InjectPropertyByNameBuildPlan : IPropertyId, IExtensibility<string[]>
   {
     private readonly string[] _names;
 

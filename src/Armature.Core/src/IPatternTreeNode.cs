@@ -41,6 +41,6 @@ namespace Armature.Core
     /// <param name="buildStage">A build stage in which the build action is executed.</param>
     /// <param name="buildAction">A build action.</param>
     /// <returns>Returns 'this' in order to use fluent syntax</returns>
-    IPatternTreeNode UseBuildAction(object buildStage, IBuildAction buildAction);
+    IPatternTreeNode UseBuildAction(object buildStage, IBuildAction buildAction); //TODO: change parameters position
   }
 }

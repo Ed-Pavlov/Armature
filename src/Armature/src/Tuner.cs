@@ -37,10 +37,10 @@ namespace Armature
     /// </summary>
     public Tuner UsingPropertyArguments(params object[] arguments)
     {
-      ParentNode.UseBuildAction(BuildStage.Initialize, InjectIntoProperties.Instance);
+      ParentNode.UseBuildAction(BuildStage.Initialize, InjectIntoProperties.Instance); //TODO: dont add two times
 
       foreach(var argument in arguments)
-        if(argument is IPropertyValueBuildPlan buildPlan)
+        if(argument is IPropertyId buildPlan)
           buildPlan.Apply(ParentNode);
         else if(argument is ITuner)
           throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected");
@@ -51,6 +51,17 @@ namespace Armature
 
       return this;
     }
+
+    public Tuner InjectIntoProperty(params IPropertyId[] propertyIds)
+    {
+      ParentNode.UseBuildAction(BuildStage.Initialize, InjectIntoProperties.Instance); //TODO: dont add two times
+
+      foreach(var propertyId in propertyIds)
+        propertyId.Apply(ParentNode);
+
+      return this;
+    }
+
 
     /// <summary>
     ///   Register Unit as an singleton with a lifetime equal to parent <see cref="BuildPlanCollection"/>. See <see cref="Singleton" /> for details
