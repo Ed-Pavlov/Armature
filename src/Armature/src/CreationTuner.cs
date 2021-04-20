@@ -19,13 +19,13 @@ namespace Armature
     ///   Specifies that unit should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
     /// </summary>
     public Tuner CreatedByDefault()
-      => new(ParentNode.GetOrAddNode(new IfFirstUnitMatches(new Pattern(Type, Key)).UseBuildAction(BuildStage.Create, Default.CreationBuildAction)));
+      => new(ParentNode.GetOrAddNode(new IfFirstUnitMatches(new Pattern(Type, Key)).UseBuildAction(Default.CreationBuildAction, BuildStage.Create)));
 
     /// <summary>
     ///   Specifies that unit should be created using reflection.
     /// </summary>
     public Tuner CreatedByReflection()
-      => new(ParentNode.GetOrAddNode(new IfFirstUnitMatches(new Pattern(Type, Key)).UseBuildAction(BuildStage.Create, CreateByReflection.Instance)));
+      => new(ParentNode.GetOrAddNode(new IfFirstUnitMatches(new Pattern(Type, Key)).UseBuildAction(CreateByReflection.Instance, BuildStage.Create)));
     
     Type IExtensibility<Type, object>.   Item1 => Type;
     object? IExtensibility<Type, object>.Item2 => Key;

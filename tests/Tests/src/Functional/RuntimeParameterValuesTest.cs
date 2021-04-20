@@ -100,9 +100,9 @@ namespace Tests.Functional
            {
              // inject into constructor
              new IfLastUnitMatches(ConstructorPattern.Instance)
-              .UseBuildAction(BuildStage.Create, GetLongestConstructor.Instance),
+              .UseBuildAction(GetLongestConstructor.Instance, BuildStage.Create),
              new IfLastUnitMatches(MethodArgumentPattern.Instance)
-              .UseBuildAction(BuildStage.Create, BuildArgumentForMethodParameter.Instance) // autowiring
+              .UseBuildAction(BuildArgumentForMethodParameter.Instance, BuildStage.Create) // autowiring
            }
          };
 

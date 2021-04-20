@@ -101,7 +101,7 @@ namespace Tests.Functional
            {
              // inject into constructor
              new IfLastUnitMatches(ConstructorPattern.Instance)
-              .UseBuildAction(BuildStage.Create, GetLongestConstructor.Instance)
+              .UseBuildAction(GetLongestConstructor.Instance, BuildStage.Create)
            }
          };
 

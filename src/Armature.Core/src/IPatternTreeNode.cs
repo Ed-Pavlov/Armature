@@ -38,9 +38,9 @@ namespace Armature.Core
     ///   Adds a <see cref="IBuildAction" /> for a "to be built" unit which is matched by the branch of the pattern tree represented by this node
     ///   with its parents. 
     /// </summary>
-    /// <param name="buildStage">A build stage in which the build action is executed.</param>
     /// <param name="buildAction">A build action.</param>
+    /// <param name="buildStage">A build stage in which the build action is executed.</param>
     /// <returns>Returns 'this' in order to use fluent syntax</returns>
-    IPatternTreeNode UseBuildAction(object buildStage, IBuildAction buildAction); //TODO: change parameters position
+    IPatternTreeNode UseBuildAction(IBuildAction buildAction, object buildStage); //TODO: change parameters position
   }
 }

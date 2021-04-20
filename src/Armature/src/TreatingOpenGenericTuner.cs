@@ -22,7 +22,7 @@ namespace Armature
     /// </summary>
     public OpenGenericCreationTuner As(Type openGenericType, object? key = null)
     {
-      ParentNode.UseBuildAction(BuildStage.Create, new RedirectOpenGenericType(openGenericType, key));
+      ParentNode.UseBuildAction(new RedirectOpenGenericType(openGenericType, key), BuildStage.Create);
       return new OpenGenericCreationTuner(ParentNode, openGenericType, key);
     }
 
@@ -31,7 +31,7 @@ namespace Armature
     /// </summary>
     public Tuner AsIs()
     {
-      ParentNode.UseBuildAction(BuildStage.Create, Default.CreationBuildAction);
+      ParentNode.UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
       return new Tuner(ParentNode);
     }
   }

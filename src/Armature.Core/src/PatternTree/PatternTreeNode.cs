@@ -32,7 +32,7 @@ namespace Armature.Core
 
     /// <inheritdoc />
     [DebuggerStepThrough]
-    public virtual IPatternTreeNode UseBuildAction(object buildStage, IBuildAction buildAction)
+    public virtual IPatternTreeNode UseBuildAction(IBuildAction buildAction, object buildStage)
     {
       LazyBuildAction
        .GetOrCreateValue(buildStage, () => new List<IBuildAction>())

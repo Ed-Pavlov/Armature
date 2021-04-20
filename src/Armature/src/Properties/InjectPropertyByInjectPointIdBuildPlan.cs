@@ -18,7 +18,7 @@ namespace Armature
     public void Apply(IPatternTreeNode patternTreeNode)
       => patternTreeNode
         .GetOrAddNode(new IfLastUnitMatches(PropertiesListPattern.Instance))
-        .UseBuildAction(BuildStage.Create, new GetPropertyListByInjectPointId(Item1));
+        .UseBuildAction(new GetPropertyListByInjectPointId(Item1), BuildStage.Create);
 
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", Item1));
   }

@@ -254,9 +254,7 @@ namespace Tests.Functional
            {
              // inject into constructor
              new IfLastUnitMatches(ConstructorPattern.Instance)
-              .UseBuildAction(
-                 BuildStage.Create,
-                 new GetConstructorByParameterTypes()) // use empty ctor by default in this test
+              .UseBuildAction(new GetConstructorByParameterTypes(), BuildStage.Create) // use empty ctor by default in this test
            }
          };
 

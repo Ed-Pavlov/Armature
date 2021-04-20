@@ -21,7 +21,7 @@ namespace Armature
     public Tuner CreatedByDefault()
       => new(ParentNode
             .GetOrAddNode(new FindUnitMatches(new OpenGenericTypePattern(OpenGenericType, Key), QueryWeight.WildcardMatchingUnit - 1))
-            .UseBuildAction(BuildStage.Create, Default.CreationBuildAction));
+            .UseBuildAction(Default.CreationBuildAction, BuildStage.Create));
 
     /// <summary>
     ///   Specifies that unit should be created using reflection.
@@ -29,7 +29,7 @@ namespace Armature
     public Tuner CreatedByReflection() => 
       new(ParentNode
          .GetOrAddNode(new FindUnitMatches(new OpenGenericTypePattern(OpenGenericType, Key), QueryWeight.WildcardMatchingUnit - 1))
-         .UseBuildAction(BuildStage.Create, CreateByReflection.Instance));
+         .UseBuildAction(CreateByReflection.Instance, BuildStage.Create));
 
     Type IExtensibility<Type, object>.   Item1 => OpenGenericType;
     object? IExtensibility<Type, object>.Item2 => Key;

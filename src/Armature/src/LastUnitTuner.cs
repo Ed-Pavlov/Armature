@@ -15,7 +15,7 @@ namespace Armature
     {
       patternTreeNode
        .GetOrAddNode(new IfLastUnitMatches(UnitPattern, Weight))
-       .UseBuildAction(BuildStage.Create, BuildAction);
+       .UseBuildAction(BuildAction, BuildStage.Create);
 
       Apply(patternTreeNode);
     }

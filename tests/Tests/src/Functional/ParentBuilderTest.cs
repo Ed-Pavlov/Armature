@@ -220,7 +220,7 @@ namespace Tests.Functional
       target
        .GetOrAddNode(new SkipToLastUnit())
        .AddNode(new IfLastUnitMatches(CanBeInstantiatedPattern.Instance))
-       .UseBuildAction(BuildStage.Cache, new DebugOnlyBuildAction());
+       .UseBuildAction(new DebugOnlyBuildAction(), BuildStage.Cache);
 
       // --act
       var actual = target.Build<string>();
@@ -257,9 +257,9 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              new IfLastUnitMatches(ConstructorPattern.Instance)
-              .UseBuildAction(BuildStage.Create, GetLongestConstructor.Instance),
+              .UseBuildAction(GetLongestConstructor.Instance, BuildStage.Create),
              new IfLastUnitMatches(MethodArgumentPattern.Instance)
-              .UseBuildAction(BuildStage.Create, BuildArgumentForMethodParameter.Instance)
+              .UseBuildAction(BuildArgumentForMethodParameter.Instance, BuildStage.Create)
            }
          };
 

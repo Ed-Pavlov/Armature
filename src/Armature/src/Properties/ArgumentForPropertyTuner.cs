@@ -17,6 +17,6 @@ namespace Armature
     protected override void Apply(IPatternTreeNode patternTreeNode)
       => patternTreeNode
         .GetOrAddNode(new IfLastUnitMatches(PropertiesListPattern.Instance))
-        .UseBuildAction(BuildStage.Create, _getPropertyAction);
+        .UseBuildAction(_getPropertyAction, BuildStage.Create);
   }
 }

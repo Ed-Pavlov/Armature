@@ -38,8 +38,8 @@ namespace Armature.Core
         _treeRoot.PrintToLog();
     }
 
-    public bool                       Equals(IPatternTreeNode other)                                => throw new NotSupportedException();
-    IPatternTreeNode IPatternTreeNode.UseBuildAction(object   buildStage, IBuildAction buildAction) => throw new NotSupportedException();
+    public bool                       Equals(IPatternTreeNode     other)                          => throw new NotSupportedException();
+    IPatternTreeNode IPatternTreeNode.UseBuildAction(IBuildAction buildAction, object buildStage) => throw new NotSupportedException();
 
     #region Syntax sugar
 

@@ -25,7 +25,7 @@ namespace Armature
         else
           ParentNode
            .GetOrAddNode(new IfLastUnitMatches(new MethodParameterByTypePattern(argument.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
-           .UseBuildAction(BuildStage.Create, new Singleton(argument));
+           .UseBuildAction(new Singleton(argument), BuildStage.Create);
 
       return this;
     }
@@ -37,7 +37,7 @@ namespace Armature
     /// </summary>
     public Tuner UsingPropertyArguments(params object[] arguments)
     {
-      ParentNode.UseBuildAction(BuildStage.Initialize, InjectIntoProperties.Instance); //TODO: dont add two times
+      ParentNode.UseBuildAction(InjectIntoProperties.Instance, BuildStage.Initialize); //TODO: dont add two times
 
       foreach(var argument in arguments)
         if(argument is IPropertyId buildPlan)
@@ -47,14 +47,14 @@ namespace Armature
         else
           ParentNode
            .GetOrAddNode(new IfLastUnitMatches(new PropertyByTypePattern(argument.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
-           .UseBuildAction(BuildStage.Create, new Singleton(argument));
+           .UseBuildAction(new Singleton(argument), BuildStage.Create);
 
       return this;
     }
 
     public Tuner InjectIntoProperty(params IPropertyId[] propertyIds)
     {
-      ParentNode.UseBuildAction(BuildStage.Initialize, InjectIntoProperties.Instance); //TODO: dont add two times
+      ParentNode.UseBuildAction(InjectIntoProperties.Instance, BuildStage.Initialize); //TODO: dont add two times
 
       foreach(var propertyId in propertyIds)
         propertyId.Apply(ParentNode);
@@ -66,7 +66,7 @@ namespace Armature
     /// <summary>
     ///   Register Unit as an singleton with a lifetime equal to parent <see cref="BuildPlanCollection"/>. See <see cref="Singleton" /> for details
     /// </summary>
-    public void AsSingleton() => ParentNode.UseBuildAction(BuildStage.Cache, new Singleton());
+    public void AsSingleton() => ParentNode.UseBuildAction(new Singleton(), BuildStage.Cache);
 
     /// <summary>
     ///   Instantiate a Unit using a constructor with the biggest number of parameters
@@ -75,7 +75,7 @@ namespace Armature
     {
       ParentNode
        .GetOrAddNode(new IfLastUnitMatches(ConstructorPattern.Instance))
-       .UseBuildAction(BuildStage.Create, GetLongestConstructor.Instance);
+       .UseBuildAction(GetLongestConstructor.Instance, BuildStage.Create);
 
       return this;
     }
@@ -87,7 +87,7 @@ namespace Armature
     {
       ParentNode
        .GetOrAddNode(new IfLastUnitMatches(ConstructorPattern.Instance))
-       .UseBuildAction(BuildStage.Create, new GetConstructorByInjectPointId(injectionPointId));
+       .UseBuildAction(new GetConstructorByInjectPointId(injectionPointId), BuildStage.Create);
 
       return this;
     }
@@ -124,7 +124,7 @@ namespace Armature
     {
       ParentNode
        .GetOrAddNode(new IfLastUnitMatches(ConstructorPattern.Instance))
-       .UseBuildAction(BuildStage.Create, new GetConstructorByParameterTypes(parameterTypes));
+       .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create);
 
       return this;
     }

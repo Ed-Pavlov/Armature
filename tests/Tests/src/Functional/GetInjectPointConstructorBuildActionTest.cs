@@ -76,14 +76,14 @@ namespace Tests.Functional
              // inject into constructor
              new IfLastUnitMatches(ConstructorPattern.Instance)
               .UseBuildAction(
-                 BuildStage.Create,
                  new OrderedBuildActionContainer
                  {
                    new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
-                   GetLongestConstructor.Instance   // constructor with largest number of parameters has less priority
-                 }),
+                   GetLongestConstructor.Instance       // constructor with largest number of parameters has less priority
+                 },
+                 BuildStage.Create),
              new IfLastUnitMatches(MethodArgumentPattern.Instance)
-              .UseBuildAction(BuildStage.Create, BuildArgumentForMethodParameter.Instance)
+              .UseBuildAction(BuildArgumentForMethodParameter.Instance, BuildStage.Create)
            }
          };
 

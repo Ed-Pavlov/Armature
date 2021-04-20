@@ -1,4 +1,6 @@
-﻿namespace Armature.Core
+﻿using System;
+
+namespace Armature.Core
 {
   /// <summary>
   /// Represents a pattern used to match with the unit id in order to gather a set of <see cref="IBuildAction"/> needed to build a unit.

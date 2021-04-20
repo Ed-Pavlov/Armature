@@ -19,7 +19,7 @@ namespace Tests.UnitTests
       // --arrange
       var target = new FindUnitMatches(Match.Type<IDisposable>(null))
                   .GetOrAddNode(new FindUnitMatches(Match.Type<MemoryStream>(null)))
-                  .UseBuildAction(BuildStage.Cache, expected);
+                  .UseBuildAction(expected, BuildStage.Cache);
 
       // --act
       var actual = target
@@ -36,10 +36,10 @@ namespace Tests.UnitTests
       // --arrange
       var unitIdMatcher = Match.Type<int>(null);
       var buildStep1    = new IfLastUnitMatches(unitIdMatcher);
-      buildStep1.UseBuildAction(BuildStage.Cache, CreateByReflection.Instance);
+      buildStep1.UseBuildAction(CreateByReflection.Instance, BuildStage.Cache);
       var singletonAction = new Singleton();
       var buildStep2      = new FindUnitMatches(unitIdMatcher);
-      buildStep2.UseBuildAction(BuildStage.Cache, singletonAction);
+      buildStep2.UseBuildAction(singletonAction, BuildStage.Cache);
 
       var target = new FindUnitMatches(Match.Type<string>(null));
       target.GetOrAddNode(buildStep1);

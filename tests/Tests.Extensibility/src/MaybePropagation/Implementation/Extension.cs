@@ -14,7 +14,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     {
       var treat     = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
       var uniqueKey = Guid.NewGuid();
-      treat.PatternTreeNode.UseBuildAction(BuildStage.Create, new BuildMaybeAction<T>(uniqueKey));
+      treat.PatternTreeNode.UseBuildAction(new BuildMaybeAction<T>(uniqueKey), BuildStage.Create);
 
       return new TreatingTuner<T>(
         treat.PatternTreeNode.GetOrAddNode(new FindUnitMatches(new Pattern(typeof(T), uniqueKey), 0)));
@@ -26,7 +26,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     public static TreatingTuner<Maybe<T>> AsMaybeValueOf<T>(this TreatingTuner<T> treatingTuner)
     {
       var treat = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
-      return new TreatingTuner<Maybe<T>>(treat.PatternTreeNode.UseBuildAction(BuildStage.Initialize, new GetMaybeValueBuildAction<T>()));
+      return new TreatingTuner<Maybe<T>>(treat.PatternTreeNode.UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize));
     }
   }
 }

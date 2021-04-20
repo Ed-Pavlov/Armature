@@ -20,14 +20,14 @@ namespace Armature
     /// </summary>
     public Tuner AsIs()
     {
-      ParentNode.UseBuildAction(BuildStage.Create, Default.CreationBuildAction);
+      ParentNode.UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
       return this;
     }
 
     /// <summary>
     ///   Use specified <paramref name="instance"/> as a unit.
     /// </summary>
-    public void AsInstance(T? instance) => ParentNode.UseBuildAction(BuildStage.Cache, new Singleton(instance));
+    public void AsInstance(T? instance) => ParentNode.UseBuildAction(new Singleton(instance), BuildStage.Cache);
 
     /// <summary>
     ///   Build an object of the specified <paramref name="type"/> instead.
@@ -35,7 +35,7 @@ namespace Armature
     /// </summary>
     public CreationTuner As(Type type, object? key = null)
     {
-      ParentNode.UseBuildAction(BuildStage.Create, new RedirectType(type, key));
+      ParentNode.UseBuildAction(new RedirectType(type, key), BuildStage.Create);
       return new CreationTuner(ParentNode, type, key);
     }
 
@@ -63,38 +63,38 @@ namespace Armature
     ///   Use specified <paramref name="factoryMethod"/> to create a unit.
     /// </summary>
     public Tuner AsCreatedWith(Func<T> factoryMethod)
-      => new(ParentNode.UseBuildAction(BuildStage.Create, new CreateWithFactoryMethod<T>(_ => factoryMethod())));
+      => new(ParentNode.UseBuildAction(new CreateWithFactoryMethod<T>(_ => factoryMethod()), BuildStage.Create));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1>(Func<T1?, T?> factoryMethod)
-      => new(ParentNode.UseBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod)));
+      => new(ParentNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod), BuildStage.Create));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1, T2>(Func<T1?, T2?, T?> factoryMethod)
-      => new(ParentNode.UseBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod)));
+      => new(ParentNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod), BuildStage.Create));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1, T2, T3>(Func<T1?, T2?, T3?, T?> factoryMethod)
-      => new(ParentNode.UseBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod)));
+      => new(ParentNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod), BuildStage.Create));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1, T2, T3, T4>(Func<T1?, T2?, T3?, T4?, T?> factoryMethod)
-      => new(ParentNode.UseBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T>(factoryMethod)));
+      => new(ParentNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T>(factoryMethod), BuildStage.Create));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1, T2, T3, T4, T5>(Func<T1?, T2?, T3?, T4?, T5?, T?> factoryMethod)
-      => new(ParentNode.UseBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T>(factoryMethod)));
+      => new(ParentNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T>(factoryMethod), BuildStage.Create));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1, T2, T3, T4, T5, T6>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T?> factoryMethod)
-      => new(ParentNode.UseBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T>(factoryMethod)));
+      => new(ParentNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T>(factoryMethod), BuildStage.Create));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith<T1, T2, T3, T4, T5, T6, T7>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T7?, T?> factoryMethod)
-      => new(ParentNode.UseBuildAction(BuildStage.Create, new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, T>(factoryMethod)));
+      => new(ParentNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, T>(factoryMethod), BuildStage.Create));
 
     /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
     public Tuner AsCreatedWith(Func<IBuildSession, T> factoryMethod)
-      => new(ParentNode.UseBuildAction(BuildStage.Create, new CreateWithFactoryMethod<T>(factoryMethod)));
+      => new(ParentNode.UseBuildAction(new CreateWithFactoryMethod<T>(factoryMethod), BuildStage.Create));
   }
 }
