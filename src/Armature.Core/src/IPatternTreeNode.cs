@@ -14,6 +14,8 @@ namespace Armature.Core
     /// All nodes with their children are a pattern tree.  
     /// </summary>
     ICollection<IPatternTreeNode> Children { get; }
+    
+    BuildActionBag BuildActions { get; }
 
     /// <summary>
     ///   Returns build actions which should be performed to build a unit represented by the last item of <paramref name="unitSequence" />
@@ -30,17 +32,11 @@ namespace Armature.Core
     /// </remarks>
     /// <returns>
     ///   Returns all matched build actions for the <paramref name="unitSequence" />. All actions are grouped by a building stage
-    ///   and coupled with a "weight of matching". See <see cref="BuildActionBag" /> for details.
+    ///   and coupled with a "weight of matching". See <see cref="WeightedBuildActionBag" /> for details.
     /// </returns>
-    BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight);
+    WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight);
 
-    /// <summary>
-    ///   Adds a <see cref="IBuildAction" /> for a "to be built" unit which is matched by the branch of the pattern tree represented by this node
-    ///   with its parents. 
-    /// </summary>
-    /// <param name="buildAction">A build action.</param>
-    /// <param name="buildStage">A build stage in which the build action is executed.</param>
-    /// <returns>Returns 'this' in order to use fluent syntax</returns>
-    IPatternTreeNode UseBuildAction(IBuildAction buildAction, object buildStage); //TODO: change parameters position
+
+    // IPatternTreeNode UseBuildAction(IBuildAction buildAction, object buildStage); //TODO: change parameters position
   }
 }

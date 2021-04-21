@@ -15,12 +15,12 @@ namespace Armature.Core
     ///   Merges two collections into one
     /// </summary>
     [DebuggerStepThrough]
-    public static BuildActionBag? Merge(this BuildActionBag? left, BuildActionBag? right)
+    public static WeightedBuildActionBag? Merge(this WeightedBuildActionBag? left, WeightedBuildActionBag? right)
     {
       if(left is null) return right;
       if(right is null) return left;
 
-      var result = new BuildActionBag();
+      var result = new WeightedBuildActionBag();
 
       foreach(var pair in left)
       {
@@ -50,7 +50,7 @@ namespace Armature.Core
     ///   Returns the build action with biggest matching weight for the build stage
     /// </summary>
     /// <exception cref="ArmatureException">Throws if there are more than one action with equal matching weight</exception>
-    public static IBuildAction? GetTopmostAction(this BuildActionBag? buildActionBag, object stage)
+    public static IBuildAction? GetTopmostAction(this WeightedBuildActionBag? buildActionBag, object stage)
     {
       if(stage is null) throw new ArgumentNullException(nameof(stage));
 

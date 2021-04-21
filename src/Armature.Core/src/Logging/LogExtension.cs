@@ -32,7 +32,7 @@ namespace Armature.Core.Logging
             }
         });
 
-    public static void ToLog(this BuildActionBag? actions, LogLevel logLevel = LogLevel.Verbose)
+    public static void ToLog(this WeightedBuildActionBag? actions, LogLevel logLevel = LogLevel.Verbose)
       => logLevel.ExecuteIfEnabled(
         () =>
         {

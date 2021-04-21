@@ -29,8 +29,9 @@ namespace Armature.Core
     private readonly TreeRoot _treeRoot = new();
 
     public ICollection<IPatternTreeNode> Children => _treeRoot.Children;
-    
-    public BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight = 0) => _treeRoot.GatherBuildActions(unitSequence, 0);
+
+    public WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight = 0)
+      => _treeRoot.GatherBuildActions(unitSequence, 0);
 
     public void PrintToLog()
     {
@@ -38,8 +39,8 @@ namespace Armature.Core
         _treeRoot.PrintToLog();
     }
 
-    public bool                       Equals(IPatternTreeNode     other)                          => throw new NotSupportedException();
-    IPatternTreeNode IPatternTreeNode.UseBuildAction(IBuildAction buildAction, object buildStage) => throw new NotSupportedException();
+    public BuildActionBag BuildActions                   => throw new NotSupportedException();
+    public bool           Equals(IPatternTreeNode other) => throw new NotSupportedException();
 
     #region Syntax sugar
 
@@ -57,7 +58,8 @@ namespace Armature.Core
       public TreeRoot() : base(0) { }
 
       [DebuggerStepThrough]
-      public override BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight) => GetChildrenActions(unitSequence, inputWeight);
+      public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
+        => GetChildrenActions(unitSequence, inputWeight);
 
       [DebuggerStepThrough]
       public override bool Equals(IPatternTreeNode other) => throw new NotSupportedException();

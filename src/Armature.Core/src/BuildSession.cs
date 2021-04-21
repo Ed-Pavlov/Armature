@@ -87,7 +87,7 @@ namespace Armature.Core
     /// <summary>
     /// Common logic to build one or all units
     /// </summary>
-    private T Build<T>(UnitId unitId, Func<BuildActionBag?, T> build)
+    private T Build<T>(UnitId unitId, Func<WeightedBuildActionBag?, T> build)
     {
       using(LogBuildSessionState(unitId))
       {
@@ -95,8 +95,8 @@ namespace Armature.Core
 
         try
         {
-          BuildActionBag? actions;
-          BuildActionBag? auxActions;
+          WeightedBuildActionBag? actions;
+          WeightedBuildActionBag? auxActions;
 
           using(Log.Block(LogLevel.Verbose, "Looking for build actions"))
           {
@@ -120,7 +120,7 @@ namespace Armature.Core
       }
     }
 
-    private BuildResult BuildUnit(BuildActionBag? buildActionBag)
+    private BuildResult BuildUnit(WeightedBuildActionBag? buildActionBag)
     {
       if(buildActionBag is null)
         return BuildViaParentBuilder(_buildSequence.Last());
@@ -170,7 +170,7 @@ namespace Armature.Core
                : BuildViaParentBuilder(_buildSequence.Last());
     }
 
-    private List<BuildResult> BuildAllUnits(BuildActionBag? buildActionBag)
+    private List<BuildResult> BuildAllUnits(WeightedBuildActionBag? buildActionBag)
     {
       if(buildActionBag is null) return Empty<BuildResult>.List;
 

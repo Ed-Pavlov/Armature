@@ -22,33 +22,23 @@ namespace Armature.Core
   /// </remarks>
   public abstract class PatternTreeNode : IPatternTreeNode, IEnumerable
   {
-    private Dictionary<object, List<IBuildAction>>? _buildActions;
-    private Dictionary<object, List<IBuildAction>>  LazyBuildAction => _buildActions ??= new Dictionary<object, List<IBuildAction>>();
+    private BuildActionBag? _buildActions;
+    private BuildActionBag  LazyBuildAction => _buildActions ??= new BuildActionBag();
 
     protected PatternTreeNode(int weight) => Weight = weight;
 
-    public abstract ICollection<IPatternTreeNode> Children { get; }
-    public abstract BuildActionBag?               GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight);
-
-    /// <inheritdoc />
-    [DebuggerStepThrough]
-    public virtual IPatternTreeNode UseBuildAction(IBuildAction buildAction, object buildStage)
-    {
-      LazyBuildAction
-       .GetOrCreateValue(buildStage, () => new List<IBuildAction>())
-       .Add(buildAction);
-
-      return this;
-    }
+    public virtual  BuildActionBag                BuildActions => LazyBuildAction;
+    public abstract ICollection<IPatternTreeNode> Children     { get; }
+    public abstract WeightedBuildActionBag?       GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight);
 
     protected int Weight { [DebuggerStepThrough] get; }
 
     [DebuggerStepThrough]
-    protected BuildActionBag? GetOwnBuildActions(int matchingWeight)
+    protected WeightedBuildActionBag? GetOwnBuildActions(int matchingWeight)
     {
       if(_buildActions is null) return null;
 
-      var result = new BuildActionBag();
+      var result = new WeightedBuildActionBag();
 
       foreach(var pair in _buildActions)
         result.Add(pair.Key, pair.Value.Select(_ => _.WithWeight(matchingWeight)).ToList());

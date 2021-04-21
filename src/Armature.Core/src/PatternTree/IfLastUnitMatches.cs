@@ -18,7 +18,7 @@ namespace Armature.Core
 
     public override ICollection<IPatternTreeNode> Children => throw new NotSupportedException("This pattern can't contain children");
 
-    public override BuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
+    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {
       if(unitSequence.Length > 1) return null;
 
