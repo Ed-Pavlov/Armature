@@ -37,7 +37,7 @@ namespace Armature
     /// </summary>
     public Tuner UsingPropertyArguments(params object[] arguments)
     {
-      ParentNode.UseBuildAction(InjectIntoProperties.Instance, BuildStage.Initialize); //TODO: dont add two times
+      ParentNode.UseBuildAction(InjectIntoProperties.Instance, BuildStage.Initialize, true); //TODO: dont add two times
 
       foreach(var argument in arguments)
         if(argument is IPropertyId buildPlan)
@@ -54,7 +54,7 @@ namespace Armature
 
     public Tuner InjectIntoProperty(params IPropertyId[] propertyIds)
     {
-      ParentNode.UseBuildAction(InjectIntoProperties.Instance, BuildStage.Initialize); //TODO: dont add two times
+      ParentNode.UseBuildAction(InjectIntoProperties.Instance, BuildStage.Initialize, true); //TODO: dont add two times
 
       foreach(var propertyId in propertyIds)
         propertyId.Apply(ParentNode);

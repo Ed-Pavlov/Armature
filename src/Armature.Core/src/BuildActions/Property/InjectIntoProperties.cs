@@ -6,7 +6,7 @@ namespace Armature.Core
   /// <summary>
   ///   Injects values into building Unit properties specified for injection
   /// </summary>
-  public class InjectIntoProperties : IBuildAction
+  public record InjectIntoProperties : IBuildAction
   {
     public static readonly IBuildAction Instance = new InjectIntoProperties();
 

@@ -48,14 +48,18 @@ namespace Armature.Core
     /// <param name="node"></param>
     /// <param name="buildAction">A build action.</param>
     /// <param name="buildStage">A build stage in which the build action is executed.</param>
+    /// <param name="checkIfNotPresent"></param>
     /// <returns>Returns 'this' in order to use fluent syntax</returns>    
     [DebuggerStepThrough]
-    public static IPatternTreeNode UseBuildAction(this IPatternTreeNode node, IBuildAction buildAction, object buildStage)
+    public static IPatternTreeNode UseBuildAction(this IPatternTreeNode node, IBuildAction buildAction, object buildStage, bool checkIfNotPresent = false)
     {
-      node.BuildActions
-       .GetOrCreateValue(buildStage, () => new List<IBuildAction>())
-       .Add(buildAction);
+      var collection = node.BuildActions.GetOrCreateValue(buildStage, () => new List<IBuildAction>());
 
+      if(checkIfNotPresent)
+        if(collection.Contains(buildAction))
+          return node;
+      
+      collection.Add(buildAction);
       return node;
     }
   }
