@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 
 namespace Armature.Core
@@ -6,11 +7,11 @@ namespace Armature.Core
   /// <summary>
   ///   Injects values into building Unit properties specified for injection
   /// </summary>
-  public record InjectIntoProperties : IBuildAction
+  public record InjectDependenciesIntoProperties : IBuildAction
   {
-    public static readonly IBuildAction Instance = new InjectIntoProperties();
+    public static readonly IBuildAction Instance = new InjectDependenciesIntoProperties();
 
-    private InjectIntoProperties() { }
+    private InjectDependenciesIntoProperties() { }
 
     [DebuggerStepThrough]
     public void Process(IBuildSession buildSession) { }
@@ -22,12 +23,12 @@ namespace Armature.Core
         var unit = buildSession.BuildResult.Value;
         var type = unit!.GetType();
 
-        var unitInfo = new UnitId(type, SpecialKey.Property);
-        var list     = buildSession.BuildAllUnits(unitInfo);
+        var unitInfo = new UnitId(type, SpecialKey.PropertiesList);
+        var unitList = buildSession.BuildAllUnits(unitInfo);
 
-        foreach(var buildResult in list)
+        foreach(var property in unitList.Select(result => result.Value!).SelectMany(list => (PropertyInfo[])list))
         {
-          var property = (PropertyInfo) buildResult.Value!;
+          // var property = (PropertyInfo)buildResult.Value!;
 
           var argument = buildSession.BuildArgument(property);
           property.SetValue(unit, argument);

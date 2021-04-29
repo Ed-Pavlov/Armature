@@ -19,7 +19,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingMethodArguments(new object()); // set value to inject into ctor
+       .UsingArguments(new object()); // set value to inject into ctor
 
       // --act
       var actual = target.Build<Subject>();

@@ -4,12 +4,12 @@ using Armature.Extensibility;
 namespace Armature
 {
   /// <summary>
-  ///   Stores and applies a plan how to build value to inject.
+  ///  Adds a <see cref="IfLastUnitMatches"/>  pattern with a build action passed into a constructor to the tree passed to the
+  /// <see cref="Apply(IPatternTreeNode)"/> method
   /// </summary>
-  public class LastUnitTuner : BuildActionExtensibility, ITuner
+  public abstract class LastUnitTuner : BuildActionExtensibility, ITuner
   {
-    public LastUnitTuner(IUnitPattern unitPattern, IBuildAction action, int weight)
-      : base(unitPattern, action, weight) { }
+    protected LastUnitTuner(IUnitPattern unitPattern, IBuildAction action, int weight) : base(unitPattern, action, weight) { }
 
     void ITuner.Apply(IPatternTreeNode patternTreeNode)
     {
@@ -21,7 +21,7 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Can be overriden to add extra logic in addition to implemented in <see cref="ITuner.Apply" />
+    /// Can be overriden to add extra logic in addition to implemented in this class
     /// </summary>
     protected virtual void Apply(IPatternTreeNode patternTreeNode) { }
   }

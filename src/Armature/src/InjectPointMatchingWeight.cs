@@ -23,6 +23,8 @@ namespace Armature
     protected static int Attribute  = StrictType + Step;
     protected static int Name       = Attribute  + Step;
 
+    public static int Hz;
+    
     /// <summary>
     ///   Weight of matcher matching value for parameter by assignability value to parameter.
     /// </summary>

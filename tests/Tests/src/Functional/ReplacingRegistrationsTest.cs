@@ -22,7 +22,7 @@ namespace Tests.Functional
       builder
        .OverrideTreat<Subject>()
        .AsIs()
-       .UsingMethodArguments(10);
+       .UsingArguments(10);
 
       builder.Build<Subject>().Should().BeOfType<Subject>().Which.Value.Should().Be(10);
     }

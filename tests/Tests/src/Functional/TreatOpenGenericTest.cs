@@ -43,7 +43,7 @@ namespace Tests.Functional
       target
        .TreatOpenGeneric(typeof(ISubject<>))
        .AsCreated(typeof(Subject<>))
-       .UsingMethodArguments(expected);
+       .UsingArguments(expected);
 
       // --act
       var actual = target.Build<ISubject<int>>();
@@ -61,14 +61,14 @@ namespace Tests.Functional
       target
        .TreatOpenGeneric(typeof(ISubject<>))
        .AsCreated(typeof(Subject<>))
-       .UsingMethodArguments("open");
+       .UsingArguments("open");
 
       const string closed = "closed";
 
       target
        .Treat<ISubject<string>>()
        .AsCreated<Subject<string>>()
-       .UsingMethodArguments(closed);
+       .UsingArguments(closed);
 
       // --act
       var actual = target.Build<ISubject<string>>();

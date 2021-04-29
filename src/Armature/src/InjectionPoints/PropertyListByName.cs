@@ -10,25 +10,17 @@ namespace Armature
   /// <summary>
   ///   Adds a plan injecting dependencies into properties with corresponding names
   /// </summary>
-  public class InjectPropertyByNameBuildPlan : IPropertyId, IExtensibility<string[]>
+  public class PropertyListByName : LastUnitTuner, IInjectPointTuner //, IExtensibility<string[]>
   {
     private readonly string[] _names;
 
     [DebuggerStepThrough]
-    public InjectPropertyByNameBuildPlan(params string[] names)
+    public PropertyListByName(string[] names, int weight) : base(PropertiesListPattern.Instance, new GetPropertyListByNameBuildAction(names), weight)
     {
       if(names is null || names.Length == 0) throw new ArgumentNullException(nameof(names));
 
       _names = names;
     }
-
-    string[] IExtensibility<string[]>.Item1 => _names;
-
-    [DebuggerStepThrough]
-    public void Apply(IPatternTreeNode patternTreeNode)
-      => patternTreeNode
-        .GetOrAddNode(new IfLastUnitMatches(PropertiesListPattern.Instance))
-        .UseBuildAction(new GetPropertyByNameBuildAction(_names), BuildStage.Create);
 
     public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", _names));
   }

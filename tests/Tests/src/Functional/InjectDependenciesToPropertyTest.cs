@@ -24,7 +24,7 @@ namespace Tests.Functional
           skipToLastUnit =>
             skipToLastUnit
              .AddNode(new IfLastUnitMatches(CanBeInstantiatedPattern.Instance))
-             .UseBuildAction(InjectIntoProperties.Instance, BuildStage.Initialize))
+             .UseBuildAction(InjectDependenciesIntoProperties.Instance, BuildStage.Initialize))
        .With( // add build action finding properties attributed with InjectAttribute for any type 
           skipToLastUnit =>
             skipToLastUnit
@@ -59,7 +59,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingPropertyArguments(Property.Named(nameof(Subject.StringProperty))); // inject property adds a build action injecting values into property
+       .InjectInto(Property.Named(nameof(Subject.StringProperty))); // inject property adds a build action injecting values into property
 
       // --act
       var actual = target.Build<Subject>();
@@ -83,7 +83,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingPropertyArguments(
+       .InjectInto(
           Property.ByInjectPoint(
             injectPointId is null
               ? Empty<object>.Array
@@ -109,7 +109,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingPropertyArguments(ForProperty.Named(nameof(Subject.StringProperty)).UseValue(expected));
+       .UsingArguments(ForProperty.Named(nameof(Subject.StringProperty)).UseValue(expected));
 
       // --act
       var actual = target.Build<Subject>();
@@ -134,7 +134,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingPropertyArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseKey(key));
+       .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseKey(key));
 
       // --act
       var actual = target.Build<Subject>();
@@ -158,7 +158,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingPropertyArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsKey());
+       .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsKey());
 
       // --act
       var actual = target.Build<Subject>();
@@ -180,7 +180,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingPropertyArguments(ForProperty.OfType<int>().UseFactoryMethod(_ => expected));
+       .UsingArguments(ForProperty.OfType<int>().UseFactoryMethod(_ => expected));
 
       // --act
       var actual = target.Build<Subject>();

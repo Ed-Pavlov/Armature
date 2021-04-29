@@ -13,18 +13,18 @@ namespace Armature
     /// <summary>
     ///   Provides arguments to inject into building units constructor and methods. See <see cref="ForParameter" /> for details.
     /// </summary>
-    public Tuner UsingMethodArguments(params object[] arguments)
+    public Tuner UsingArguments(params object[] arguments) //TODO: надо как-то свести и Property и Methods к одному методу UsingArguments
     {
       if(arguments is null || arguments.Length == 0) throw new ArgumentNullException(nameof(arguments));
 
       foreach(var argument in arguments)
-        if(argument is IMethodArgumentTuner buildPlan)
+        if(argument is IArgumentTuner buildPlan)
           buildPlan.Apply(ParentNode);
         else if(argument is ITuner)
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected");
         else
           ParentNode
-           .GetOrAddNode(new IfLastUnitMatches(new MethodParameterByTypePattern(argument.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
+           .GetOrAddNode(new IfLastUnitMatches(new SubtypePattern(argument.GetType(), null), InjectPointMatchingWeight.WeakTypedParameter))
            .UseBuildAction(new Singleton(argument), BuildStage.Create);
 
       return this;
@@ -35,33 +35,32 @@ namespace Armature
     ///   Also value can be a build plan returned by one of the method of the <see cref="Property" /> class,
     /// which specifies properties to inject dependencies.
     /// </summary>
-    public Tuner UsingPropertyArguments(params object[] arguments)
+    // public Tuner UsingArguments(params object[] arguments)
+    // {
+    //   ParentNode.UseBuildAction(InjectDependenciesIntoProperties.Instance, BuildStage.Initialize, true);
+    //
+    //   foreach(var argument in arguments)
+    //     if(argument is IInjectionPointTuner buildPlan)
+    //       buildPlan.Apply(ParentNode);
+    //     else if(argument is ITuner)
+    //       throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected");
+    //     else
+    //       ParentNode
+    //        .GetOrAddNode(new IfLastUnitMatches(new PropertyByTypePattern(argument.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
+    //        .UseBuildAction(new Singleton(argument), BuildStage.Create);
+    //
+    //   return this;
+    // }
+
+    public Tuner InjectInto(params IInjectPointTuner[] propertyIds)
     {
-      ParentNode.UseBuildAction(InjectIntoProperties.Instance, BuildStage.Initialize, true); //TODO: dont add two times
-
-      foreach(var argument in arguments)
-        if(argument is IPropertyId buildPlan)
-          buildPlan.Apply(ParentNode);
-        else if(argument is ITuner)
-          throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected");
-        else
-          ParentNode
-           .GetOrAddNode(new IfLastUnitMatches(new PropertyByTypePattern(argument.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
-           .UseBuildAction(new Singleton(argument), BuildStage.Create);
-
-      return this;
-    }
-
-    public Tuner InjectIntoProperty(params IPropertyId[] propertyIds)
-    {
-      ParentNode.UseBuildAction(InjectIntoProperties.Instance, BuildStage.Initialize, true); //TODO: dont add two times
+      ParentNode.UseBuildAction(InjectDependenciesIntoProperties.Instance, BuildStage.Initialize, true);
 
       foreach(var propertyId in propertyIds)
         propertyId.Apply(ParentNode);
 
       return this;
     }
-
 
     /// <summary>
     ///   Register Unit as an singleton with a lifetime equal to parent <see cref="BuildPlanCollection"/>. See <see cref="Singleton" /> for details

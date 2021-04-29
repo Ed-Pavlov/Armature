@@ -23,7 +23,7 @@ namespace Tests.Functional
       target
        .Treat<StringConsumer>()
        .AsIs()
-       .UsingMethodArguments(Expected);
+       .UsingArguments(Expected);
 
       // register AddPostfixToString buildAction for any string on the very first stage
       // (postprocessing will be called last and buildAction will add a postfix to created or cached string
@@ -48,7 +48,7 @@ namespace Tests.Functional
               target
                .Treat<StringConsumer>()
                .AsIs()
-               .UsingMethodArguments(Expected)))
+               .UsingArguments(Expected)))
        .SetName("RegisteredAsParameterValue");
 
       yield return new TestCaseData(

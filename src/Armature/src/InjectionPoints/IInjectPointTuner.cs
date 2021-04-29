@@ -1,8 +1,8 @@
 ﻿namespace Armature
 {
-  /// <inheritdoc cref="ITuner" />
+  /// <inheritdoc />
   /// <summary>
   ///   Contains plan of building value to inject into a property
   /// </summary>
-  public interface IPropertyId : ITuner { }
+  public interface IInjectPointTuner : ITuner { }
 }

@@ -81,7 +81,7 @@ namespace Armature
 
       buildPlans
        .TreatAll()
-       .UsingMethodArguments(arguments);
+       .UsingArguments(arguments);
 
       return buildPlans;
     }

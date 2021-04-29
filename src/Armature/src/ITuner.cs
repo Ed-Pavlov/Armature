@@ -4,16 +4,15 @@
 namespace Armature
 {
   /// <summary>
-  ///   Used for simplifying framework syntax, in order to be able create an object which doesn't have an access to the currently being
-  /// tuned build plan and apply the plan later.
-  ///   See usages for details.
+  /// Inheritors of this interface can be used to create "tuners" which can append the pattern tree at any time, in opposite to static "tuners" like
+  /// <see cref="TreatingTuner"/>, <see cref="CreationTuner"/> and so on, which are append pattern tree nodes immediately during the call of their methods.    
   /// </summary>
+  /// <remarks>See usages for details</remarks>
   public interface ITuner
   {
     /// <summary>
-    ///   Apply build plan to the currently building plan
+    /// Append pattern tree nodes to the passed <paramref name="patternTreeNode"/>
     /// </summary>
-    /// <param name="patternTreeNode"></param>
     void Apply(IPatternTreeNode patternTreeNode);
   }
 }
