@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Armature.Core.Logging;
@@ -14,26 +13,12 @@ namespace Armature.Core
   /// but it is built in "context" of all the sequence of dependencies.</remarks>
   public partial class BuildSession
   {
-    private readonly object[]              _buildStages;
+    private readonly object[]          _buildStages;
     private readonly IPatternTreeNode  _buildPlans;
     private readonly IPatternTreeNode? _auxBuildPlans;
-    private readonly Builder[]?            _parentBuilders;
-    private readonly List<UnitId>          _buildSequence;
+    private readonly Builder[]?        _parentBuilders;
+    private readonly List<UnitId>      _buildSequence;
 
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    public BuildSession(object[] buildStages, IPatternTreeNode buildPlans, IPatternTreeNode? auxBuildPlans, Builder[]? parentBuilders)
-    {
-      _buildStages    = buildStages ?? throw new ArgumentNullException(nameof(buildStages));
-      _buildPlans     = buildPlans  ?? throw new ArgumentNullException(nameof(buildPlans));
-      _auxBuildPlans  = auxBuildPlans;
-      _parentBuilders = parentBuilders;
-      _buildSequence  = new List<UnitId>(4);
-    }
-
-    /// <summary>
-    ///   Builds a Unit represented by <paramref name="unitId" />
-    /// </summary>
-    /// <param name="unitId">"Id" of the unit to build.</param>
     /// <param name="buildStages">The sequence of build stages. See <see cref="Builder" /> for details.</param>
     /// <param name="buildPlans">Build plans used to find build actions to build a unit.</param>
     /// <param name="auxBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method
@@ -42,46 +27,26 @@ namespace Armature.Core
     ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
-    public static BuildResult BuildUnit(
-      UnitId                unitId,
-      object[]              buildStages,
-      IPatternTreeNode  buildPlans,
-      IPatternTreeNode? auxBuildPlans,
-      Builder[]?            parentBuilders)
-      => new BuildSession(buildStages, buildPlans, auxBuildPlans, parentBuilders).BuildUnit(unitId);
-
-    /// <summary>
-    ///   Builds all Units represented by <paramref name="unitId" />
-    /// </summary>
-    /// <param name="unitId">"Id" of the unit to build. See <see cref="IPatternTreeNode" /> for details</param>
-    /// <param name="buildStages">The sequence of build stages. See <see cref="Builder" /> for details</param>
-    /// <param name="buildPlans">Build plans used to find build actions to build a unit.</param>
-    /// <param name="auxBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method
-    /// they are passed to <paramref name="parentBuilders"/> in opposite to <paramref name="buildPlans"/> </param>
-    /// <param name="parentBuilders">
-    ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
-    ///   parent builders one by one in the order they passed into constructor
-    /// </param>
-    public static IReadOnlyList<BuildResult> BuildAllUnits(
-      UnitId                unitId,
-      object[]              buildStages,
-      IPatternTreeNode  buildPlans,
-      IPatternTreeNode? auxBuildPlans,
-      Builder[]?            parentBuilders)
-      => new BuildSession(buildStages, buildPlans, auxBuildPlans, parentBuilders).BuildAllUnits(unitId);
-
+    public BuildSession(object[] buildStages, IPatternTreeNode buildPlans, IPatternTreeNode? auxBuildPlans, Builder[]? parentBuilders)
+    {
+      _buildStages    = buildStages ?? throw new ArgumentNullException(nameof(buildStages));
+      _buildPlans     = buildPlans  ?? throw new ArgumentNullException(nameof(buildPlans));
+      _auxBuildPlans  = auxBuildPlans;
+      _parentBuilders = parentBuilders;
+      _buildSequence  = new List<UnitId>(4);
+    }
+    
     /// <summary>
     ///   Builds a Unit represented by <paramref name="unitId" />
     /// </summary>
     /// <param name="unitId">"Id" of the unit to build. See <see cref="IPatternTreeNode" /> for details</param>
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public BuildResult BuildUnit(UnitId unitId) => Build(unitId, BuildUnit);
 
     /// <summary>
     ///   Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
     ///   This can be useful to build all implementers of an interface.
     /// </summary>
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+    /// <param name="unitId">"Id" of the unit to build. See <see cref="IPatternTreeNode" /> for details</param>
     public IReadOnlyList<BuildResult> BuildAllUnits(UnitId unitId) => Build(unitId, BuildAllUnits);
 
     /// <summary>
