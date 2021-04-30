@@ -13,7 +13,7 @@ namespace Armature.Core
     private readonly IUnitPattern _unitPattern;
 
     [DebuggerStepThrough]
-    public IfLastUnitMatches(IUnitPattern unitPattern, int weight = QueryWeight.Any) : base(weight)
+    public IfLastUnitMatches(IUnitPattern unitPattern, int weight = 0) : base(weight)
       => _unitPattern = unitPattern ?? throw new ArgumentNullException(nameof(unitPattern));
 
     public override ICollection<IPatternTreeNode> Children => throw new NotSupportedException("This pattern can't contain children");

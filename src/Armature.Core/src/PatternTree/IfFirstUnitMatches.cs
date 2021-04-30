@@ -11,9 +11,8 @@ namespace Armature.Core
   {
     private readonly IUnitPattern _pattern;
 
-    public IfFirstUnitMatches(IUnitPattern pattern) : this(pattern, QueryWeight.StrictMatchingUnit) { }
-
-    public IfFirstUnitMatches(IUnitPattern pattern, int weight) : base(weight) => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
+    public IfFirstUnitMatches(IUnitPattern pattern, int weight = WeightOf.FirstUnit) : base(weight)
+      => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
     /// <summary>
     ///   Checks if the first unit in the building unit sequence matches the specified patter.

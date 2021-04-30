@@ -131,11 +131,11 @@ namespace Armature
     /// <summary>
     ///   Doing the same as <see cref="PatternTreeTunerExtension.Building{T}" /> but w/o breaking fluent syntax
     /// </summary>
-    public Tuner BuildingWhich(Action<SequenceTuner> tuneAction)
+    public Tuner BuildingWhich(Action<RootTuner> tuneAction)
     {
       if(tuneAction is null) throw new ArgumentNullException(nameof(tuneAction));
 
-      tuneAction(new SequenceTuner(ParentNode));
+      tuneAction(new RootTuner(ParentNode));
 
       return this;
     }

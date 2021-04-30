@@ -20,7 +20,7 @@ namespace Armature
     /// </summary>
     public Tuner CreatedByDefault()
       => new(ParentNode
-            .GetOrAddNode(new FindUnitMatches(new OpenGenericTypePattern(OpenGenericType, Key), QueryWeight.WildcardMatchingUnit - 1))
+            .GetOrAddNode(new FindUnitMatches(new OpenGenericTypePattern(OpenGenericType, Key), WeightOf.FindUnit | WeightOf.OpenGenericPattern))
             .UseBuildAction(Default.CreationBuildAction, BuildStage.Create));
 
     /// <summary>
@@ -28,7 +28,7 @@ namespace Armature
     /// </summary>
     public Tuner CreatedByReflection() => 
       new(ParentNode
-         .GetOrAddNode(new FindUnitMatches(new OpenGenericTypePattern(OpenGenericType, Key), QueryWeight.WildcardMatchingUnit - 1))
+         .GetOrAddNode(new FindUnitMatches(new OpenGenericTypePattern(OpenGenericType, Key), WeightOf.FindUnit | WeightOf.OpenGenericPattern))
          .UseBuildAction(CreateByReflection.Instance, BuildStage.Create));
 
     Type IExtensibility<Type, object>.   Item1 => OpenGenericType;

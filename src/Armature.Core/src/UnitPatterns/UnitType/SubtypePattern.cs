@@ -3,7 +3,7 @@
 namespace Armature.Core
 {
   /// <summary>
-  /// Checks if a unit is of the specified base type.
+  /// Checks if a unit is a subtype of the specified base type.
   /// </summary>
   public record SubtypePattern : TypePatternBase, IUnitPattern
   {

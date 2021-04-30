@@ -4,14 +4,15 @@ using System.Diagnostics;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Moves along the building units sequence from left to right skipping units until it encounters a matching unit. Behaves like string search with wildcard.
+  ///   Moves along the building units sequence from the unit passed to the <see cref="BuildSession.BuildUnit(UnitId)"/> to its dependencies skipping units
+  ///   until it encounters a matching unit. Behaves like string search with wildcard.
   /// </summary>
   public class FindUnitMatches : PatternTreeNodeWithChildren, IEquatable<FindUnitMatches>
   {
     private readonly IUnitPattern _pattern;
 
-    public FindUnitMatches(IUnitPattern pattern) : this(pattern, QueryWeight.WildcardMatchingUnit) { }
-    public FindUnitMatches(IUnitPattern pattern, int weight) : base(weight) => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
+    public FindUnitMatches(IUnitPattern pattern, int weight = WeightOf.FindUnit) : base(weight)
+      => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
     /// <summary>
     ///   Moves along the building unit sequence skipping units until it finds the matching unit.

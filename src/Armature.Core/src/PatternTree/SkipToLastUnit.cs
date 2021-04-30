@@ -10,7 +10,7 @@ namespace Armature.Core
   /// </summary>
   public class SkipToLastUnit : PatternTreeNodeWithChildren
   {
-    public SkipToLastUnit() : this(QueryWeight.AnyUnit) { }
+    public SkipToLastUnit() : this(WeightOf.SkipToLastUnit) { }
     public SkipToLastUnit(int weight) : base(weight) { }
 
     public override BuildActionBag BuildActions
