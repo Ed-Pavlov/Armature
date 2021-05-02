@@ -114,7 +114,7 @@ namespace Armature.Core
     }
 
     private static void LogException(Exception exc)
-      => LogLevel.Trace.ExecuteIfEnabled(
+      => Log.Execute(LogLevel.Trace,
         () =>
         {
           using(Log.Block(LogLevel.Trace, "Exception: {0}", exc))

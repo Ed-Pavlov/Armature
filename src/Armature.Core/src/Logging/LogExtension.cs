@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Armature.Core.Logging
 {
   public static class LogExtension
   {
-    private const string BuildSequenceIsEmpty = "BuildSequence{ empty }";
-
     public static string GetFullName(this Type type)
       => type.IsGenericType
            ? string.Format(
@@ -25,28 +22,21 @@ namespace Armature.Core.Logging
            : type.Name;
 
     public static void ToLog(this WeightedBuildActionBag? actions, LogLevel logLevel)
-      => logLevel.ExecuteIfEnabled(
+      => Log.Execute(
+        logLevel,
         () =>
         {
           if(actions is null)
-          {
-            Log.WriteLine(logLevel, LogConst.NoMatch);
-            return;
-          }
+            Log.WriteLine(logLevel, "No matched actions");
+          else
+            foreach(var pair in actions)
+            {
+              var stage       = pair.Key;
+              var actionsList = pair.Value;
 
-          foreach(var pair in actions)
-            LogBuildActionBag(pair, logLevel);
-        });
-
-    private static void LogBuildActionBag(KeyValuePair<object, List<Weighted<IBuildAction>>> stagedActions, LogLevel logLevel)
-      => logLevel.ExecuteIfEnabled(
-        () =>
-        {
-          var stage       = stagedActions.Key;
-          var actionsList = stagedActions.Value;
-
-          foreach(var action in actionsList)
-            Log.WriteLine(logLevel, "{0}{{ Stage={1}, Weight={2:n0} }}", action.Entity, stage, action.Weight);
+              foreach(var action in actionsList)
+                Log.WriteLine(logLevel, "{0}{{ Stage={1}, Weight={2:n0} }}", action.Entity, stage, action.Weight);
+            }
         });
   }
 }

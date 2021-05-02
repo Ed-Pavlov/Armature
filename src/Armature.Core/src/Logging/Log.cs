@@ -11,18 +11,20 @@ namespace Armature.Core.Logging
   /// </summary>
   public static class Log
   {
+    private static readonly Stack<List<string>> DeferredContent = new();
+
     private static int      _indent;
     private static LogLevel _logLevel = LogLevel.None;
-
-    private static readonly Stack<List<string>> DeferredContent = new();
 
     /// <summary>
     ///   Set should full type name be logged or only short name w/o namespace to simplify reading.
     /// </summary>
     public static bool LogFullTypeName = false;
 
+    /// <summary>
+    ///   The count of spaces used to indent lines
+    /// </summary>
     public static int IndentSize = 2;
-
 
     /// <summary>
     ///   Used to enable logging in a limited scope using "using" C# keyword
@@ -30,16 +32,8 @@ namespace Armature.Core.Logging
     public static IDisposable Enabled(LogLevel logLevel = LogLevel.Info)
     {
       var prevLevel = _logLevel;
-      return new Bracket(() => _logLevel = logLevel, () => _logLevel = prevLevel);
-    }
-
-    private static void DoWriteLine(string line)
-    {
-      // all "Write" methods should at the end call this method, so we check for deferred in one place only
-      if(DeferredContent.Count == 0)
-        System.Diagnostics.Trace.WriteLine(line);
-      else
-        DeferredContent.Peek().Add(line);
+      _logLevel = logLevel;
+      return new Disposable(() => _logLevel = prevLevel);
     }
 
     public static void WriteLine(LogLevel logLevel, string line)
@@ -133,7 +127,7 @@ namespace Armature.Core.Logging
     /// <param name="logLevel"></param>
     /// <param name="action"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ExecuteIfEnabled(this LogLevel logLevel, Action action)
+    public static void Execute(LogLevel logLevel, Action action)
     {
       if(logLevel > _logLevel) return;
 
@@ -156,20 +150,54 @@ namespace Armature.Core.Logging
       return obj is Type type ? type.ToLogString() : obj.ToString();
     }
 
-    private static string GetIndent() => new(' ', _indent);
+    public static IDisposable Deferred(LogLevel logLevel, Action<Action?> action)
+    {
+      if(_logLevel < logLevel) return DumbDisposable.Instance;
+
+      DeferredContent.Push(new List<string>());
+      var originalIndent = _indent;
+
+      return new Disposable(
+        () =>
+        {
+          var deferredContent = DeferredContent.Pop();
+
+          action(
+            deferredContent.Count == 0
+              ? null
+              : () =>
+                {
+                  var gap = new string(' ', _indent - originalIndent);
+
+                  foreach(var line in deferredContent)
+                    DoWriteLine(gap + line);
+                });
+        });
+    }
+
+    private static string GetIndent() => new(' ', _indent * IndentSize);
+
+    private static void DoWriteLine(string line)
+    {
+      // all "Write" methods should at the end call this method, so we check for deferred in one place only
+      if(DeferredContent.Count == 0)
+        System.Diagnostics.Trace.WriteLine(line);
+      else
+        DeferredContent.Peek().Add(line);
+    }
 
     private class Indenter : IDisposable
     {
       private readonly int  _indent;
       private readonly bool _isBlock;
 
-      public Indenter(bool isBlock, int indentCount)
+      public Indenter(bool isBlock, int indent)
       {
         if(isBlock)
           WriteLine(LogLevel.Info, "{");
 
         _isBlock    =  isBlock;
-        _indent     =  indentCount * IndentSize;
+        _indent     =  indent;
         Log._indent += _indent;
       }
 
@@ -186,25 +214,9 @@ namespace Armature.Core.Logging
     {
       private readonly Action _action;
 
-      public Disposable(Action action)
-      {
-        _action = action;
-      }
+      public Disposable(Action action) => _action = action;
 
       public void Dispose() => _action();
-    }
-
-    private class Bracket : IDisposable
-    {
-      private readonly Action _endAction;
-
-      public Bracket(Action startAction, Action endAction)
-      {
-        startAction();
-        _endAction = endAction;
-      }
-
-      public void Dispose() => _endAction();
     }
 
     private class DumbDisposable : IDisposable
@@ -218,32 +230,8 @@ namespace Armature.Core.Logging
         // dumb
       }
     }
-
-    public static IDisposable Deferred(LogLevel logLevel, Action<Action?> action)
-    {
-      if(_logLevel < logLevel) return DumbDisposable.Instance;
-
-      DeferredContent.Push(new List<string>());
-      var originalIndent = _indent;
-
-      return new Disposable(
-        () =>
-        {
-          var deferredContent = DeferredContent.Pop();
-          
-          action(
-            deferredContent.Count == 0
-              ? null
-              : () =>
-                {
-                  var gap = new string(' ', _indent - originalIndent);
-
-                  foreach(var line in deferredContent)
-                    DoWriteLine(gap + line);
-                });
-        });
-    }
   }
+
 
   public enum LogLevel { None = 0, Info, Verbose, Trace }
 }
