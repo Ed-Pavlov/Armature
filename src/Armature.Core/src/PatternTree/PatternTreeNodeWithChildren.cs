@@ -17,16 +17,16 @@ namespace Armature.Core
 
     public override ICollection<IPatternTreeNode> Children => LazyChildren;
 
-    protected WeightedBuildActionBag? GetOwnOrChildrenBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
+    protected WeightedBuildActionBag? GetOwnOrChildrenBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight)
     {
-      WeightedBuildActionBag? buildActionBag;
+      WeightedBuildActionBag? buildActionBag = null;
 
       if(unitSequence.Length == 1)
       {
         buildActionBag = GetOwnBuildActions(Weight + inputWeight);
 
         if(buildActionBag is null)
-          Log.WriteLine(LogLevel.Trace, () => string.Format("{0}{{not matched}}", this));
+          Log.WriteLine(LogLevel.Trace, () => $"{this}{LogConst.NoMatch}");
         else
           using(Log.Block(LogLevel.Verbose, ToString)) // pass group method, do not call ToString
           {
@@ -36,11 +36,24 @@ namespace Armature.Core
       }
       else
       {
-        Log.WriteLine(LogLevel.Verbose, ToString); // pass group method, do not call ToString
+        using(Log.Deferred(
+          LogLevel.Verbose,
+          writeDeferredLog =>
+          {
+            var logLevel = buildActionBag is null ? LogLevel.Trace : LogLevel.Verbose;
 
-        // pass the rest of the sequence to children and return their actions
-        using(Log.AddIndent())
+            string GetLogLine() => $"{this} => pass further";
+
+            if(writeDeferredLog is null)
+              Log.WriteLine(logLevel, GetLogLine);
+            else
+              using(Log.Block(logLevel, GetLogLine))
+                writeDeferredLog();
+          }))
+        {
+          // pass the rest of the sequence to children and return their actions
           buildActionBag = GetChildrenActions(unitSequence.GetTail(1), inputWeight + Weight);
+        }
       }
 
       return buildActionBag;
@@ -52,9 +65,9 @@ namespace Armature.Core
     /// <param name="unitSequence">The sequence of units building in this build session.</param>
     /// <param name="inputMatchingWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
     [DebuggerStepThrough]
-    protected WeightedBuildActionBag? GetChildrenActions(ArrayTail<UnitId> unitSequence, int inputMatchingWeight)
+    protected WeightedBuildActionBag? GetChildrenActions(ArrayTail<UnitId> unitSequence, long inputMatchingWeight)
       => _children?.Aggregate(
-        (WeightedBuildActionBag?) null,
+        (WeightedBuildActionBag?)null,
         (current, child) => current.Merge(child.GatherBuildActions(unitSequence, inputMatchingWeight)));
   }
 }

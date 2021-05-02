@@ -29,12 +29,12 @@ namespace Armature.Core
 
     public virtual  BuildActionBag                BuildActions => LazyBuildAction;
     public abstract ICollection<IPatternTreeNode> Children     { get; }
-    public abstract WeightedBuildActionBag?       GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight);
+    public abstract WeightedBuildActionBag?       GatherBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight);
 
-    protected int Weight { [DebuggerStepThrough] get; }
+    protected long Weight { [DebuggerStepThrough] get; }
 
     [DebuggerStepThrough]
-    protected WeightedBuildActionBag? GetOwnBuildActions(int matchingWeight)
+    protected WeightedBuildActionBag? GetOwnBuildActions(long matchingWeight)
     {
       if(_buildActions is null) return null;
 
@@ -47,7 +47,7 @@ namespace Armature.Core
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}<{1:n0}>", GetType().GetShortName(), Weight);
+    public override string ToString() => $"{GetType().GetShortName()}{{ {Weight:n0} }}>";
 
     public abstract bool Equals(IPatternTreeNode other);
 
@@ -80,7 +80,7 @@ namespace Armature.Core
                 if(buildAction is ILogable printable)
                   printable.PrintToLog();
                 else
-                  Log.Info(buildAction.ToString());
+                  Log.WriteLine(LogLevel.Info, buildAction.ToString);
             }
         }
     }

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Armature.Core.Logging;
 
 
 namespace Armature.Core
@@ -40,25 +40,28 @@ namespace Armature.Core
     ///   "Builds" values for parameters by building a set of <see cref="UnitId" />(<paramref name="parameters" />[i], <see cref="SpecialKey.Argument" />)
     ///   one by one via current build session
     /// </summary>
-    public static object?[] GetValuesForParameters(this IBuildSession buildSession, ParameterInfo[] parameters)
+    public static object?[] GetArgumentsForParameters(this IBuildSession buildSession, ParameterInfo[] parameters)
     {
       if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
       if(parameters is null) throw new ArgumentNullException(nameof(parameters));
       if(parameters.Length == 0) throw new ArgumentException("At least one parameters should be provided", nameof(parameters));
 
-      var values = new object?[parameters.Length];
-
-      for(var i = 0; i < parameters.Length; i++)
+      using(Log.Block(LogLevel.Trace, () => "GetValuesForParameters( " + string.Join(", ", parameters.Select(_ => _.ToString()).ToArray()) + " )"))
       {
-        var buildResult = buildSession.BuildUnit(new UnitId(parameters[i], SpecialKey.Argument));
+        var values = new object?[parameters.Length];
 
-        if(!buildResult.HasValue)
-          throw new ArmatureException(string.Format("Can't build value for parameter '{0}'", parameters[i]));
+        for(var i = 0; i < parameters.Length; i++)
+        {
+          var buildResult = buildSession.BuildUnit(new UnitId(parameters[i], SpecialKey.Argument));
 
-        values[i] = buildResult.Value;
+          if(!buildResult.HasValue)
+            throw new ArmatureException(string.Format("Can't build value for parameter '{0}'", parameters[i]));
+
+          values[i] = buildResult.Value;
+        }
+
+        return values;
       }
-
-      return values;
     }
 
     /// <summary>

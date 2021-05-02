@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace Armature.Core.Logging
@@ -13,10 +14,15 @@ namespace Armature.Core.Logging
     private static int      _indent;
     private static LogLevel _logLevel = LogLevel.None;
 
+    private static readonly Stack<List<string>> DeferredContent = new();
+
     /// <summary>
     ///   Set should full type name be logged or only short name w/o namespace to simplify reading.
     /// </summary>
     public static bool LogFullTypeName = false;
+
+    public static int IndentSize = 2;
+
 
     /// <summary>
     ///   Used to enable logging in a limited scope using "using" C# keyword
@@ -26,6 +32,59 @@ namespace Armature.Core.Logging
       var prevLevel = _logLevel;
       return new Bracket(() => _logLevel = logLevel, () => _logLevel = prevLevel);
     }
+
+    private static void DoWriteLine(string line)
+    {
+      // all "Write" methods should at the end call this method, so we check for deferred in one place only
+      if(DeferredContent.Count == 0)
+        System.Diagnostics.Trace.WriteLine(line);
+      else
+        DeferredContent.Peek().Add(line);
+    }
+
+    public static void WriteLine(LogLevel logLevel, string line)
+    {
+      if(logLevel > _logLevel) return;
+
+      DoWriteLine(GetIndent() + line);
+    }
+
+    [StringFormatMethod("format")]
+    public static void WriteLine<T1>(LogLevel logLevel, string format, T1 p1) => WriteLine(logLevel, string.Format(format, p1));
+
+    [StringFormatMethod("format")]
+    public static void WriteLine<T1, T2>(LogLevel logLevel, string format, T1 p1, T2 p2) => WriteLine(logLevel, string.Format(format, p1, p2));
+
+    [StringFormatMethod("format")]
+    public static void WriteLine<T1, T2, T3>(LogLevel logLevel, string format, T1 p1, T2 p2, T3 p3)
+      => WriteLine(logLevel, string.Format(format, p1, p2, p3));
+
+    // [StringFormatMethod("format")]
+    // public static void Write(LogLevel logLevel, string format, params object[] parameters)
+    // {
+    //   if(logLevel > _logLevel) return;
+    //
+    //   // ReSharper disable once CoVariantArrayConversion
+    //   System.Diagnostics.Trace.Write(string.Format(format, parameters));
+    // }
+
+
+    [StringFormatMethod("format")]
+    public static void WriteLine(LogLevel logLevel, string format, params object[] parameters) => WriteLine(logLevel, string.Format(format, parameters));
+
+    /// <summary>
+    ///   This message calls <paramref name="createMessage"/> only if Logging is enabled for <paramref name="logLevel"/>,
+    ///   use it calculating arguments for logging takes a time.
+    /// </summary>
+    [StringFormatMethod("format")]
+    public static void WriteLine(LogLevel logLevel, [InstantHandle] Func<string> createMessage) => WriteLine(logLevel, createMessage());
+
+    /// <summary>
+    ///   This message calls <paramref name="createMessage"/> only if Logging is enabled for <paramref name="logLevel"/>,
+    ///   use it calculating arguments for logging takes a time.
+    /// </summary>
+    [StringFormatMethod("format")]
+    public static void WriteLine<T1>(LogLevel logLevel, [InstantHandle] Func<T1, string> createMessage, T1 v1) => WriteLine(logLevel, createMessage(v1));
 
     /// <summary>
     ///   Used to make an indented "block" in log data
@@ -67,20 +126,12 @@ namespace Armature.Core.Logging
     /// </summary>
     public static IDisposable AddIndent(bool newBlock = false, int count = 1) => new Indenter(newBlock, count);
 
-    [StringFormatMethod("format")]
-    public static void Info(string format, params object[] parameters) => WriteLine(LogLevel.Info, format, parameters);
-
-    [StringFormatMethod("format")]
-    public static void Trace(string format, params object[] parameters) => WriteLine(LogLevel.Trace, format, parameters);
-
-    [StringFormatMethod("format")]
-    public static void Verbose(string format, params object[] parameters) => WriteLine(LogLevel.Verbose, format, parameters);
-
     /// <summary>
     /// Executes action if <paramref name="logLevel"/> satisfies current Log level. See <see cref="Enabled"/> for details
     /// </summary>
     /// <param name="logLevel"></param>
     /// <param name="action"></param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ExecuteIfEnabled(this LogLevel logLevel, Action action)
     {
       if(logLevel > _logLevel) return;
@@ -88,70 +139,11 @@ namespace Armature.Core.Logging
       action();
     }
 
-    public static void WriteLine<T1>(LogLevel logLevel, string format, T1 p1)
-    {
-      if(logLevel > _logLevel) return;
-      System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, p1.ToLogString()));
-    }
-
-    public static void WriteLine<T1, T2>(LogLevel logLevel, string format, T1 p1, T2 p2)
-    {
-      if(logLevel > _logLevel) return;
-      System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, p1.ToLogString(), p2.ToLogString()));
-    }
-
-    public static void WriteLine<T1, T2, T3>(LogLevel logLevel, string format, T1 p1, T2 p2, T3 p3)
-    {
-      if(logLevel > _logLevel) return;
-      System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, p1.ToLogString(), p2.ToLogString(), p3.ToLogString()));
-    }
-
-    [StringFormatMethod("format")]
-    public static void Write(LogLevel logLevel, string format, params object[] parameters)
-    {
-      if(logLevel > _logLevel) return;
-
-      // ReSharper disable once CoVariantArrayConversion
-      System.Diagnostics.Trace.Write(string.Format(format, parameters.Select(ToLogString).ToArray()));
-    }
-
-    [StringFormatMethod("format")]
-    public static void WriteLine(LogLevel logLevel, string format, params object[] parameters)
-    {
-      if(logLevel > _logLevel) return;
-
-      // ReSharper disable once CoVariantArrayConversion
-      System.Diagnostics.Trace.WriteLine(GetIndent() + string.Format(format, parameters.Select(ToLogString).ToArray()));
-    }
-
-    /// <summary>
-    ///   This message calls <paramref name="createMessage"/> only if Logging is enabled for <paramref name="logLevel"/>,
-    ///   use it calculating arguments for logging takes a time.
-    /// </summary>
-    [StringFormatMethod("format")]
-    public static void WriteLine(LogLevel logLevel, [InstantHandle] Func<string> createMessage)
-    {
-      if(logLevel > _logLevel) return;
-
-      System.Diagnostics.Trace.WriteLine(GetIndent() + createMessage());
-    }
-
-    /// <summary>
-    ///   This message calls <paramref name="createMessage"/> only if Logging is enabled for <paramref name="logLevel"/>,
-    ///   use it calculating arguments for logging takes a time.
-    /// </summary>
-    [StringFormatMethod("format")]
-    public static void WriteLine<T1>(LogLevel logLevel, [InstantHandle] Func<T1, string> createMessage, T1 v1)
-    {
-      if(logLevel > _logLevel) return;
-
-      System.Diagnostics.Trace.WriteLine(GetIndent() + createMessage(v1));
-    }
 
     /// <summary>
     ///   Returns the name of <paramref name="type" /> respecting <see cref="LogFullTypeName" /> property
     /// </summary>
-    public static string ToLogString(this Type type) => LogFullTypeName ? GetTypeFullName(type) : type.GetShortName();
+    public static string ToLogString(this Type type) => LogFullTypeName ? type.GetFullName() : type.GetShortName();
 
     /// <summary>
     ///   Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
@@ -163,48 +155,42 @@ namespace Armature.Core.Logging
       return obj is Type type ? type.ToLogString() : obj.ToString();
     }
 
-    private static string GetIndent()
-    {
-      var indent = "";
-
-      for(var i = 0; i < _indent; i++)
-        indent += "  ";
-
-      return indent;
-    }
-
-    private static string GetTypeFullName(Type type)
-    {
-      if(!type.IsGenericType) return type.FullName!;
-
-      var main      = type.GetGenericTypeDefinition().FullName;
-      var arguments = string.Join(", ", type.GenericTypeArguments.Select(GetTypeFullName).ToArray());
-
-      return string.Format("{0}[{1}]", main, arguments);
-    }
+    private static string GetIndent() => new(' ', _indent);
 
     private class Indenter : IDisposable
     {
-      private readonly int  _count;
-      private readonly bool _newBlock;
+      private readonly int  _indent;
+      private readonly bool _isBlock;
 
-      public Indenter(bool newBlock, int count)
+      public Indenter(bool isBlock, int indentCount)
       {
-        if(newBlock)
-          WriteLine(LogLevel.Info, "{{");
+        if(isBlock)
+          WriteLine(LogLevel.Info, "{");
 
-        _newBlock =  newBlock;
-        _count    =  count;
-        _indent   += count;
+        _isBlock    =  isBlock;
+        _indent     =  indentCount * IndentSize;
+        Log._indent += _indent;
       }
 
       public void Dispose()
       {
-        _indent -= _count;
+        Log._indent -= _indent;
 
-        if(_newBlock)
-          WriteLine(LogLevel.Info, "}}");
+        if(_isBlock)
+          WriteLine(LogLevel.Info, "}");
       }
+    }
+
+    private class Disposable : IDisposable
+    {
+      private readonly Action _action;
+
+      public Disposable(Action action)
+      {
+        _action = action;
+      }
+
+      public void Dispose() => _action();
     }
 
     private class Bracket : IDisposable
@@ -230,6 +216,31 @@ namespace Armature.Core.Logging
       {
         // dumb
       }
+    }
+
+    public static IDisposable Deferred(LogLevel logLevel, Action<Action?> action)
+    {
+      if(_logLevel < logLevel) return DumbDisposable.Instance;
+
+      DeferredContent.Push(new List<string>());
+      var originalIndent = _indent;
+
+      return new Disposable(
+        () =>
+        {
+          var deferredContent = DeferredContent.Pop();
+          
+          action(
+            deferredContent.Count == 0
+              ? null
+              : () =>
+                {
+                  var gap = new string(' ', _indent - originalIndent);
+
+                  foreach(var line in deferredContent)
+                    DoWriteLine(gap + line);
+                });
+        });
     }
   }
 

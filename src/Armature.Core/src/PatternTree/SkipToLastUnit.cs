@@ -22,7 +22,7 @@ namespace Armature.Core
     /// <summary>
     ///   Decreases the matching weight by each skipped unit then pass unit under construction to children nodes
     /// </summary>
-    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
+    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight)
     {
       var unitsToSkipCount = unitSequence.Length;
       var matchingWeight = inputWeight + Weight * unitsToSkipCount;
@@ -34,7 +34,7 @@ namespace Armature.Core
       }
     }
 
-    private string ToString(int unitsToSkip) => string.Format("{0}<x{1:n0}>", base.ToString(), unitsToSkip);
+    private string ToString(int unitsToSkip) => $"{GetType().GetShortName()}{{ Weight={Weight:n0}, Skipped={unitsToSkip} }}";
 
     #region Equality
 

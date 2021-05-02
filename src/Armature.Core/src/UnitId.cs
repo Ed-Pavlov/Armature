@@ -22,7 +22,7 @@ namespace Armature.Core
       Key  = key;
     }
 
-    public override string ToString() => string.Format("{0}({1}, {2})", nameof(UnitId), Kind.ToLogString(), Key.ToLogString());
+    public override string ToString() => $"{{{Kind.ToLogString()}, {Key.ToLogString()}}}";
 
     #region Equality implementation
 

@@ -21,6 +21,7 @@ namespace Armature.Core
   ///     new GetLongestConstructorBuildAction()
   ///   }
   /// </remarks>
+
   //TODO: need another name, something like build actions chain, or whatever, describing semantic better than now
   public class OrderedBuildActionContainer : IBuildAction, ILogable, IEnumerable
   {
@@ -34,19 +35,42 @@ namespace Armature.Core
       foreach(var buildAction in _buildActions)
         try
         {
-          buildAction.Process(buildSession);
+          using(Log.Deferred(
+            LogLevel.Verbose,
+            writeDeferredLog =>
+            {
+              var buildResult = buildSession.BuildResult;
+              var logLevel    = buildResult.HasValue ? LogLevel.Verbose : LogLevel.Trace;
+              
+              string GetLogLine() => $"{buildAction}.{nameof(IBuildAction.Process)}(...) => {buildResult}";
 
-          if(!buildSession.BuildResult.HasValue)
+              if(writeDeferredLog is null)
+                Log.WriteLine(logLevel, GetLogLine);
+              else
+                using(Log.Block(logLevel, GetLogLine))
+                  writeDeferredLog();
+            }))
           {
-            Log.WriteLine(LogLevel.Trace, () => string.Format("{0} has not built value", buildAction));
+            buildAction.Process(buildSession);
           }
-          else
-          {
-            Log.WriteLine(LogLevel.Info, () => string.Format("redirected execution to {0}", buildAction));
-            _effectiveBuildActions.TryAdd(buildSession, buildAction);
 
+          if(buildSession.BuildResult.HasValue)
+          {
+            _effectiveBuildActions.TryAdd(buildSession, buildAction);
             break;
           }
+
+          // if(!buildSession.BuildResult.HasValue)
+          // {
+          //   Log.WriteLine(LogLevel.Trace, () => $"{buildAction}.{nameof(IBuildAction.Process)} : no result");
+          // }
+          // else
+          // {
+          //   Log.WriteLine(LogLevel.Info, () => string.Format("redirected execution to {0}", buildAction));
+          //   _effectiveBuildActions.TryAdd(buildSession, buildAction);
+          //
+          //   break;
+          // }
         }
         catch(ArmatureException exc)
         {
@@ -72,10 +96,11 @@ namespace Armature.Core
 
     public void PostProcess(IBuildSession buildSession)
     {
-      if(_effectiveBuildActions.TryRemove(buildSession, out var effectiveBuildAction))
+      if(_effectiveBuildActions.TryRemove(buildSession, out var buildAction))
       {
-        effectiveBuildAction.PostProcess(buildSession);
-        Log.WriteLine(LogLevel.Info, () => string.Format("redirected execution to {0}", effectiveBuildAction));
+        buildAction.PostProcess(buildSession);
+
+        Log.WriteLine(LogLevel.Verbose, () => $"{buildAction}.{nameof(IBuildAction.PostProcess)}(...)");
       }
     }
 
@@ -107,7 +132,7 @@ namespace Armature.Core
       using(Log.Block(LogLevel.Info, "Ordered actions"))
       {
         foreach(var buildAction in _buildActions)
-          Log.Info(buildAction.ToString());
+          Log.WriteLine(LogLevel.Info, buildAction.ToString);
       }
     }
   }

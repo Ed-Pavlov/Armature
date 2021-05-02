@@ -18,11 +18,11 @@ namespace Armature.Core
     ///   Checks if the first unit in the building unit sequence matches the specified patter.
     ///   If it is the unit under construction, returns build actions for it, if no, pass the rest of the sequence to each child and returns merged actions.
     /// </summary>
-    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
+    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight)
       => _pattern.Matches(unitSequence[0]) ? GetOwnOrChildrenBuildActions(unitSequence, inputWeight) : null;
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().GetShortName(), Weight, _pattern);
+    public override string ToString() => $"{GetType().GetShortName()}( {_pattern.ToLogString()} ){{ Weight={Weight:n0} }}";
 
     #region Equality
 
@@ -42,7 +42,7 @@ namespace Armature.Core
     {
       unchecked
       {
-        return (_pattern.GetHashCode() * 397) ^ Weight;
+        return (_pattern.GetHashCode() * 397) ^ (int)Weight;
       }
     }
 

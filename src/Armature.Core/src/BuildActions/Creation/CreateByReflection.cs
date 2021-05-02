@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
 
@@ -23,13 +22,7 @@ namespace Armature.Core
         // ReSharper disable once PossibleNullReferenceException
         if(!type.IsInterface && !type.IsAbstract)
         {
-          ConstructorInfo constructor;
-
-          using(Log.Block(LogLevel.Trace, "Looking for constructor"))
-          {
-            constructor = buildSession.GetConstructorOf(type);
-          }
-
+          var constructor = buildSession.GetConstructorOf(type);
           var parameters = constructor.GetParameters();
 
           if(parameters.Length == 0 && type.IsValueType) // do not create default value of value type, it can confuse logic
@@ -40,19 +33,11 @@ namespace Armature.Core
             object instance;
 
             if(parameters.Length == 0)
-            {
               instance = constructor.Invoke(Empty<object>.Array);
-            }
             else
             {
-              object?[] valuesForParameters;
-
-              using(Log.Block(LogLevel.Trace, () => "Looking for parameters [" + string.Join(", ", parameters.Select(_ => _.ToString()).ToArray()) + "]"))
-              {
-                valuesForParameters = buildSession.GetValuesForParameters(parameters);
-              }
-
-              instance = constructor.Invoke(valuesForParameters);
+              var arguments = buildSession.GetArgumentsForParameters(parameters);
+              instance = constructor.Invoke(arguments);
             }
 
             buildSession.BuildResult = new BuildResult(instance);

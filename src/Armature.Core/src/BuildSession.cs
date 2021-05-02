@@ -35,7 +35,7 @@ namespace Armature.Core
       _parentBuilders = parentBuilders;
       _buildSequence  = new List<UnitId>(4);
     }
-    
+
     /// <summary>
     ///   Builds a Unit represented by <paramref name="unitId" />
     /// </summary>
@@ -54,7 +54,7 @@ namespace Armature.Core
     /// </summary>
     private T Build<T>(UnitId unitId, Func<WeightedBuildActionBag?, T> build)
     {
-      using(LogBuildSessionState(unitId))
+      using(Log.Block(LogLevel.Info, () => $"Build( {unitId} )"))
       {
         _buildSequence.Add(unitId);
 
@@ -63,7 +63,7 @@ namespace Armature.Core
           WeightedBuildActionBag? actions;
           WeightedBuildActionBag? auxActions;
 
-          using(Log.Block(LogLevel.Verbose, "Looking for build actions"))
+          using(Log.Block(LogLevel.Verbose, () => $"GatherBuildActions( {string.Join(", ", _buildSequence)} )"))
           {
             actions    = _buildPlans.GatherBuildActions(_buildSequence.AsArrayTail(), 0);
             auxActions = _auxBuildPlans?.GatherBuildActions(_buildSequence.AsArrayTail(), 0);
@@ -103,7 +103,7 @@ namespace Armature.Core
 
         performedActions.Push(buildAction);
 
-        using(Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Execute action", buildAction)))
+        using(Log.Block(LogLevel.Info, () => $"{buildAction}.{nameof(IBuildAction.Process)}( buildResult: {buildSession.BuildResult} )"))
         {
           buildAction.Process(buildSession);
         }
@@ -114,7 +114,8 @@ namespace Armature.Core
 
           Log.WriteLine(
             LogLevel.Info,
-            () => string.Format("Build Result{{{0}:{1}}}", buildSession.BuildResult, buildSession.BuildResult.Value?.GetType().ToLogString()));
+            () => $"{nameof(BuildSession)}.{nameof(IBuildSession.BuildResult)} = "
+                + $"{buildSession.BuildResult} : {buildSession.BuildResult.Value?.GetType().ToLogString()}");
 
           break; // object is built, unwind called actions in reverse orders
         }
@@ -124,7 +125,7 @@ namespace Armature.Core
       {
         Log.WriteLine(LogLevel.Info, "");
 
-        using(Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Rewind action", buildAction)))
+        using(Log.Block(LogLevel.Info, () => $"{buildAction}.{nameof(IBuildAction.PostProcess)}( buildResult: {buildSession.BuildResult} )"))
         {
           buildAction.PostProcess(buildSession);
         }
@@ -160,7 +161,8 @@ namespace Armature.Core
 
           Log.WriteLine(
             LogLevel.Info,
-            () => string.Format("Build Result{{{0}:{1}}}", buildSession.BuildResult, buildSession.BuildResult.Value?.GetType().ToLogString()));
+            () => $"{nameof(BuildSession)}.{nameof(IBuildSession.BuildResult)} = "
+                + $"{{{buildSession.BuildResult} : {buildSession.BuildResult.Value?.GetType().ToLogString()}}}");
 
           result.Add(buildSession.BuildResult);
         }
@@ -197,17 +199,6 @@ namespace Armature.Core
         return default;
 
       throw exceptions.Aggregate("One or more exceptions occured during build the unit");
-    }
-
-    private IDisposable LogBuildSessionState(UnitId unitId)
-    {
-      var block = Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Build", unitId));
-
-      {
-        _buildSequence.ToLog();
-      }
-
-      return block;
     }
 
     private void AddDebugData(Exception exception)

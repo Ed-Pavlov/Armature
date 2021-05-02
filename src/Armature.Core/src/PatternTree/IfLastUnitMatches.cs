@@ -10,21 +10,21 @@ namespace Armature.Core
   /// </summary>
   public class IfLastUnitMatches : PatternTreeNode
   {
-    private readonly IUnitPattern _unitPattern;
+    private readonly IUnitPattern _pattern;
 
     [DebuggerStepThrough]
     public IfLastUnitMatches(IUnitPattern unitPattern, int weight = 0) : base(weight)
-      => _unitPattern = unitPattern ?? throw new ArgumentNullException(nameof(unitPattern));
+      => _pattern = unitPattern ?? throw new ArgumentNullException(nameof(unitPattern));
 
     public override ICollection<IPatternTreeNode> Children => throw new NotSupportedException("This pattern can't contain children");
 
-    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
+    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight)
     {
       if(unitSequence.Length > 1) return null;
 
-      if(!_unitPattern.Matches(unitSequence.Last()))
+      if(!_pattern.Matches(unitSequence.Last()))
       {
-        Log.WriteLine(LogLevel.Trace, () => string.Format("{0}{{not matched}}", this));
+        Log.WriteLine(LogLevel.Trace, () => $"{this}{LogConst.NoMatch}");
         return null;
       }
 
@@ -38,7 +38,7 @@ namespace Armature.Core
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().GetShortName(), Weight, _unitPattern);
+    public override string ToString() =>  $"{GetType().GetShortName()}( {_pattern.ToLogString()} ){{ Weight={Weight:n0} }}";
 
     #region Equality
 
@@ -47,7 +47,7 @@ namespace Armature.Core
       if(ReferenceEquals(null, other)) return false;
       if(ReferenceEquals(this, other)) return true;
 
-      return Weight == other.Weight && _unitPattern.Equals(other._unitPattern);
+      return Weight == other.Weight && _pattern.Equals(other._pattern);
     }
 
     public override bool Equals(IPatternTreeNode obj) => Equals(obj as IfLastUnitMatches);
@@ -58,7 +58,7 @@ namespace Armature.Core
     {
       unchecked
       {
-        return (Weight * 397) ^ _unitPattern.GetHashCode();
+        return (_pattern.GetHashCode() * 397) ^ (int)Weight;
       }
     }
 

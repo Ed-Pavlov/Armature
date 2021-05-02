@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Armature.Core.Logging;
 
 namespace Armature.Core
 {
@@ -18,7 +19,7 @@ namespace Armature.Core
     ///   Moves along the building unit sequence skipping units until it finds the matching unit.
     ///   If it is the unit under construction, returns build actions for it, if no, pass the rest of the sequence to each child and returns merged actions.
     /// </summary>
-    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
+    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight)
     {
       var realWeight = inputWeight;
 
@@ -34,11 +35,12 @@ namespace Armature.Core
         realWeight++;
       }
 
+      Log.WriteLine(LogLevel.Trace, () => $"{this}{LogConst.NoMatch}");
       return null;
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}<{1:n0}>.{2}", GetType().Name, Weight, _pattern);
+    public override string ToString() => $"{GetType().GetShortName()}( {_pattern.ToLogString()} ){{ Weight={Weight:n0} }}";
 
     #region Equality
 
@@ -58,7 +60,7 @@ namespace Armature.Core
     {
       unchecked
       {
-        return (_pattern.GetHashCode() * 397) ^ Weight;
+        return (_pattern.GetHashCode() * 397) ^ (int)Weight;
       }
     }
 
