@@ -28,7 +28,7 @@ namespace Armature.Core
     protected abstract object?    Execute(object?[] values);
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), GetMethod().ToLogString());
+    public override string ToString() => $"{GetType().GetShortName()}( {GetMethod().ToLogString()} )";
   }
 
   /// <inheritdoc />

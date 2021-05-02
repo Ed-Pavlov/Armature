@@ -29,6 +29,6 @@ namespace Armature.Core
 
     protected abstract Type GetValueType(UnitId unitId);
 
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _key.ToLogString());
+    public override string ToString() => $"{GetType().GetShortName()}{{ Key = {_key.ToLogString()} }}";
   }
 }

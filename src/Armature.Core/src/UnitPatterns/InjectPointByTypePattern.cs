@@ -28,6 +28,6 @@ namespace Armature.Core
     protected abstract Type? GetInjectPointType(UnitId unitId);
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _type.ToLogString());
+    public override string ToString() => string.Format("{0}( {1} )", GetType().GetShortName(), _type.ToLogString());
   }
 }

@@ -28,10 +28,10 @@ namespace Armature.Core
         return null;
       }
 
-      using(Log.Block(LogLevel.Verbose, ToString)) // pass method group, do not call ToString
+      using(Log.Block(LogLevel.Trace, ToString)) // pass method group, do not call ToString
       {
         var buildActions = GetOwnBuildActions(Weight + inputWeight);
-        buildActions.ToLog();
+        buildActions.ToLog(LogLevel.Trace);
 
         return buildActions;
       }

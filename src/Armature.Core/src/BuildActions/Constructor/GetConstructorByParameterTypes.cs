@@ -45,9 +45,6 @@ namespace Armature.Core
 
     [DebuggerStepThrough]
     public override string ToString()
-      => string.Format(
-        LogConst.OneParameterFormat,
-        GetType().GetShortName(),
-        string.Join(", ", _parameterTypes.Select(Log.ToLogString).ToArray()));
+      => $"{GetType().GetShortName()}( {string.Join(", ", _parameterTypes.Select(Log.ToLogString).ToArray())} )";
   }
 }

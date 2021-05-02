@@ -19,7 +19,7 @@ namespace Armature.Core
 
     protected WeightedBuildActionBag? GetOwnOrChildrenBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight)
     {
-      WeightedBuildActionBag? buildActionBag = null;
+      WeightedBuildActionBag? buildActionBag;
 
       if(unitSequence.Length == 1)
       {
@@ -28,27 +28,25 @@ namespace Armature.Core
         if(buildActionBag is null)
           Log.WriteLine(LogLevel.Trace, () => $"{this}{LogConst.NoMatch}");
         else
-          using(Log.Block(LogLevel.Verbose, ToString)) // pass group method, do not call ToString
+          using(Log.Block(LogLevel.Trace, ToString)) // pass group method, do not call ToString
           {
             // ReSharper disable once RedundantArgumentDefaultValue
-            buildActionBag.ToLog(LogLevel.Verbose);
+            buildActionBag.ToLog(LogLevel.Trace);
           }
       }
       else
       {
         using(Log.Deferred(
-          LogLevel.Verbose,
-          writeDeferredLog =>
+          LogLevel.Trace,
+          blockContent =>
           {
-            var logLevel = buildActionBag is null ? LogLevel.Trace : LogLevel.Verbose;
-
             string GetLogLine() => $"{this} => pass further";
 
-            if(writeDeferredLog is null)
-              Log.WriteLine(logLevel, GetLogLine);
+            if(blockContent is null)
+              Log.WriteLine(LogLevel.Trace, GetLogLine);
             else
-              using(Log.Block(logLevel, GetLogLine))
-                writeDeferredLog();
+              using(Log.Block(LogLevel.Trace, GetLogLine))
+                blockContent();
           }))
         {
           // pass the rest of the sequence to children and return their actions

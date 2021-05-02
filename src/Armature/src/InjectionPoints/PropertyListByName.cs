@@ -4,7 +4,6 @@ using Armature.Core;
 using Armature.Core.Logging;
 using Armature.Extensibility;
 
-
 namespace Armature
 {
   /// <summary>
@@ -22,6 +21,6 @@ namespace Armature
       _names = names;
     }
 
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", _names));
+    public override string ToString() => $"{GetType().GetShortName()}( {string.Join(", ", _names)} )";
   }
 }

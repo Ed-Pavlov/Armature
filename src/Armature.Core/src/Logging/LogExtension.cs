@@ -24,7 +24,7 @@ namespace Armature.Core.Logging
              string.Join(", ", type.GenericTypeArguments.Select(GetShortName).ToArray()))
            : type.Name;
 
-    public static void ToLog(this WeightedBuildActionBag? actions, LogLevel logLevel = LogLevel.Verbose)
+    public static void ToLog(this WeightedBuildActionBag? actions, LogLevel logLevel)
       => logLevel.ExecuteIfEnabled(
         () =>
         {

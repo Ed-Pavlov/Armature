@@ -19,6 +19,6 @@ namespace Armature.Core
     protected abstract string? GetInjectPointName(UnitId unitId);
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _name);
+    public override string ToString() => $"{GetType().GetShortName()}( {_name} )";
   }
 }

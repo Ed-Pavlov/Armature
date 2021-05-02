@@ -30,7 +30,7 @@ namespace Armature.Core
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().Name, (object?) _instance ?? "not set");
+    public override string ToString() => $"{GetType().Name}( {(_instance?.ToString() ?? "nothing")} )";
 
     private class Instance
     {
@@ -40,7 +40,7 @@ namespace Armature.Core
       public Instance(object? value) => Value = value;
 
       [DebuggerStepThrough]
-      public override string ToString() => Value is null ? "[no instance]" : Value.ToLogString();
+      public override string ToString() => Value is null ? "null" : Value.ToLogString();
     }
   }
 }

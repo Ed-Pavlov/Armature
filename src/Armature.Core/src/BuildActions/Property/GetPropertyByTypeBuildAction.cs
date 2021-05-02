@@ -30,6 +30,6 @@ namespace Armature.Core
 
     public void PostProcess(IBuildSession buildSession) { }
 
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _type);
+    public override string ToString() => string.Format("{0}( {1} )", GetType().GetShortName(), _type);
   }
 }

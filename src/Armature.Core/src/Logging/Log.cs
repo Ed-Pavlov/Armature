@@ -94,9 +94,10 @@ namespace Armature.Core.Logging
     /// <summary>
     ///   Used to make a named and indented "block" in log data
     /// </summary>
-    public static IDisposable Block(LogLevel logLevel, string name, params object[] parameters)
+    [StringFormatMethod("format")]
+    public static IDisposable Block(LogLevel logLevel, string format, params object[] parameters)
     {
-      WriteLine(logLevel, name, parameters);
+      WriteLine(logLevel, format, parameters);
 
       return logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
     }

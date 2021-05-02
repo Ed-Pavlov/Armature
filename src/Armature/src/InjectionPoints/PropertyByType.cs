@@ -11,6 +11,6 @@ namespace Armature
     public PropertyByType(Type type, int weight) : base(PropertiesListPattern.Instance, new GetPropertyByTypeBuildAction(type), weight)
       => _type = type ?? throw new ArgumentNullException(nameof(type));
 
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _type.ToLogString());
+    public override string ToString() => $"{GetType().GetShortName()}( {_type.ToLogString()} )";
   }
 }

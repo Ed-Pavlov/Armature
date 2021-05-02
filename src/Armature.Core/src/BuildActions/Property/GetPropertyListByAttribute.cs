@@ -42,6 +42,6 @@ namespace Armature.Core
     public void PostProcess(IBuildSession buildSession) { }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _predicate);
+    public override string ToString() => string.Format("{0}( {1} )", GetType().GetShortName(), _predicate);
   }
 }

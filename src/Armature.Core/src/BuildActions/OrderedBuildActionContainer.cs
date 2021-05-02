@@ -100,7 +100,7 @@ namespace Armature.Core
       {
         buildAction.PostProcess(buildSession);
 
-        Log.WriteLine(LogLevel.Verbose, () => $"{buildAction}.{nameof(IBuildAction.PostProcess)}(...)");
+        Log.WriteLine(LogLevel.Trace, () => $"{buildAction}.{nameof(IBuildAction.PostProcess)}(...)");
       }
     }
 

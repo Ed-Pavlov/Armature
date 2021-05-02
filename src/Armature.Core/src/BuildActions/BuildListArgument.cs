@@ -99,6 +99,6 @@ namespace Armature.Core
       return type.IsAssignableFrom(listType);
     }
 
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _key.ToLogString());
+    public override string ToString() => string.Format("{0}( {1} )", GetType().GetShortName(), _key.ToLogString());
   }
 }

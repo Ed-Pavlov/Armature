@@ -15,6 +15,6 @@ namespace Armature
       => _pointIds = pointIds;
 
     public override string ToString()
-      => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), string.Join(", ", _pointIds.Select(_ => _.ToLogString())));
+      => $"{GetType().GetShortName()}( {string.Join(", ", _pointIds.Select(_ => _.ToLogString()) )} )";
   }
 }

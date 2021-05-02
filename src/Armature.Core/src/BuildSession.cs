@@ -63,15 +63,15 @@ namespace Armature.Core
           WeightedBuildActionBag? actions;
           WeightedBuildActionBag? auxActions;
 
-          using(Log.Block(LogLevel.Verbose, () => $"GatherBuildActions( {string.Join(", ", _buildSequence)} )"))
+          using(Log.Block(LogLevel.Verbose, () => $"{nameof(IPatternTreeNode.GatherBuildActions)}( {string.Join(", ", _buildSequence)} )"))
           {
             actions    = _buildPlans.GatherBuildActions(_buildSequence.AsArrayTail(), 0);
             auxActions = _auxBuildPlans?.GatherBuildActions(_buildSequence.AsArrayTail(), 0);
           }
 
-          Log.WriteLine(LogLevel.Verbose, "");
-
-          return build(actions.Merge(auxActions));
+          var actionBag = actions.Merge(auxActions);
+          LogGatheredActions(actionBag);
+          return build(actionBag);
         }
         catch(Exception exception)
         {
@@ -103,29 +103,26 @@ namespace Armature.Core
 
         performedActions.Push(buildAction);
 
-        using(Log.Block(LogLevel.Info, () => $"{buildAction}.{nameof(IBuildAction.Process)}( buildResult: {buildSession.BuildResult} )"))
+        Log.WriteLine(LogLevel.Verbose, "");
+
+        using(Log.Block(LogLevel.Verbose, () => $"{buildAction}.{nameof(IBuildAction.Process)}( buildResult: {buildSession.BuildResult} )"))
         {
           buildAction.Process(buildSession);
         }
 
         if(buildSession.BuildResult.HasValue)
-        {
-          Log.WriteLine(LogLevel.Info, "");
-
-          Log.WriteLine(
-            LogLevel.Info,
-            () => $"{nameof(BuildSession)}.{nameof(IBuildSession.BuildResult)} = "
-                + $"{buildSession.BuildResult} : {buildSession.BuildResult.Value?.GetType().ToLogString()}");
-
           break; // object is built, unwind called actions in reverse orders
-        }
       }
+
+      Log.WriteLine(LogLevel.Verbose, "");
+
+      LogBuildResult(buildSession.BuildResult);
+
+      Log.WriteLine(LogLevel.Trace, "");
 
       foreach(var buildAction in performedActions)
       {
-        Log.WriteLine(LogLevel.Info, "");
-
-        using(Log.Block(LogLevel.Info, () => $"{buildAction}.{nameof(IBuildAction.PostProcess)}( buildResult: {buildSession.BuildResult} )"))
+        using(Log.Block(LogLevel.Trace, () => $"{buildAction}.{nameof(IBuildAction.PostProcess)}( buildResult: {buildSession.BuildResult} )"))
         {
           buildAction.PostProcess(buildSession);
         }
@@ -149,23 +146,16 @@ namespace Armature.Core
       {
         var buildSession = new Interface(this, _buildSequence);
 
-        using(Log.Block(LogLevel.Info, () => string.Format(LogConst.OneParameterFormat, "Execute action", buildAction)))
+        using(Log.Block(LogLevel.Info, () => string.Format("{0}( {1} )", "Execute action", buildAction)))
         {
           buildAction.Process(buildSession);
           buildAction.PostProcess(buildSession);
         }
 
+        LogBuildResult(buildSession.BuildResult);
+
         if(buildSession.BuildResult.HasValue)
-        {
-          Log.WriteLine(LogLevel.Info, "");
-
-          Log.WriteLine(
-            LogLevel.Info,
-            () => $"{nameof(BuildSession)}.{nameof(IBuildSession.BuildResult)} = "
-                + $"{{{buildSession.BuildResult} : {buildSession.BuildResult.Value?.GetType().ToLogString()}}}");
-
           result.Add(buildSession.BuildResult);
-        }
       }
 
       return result;
@@ -212,5 +202,23 @@ namespace Armature.Core
 
       exception.AddData(ExceptionData.BuildSequence, sb.ToString());
     }
+    
+    private static void LogBuildResult(BuildResult buildResult)
+      => Log.WriteLine(
+        LogLevel.Info,
+        () => $"{nameof(BuildSession)}.{nameof(IBuildSession.BuildResult)} = "
+            + $"{(buildResult.HasValue ? $"{buildResult} : {buildResult.Value?.GetType().ToLogString()}" : buildResult)}");
+
+    private static void LogGatheredActions(WeightedBuildActionBag? actionBag)
+    {
+      Log.WriteLine(LogLevel.Verbose, "");
+
+      if(actionBag is null)
+        Log.WriteLine(LogLevel.Verbose, "No matched actions");
+      else
+        using(Log.Block(LogLevel.Verbose, "Gathered actions"))
+          actionBag.ToLog(LogLevel.Verbose);
+    }
+    
   }
 }

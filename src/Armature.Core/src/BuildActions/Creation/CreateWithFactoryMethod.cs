@@ -25,6 +25,6 @@ namespace Armature.Core
     public void PostProcess(IBuildSession buildSession) { }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _factoryMethod.ToLogString());
+    public override string ToString() => $"{GetType().GetShortName()}( {_factoryMethod.ToLogString()} )";
   }
 }

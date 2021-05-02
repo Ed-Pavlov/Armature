@@ -70,7 +70,7 @@ namespace Tests.Functional
        .Treat<Subject>()
        .AsIs();
 
-      using var _ = Log.Enabled(LogLevel.Trace);
+      using var _ = Log.Enabled(LogLevel.Verbose);
       // --act
       var actual = target.Build<Subject>(expectedText, expectedValue);
 

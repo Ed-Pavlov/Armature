@@ -17,6 +17,6 @@ namespace Armature.Core
       => _injectPointId = injectPointId;
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format(LogConst.OneParameterFormat, GetType().GetShortName(), _injectPointId.ToLogString());
+    public override string ToString() => string.Format("{0}( {1} )", GetType().GetShortName(), _injectPointId.ToLogString());
   }
 }

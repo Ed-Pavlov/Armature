@@ -25,12 +25,22 @@ namespace Armature.Core
     public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight)
     {
       var unitsToSkipCount = unitSequence.Length;
-      var matchingWeight = inputWeight + Weight * unitsToSkipCount;
+      var matchingWeight   = inputWeight + Weight * unitsToSkipCount;
 
-      using(Log.Block(LogLevel.Verbose, ToString, unitsToSkipCount)) // pass group method, do not call ToString method
+      WeightedBuildActionBag? actionBag = null;
+
+      using(Log.Deferred(
+        LogLevel.Trace,
+        blockContent =>
+        {
+          if(actionBag is not null)
+            using(Log.Block(LogLevel.Trace, ToString, unitsToSkipCount))
+              blockContent?.Invoke();
+        }))
       {
         var lastUnitAsTail = unitSequence.GetTail(unitSequence.Length - 1);
-        return GetChildrenActions(lastUnitAsTail, matchingWeight);
+        actionBag = GetChildrenActions(lastUnitAsTail, matchingWeight);
+        return actionBag;
       }
     }
 
@@ -39,7 +49,7 @@ namespace Armature.Core
     #region Equality
 
     [DebuggerStepThrough]
-    public override bool Equals(IPatternTreeNode other) => Equals((object) other);
+    public override bool Equals(IPatternTreeNode other) => Equals((object)other);
 
     [DebuggerStepThrough]
     public override bool Equals(object? obj)
