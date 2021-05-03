@@ -11,12 +11,6 @@ namespace Armature.Core
   {
     private Instance? _instance;
 
-    [DebuggerStepThrough]
-    public Singleton() { }
-
-    [DebuggerStepThrough]
-    public Singleton(object? value) => _instance = new Instance(value);
-
     public void Process(IBuildSession buildSession)
     {
       if(_instance is not null)
@@ -28,9 +22,6 @@ namespace Armature.Core
       if(buildSession.BuildResult.HasValue)
         _instance = new Instance(buildSession.BuildResult.Value);
     }
-
-    [DebuggerStepThrough]
-    public override string ToString() => $"{GetType().Name}( {(_instance?.ToString() ?? "nothing")} )";
 
     private class Instance
     {

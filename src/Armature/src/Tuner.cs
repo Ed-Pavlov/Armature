@@ -11,7 +11,7 @@ namespace Armature
     public Tuner(IPatternTreeNode parentNode) : base(parentNode) { }
 
     /// <summary>
-    ///   Provides arguments to inject into building units constructor and methods. See <see cref="ForParameter" /> for details.
+    ///   Provides arguments to inject into building unit. See <see cref="ForParameter" /> for details.
     /// </summary>
     public Tuner UsingArguments(params object[] arguments) //TODO: надо как-то свести и Property и Methods к одному методу UsingArguments
     {
@@ -24,8 +24,8 @@ namespace Armature
           throw new ArmatureException("IParameterValueBuildPlan or plain object value expected");
         else
           ParentNode
-           .GetOrAddNode(new IfLastUnitMatches(new SubtypePattern(argument.GetType(), null), InjectPointMatchingWeight.WeakTypedParameter))
-           .UseBuildAction(new Singleton(argument), BuildStage.Create);
+           .GetOrAddNode(new IfLastUnitMatches(new ParentTypePattern(argument.GetType(), null), InjectPointMatchingWeight.WeakTypedParameter))
+           .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
 
       return this;
     }

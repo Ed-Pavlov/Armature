@@ -13,7 +13,7 @@ namespace Armature
     /// <summary>
     ///   Inject the <paramref name="value" /> into the property
     /// </summary>
-    public IArgumentTuner UseValue(object? value) => new TunerImpl(UnitPattern, BuildAction, new Singleton(value), Weight);
+    public IArgumentTuner UseValue(object? value) => new TunerImpl(UnitPattern, BuildAction, new Instance<object>(value), Weight);
 
     /// <summary>
     ///   For building a value for the property use <see cref="PropertyInfo.PropertyType" /> and <paramref name="key" />

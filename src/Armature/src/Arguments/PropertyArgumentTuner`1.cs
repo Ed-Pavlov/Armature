@@ -10,6 +10,6 @@ namespace Armature
     /// <summary>
     ///   Inject the <paramref name="value" /> into the property
     /// </summary>
-    public IArgumentTuner UseValue(T value) => new TunerImpl(UnitPattern, BuildAction, new Singleton(value), Weight);
+    public IArgumentTuner UseValue(T value) => new TunerImpl(UnitPattern, BuildAction, new Instance<T>(value), Weight);
   }
 }
