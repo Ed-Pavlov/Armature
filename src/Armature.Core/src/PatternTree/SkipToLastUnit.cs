@@ -28,19 +28,18 @@ namespace Armature.Core
       var matchingWeight   = inputWeight + Weight * unitsToSkipCount;
 
       WeightedBuildActionBag? actionBag = null;
-
-      using(Log.Deferred(
-        LogLevel.Trace,
-        blockContent =>
-        {
-          if(actionBag is not null)
-            using(Log.Block(LogLevel.Trace, ToString, unitsToSkipCount))
-              blockContent?.Invoke();
-        }))
+      using(Log.Deferred(LogLevel.Trace, LogMatchingState))
       {
         var lastUnitAsTail = unitSequence.GetTail(unitSequence.Length - 1);
         actionBag = GetChildrenActions(lastUnitAsTail, matchingWeight);
         return actionBag;
+      }
+
+      void LogMatchingState(Action? blockContent)
+      {
+        if(actionBag is not null)
+          using(Log.Block(LogLevel.Trace, ToString, unitsToSkipCount))
+            blockContent?.Invoke();
       }
     }
 

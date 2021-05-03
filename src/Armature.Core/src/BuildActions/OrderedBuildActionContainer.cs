@@ -35,21 +35,7 @@ namespace Armature.Core
       foreach(var buildAction in _buildActions)
         try
         {
-          using(Log.Deferred(
-            LogLevel.Verbose,
-            writeDeferredLog =>
-            {
-              var buildResult = buildSession.BuildResult;
-              var logLevel    = buildResult.HasValue ? LogLevel.Verbose : LogLevel.Trace;
-              
-              string GetLogLine() => $"{buildAction}.{nameof(IBuildAction.Process)}(...) => {buildResult}";
-
-              if(writeDeferredLog is null)
-                Log.WriteLine(logLevel, GetLogLine);
-              else
-                using(Log.Block(logLevel, GetLogLine))
-                  writeDeferredLog();
-            }))
+          using(LogBuildActionProcess(buildSession, buildAction))
           {
             buildAction.Process(buildSession);
           }
@@ -59,18 +45,6 @@ namespace Armature.Core
             _effectiveBuildActions.TryAdd(buildSession, buildAction);
             break;
           }
-
-          // if(!buildSession.BuildResult.HasValue)
-          // {
-          //   Log.WriteLine(LogLevel.Trace, () => $"{buildAction}.{nameof(IBuildAction.Process)} : no result");
-          // }
-          // else
-          // {
-          //   Log.WriteLine(LogLevel.Info, () => string.Format("redirected execution to {0}", buildAction));
-          //   _effectiveBuildActions.TryAdd(buildSession, buildAction);
-          //
-          //   break;
-          // }
         }
         catch(ArmatureException exc)
         {
@@ -81,7 +55,7 @@ namespace Armature.Core
         }
         catch(Exception exc)
         {
-          Log.WriteLine(LogLevel.Trace, () => string.Format("User exception was throw during executing {0}", buildAction));
+          Log.WriteLine(LogLevel.Trace, () => $"User exception was throw during executing {buildAction}");
           LogException(exc);
 
           for(var i = 0; i < exceptions.Count; i++)
@@ -94,13 +68,30 @@ namespace Armature.Core
         throw exceptions.Aggregate("One or more exceptions occured during processing build actions");
     }
 
+    private static IDisposable LogBuildActionProcess(IBuildSession buildSession, IBuildAction buildAction)
+      => Log.Deferred(
+        LogLevel.Verbose,
+        writeDeferredLog =>
+        {
+          var buildResult = buildSession.BuildResult;
+          var logLevel    = buildResult.HasValue ? LogLevel.Verbose : LogLevel.Trace;
+
+          string GetLogLine() => $"{buildAction}.{nameof(IBuildAction.Process)}(...) => {buildResult}";
+
+          if(writeDeferredLog is null)
+            Log.WriteLine(logLevel, GetLogLine);
+          else
+            using(Log.Block(logLevel, GetLogLine))
+              writeDeferredLog();
+        });
+
     public void PostProcess(IBuildSession buildSession)
     {
       if(_effectiveBuildActions.TryRemove(buildSession, out var buildAction))
       {
         buildAction.PostProcess(buildSession);
 
-        Log.WriteLine(LogLevel.Trace, () => $"{buildAction}.{nameof(IBuildAction.PostProcess)}(...)");
+        Log.WriteLine(LogLevel.Trace, () => string.Format("{0}.{1}(...)", buildAction, nameof(IBuildAction.PostProcess)));
       }
     }
 
@@ -114,10 +105,11 @@ namespace Armature.Core
     }
 
     private static void LogException(Exception exc)
-      => Log.Execute(LogLevel.Trace,
+      => Log.Execute(
+        LogLevel.Trace,
         () =>
         {
-          using(Log.Block(LogLevel.Trace, "Exception: {0}", exc))
+          using(Log.Block(LogLevel.Trace, $"Exception: {exc}"))
           {
             foreach(DictionaryEntry entry in exc.Data)
               Log.WriteLine(LogLevel.Trace, "{0}: {1}", entry.Key, entry.Value);
@@ -129,7 +121,7 @@ namespace Armature.Core
 
     public void PrintToLog()
     {
-      using(Log.Block(LogLevel.Info, "Ordered actions"))
+      using(Log.Block(LogLevel.Info, nameof(OrderedBuildActionContainer)))
       {
         foreach(var buildAction in _buildActions)
           Log.WriteLine(LogLevel.Info, buildAction.ToString);

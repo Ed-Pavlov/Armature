@@ -146,11 +146,11 @@ namespace Armature.Core
       {
         var buildSession = new Interface(this, _buildSequence);
 
-        using(Log.Block(LogLevel.Info, () => string.Format("{0}( {1} )", "Execute action", buildAction)))
-        {
+        using(Log.Block(LogLevel.Trace, () => $"{buildAction}.{nameof(IBuildAction.Process)}( buildResult: {buildSession.BuildResult} )"))
           buildAction.Process(buildSession);
+
+        using(Log.Block(LogLevel.Trace, () => $"{buildAction}.{nameof(IBuildAction.PostProcess)}( buildResult: {buildSession.BuildResult} )"))
           buildAction.PostProcess(buildSession);
-        }
 
         LogBuildResult(buildSession.BuildResult);
 
@@ -202,7 +202,7 @@ namespace Armature.Core
 
       exception.AddData(ExceptionData.BuildSequence, sb.ToString());
     }
-    
+
     private static void LogBuildResult(BuildResult buildResult)
       => Log.WriteLine(
         LogLevel.Info,
@@ -219,6 +219,5 @@ namespace Armature.Core
         using(Log.Block(LogLevel.Verbose, "Gathered actions"))
           actionBag.ToLog(LogLevel.Verbose);
     }
-    
   }
 }

@@ -65,7 +65,7 @@ namespace Armature.Core
 
       if(children is not null)
         foreach(var child in children)
-          using(Log.Block(LogLevel.Info, child.ToString()))
+          using(Log.Block(LogLevel.Info, child.ToString))
           {
             child.PrintToLog();
           }
@@ -74,7 +74,7 @@ namespace Armature.Core
         using(Log.Block(LogLevel.Info, "Build actions"))
         {
           foreach(var pair in _buildActions)
-            using(Log.Block(LogLevel.Info, "Stage: {0}", pair.Key))
+            using(Log.Block(LogLevel.Info, $"Stage: {pair.Key}"))
             {
               foreach(var buildAction in pair.Value)
                 if(buildAction is ILogable printable)

@@ -24,7 +24,7 @@ namespace Armature.Core
 
       if(attribute is null)
       {
-        Log.WriteLine(LogLevel.Verbose, () => $"{this} => Parameter is not marked with InjectAttribute");
+        Log.WriteLine(LogLevel.Verbose, () => $"{this} => parameter is not marked with InjectAttribute");
       }
       else
       {

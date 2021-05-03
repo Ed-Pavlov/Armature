@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Armature.Core.Logging;
@@ -19,42 +20,29 @@ namespace Armature.Core
 
     protected WeightedBuildActionBag? GetOwnOrChildrenBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight)
     {
-      WeightedBuildActionBag? buildActionBag;
+      WeightedBuildActionBag? actionBag;
 
-      if(unitSequence.Length == 1)
+      if(unitSequence.Length > 1)
+      { // pass the rest of the sequence to children and return their actions
+        using(LogMatchingState())
+        {
+          actionBag = GetChildrenActions(unitSequence.GetTail(1), inputWeight + Weight);
+        }
+      }
+      else
       {
-        buildActionBag = GetOwnBuildActions(Weight + inputWeight);
+        actionBag = GetOwnBuildActions(Weight + inputWeight);
 
-        if(buildActionBag is null)
+        if(actionBag is null)
           Log.WriteLine(LogLevel.Trace, () => $"{this}{LogConst.NoMatch}");
         else
           using(Log.Block(LogLevel.Trace, ToString)) // pass group method, do not call ToString
           {
-            // ReSharper disable once RedundantArgumentDefaultValue
-            buildActionBag.ToLog(LogLevel.Trace);
+            actionBag.ToLog(LogLevel.Trace);
           }
       }
-      else
-      {
-        using(Log.Deferred(
-          LogLevel.Trace,
-          blockContent =>
-          {
-            string GetLogLine() => $"{this} => pass further";
 
-            if(blockContent is null)
-              Log.WriteLine(LogLevel.Trace, GetLogLine);
-            else
-              using(Log.Block(LogLevel.Trace, GetLogLine))
-                blockContent();
-          }))
-        {
-          // pass the rest of the sequence to children and return their actions
-          buildActionBag = GetChildrenActions(unitSequence.GetTail(1), inputWeight + Weight);
-        }
-      }
-
-      return buildActionBag;
+      return actionBag;
     }
 
     /// <summary>
@@ -67,5 +55,20 @@ namespace Armature.Core
       => _children?.Aggregate(
         (WeightedBuildActionBag?)null,
         (current, child) => current.Merge(child.GatherBuildActions(unitSequence, inputMatchingWeight)));
+    
+    private IDisposable LogMatchingState()
+      => Log.Deferred(
+        LogLevel.Trace,
+        blockContent =>
+        {
+          string GetLogLine() => $"{this} => pass further";
+
+          if(blockContent is null)
+            Log.WriteLine(LogLevel.Trace, GetLogLine);
+          else
+            using(Log.Block(LogLevel.Trace, GetLogLine))
+              blockContent();
+        });
+
   }
 }
