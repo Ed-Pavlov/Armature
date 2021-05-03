@@ -70,7 +70,7 @@ namespace Armature
 
       return buildResult.HasValue
                ? (T?) buildResult.Value
-               : throw new ArmatureException($"Can't build unit <{unitId}>").AddData("unitInfo", unitId);
+               : throw new ArmatureException($"Unit {unitId} is not built").AddData("unitInfo", unitId);
     }
 
     private static IPatternTreeNode? CreateAuxBuildPlansCollection(object[]? arguments)

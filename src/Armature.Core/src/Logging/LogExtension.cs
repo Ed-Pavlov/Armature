@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 
 namespace Armature.Core.Logging
@@ -37,6 +38,22 @@ namespace Armature.Core.Logging
               foreach(var action in actionsList)
                 Log.WriteLine(logLevel, "{0}{{ Stage={1}, Weight={2:n0} }}", action.Entity, stage, action.Weight);
             }
+        });
+
+    public static void ToLog(this Exception exc, Func<string> getTitle)
+      => Log.Execute(
+        LogLevel.Info,
+        () =>
+        {
+          using(Log.Block(LogLevel.Info, getTitle))
+          {
+            Log.WriteLine(LogLevel.Info, exc.ToString);
+
+            Log.WriteLine(LogLevel.Info, ExceptionConst.Data);
+
+            foreach(DictionaryEntry entry in exc.Data)
+              Log.WriteLine(LogLevel.Info, "{0}: {1}", entry.Key, entry.Value);
+          }
         });
   }
 }

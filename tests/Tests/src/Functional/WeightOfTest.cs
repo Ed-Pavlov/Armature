@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Armature;
 using Armature.Core;
 using FluentAssertions;
@@ -25,9 +27,9 @@ namespace Tests.Functional
     [Test]
     public void test()
     {
-      Console.WriteLine(WeightOf.FindUnit | WeightOf.SubtypePattern);
-      Console.WriteLine(WeightOf.FindUnit + WeightOf.SubtypePattern);
-      Console.WriteLine(WeightOf.SkipToLastUnit);
+      var dic = new HashSet<int>();
+      dic.Add(1);
+      dic.Add(1);
     }
   }
 }

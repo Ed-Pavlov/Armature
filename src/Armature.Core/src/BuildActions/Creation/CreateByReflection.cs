@@ -44,14 +44,15 @@ namespace Armature.Core
           }
           catch(TargetInvocationException exception)
           {
-            if(exception.InnerException is null) throw;
+            var innerException = exception.InnerException;
+            if(innerException is null) throw; //rethrow caught exception
 
             // extract original exception from TargetInvocationException and throw it,
             // store original stack trace as exception data since throwing will replace it
-            exception.InnerException.AddData(ExceptionData.TargetInvocationStackTrace, exception.StackTrace);
-            exception.InnerException.AddData(ExceptionData.OriginalStackTrace, exception.InnerException.StackTrace);
+            innerException.AddData(ExceptionConst.TargetInvocationStackTrace, exception.StackTrace);
+            innerException.AddData(ExceptionConst.OriginalStackTrace, innerException.StackTrace);
 
-            throw exception.InnerException;
+            throw innerException;
           }
         }
       }

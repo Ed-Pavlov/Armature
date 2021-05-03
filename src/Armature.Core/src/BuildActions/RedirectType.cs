@@ -18,7 +18,7 @@ namespace Armature.Core
       if(redirectTo is null) throw new ArgumentNullException(nameof(redirectTo));
 
       if(redirectTo.IsGenericTypeDefinition)
-        throw new ArgumentException("Type should not be open generic, use RedirectOpenGenericTypeBuildAction for open generics", nameof(redirectTo));
+        throw new ArgumentException($"Type should not be open generic, use {nameof(RedirectOpenGenericType)} for open generics", nameof(redirectTo));
 
       _redirectTo = redirectTo;
       _key        = key;

@@ -10,7 +10,7 @@ namespace Armature.Core
     ///   Returns a <see cref="Type" /> if <see cref="UnitId.Kind" /> is a type, otherwise throws exception.
     /// </summary>
     [DebuggerStepThrough]
-    public static Type GetUnitType(this UnitId unitId) => (Type) unitId.Kind! ?? throw new ArgumentNullException(nameof(unitId));
+    public static Type GetUnitType(this UnitId unitId) => (Type) unitId.Kind! ?? throw new ArgumentNullException(nameof(unitId.Kind));
 
     /// <summary>
     ///   Returns a <see cref="Type" /> if <see cref="UnitId.Kind" /> is a type, otherwise null.

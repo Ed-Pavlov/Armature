@@ -13,10 +13,10 @@ namespace Armature.Core
     private readonly IUnitPattern _pattern;
 
     [DebuggerStepThrough]
-    public IfLastUnitMatches(IUnitPattern unitPattern, int weight = 0) : base(weight)
-      => _pattern = unitPattern ?? throw new ArgumentNullException(nameof(unitPattern));
+    public IfLastUnitMatches(IUnitPattern pattern, int weight = 0) : base(weight)
+      => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
-    public override ICollection<IPatternTreeNode> Children => throw new NotSupportedException("This pattern can't contain children");
+    public override ICollection<IPatternTreeNode> Children => throw new NotSupportedException("This pattern can't contain children"); //TODO: why?
 
     public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {

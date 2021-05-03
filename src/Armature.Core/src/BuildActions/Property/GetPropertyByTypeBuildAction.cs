@@ -22,9 +22,11 @@ namespace Armature.Core
       buildSession.BuildResult =
         properties.Length switch
         {
-          0   => throw new ArmatureException($"No property of type '{_type.ToLogString()}' in type '{unitType.ToLogString()}'"),
-          > 1 => throw new ArmatureException($"More than one property of type '{_type.ToLogString()}' in type '{unitType.ToLogString()}'"),
-          _   => new BuildResult(properties)
+          0 => throw new ArmatureException($"No property of type '{_type.ToLogString()}' in type '{unitType.ToLogString()}'"),
+          > 1 => throw new ArmatureException(
+                   $"More than one property of type '{_type.ToLogString()}' in type '{unitType.ToLogString()}."
+                 + $" Consider using a property name instead.'"),
+          _ => new BuildResult(properties)
         };
     }
 

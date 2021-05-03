@@ -35,7 +35,7 @@ namespace Armature.Core
       if(parentNode is null) throw new ArgumentNullException(nameof(parentNode));
 
       if(parentNode.Children.Contains(node))
-        throw new ArmatureException(string.Format("There is already matcher added '{0}'", node));
+        throw new ArmatureException(string.Format("The same node '{0}' has already been added.", node));
 
       parentNode.Children.Add(node);
       return node;

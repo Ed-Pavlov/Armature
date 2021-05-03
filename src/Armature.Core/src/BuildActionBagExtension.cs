@@ -55,7 +55,6 @@ namespace Armature.Core
       if(stage is null) throw new ArgumentNullException(nameof(stage));
 
       var actions = buildActionBag?.GetValueSafe(stage);
-
       if(actions is null) return null;
 
       actions.Sort((l, r) => r.Weight.CompareTo(l.Weight)); // sort descending
@@ -63,18 +62,16 @@ namespace Armature.Core
       if(actions.Count > 1)
         if(actions[0].Weight == actions[1].Weight)
         {
-          Log.WriteLine(LogLevel.Info, "Two or more building actions have the same weight.");
-
           throw new ArmatureException(
-                  "Two or more building actions have the same weight. "
+                  "Two or more building actions matched with the same weight. Weight = {actions[0].Weight:n0}"
                 + Environment.NewLine
-                + $"{actions[0].ToString()}"
+                + $"{actions[0]}"
                 + Environment.NewLine
-                + $"{actions[1].ToString()}"
+                + $"{actions[1]}"
                 + Environment.NewLine
                 + "See Exception.Data for details or enable logging to find the reason")
-               .AddData(1, actions[0].ToString())
-               .AddData(2, actions[1].ToString());
+               .AddData("Action #1", actions[0].ToString())
+               .AddData("Action #2", actions[1].ToString());
         }
 
       return actions[0].Entity;

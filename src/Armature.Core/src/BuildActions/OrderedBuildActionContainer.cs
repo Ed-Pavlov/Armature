@@ -46,26 +46,14 @@ namespace Armature.Core
             break;
           }
         }
-        catch(ArmatureException exc)
-        {
-          LogException(exc);
-          exceptions.Add(exc);
-
-          // continue;
-        }
         catch(Exception exc)
         {
-          Log.WriteLine(LogLevel.Trace, () => $"User exception was throw during executing {buildAction}");
-          LogException(exc);
-
-          for(var i = 0; i < exceptions.Count; i++)
-            exc.AddData(i, exceptions[i]);
-
-          throw;
+          exc.ToLog(() => $"Exception was thrown during executing {buildAction} {nameof(IBuildAction.Process)} method");
+          exceptions.Add(exc);
         }
 
       if(!buildSession.BuildResult.HasValue && exceptions.Count > 0)
-        throw exceptions.Aggregate("One or more exceptions occured during processing build actions");
+        throw exceptions.Aggregate($"{exceptions.Count} exceptions occured during processing build actions");
     }
 
     private static IDisposable LogBuildActionProcess(IBuildSession buildSession, IBuildAction buildAction)
@@ -103,18 +91,6 @@ namespace Armature.Core
 
       return this;
     }
-
-    private static void LogException(Exception exc)
-      => Log.Execute(
-        LogLevel.Trace,
-        () =>
-        {
-          using(Log.Block(LogLevel.Trace, $"Exception: {exc}"))
-          {
-            foreach(DictionaryEntry entry in exc.Data)
-              Log.WriteLine(LogLevel.Trace, "{0}: {1}", entry.Key, entry.Value);
-          }
-        });
 
     [DebuggerStepThrough]
     public override string ToString() => GetType().ToLogString();

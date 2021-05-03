@@ -75,7 +75,7 @@ namespace Armature.Core
         }
         catch(Exception exception)
         {
-          AddDebugData(exception);
+          AddBuildSessionData(exception);
           throw;
         }
         finally
@@ -180,6 +180,7 @@ namespace Armature.Core
         }
         catch(Exception exc)
         {
+          exc.ToLog(() => "Exception");
           exceptions.Add(exc);
 
           // continue
@@ -188,19 +189,19 @@ namespace Armature.Core
       if(exceptions.Count == 0)
         return default;
 
-      throw exceptions.Aggregate("One or more exceptions occured during build the unit");
+      throw exceptions.Aggregate($"{exceptions.Count} exceptions occured during building an unit via parent builders");
     }
 
-    private void AddDebugData(Exception exception)
+    private void AddBuildSessionData(Exception exception)
     {
-      if(exception.Data.Contains(ExceptionData.BuildSequence)) return;
+      if(exception.Data.Contains(ExceptionConst.BuildSequence)) return;
 
       var sb = new StringBuilder();
 
       foreach(var unitInfo in _buildSequence)
         sb.AppendLine(unitInfo.ToString());
 
-      exception.AddData(ExceptionData.BuildSequence, sb.ToString());
+      exception.AddData(ExceptionConst.BuildSequence, sb.ToString());
     }
 
     private static void LogBuildResult(BuildResult buildResult)

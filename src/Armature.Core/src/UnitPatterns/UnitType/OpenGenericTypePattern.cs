@@ -11,7 +11,7 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public OpenGenericTypePattern(Type openType, object? key) : base(openType, key)
     {
-      if(!openType.IsGenericTypeDefinition) throw new ArgumentException("Provide open generic type", nameof(openType));
+      if(!openType.IsGenericTypeDefinition) throw new ArgumentException("Should be an open generic type", nameof(openType));
     }
 
     public bool Matches(UnitId unitId)

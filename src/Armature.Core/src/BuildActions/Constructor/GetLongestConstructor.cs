@@ -34,18 +34,15 @@ namespace Armature.Core
 
     private static ConstructorInfo GetConstructor(ConstructorInfo[] constructors, Type unitType)
     {
-      var suitableConstructors = new Dictionary<int, int> {{0, constructors[0].GetParameters().Length}};
+      var suitableConstructors = new Dictionary<int, int> { { 0, constructors[0].GetParameters().Length } };
 
       for(var i = 1; i < constructors.Length; i++)
       {
-        var parametersCount = constructors[i].GetParameters().Length;
-
+        var parametersCount    = constructors[i].GetParameters().Length;
         var maxParametersCount = suitableConstructors.First().Value;
 
         if(parametersCount == maxParametersCount)
-        {
           suitableConstructors.Add(i, parametersCount);
-        }
         else if(parametersCount > maxParametersCount)
         {
           suitableConstructors.Clear();
@@ -61,16 +58,16 @@ namespace Armature.Core
         var counter = 0;
 
         foreach(var pair in suitableConstructors)
-          message.AppendLine($"ctor#{counter++}: {constructors[pair.Key]}");
+          message.AppendLine($"ctor#{++counter}: {constructors[pair.Key]}");
 
-        var exc = new ArmatureException("ConstructorsAmbiguity");
+        var exception = new ArmatureException(message.ToString());
 
         counter = 0;
 
         foreach(var pair in suitableConstructors)
-          exc.Data.Add(counter++, constructors[pair.Key]);
+          exception.Data.Add($"ctor#{++counter}", constructors[pair.Key]);
 
-        throw exc;
+        throw exception;
       }
 
       return constructors[suitableConstructors.First().Key];

@@ -10,7 +10,7 @@ namespace Armature.Core
   public class WeightOf
   {
     protected const byte Step   = 10;
-    protected const byte Lowest = 20;
+    protected const byte Lowest = Step * 2;
 
     public const byte OpenGenericPattern = Lowest             + Step;
     public const byte SubtypePattern     = OpenGenericPattern + Step;

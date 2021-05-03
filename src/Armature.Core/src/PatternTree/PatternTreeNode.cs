@@ -60,7 +60,7 @@ namespace Armature.Core
         children = Children;
       }
       catch
-      { // do nothing
+      { // access to Children could throw an exception, do nothing
       }
 
       if(children is not null)

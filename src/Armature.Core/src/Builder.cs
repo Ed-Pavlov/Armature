@@ -38,10 +38,10 @@ namespace Armature.Core
         throw new ArgumentException("empty", nameof(stages));
 
       if(stages.Any(stage => stage is null))
-        throw new ArgumentException("Contains null stage", nameof(stages));
+        throw new ArgumentException("Should not contain null values", nameof(stages));
 
       if(stages.Length != stages.Distinct().Count())
-        throw new ArgumentException("Contains duplicates", nameof(stages));
+        throw new ArgumentException("Should not contain duplicate values", nameof(stages));
 
       _stages         = stages;
       _parentBuilders = parentBuilders is null || parentBuilders.Length == 0 ? null : parentBuilders;
