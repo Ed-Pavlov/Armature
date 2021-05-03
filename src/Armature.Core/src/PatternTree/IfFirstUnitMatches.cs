@@ -18,7 +18,7 @@ namespace Armature.Core
     ///   Checks if the first unit in the building unit sequence matches the specified patter.
     ///   If it is the unit under construction, returns build actions for it, if no, pass the rest of the sequence to each child and returns merged actions.
     /// </summary>
-    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight)
+    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
       => _pattern.Matches(unitSequence[0]) ? GetOwnOrChildrenBuildActions(unitSequence, inputWeight) : null;
 
     [DebuggerStepThrough]

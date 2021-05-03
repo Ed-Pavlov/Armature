@@ -29,12 +29,12 @@ namespace Armature.Core
 
     public virtual  BuildActionBag                BuildActions => LazyBuildAction;
     public abstract ICollection<IPatternTreeNode> Children     { get; }
-    public abstract WeightedBuildActionBag?       GatherBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight);
+    public abstract WeightedBuildActionBag?       GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight);
 
-    protected long Weight { [DebuggerStepThrough] get; }
+    protected int Weight { [DebuggerStepThrough] get; }
 
     [DebuggerStepThrough]
-    protected WeightedBuildActionBag? GetOwnBuildActions(long matchingWeight)
+    protected WeightedBuildActionBag? GetOwnBuildActions(int matchingWeight)
     {
       if(_buildActions is null) return null;
 

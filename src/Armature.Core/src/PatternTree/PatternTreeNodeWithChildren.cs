@@ -18,7 +18,7 @@ namespace Armature.Core
 
     public override ICollection<IPatternTreeNode> Children => LazyChildren;
 
-    protected WeightedBuildActionBag? GetOwnOrChildrenBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight)
+    protected WeightedBuildActionBag? GetOwnOrChildrenBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {
       WeightedBuildActionBag? actionBag;
 
@@ -51,7 +51,7 @@ namespace Armature.Core
     /// <param name="unitSequence">The sequence of units building in this build session.</param>
     /// <param name="inputMatchingWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
     [DebuggerStepThrough]
-    protected WeightedBuildActionBag? GetChildrenActions(ArrayTail<UnitId> unitSequence, long inputMatchingWeight)
+    protected WeightedBuildActionBag? GetChildrenActions(ArrayTail<UnitId> unitSequence, int inputMatchingWeight)
       => _children?.Aggregate(
         (WeightedBuildActionBag?)null,
         (current, child) => current.Merge(child.GatherBuildActions(unitSequence, inputMatchingWeight)));

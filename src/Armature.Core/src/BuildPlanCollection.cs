@@ -30,7 +30,7 @@ namespace Armature.Core
 
     public ICollection<IPatternTreeNode> Children => _treeRoot.Children;
 
-    public WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight = 0)
+    public WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight = 0)
       => _treeRoot.GatherBuildActions(unitSequence, 0);
 
     public void PrintToLog()
@@ -58,7 +58,7 @@ namespace Armature.Core
       public TreeRoot() : base(0) { }
 
       [DebuggerStepThrough]
-      public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight)
+      public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
         => GetChildrenActions(unitSequence, inputWeight);
 
       [DebuggerStepThrough]

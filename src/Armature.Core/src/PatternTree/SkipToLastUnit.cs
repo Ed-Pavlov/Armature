@@ -22,7 +22,7 @@ namespace Armature.Core
     /// <summary>
     ///   Decreases the matching weight by each skipped unit then pass unit under construction to children nodes
     /// </summary>
-    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, long inputWeight)
+    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {
       var unitsToSkipCount = unitSequence.Length;
       var matchingWeight   = inputWeight + Weight * unitsToSkipCount;

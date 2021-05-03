@@ -21,5 +21,13 @@ namespace Tests.Functional
     [Test]
     public void first_unit_should_be_greater_than_find_unit_with_any_pattern()
       => WeightOf.FirstUnit.Should().BeGreaterThan(WeightOf.FindUnit | short.MaxValue);
+
+    [Test]
+    public void test()
+    {
+      Console.WriteLine(WeightOf.FindUnit | WeightOf.SubtypePattern);
+      Console.WriteLine(WeightOf.FindUnit + WeightOf.SubtypePattern);
+      Console.WriteLine(WeightOf.SkipToLastUnit);
+    }
   }
 }
