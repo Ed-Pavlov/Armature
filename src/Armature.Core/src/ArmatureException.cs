@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Text;
+using Armature.Core.Logging;
 
 namespace Armature.Core
 {
@@ -11,11 +12,15 @@ namespace Armature.Core
   [Serializable]
   public class ArmatureException : ApplicationException
   {
-    [DebuggerStepThrough]
-    public ArmatureException(string message) : base(message) { }
+    private static readonly string Postfix =
+      Environment.NewLine
+    + $"See {nameof(Exception)}.{nameof(Data)} for details or enable logging using {nameof(Log)}.{nameof(Log.Enabled)} to investigate the error.";
 
     [DebuggerStepThrough]
-    public ArmatureException(string message, Exception innerException) : base(message, innerException) { }
+    public ArmatureException(string message) : base(message + Postfix) { }
+
+    [DebuggerStepThrough]
+    public ArmatureException(string message, Exception innerException) : base(message + Postfix, innerException) { }
 
     [DebuggerStepThrough]
     public override string ToString()

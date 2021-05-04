@@ -27,7 +27,7 @@ namespace Armature
     /// <summary>
     ///   Use specified <paramref name="instance"/> as a unit.
     /// </summary>
-    public void AsInstance(T? instance) => ParentNode.UseBuildAction(new Instance<T>(instance), BuildStage.Cache);
+    public void AsInstance(T? instance) => ParentNode.UseBuildAction(new Value<T>(instance), BuildStage.Cache);
 
     /// <summary>
     ///   Build an object of the specified <paramref name="type"/> instead.

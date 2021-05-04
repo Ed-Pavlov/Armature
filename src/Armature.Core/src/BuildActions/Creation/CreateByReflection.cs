@@ -1,17 +1,16 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using Armature.Core.Logging;
 
 namespace Armature.Core
 {
   /// <summary>
-  ///   Creates a Unit using reflection.
+  ///   Instantiates an object using reflection <see cref="ConstructorInfo.Invoke(object[])"/> method.
   /// </summary>
   public class CreateByReflection : IBuildAction
   {
     public static readonly IBuildAction Instance = new CreateByReflection();
-
-    private CreateByReflection() { }
 
     public void Process(IBuildSession buildSession)
     {
@@ -19,41 +18,33 @@ namespace Armature.Core
       {
         var type = buildSession.GetUnitUnderConstruction().GetUnitType();
 
-        // ReSharper disable once PossibleNullReferenceException
         if(!type.IsInterface && !type.IsAbstract)
         {
           var constructor = buildSession.GetConstructorOf(type);
-          var parameters = constructor.GetParameters();
+          var parameters  = constructor.GetParameters();
 
           if(parameters.Length == 0 && type.IsValueType) // do not create default value of value type, it can confuse logic
             return;
 
+          object instance;
+
           try
           {
-            object instance;
-
             if(parameters.Length == 0)
               instance = constructor.Invoke(Empty<object>.Array);
             else
             {
-              var arguments = buildSession.GetArgumentsForParameters(parameters);
+              var arguments = buildSession.GetArgumentsForParameters(constructor, parameters);
               instance = constructor.Invoke(arguments);
             }
-
-            buildSession.BuildResult = new BuildResult(instance);
           }
-          catch(TargetInvocationException exception)
+          catch(TargetInvocationException e)
           {
-            var innerException = exception.InnerException;
-            if(innerException is null) throw; //rethrow caught exception
-
-            // extract original exception from TargetInvocationException and throw it,
-            // store original stack trace as exception data since throwing will replace it
-            innerException.AddData(ExceptionConst.TargetInvocationStackTrace, exception.StackTrace);
-            innerException.AddData(ExceptionConst.OriginalStackTrace, innerException.StackTrace);
-
-            throw innerException;
+            Console.WriteLine(e);
+            throw;
           }
+
+          buildSession.BuildResult = new BuildResult(instance);
         }
       }
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Armature.Core.Logging;
@@ -10,7 +9,7 @@ namespace Armature.Core
   /// <summary>
   ///   This container is used mostly for "default" build actions applied to any unit under construction.
   ///   For example by default we want to find attributed constructor and if there is no any get longest constructor, set these two actions in right order
-  ///   into <see cref="OrderedBuildActionContainer" /> to reach such behaviour. If a build action did not build a unit container calls the next one till
+  ///   into <see cref="BuildActionChain" /> to reach such behaviour. If a build action did not build a unit container calls the next one till
   ///   a unit will be built.
   /// </summary>
   /// <remarks>
@@ -23,10 +22,10 @@ namespace Armature.Core
   /// </remarks>
 
   //TODO: need another name, something like build actions chain, or whatever, describing semantic better than now
-  public class OrderedBuildActionContainer : IBuildAction, ILogable, IEnumerable
+  public class BuildActionChain : IBuildAction, ILogable, IEnumerable
   {
-    private readonly List<IBuildAction>                                _buildActions          = new();
-    private readonly ConcurrentDictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new();
+    private readonly List<IBuildAction>                      _buildActions          = new();
+    private readonly Dictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new();
 
     public void Process(IBuildSession buildSession)
     {
@@ -42,7 +41,7 @@ namespace Armature.Core
 
           if(buildSession.BuildResult.HasValue)
           {
-            _effectiveBuildActions.TryAdd(buildSession, buildAction);
+            _effectiveBuildActions.Add(buildSession, buildAction);
             break;
           }
         }
@@ -75,17 +74,18 @@ namespace Armature.Core
 
     public void PostProcess(IBuildSession buildSession)
     {
-      if(_effectiveBuildActions.TryRemove(buildSession, out var buildAction))
+      if(_effectiveBuildActions.TryGetValue(buildSession, out var buildAction))
       {
+        _effectiveBuildActions.Remove(buildSession);
+        
         buildAction.PostProcess(buildSession);
-
         Log.WriteLine(LogLevel.Trace, () => string.Format("{0}.{1}(...)", buildAction, nameof(IBuildAction.PostProcess)));
       }
     }
 
     public IEnumerator GetEnumerator() => throw new NotSupportedException();
 
-    public OrderedBuildActionContainer Add(IBuildAction buildAction)
+    public BuildActionChain Add(IBuildAction buildAction)
     {
       _buildActions.Add(buildAction);
 
@@ -97,7 +97,7 @@ namespace Armature.Core
 
     public void PrintToLog()
     {
-      using(Log.Block(LogLevel.Info, nameof(OrderedBuildActionContainer)))
+      using(Log.Block(LogLevel.Info, nameof(BuildActionChain)))
       {
         foreach(var buildAction in _buildActions)
           Log.WriteLine(LogLevel.Info, buildAction.ToString);

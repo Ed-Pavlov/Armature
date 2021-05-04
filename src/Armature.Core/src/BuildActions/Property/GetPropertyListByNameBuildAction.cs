@@ -31,7 +31,7 @@ namespace Armature.Core
 
                    if(property is null)
                      throw new ArmatureException(
-                       string.Format("There is no property with name '{0}' in type '{1}'", string.Join(", ", _names), unitType.ToLogString()));
+                       string.Format("There is no property with name '{0}' in type '{1}'", name, unitType.ToLogString()));
 
                    return property;
                  })

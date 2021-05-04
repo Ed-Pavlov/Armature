@@ -15,7 +15,7 @@ namespace Armature
     /// <summary>
     ///   Use the <paramref name="value" /> as an argument for the parameter.
     /// </summary>
-    public IArgumentTuner UseValue(object? value) => new TunerImpl(UnitPattern, new Instance<object>(value), Weight);
+    public IArgumentTuner UseValue(object? value) => new TunerImpl(UnitPattern, new Value<object>(value), Weight);
     
     /// <summary>
     ///   For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <paramref name="key" />

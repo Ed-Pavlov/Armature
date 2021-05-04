@@ -15,8 +15,9 @@ namespace Armature.Core
     {
       if(!buildSession.BuildResult.HasValue)
       {
-        var parameters = GetMethod().GetParameters().ToArray();
-        var result     = Execute(buildSession.GetArgumentsForParameters(parameters));
+        var method = GetMethod();
+        var parameters = method.GetParameters().ToArray();
+        var result     = Execute(buildSession.GetArgumentsForParameters(method, parameters));
         buildSession.BuildResult = new BuildResult(result);
       }
     }

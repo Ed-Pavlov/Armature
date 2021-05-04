@@ -56,7 +56,7 @@ namespace Tests.Functional
              // inject into constructor
              new IfLastUnitMatches(ConstructorPattern.Instance)
               .UseBuildAction(
-                 new OrderedBuildActionContainer
+                 new BuildActionChain
                  {
                    new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
                    GetLongestConstructor

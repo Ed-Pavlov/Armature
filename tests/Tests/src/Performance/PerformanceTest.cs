@@ -166,7 +166,7 @@ namespace Tests.Performance
                        // inject into constructor
                        new IfLastUnitMatches(ConstructorPattern.Instance)
                         .UseBuildAction(
-                           new OrderedBuildActionContainer
+                           new BuildActionChain
                            {
                              new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
                              GetLongestConstructor.Instance       // constructor with largest number of parameters has less priority
@@ -174,13 +174,13 @@ namespace Tests.Performance
                            BuildStage.Create),
                        new IfLastUnitMatches(MethodArgumentPattern.Instance)
                         .UseBuildAction(
-                           new OrderedBuildActionContainer
+                           new BuildActionChain
                            {
                              BuildArgumentForMethodWithPointIdAsKey.Instance, BuildArgumentForMethodParameter.Instance
                            },
                            BuildStage.Create),
                        new IfLastUnitMatches(PropertyArgumentPattern.Instance)
-                        .UseBuildAction(new OrderedBuildActionContainer {new BuildArgumentForProperty()}, BuildStage.Create)
+                        .UseBuildAction(new BuildActionChain {new BuildArgumentForProperty()}, BuildStage.Create)
                      };
 
       var buildStages = new object[] {BuildStage.Cache, BuildStage.Initialize, BuildStage.Create};

@@ -15,7 +15,7 @@ namespace Armature.Core
   {
     public static readonly IBuildAction Instance = new GetLongestConstructor();
 
-    private GetLongestConstructor() { }
+    public GetLongestConstructor() { }
 
     public void Process(IBuildSession buildSession)
     {
@@ -52,20 +52,12 @@ namespace Armature.Core
 
       if(suitableConstructors.Count != 1)
       {
-        var message = new StringBuilder($"More than one constructor with max parameters count for type '{unitType.ToLogString()}' found");
-        message.AppendLine();
+        var exception = new ArmatureException($"More than one constructor with max parameters count for type '{unitType.ToLogString()}' found");
 
         var counter = 0;
 
         foreach(var pair in suitableConstructors)
-          message.AppendLine($"ctor#{++counter}: {constructors[pair.Key]}");
-
-        var exception = new ArmatureException(message.ToString());
-
-        counter = 0;
-
-        foreach(var pair in suitableConstructors)
-          exception.Data.Add($"ctor#{++counter}", constructors[pair.Key]);
+          exception.AddData($"ctor#{++counter}", constructors[pair.Key]);
 
         throw exception;
       }

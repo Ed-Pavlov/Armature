@@ -451,7 +451,7 @@ namespace Tests.Functional
              // inject into constructor
              new IfLastUnitMatches(ConstructorPattern.Instance)
               .UseBuildAction(
-                 new OrderedBuildActionContainer
+                 new BuildActionChain
                  {
                    new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
                    GetLongestConstructor
@@ -459,7 +459,7 @@ namespace Tests.Functional
                  },
                  BuildStage.Create),
              new IfLastUnitMatches(MethodArgumentPattern.Instance)
-              .UseBuildAction(new OrderedBuildActionContainer() {BuildArgumentForMethodParameter.Instance, GetDefaultParameterValue.Instance}, BuildStage.Create) // autowiring
+              .UseBuildAction(new BuildActionChain() {BuildArgumentForMethodParameter.Instance, GetDefaultParameterValue.Instance}, BuildStage.Create) // autowiring
            }
          };
 

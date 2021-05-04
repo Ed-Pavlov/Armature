@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Armature.Core.Logging;
 
 namespace Armature.Core
@@ -58,30 +57,21 @@ namespace Armature.Core
       {
         _buildSequence.Add(unitId);
 
-        try
-        {
-          WeightedBuildActionBag? actions;
-          WeightedBuildActionBag? auxActions;
+        WeightedBuildActionBag? actions;
+        WeightedBuildActionBag? auxActions;
 
-          using(Log.Block(LogLevel.Verbose, () => $"{nameof(IPatternTreeNode.GatherBuildActions)}( {string.Join(", ", _buildSequence)} )"))
-          {
-            actions    = _buildPlans.GatherBuildActions(_buildSequence.AsArrayTail(), 0);
-            auxActions = _auxBuildPlans?.GatherBuildActions(_buildSequence.AsArrayTail(), 0);
-          }
+        using(Log.Block(LogLevel.Verbose, () => $"{nameof(IPatternTreeNode.GatherBuildActions)}( {string.Join(", ", _buildSequence)} )"))
+        {
+          actions    = _buildPlans.GatherBuildActions(_buildSequence.AsArrayTail(), 0);
+          auxActions = _auxBuildPlans?.GatherBuildActions(_buildSequence.AsArrayTail(), 0);
+        }
 
-          var actionBag = actions.Merge(auxActions);
-          LogGatheredActions(actionBag);
-          return build(actionBag);
-        }
-        catch(Exception exception)
-        {
-          AddBuildSessionData(exception);
-          throw;
-        }
-        finally
-        {
-          _buildSequence.RemoveAt(_buildSequence.Count - 1);
-        }
+        var actionBag = actions.Merge(auxActions);
+        LogGatheredActions(actionBag);
+        var result = build(actionBag);
+        
+        _buildSequence.RemoveAt(_buildSequence.Count - 1);
+        return result;
       }
     }
 
@@ -103,12 +93,7 @@ namespace Armature.Core
 
         performedActions.Push(buildAction);
 
-        Log.WriteLine(LogLevel.Verbose, "");
-
-        using(Log.Block(LogLevel.Verbose, () => $"{buildAction}.{nameof(IBuildAction.Process)}( buildResult: {buildSession.BuildResult} )"))
-        {
-          buildAction.Process(buildSession);
-        }
+        BuildActionProcess(buildAction, buildSession);
 
         if(buildSession.BuildResult.HasValue)
           break; // object is built, unwind called actions in reverse orders
@@ -121,12 +106,7 @@ namespace Armature.Core
       Log.WriteLine(LogLevel.Trace, "");
 
       foreach(var buildAction in performedActions)
-      {
-        using(Log.Block(LogLevel.Trace, () => $"{buildAction}.{nameof(IBuildAction.PostProcess)}( buildResult: {buildSession.BuildResult} )"))
-        {
-          buildAction.PostProcess(buildSession);
-        }
-      }
+        BuildActionPostProcess(buildAction, buildSession);
 
       return buildSession.BuildResult.HasValue
                ? buildSession.BuildResult
@@ -138,7 +118,16 @@ namespace Armature.Core
       if(buildActionBag is null) return Empty<BuildResult>.List;
 
       if(buildActionBag.Keys.Count > 1)
-        throw new ArmatureException($"Actions only for one stage should be provided for {nameof(BuildAllUnits)}");
+      {
+        var exception = new ArmatureException($"Actions only for one stage should be provided for {nameof(BuildAllUnits)}");
+
+        var number = 1;
+
+        foreach(var pair in buildActionBag)
+          exception.AddData($"Stage #{number++}", pair.Key);
+
+        throw exception;
+      }
 
       var result = new List<BuildResult>();
 
@@ -146,11 +135,8 @@ namespace Armature.Core
       {
         var buildSession = new Interface(this, _buildSequence);
 
-        using(Log.Block(LogLevel.Trace, () => $"{buildAction}.{nameof(IBuildAction.Process)}( buildResult: {buildSession.BuildResult} )"))
-          buildAction.Process(buildSession);
-
-        using(Log.Block(LogLevel.Trace, () => $"{buildAction}.{nameof(IBuildAction.PostProcess)}( buildResult: {buildSession.BuildResult} )"))
-          buildAction.PostProcess(buildSession);
+        BuildActionProcess(buildAction, buildSession);
+        BuildActionPostProcess(buildAction, buildSession);
 
         LogBuildResult(buildSession.BuildResult);
 
@@ -160,6 +146,43 @@ namespace Armature.Core
 
       return result;
     }
+
+    private void BuildActionProcess(IBuildAction buildAction, Interface buildSession)
+    {
+      Log.WriteLine(LogLevel.Verbose, "");
+
+      using(Log.Block(LogLevel.Verbose, () => $"{buildAction}.{nameof(IBuildAction.Process)}( buildResult: {buildSession.BuildResult} )"))
+      {
+        try
+        {
+          buildAction.Process(buildSession);
+        }
+        catch(Exception exc)
+        {
+          AddBuildSessionData(exc);
+          exc.ToLog(() => $"Exception was thrown during executing {buildAction}.{nameof(IBuildAction.Process)} method");
+          throw;
+        }
+      }
+    }
+
+    private void BuildActionPostProcess(IBuildAction buildAction, IBuildSession buildSession)
+    {
+      using(Log.Block(LogLevel.Trace, () => $"{buildAction}.{nameof(IBuildAction.PostProcess)}( buildResult: {buildSession.BuildResult} )"))
+      {
+        try
+        {
+          buildAction.PostProcess(buildSession);
+        }
+        catch(Exception exc)
+        {
+          AddBuildSessionData(exc);
+          exc.ToLog(() => $"Exception was thrown during executing {buildAction}.{nameof(IBuildAction.PostProcess)} method");
+          throw;
+        }
+      }
+    }
+
 
     private BuildResult BuildViaParentBuilder(UnitId unitId)
     {
@@ -195,13 +218,7 @@ namespace Armature.Core
     private void AddBuildSessionData(Exception exception)
     {
       if(exception.Data.Contains(ExceptionConst.BuildSequence)) return;
-
-      var sb = new StringBuilder();
-
-      foreach(var unitInfo in _buildSequence)
-        sb.AppendLine(unitInfo.ToString());
-
-      exception.AddData(ExceptionConst.BuildSequence, sb.ToString());
+      exception.AddData(ExceptionConst.BuildSequence, string.Join(" -> ", _buildSequence));
     }
 
     private static void LogBuildResult(BuildResult buildResult)

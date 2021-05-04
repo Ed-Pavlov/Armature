@@ -70,7 +70,6 @@ namespace Tests.Functional
        .Treat<Subject>()
        .AsIs();
 
-      using var _ = Log.Enabled(LogLevel.Verbose);
       // --act
       var actual = target.Build<Subject>(expectedText, expectedValue);
 
@@ -177,7 +176,7 @@ namespace Tests.Functional
              // inject into constructor
              new IfLastUnitMatches(ConstructorPattern.Instance)
               .UseBuildAction(
-                 new OrderedBuildActionContainer
+                 new BuildActionChain
                  {
                    new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
                    GetLongestConstructor.Instance       // constructor with largest number of parameters has less priority
@@ -186,7 +185,7 @@ namespace Tests.Functional
              
              new IfLastUnitMatches(MethodArgumentPattern.Instance)
               .UseBuildAction(
-                 new OrderedBuildActionContainer
+                 new BuildActionChain
                  {
                    BuildArgumentForMethodWithPointIdAsKey.Instance, 
                    BuildArgumentForMethodParameter.Instance

@@ -12,6 +12,6 @@ namespace Armature
     /// <summary>
     ///   Use the <paramref name="value" /> for the parameter
     /// </summary>
-    public ITuner UseValue(T? value) => new TunerImpl(UnitPattern, new Instance<T>(value), Weight);
+    public ITuner UseValue(T? value) => new TunerImpl(UnitPattern, new Value<T>(value), Weight);
   }
 }

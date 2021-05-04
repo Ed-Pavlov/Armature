@@ -47,6 +47,9 @@ namespace Armature
     /// <exception cref="ArmatureException">Throws if not unit was built by this or any parent containers</exception>
     public static IReadOnlyList<object?> BuildAll<T>(this Builder builder, params object[]? arguments) => builder.BuildAll<T>(null, arguments);
 
+    /// <summary>
+    ///   All other BuildAll... methods should delegate to this one. This is the real implementation
+    /// </summary>
     private static IReadOnlyList<object?> BuildAll<T>(this Builder builder, object? key, params object[]? arguments)
     {
       var unitId     = new UnitId(typeof(T), key);
@@ -70,7 +73,7 @@ namespace Armature
 
       return buildResult.HasValue
                ? (T?) buildResult.Value
-               : throw new ArmatureException($"Unit {unitId} is not built").AddData("unitInfo", unitId);
+               : throw new ArmatureException($"Unit {unitId} is not built").AddData($"{nameof(unitId)}", unitId.ToString());
     }
 
     private static IPatternTreeNode? CreateAuxBuildPlansCollection(object[]? arguments)

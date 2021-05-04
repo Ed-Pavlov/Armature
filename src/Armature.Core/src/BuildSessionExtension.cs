@@ -24,7 +24,7 @@ namespace Armature.Core
       if(!result.HasValue)
         throw new Exception(string.Format("Can't find appropriate constructor for type {0}", type));
 
-      return (ConstructorInfo) result.Value!;
+      return (ConstructorInfo)result.Value!;
     }
 
     /// <summary>
@@ -33,20 +33,25 @@ namespace Armature.Core
     public static object? BuildArgument(this IBuildSession buildSession, PropertyInfo propertyInfo)
     {
       var buildResult = buildSession.BuildUnit(new UnitId(propertyInfo, SpecialKey.Argument));
-      return buildResult.HasValue ? buildResult.Value : throw new ArmatureException(string.Format("Can't build value for property '{0}'", propertyInfo));
+
+      return buildResult.HasValue
+               ? buildResult.Value
+               : throw new ArmatureException(string.Format("Argument for property '{0}' of {1} is not built", propertyInfo, propertyInfo.DeclaringType));
     }
 
     /// <summary>
     ///   "Builds" values for parameters by building a set of <see cref="UnitId" />(<paramref name="parameters" />[i], <see cref="SpecialKey.Argument" />)
     ///   one by one via current build session
     /// </summary>
-    public static object?[] GetArgumentsForParameters(this IBuildSession buildSession, ParameterInfo[] parameters)
+    public static object?[] GetArgumentsForParameters(this IBuildSession buildSession, MethodBase methodBase, ParameterInfo[] parameters)
     {
       if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
       if(parameters is null) throw new ArgumentNullException(nameof(parameters));
       if(parameters.Length == 0) throw new ArgumentException("At least one parameters should be provided", nameof(parameters));
 
-      using(Log.Block(LogLevel.Trace, () => "GetValuesForParameters( " + string.Join(", ", parameters.Select(_ => _.ToString()).ToArray()) + " )"))
+      using(Log.Block(
+        LogLevel.Trace,
+        () => $"{nameof(GetArgumentsForParameters)}( " + string.Join(", ", parameters.Select(_ => _.ToString()).ToArray()) + " )"))
       {
         var values = new object?[parameters.Length];
 
@@ -55,7 +60,8 @@ namespace Armature.Core
           var buildResult = buildSession.BuildUnit(new UnitId(parameters[i], SpecialKey.Argument));
 
           if(!buildResult.HasValue)
-            throw new ArmatureException(string.Format("Can't build value for parameter '{0}'", parameters[i]));
+            throw new ArmatureException(
+              string.Format("Argument for parameter '{0}' of {1}.{2} is not built", parameters[i], methodBase.DeclaringType, methodBase.Name));
 
           values[i] = buildResult.Value;
         }

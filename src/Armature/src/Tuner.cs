@@ -21,11 +21,11 @@ namespace Armature
         if(argument is IArgumentTuner buildPlan)
           buildPlan.Apply(ParentNode);
         else if(argument is ITuner)
-          throw new ArmatureException("IParameterValueBuildPlan or plain object value expected");
+          throw new ArgumentException("IParameterValueBuildPlan or plain object value expected");
         else
           ParentNode
            .GetOrAddNode(new IfLastUnitMatches(new ParentTypePattern(argument.GetType(), null), InjectPointMatchingWeight.WeakTypedParameter))
-           .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
+           .UseBuildAction(new Value<object>(argument), BuildStage.Cache);
 
       return this;
     }

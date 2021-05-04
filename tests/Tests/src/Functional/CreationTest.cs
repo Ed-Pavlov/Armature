@@ -1,5 +1,6 @@
 ﻿using Armature;
 using Armature.Core;
+using Armature.Core.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -118,6 +119,7 @@ namespace Tests.Functional
           })
        .UsingArguments(expectedString);
 
+      using var _ = Log.Enabled(LogLevel.Verbose);
       // --act
       var actual = target.Build<Subject>();
 
@@ -252,7 +254,6 @@ namespace Tests.Functional
          {
            new SkipToLastUnit
            {
-             // inject into constructor
              new IfLastUnitMatches(ConstructorPattern.Instance)
               .UseBuildAction(new GetConstructorByParameterTypes(), BuildStage.Create) // use empty ctor by default in this test
            }
