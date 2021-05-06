@@ -12,8 +12,6 @@ namespace Armature.Core
   {
     public static readonly IBuildAction Instance = new BuildArgumentForMethodWithPointIdAsKey();
 
-    private BuildArgumentForMethodWithPointIdAsKey() { }
-
     public void Process(IBuildSession buildSession)
     {
       var parameterInfo = (ParameterInfo) buildSession.GetUnitUnderConstruction().Kind!;

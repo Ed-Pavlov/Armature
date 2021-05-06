@@ -55,8 +55,11 @@ namespace Armature
       var unitId     = new UnitId(typeof(T), key);
       var buildPlans = CreateAuxBuildPlansCollection(arguments);
 
-      var list = builder.BuildAllUnits(unitId, buildPlans);
-      return ReferenceEquals(list, Empty<BuildResult>.List) ? Empty<object?>.List : list.Select(buildResult => buildResult.Value).ToArray();
+      var unitList = builder.BuildAllUnits(unitId, buildPlans);
+
+      return ReferenceEquals(unitList, Empty<Weighted<BuildResult>>.List)
+               ? Empty<object?>.List
+               : unitList.Select(_ => _.Entity).Select(buildResult => buildResult.Value).ToArray();
     }
 
     /// <summary>
@@ -72,13 +75,13 @@ namespace Armature
       var buildResult = builder.BuildUnit(unitId, buildPlans);
 
       return buildResult.HasValue
-               ? (T?) buildResult.Value
+               ? (T?)buildResult.Value
                : throw new ArmatureException($"Unit {unitId} is not built").AddData($"{nameof(unitId)}", unitId.ToString());
     }
 
     private static IPatternTreeNode? CreateAuxBuildPlansCollection(object[]? arguments)
     {
-      if(arguments is not {Length: > 0}) return null;
+      if(arguments is not { Length: > 0 }) return null;
 
       var buildPlans = new BuildPlanCollection();
 
@@ -123,9 +126,9 @@ namespace Armature
       /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
       /// <exception cref="ArmatureException">Throws if no unit was built by this or any parent containers</exception>
       [DebuggerStepThrough]
-      public IReadOnlyList<object?>? BuildAll<T>() => _builder.BuildAll<T>(_key);
+      public IReadOnlyList<object?> BuildAll<T>() => _builder.BuildAll<T>(_key);
 
-      
+
       /// <summary>
       ///   Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight with an additional
       ///   key passed into <see cref="BuilderExtension.UsingKey"/> method passing additional <paramref name="arguments" /> they can be values or
@@ -135,7 +138,7 @@ namespace Armature
       /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
       /// <exception cref="ArmatureException">Throws if no unit was built by this or any parent containers</exception>
       [DebuggerStepThrough]
-      public IReadOnlyList<object?>? BuildAll<T>(params object[] arguments) => _builder.BuildAll<T>(_key, arguments);
+      public IReadOnlyList<object?> BuildAll<T>(params object[] arguments) => _builder.BuildAll<T>(_key, arguments);
     }
   }
 }

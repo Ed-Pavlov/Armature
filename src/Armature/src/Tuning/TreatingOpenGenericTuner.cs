@@ -15,7 +15,7 @@ namespace Armature
     ///   Build an object of the specified <paramref name="openGenericType"/> instead. Also use default creation strategy for that type.
     ///   See <see cref="Default.CreationBuildAction"/> for details.
     /// </summary>
-    public Tuner AsCreated(Type openGenericType, object? key = null) => As(openGenericType, key).CreatedByDefault();
+    public FinalTuner AsCreated(Type openGenericType, object? key = null) => As(openGenericType, key).CreatedByDefault();
 
     /// <summary>
     ///   Build an object of the specified <paramref name="openGenericType"/> instead. 
@@ -29,10 +29,10 @@ namespace Armature
     /// <summary>
     ///   Use default creation strategy for a unit. See <see cref="Default.CreationBuildAction"/> for details.
     /// </summary>
-    public Tuner AsIs()
+    public FinalTuner AsIs()
     {
       ParentNode.UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
-      return new Tuner(ParentNode);
+      return new FinalTuner(ParentNode);
     }
   }
 }

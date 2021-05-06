@@ -53,7 +53,7 @@ namespace Tests.Extensibility.MaybePropagation
              new IfLastUnitMatches(ConstructorPattern.Instance)
               .UseBuildAction(GetLongestConstructor.Instance, BuildStage.Create),
              new IfLastUnitMatches(MethodArgumentPattern.Instance)
-              .UseBuildAction(BuildArgumentForMethodParameter.Instance, BuildStage.Create)
+              .UseBuildAction(BuildArgumentByParameter.Instance, BuildStage.Create)
            }
          };
   }

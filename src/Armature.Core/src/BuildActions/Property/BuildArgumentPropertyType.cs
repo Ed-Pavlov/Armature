@@ -5,12 +5,12 @@ using System.Reflection;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Builds an argument for the property.
+  ///   Builds an argument for the property using <see cref="PropertyInfo.PropertyType"/> and specified key as <see cref="UnitId"/>.
   /// </summary>
-  public class BuildArgumentForProperty : BuildArgumentBase
+  public class BuildArgumentPropertyType : BuildArgumentBase
   {
     [DebuggerStepThrough]
-    public BuildArgumentForProperty(object? key = null) : base(key) { }
+    public BuildArgumentPropertyType(object? key = null) : base(key) { }
 
     protected override Type GetValueType(UnitId unitId) => ((PropertyInfo) unitId.Kind!).PropertyType;
   }

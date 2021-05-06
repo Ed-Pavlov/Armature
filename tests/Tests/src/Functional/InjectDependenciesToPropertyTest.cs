@@ -199,7 +199,7 @@ namespace Tests.Functional
              new IfLastUnitMatches(ConstructorPattern.Instance)
               .UseBuildAction(GetLongestConstructor.Instance, BuildStage.Create),
              new IfLastUnitMatches(PropertyArgumentPattern.Instance)
-              .UseBuildAction(new BuildArgumentForProperty(), BuildStage.Create)
+              .UseBuildAction(new BuildArgumentPropertyType(), BuildStage.Create)
            }
          };
 

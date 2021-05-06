@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
 
@@ -34,7 +35,7 @@ namespace Armature.Core
               instance = constructor.Invoke(Empty<object>.Array);
             else
             {
-              var arguments = buildSession.GetArgumentsForParameters(constructor, parameters);
+              var arguments = (object?[])buildSession.BuildUnit(new UnitId(constructor, SpecialKey.Argument)).Value!;
               instance = constructor.Invoke(arguments);
             }
           }

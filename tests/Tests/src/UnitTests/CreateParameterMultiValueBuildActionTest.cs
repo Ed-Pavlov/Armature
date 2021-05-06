@@ -19,7 +19,7 @@ namespace Tests.UnitTests
       var target       = new BuildListArgumentForMethodParameter();
       var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.BuildSequence).Returns(new[] {new UnitId(parameterInfo, null)});
-      A.CallTo(() => buildSession.BuildAllUnits(default)).WithAnyArguments().Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_)).ToArray());
+      A.CallTo(() => buildSession.BuildAllUnits(default)).WithAnyArguments().Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());
 
       // --act
       target.Process(buildSession);

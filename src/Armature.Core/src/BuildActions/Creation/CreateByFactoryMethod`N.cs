@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
 
@@ -15,9 +14,9 @@ namespace Armature.Core
     {
       if(!buildSession.BuildResult.HasValue)
       {
-        var method = GetMethod();
-        var parameters = method.GetParameters().ToArray();
-        var result     = Execute(buildSession.GetArgumentsForParameters(method, parameters));
+        var method     = GetMethod();
+        var arguments  = (object?[])buildSession.BuildUnit(new UnitId(method, SpecialKey.Argument)).Value!;
+        var result     = Execute(arguments);
         buildSession.BuildResult = new BuildResult(result);
       }
     }
@@ -26,7 +25,7 @@ namespace Armature.Core
     public void PostProcess(IBuildSession buildSession) { }
 
     protected abstract MethodBase GetMethod();
-    protected abstract object?    Execute(object?[] values);
+    protected abstract object?    Execute(object?[] arguments);
 
     [DebuggerStepThrough]
     public override string ToString() => $"{GetType().GetShortName()}( {GetMethod().ToLogString()} )";
@@ -43,7 +42,7 @@ namespace Armature.Core
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object? Execute(object?[] values) => _factoryMethod((T1?) values[0]);
+    protected override object? Execute(object?[] arguments) => _factoryMethod((T1?) arguments[0]);
   }
 
   /// <inheritdoc />
@@ -57,7 +56,7 @@ namespace Armature.Core
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object? Execute(object?[] values) => _factoryMethod((T1?) values[0], (T2?) values[1]);
+    protected override object? Execute(object?[] arguments) => _factoryMethod((T1?) arguments[0], (T2?) arguments[1]);
   }
 
   /// <inheritdoc />
@@ -71,7 +70,7 @@ namespace Armature.Core
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object? Execute(object?[] values) => _factoryMethod((T1?) values[0], (T2?) values[1], (T3?) values[2]);
+    protected override object? Execute(object?[] arguments) => _factoryMethod((T1?) arguments[0], (T2?) arguments[1], (T3?) arguments[2]);
   }
 
   /// <inheritdoc />
@@ -85,7 +84,7 @@ namespace Armature.Core
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object? Execute(object?[] values) => _factoryMethod((T1?) values[0], (T2?) values[1], (T3?) values[2], (T4?) values[3]);
+    protected override object? Execute(object?[] arguments) => _factoryMethod((T1?) arguments[0], (T2?) arguments[1], (T3?) arguments[2], (T4?) arguments[3]);
   }
 
   /// <inheritdoc />
@@ -99,8 +98,8 @@ namespace Armature.Core
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object? Execute(object?[] values)
-      => _factoryMethod((T1?) values[0], (T2?) values[1], (T3?) values[2], (T4?) values[3], (T5?) values[4]);
+    protected override object? Execute(object?[] arguments)
+      => _factoryMethod((T1?) arguments[0], (T2?) arguments[1], (T3?) arguments[2], (T4?) arguments[3], (T5?) arguments[4]);
   }
 
   /// <inheritdoc />
@@ -114,14 +113,14 @@ namespace Armature.Core
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object? Execute(object?[] values)
+    protected override object? Execute(object?[] arguments)
       => _factoryMethod(
-        (T1?) values[0],
-        (T2?) values[1],
-        (T3?) values[2],
-        (T4?) values[3],
-        (T5?) values[4],
-        (T6?) values[5]);
+        (T1?) arguments[0],
+        (T2?) arguments[1],
+        (T3?) arguments[2],
+        (T4?) arguments[3],
+        (T5?) arguments[4],
+        (T6?) arguments[5]);
   }
 
   /// <inheritdoc />
@@ -135,14 +134,14 @@ namespace Armature.Core
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
 
-    protected override object? Execute(object?[] values)
+    protected override object? Execute(object?[] arguments)
       => _factoryMethod(
-        (T1?) values[0],
-        (T2?) values[1],
-        (T3?) values[2],
-        (T4?) values[3],
-        (T5?) values[4],
-        (T6?) values[5],
-        (T7?) values[6]);
+        (T1?) arguments[0],
+        (T2?) arguments[1],
+        (T3?) arguments[2],
+        (T4?) arguments[3],
+        (T5?) arguments[4],
+        (T6?) arguments[5],
+        (T7?) arguments[6]);
   }
 }

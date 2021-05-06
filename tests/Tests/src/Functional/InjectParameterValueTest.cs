@@ -47,7 +47,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingInjectPointConstructor(LevelOne.TwoParameterCtor)
+       .InjectInto(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor))
        .UsingArguments(expectedInt, expectedString);
 
       // --act
@@ -85,7 +85,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource("ForParameterSource")]
-    public void should_pass_null_as_parameter_value(MethodArgumentTuner forParameter)
+    public void should_pass_null_as_parameter_value(ArgumentStaticTuner forParameter)
     {
       // --arrange
       var target = CreateTarget();
@@ -107,7 +107,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource("ForParameterSource")]
-    public void should_use_value_for_parameter(MethodArgumentTuner forParameter)
+    public void should_use_value_for_parameter(ArgumentStaticTuner forParameter)
     {
       const string expected = "expected";
 
@@ -129,7 +129,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource("ForParameterSource")]
-    public void should_build_value_for_parameter_using_parameter_type_and_key(MethodArgumentTuner forParameter)
+    public void should_build_value_for_parameter_using_parameter_type_and_key(ArgumentStaticTuner forParameter)
     {
       const string key      = "key398";
       const string expected = "expected 398752";
@@ -162,7 +162,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource("ForParameterSource")]
-    public void should_fail_if_there_is_no_value_w_key_registered(MethodArgumentTuner forParameter)
+    public void should_fail_if_there_is_no_value_w_key_registered(ArgumentStaticTuner forParameter)
     {
       // --arrange
       var target = CreateTarget();
@@ -184,7 +184,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource("ForParameterSource")]
-    public void should_use_factory_method(MethodArgumentTuner forParameter)
+    public void should_use_factory_method(ArgumentStaticTuner forParameter)
     {
       const int expectedInt = 392;
 
@@ -343,7 +343,7 @@ namespace Tests.Functional
        .BuildingWhich(_ => _.TreatAll().UsingArguments(expected + "bad"));
 
       // --act
-      var actual = (LevelTwo) target.Build<ISubject1>();
+      var actual = (LevelTwo)target.Build<ISubject1>();
 
       // --assert
       actual.LevelOne.Text.Should().Be(expected, "Because {0} is registered for {1}", expected, typeof(LevelOne).Name);
@@ -377,7 +377,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingInjectPointConstructor(LevelOne.TwoParameterCtor)
+       .InjectInto(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor))
        .UsingArguments(expectedInt);
 
       // --act
@@ -397,7 +397,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingInjectPointConstructor(LevelOne.TwoParameterCtor);
+       .InjectInto(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor));
 
       // --act
       var actual = target.Build<LevelOne>();
@@ -459,7 +459,9 @@ namespace Tests.Functional
                  },
                  BuildStage.Create),
              new IfLastUnitMatches(MethodArgumentPattern.Instance)
-              .UseBuildAction(new BuildActionChain() {BuildArgumentForMethodParameter.Instance, GetDefaultParameterValue.Instance}, BuildStage.Create) // autowiring
+              .UseBuildAction(
+                 new BuildActionChain() { BuildArgumentByParameter.Instance, GetDefaultParameterValue.Instance },
+                 BuildStage.Create) // autowiring
            }
          };
 

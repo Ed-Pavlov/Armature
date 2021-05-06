@@ -10,8 +10,6 @@ namespace Armature.Core
   {
     public static readonly IUnitPattern Instance = new PropertiesListPattern();
 
-    private PropertiesListPattern() { }
-
     public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.PropertiesList && unitId.GetUnitTypeSafe() is not null;
     
     [DebuggerStepThrough]

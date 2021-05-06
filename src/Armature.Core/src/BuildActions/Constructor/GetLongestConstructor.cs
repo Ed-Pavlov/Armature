@@ -15,8 +15,6 @@ namespace Armature.Core
   {
     public static readonly IBuildAction Instance = new GetLongestConstructor();
 
-    public GetLongestConstructor() { }
-
     public void Process(IBuildSession buildSession)
     {
       var unitType     = buildSession.GetUnitUnderConstruction().GetUnitType();

@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Armature.Core;
+﻿using Armature.Core;
 
 namespace Armature
 {
@@ -11,18 +10,24 @@ namespace Armature
     /// <summary>
     ///   Tunes up what argument inject into method parameter of type <typeparamref name="T" />.
     /// </summary>
-    public static MethodArgumentTuner<T> OfType<T>() => new(new MethodParameterByTypePattern(typeof(T), true), InjectPointMatchingWeight.TypedParameter);
+    public static ArgumentStaticTuner<T> OfType<T>()
+      => new(parentNode =>
+               parentNode.GetOrAddNode(
+                 new IfLastUnitMatches(new MethodParameterByTypePattern(typeof(T), true), InjectPointMatchingWeight.TypedParameter)));
 
     /// <summary>
     ///   Tunes up what argument inject into method parameter with the specified <paramref name="parameterName"/>.
     /// </summary>
-    public static MethodArgumentTuner Named(string parameterName)
-      => new(new ParameterWithNamePattern(parameterName), InjectPointMatchingWeight.NamedParameter);
+    public static ArgumentStaticTuner Named(string parameterName)
+      => new(parentNode =>
+               parentNode.GetOrAddNode(new IfLastUnitMatches(new ParameterWithNamePattern(parameterName), InjectPointMatchingWeight.NamedParameter)));
 
     /// <summary>
     ///   Tunes up what argument inject into method parameter marked with <see cref="InjectAttribute"/> with the specified <paramref name="injectPointId"/>. 
     /// </summary>
-    public static MethodArgumentTuner WithInjectPoint(object? injectPointId)
-      => new MethodArgumentTuner(new ParameterWithInjectIdPattern(injectPointId), InjectPointMatchingWeight.AttributedParameter);
+    public static ArgumentStaticTuner WithInjectPoint(object? injectPointId)
+      => new(parentNode =>
+               parentNode.GetOrAddNode(
+                 new IfLastUnitMatches(new ParameterWithInjectIdPattern(injectPointId), InjectPointMatchingWeight.AttributedParameter)));
   }
 }

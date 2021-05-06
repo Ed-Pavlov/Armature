@@ -17,7 +17,7 @@ namespace Tests.Functional
       builder
        .Treat<Subject>()
        .AsIs()
-       .UsingParameterlessConstructor();
+       .InjectInto(Constructor.Parameterless());
 
       builder
        .TreatOverride<Subject>()

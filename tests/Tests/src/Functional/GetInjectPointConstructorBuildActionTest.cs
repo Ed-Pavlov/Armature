@@ -36,7 +36,7 @@ namespace Tests.Functional
       container
        .Treat<Subject>()
        .AsIs()
-       .UsingInjectPointConstructor(Subject.InjectPointId);
+       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.InjectPointId));
 
       // --act
       var instance = container.Build<Subject>();
@@ -58,7 +58,7 @@ namespace Tests.Functional
       target
        .Treat<LevelTwo>()
        .AsIs()
-       .UsingInjectPointConstructor(Subject.InjectPointId);
+       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.InjectPointId));
 
       var actual = target.Build<LevelTwo>();
 
@@ -83,7 +83,7 @@ namespace Tests.Functional
                  },
                  BuildStage.Create),
              new IfLastUnitMatches(MethodArgumentPattern.Instance)
-              .UseBuildAction(BuildArgumentForMethodParameter.Instance, BuildStage.Create)
+              .UseBuildAction(BuildArgumentByParameter.Instance, BuildStage.Create)
            }
          };
 

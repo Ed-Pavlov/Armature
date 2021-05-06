@@ -176,11 +176,11 @@ namespace Tests.Performance
                         .UseBuildAction(
                            new BuildActionChain
                            {
-                             BuildArgumentForMethodWithPointIdAsKey.Instance, BuildArgumentForMethodParameter.Instance
+                             BuildArgumentForMethodWithPointIdAsKey.Instance, BuildArgumentByParameter.Instance
                            },
                            BuildStage.Create),
                        new IfLastUnitMatches(PropertyArgumentPattern.Instance)
-                        .UseBuildAction(new BuildActionChain {new BuildArgumentForProperty()}, BuildStage.Create)
+                        .UseBuildAction(new BuildActionChain {new BuildArgumentPropertyType()}, BuildStage.Create)
                      };
 
       var buildStages = new object[] {BuildStage.Cache, BuildStage.Initialize, BuildStage.Create};

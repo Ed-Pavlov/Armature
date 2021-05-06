@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Armature.Core.Logging;
-
 
 namespace Armature.Core
 {
@@ -19,55 +17,26 @@ namespace Armature.Core
       if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var result = buildSession.BuildUnit(new UnitId(type, SpecialKey.Constructor));
-
-      if(!result.HasValue)
+      // take all constructors
+      var buildResultList = buildSession.BuildAllUnits(new UnitId(type, SpecialKey.Constructor));
+      
+      if(buildResultList.Count == 0)
         throw new Exception(string.Format("Can't find appropriate constructor for type {0}", type));
 
-      return (ConstructorInfo)result.Value!;
+      // and choose one with the max matching weight
+      return (ConstructorInfo)buildResultList.Max().Entity.Value!;
     }
 
     /// <summary>
     ///   Builds an argument to inject into the property representing by <paramref name="propertyInfo" />
     /// </summary>
-    public static object? BuildArgument(this IBuildSession buildSession, PropertyInfo propertyInfo)
+    public static object? BuildPropertyArgument(this IBuildSession buildSession, PropertyInfo propertyInfo)
     {
       var buildResult = buildSession.BuildUnit(new UnitId(propertyInfo, SpecialKey.Argument));
 
       return buildResult.HasValue
                ? buildResult.Value
                : throw new ArmatureException(string.Format("Argument for property '{0}' of {1} is not built", propertyInfo, propertyInfo.DeclaringType));
-    }
-
-    /// <summary>
-    ///   "Builds" values for parameters by building a set of <see cref="UnitId" />(<paramref name="parameters" />[i], <see cref="SpecialKey.Argument" />)
-    ///   one by one via current build session
-    /// </summary>
-    public static object?[] GetArgumentsForParameters(this IBuildSession buildSession, MethodBase methodBase, ParameterInfo[] parameters)
-    {
-      if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
-      if(parameters is null) throw new ArgumentNullException(nameof(parameters));
-      if(parameters.Length == 0) throw new ArgumentException("At least one parameters should be provided", nameof(parameters));
-
-      using(Log.Block(
-        LogLevel.Trace,
-        () => $"{nameof(GetArgumentsForParameters)}( " + string.Join(", ", parameters.Select(_ => _.ToString()).ToArray()) + " )"))
-      {
-        var values = new object?[parameters.Length];
-
-        for(var i = 0; i < parameters.Length; i++)
-        {
-          var buildResult = buildSession.BuildUnit(new UnitId(parameters[i], SpecialKey.Argument));
-
-          if(!buildResult.HasValue)
-            throw new ArmatureException(
-              string.Format("Argument for parameter '{0}' of {1}.{2} is not built", parameters[i], methodBase.DeclaringType, methodBase.Name));
-
-          values[i] = buildResult.Value;
-        }
-
-        return values;
-      }
     }
 
     /// <summary>

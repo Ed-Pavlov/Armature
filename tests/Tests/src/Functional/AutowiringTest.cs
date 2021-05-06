@@ -188,7 +188,7 @@ namespace Tests.Functional
                  new BuildActionChain
                  {
                    BuildArgumentForMethodWithPointIdAsKey.Instance, 
-                   BuildArgumentForMethodParameter.Instance
+                   BuildArgumentByParameter.Instance
                  },
                  BuildStage.Create)
            }

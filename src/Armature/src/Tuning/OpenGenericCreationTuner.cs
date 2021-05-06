@@ -18,7 +18,7 @@ namespace Armature
     /// <summary>
     ///   Specifies that unit should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
     /// </summary>
-    public Tuner CreatedByDefault()
+    public FinalTuner CreatedByDefault()
       => new(ParentNode
             .GetOrAddNode(new FindUnitMatches(new OpenGenericTypePattern(OpenGenericType, Key), WeightOf.FindUnit | WeightOf.OpenGenericPattern))
             .UseBuildAction(Default.CreationBuildAction, BuildStage.Create));
@@ -26,7 +26,7 @@ namespace Armature
     /// <summary>
     ///   Specifies that unit should be created using reflection.
     /// </summary>
-    public Tuner CreatedByReflection() => 
+    public FinalTuner CreatedByReflection() => 
       new(ParentNode
          .GetOrAddNode(new FindUnitMatches(new OpenGenericTypePattern(OpenGenericType, Key), WeightOf.FindUnit | WeightOf.OpenGenericPattern))
          .UseBuildAction(CreateByReflection.Instance, BuildStage.Create));

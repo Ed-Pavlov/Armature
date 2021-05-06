@@ -83,10 +83,10 @@ namespace Armature
     ///   Configure build plans for any unit building in context of the unit.
     ///   See <see cref="BuildSession"/> for details.
     /// </summary>
-    public Tuner TreatAll()
+    public FinalTuner TreatAll()
     {
       var patternMatcher = new SkipToLastUnit();
-      return new Tuner(ParentNode.GetOrAddNode(patternMatcher));
+      return new FinalTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
   }
 }

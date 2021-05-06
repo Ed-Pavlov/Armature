@@ -19,7 +19,7 @@ namespace Armature
     public static TreatingTuner<T> TreatInheritorsOf<T>(this IPatternTreeNode buildPlans, object? key = null)
       => new RootTuner(buildPlans).TreatInheritorsOf<T>(key);
 
-    public static Tuner TreatAll(this IPatternTreeNode buildPlans) => new RootTuner(buildPlans).TreatAll();
+    public static FinalTuner TreatAll(this IPatternTreeNode buildPlans) => new RootTuner(buildPlans).TreatAll();
 
     public static RootTuner Building(this IPatternTreeNode buildPlans, Type type, object? key = null) => new RootTuner(buildPlans).Building(type, key);
 

@@ -65,7 +65,7 @@ namespace Armature.Core
     /// <param name="unitId">Building unit "id"</param>
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
     /// <returns>Returns <see cref="Empty{BuildResult}.List"/> if no units were built. </returns>
-    public IReadOnlyList<BuildResult> BuildAllUnits(UnitId unitId, IPatternTreeNode? auxBuildPlans = null)
+    public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId, IPatternTreeNode? auxBuildPlans = null)
       => new BuildSession(_stages, this, auxBuildPlans, _parentBuilders).BuildAllUnits(unitId);
   }
 }

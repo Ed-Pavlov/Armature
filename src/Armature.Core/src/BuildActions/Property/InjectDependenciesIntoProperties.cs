@@ -24,13 +24,13 @@ namespace Armature.Core
         var type = unit!.GetType();
 
         var unitInfo = new UnitId(type, SpecialKey.PropertiesList);
-        var unitList = buildSession.BuildAllUnits(unitInfo);
+        var unitList = buildSession.BuildAllUnits(unitInfo).Select(_ => _.Entity); //TODO: do we need to take into account weight of matching? 
 
         foreach(var property in unitList.Select(result => result.Value!).SelectMany(list => (PropertyInfo[])list))
         {
           // var property = (PropertyInfo)buildResult.Value!;
 
-          var argument = buildSession.BuildArgument(property);
+          var argument = buildSession.BuildPropertyArgument(property);
           property.SetValue(unit, argument);
         }
       }

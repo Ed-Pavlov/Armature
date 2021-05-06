@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Armature.Core.Logging;
 
@@ -13,7 +14,7 @@ namespace Armature.Core
   {
     private static readonly object[] ParamContainer     = new object[1];
     private static readonly Type[]   TypeParamContainer = new Type[1];
-    private static readonly Type[]   IntTypeParam       = {typeof(int)};
+    private static readonly Type[]   IntTypeParam       = { typeof(int) };
 
     private readonly object? _key;
 
@@ -23,26 +24,22 @@ namespace Armature.Core
     public void Process(IBuildSession buildSession)
     {
       var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
-      var effectiveKey          = _key == SpecialKey.Propagate ? unitUnderConstruction.Key : _key;
+      var effectiveKey          = _key.GetKey(unitUnderConstruction.Key);
 
-      var argumentType = GetArgumentType(unitUnderConstruction);
+      var injectionPointType = GetArgumentType(unitUnderConstruction);
 
-      if(IsCollection(argumentType, out var listType))
+      if(IsCollection(injectionPointType, out var listType))
       {
-        var itemType = argumentType.GenericTypeArguments[0];
+        if(listType is null)
+          throw new InvalidOperationException("Remove this assert when support of .NET4.x will be discarded and use Roslyn analyzer attributes");
 
-        var arguments = buildSession.BuildAllUnits(new UnitId(itemType, effectiveKey));
+        var collectionItemType = injectionPointType.GenericTypeArguments[0];
+        var arguments          = buildSession.BuildAllUnits(new UnitId(collectionItemType, effectiveKey));
 
-        if(arguments is not null)
-        {
-          if(listType is null)
-            throw new InvalidOperationException("Remove this assert when support of .NET4.x will be discarded and use Roslyn analyzer attributes");
+        var listInstance = CreateListInstance(listType, arguments.Count);
+        FillList(listInstance, listType, collectionItemType, arguments.Select(_ => _.Entity));
 
-          var listInstance = CreateListInstance(listType, arguments.Count);
-          FillList(listInstance, listType, itemType, arguments);
-
-          buildSession.BuildResult = new BuildResult(listInstance);
-        }
+        buildSession.BuildResult = new BuildResult(listInstance);
       }
     }
 

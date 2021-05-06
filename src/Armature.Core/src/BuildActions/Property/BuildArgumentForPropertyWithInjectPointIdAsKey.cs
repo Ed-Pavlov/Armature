@@ -12,8 +12,6 @@ namespace Armature.Core
   {
     public static readonly IBuildAction Instance = new BuildArgumentForPropertyWithInjectPointIdAsKey();
 
-    private BuildArgumentForPropertyWithInjectPointIdAsKey() { }
-
     public void Process(IBuildSession buildSession)
     {
       var propertyInfo = (PropertyInfo) buildSession.GetUnitUnderConstruction().Kind!;

@@ -240,7 +240,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>(key)
        .AsIs()
-       .UsingConstructorWithParameters<int>();
+       .InjectInto(Constructor.WithParameters<int>());
 
       // --act
       var actual = target.UsingKey(key).Build<Subject>(expected);

@@ -35,5 +35,7 @@ namespace Armature.Core
 
     public static bool IsSpecial(this object? obj)
       => obj is UnitKey key && (key == Any || key == Constructor || key == PropertiesList || key == Argument || key == Propagate);
+
+    public static object? GetKey(this object? buildActionKey, object? unitKey) => ReferenceEquals(buildActionKey, Propagate) ? unitKey : buildActionKey;
   }
 }

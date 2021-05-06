@@ -122,13 +122,13 @@ namespace Tests.Functional
                  new BuildActionChain
                  {
                    BuildArgumentForMethodWithPointIdAsKey.Instance, 
-                   BuildArgumentForMethodParameter.Instance
+                   BuildArgumentByParameter.Instance
                  }, BuildStage.Create),
              new IfLastUnitMatches(PropertyArgumentPattern.Instance)
               .UseBuildAction(
                  new BuildActionChain
                  {
-                   new BuildArgumentForProperty()
+                   new BuildArgumentPropertyType()
                  }, BuildStage.Create)
            }
          };

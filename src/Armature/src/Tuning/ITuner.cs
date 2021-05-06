@@ -1,6 +1,5 @@
 ﻿using Armature.Core;
 
-
 namespace Armature
 {
   /// <summary>

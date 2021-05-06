@@ -74,7 +74,7 @@ namespace Tests.Functional
               .UseBuildAction(
                  new BuildActionChain()
                  {
-                   BuildArgumentForMethodParameter.Instance,
+                   BuildArgumentByParameter.Instance,
                    BuildListArgumentForMethodParameter.Instance,
                    GetDefaultParameterValue.Instance
                  },

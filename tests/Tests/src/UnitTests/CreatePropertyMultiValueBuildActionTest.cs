@@ -21,7 +21,7 @@ namespace Tests.UnitTests
 
       A.CallTo(() => buildSession.BuildAllUnits(default))
        .WithAnyArguments()
-       .Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_)).ToArray());
+       .Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());
 
       // --act
       target.Process(buildSession);

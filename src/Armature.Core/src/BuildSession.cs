@@ -46,7 +46,7 @@ namespace Armature.Core
     ///   This can be useful to build all implementers of an interface.
     /// </summary>
     /// <param name="unitId">"Id" of the unit to build. See <see cref="IPatternTreeNode" /> for details</param>
-    public IReadOnlyList<BuildResult> BuildAllUnits(UnitId unitId) => Build(unitId, BuildAllUnits);
+    public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId) => Build(unitId, BuildAllUnits);
 
     /// <summary>
     /// Common logic to build one or all units
@@ -113,9 +113,9 @@ namespace Armature.Core
                : BuildViaParentBuilder(_buildSequence.Last());
     }
 
-    private List<BuildResult> BuildAllUnits(WeightedBuildActionBag? buildActionBag)
+    private List<Weighted<BuildResult>> BuildAllUnits(WeightedBuildActionBag? buildActionBag)
     {
-      if(buildActionBag is null) return Empty<BuildResult>.List;
+      if(buildActionBag is null) return Empty<Weighted<BuildResult>>.List;
 
       if(buildActionBag.Keys.Count > 1)
       {
@@ -129,22 +129,23 @@ namespace Armature.Core
         throw exception;
       }
 
-      var result = new List<BuildResult>();
+      var buildResultList = new List<Weighted<BuildResult>>();
 
-      foreach(var buildAction in buildActionBag.Values.Single().Select(_ => _.Entity))
+      foreach(var weightedBuildAction in buildActionBag.Values.Single())
       {
         var buildSession = new Interface(this, _buildSequence);
 
+        var buildAction = weightedBuildAction.Entity;
         BuildActionProcess(buildAction, buildSession);
         BuildActionPostProcess(buildAction, buildSession);
 
         LogBuildResult(buildSession.BuildResult);
 
         if(buildSession.BuildResult.HasValue)
-          result.Add(buildSession.BuildResult);
+          buildResultList.Add(buildSession.BuildResult.WithWeight(weightedBuildAction.Weight));
       }
 
-      return result;
+      return buildResultList;
     }
 
     private void BuildActionProcess(IBuildAction buildAction, Interface buildSession)

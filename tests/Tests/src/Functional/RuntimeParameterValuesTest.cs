@@ -22,7 +22,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingInjectPointConstructor(Subject.StringCtor);
+       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.StringCtor));
 
       // --act
       var actual = target.Build<Subject>(expected);
@@ -42,7 +42,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingInjectPointConstructor(Subject.DisposableCtor);
+       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.DisposableCtor));
 
       // --act
       var actual = target.Build<Subject>(expected);
@@ -84,7 +84,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingInjectPointConstructor(Subject.StringCtor);
+       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.StringCtor));
 
       // --act
       var actual = target.Build<Subject>(ForParameter.OfType<string>().UseValue(null));
@@ -102,7 +102,7 @@ namespace Tests.Functional
              new IfLastUnitMatches(ConstructorPattern.Instance)
               .UseBuildAction(GetLongestConstructor.Instance, BuildStage.Create),
              new IfLastUnitMatches(MethodArgumentPattern.Instance)
-              .UseBuildAction(BuildArgumentForMethodParameter.Instance, BuildStage.Create) // autowiring
+              .UseBuildAction(BuildArgumentByParameter.Instance, BuildStage.Create) // autowiring
            }
          };
 

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
+﻿using System.Reflection;
 using Armature.Core;
 
 namespace Armature
@@ -9,34 +8,38 @@ namespace Armature
     /// <summary>
     ///   Matches with property with <see cref="PropertyInfo.PropertyType" /> equals to <typeparamref name="T" />
     /// </summary>
-    public static PropertyArgumentTuner<T> OfType<T>()
-    {
-      var buildAction = new GetPropertyByTypeBuildAction(typeof(T));
-      var pattern     = new PropertyByTypePattern(typeof(T), true);
-
-      return new PropertyArgumentTuner<T>(pattern, buildAction, InjectPointMatchingWeight.TypedParameter);
-    }
+    public static ArgumentStaticTuner<T> OfType<T>()
+      => new(parentNode =>
+             {
+               parentNode.TunePropertyListBuilding(new GetPropertyByTypeBuildAction(typeof(T)));
+               return parentNode.GetOrAddNode(new IfLastUnitMatches(new PropertyByTypePattern(typeof(T), true), InjectPointMatchingWeight.TypedParameter));
+             });
 
     /// <summary>
     ///   Matches with property with <see cref="MemberInfo.Name" /> equals to <paramref name="propertyName" />
     /// </summary>
-    public static PropertyArgumentTuner Named(string propertyName)
-    {
-      var getPropertyList   = new GetPropertyListByNameBuildAction(propertyName);
-      var isPropertyPattern = new PropertyWithNamePattern(propertyName);
-
-      return new PropertyArgumentTuner(isPropertyPattern, getPropertyList, InjectPointMatchingWeight.NamedParameter);
-    }
+    public static ArgumentStaticTuner Named(string propertyName)
+      => new(parentNode =>
+             {
+               parentNode.TunePropertyListBuilding(new GetPropertyListByNameBuildAction(propertyName));
+               return parentNode.GetOrAddNode(new IfLastUnitMatches(new PropertyWithNamePattern(propertyName), InjectPointMatchingWeight.NamedParameter));
+             });
 
     /// <summary>
     ///   Matches with property marked with <see cref="InjectAttribute" />(<paramref name="injectPointId" />)
     /// </summary>
-    public static PropertyArgumentTuner WithInjectPoint(object? injectPointId)
-    {
-      var getPropertyAction = new GetPropertyListByInjectPointId(injectPointId);
-      var matcher           = new PropertyWithInjectIdPattern(injectPointId);
+    public static ArgumentStaticTuner WithInjectPoint(object? injectPointId)
+      => new(parentNode =>
+             {
+               parentNode.TunePropertyListBuilding(new GetPropertyListByInjectPointId(injectPointId));
 
-      return new PropertyArgumentTuner(matcher, getPropertyAction, InjectPointMatchingWeight.AttributedParameter);
-    }
+               return parentNode.GetOrAddNode(
+                 new IfLastUnitMatches(new PropertyWithInjectIdPattern(injectPointId), InjectPointMatchingWeight.AttributedParameter));
+             });
+
+    private static void TunePropertyListBuilding(this IPatternTreeNode patternTreeNode, IBuildAction buildAction)
+      => patternTreeNode
+        .GetOrAddNode(new IfLastUnitMatches(PropertiesListPattern.Instance))
+        .UseBuildAction(buildAction, BuildStage.Create);
   }
 }
