@@ -14,9 +14,8 @@ namespace Armature.Core
     {
       if(!buildSession.BuildResult.HasValue)
       {
-        var method     = GetMethod();
-        var arguments  = (object?[])buildSession.BuildUnit(new UnitId(method, SpecialKey.Argument)).Value!;
-        var result     = Execute(arguments);
+        var arguments = buildSession.BuildArgumentsForMethod(GetMethod().GetParameters());
+        var result    = Execute(arguments);
         buildSession.BuildResult = new BuildResult(result);
       }
     }

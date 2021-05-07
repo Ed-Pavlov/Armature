@@ -250,14 +250,30 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Create)
-         {
-           new SkipToLastUnit
-           {
-             new IfLastUnitMatches(ConstructorPattern.Instance)
-              .UseBuildAction(new GetConstructorByParameterTypes(), BuildStage.Create) // use empty ctor by default in this test
-           }
-         };
+    {
+      var builder = new Builder(BuildStage.Cache, BuildStage.Create);
+
+      builder
+       .TreatAll()
+       .InjectInto(Constructor.Parameterless())
+       .UsingArguments(AutoBuildByParameter.Type);
+
+      return builder;
+      
+      return new(BuildStage.Cache, BuildStage.Create)
+             {
+               new SkipToLastUnit
+               {
+                 new IfLastUnitMatches(Static<IsConstructor>.Instance)
+                  .UseBuildAction(new GetConstructorByParameterTypes(), BuildStage.Create), // use empty ctor by default in this test
+
+                 new IfLastUnitMatches(Static<IsMethodParametersList>.Instance)
+                  .UseBuildAction(Static<BuildMethodArgumentsInDirectOrder>.Instance, BuildStage.Create),
+                 new IfLastUnitMatches(Static<IsMethodParameter>.Instance)
+                  .UseBuildAction(Static<BuildArgumentByParameterType>.Instance, BuildStage.Create)
+               }
+             };
+    }
 
     private interface ISubject1 { }
 

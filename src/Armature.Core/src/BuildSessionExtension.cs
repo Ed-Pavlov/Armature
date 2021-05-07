@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 namespace Armature.Core
 {
@@ -17,14 +18,21 @@ namespace Armature.Core
       if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      // take all constructors
-      var buildResultList = buildSession.BuildAllUnits(new UnitId(type, SpecialKey.Constructor));
-      
-      if(buildResultList.Count == 0)
+      var result = buildSession.BuildUnit(new UnitId(type, SpecialKey.Constructor));
+
+      if(!result.HasValue)
         throw new Exception(string.Format("Can't find appropriate constructor for type {0}", type));
 
-      // and choose one with the max matching weight
-      return (ConstructorInfo)buildResultList.Max().Entity.Value!;
+      return (ConstructorInfo)result.Value!;
+    }
+
+    public static object?[] BuildArgumentsForMethod(this IBuildSession buildSession, ParameterInfo[] parameters)
+    {
+      if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
+      if(parameters is null) throw new ArgumentNullException(nameof(parameters));
+      if(parameters.Length == 0) throw new ArgumentException("At least one parameter should be provided", nameof(parameters));
+
+      return (object?[])buildSession.BuildUnit(new UnitId(parameters, SpecialKey.Argument)).Value!;
     }
 
     /// <summary>

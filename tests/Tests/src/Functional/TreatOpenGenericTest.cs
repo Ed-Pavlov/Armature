@@ -100,7 +100,7 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnitMatches(ConstructorPattern.Instance)
+             new IfLastUnitMatches(IsConstructor.Instance)
               .UseBuildAction(GetLongestConstructor.Instance, BuildStage.Create)
            }
          };

@@ -256,10 +256,10 @@ namespace Tests.Functional
          {
            new SkipToLastUnit
            {
-             new IfLastUnitMatches(ConstructorPattern.Instance)
+             new IfLastUnitMatches(IsConstructor.Instance)
               .UseBuildAction(GetLongestConstructor.Instance, BuildStage.Create),
-             new IfLastUnitMatches(MethodArgumentPattern.Instance)
-              .UseBuildAction(BuildArgumentByParameter.Instance, BuildStage.Create)
+             new IfLastUnitMatches(IsMethodParameter.Instance)
+              .UseBuildAction(BuildArgumentByParameterType.Instance, BuildStage.Create)
            }
          };
 

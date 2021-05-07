@@ -9,7 +9,7 @@ namespace Armature.Core
   /// <summary>
   ///   This container is used mostly for "default" build actions applied to any unit under construction.
   ///   For example by default we want to find attributed constructor and if there is no any get longest constructor, set these two actions in right order
-  ///   into <see cref="BuildActionChain" /> to reach such behaviour. If a build action did not build a unit container calls the next one till
+  ///   into <see cref="TryInOrder" /> to reach such behaviour. If a build action did not build a unit container calls the next one till
   ///   a unit will be built.
   /// </summary>
   /// <remarks>
@@ -22,10 +22,12 @@ namespace Armature.Core
   /// </remarks>
 
   //TODO: need another name, something like build actions chain, or whatever, describing semantic better than now
-  public class BuildActionChain : IBuildAction, ILogable, IEnumerable
+  public class TryInOrder : IBuildAction, ILogable, IEnumerable
   {
     private readonly List<IBuildAction>                      _buildActions          = new();
     private readonly Dictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new();
+
+    public TryInOrder(params IBuildAction[] buildAction) { }
 
     public void Process(IBuildSession buildSession)
     {
@@ -85,7 +87,7 @@ namespace Armature.Core
 
     public IEnumerator GetEnumerator() => throw new NotSupportedException();
 
-    public BuildActionChain Add(IBuildAction buildAction)
+    public TryInOrder Add(IBuildAction buildAction)
     {
       _buildActions.Add(buildAction);
 
@@ -97,7 +99,7 @@ namespace Armature.Core
 
     public void PrintToLog()
     {
-      using(Log.Block(LogLevel.Info, nameof(BuildActionChain)))
+      using(Log.Block(LogLevel.Info, nameof(TryInOrder)))
       {
         foreach(var buildAction in _buildActions)
           Log.WriteLine(LogLevel.Info, buildAction.ToString);

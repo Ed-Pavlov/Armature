@@ -19,7 +19,7 @@ namespace Armature
 
       foreach(var argument in arguments)
         if(argument is IArgumentTuner buildPlan)
-          buildPlan.Apply(ParentNode);
+          buildPlan.Tune(ParentNode);
         else if(argument is ITuner)
           throw new ArgumentException("IParameterValueBuildPlan or plain object value expected");
         else
@@ -57,7 +57,7 @@ namespace Armature
       ParentNode.UseBuildAction(InjectDependenciesIntoProperties.Instance, BuildStage.Initialize, true);
 
       foreach(var propertyId in propertyIds)
-        propertyId.Apply(ParentNode);
+        propertyId.Tune(ParentNode);
 
       return this;
     }

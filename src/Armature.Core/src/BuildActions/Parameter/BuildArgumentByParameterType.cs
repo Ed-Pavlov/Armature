@@ -6,11 +6,12 @@ namespace Armature.Core
   /// <summary>
   ///   Builds an argument for the constructor/method parameter using <see cref="ParameterInfo.ParameterType"/> and specified key as <see cref="UnitId"/>.
   /// </summary>
-  public class BuildArgumentByParameter : BuildArgumentBase
+  public class BuildArgumentByParameterType : BuildArgumentBase
   {
-    public static readonly IBuildAction Instance = new BuildArgumentByParameter();
+    public static readonly IBuildAction Instance = new BuildArgumentByParameterType();
 
-    public BuildArgumentByParameter(object? key = null) : base(key) { }
+    public BuildArgumentByParameterType() : base(null) { }
+    public BuildArgumentByParameterType(object? key) : base(key) { }
 
     protected override Type GetValueType(UnitId unitId) => ((ParameterInfo) unitId.Kind!).ParameterType;
   }

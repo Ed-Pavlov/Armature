@@ -12,6 +12,6 @@ namespace Armature
     /// <summary>
     /// Append pattern tree nodes to the passed <paramref name="patternTreeNode"/>
     /// </summary>
-    void Apply(IPatternTreeNode patternTreeNode);
+    void Tune(IPatternTreeNode patternTreeNode);
   }
 }

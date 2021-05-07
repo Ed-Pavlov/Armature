@@ -35,7 +35,7 @@ namespace Armature.Core
               instance = constructor.Invoke(Empty<object>.Array);
             else
             {
-              var arguments = (object?[])buildSession.BuildUnit(new UnitId(constructor, SpecialKey.Argument)).Value!;
+              var arguments = buildSession.BuildArgumentsForMethod(parameters);
               instance = constructor.Invoke(arguments);
             }
           }

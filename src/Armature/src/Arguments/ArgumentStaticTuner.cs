@@ -27,7 +27,7 @@ namespace Armature
       if(key is null) throw new ArgumentNullException(nameof(key));
 
       return new ArgumentTuner(
-        node => TuneTreeNodePattern(node).UseBuildAction(new BuildArgumentByParameter(key), BuildStage.Create));
+        node => TuneTreeNodePattern(node).UseBuildAction(new BuildArgumentByParameterType(key), BuildStage.Create));
     }
 
     /// <summary>

@@ -8,12 +8,12 @@ namespace Armature
       node =>
       {
         node
-         .GetOrAddNode(new IfLastUnitMatches(Static<MethodArgumentPattern>.Instance))
-         .UseBuildAction(BuildArgumentByParameter.Instance, BuildStage.Create);
+         .GetOrAddNode(new IfLastUnitMatches(Static<IsMethodParameter>.Instance))
+         .UseBuildAction(BuildArgumentByParameterType.Instance, BuildStage.Create);
 
         node
-         .GetOrAddNode(new IfLastUnitMatches(Static<MethodArgumentListPattern>.Instance))
-         .UseBuildAction(Static<BuildMethodArguments>.Instance, BuildStage.Create);
+         .GetOrAddNode(new IfLastUnitMatches(Static<IsMethodParametersList>.Instance))
+         .UseBuildAction(Static<BuildMethodArgumentsInDirectOrder>.Instance, BuildStage.Create);
       }); 
   }
 }

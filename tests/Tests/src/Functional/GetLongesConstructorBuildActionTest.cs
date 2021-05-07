@@ -49,9 +49,9 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnitMatches(ConstructorPattern.Instance)
+             new IfLastUnitMatches(IsConstructor.Instance)
               .UseBuildAction(
-                 new BuildActionChain
+                 new TryInOrder
                  {
                    new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
                    GetLongestConstructor

@@ -60,6 +60,6 @@ namespace Armature
 
     //TODO: move to helper and make public?
     private static IfLastUnitMatches AddConstructorPattern(this IPatternTreeNode parentNode, short weight)
-      => parentNode.GetOrAddNode(new IfLastUnitMatches(Static<ConstructorPattern>.Instance, weight));
+      => parentNode.GetOrAddNode(new IfLastUnitMatches(Static<IsConstructor>.Instance, weight));
   }
 }
