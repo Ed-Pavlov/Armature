@@ -83,7 +83,7 @@ namespace Armature
     {
       if(arguments is not { Length: > 0 }) return null;
 
-      var buildPlans = new BuildPlanCollection();
+      var buildPlans = new PatternTree();
 
       buildPlans
        .TreatAll()

@@ -13,14 +13,14 @@ namespace Armature
     public static ArgumentStaticTuner<T> OfType<T>()
       => new(parentNode =>
                parentNode.GetOrAddNode(
-                 new IfLastUnitMatches(new MethodParameterByTypePattern(typeof(T), true), InjectPointMatchingWeight.TypedParameter)));
+                 new IfLastUnit(new IsMethodParameterWithType(typeof(T), true), InjectPointMatchingWeight.TypedParameter)));
 
     /// <summary>
     ///   Tunes up what argument inject into method parameter with the specified <paramref name="parameterName"/>.
     /// </summary>
     public static ArgumentStaticTuner Named(string parameterName)
       => new(parentNode =>
-               parentNode.GetOrAddNode(new IfLastUnitMatches(new ParameterWithNamePattern(parameterName), InjectPointMatchingWeight.NamedParameter)));
+               parentNode.GetOrAddNode(new IfLastUnit(new IsMethodParameterNamed(parameterName), InjectPointMatchingWeight.NamedParameter)));
 
     /// <summary>
     ///   Tunes up what argument inject into method parameter marked with <see cref="InjectAttribute"/> with the specified <paramref name="injectPointId"/>. 
@@ -28,6 +28,6 @@ namespace Armature
     public static ArgumentStaticTuner WithInjectPoint(object? injectPointId)
       => new(parentNode =>
                parentNode.GetOrAddNode(
-                 new IfLastUnitMatches(new ParameterWithInjectIdPattern(injectPointId), InjectPointMatchingWeight.AttributedParameter)));
+                 new IfLastUnit(new IsParameterInfoWithAttribute(injectPointId), InjectPointMatchingWeight.AttributedParameter)));
   }
 }

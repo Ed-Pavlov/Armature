@@ -30,7 +30,7 @@ namespace Tests.Functional
 
       target
        .GetOrAddNode(new SkipToLastUnit())
-       .AddNode(new IfLastUnitMatches(new StringParameterPattern()))
+       .AddNode(new IfLastUnit(new StringParameterPattern()))
        .UseBuildAction(new AddPostfixToString(Postfix), BuildStage.Intercept);
 
       // --act
@@ -85,8 +85,8 @@ namespace Tests.Functional
          {
            new SkipToLastUnit
            {
-             new IfLastUnitMatches(IsConstructor.Instance)
-              .UseBuildAction(GetLongestConstructor.Instance, BuildStage.Create)
+             new IfLastUnit(IsConstructor.Instance)
+              .UseBuildAction(GetConstructorWithMaxParametersCount.Instance, BuildStage.Create)
            }
          };
 

@@ -17,7 +17,7 @@ namespace Armature
     ///   Use the <paramref name="value" /> as an argument for the parameter.
     /// </summary>
     public IArgumentTuner UseValue(object? value)
-      => new ArgumentTuner(node => TuneTreeNodePattern(node).UseBuildAction(new Value<object>(value), BuildStage.Create));
+      => new ArgumentTuner(node => TuneTreeNodePattern(node).UseBuildAction(new Instance<object>(value), BuildStage.Create));
 
     /// <summary>
     ///   For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <paramref name="key" />
@@ -35,7 +35,7 @@ namespace Armature
     /// </summary>
     public IArgumentTuner UseInjectPointIdAsKey()
       => new ArgumentTuner(
-        node => TuneTreeNodePattern(node).UseBuildAction(Static<BuildArgumentForMethodWithPointIdAsKey>.Instance, BuildStage.Create));
+        node => TuneTreeNodePattern(node).UseBuildAction(Static<BuildArgumentByParameterInjectPointId>.Instance, BuildStage.Create));
 
     /// <summary>
     ///   For building a value for the parameter use <paramref name="factoryMethod" /> factory method

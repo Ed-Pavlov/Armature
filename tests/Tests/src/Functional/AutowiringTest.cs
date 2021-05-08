@@ -173,17 +173,17 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnitMatches(IsConstructor.Instance)
+             new IfLastUnit(IsConstructor.Instance)
               .UseBuildAction(
                  new TryInOrder
                  {
                    new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
-                   GetLongestConstructor.Instance       // constructor with largest number of parameters has less priority
+                   GetConstructorWithMaxParametersCount.Instance       // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
-             new IfLastUnitMatches(IsMethodParameter.Instance)
+             new IfLastUnit(IsParameterInfo.Instance)
               .UseBuildAction(
-                 new TryInOrder { BuildArgumentForMethodWithPointIdAsKey.Instance, BuildArgumentByParameterType.Instance },
+                 new TryInOrder { BuildArgumentByParameterInjectPointId.Instance, BuildArgumentByParameterType.Instance },
                  BuildStage.Create)
            }
          };

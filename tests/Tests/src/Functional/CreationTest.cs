@@ -1,4 +1,5 @@
-﻿using Armature;
+﻿using System;
+using Armature;
 using Armature.Core;
 using Armature.Core.Logging;
 using FluentAssertions;
@@ -253,23 +254,27 @@ namespace Tests.Functional
     {
       var builder = new Builder(BuildStage.Cache, BuildStage.Create);
 
-      builder
-       .TreatAll()
-       .InjectInto(Constructor.Parameterless())
-       .UsingArguments(AutoBuildByParameter.Type);
-
-      return builder;
+      // builder
+      //  .TreatAll()
+      //  .InjectInto(Constructor.Parameterless())
+      //  .UsingArguments(AutoBuildByParameter.Type);
+      //
+      // return builder;
       
+     
       return new(BuildStage.Cache, BuildStage.Create)
              {
                new SkipToLastUnit
                {
-                 new IfLastUnitMatches(Static<IsConstructor>.Instance)
+                 new SkipTillUnit(new IsSubtypeOf(typeof(IDisposable), null))
+                  .UseBuildAction(new CreateByReflection(), BuildStage.Cache),
+                 
+                 new IfLastUnit(new IsConstructor())
                   .UseBuildAction(new GetConstructorByParameterTypes(), BuildStage.Create), // use empty ctor by default in this test
 
-                 new IfLastUnitMatches(Static<IsMethodParametersList>.Instance)
-                  .UseBuildAction(Static<BuildMethodArgumentsInDirectOrder>.Instance, BuildStage.Create),
-                 new IfLastUnitMatches(Static<IsMethodParameter>.Instance)
+                 new IfLastUnit(new IsParameterInfoList())
+                  .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                 new IfLastUnit(new IsParameterInfo())
                   .UseBuildAction(Static<BuildArgumentByParameterType>.Instance, BuildStage.Create)
                }
              };

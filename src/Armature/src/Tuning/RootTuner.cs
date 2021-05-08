@@ -17,7 +17,7 @@ namespace Armature
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var patternMatcher = new FindUnitMatches(new Pattern(type, key));
+      var patternMatcher = new SkipTillUnit(new Pattern(type, key));
       return new RootTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
 
@@ -35,7 +35,7 @@ namespace Armature
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var patternMatcher = new FindUnitMatches(new Pattern(type, key));
+      var patternMatcher = new SkipTillUnit(new Pattern(type, key));
       return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
 
@@ -45,7 +45,7 @@ namespace Armature
     /// </summary>
     public TreatingTuner<T> Treat<T>(object? key = null)
     {
-      var patternMatcher = new FindUnitMatches(new Pattern(typeof(T), key));
+      var patternMatcher = new SkipTillUnit(new Pattern(typeof(T), key));
       return new TreatingTuner<T>(ParentNode.GetOrAddNode(patternMatcher));
     }
     
@@ -55,7 +55,7 @@ namespace Armature
     /// </summary>
     public TreatingOpenGenericTuner TreatOpenGeneric(Type openGenericType, object? key = null)
     {
-      var patternMatcher = new FindUnitMatches(new OpenGenericTypePattern(openGenericType, key), WeightOf.FindUnit | WeightOf.OpenGenericPattern);
+      var patternMatcher = new SkipTillUnit(new IsOpenGenericType(openGenericType, key), WeightOf.FindUnit | WeightOf.OpenGenericPattern);
       return new TreatingOpenGenericTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
     
@@ -65,7 +65,7 @@ namespace Armature
     /// </summary>
     public TreatingTuner TreatInheritorsOf(Type baseType, object? key = null)
     {
-      var patternMatcher = new FindUnitMatches(new SubtypePattern(baseType, key), WeightOf.FindUnit | WeightOf.SubtypePattern);
+      var patternMatcher = new SkipTillUnit(new IsSubtypeOf(baseType, key), WeightOf.FindUnit | WeightOf.SubtypePattern);
       return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
 
@@ -75,7 +75,7 @@ namespace Armature
     /// </summary>
     public TreatingTuner<T> TreatInheritorsOf<T>(object? key = null)
     {
-      var patternMatcher = new FindUnitMatches(new SubtypePattern(typeof(T), key), WeightOf.FindUnit | WeightOf.SubtypePattern);
+      var patternMatcher = new SkipTillUnit(new IsSubtypeOf(typeof(T), key), WeightOf.FindUnit | WeightOf.SubtypePattern);
       return new TreatingTuner<T>(ParentNode.GetOrAddNode(patternMatcher));
     }
 

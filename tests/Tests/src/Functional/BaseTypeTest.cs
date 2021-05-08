@@ -92,11 +92,11 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnitMatches(IsConstructor.Instance)
-              .UseBuildAction(GetLongestConstructor.Instance, BuildStage.Create),
+             new IfLastUnit(IsConstructor.Instance)
+              .UseBuildAction(GetConstructorWithMaxParametersCount.Instance, BuildStage.Create),
 
-             new IfLastUnitMatches(PropertyArgumentPattern.Instance)
-              .UseBuildAction(new BuildArgumentPropertyType(), BuildStage.Create)
+             new IfLastUnit(IsPropertyInfo.Instance)
+              .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)
            }
          };
 

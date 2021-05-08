@@ -449,18 +449,18 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnitMatches(IsConstructor.Instance)
+             new IfLastUnit(IsConstructor.Instance)
               .UseBuildAction(
                  new TryInOrder
                  {
                    new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
-                   GetLongestConstructor
+                   GetConstructorWithMaxParametersCount
                     .Instance // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
-             new IfLastUnitMatches(IsMethodParameter.Instance)
+             new IfLastUnit(IsParameterInfo.Instance)
               .UseBuildAction(
-                 new TryInOrder() { BuildArgumentByParameterType.Instance, GetDefaultParameterValue.Instance },
+                 new TryInOrder() { BuildArgumentByParameterType.Instance, GetParameterDefaultValue.Instance },
                  BuildStage.Create) // autowiring
            }
          };

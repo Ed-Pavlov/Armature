@@ -75,8 +75,8 @@ namespace Tests.Functional
          {
            new SkipToLastUnit
            {
-             new IfLastUnitMatches(IsConstructor.Instance)
-              .UseBuildAction(GetLongestConstructor.Instance, BuildStage.Create)
+             new IfLastUnit(IsConstructor.Instance)
+              .UseBuildAction(GetConstructorWithMaxParametersCount.Instance, BuildStage.Create)
            }
          };
 

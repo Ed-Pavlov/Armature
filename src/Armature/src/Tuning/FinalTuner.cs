@@ -24,8 +24,8 @@ namespace Armature
           throw new ArgumentException("IParameterValueBuildPlan or plain object value expected");
         else
           ParentNode
-           .GetOrAddNode(new IfLastUnitMatches(new ParentTypePattern(argument.GetType(), null), InjectPointMatchingWeight.WeakTypedParameter))
-           .UseBuildAction(new Value<object>(argument), BuildStage.Cache);
+           .GetOrAddNode(new IfLastUnit(new IsBaseTypeOf(argument.GetType(), null), InjectPointMatchingWeight.WeakTypedParameter))
+           .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
 
       return this;
     }
@@ -63,7 +63,7 @@ namespace Armature
     }
 
     /// <summary>
-    ///   Register Unit as an singleton with a lifetime equal to parent <see cref="BuildPlanCollection"/>. See <see cref="Singleton" /> for details
+    ///   Register Unit as an singleton with a lifetime equal to parent <see cref="PatternTree"/>. See <see cref="Singleton" /> for details
     /// </summary>
     public void AsSingleton() => ParentNode.UseBuildAction(new Singleton(), BuildStage.Cache);
 

@@ -6,7 +6,7 @@ namespace Armature.Core
   /// <summary>
   /// Builds a list of arguments by using <see cref="IBuildSession.BuildAllUnits"/> method for a property.
   /// </summary>
-  public class BuildListArgumentForProperty : BuildListArgument
+  public class BuildListArgumentForProperty : BuildListArgumentBase
   {
     public BuildListArgumentForProperty(object? key = null) : base(key) { }
 

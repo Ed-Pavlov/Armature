@@ -6,10 +6,10 @@ using System.Linq;
 namespace Armature.Core
 {
   /// <summary>
-  ///   The builder of units. It is the convenient way to keep corresponding build plans (<see cref="BuildPlanCollection" />),
+  ///   The builder of units. It is the convenient way to keep corresponding build plans (<see cref="PatternTree" />),
   ///   build stages, and parent builders to pass into <see cref="BuildSession" /> which can be instantiated independently.
   /// </summary>
-  public class Builder : BuildPlanCollection
+  public class Builder : PatternTree
   {
     private readonly object[]   _stages;
     private readonly Builder[]? _parentBuilders;

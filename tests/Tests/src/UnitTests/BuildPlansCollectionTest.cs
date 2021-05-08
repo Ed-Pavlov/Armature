@@ -16,10 +16,10 @@ namespace Tests.UnitTests
 
       // --arrange
       var unitIdMatcher = Match.Type<string>(null);
-      var matchString   = new IfLastUnitMatches(unitIdMatcher).UseBuildAction(CreateByReflection.Instance, BuildStage.Cache);
-      var matchAny      = new FindUnitMatches(unitIdMatcher).UseBuildAction(singletonAction, BuildStage.Cache);
+      var matchString   = new IfLastUnit(unitIdMatcher).UseBuildAction(CreateByReflection.Instance, BuildStage.Cache);
+      var matchAny      = new SkipTillUnit(unitIdMatcher).UseBuildAction(singletonAction, BuildStage.Cache);
 
-      var target = new BuildPlanCollection();
+      var target = new PatternTree();
       target.Children.Add(matchString);
       target.Children.Add(matchAny);
 

@@ -125,7 +125,7 @@ namespace Tests.Performance
 
       var unitMatcher = new UnitPatternWrapper(new Pattern(unitId.Kind, unitId.Key));
 
-      var query = new FindUnitMatches(unitMatcher);
+      var query = new SkipTillUnit(unitMatcher);
 
       return new TreatingTuner(buildPlans.GetOrAddNode(query));
     }
@@ -164,23 +164,23 @@ namespace Tests.Performance
       var treatAll = new SkipToLastUnit
                      {
                        // inject into constructor
-                       new IfLastUnitMatches(IsConstructor.Instance)
+                       new IfLastUnit(IsConstructor.Instance)
                         .UseBuildAction(
                            new TryInOrder
                            {
                              new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
-                             GetLongestConstructor.Instance       // constructor with largest number of parameters has less priority
+                             GetConstructorWithMaxParametersCount.Instance       // constructor with largest number of parameters has less priority
                            },
                            BuildStage.Create),
-                       new IfLastUnitMatches(IsMethodParameter.Instance)
+                       new IfLastUnit(IsParameterInfo.Instance)
                         .UseBuildAction(
                            new TryInOrder
                            {
-                             BuildArgumentForMethodWithPointIdAsKey.Instance, BuildArgumentByParameterType.Instance
+                             BuildArgumentByParameterInjectPointId.Instance, BuildArgumentByParameterType.Instance
                            },
                            BuildStage.Create),
-                       new IfLastUnitMatches(PropertyArgumentPattern.Instance)
-                        .UseBuildAction(new TryInOrder {new BuildArgumentPropertyType()}, BuildStage.Create)
+                       new IfLastUnit(IsPropertyInfo.Instance)
+                        .UseBuildAction(new TryInOrder {new BuildArgumentByPropertyType()}, BuildStage.Create)
                      };
 
       var buildStages = new object[] {BuildStage.Cache, BuildStage.Initialize, BuildStage.Create};

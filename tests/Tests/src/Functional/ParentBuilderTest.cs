@@ -219,7 +219,7 @@ namespace Tests.Functional
       // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder 
       target
        .GetOrAddNode(new SkipToLastUnit())
-       .AddNode(new IfLastUnitMatches(CanBeInstantiatedPattern.Instance))
+       .AddNode(new IfLastUnit(CanBeInstantiated.Instance))
        .UseBuildAction(new DebugOnlyBuildAction(), BuildStage.Cache);
 
       // --act
@@ -256,9 +256,9 @@ namespace Tests.Functional
          {
            new SkipToLastUnit
            {
-             new IfLastUnitMatches(IsConstructor.Instance)
-              .UseBuildAction(GetLongestConstructor.Instance, BuildStage.Create),
-             new IfLastUnitMatches(IsMethodParameter.Instance)
+             new IfLastUnit(IsConstructor.Instance)
+              .UseBuildAction(GetConstructorWithMaxParametersCount.Instance, BuildStage.Create),
+             new IfLastUnit(IsParameterInfo.Instance)
               .UseBuildAction(BuildArgumentByParameterType.Instance, BuildStage.Create)
            }
          };

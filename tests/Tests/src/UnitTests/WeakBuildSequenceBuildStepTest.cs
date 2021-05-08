@@ -17,8 +17,8 @@ namespace Tests.UnitTests
       var expected = new Singleton();
 
       // --arrange
-      var target = new FindUnitMatches(Match.Type<IDisposable>(null))
-                  .GetOrAddNode(new FindUnitMatches(Match.Type<MemoryStream>(null)))
+      var target = new SkipTillUnit(Match.Type<IDisposable>(null))
+                  .GetOrAddNode(new SkipTillUnit(Match.Type<MemoryStream>(null)))
                   .UseBuildAction(expected, BuildStage.Cache);
 
       // --act
@@ -35,13 +35,13 @@ namespace Tests.UnitTests
     {
       // --arrange
       var unitIdMatcher = Match.Type<int>(null);
-      var buildStep1    = new IfLastUnitMatches(unitIdMatcher);
+      var buildStep1    = new IfLastUnit(unitIdMatcher);
       buildStep1.UseBuildAction(CreateByReflection.Instance, BuildStage.Cache);
       var singletonAction = new Singleton();
-      var buildStep2      = new FindUnitMatches(unitIdMatcher);
+      var buildStep2      = new SkipTillUnit(unitIdMatcher);
       buildStep2.UseBuildAction(singletonAction, BuildStage.Cache);
 
-      var target = new FindUnitMatches(Match.Type<string>(null));
+      var target = new SkipTillUnit(Match.Type<string>(null));
       target.GetOrAddNode(buildStep1);
       target.GetOrAddNode(buildStep2);
 

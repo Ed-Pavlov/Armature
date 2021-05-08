@@ -29,7 +29,7 @@ namespace Tests.Functional
     {
       var createByReflection1 = Static<CreateByReflection>.Instance;
       Console.WriteLine(createByReflection1);
-      Console.WriteLine(Static<GetLongestConstructor>.Instance);
+      Console.WriteLine(Static<GetConstructorWithMaxParametersCount>.Instance);
       var createByReflection2 = Static<CreateByReflection>.Instance;
       Console.WriteLine(createByReflection2);
       

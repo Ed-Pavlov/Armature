@@ -8,7 +8,7 @@ namespace Armature
     public static IInjectPointTuner OfType<T>() => OfType(typeof(T));
 
     public static IInjectPointTuner OfType(Type type, short weight = 0)
-      => new InjectPointTuner(node => node.AddPropertiesListPattern(weight).UseBuildAction(new GetPropertyByTypeBuildAction(type), BuildStage.Create));
+      => new InjectPointTuner(node => node.AddPropertiesListPattern(weight).UseBuildAction(new GetPropertyByType(type), BuildStage.Create));
 
     /// <summary>
     ///   Adds a plan injecting dependencies into properties with corresponding <paramref name="names" />
@@ -20,7 +20,7 @@ namespace Armature
     /// </summary>
     public static IInjectPointTuner Named(short weight, params string[] names)
       => new InjectPointTuner(
-        node => node.AddPropertiesListPattern(weight).UseBuildAction(new GetPropertyListByNameBuildAction(names), BuildStage.Create));
+        node => node.AddPropertiesListPattern(weight).UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create));
 
     /// <summary>
     ///   Adds a plan injecting dependencies into properties marked with <see cref="InjectAttribute" /> with corresponding <paramref name="pointIds" />
@@ -34,7 +34,7 @@ namespace Armature
       => new InjectPointTuner(
         node => node.AddPropertiesListPattern(weight).UseBuildAction(new GetPropertyListByInjectPointId(pointIds), BuildStage.Create));
 
-    private static IfLastUnitMatches AddPropertiesListPattern(this IPatternTreeNode node, short weight)
-      => node.GetOrAddNode(new IfLastUnitMatches(Static<PropertiesListPattern>.Instance, weight));
+    private static IfLastUnit AddPropertiesListPattern(this IPatternTreeNode node, short weight)
+      => node.GetOrAddNode(new IfLastUnit(Static<IsPropertyList>.Instance, weight));
   }
 }

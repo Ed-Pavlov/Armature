@@ -9,7 +9,7 @@ namespace Armature
     ///   Instantiate a Unit using a constructor with the biggest number of parameters
     /// </summary>
     public static IInjectPointTuner WithMaxParametersCount(short weight = 0)
-      => new InjectPointTuner(node => node.AddConstructorPattern(weight).UseBuildAction(Static<GetLongestConstructor>.Instance, BuildStage.Create));
+      => new InjectPointTuner(node => node.AddConstructorPattern(weight).UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create));
 
     /// <summary>
     ///   Instantiate a Unit using a constructor marked with <see cref="InjectAttribute" />(<paramref name="injectionPointId" />)
@@ -59,7 +59,7 @@ namespace Armature
         node => node.AddConstructorPattern(weight).UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
 
     //TODO: move to helper and make public?
-    private static IfLastUnitMatches AddConstructorPattern(this IPatternTreeNode parentNode, short weight)
-      => parentNode.GetOrAddNode(new IfLastUnitMatches(Static<IsConstructor>.Instance, weight));
+    private static IfLastUnit AddConstructorPattern(this IPatternTreeNode parentNode, short weight)
+      => parentNode.GetOrAddNode(new IfLastUnit(Static<IsConstructor>.Instance, weight));
   }
 }

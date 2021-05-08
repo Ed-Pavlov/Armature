@@ -11,8 +11,8 @@ namespace Armature
     public static ArgumentStaticTuner<T> OfType<T>()
       => new(parentNode =>
              {
-               parentNode.TunePropertyListBuilding(new GetPropertyByTypeBuildAction(typeof(T)));
-               return parentNode.GetOrAddNode(new IfLastUnitMatches(new PropertyByTypePattern(typeof(T), true), InjectPointMatchingWeight.TypedParameter));
+               parentNode.TunePropertyListBuilding(new GetPropertyByType(typeof(T)));
+               return parentNode.GetOrAddNode(new IfLastUnit(new IsPropertyWithType(typeof(T), true), InjectPointMatchingWeight.TypedParameter));
              });
 
     /// <summary>
@@ -21,8 +21,8 @@ namespace Armature
     public static ArgumentStaticTuner Named(string propertyName)
       => new(parentNode =>
              {
-               parentNode.TunePropertyListBuilding(new GetPropertyListByNameBuildAction(propertyName));
-               return parentNode.GetOrAddNode(new IfLastUnitMatches(new PropertyWithNamePattern(propertyName), InjectPointMatchingWeight.NamedParameter));
+               parentNode.TunePropertyListBuilding(new GetPropertyListByNames(propertyName));
+               return parentNode.GetOrAddNode(new IfLastUnit(new IsPropertyNamed(propertyName), InjectPointMatchingWeight.NamedParameter));
              });
 
     /// <summary>
@@ -34,12 +34,12 @@ namespace Armature
                parentNode.TunePropertyListBuilding(new GetPropertyListByInjectPointId(injectPointId));
 
                return parentNode.GetOrAddNode(
-                 new IfLastUnitMatches(new PropertyWithInjectIdPattern(injectPointId), InjectPointMatchingWeight.AttributedParameter));
+                 new IfLastUnit(new IsPropertyInfoWithAttribute(injectPointId), InjectPointMatchingWeight.AttributedParameter));
              });
 
     private static void TunePropertyListBuilding(this IPatternTreeNode patternTreeNode, IBuildAction buildAction)
       => patternTreeNode
-        .GetOrAddNode(new IfLastUnitMatches(PropertiesListPattern.Instance))
+        .GetOrAddNode(new IfLastUnit(IsPropertyList.Instance))
         .UseBuildAction(buildAction, BuildStage.Create);
   }
 }

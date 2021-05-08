@@ -16,7 +16,7 @@ namespace Armature.Core
     /// <summary>
     /// Is used to build a list of properties of a type
     /// </summary>
-    public static readonly object PropertiesList = new UnitKey(nameof(PropertiesList));
+    public static readonly object PropertyList = new UnitKey(nameof(PropertyList));
 
     /// <summary>
     ///   Is used to build an argument for inject point
@@ -34,7 +34,7 @@ namespace Armature.Core
     public static readonly UnitKey Propagate = new(nameof(Propagate));
 
     public static bool IsSpecial(this object? obj)
-      => obj is UnitKey key && (key == Any || key == Constructor || key == PropertiesList || key == Argument || key == Propagate);
+      => obj is UnitKey key && (key == Any || key == Constructor || key == PropertyList || key == Argument || key == Propagate);
 
     public static object? GetKey(this object? buildActionKey, object? unitKey) => ReferenceEquals(buildActionKey, Propagate) ? unitKey : buildActionKey;
   }

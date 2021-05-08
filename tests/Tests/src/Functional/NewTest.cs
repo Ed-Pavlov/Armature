@@ -15,7 +15,7 @@ namespace Tests.Functional
       builder
        .TreatAll()
        .InjectInto(Constructor.WithMaxParametersCount())
-       .UsingArguments(AutoBuildByParameter.Type);
+       .UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
 
       builder.Treat<IA1>().AsCreated<A1>();
 

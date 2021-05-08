@@ -55,12 +55,12 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnitMatches(IsConstructor.Instance)
+             new IfLastUnit(IsConstructor.Instance)
               .UseBuildAction(
                  new TryInOrder
                  {
                    new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
-                   GetLongestConstructor
+                   GetConstructorWithMaxParametersCount
                     .Instance // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create)
