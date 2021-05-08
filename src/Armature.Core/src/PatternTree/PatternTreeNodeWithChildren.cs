@@ -50,7 +50,6 @@ namespace Armature.Core
     /// </summary>
     /// <param name="unitSequence">The sequence of units building in this build session.</param>
     /// <param name="inputMatchingWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
-    [DebuggerStepThrough]
     protected WeightedBuildActionBag? GetChildrenActions(ArrayTail<UnitId> unitSequence, int inputMatchingWeight)
       => _children?.Aggregate(
         (WeightedBuildActionBag?)null,

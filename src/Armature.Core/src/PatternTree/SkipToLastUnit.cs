@@ -25,7 +25,7 @@ namespace Armature.Core
     public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {
       var unitsToSkipCount = unitSequence.Length;
-      var matchingWeight   = inputWeight + Weight * unitsToSkipCount;
+      var matchingWeight   = inputWeight - Weight * unitsToSkipCount;
 
       WeightedBuildActionBag? actionBag = null;
       using(Log.Deferred(LogLevel.Trace, LogMatchingState))
@@ -44,24 +44,5 @@ namespace Armature.Core
     }
 
     private string ToString(int unitsToSkip) => $"{GetType().GetShortName()}{{ Weight={Weight:n0}, Skipped={unitsToSkip} }}";
-
-    #region Equality
-
-    [DebuggerStepThrough]
-    public override bool Equals(IPatternTreeNode other) => Equals((object)other);
-
-    [DebuggerStepThrough]
-    public override bool Equals(object? obj)
-    {
-      if(ReferenceEquals(null, obj)) return false;
-      if(ReferenceEquals(this, obj)) return true;
-
-      return obj is SkipToLastUnit other && Weight == other.Weight;
-    }
-
-    [DebuggerStepThrough]
-    public override int GetHashCode() => Weight.GetHashCode();
-
-    #endregion
   }
 }

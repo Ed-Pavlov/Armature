@@ -9,7 +9,7 @@ namespace Armature.Core
   /// <summary>
   ///   Gets a constructor of type which matches specified parameter types list.
   /// </summary>
-  public class GetConstructorByParameterTypes : IBuildAction
+  public record GetConstructorByParameterTypes : IBuildAction
   {
     private readonly Type[] _parameterTypes;
 

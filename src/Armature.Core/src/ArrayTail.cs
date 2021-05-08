@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
+using Armature.Core.Logging;
 
 namespace Armature.Core
 {
@@ -32,5 +34,19 @@ namespace Armature.Core
 
     [DebuggerStepThrough]
     public ArrayTail<T> GetTail(int startIndex) => new(_array, _startIndex + startIndex);
+
+    public override string ToString()
+    {
+      var sb = new StringBuilder();
+      
+      var i  = 0;
+      for(; i < Length - 1; i++)
+      {
+        sb.Append(this[i].ToLogString());
+        sb.Append(", ");
+      }
+      sb.Append(this[i].ToLogString());
+      return sb.ToString();
+    }
   }
 }

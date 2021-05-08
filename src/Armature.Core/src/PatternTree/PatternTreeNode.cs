@@ -33,7 +33,6 @@ namespace Armature.Core
 
     protected int Weight { [DebuggerStepThrough] get; }
 
-    [DebuggerStepThrough]
     protected WeightedBuildActionBag? GetOwnBuildActions(int matchingWeight)
     {
       if(_buildActions is null) return null;
@@ -47,9 +46,14 @@ namespace Armature.Core
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => $"{GetType().GetShortName()}{{ {Weight:n0} }}>";
+    public override string ToString() => $"{GetType().GetShortName()}{{ {Weight:n0} }}";
 
-    public abstract bool Equals(IPatternTreeNode other);
+    public virtual bool Equals(IPatternTreeNode? other)
+      => other is PatternTreeNode otherNode && Weight == otherNode.Weight && GetType() == otherNode.GetType();
+
+    public override bool Equals(object? obj) => Equals(obj as IPatternTreeNode);
+
+    public override int GetHashCode() => Weight.GetHashCode();
 
     public void PrintToLog()
     {

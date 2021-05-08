@@ -13,7 +13,7 @@ namespace Armature.Core
       if(ReferenceEquals(unitKey, SpecialKey.Any))
         throw new ArgumentOutOfRangeException(
           nameof(unitKey),
-          $"Building unit's key can't be '{nameof(UnitKey)}.{nameof(SpecialKey.Any)}' special key. Check arguments order in the call of this method");
+          $"Building unit's key can't be '{nameof(SpecialKey)}.{nameof(SpecialKey.Any)}' special key. Check arguments order in the call of this method");
 
       return Equals(pattern, unitKey) || ReferenceEquals(pattern, SpecialKey.Any);
     }

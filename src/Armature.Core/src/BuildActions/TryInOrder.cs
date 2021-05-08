@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Armature.Core.Logging;
 
 namespace Armature.Core
@@ -27,7 +28,7 @@ namespace Armature.Core
     private readonly List<IBuildAction>                      _buildActions          = new();
     private readonly Dictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new();
 
-    public TryInOrder(params IBuildAction[] buildAction) { }
+    public TryInOrder(params IBuildAction[] buildActions) => _buildActions = buildActions.ToList();
 
     public void Process(IBuildSession buildSession)
     {
@@ -49,7 +50,7 @@ namespace Armature.Core
         }
         catch(Exception exc)
         {
-          exc.ToLog(() => $"Exception was thrown during executing {buildAction} {nameof(IBuildAction.Process)} method");
+          exc.ToLog(() => $"Exception was thrown during executing {buildAction}.{nameof(IBuildAction.Process)} method");
           exceptions.Add(exc);
         }
 

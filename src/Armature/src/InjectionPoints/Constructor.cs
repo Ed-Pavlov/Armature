@@ -9,7 +9,8 @@ namespace Armature
     ///   Instantiate a Unit using a constructor with the biggest number of parameters
     /// </summary>
     public static IInjectPointTuner WithMaxParametersCount(short weight = 0)
-      => new InjectPointTuner(node => node.AddConstructorPattern(weight).UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create));
+      => new InjectPointTuner(
+        node => node.AddConstructorPattern(weight).UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create));
 
     /// <summary>
     ///   Instantiate a Unit using a constructor marked with <see cref="InjectAttribute" />(<paramref name="injectionPointId" />)
@@ -31,14 +32,12 @@ namespace Armature
     /// <summary>
     ///   Instantiate a Unit using constructor with exact set of parameters provided as generic arguments
     /// </summary>
-    public static IInjectPointTuner WithParameters<T1, T2>(short weight = 0)
-      => WithParameters(weight, typeof(T1), typeof(T2));
+    public static IInjectPointTuner WithParameters<T1, T2>(short weight = 0) => WithParameters(weight, typeof(T1), typeof(T2));
 
     /// <summary>
     ///   Instantiate a Unit using constructor with exact set of parameters provided as generic arguments
     /// </summary>
-    public static IInjectPointTuner WithParameters<T1, T2, T3>(short weight = 0)
-      => WithParameters(weight, typeof(T1), typeof(T2), typeof(T3));
+    public static IInjectPointTuner WithParameters<T1, T2, T3>(short weight = 0) => WithParameters(weight, typeof(T1), typeof(T2), typeof(T3));
 
     /// <summary>
     ///   Instantiate a Unit using constructor with exact set of parameters provided as generic arguments

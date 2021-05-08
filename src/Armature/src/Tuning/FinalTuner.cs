@@ -24,8 +24,9 @@ namespace Armature
           throw new ArgumentException("IParameterValueBuildPlan or plain object value expected");
         else
           ParentNode
+           .GetOrAddNode(new SkipSpecialUnits())
            .GetOrAddNode(new IfLastUnit(new IsBaseTypeOf(argument.GetType(), null), InjectPointMatchingWeight.WeakTypedParameter))
-           .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
+           .UseBuildAction(new Instance<object>(argument), BuildStage.Create);
 
       return this;
     }
@@ -54,11 +55,8 @@ namespace Armature
 
     public FinalTuner InjectInto(params IInjectPointTuner[] propertyIds)
     {
-      ParentNode.UseBuildAction(InjectDependenciesIntoProperties.Instance, BuildStage.Initialize, true);
-
-      foreach(var propertyId in propertyIds)
-        propertyId.Tune(ParentNode);
-
+      foreach(var injectPointTuner in propertyIds)
+        injectPointTuner.Tune(ParentNode);
       return this;
     }
 

@@ -62,7 +62,7 @@ namespace Armature.Core
         => GetChildrenActions(unitSequence, inputWeight);
 
       [DebuggerStepThrough]
-      public override bool Equals(IPatternTreeNode other) => throw new NotSupportedException();
+      public override bool Equals(IPatternTreeNode? other) => throw new NotSupportedException();
     }
   }
 }

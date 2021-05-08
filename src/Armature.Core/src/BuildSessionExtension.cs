@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
 
 namespace Armature.Core
 {
@@ -21,7 +20,7 @@ namespace Armature.Core
       var result = buildSession.BuildUnit(new UnitId(type, SpecialKey.Constructor));
 
       if(!result.HasValue)
-        throw new Exception(string.Format("Can't find appropriate constructor for type {0}", type));
+        throw new ArmatureException(string.Format("Can't find appropriate constructor for type {0}.", type));
 
       return (ConstructorInfo)result.Value!;
     }

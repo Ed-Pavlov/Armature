@@ -15,7 +15,7 @@ namespace Armature.Core
     public bool Matches(UnitId unitId)
     {
       var type = unitId.GetUnitTypeSafe();
-      return !unitId.Key.IsSpecial() && type is {IsAbstract: false, IsInterface: false, IsGenericTypeDefinition: false};
+      return unitId.Key is not SpecialKey && type is {IsAbstract: false, IsInterface: false, IsGenericTypeDefinition: false};
     }
     
     [DebuggerStepThrough]

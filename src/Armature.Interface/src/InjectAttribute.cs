@@ -11,7 +11,8 @@ namespace Armature
   | AttributeTargets.Property
   | AttributeTargets.Parameter
   | AttributeTargets.Field
-  | AttributeTargets.Event)]
+  | AttributeTargets.Event, 
+    AllowMultiple = false)]
   public class InjectAttribute : Attribute
   {
     /// <summary>

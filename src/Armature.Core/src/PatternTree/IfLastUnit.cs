@@ -50,15 +50,15 @@ namespace Armature.Core
       return Weight == other.Weight && _pattern.Equals(other._pattern);
     }
 
-    public override bool Equals(IPatternTreeNode obj) => Equals(obj as IfLastUnit);
+    public override bool Equals(IPatternTreeNode? obj) => Equals(obj as IfLastUnit);
 
-    public override bool Equals(object obj) => Equals(obj as IfLastUnit);
+    public override bool Equals(object? obj) => Equals(obj as IfLastUnit);
 
     public override int GetHashCode()
     {
       unchecked
       {
-        return (_pattern.GetHashCode() * 397) ^ (int)Weight;
+        return (_pattern.GetHashCode() * 397) ^ Weight;
       }
     }
 

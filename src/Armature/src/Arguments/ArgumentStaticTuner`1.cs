@@ -10,7 +10,7 @@ namespace Armature
     /// <summary>
     ///   Use the <paramref name="value" /> as an argument for the parameter.
     /// </summary>
-    public IArgumentTuner UseValue(T? value)
+    public IArgumentTuner UseValue(T value)
       => new ArgumentTuner(node => TuneTreeNodePattern(node).UseBuildAction(new Instance<T>(value), BuildStage.Create));
   }
 }

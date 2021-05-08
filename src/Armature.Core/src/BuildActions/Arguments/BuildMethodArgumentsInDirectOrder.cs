@@ -13,18 +13,19 @@ namespace Armature.Core
     {
       if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
 
-      var method     = (MethodBase)buildSession.GetUnitUnderConstruction().Kind!;
-      var parameters = method.GetParameters();
-
+      var parameters = (ParameterInfo[])buildSession.GetUnitUnderConstruction().Kind!;
       var arguments = new object?[parameters.Length];
 
       for(var i = 0; i < parameters.Length; i++)
       {
         var buildResult = buildSession.BuildUnit(new UnitId(parameters[i], SpecialKey.Argument));
-
+        
         if(!buildResult.HasValue)
+        {
+          var method = parameters[i].Member;
           throw new ArmatureException(string.Format("Argument for parameter '{0}' of {1} {2} is not built", parameters[i], method.DeclaringType, method))
            .AddData("Method", method.ToString());
+        }
 
         arguments[i] = buildResult.Value;
       }

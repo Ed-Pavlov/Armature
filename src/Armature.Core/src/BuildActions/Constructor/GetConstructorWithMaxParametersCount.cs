@@ -11,7 +11,7 @@ namespace Armature.Core
   /// <summary>
   ///   Gets a constructor of type with biggest number of parameters.
   /// </summary>
-  public class GetConstructorWithMaxParametersCount : IBuildAction
+  public record GetConstructorWithMaxParametersCount : IBuildAction
   {
     public static readonly IBuildAction Instance = new GetConstructorWithMaxParametersCount();
 

@@ -13,7 +13,6 @@ namespace Armature.Core
     /// </summary>
     /// <remarks>Call it first and then fill returned <see cref="IPatternTreeNode" /> with build actions or perform other needed actions due to
     /// it can return other instance of <see cref="IPatternTreeNode"/> then <paramref name="node"/>.</remarks>
-    [DebuggerStepThrough]
     public static T GetOrAddNode<T>(this IPatternTreeNode parentNode, T node) where T : IPatternTreeNode
     {
       if(parentNode is null) throw new ArgumentNullException(nameof(parentNode));
@@ -29,7 +28,6 @@ namespace Armature.Core
     /// Adds the <paramref name="node" /> into <paramref name="parentNode" />.
     /// </summary>
     /// <exception cref="ArmatureException">A node already exists in the collection</exception>
-    [DebuggerStepThrough]
     public static T AddNode<T>(this IPatternTreeNode parentNode, T node) where T : IPatternTreeNode
     {
       if(parentNode is null) throw new ArgumentNullException(nameof(parentNode));
@@ -50,7 +48,6 @@ namespace Armature.Core
     /// <param name="buildStage">A build stage in which the build action is executed.</param>
     /// <param name="checkIfNotPresent"></param>
     /// <returns>Returns 'this' in order to use fluent syntax</returns>    
-    [DebuggerStepThrough]
     public static IPatternTreeNode UseBuildAction(this IPatternTreeNode node, IBuildAction buildAction, object buildStage, bool checkIfNotPresent = false)
     {
       var collection = node.BuildActions.GetOrCreateValue(buildStage, () => new List<IBuildAction>());
