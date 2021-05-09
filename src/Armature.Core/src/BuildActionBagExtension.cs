@@ -63,8 +63,8 @@ namespace Armature.Core
         if(actions[0].Weight == actions[1].Weight)
         {
           throw new ArmatureException($"Two or more building actions matched with the same weight = {actions[0].Weight:n0}")
-               .AddData("Action #1", actions[0].ToString())
-               .AddData("Action #2", actions[1].ToString());
+               .AddData("Action #1", actions[0])
+               .AddData("Action #2", actions[1]);
         }
 
       return actions[0].Entity;

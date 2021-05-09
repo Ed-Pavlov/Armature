@@ -1,6 +1,7 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
+using Armature.Core.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -177,13 +178,19 @@ namespace Tests.Functional
               .UseBuildAction(
                  new TryInOrder
                  {
-                   new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
-                   GetConstructorWithMaxParametersCount.Instance       // constructor with largest number of parameters has less priority
+                   new GetConstructorByInjectPointId(),       // constructor marked with [Inject] attribute has more priority
+                   new GetConstructorWithMaxParametersCount() // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
+             new IfLastUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfLastUnit(IsParameterInfo.Instance)
               .UseBuildAction(
-                 new TryInOrder { BuildArgumentByParameterInjectPointId.Instance, BuildArgumentByParameterType.Instance },
+                 new TryInOrder
+                 {
+                   BuildArgumentByParameterInjectPointId.Instance, 
+                   BuildArgumentByParameterType.Instance
+                 },
                  BuildStage.Create)
            }
          };

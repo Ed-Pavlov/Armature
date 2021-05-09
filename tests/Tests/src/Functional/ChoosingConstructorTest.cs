@@ -2,6 +2,7 @@
 using System.Collections;
 using Armature;
 using Armature.Core;
+using Armature.Core.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -16,7 +17,7 @@ namespace Tests.Functional
     [TestCaseSource(nameof(max_number_of_parameters))]
     public void should_call_ctor_with_max_number_of_parameters(IBuildAction getConstructorAction)
     {
-      var target = new Builder(BuildStage.Create)
+      var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
                      new SkipToLastUnit {new IfLastUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
                    };
@@ -63,7 +64,7 @@ namespace Tests.Functional
     [TestCaseSource(nameof(inject_point_id_ctor))]
     public void should_call_constructor_marked_with_attribute(string injectPointId, IBuildAction getConstructorAction)
     {
-      var target = new Builder(BuildStage.Create)
+      var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
                      new SkipToLastUnit {new IfLastUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
                    };
@@ -85,7 +86,7 @@ namespace Tests.Functional
     [Test]
     public void should_call_constructor_matched_with_parameter_types()
     {
-      var target = new Builder(BuildStage.Create)
+      var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
                      new SkipToLastUnit
                      {
@@ -107,6 +108,7 @@ namespace Tests.Functional
             .InjectInto(Constructor.WithParameters<int, string>())
             .UsingArguments(4, "string"); // set value to inject into ctor
 
+      using var _ = Log.Enabled(LogLevel.Verbose);
       // --act
       var actual = target.Build<Subject3>();
 

@@ -124,6 +124,8 @@ namespace Tests.Functional
                    BuildArgumentByParameterInjectPointId.Instance, 
                    BuildArgumentByParameterType.Instance
                  }, BuildStage.Create),
+             new IfLastUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfLastUnit(IsPropertyInfo.Instance)
               .UseBuildAction(
                  new TryInOrder

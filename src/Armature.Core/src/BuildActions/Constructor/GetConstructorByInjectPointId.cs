@@ -34,7 +34,7 @@ namespace Armature.Core
         + $"{nameof(InjectAttribute)} with {nameof(InjectAttribute.InjectionPointId)}={_injectPointId.ToLogString()}");
 
         for(var i = 0; i < constructors.Length; i++)
-          exception.AddData($"Constructor #{i}", constructors[i].ToString());
+          exception.AddData($"Constructor #{i}", constructors[i]);
 
         throw exception;
       }

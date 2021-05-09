@@ -19,5 +19,7 @@ namespace Armature.Core
       var unitType = unitId.GetUnitTypeSafe();
       return Key.Matches(unitId.Key) && unitType is {IsGenericType: true} && unitType.GetGenericTypeDefinition() == Type;
     }
+    
+    public override string ToString() => base.ToString();
   }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using Armature.Core.Logging;
 
 namespace Armature.Core
 {
@@ -14,7 +15,7 @@ namespace Armature.Core
       if(exception is null) throw new ArgumentNullException(nameof(exception));
       if(key is null) throw new ArgumentNullException(nameof(key));
 
-      exception.Data.Add(key, value);
+      exception.Data.Add(key, value.ToLogString());
 
       return exception;
     }
@@ -38,7 +39,7 @@ namespace Armature.Core
       i = 0;
 
       foreach(var exc in exceptions)
-        exception.AddData($"Exception#{++i}", exc.ToString());
+        exception.AddData($"Exception#{++i}", exc);
 
       return exception;
     }

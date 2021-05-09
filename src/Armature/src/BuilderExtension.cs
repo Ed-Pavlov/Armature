@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -76,7 +77,7 @@ namespace Armature
 
       return buildResult.HasValue
                ? (T?)buildResult.Value
-               : throw new ArmatureException($"Unit {unitId} is not built").AddData($"{nameof(unitId)}", unitId.ToString());
+               : throw new ArmatureException($"Unit {unitId} is not built").AddData($"{nameof(unitId)}", unitId);
     }
 
     private static IPatternTreeNode? CreateAuxBuildPlansCollection(object[]? arguments)

@@ -1,5 +1,6 @@
 ﻿using Armature;
 using Armature.Core;
+using Armature.Core.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -78,6 +79,8 @@ namespace Tests.Functional
        .AsIs()
        .InjectInto(Property.Named(nameof(Subject.InjectHere)));
 
+      target.PrintToLog();
+      
       // --act
       var actual = target.Build<Subject>();
 

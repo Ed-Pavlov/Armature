@@ -26,7 +26,7 @@ namespace Armature
           ParentNode
            .GetOrAddNode(new SkipSpecialUnits())
            .GetOrAddNode(new IfLastUnit(new IsBaseTypeOf(argument.GetType(), null), InjectPointMatchingWeight.WeakTypedParameter))
-           .UseBuildAction(new Instance<object>(argument), BuildStage.Create);
+           .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
 
       return this;
     }

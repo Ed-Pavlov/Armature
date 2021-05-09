@@ -458,6 +458,8 @@ namespace Tests.Functional
                     .Instance // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
+             new IfLastUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfLastUnit(IsParameterInfo.Instance)
               .UseBuildAction(
                  new TryInOrder() { BuildArgumentByParameterType.Instance, GetParameterDefaultValue.Instance },

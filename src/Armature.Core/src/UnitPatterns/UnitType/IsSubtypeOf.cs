@@ -10,5 +10,7 @@ namespace Armature.Core
     public IsSubtypeOf(Type baseType, object? key) : base(baseType, key) { }
 
     public bool Matches(UnitId unitId) => Key.Matches(unitId.Key) && Type.IsAssignableFrom(unitId.GetUnitTypeSafe());
+
+    public override string ToString() => base.ToString();
   }
 }

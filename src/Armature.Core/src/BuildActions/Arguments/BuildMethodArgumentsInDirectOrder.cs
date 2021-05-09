@@ -24,7 +24,7 @@ namespace Armature.Core
         {
           var method = parameters[i].Member;
           throw new ArmatureException(string.Format("Argument for parameter '{0}' of {1} {2} is not built", parameters[i], method.DeclaringType, method))
-           .AddData("Method", method.ToString());
+           .AddData("Method", method);
         }
 
         arguments[i] = buildResult.Value;
