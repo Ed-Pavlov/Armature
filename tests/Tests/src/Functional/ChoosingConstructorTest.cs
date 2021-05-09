@@ -4,6 +4,7 @@ using Armature;
 using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
+
 #pragma warning disable 8618
 #pragma warning disable 8602
 
@@ -23,10 +24,9 @@ namespace Tests.Functional
       target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
 
       // --arrange
-      target
-       .Treat<Subject2>()
-       .AsIs()
-       .UsingArguments(new object()); // set value to inject into ctor
+      target.Treat<Subject2>()
+            .AsIs()
+            .UsingArguments(new object()); // set value to inject into ctor
 
       target.PrintToLog();
 
@@ -71,10 +71,9 @@ namespace Tests.Functional
       target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
 
       // --arrange
-      target
-       .Treat<Subject1>()
-       .AsIs()
-       .UsingArguments(new object()); // set value to inject into ctor
+      target.Treat<Subject1>()
+            .AsIs()
+            .UsingArguments(new object()); // set value to inject into ctor
 
       // --act
       var actual = target.Build<Subject1>();
@@ -103,11 +102,10 @@ namespace Tests.Functional
       target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
 
       // --arrange
-      target
-       .Treat<Subject3>()
-       .AsIs()
-       .InjectInto(Constructor.WithParameters<int, string>())
-       .UsingArguments(4, "string"); // set value to inject into ctor
+      target.Treat<Subject3>()
+            .AsIs()
+            .InjectInto(Constructor.WithParameters<int, string>())
+            .UsingArguments(4, "string"); // set value to inject into ctor
 
       // --act
       var actual = target.Build<Subject3>();
