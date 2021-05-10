@@ -5,37 +5,19 @@ using Armature.Core;
 
 namespace Armature
 {
-  public class ArgumentStaticTuner // : UnitMatcherExtensibility
+  public abstract class ArgumentTunerBase<T> // : UnitMatcherExtensibility
   {
     protected readonly Func<IPatternTreeNode, IPatternTreeNode> TuneTreeNodePattern;
 
     [DebuggerStepThrough]
-    public ArgumentStaticTuner(Func<IPatternTreeNode, IPatternTreeNode> tuneTreeNodePattern)
+    protected ArgumentTunerBase(Func<IPatternTreeNode, IPatternTreeNode> tuneTreeNodePattern)
       => TuneTreeNodePattern = tuneTreeNodePattern ?? throw new ArgumentNullException(nameof(tuneTreeNodePattern));
 
     /// <summary>
     ///   Use the <paramref name="value" /> as an argument for the parameter.
     /// </summary>
-    public IArgumentTuner UseValue(object? value)
-      => new ArgumentTuner(node => TuneTreeNodePattern(node).UseBuildAction(new Instance<object?>(value), BuildStage.Create));
-
-    /// <summary>
-    ///   For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <paramref name="key" />
-    /// </summary>
-    public IArgumentTuner UseKey(object key)
-    {
-      if(key is null) throw new ArgumentNullException(nameof(key));
-
-      return new ArgumentTuner(
-        node => TuneTreeNodePattern(node).UseBuildAction(new BuildArgumentByParameterType(key), BuildStage.Create));
-    }
-
-    /// <summary>
-    ///   For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute.InjectionPointId" /> as key
-    /// </summary>
-    public IArgumentTuner UseInjectPointIdAsKey()
-      => new ArgumentTuner(
-        node => TuneTreeNodePattern(node).UseBuildAction(Static<BuildArgumentByParameterInjectPointId>.Instance, BuildStage.Create));
+    public IArgumentTuner UseValue(T value)
+      => new ArgumentTuner(node => TuneTreeNodePattern(node).UseBuildAction(new Instance<T>(value), BuildStage.Create));
 
     /// <summary>
     ///   For building a value for the parameter use <paramref name="factoryMethod" /> factory method
@@ -47,9 +29,9 @@ namespace Armature
     /// <summary>
     ///   For building a value for the parameter use <paramref name="factoryMethod" /> factory method
     /// </summary>
-    public IArgumentTuner UseFactoryMethod<T>(Func<T?, object?> factoryMethod)
+    public IArgumentTuner UseFactoryMethod<TR>(Func<TR?, object?> factoryMethod)
       => new ArgumentTuner(
-        node => TuneTreeNodePattern(node).UseBuildAction(new CreateWithFactoryMethodBuildAction<T, object>(factoryMethod), BuildStage.Create));
+        node => TuneTreeNodePattern(node).UseBuildAction(new CreateWithFactoryMethodBuildAction<TR, object>(factoryMethod), BuildStage.Create));
 
     /// <summary>
     ///   For building a value for the parameter use <paramref name="factoryMethod" /> factory method

@@ -10,8 +10,6 @@ namespace Armature.Core
   {
     public static readonly IUnitPattern Instance = new CanBeInstantiated();
 
-    private CanBeInstantiated() { }
-
     public bool Matches(UnitId unitId)
     {
       var type = unitId.GetUnitTypeSafe();

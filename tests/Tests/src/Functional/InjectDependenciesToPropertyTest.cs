@@ -1,5 +1,6 @@
 ﻿using Armature;
 using Armature.Core;
+using Armature.Core.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
@@ -18,18 +19,12 @@ namespace Tests.Functional
       // --arrange
       var target = CreateTarget();
 
+      // target.TreatAll().InjectInto(Property.ByInjectPoint()); //TODO: is it possible to make it working
+
       target
        .GetOrAddNode(new SkipToLastUnit())
-       .With( // add build action injecting values into property for any type
-          skipToLastUnit =>
-            skipToLastUnit
-             .AddNode(new IfLastUnit(CanBeInstantiated.Instance))
-             .UseBuildAction(InjectDependenciesIntoProperties.Instance, BuildStage.Initialize))
-       .With( // add build action finding properties attributed with InjectAttribute for any type 
-          skipToLastUnit =>
-            skipToLastUnit
-             .AddNode(new IfLastUnit(IsPropertyList.Instance))
-             .UseBuildAction(new GetPropertyListByInjectPointId(), BuildStage.Create));
+       .AddNode(new IfLastUnit(IsPropertyList.Instance))
+       .UseBuildAction(new GetPropertyListByInjectPointId(), BuildStage.Create);
 
       target.Treat<string>().AsInstance(expected);
 
@@ -87,7 +82,7 @@ namespace Tests.Functional
           Property.ByInjectPoint(
             injectPointId is null
               ? Empty<object>.Array
-              : new[] {injectPointId})); // inject property adds a build action injecting values into property
+              : new[] { injectPointId })); // inject property adds a build action injecting values into property
 
       // --act
       var actual = target.Build<Subject>();
@@ -110,6 +105,8 @@ namespace Tests.Functional
        .Treat<Subject>()
        .AsIs()
        .UsingArguments(ForProperty.Named(nameof(Subject.StringProperty)).UseValue(expected));
+
+      using var _ = Log.Enabled(LogLevel.Trace);
 
       // --act
       var actual = target.Build<Subject>();
@@ -160,6 +157,8 @@ namespace Tests.Functional
        .AsIs()
        .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsKey());
 
+      using var _ = Log.Enabled(LogLevel.Verbose);
+
       // --act
       var actual = target.Build<Subject>();
 
@@ -198,6 +197,8 @@ namespace Tests.Functional
              // inject into constructor
              new IfLastUnit(IsConstructor.Instance)
               .UseBuildAction(GetConstructorWithMaxParametersCount.Instance, BuildStage.Create),
+             new IfLastUnit(new CanBeInstantiated())
+              .UseBuildAction(new InjectDependenciesIntoProperties(), BuildStage.Initialize),
              new IfLastUnit(IsPropertyInfo.Instance)
               .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)
            }

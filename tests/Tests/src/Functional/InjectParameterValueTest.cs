@@ -85,7 +85,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource("ForParameterSource")]
-    public void should_pass_null_as_parameter_value(ArgumentStaticTuner forParameter)
+    public void should_pass_null_as_parameter_value(MethodArgumentTuner forParameter)
     {
       // --arrange
       var target = CreateTarget();
@@ -107,7 +107,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource("ForParameterSource")]
-    public void should_use_value_for_parameter(ArgumentStaticTuner forParameter)
+    public void should_use_value_for_parameter(MethodArgumentTuner forParameter)
     {
       const string expected = "expected";
 
@@ -129,7 +129,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource("ForParameterSource")]
-    public void should_build_value_for_parameter_using_parameter_type_and_key(ArgumentStaticTuner forParameter)
+    public void should_build_value_for_parameter_using_parameter_type_and_key(MethodArgumentTuner forParameter)
     {
       const string key      = "key398";
       const string expected = "expected 398752";
@@ -162,7 +162,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource("ForParameterSource")]
-    public void should_fail_if_there_is_no_value_w_key_registered(ArgumentStaticTuner forParameter)
+    public void should_fail_if_there_is_no_value_w_key_registered(MethodArgumentTuner forParameter)
     {
       // --arrange
       var target = CreateTarget();
@@ -184,7 +184,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource("ForParameterSource")]
-    public void should_use_factory_method(ArgumentStaticTuner forParameter)
+    public void should_use_factory_method(MethodArgumentTuner forParameter)
     {
       const int expectedInt = 392;
 

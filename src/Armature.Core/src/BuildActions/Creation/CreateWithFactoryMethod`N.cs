@@ -36,7 +36,7 @@ namespace Armature.Core
     private readonly Func<T1?, TR?> _factoryMethod;
 
     [DebuggerStepThrough]
-    public CreateWithFactoryMethodBuildAction(Func<T1?, TR?> factoryMethod)
+    public CreateWithFactoryMethodBuildAction(Func<T1?, TR?> factoryMethod) //TODO: TR? should be TR, but declaration should be object? if needed
       => _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
 
     protected override MethodBase GetMethod() => _factoryMethod.Method;
