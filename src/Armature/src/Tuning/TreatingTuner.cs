@@ -13,6 +13,26 @@ namespace Armature
   {
     public TreatingTuner(IPatternTreeNode parentNode) : base(parentNode) { }
 
+    /// <summary>
+    ///   Use specified <paramref name="instance"/> as a unit.
+    /// </summary>
+    public void AsInstance(T instance) => ParentNode.UseBuildAction(new Instance<T>(instance), BuildStage.Cache);
+    
+    /// <summary>
+    ///   Build an object of the specified <paramref name="type"/> instead.
+    ///   Tune plan of creating the object by subsequence calls.
+    /// </summary>
+    public CreationTuner As(Type type, object? key = null)
+    {
+      ParentNode.UseBuildAction(new RedirectType(type, key), BuildStage.Create);
+      return new CreationTuner(ParentNode, type, key);
+    }
+    
+    /// <summary>
+    ///   Build an object of the <typeparamref name="TRedirect"/> type instead.
+    ///   Tune plan of creating the object by subsequence calls.
+    /// </summary>
+    public CreationTuner As<TRedirect>(object? key = null) => As(typeof(TRedirect), key);
 
     /// <summary>
     ///   Use default creation strategy for a unit. See <see cref="Default.CreationBuildAction"/> for details.
@@ -23,28 +43,7 @@ namespace Armature
       ParentNode.UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
       return this;
     }
-
-    /// <summary>
-    ///   Use specified <paramref name="instance"/> as a unit.
-    /// </summary>
-    public void AsInstance(T instance) => ParentNode.UseBuildAction(new Instance<T>(instance), BuildStage.Cache);
-
-    /// <summary>
-    ///   Build an object of the specified <paramref name="type"/> instead.
-    ///   Tune plan of creating the object by subsequence calls.
-    /// </summary>
-    public CreationTuner As(Type type, object? key = null)
-    {
-      ParentNode.UseBuildAction(new RedirectType(type, key), BuildStage.Create);
-      return new CreationTuner(ParentNode, type, key);
-    }
-
-    /// <summary>
-    ///   Build an object of the <typeparamref name="TRedirect"/> type instead.
-    ///   Tune plan of creating the object by subsequence calls.
-    /// </summary>
-    public CreationTuner As<TRedirect>(object? key = null) => As(typeof(TRedirect), key);
-
+    
     /// <summary>
     ///   Build an object of the specified <paramref name="type"/> instead. Also use default creation strategy for that type.
     ///   See <see cref="Default.CreationBuildAction"/> for details.

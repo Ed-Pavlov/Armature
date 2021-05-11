@@ -11,7 +11,7 @@ namespace Armature
     public static PropertyArgumentTuner<T> OfType<T>()
       => new(parentNode =>
              {
-               parentNode.TunePropertyListBuilding(new GetPropertyByType(typeof(T)));
+               Property.OfType<T>().Tune(parentNode);
                return parentNode.GetOrAddNode(new IfLastUnit(new IsPropertyWithType(typeof(T), true), InjectPointMatchingWeight.TypedParameter));
              });
 
@@ -21,7 +21,7 @@ namespace Armature
     public static PropertyArgumentTuner<object?> Named(string propertyName)
       => new(parentNode =>
              {
-               parentNode.TunePropertyListBuilding(new GetPropertyListByNames(propertyName));
+               Property.Named(propertyName).Tune(parentNode);
                return parentNode.GetOrAddNode(new IfLastUnit(new IsPropertyNamed(propertyName), InjectPointMatchingWeight.NamedParameter));
              });
 
@@ -31,15 +31,9 @@ namespace Armature
     public static PropertyArgumentTuner<object?> WithInjectPoint(object? injectPointId)
       => new(parentNode =>
              {
-               parentNode.TunePropertyListBuilding(new GetPropertyListByInjectPointId(injectPointId));
-
+               Property.ByInjectPoint(injectPointId).Tune(parentNode);
                return parentNode.GetOrAddNode(
                  new IfLastUnit(new IsPropertyInfoWithAttribute(injectPointId), InjectPointMatchingWeight.AttributedParameter));
              });
-
-    private static void TunePropertyListBuilding(this IPatternTreeNode patternTreeNode, IBuildAction buildAction)
-      => patternTreeNode
-        .GetOrAddNode(new IfLastUnit(IsPropertyList.Instance))
-        .UseBuildAction(buildAction, BuildStage.Create);
   }
 }

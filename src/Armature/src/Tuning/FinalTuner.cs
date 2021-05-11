@@ -13,7 +13,7 @@ namespace Armature
     /// <summary>
     ///   Provides arguments to inject into building unit. See <see cref="ForParameter" /> for details.
     /// </summary>
-    public FinalTuner UsingArguments(params object[] arguments) //TODO: надо как-то свести и Property и Methods к одному методу UsingArguments
+    public FinalTuner UsingArguments(params object[] arguments)
     {
       if(arguments is null || arguments.Length == 0) throw new ArgumentNullException(nameof(arguments));
 
@@ -31,28 +31,6 @@ namespace Armature
       return this;
     }
 
-    /// <summary>
-    ///   Provides arguments to inject into building units properties.   See <see cref="ForProperty" /> for details.
-    ///   Also value can be a build plan returned by one of the method of the <see cref="Property" /> class,
-    /// which specifies properties to inject dependencies.
-    /// </summary>
-    // public Tuner UsingArguments(params object[] arguments)
-    // {
-    //   ParentNode.UseBuildAction(InjectDependenciesIntoProperties.Instance, BuildStage.Initialize, true);
-    //
-    //   foreach(var argument in arguments)
-    //     if(argument is IInjectionPointTuner buildPlan)
-    //       buildPlan.Apply(ParentNode);
-    //     else if(argument is ITuner)
-    //       throw new ArmatureException("IPropertyValueBuildPlan or plain object value expected");
-    //     else
-    //       ParentNode
-    //        .GetOrAddNode(new IfLastUnitMatches(new PropertyByTypePattern(argument.GetType(), false), InjectPointMatchingWeight.WeakTypedParameter))
-    //        .UseBuildAction(new Singleton(argument), BuildStage.Create);
-    //
-    //   return this;
-    // }
-
     public FinalTuner InjectInto(params IInjectPointTuner[] propertyIds)
     {
       foreach(var injectPointTuner in propertyIds)
@@ -68,13 +46,11 @@ namespace Armature
     /// <summary>
     ///   Doing the same as <see cref="PatternTreeTunerExtension.Building{T}" /> but w/o breaking fluent syntax
     /// </summary>
-    public FinalTuner BuildingWhich(Action<RootTuner> tuneAction)
+    public void BuildingWhich(Action<RootTuner> tuneAction)
     {
       if(tuneAction is null) throw new ArgumentNullException(nameof(tuneAction));
 
       tuneAction(new RootTuner(ParentNode));
-
-      return this;
     }
   }
 }

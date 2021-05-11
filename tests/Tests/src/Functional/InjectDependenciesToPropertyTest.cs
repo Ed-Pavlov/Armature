@@ -1,4 +1,6 @@
-﻿using Armature;
+﻿using System;
+using System.Collections;
+using Armature;
 using Armature.Core;
 using Armature.Core.Logging;
 using FluentAssertions;
@@ -12,7 +14,7 @@ namespace Tests.Functional
   public class InjectDependenciesToPropertyTest
   {
     [Test]
-    public void value_should_be_injected_into_injectpoint_property()
+    public void value_should_be_injected_into_property()
     {
       const string expected = "expectedString";
 
@@ -23,8 +25,16 @@ namespace Tests.Functional
 
       target
        .GetOrAddNode(new SkipToLastUnit())
-       .AddNode(new IfLastUnit(IsPropertyList.Instance))
-       .UseBuildAction(new GetPropertyListByInjectPointId(), BuildStage.Create);
+       .With( // add build action injecting values into property for any type
+          skipToLastUnit =>
+            skipToLastUnit
+             .AddNode(new IfLastUnit(CanBeInstantiated.Instance))
+             .UseBuildAction(InjectDependenciesIntoProperties.Instance, BuildStage.Initialize))
+       .With( // add build action finding properties attributed with InjectAttribute for any type 
+          skipToLastUnit =>
+            skipToLastUnit
+             .AddNode(new IfLastUnit(IsPropertyList.Instance))
+             .UseBuildAction(new GetPropertyListByInjectPointId(), BuildStage.Create));
 
       target.Treat<string>().AsInstance(expected);
 
@@ -41,8 +51,8 @@ namespace Tests.Functional
       actual.StringProperty.Should().BeNull();
     }
 
-    [Test]
-    public void value_should_be_injected_into_property_by_name()
+    [TestCaseSource(nameof(test_case_source))]
+    public void value_should_be_injected_into_property_by_name(Func<PatternTree, FinalTuner> tune)
     {
       const string expected = "expectedString";
 
@@ -51,13 +61,11 @@ namespace Tests.Functional
 
       target.Treat<string>().AsInstance(expected);
 
-      target
-       .Treat<Subject>()
-       .AsIs()
-       .InjectInto(Property.Named(nameof(Subject.StringProperty))); // inject property adds a build action injecting values into property
+      tune(target)
+       .InjectInto(Property.Named(nameof(Subject.StringProperty)));
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<ISubject>();
 
       // --assert
       actual.Should().NotBeNull();
@@ -65,8 +73,31 @@ namespace Tests.Functional
       actual.StringProperty.Should().Be(expected);
     }
 
+    [TestCaseSource(nameof(test_case_source))]
+    public void should_use_argument_for_property_by_name(Func<PatternTree, FinalTuner> tune)
+    {
+      const string expected = "expectedString";
+      const string bad      = expected + "bad";
+
+      // --arrange
+      var target = CreateTarget();
+
+      target.Treat<string>().AsInstance(bad);
+
+      tune(target)
+       .UsingArguments(ForProperty.Named(nameof(Subject.StringProperty)).UseValue(expected));
+
+      // --act
+      var actual = target.Build<ISubject>();
+
+      // --assert
+      actual.Should().NotBeNull();
+      actual.StringProperty.Should().Be(expected);
+      actual.InjectProperty.Should().BeNull();
+    }
+
     [Test]
-    public void value_should_be_injected_into_property_by_injectpointid([Values(null, Subject.InjectPointId)] object injectPointId)
+    public void should_inject_into_property__by_injectpointid([Values(null, Subject.InjectPointId)] object injectPointId)
     {
       const string expected = "expectedString";
 
@@ -78,11 +109,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectInto(
-          Property.ByInjectPoint(
-            injectPointId is null
-              ? Empty<object>.Array
-              : new[] { injectPointId })); // inject property adds a build action injecting values into property
+       .InjectInto(injectPointId is null ? Property.ByInjectPoint() : Property.ByInjectPoint(new[] { injectPointId }));
 
       // --act
       var actual = target.Build<Subject>();
@@ -94,38 +121,39 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_provided_value_for_property_by_name()
+    public void should_inject_into_property_of_interface_by_injectpointid(
+      [Values(null, Subject.InterfaceInjectPointId)] object injectPointId)
     {
       const string expected = "expectedString";
 
       // --arrange
       var target = CreateTarget();
 
-      target
-       .Treat<Subject>()
-       .AsIs()
-       .UsingArguments(ForProperty.Named(nameof(Subject.StringProperty)).UseValue(expected));
+      target.Treat<string>().AsInstance(expected);
 
-      using var _ = Log.Enabled(LogLevel.Trace);
+      target.Treat<ISubject>().AsCreated<Subject>();
+      target.Treat<ISubject>().InjectInto(injectPointId is null ? Property.ByInjectPoint() : Property.ByInjectPoint(new[] { injectPointId }));
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<ISubject>();
 
       // --assert
       actual.Should().NotBeNull();
-      actual.StringProperty.Should().Be(expected);
-      actual.InjectProperty.Should().BeNull();
+      actual.InjectProperty.Should().Be(expected);
+      actual.StringProperty.Should().BeNull();
     }
 
     [Test]
-    public void should_use_provided_key_for_property_by_inject_point()
+    public void should_use_key_for_property_argument_by_inject_point()
     {
       const string key      = "key";
       const string expected = "expectedString";
+      const string bad      = expected + "bad";
 
       // --arrange
       var target = CreateTarget();
 
+      target.Treat<string>().AsInstance(bad);
       target.Treat<string>(key).AsInstance(expected);
 
       target
@@ -141,23 +169,25 @@ namespace Tests.Functional
       actual.InjectProperty.Should().Be(expected);
       actual.StringProperty.Should().BeNull();
     }
+    
+    
 
     [Test]
     public void should_use_inject_point_id_as_key_for_property_by_inject_point()
     {
       const string expected = "expectedString";
+      const string bad      = expected + "bad";
 
       // --arrange
       var target = CreateTarget();
 
+      target.Treat<string>().AsInstance(bad);
       target.Treat<string>(Subject.InjectPointId).AsInstance(expected);
 
       target
        .Treat<Subject>()
        .AsIs()
        .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsKey());
-
-      using var _ = Log.Enabled(LogLevel.Verbose);
 
       // --act
       var actual = target.Build<Subject>();
@@ -168,21 +198,19 @@ namespace Tests.Functional
       actual.StringProperty.Should().BeNull();
     }
 
-    [Test]
-    public void should_use_resolver_for_property_by_type()
+    [TestCaseSource(nameof(test_case_source))]
+    public void should_use_argument_for_property_by_type(Func<PatternTree, FinalTuner> tune)
     {
       const int expected = 3254;
 
       // --arrange
       var target = CreateTarget();
 
-      target
-       .Treat<Subject>()
-       .AsIs()
+      tune(target)
        .UsingArguments(ForProperty.OfType<int>().UseFactoryMethod(_ => expected));
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<ISubject>();
 
       // --assert
       actual.Should().NotBeNull();
@@ -197,16 +225,37 @@ namespace Tests.Functional
              // inject into constructor
              new IfLastUnit(IsConstructor.Instance)
               .UseBuildAction(GetConstructorWithMaxParametersCount.Instance, BuildStage.Create),
-             new IfLastUnit(new CanBeInstantiated())
-              .UseBuildAction(new InjectDependenciesIntoProperties(), BuildStage.Initialize),
              new IfLastUnit(IsPropertyInfo.Instance)
               .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)
            }
          };
 
-    private class Subject
+    private static IEnumerable test_case_source()
     {
-      public const string InjectPointId = "id";
+      yield return new TestCaseData(new Func<PatternTree, FinalTuner>(tree => tree.Treat<ISubject>().AsCreated<Subject>())).SetName("Subject");
+
+      yield return new TestCaseData(
+        new Func<PatternTree, FinalTuner>(
+          tree =>
+          {
+            tree.Treat<ISubject>().AsCreated<Subject>();
+            return tree.Treat<ISubject>();
+          })).SetName("ISubject");
+    }
+
+    private interface ISubject
+    {
+      [Inject(Subject.InterfaceInjectPointId)]
+      string InjectProperty { get; set; }
+
+      string StringProperty { get; set; }
+      int    IntProperty    { get; set; }
+    }
+
+    private class Subject : ISubject
+    {
+      public const string InjectPointId          = "id";
+      public const string InterfaceInjectPointId = Subject.InjectPointId + "Interface";
 
       [Inject(InjectPointId)]
       public string InjectProperty { get; set; }
