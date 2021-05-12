@@ -2,10 +2,8 @@
 using System.Collections;
 using Armature;
 using Armature.Core;
-using Armature.Core.Logging;
 using FluentAssertions;
 using NUnit.Framework;
-using Tests.Common;
 
 // Resharper disable all
 
@@ -13,44 +11,6 @@ namespace Tests.Functional
 {
   public class InjectDependenciesToPropertyTest
   {
-    [Test]
-    public void value_should_be_injected_into_property()
-    {
-      const string expected = "expectedString";
-
-      // --arrange
-      var target = CreateTarget();
-
-      // target.TreatAll().InjectInto(Property.ByInjectPoint()); //TODO: is it possible to make it working
-
-      target
-       .GetOrAddNode(new SkipToLastUnit())
-       .With( // add build action injecting values into property for any type
-          skipToLastUnit =>
-            skipToLastUnit
-             .AddNode(new IfLastUnit(CanBeInstantiated.Instance))
-             .UseBuildAction(InjectDependenciesIntoProperties.Instance, BuildStage.Initialize))
-       .With( // add build action finding properties attributed with InjectAttribute for any type 
-          skipToLastUnit =>
-            skipToLastUnit
-             .AddNode(new IfLastUnit(IsPropertyList.Instance))
-             .UseBuildAction(new GetPropertyListByInjectPointId(), BuildStage.Create));
-
-      target.Treat<string>().AsInstance(expected);
-
-      target
-       .Treat<Subject>()
-       .AsIs();
-
-      // --act
-      var actual = target.Build<Subject>();
-
-      // --assert
-      actual.Should().NotBeNull();
-      actual.InjectProperty.Should().Be(expected);
-      actual.StringProperty.Should().BeNull();
-    }
-
     [TestCaseSource(nameof(test_case_source))]
     public void value_should_be_injected_into_property_by_name(Func<PatternTree, FinalTuner> tune)
     {
@@ -95,9 +55,30 @@ namespace Tests.Functional
       actual.StringProperty.Should().Be(expected);
       actual.InjectProperty.Should().BeNull();
     }
+    
+    // target.TreatAll().InjectInto(Property.ByInjectPoint()); //TODO: is it possible to make it working
 
+    [TestCaseSource(nameof(test_case_source))]
+    public void should_use_argument_for_property_by_type(Func<PatternTree, FinalTuner> tune)
+    {
+      const int expected = 3254;
+
+      // --arrange
+      var target = CreateTarget();
+
+      tune(target)
+       .UsingArguments(ForProperty.OfType<int>().UseFactoryMethod(_ => expected));
+
+      // --act
+      var actual = target.Build<ISubject>();
+
+      // --assert
+      actual.Should().NotBeNull();
+      actual.IntProperty.Should().Be(expected);
+    }
+    
     [Test]
-    public void should_inject_into_property__by_injectpointid([Values(null, Subject.InjectPointId)] object injectPointId)
+    public void should_inject_into_property_by_injectpointid([Values(null, Subject.InjectPointId)] object injectPointId)
     {
       const string expected = "expectedString";
 
@@ -170,8 +151,31 @@ namespace Tests.Functional
       actual.StringProperty.Should().BeNull();
     }
     
-    
+    [Test]
+    public void should_use_key_for_interface_property_argument_by_inject_point()
+    {
+      const string key      = "key";
+      const string expected = "expectedString";
+      const string bad      = expected + "bad";
 
+      // --arrange
+      var target = CreateTarget();
+
+      target.Treat<string>().AsInstance(bad);
+      target.Treat<string>(key).AsInstance(expected);
+
+      target.Treat<ISubject>().UsingArguments(ForProperty.WithInjectPoint(Subject.InterfaceInjectPointId).UseKey(key));
+      target.Treat<ISubject>().AsCreated<Subject>();
+
+      // --act
+      var actual = target.Build<ISubject>();
+
+      // --assert
+      actual.Should().NotBeNull();
+      actual.InjectProperty.Should().Be(expected);
+      actual.StringProperty.Should().BeNull();
+    }
+    
     [Test]
     public void should_use_inject_point_id_as_key_for_property_by_inject_point()
     {
@@ -197,24 +201,29 @@ namespace Tests.Functional
       actual.InjectProperty.Should().Be(expected);
       actual.StringProperty.Should().BeNull();
     }
-
-    [TestCaseSource(nameof(test_case_source))]
-    public void should_use_argument_for_property_by_type(Func<PatternTree, FinalTuner> tune)
+    
+    [Test]
+    public void should_use_inject_point_id_as_key_for_interface_property_by_inject_point()
     {
-      const int expected = 3254;
+      const string expected = "expectedString";
+      const string bad      = expected + "bad";
 
       // --arrange
       var target = CreateTarget();
 
-      tune(target)
-       .UsingArguments(ForProperty.OfType<int>().UseFactoryMethod(_ => expected));
+      target.Treat<string>().AsInstance(bad);
+      target.Treat<string>(Subject.InterfaceInjectPointId).AsInstance(expected);
 
+      target.Treat<ISubject>().UsingArguments(ForProperty.WithInjectPoint(Subject.InterfaceInjectPointId).UseInjectPointIdAsKey());
+      target.Treat<ISubject>().AsCreated<Subject>();
+      
       // --act
       var actual = target.Build<ISubject>();
 
       // --assert
       actual.Should().NotBeNull();
-      actual.IntProperty.Should().Be(expected);
+      actual.InjectProperty.Should().Be(expected);
+      actual.StringProperty.Should().BeNull();
     }
 
     public static Builder CreateTarget()
