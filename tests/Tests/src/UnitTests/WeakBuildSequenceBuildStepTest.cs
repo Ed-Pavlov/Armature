@@ -60,5 +60,14 @@ namespace Tests.UnitTests
        .Should()
        .BeEquivalentTo(CreateByReflection.Instance, singletonAction);
     }
+
+    [Test]
+    public void hz()
+    {
+      Console.WriteLine(WeightOf.SkipToLastUnit);
+      Console.WriteLine(WeightOf.Lowest << (sizeof(byte) * 8));
+      Console.WriteLine(WeightOf.FindUnit);
+      Console.WriteLine(WeightOf.FirstUnit);
+    }
   }
 }

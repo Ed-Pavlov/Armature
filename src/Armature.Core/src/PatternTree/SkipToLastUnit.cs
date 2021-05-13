@@ -37,7 +37,7 @@ namespace Armature.Core
 
       void LogMatchingState(Action? blockContent)
       {
-        if(actionBag is not null)
+        // if(actionBag is not null)
           using(Log.Block(LogLevel.Trace, ToString, unitsToSkipCount))
             blockContent?.Invoke();
       }

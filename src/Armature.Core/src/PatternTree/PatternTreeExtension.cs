@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using Armature.Core.Logging;
+using JetBrains.Annotations;
 
 namespace Armature.Core
 {
@@ -47,14 +47,16 @@ namespace Armature.Core
     /// <param name="buildAction">A build action.</param>
     /// <param name="buildStage">A build stage in which the build action is executed.</param>
     /// <returns>Returns 'this' in order to use fluent syntax</returns>    
-    public static IPatternTreeNode UseBuildAction(this IPatternTreeNode node, IBuildAction buildAction, object buildStage)
+    public static IPatternTreeNode UseBuildAction([NotNull] this IPatternTreeNode node, IBuildAction buildAction, object buildStage)
     {
-      var collection = node.BuildActions.GetOrCreateValue(buildStage, () => new List<IBuildAction>());
+      if(node is null) throw new ArgumentNullException(nameof(node));
+      if(buildAction is null) throw new ArgumentNullException(nameof(buildAction));
+      if(buildStage is null) throw new ArgumentNullException(nameof(buildStage));
 
-      if(collection.Contains(buildAction))
-        return node;
+      if(node.BuildActions.TryGetValue(buildStage, out var existedBuildAction))
+        throw new InvalidOperationException($"Build action {existedBuildAction} is already registered for the stage {buildStage.ToLogString()}");
       
-      collection.Add(buildAction);
+      node.BuildActions.Add(buildStage, buildAction);
       return node;
     }
   }

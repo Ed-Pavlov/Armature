@@ -40,7 +40,7 @@ namespace Armature.Core
       var result = new WeightedBuildActionBag();
 
       foreach(var pair in _buildActions)
-        result.Add(pair.Key, pair.Value.Select(_ => _.WithWeight(matchingWeight)).ToList());
+        result.Add(pair.Key, new List<Weighted<IBuildAction>>(1){pair.Value.WithWeight(matchingWeight)});
 
       return result;
     }
@@ -78,14 +78,7 @@ namespace Armature.Core
         using(Log.Block(LogLevel.Info, "Build actions"))
         {
           foreach(var pair in _buildActions)
-            using(Log.Block(LogLevel.Info, $"Stage: {pair.Key}"))
-            {
-              foreach(var buildAction in pair.Value)
-                if(buildAction is ILogable printable)
-                  printable.PrintToLog();
-                else
-                  Log.WriteLine(LogLevel.Info, buildAction.ToString);
-            }
+            Log.WriteLine(LogLevel.Info, $"{pair.Value}{{ Stage={pair.Key} }}");
         }
     }
 

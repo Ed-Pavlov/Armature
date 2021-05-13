@@ -2,6 +2,7 @@
 using System.Collections;
 using Armature;
 using Armature.Core;
+using Armature.Core.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -231,17 +232,18 @@ namespace Tests.Functional
       // --arrange
       var target = CreateTarget();
 
-      var adjuster = target
+      var tuner = target
                     .Treat<LevelOne>()
                     .AsIs();
 
       // --act
-      Action actual = () => adjuster.UsingArguments(
+      Action actual = () => tuner.UsingArguments(
                         ForParameter.OfType<string>().UseKey("expected29083"),
                         ForParameter.OfType<string>().UseValue("kldj"));
 
       // --assert
-      actual.Should().ThrowExactly<ArmatureException>();
+      actual.Should().ThrowExactly<InvalidOperationException>()
+            .WithMessage("Build action BuildArgumentByParameterType{ Key = expected29083 } is already registered for the stage Create");
     }
 
     [Test]
@@ -357,9 +359,18 @@ namespace Tests.Functional
 
       var target = CreateTarget();
 
-      target.Treat<ISubject1>().AsCreated<LevelThree>().BuildingWhich(_ => _.TreatAll().UsingArguments(levelThree)); // longer path
-      target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected));                     // narrower context
+      target.Treat<ISubject1>().AsCreated<LevelThree>();
+      target.Building<ISubject1>().Building<LevelThree>().TreatAll().UsingArguments(levelThree); // longer path
+      target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected));                       // narrower context
       target.Treat<LevelOne>().AsIs();
+
+      target.PrintToLog();
+      
+      Console.WriteLine("");
+      Console.WriteLine("/////////////////////////////////////////////////////////");
+      Console.WriteLine("");
+      
+      using var _ = Log.Enabled(LogLevel.Trace);
 
       var actual = target.Build<ISubject1>();
 
@@ -438,7 +449,7 @@ namespace Tests.Functional
 
     private static IEnumerable ForParameterSource()
     {
-      yield return new TestCaseData(ForParameter.OfType<string>()).SetName("OfType");
+      yield return new TestCaseData(ForParameter.OfType(typeof(string))).SetName("OfType");
       yield return new TestCaseData(ForParameter.Named("text")).SetName("Named");
       yield return new TestCaseData(ForParameter.WithInjectPoint(null)).SetName("WithInjectPoint");
     }
@@ -453,17 +464,20 @@ namespace Tests.Functional
               .UseBuildAction(
                  new TryInOrder
                  {
-                   new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
-                   GetConstructorWithMaxParametersCount
-                    .Instance // constructor with largest number of parameters has less priority
+                   new GetConstructorByInjectPointId(),       // constructor marked with [Inject] attribute has more priority
+                   new GetConstructorWithMaxParametersCount() // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
              new IfLastUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfLastUnit(IsParameterInfo.Instance)
               .UseBuildAction(
-                 new TryInOrder() { BuildArgumentByParameterType.Instance, GetParameterDefaultValue.Instance },
-                 BuildStage.Create) // autowiring
+                 new TryInOrder()
+                 {
+                   BuildArgumentByParameterType.Instance, 
+                   GetParameterDefaultValue.Instance
+                 },
+                 BuildStage.Create)
            }
          };
 
