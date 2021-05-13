@@ -32,9 +32,14 @@ namespace Tests.Functional
          {
            new SkipToLastUnit
            {
-             // inject into constructor
-             new IfLastUnit(IsConstructor.Instance)
-              .UseBuildAction(GetConstructorWithMaxParametersCount.Instance, BuildStage.Create)
+             new IfLastUnit(IsConstructor.Instance) // inject into constructor
+              .UseBuildAction(GetConstructorWithMaxParametersCount.Instance, BuildStage.Create),
+             
+             new IfLastUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+             
+             new IfLastUnit(new IsParameterInfo())
+              .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
            }
          };
 
