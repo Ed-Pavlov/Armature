@@ -95,13 +95,18 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Create)
+      => new(BuildStage.Cache, BuildStage.Create)
          {
            new SkipToLastUnit
            {
-             // inject into constructor
-             new IfLastUnit(IsConstructor.Instance)
-              .UseBuildAction(GetConstructorWithMaxParametersCount.Instance, BuildStage.Create)
+             new IfLastUnit(new IsConstructor()) // inject into constructor
+              .UseBuildAction(GetConstructorWithMaxParametersCount.Instance, BuildStage.Create),
+             
+             new IfLastUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+             
+             new IfLastUnit(new IsParameterInfo())
+              .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
            }
          };
 
