@@ -54,8 +54,12 @@ namespace Armature.Core
           exceptions.Add(exc);
         }
 
-      if(!buildSession.BuildResult.HasValue && exceptions.Count > 0)
-        throw exceptions.Aggregate($"{exceptions.Count} exceptions occured during processing build actions");
+      if(!buildSession.BuildResult.HasValue)
+        switch(exceptions)
+        {
+          case { Count: 1 }:   throw exceptions[0];
+          case { Count: > 0 }: throw exceptions.Aggregate($"{exceptions.Count} exceptions occured during processing build actions");
+        }
     }
 
     private static IDisposable LogBuildActionProcess(IBuildSession buildSession, IBuildAction buildAction)
@@ -80,7 +84,7 @@ namespace Armature.Core
       if(_effectiveBuildActions.TryGetValue(buildSession, out var buildAction))
       {
         _effectiveBuildActions.Remove(buildSession);
-        
+
         buildAction.PostProcess(buildSession);
         Log.WriteLine(LogLevel.Trace, () => string.Format("{0}.{1}(...)", buildAction, nameof(IBuildAction.PostProcess)));
       }

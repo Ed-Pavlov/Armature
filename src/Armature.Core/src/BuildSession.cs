@@ -68,10 +68,13 @@ namespace Armature.Core
 
         var actionBag = actions.Merge(auxActions);
         LogGatheredActions(actionBag);
-        var result = build(actionBag);
-        
-        _buildSequence.RemoveAt(_buildSequence.Count - 1);
-        return result;
+
+        try {
+          return build(actionBag);
+        }
+        finally {
+          _buildSequence.RemoveAt(_buildSequence.Count - 1);
+        }
       }
     }
 

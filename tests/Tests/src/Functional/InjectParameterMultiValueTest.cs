@@ -11,15 +11,6 @@ namespace Tests.Functional
   public class InjectParameterMultiValueTest
   {
     [Test]
-    public void hz()
-    {
-      var target = CreateTarget();
-
-      target.Treat<IDisposable>().AsCreated<MemoryStream>();
-      target.Treat<IDisposable>().AsCreated<Stream>();
-    }
-
-    [Test]
     public void should_inject_multi_value_parameter()
     {
       const string expectedText = "text";
@@ -62,7 +53,7 @@ namespace Tests.Functional
       Action action = () => target.Build<Subject>();
 
       // --assert
-      action.Should().Throw<ArmatureException>().And.Message.Should().Contain("Two or more building actions have the same weight");
+      action.Should().Throw<ArmatureException>().Where(_ => _.Message.StartsWith("Two or more building actions matched with the same weight"));
     }
 
     private static Builder CreateTarget()
@@ -80,6 +71,8 @@ namespace Tests.Functional
                     .Instance // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
+             new IfLastUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfLastUnit(IsParameterInfo.Instance)
               .UseBuildAction(
                  new TryInOrder()
