@@ -2,7 +2,7 @@
 
 namespace Armature.Core
 {
-  public class BuildActionBag : Dictionary<object, IBuildAction>
+  public class BuildActionBag : Dictionary<object, List<IBuildAction>>
   {
     
   }

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Armature.Core;
+using Armature.Core.Logging;
 
 namespace Armature
 {
@@ -12,7 +13,10 @@ namespace Armature
       => new(parentNode =>
              {
                Property.OfType<T>().Tune(parentNode);
-               return parentNode.GetOrAddNode(new IfLastUnit(new IsPropertyWithType(typeof(T), true), InjectPointMatchingWeight.TypedParameter));
+
+               return parentNode.AddNode(
+                 new IfLastUnit(new IsPropertyWithType(typeof(T), true), InjectPointMatchingWeight.TypedParameter),
+                 $"Building of an argument for the property with type {typeof(T).ToLogString()} is already tuned");
              });
 
     /// <summary>
@@ -22,7 +26,10 @@ namespace Armature
       => new(parentNode =>
              {
                Property.Named(propertyName).Tune(parentNode);
-               return parentNode.GetOrAddNode(new IfLastUnit(new IsPropertyNamed(propertyName), InjectPointMatchingWeight.NamedParameter));
+
+               return parentNode.AddNode(
+                 new IfLastUnit(new IsPropertyNamed(propertyName), InjectPointMatchingWeight.NamedParameter),
+                 $"Building of an argument for the property with name {propertyName} is already tuned");
              });
 
     /// <summary>
@@ -32,8 +39,12 @@ namespace Armature
       => new(parentNode =>
              {
                Property.ByInjectPoint(injectPointId).Tune(parentNode);
-               return parentNode.GetOrAddNode(
-                 new IfLastUnit(new IsPropertyInfoWithAttribute(injectPointId), InjectPointMatchingWeight.AttributedParameter));
+
+               return parentNode
+                .AddNode(
+                   new IfLastUnit(new IsPropertyInfoWithAttribute(injectPointId), InjectPointMatchingWeight.AttributedParameter),
+                   $"Building of an argument for the property marked with {nameof(InjectAttribute)}"
+                 + $" with {nameof(InjectAttribute.InjectionPointId)} equal to {injectPointId.ToLogString()} is already tuned");
              });
   }
 }

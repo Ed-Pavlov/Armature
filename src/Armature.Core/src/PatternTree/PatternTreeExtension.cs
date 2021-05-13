@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Armature.Core.Logging;
 using JetBrains.Annotations;
@@ -13,10 +14,11 @@ namespace Armature.Core
     /// </summary>
     /// <remarks>Call it first and then fill returned <see cref="IPatternTreeNode" /> with build actions or perform other needed actions due to
     /// it can return other instance of <see cref="IPatternTreeNode"/> then <paramref name="node"/>.</remarks>
-    public static T GetOrAddNode<T>(this IPatternTreeNode parentNode, T node) where T : IPatternTreeNode
+    public static T GetOrAddNode<T>(this IPatternTreeNode parentNode, [NotNull] T node) where T : IPatternTreeNode
     {
       if(parentNode is null) throw new ArgumentNullException(nameof(parentNode));
-      
+      if(node is null) throw new ArgumentNullException(nameof(node));
+
       if(parentNode.Children.Contains(node))
         return (T) parentNode.Children.First(_ => _.Equals(node));
 
@@ -28,12 +30,13 @@ namespace Armature.Core
     /// Adds the <paramref name="node" /> into <paramref name="parentNode" />.
     /// </summary>
     /// <exception cref="ArmatureException">A node already exists in the collection</exception>
-    public static T AddNode<T>(this IPatternTreeNode parentNode, T node) where T : IPatternTreeNode
+    public static T AddNode<T>(this IPatternTreeNode parentNode, T node, string? exceptionMessage = null) where T : IPatternTreeNode
     {
       if(parentNode is null) throw new ArgumentNullException(nameof(parentNode));
 
       if(parentNode.Children.Contains(node))
-        throw new ArgumentException(string.Format("The same node '{0}' has already been added.", node));
+        throw new ArmatureException(exceptionMessage ?? string.Format("Node '{0}' is already added to the pattern tree.", node))
+         .AddData("PatternTreeNode", parentNode.ToLogString());
 
       parentNode.Children.Add(node);
       return node;
@@ -53,10 +56,12 @@ namespace Armature.Core
       if(buildAction is null) throw new ArgumentNullException(nameof(buildAction));
       if(buildStage is null) throw new ArgumentNullException(nameof(buildStage));
 
-      if(node.BuildActions.TryGetValue(buildStage, out var existedBuildAction))
-        throw new InvalidOperationException($"Build action {existedBuildAction} is already registered for the stage {buildStage.ToLogString()}");
+      var list = node.BuildActions.GetOrCreateValue(buildStage, () => new List<IBuildAction>());
       
-      node.BuildActions.Add(buildStage, buildAction);
+      if(list.Contains(buildAction))
+        return node;
+      
+      list.Add(buildAction);
       return node;
     }
   }

@@ -43,12 +43,9 @@ namespace Armature
     ///   Configure build plans for Unit of type <typeparamref name="T"/>.
     ///   How it should be treated is specified by subsequence calls using returned object.
     /// </summary>
-    public TreatingTuner<T> Treat<T>(object? key = null)
-    {
-      var patternMatcher = new SkipTillUnit(new Pattern(typeof(T), key));
-      return new TreatingTuner<T>(ParentNode.GetOrAddNode(patternMatcher));
-    }
-    
+    public TreatingTuner<T> Treat<T>(object? key = null) 
+      => new(ParentNode.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(T), key))));
+
     /// <summary>
     ///   Configure build plans for whole class of open generic types.
     ///   How <paramref name="openGenericType" /> should be treated is specified by subsequence calls using returned object.

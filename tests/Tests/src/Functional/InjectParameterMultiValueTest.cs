@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Armature;
 using Armature.Core;
 using FluentAssertions;
@@ -10,10 +11,19 @@ namespace Tests.Functional
   public class InjectParameterMultiValueTest
   {
     [Test]
+    public void hz()
+    {
+      var target = CreateTarget();
+
+      target.Treat<IDisposable>().AsCreated<MemoryStream>();
+      target.Treat<IDisposable>().AsCreated<Stream>();
+    }
+
+    [Test]
     public void should_inject_multi_value_parameter()
     {
       const string expectedText = "text";
-      var          expectedInt  = new[] {1, 2, 3};
+      var          expectedInt  = new[] { 1, 2, 3 };
 
       // --arrange
       var target = CreateTarget();
@@ -36,7 +46,7 @@ namespace Tests.Functional
     public void should_fail_when_multi_value_registered_for_one_parameter()
     {
       const string expectedText = "text";
-      var          expectedInt  = new[] {1, 2, 3};
+      var          expectedInt  = new[] { 1, 2, 3 };
 
       // --arrange
       var target = CreateTarget();
@@ -74,9 +84,7 @@ namespace Tests.Functional
               .UseBuildAction(
                  new TryInOrder()
                  {
-                   BuildArgumentByParameterType.Instance,
-                   BuildListArgumentForMethodParameter.Instance,
-                   GetParameterDefaultValue.Instance
+                   BuildArgumentByParameterType.Instance, BuildListArgumentForMethodParameter.Instance, GetParameterDefaultValue.Instance
                  },
                  BuildStage.Create) // autowiring
            }

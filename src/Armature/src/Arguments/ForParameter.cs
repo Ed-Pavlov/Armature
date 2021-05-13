@@ -1,5 +1,6 @@
 ﻿using System;
 using Armature.Core;
+using Armature.Core.Logging;
 
 namespace Armature
 {
@@ -15,7 +16,8 @@ namespace Armature
       => new(parentNode =>
                parentNode
                 .GetOrAddNode(new SkipSpecialUnits())
-                .GetOrAddNode(new IfLastUnit(new IsMethodParameterWithType(type, true), InjectPointMatchingWeight.TypedParameter)));
+                .AddNode(new IfLastUnit(new IsMethodParameterWithType(type, true), InjectPointMatchingWeight.TypedParameter),
+                         $"Building of an argument for the method parameter of type {type.ToLogString()} is already tuned"));
 
     /// <summary>
     ///   Tunes up what argument inject into method parameter of type <typeparamref name="T" />.
@@ -24,7 +26,8 @@ namespace Armature
       => new(parentNode =>
                parentNode
                 .GetOrAddNode(new SkipSpecialUnits())
-                .GetOrAddNode(new IfLastUnit(new IsMethodParameterWithType(typeof(T), true), InjectPointMatchingWeight.TypedParameter)));
+                .AddNode(new IfLastUnit(new IsMethodParameterWithType(typeof(T), true), InjectPointMatchingWeight.TypedParameter), 
+                         $"Building of an argument for the method parameter of type {typeof(T).ToLogString()} is already tuned"));
 
     /// <summary>
     ///   Tunes up what argument inject into method parameter with the specified <paramref name="parameterName"/>.
@@ -33,7 +36,8 @@ namespace Armature
       => new(parentNode =>
                parentNode
                 .GetOrAddNode(new SkipSpecialUnits())
-                .GetOrAddNode(new IfLastUnit(new IsMethodParameterNamed(parameterName), InjectPointMatchingWeight.NamedParameter)));
+                .AddNode(new IfLastUnit(new IsMethodParameterNamed(parameterName), InjectPointMatchingWeight.NamedParameter), 
+                         $"Building of an argument for the method parameter with name {parameterName} is already tuned"));
 
     /// <summary>
     ///   Tunes up what argument inject into method parameter marked with <see cref="InjectAttribute"/> with the specified <paramref name="injectPointId"/>. 
@@ -42,6 +46,8 @@ namespace Armature
       => new(parentNode =>
                parentNode
                 .GetOrAddNode(new SkipSpecialUnits())
-                .GetOrAddNode(new IfLastUnit(new IsParameterInfoWithAttribute(injectPointId), InjectPointMatchingWeight.AttributedParameter)));
+                .AddNode(new IfLastUnit(new IsParameterInfoWithAttribute(injectPointId), InjectPointMatchingWeight.AttributedParameter),
+                         $"Building of an argument for the method parameter marked with {nameof(InjectAttribute)}"
+                       + $" with {nameof(InjectAttribute.InjectionPointId)} equal to {injectPointId.ToLogString()} is already tuned"));
   }
 }

@@ -242,8 +242,8 @@ namespace Tests.Functional
                         ForParameter.OfType<string>().UseValue("kldj"));
 
       // --assert
-      actual.Should().ThrowExactly<InvalidOperationException>()
-            .WithMessage("Build action BuildArgumentByParameterType{ Key = expected29083 } is already registered for the stage Create");
+      actual.Should().ThrowExactly<ArmatureException>()
+            .Where(_ => _.Message.StartsWith($"Building of an argument for the method parameter of type {typeof(string).ToLogString()} is already tuned"));
     }
 
     [Test]

@@ -40,7 +40,7 @@ namespace Armature.Core
       var result = new WeightedBuildActionBag();
 
       foreach(var pair in _buildActions)
-        result.Add(pair.Key, new List<Weighted<IBuildAction>>(1){pair.Value.WithWeight(matchingWeight)});
+        result.Add(pair.Key, pair.Value.Select(_ => _.WithWeight(matchingWeight)).ToList());
 
       return result;
     }
