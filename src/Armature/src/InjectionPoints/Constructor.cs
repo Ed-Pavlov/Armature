@@ -10,14 +10,16 @@ namespace Armature
     /// </summary>
     public static IInjectPointTuner WithMaxParametersCount(short weight = 0)
       => new InjectPointTuner(
-        node => node.AddConstructorPattern(weight).UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create));
+        node => node.GetOrAddNode(new IfLastUnit(Static<IsConstructor>.Instance, weight))
+                    .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create));
 
     /// <summary>
     ///   Instantiate a Unit using a constructor marked with <see cref="InjectAttribute" />(<paramref name="injectionPointId" />)
     /// </summary>
     public static IInjectPointTuner MarkedWithInjectAttribute(object? injectionPointId, short weight = 0)
       => new InjectPointTuner(
-        node => node.AddConstructorPattern(weight).UseBuildAction(new GetConstructorByInjectPointId(injectionPointId), BuildStage.Create));
+        node => node.GetOrAddNode(new IfLastUnit(Static<IsConstructor>.Instance, weight))
+                    .UseBuildAction(new GetConstructorByInjectPointId(injectionPointId), BuildStage.Create));
 
     /// <summary>
     ///   Instantiate a Unit using constructor without parameters
@@ -55,10 +57,7 @@ namespace Armature
     /// </summary>
     public static IInjectPointTuner WithParameters(short weight, params Type[] parameterTypes)
       => new InjectPointTuner(
-        node => node.AddConstructorPattern(weight).UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
-
-    //TODO: move to helper and make public?
-    private static IfLastUnit AddConstructorPattern(this IPatternTreeNode parentNode, short weight)
-      => parentNode.GetOrAddNode(new IfLastUnit(Static<IsConstructor>.Instance, weight));
+        node => node.GetOrAddNode(new IfLastUnit(Static<IsConstructor>.Instance, weight))
+                    .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
   }
 }
