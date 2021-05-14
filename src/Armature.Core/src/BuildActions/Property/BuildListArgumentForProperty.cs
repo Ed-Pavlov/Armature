@@ -6,10 +6,13 @@ namespace Armature.Core
   /// <summary>
   /// Builds a list of arguments by using <see cref="IBuildSession.BuildAllUnits"/> method for a property.
   /// </summary>
-  public class BuildListArgumentForProperty : BuildListArgumentBase
+  public record BuildListArgumentForProperty : BuildListArgumentBase
   {
-    public BuildListArgumentForProperty(object? key = null) : base(key) { }
+    public BuildListArgumentForProperty() { }
+    public BuildListArgumentForProperty(object? key) : base(key) { }
 
     protected override Type GetArgumentType(UnitId unitId) => ((PropertyInfo) unitId.Kind!).PropertyType;
+    
+    public override string ToString() => base.ToString();
   }
 }

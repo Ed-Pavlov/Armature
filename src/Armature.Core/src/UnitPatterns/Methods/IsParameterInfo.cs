@@ -9,8 +9,6 @@ namespace Armature.Core
   /// </summary>
   public record IsParameterInfo : IUnitPattern
   {
-    public static readonly IUnitPattern Instance = new IsParameterInfo();
-
     public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Argument && unitId.Kind is ParameterInfo;
     
     [DebuggerStepThrough]

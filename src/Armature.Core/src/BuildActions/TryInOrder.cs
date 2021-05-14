@@ -23,11 +23,12 @@ namespace Armature.Core
   /// </remarks>
 
   //TODO: need another name, something like build actions chain, or whatever, describing semantic better than now
-  public class TryInOrder : IBuildAction, ILogable, IEnumerable
+  public record TryInOrder : IBuildAction, ILogable, IEnumerable
   {
-    private readonly List<IBuildAction>                      _buildActions          = new();
+    private readonly List<IBuildAction>                      _buildActions;
     private readonly Dictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new();
 
+    public TryInOrder() => _buildActions = new();
     public TryInOrder(params IBuildAction[] buildActions) => _buildActions = buildActions.ToList();
 
     public void Process(IBuildSession buildSession)
@@ -81,7 +82,7 @@ namespace Armature.Core
 
     public void PostProcess(IBuildSession buildSession)
     {
-      if(_effectiveBuildActions.TryGetValue(buildSession, out var buildAction))
+      if(_effectiveBuildActions.TryGetValue(buildSession, out var buildAction)) // TODO: why dictionary? smells
       {
         _effectiveBuildActions.Remove(buildSession);
 
@@ -100,7 +101,7 @@ namespace Armature.Core
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => GetType().ToLogString();
+    public override string ToString() => GetType().ToLogString(); //TODO: somewhere we need to print it with content
 
     public void PrintToLog()
     {

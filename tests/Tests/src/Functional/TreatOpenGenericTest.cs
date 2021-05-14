@@ -100,7 +100,7 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              new IfLastUnit(new IsConstructor()) // inject into constructor
-              .UseBuildAction(GetConstructorWithMaxParametersCount.Instance, BuildStage.Create),
+              .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),
              
              new IfLastUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),

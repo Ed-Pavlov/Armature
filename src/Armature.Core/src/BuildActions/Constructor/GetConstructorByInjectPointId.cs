@@ -12,7 +12,8 @@ namespace Armature.Core
   {
     private readonly object? _injectPointId;
     
-    public GetConstructorByInjectPointId(object? injectPointId = null) => _injectPointId = injectPointId;
+    public GetConstructorByInjectPointId() {}
+    public GetConstructorByInjectPointId(object? injectPointId) => _injectPointId = injectPointId;
     
     public void Process(IBuildSession buildSession)
     {

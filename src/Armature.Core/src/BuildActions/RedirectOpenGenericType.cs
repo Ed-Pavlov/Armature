@@ -8,7 +8,7 @@ namespace Armature.Core
   ///   Redirects building of a unit of one open generic type to the unit of another open generic type.
   ///   E.g. redirecting interface to the implementation
   /// </summary>
-  public class RedirectOpenGenericType : IBuildAction
+  public record RedirectOpenGenericType : IBuildAction
   {
     private readonly Type    _redirectTo;
     private readonly object? _key;

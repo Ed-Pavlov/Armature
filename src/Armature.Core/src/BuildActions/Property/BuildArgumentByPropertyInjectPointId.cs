@@ -8,10 +8,8 @@ namespace Armature.Core
   ///   Builds an argument for the property marked with <see cref="InjectAttribute"/> using <see cref="InjectAttribute.InjectionPointId"/>
   ///   as the <see cref="UnitId.Key"/>
   /// </summary>
-  public class BuildArgumentByPropertyInjectPointId : IBuildAction
+  public record BuildArgumentByPropertyInjectPointId : IBuildAction
   {
-    public static readonly IBuildAction Instance = new BuildArgumentByPropertyInjectPointId();
-
     public void Process(IBuildSession buildSession)
     {
       var propertyInfo = (PropertyInfo) buildSession.GetUnitUnderConstruction().Kind!;
@@ -32,5 +30,7 @@ namespace Armature.Core
     }
 
     public void PostProcess(IBuildSession buildSession) { }
+    
+    public override string ToString() => GetType().GetShortName();
   }
 }

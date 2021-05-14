@@ -25,7 +25,7 @@ namespace Armature
     ///   Specifies that unit should be created using reflection.
     /// </summary>
     public FinalTuner CreatedByReflection()
-      => new(ParentNode.GetOrAddNode(new IfFirstUnit(new Pattern(Type, Key)).UseBuildAction(CreateByReflection.Instance, BuildStage.Create)));
+      => new(ParentNode.GetOrAddNode(new IfFirstUnit(new Pattern(Type, Key)).UseBuildAction(Static<CreateByReflection>.Instance, BuildStage.Create)));
     
     Type IExtensibility<Type, object>.   Item1 => Type;
     object? IExtensibility<Type, object>.Item2 => Key;

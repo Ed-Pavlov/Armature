@@ -36,7 +36,7 @@ namespace Tests.UnitTests
       // --arrange
       var unitIdMatcher = Match.Type<int>(null);
       var buildStep1    = new IfLastUnit(unitIdMatcher);
-      buildStep1.UseBuildAction(CreateByReflection.Instance, BuildStage.Cache);
+      buildStep1.UseBuildAction(Static<CreateByReflection>.Instance, BuildStage.Cache);
       var singletonAction = new Singleton();
       var buildStep2      = new SkipTillUnit(unitIdMatcher);
       buildStep2.UseBuildAction(singletonAction, BuildStage.Cache);
@@ -58,7 +58,7 @@ namespace Tests.UnitTests
        .And
        .Subject.Select(_ => _.Entity)
        .Should()
-       .BeEquivalentTo(CreateByReflection.Instance, singletonAction);
+       .BeEquivalentTo(Static<CreateByReflection>.Instance, singletonAction);
     }
 
     [Test]

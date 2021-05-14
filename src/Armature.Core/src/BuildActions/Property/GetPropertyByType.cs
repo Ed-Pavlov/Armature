@@ -8,7 +8,7 @@ namespace Armature.Core
   ///   "Builds" a property Unit of the currently building Unit of specified type
   ///   specified <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
-  public class GetPropertyByType : IBuildAction
+  public record GetPropertyByType : IBuildAction
   {
     private readonly Type _type;
 

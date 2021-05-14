@@ -9,10 +9,8 @@ namespace Armature.Core
   /// <summary>
   ///   Instantiates an object using reflection <see cref="ConstructorInfo.Invoke(object[])"/> method.
   /// </summary>
-  public class CreateByReflection : IBuildAction
+  public record CreateByReflection : IBuildAction
   {
-    public static readonly IBuildAction Instance = new CreateByReflection();
-
     public void Process(IBuildSession buildSession)
     {
       if(!buildSession.BuildResult.HasValue)

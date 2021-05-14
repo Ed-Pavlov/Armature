@@ -13,8 +13,6 @@ namespace Armature.Core
   /// </summary>
   public record GetConstructorWithMaxParametersCount : IBuildAction
   {
-    public static readonly IBuildAction Instance = new GetConstructorWithMaxParametersCount();
-
     public void Process(IBuildSession buildSession)
     {
       var unitType     = buildSession.GetUnitUnderConstruction().GetUnitType();

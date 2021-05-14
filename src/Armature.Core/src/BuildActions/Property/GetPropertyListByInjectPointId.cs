@@ -8,7 +8,7 @@ namespace Armature.Core
   /// <summary>
   ///   Gets a list of  properties marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
-  public class GetPropertyListByInjectPointId : IBuildAction
+  public record GetPropertyListByInjectPointId : IBuildAction
   {
     private readonly object?[] _pointIds;
 
@@ -30,10 +30,10 @@ namespace Armature.Core
             .ToArray();
 
       var properties =
-        (_pointIds.Length > 0
-           ? _pointIds.SelectMany(pointId => propertiesWithAttributes.Where(_ => Equals(pointId, _.Item1.InjectionPointId)).Select(_ => _.Item2))
-                      .Distinct()
-           : propertiesWithAttributes.Select(_ => _.Item2))
+        (_pointIds.Length == 0
+           ? propertiesWithAttributes.Select(_ => _.Item2)
+           : _pointIds.SelectMany(pointId => propertiesWithAttributes.Where(_ => Equals(pointId, _.Item1.InjectionPointId)).Select(_ => _.Item2))
+                      .Distinct())
        .ToArray();
 
       if(properties.Length > 0)

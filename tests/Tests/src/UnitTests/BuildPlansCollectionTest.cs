@@ -16,7 +16,7 @@ namespace Tests.UnitTests
 
       // --arrange
       var unitIdMatcher = Match.Type<string>(null);
-      var matchString   = new IfLastUnit(unitIdMatcher).UseBuildAction(CreateByReflection.Instance, BuildStage.Cache);
+      var matchString   = new IfLastUnit(unitIdMatcher).UseBuildAction(new CreateByReflection(), BuildStage.Cache);
       var matchAny      = new SkipTillUnit(unitIdMatcher).UseBuildAction(singletonAction, BuildStage.Cache);
 
       var target = new PatternTree();
@@ -33,7 +33,7 @@ namespace Tests.UnitTests
        .And
        .Subject.Select(_ => _.Entity)
        .Should()
-       .Equal(CreateByReflection.Instance, singletonAction);
+       .Equal(Static<CreateByReflection>.Instance, singletonAction);
     }
   }
 }

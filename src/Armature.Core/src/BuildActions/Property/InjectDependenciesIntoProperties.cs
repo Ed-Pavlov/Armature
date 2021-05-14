@@ -9,8 +9,6 @@ namespace Armature.Core
   /// </summary>
   public record InjectDependenciesIntoProperties : IBuildAction
   {
-    public static readonly IBuildAction Instance = new InjectDependenciesIntoProperties();
-
     [DebuggerStepThrough]
     public void Process(IBuildSession buildSession) { }
 

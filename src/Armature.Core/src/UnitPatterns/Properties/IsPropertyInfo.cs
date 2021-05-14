@@ -9,10 +9,6 @@ namespace Armature.Core
   /// </summary>
   public record IsPropertyInfo : IUnitPattern
   {
-    public static readonly IUnitPattern Instance = new IsPropertyInfo();
-
-    private IsPropertyInfo() { }
-
     public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Argument && unitId.Kind is PropertyInfo;
     
     [DebuggerStepThrough]

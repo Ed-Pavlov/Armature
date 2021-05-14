@@ -10,7 +10,7 @@ namespace Armature.Core
   /// <summary>
   /// Base class for build actions build a list of arguments by using <see cref="IBuildSession.BuildAllUnits"/> method.
   /// </summary>
-  public abstract class BuildListArgumentBase : IBuildAction
+  public abstract record BuildListArgumentBase : IBuildAction
   {
     private static readonly object[] ParamContainer     = new object[1];
     private static readonly Type[]   TypeParamContainer = new Type[1];
@@ -18,7 +18,7 @@ namespace Armature.Core
 
     private readonly object? _key;
 
-    [DebuggerStepThrough]
+    protected BuildListArgumentBase() { }
     protected BuildListArgumentBase(object? key) => _key = key;
 
     public void Process(IBuildSession buildSession)

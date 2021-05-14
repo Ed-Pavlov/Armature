@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   ///   Builds arguments for method parameters by building a unit {<see cref="ParameterInfo"/>, <see cref="SpecialKey.Argument"/> one by one. 
   /// </summary>
-  public class BuildMethodArgumentsInDirectOrder : IBuildAction
+  public record BuildMethodArgumentsInDirectOrder : IBuildAction
   {
     public void Process(IBuildSession buildSession)
     {

@@ -232,9 +232,9 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnit(IsConstructor.Instance)
-              .UseBuildAction(GetConstructorWithMaxParametersCount.Instance, BuildStage.Create),
-             new IfLastUnit(IsPropertyInfo.Instance)
+             new IfLastUnit(new IsConstructor())
+              .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),
+             new IfLastUnit(new IsPropertyInfo())
               .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)
            }
          };

@@ -8,13 +8,14 @@ namespace Armature.Core
   /// <summary>
   ///   "Builds" a constructor Unit of the currently building Unit with provided names
   /// </summary>
-  public class GetPropertyListByNames : IBuildAction
+  public record GetPropertyListByNames : IBuildAction
   {
     private readonly IReadOnlyCollection<string> _names;
 
     public GetPropertyListByNames(params string[] names)
     {
-      if(names is null || names.Length == 0) throw new ArgumentNullException(nameof(names));
+      if(names is null) throw new ArgumentNullException(nameof(names));
+      if(names.Length == 0) throw new ArgumentException("Specify property name", nameof(names));
 
       _names = names;
     }

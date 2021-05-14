@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Armature.Core.Logging;
+﻿using Armature.Core.Logging;
 
 namespace Armature.Core
 {
@@ -9,29 +8,24 @@ namespace Armature.Core
   /// </summary>
   public class Singleton : IBuildAction
   {
-    private Instance? _instance;
+    private bool    _hasInstance;
+    private object? _instance;
 
     public void Process(IBuildSession buildSession)
     {
-      if(_instance is not null)
-        buildSession.BuildResult = new BuildResult(_instance.Value);
+      if(_hasInstance)
+        buildSession.BuildResult = new BuildResult(_instance);
     }
 
     public void PostProcess(IBuildSession buildSession)
     {
       if(buildSession.BuildResult.HasValue)
-        _instance = new Instance(buildSession.BuildResult.Value);
+      {
+        _instance    = buildSession.BuildResult.Value;
+        _hasInstance = true;
+      }
     }
 
-    private class Instance
-    {
-      public readonly object? Value;
-
-      [DebuggerStepThrough]
-      public Instance(object? value) => Value = value;
-
-      [DebuggerStepThrough]
-      public override string ToString() => Value is null ? "null" : Value.ToLogString();
-    }
+    public override string ToString() => $"{typeof(Singleton)}{{ {(_hasInstance ? _instance.ToLogString() : "no instance")} }}";
   }
 }

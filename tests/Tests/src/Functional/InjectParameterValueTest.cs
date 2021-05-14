@@ -460,7 +460,7 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnit(IsConstructor.Instance)
+             new IfLastUnit(new IsConstructor())
               .UseBuildAction(
                  new TryInOrder
                  {
@@ -470,12 +470,12 @@ namespace Tests.Functional
                  BuildStage.Create),
              new IfLastUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             new IfLastUnit(IsParameterInfo.Instance)
+             new IfLastUnit(new IsParameterInfo())
               .UseBuildAction(
                  new TryInOrder()
                  {
-                   BuildArgumentByParameterType.Instance, 
-                   GetParameterDefaultValue.Instance
+                   Static<BuildArgumentByParameterType>.Instance, 
+                   Static<GetParameterDefaultValue>.Instance
                  },
                  BuildStage.Create)
            }

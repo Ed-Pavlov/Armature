@@ -29,7 +29,7 @@ namespace Armature
     public FinalTuner CreatedByReflection() => 
       new(ParentNode
          .GetOrAddNode(new SkipTillUnit(new IsOpenGenericType(OpenGenericType, Key), WeightOf.FindUnit | WeightOf.OpenGenericPattern))
-         .UseBuildAction(CreateByReflection.Instance, BuildStage.Create));
+         .UseBuildAction(Static<CreateByReflection>.Instance, BuildStage.Create));
 
     Type IExtensibility<Type, object>.   Item1 => OpenGenericType;
     object? IExtensibility<Type, object>.Item2 => Key;

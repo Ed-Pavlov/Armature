@@ -8,8 +8,6 @@ namespace Armature.Core
   /// </summary>
   public record IsConstructor : IUnitPattern
   {
-    public static readonly IUnitPattern Instance = new IsConstructor();
-
     public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Constructor && unitId.GetUnitTypeSafe() is not null;
     
     [DebuggerStepThrough]

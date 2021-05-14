@@ -8,10 +8,8 @@ namespace Armature.Core
   ///   Builds an argument for the method parameter marked with <see cref="InjectAttribute"/> using <see cref="InjectAttribute.InjectionPointId"/> as
   ///   the <see cref="UnitId.Key"/>
   /// </summary>
-  public class BuildArgumentByParameterInjectPointId : IBuildAction
+  public record BuildArgumentByParameterInjectPointId : IBuildAction
   {
-    public static readonly IBuildAction Instance = new BuildArgumentByParameterInjectPointId();
-
     public void Process(IBuildSession buildSession)
     {
       var parameterInfo = (ParameterInfo) buildSession.GetUnitUnderConstruction().Kind!;

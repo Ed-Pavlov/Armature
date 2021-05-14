@@ -164,22 +164,22 @@ namespace Tests.Performance
       var treatAll = new SkipToLastUnit
                      {
                        // inject into constructor
-                       new IfLastUnit(IsConstructor.Instance)
+                       new IfLastUnit(new IsConstructor())
                         .UseBuildAction(
                            new TryInOrder
                            {
                              new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
-                             GetConstructorWithMaxParametersCount.Instance       // constructor with largest number of parameters has less priority
+                             Static<GetConstructorWithMaxParametersCount>.Instance       // constructor with largest number of parameters has less priority
                            },
                            BuildStage.Create),
-                       new IfLastUnit(IsParameterInfo.Instance)
+                       new IfLastUnit(new IsParameterInfo())
                         .UseBuildAction(
                            new TryInOrder
                            {
-                             BuildArgumentByParameterInjectPointId.Instance, BuildArgumentByParameterType.Instance
+                             Static<BuildArgumentByParameterInjectPointId>.Instance, Static<BuildArgumentByParameterType>.Instance
                            },
                            BuildStage.Create),
-                       new IfLastUnit(IsPropertyInfo.Instance)
+                       new IfLastUnit(new IsPropertyInfo())
                         .UseBuildAction(new TryInOrder {new BuildArgumentByPropertyType()}, BuildStage.Create)
                      };
 

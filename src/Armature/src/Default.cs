@@ -10,6 +10,6 @@ namespace Armature
     ///   You can set your own build action which will be used by these tuners.
     /// </summary>
     [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
-    public static IBuildAction CreationBuildAction = CreateByReflection.Instance;
+    public static IBuildAction CreationBuildAction = Static<CreateByReflection>.Instance;
   }
 }

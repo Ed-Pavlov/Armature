@@ -7,11 +7,11 @@ namespace Armature.Core
   /// <summary>
   ///   Base class for build actions build arguments to inject.
   /// </summary>
-  public abstract class BuildArgumentByInjectPointTypeBase : IBuildAction
+  public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction
   {
     private readonly object? _key;
 
-    [DebuggerStepThrough]
+    protected BuildArgumentByInjectPointTypeBase() {}
     protected BuildArgumentByInjectPointTypeBase(object? key) => _key = key;
 
     public void Process(IBuildSession buildSession)

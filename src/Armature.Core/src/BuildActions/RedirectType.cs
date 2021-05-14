@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   ///   Redirects building of a unit of one type to the unit of another type. E.g. redirecting interface to the implementation.
   /// </summary>
-  public class RedirectType : IBuildAction
+  public record RedirectType : IBuildAction
   {
     private readonly Type    _redirectTo;
     private readonly object? _key;

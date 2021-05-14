@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Armature.Core.Logging;
 
 namespace Armature.Core
@@ -10,8 +9,7 @@ namespace Armature.Core
   /// </summary>
   public class SkipToLastUnit : PatternTreeNodeWithChildren
   {
-    public SkipToLastUnit() : this(WeightOf.SkipToLastUnit) { }
-    public SkipToLastUnit(int weight) : base(weight) { }
+    public SkipToLastUnit(int weight = WeightOf.SkipToLastUnit) : base(weight) { }
 
     public override BuildActionBag BuildActions
       => throw new NotSupportedException(
@@ -37,7 +35,7 @@ namespace Armature.Core
 
       void LogMatchingState(Action? blockContent)
       {
-        // if(actionBag is not null)
+         if(actionBag is not null)
           using(Log.Block(LogLevel.Trace, ToString, unitsToSkipCount))
             blockContent?.Invoke();
       }

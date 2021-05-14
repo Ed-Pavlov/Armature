@@ -100,11 +100,11 @@ namespace Tests.Functional
            {
              // inject into constructor
              new IfLastUnit(new IsConstructor())
-              .UseBuildAction(GetConstructorWithMaxParametersCount.Instance, BuildStage.Create),
+              .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),
              new IfLastUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfLastUnit(new IsParameterInfo())
-              .UseBuildAction(BuildArgumentByParameterType.Instance, BuildStage.Create) // autowiring
+              .UseBuildAction(Static<BuildArgumentByParameterType>.Instance, BuildStage.Create) // autowiring
            }
          };
 
