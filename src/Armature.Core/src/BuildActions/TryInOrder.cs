@@ -22,7 +22,6 @@ namespace Armature.Core
   ///   }
   /// </remarks>
 
-  //TODO: need another name, something like build actions chain, or whatever, describing semantic better than now
   public record TryInOrder : IBuildAction, ILogable, IEnumerable
   {
     private readonly List<IBuildAction>                      _buildActions;

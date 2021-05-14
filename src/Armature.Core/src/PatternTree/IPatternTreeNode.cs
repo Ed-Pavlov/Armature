@@ -35,8 +35,5 @@ namespace Armature.Core
     ///   and coupled with a "weight of matching". See <see cref="WeightedBuildActionBag" /> for details.
     /// </returns>
     WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight);
-
-
-    // IPatternTreeNode UseBuildAction(IBuildAction buildAction, object buildStage); //TODO: change parameters position
   }
 }
