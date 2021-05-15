@@ -120,7 +120,6 @@ namespace Tests.Functional
           })
        .UsingArguments(expectedString);
 
-      using var _ = Log.Enabled(LogLevel.Verbose);
       // --act
       var actual = target.Build<Subject>();
 

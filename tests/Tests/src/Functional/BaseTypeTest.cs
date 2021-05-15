@@ -79,8 +79,6 @@ namespace Tests.Functional
        .AsIs()
        .InjectInto(Property.Named(nameof(Subject.InjectHere)));
 
-      target.PrintToLog();
-      
       // --act
       var actual = target.Build<Subject>();
 

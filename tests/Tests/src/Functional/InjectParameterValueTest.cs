@@ -364,14 +364,6 @@ namespace Tests.Functional
       target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected));                       // narrower context
       target.Treat<LevelOne>().AsIs();
 
-      target.PrintToLog();
-      
-      Console.WriteLine("");
-      Console.WriteLine("/////////////////////////////////////////////////////////");
-      Console.WriteLine("");
-      
-      using var _ = Log.Enabled(LogLevel.Trace);
-
       var actual = target.Build<ISubject1>();
 
       actual.Should().BeOfType<LevelThree>().Which.LevelTwo.LevelOne.Text.Should().Be(expected);

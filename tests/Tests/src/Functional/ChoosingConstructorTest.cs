@@ -29,8 +29,6 @@ namespace Tests.Functional
             .AsIs()
             .UsingArguments(new object()); // set value to inject into ctor
 
-      target.PrintToLog();
-
       // --act
       var actual = target.Build<Subject2>();
 
@@ -108,7 +106,6 @@ namespace Tests.Functional
             .InjectInto(Constructor.WithParameters<int, string>())
             .UsingArguments(4, "string"); // set value to inject into ctor
 
-      using var _ = Log.Enabled(LogLevel.Verbose);
       // --act
       var actual = target.Build<Subject3>();
 
