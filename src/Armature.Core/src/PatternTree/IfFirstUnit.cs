@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   ///   Checks if the first unit in the building unit sequence matches the specified pattern.
   /// </summary>
-  public class IfFirstUnit : PatternTreeNodeWithChildren
+  public class IfFirstUnit : PatternTreeNodeBase
   {
     private readonly IUnitPattern _pattern;
 

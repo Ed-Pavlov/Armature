@@ -50,9 +50,9 @@ namespace Armature.Core
     #endregion
 
     /// <summary>
-    ///   Reuse implementation of <see cref="PatternTreeNodeWithChildren" /> to implement <see cref="PatternTree" /> public interface
+    ///   Reuse implementation of <see cref="PatternTreeNodeWithChildrenBase" /> to implement <see cref="PatternTree" /> public interface
     /// </summary>
-    private class Root : PatternTreeNodeWithChildren
+    private class Root : PatternTreeNodeBase
     {
       [DebuggerStepThrough]
       public Root() : base(0) { }

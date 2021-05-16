@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   /// Skips units from the building unit sequence while unit matches specified pattern till the last (under construction) unit. 
   /// </summary>
-  public class SkipWhileUnit : PatternTreeNodeWithChildren
+  public class SkipWhileUnit : PatternTreeNodeBase
   {
     private readonly IUnitPattern _pattern;
 

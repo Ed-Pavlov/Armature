@@ -7,7 +7,7 @@ namespace Armature.Core
   ///   Matches any sequence of building units, thus passing the unit under construction to <see cref="IPatternTreeNode.Children" /> and merge their
   ///   build actions with its own.
   /// </summary>
-  public class SkipToLastUnit : PatternTreeNodeWithChildren
+  public class SkipToLastUnit : PatternTreeNodeWithChildrenBase
   {
     public SkipToLastUnit(int weight = WeightOf.SkipToLastUnit) : base(weight) { }
 

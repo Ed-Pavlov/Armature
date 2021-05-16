@@ -8,7 +8,7 @@ namespace Armature.Core
   ///   Moves along the building units sequence from the unit passed to the <see cref="BuildSession.BuildUnit(UnitId)"/> to its dependencies skipping units
   ///   until it encounters a matching unit. Behaves like string search with wildcard.
   /// </summary>
-  public class SkipTillUnit : PatternTreeNodeWithChildren
+  public class SkipTillUnit : PatternTreeNodeBase
   {
     private readonly IUnitPattern _pattern;
 
