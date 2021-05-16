@@ -19,7 +19,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipToLastUnit {new IfLastUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                     new SkipToLastUnit {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
                    };
 
       target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
@@ -41,7 +41,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Create)
                    {
-                     new SkipToLastUnit {new IfLastUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                     new SkipToLastUnit {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
                    };
 
       target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
@@ -64,7 +64,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipToLastUnit {new IfLastUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                     new SkipToLastUnit {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
                    };
 
       target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
@@ -88,7 +88,7 @@ namespace Tests.Functional
                    {
                      new SkipToLastUnit
                      {
-                       new IfLastUnit(new IsConstructor()).UseBuildAction(
+                       new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
                            new GetConstructorByInjectPointId(),
                            new GetConstructorWithMaxParametersCount(),
@@ -120,7 +120,7 @@ namespace Tests.Functional
                    {
                      new SkipToLastUnit
                      {
-                       new IfLastUnit(new IsConstructor()).UseBuildAction(
+                       new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
                            new GetConstructorByInjectPointId(),
                            new GetConstructorWithMaxParametersCount(),
@@ -153,7 +153,7 @@ namespace Tests.Functional
                    {
                      new SkipToLastUnit
                      {
-                       new IfLastUnit(new IsConstructor()).UseBuildAction(
+                       new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
                            new GetConstructorByInjectPointId(),
                            new GetConstructorWithMaxParametersCount(),

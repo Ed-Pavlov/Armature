@@ -13,7 +13,7 @@ namespace Armature
         {
           node.UseBuildAction(Static<InjectDependenciesIntoProperties>.Instance, BuildStage.Initialize);
 
-          node.GetOrAddNode(new IfLastUnit(Static<IsPropertyList>.Instance, weight))
+          node.GetOrAddNode(new IfFirstUnit(Static<IsPropertyList>.Instance, weight))
               .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
         });
 
@@ -31,7 +31,7 @@ namespace Armature
         {
           node.UseBuildAction(Static<InjectDependenciesIntoProperties>.Instance, BuildStage.Initialize);
 
-          node.GetOrAddNode(new IfLastUnit(Static<IsPropertyList>.Instance, weight))
+          node.GetOrAddNode(new IfFirstUnit(Static<IsPropertyList>.Instance, weight))
               .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
         });
 
@@ -49,7 +49,7 @@ namespace Armature
         {
           node.UseBuildAction(Static<InjectDependenciesIntoProperties>.Instance, BuildStage.Initialize);
 
-          node.GetOrAddNode(new IfLastUnit(Static<IsPropertyList>.Instance, weight))
+          node.GetOrAddNode(new IfFirstUnit(Static<IsPropertyList>.Instance, weight))
               .UseBuildAction(new GetPropertyListByInjectPointId(pointIds), BuildStage.Create);
         });
   }

@@ -109,7 +109,7 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnit(new IsConstructor())
+             new IfFirstUnit(new IsConstructor())
               .UseBuildAction(
                  new TryInOrder
                  {
@@ -117,16 +117,16 @@ namespace Tests.Functional
                    Static<GetConstructorWithMaxParametersCount>.Instance       // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
-             new IfLastUnit(new IsParameterInfo())
+             new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(
                  new TryInOrder
                  {
                    Static<BuildArgumentByParameterInjectPointId>.Instance, 
                    Static<BuildArgumentByParameterType>.Instance
                  }, BuildStage.Create),
-             new IfLastUnit(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             new IfLastUnit(new IsPropertyInfo())
+             new IfFirstUnit(new IsPropertyInfo())
               .UseBuildAction(
                  new TryInOrder
                  {

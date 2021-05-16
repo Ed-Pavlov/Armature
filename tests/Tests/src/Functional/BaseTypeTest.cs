@@ -93,10 +93,10 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnit(new IsConstructor())
+             new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),
 
-             new IfLastUnit(new IsPropertyInfo())
+             new IfFirstUnit(new IsPropertyInfo())
               .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)
            }
          };

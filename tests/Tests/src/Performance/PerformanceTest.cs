@@ -164,7 +164,7 @@ namespace Tests.Performance
       var treatAll = new SkipToLastUnit
                      {
                        // inject into constructor
-                       new IfLastUnit(new IsConstructor())
+                       new IfFirstUnit(new IsConstructor())
                         .UseBuildAction(
                            new TryInOrder
                            {
@@ -172,14 +172,14 @@ namespace Tests.Performance
                              Static<GetConstructorWithMaxParametersCount>.Instance       // constructor with largest number of parameters has less priority
                            },
                            BuildStage.Create),
-                       new IfLastUnit(new IsParameterInfo())
+                       new IfFirstUnit(new IsParameterInfo())
                         .UseBuildAction(
                            new TryInOrder
                            {
                              Static<BuildArgumentByParameterInjectPointId>.Instance, Static<BuildArgumentByParameterType>.Instance
                            },
                            BuildStage.Create),
-                       new IfLastUnit(new IsPropertyInfo())
+                       new IfFirstUnit(new IsPropertyInfo())
                         .UseBuildAction(new TryInOrder {new BuildArgumentByPropertyType()}, BuildStage.Create)
                      };
 

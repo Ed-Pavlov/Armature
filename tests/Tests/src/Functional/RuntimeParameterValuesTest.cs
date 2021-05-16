@@ -99,11 +99,11 @@ namespace Tests.Functional
            new SkipToLastUnit
            {
              // inject into constructor
-             new IfLastUnit(new IsConstructor())
+             new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),
-             new IfLastUnit(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             new IfLastUnit(new IsParameterInfo())
+             new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(Static<BuildArgumentByParameterType>.Instance, BuildStage.Create) // autowiring
            }
          };

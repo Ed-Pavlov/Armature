@@ -15,7 +15,7 @@ namespace Armature
                Property.OfType<T>().Tune(parentNode);
 
                return parentNode.AddNode(
-                 new IfLastUnit(new IsPropertyWithType(typeof(T), true), InjectPointMatchingWeight.TypedParameter),
+                 new IfFirstUnit(new IsPropertyWithType(typeof(T), true), InjectPointMatchingWeight.TypedParameter),
                  $"Building of an argument for the property with type {typeof(T).ToLogString()} is already tuned");
              });
 
@@ -28,7 +28,7 @@ namespace Armature
                Property.Named(propertyName).Tune(parentNode);
 
                return parentNode.AddNode(
-                 new IfLastUnit(new IsPropertyNamed(propertyName), InjectPointMatchingWeight.NamedParameter),
+                 new IfFirstUnit(new IsPropertyNamed(propertyName), InjectPointMatchingWeight.NamedParameter),
                  $"Building of an argument for the property with name {propertyName} is already tuned");
              });
 
@@ -42,7 +42,7 @@ namespace Armature
 
                return parentNode
                 .AddNode(
-                   new IfLastUnit(new IsPropertyInfoWithAttribute(injectPointId), InjectPointMatchingWeight.AttributedParameter),
+                   new IfFirstUnit(new IsPropertyInfoWithAttribute(injectPointId), InjectPointMatchingWeight.AttributedParameter),
                    $"Building of an argument for the property marked with {nameof(InjectAttribute)}"
                  + $" with {nameof(InjectAttribute.InjectionPointId)} equal to {injectPointId.ToLogString()} is already tuned");
              });

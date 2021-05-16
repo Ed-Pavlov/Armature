@@ -16,7 +16,7 @@ namespace Armature
       => new(parentNode =>
                parentNode
                 .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance))
-                .AddNode(new IfLastUnit(new IsMethodParameterWithType(type, true), InjectPointMatchingWeight.TypedParameter),
+                .AddNode(new IfFirstUnit(new IsMethodParameterWithType(type, true), InjectPointMatchingWeight.TypedParameter),
                          $"Building of an argument for the method parameter of type {type.ToLogString()} is already tuned"));
 
     /// <summary>
@@ -26,7 +26,7 @@ namespace Armature
       => new(parentNode =>
                parentNode
                 .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance))
-                .AddNode(new IfLastUnit(new IsMethodParameterWithType(typeof(T), true), InjectPointMatchingWeight.TypedParameter), 
+                .AddNode(new IfFirstUnit(new IsMethodParameterWithType(typeof(T), true), InjectPointMatchingWeight.TypedParameter), 
                          $"Building of an argument for the method parameter of type {typeof(T).ToLogString()} is already tuned"));
 
     /// <summary>
@@ -36,7 +36,7 @@ namespace Armature
       => new(parentNode =>
                parentNode
                 .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance))
-                .AddNode(new IfLastUnit(new IsMethodParameterNamed(parameterName), InjectPointMatchingWeight.NamedParameter), 
+                .AddNode(new IfFirstUnit(new IsMethodParameterNamed(parameterName), InjectPointMatchingWeight.NamedParameter), 
                          $"Building of an argument for the method parameter with name {parameterName} is already tuned"));
 
     /// <summary>
@@ -46,7 +46,7 @@ namespace Armature
       => new(parentNode =>
                parentNode
                 .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance))
-                .AddNode(new IfLastUnit(new IsParameterInfoWithAttribute(injectPointId), InjectPointMatchingWeight.AttributedParameter),
+                .AddNode(new IfFirstUnit(new IsParameterInfoWithAttribute(injectPointId), InjectPointMatchingWeight.AttributedParameter),
                          $"Building of an argument for the method parameter marked with {nameof(InjectAttribute)}"
                        + $" with {nameof(InjectAttribute.InjectionPointId)} equal to {injectPointId.ToLogString()} is already tuned"));
   }

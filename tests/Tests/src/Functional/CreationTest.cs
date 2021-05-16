@@ -268,12 +268,12 @@ namespace Tests.Functional
                  new SkipTillUnit(new IsSubtypeOf(typeof(IDisposable), null))
                   .UseBuildAction(new CreateByReflection(), BuildStage.Cache),
                  
-                 new IfLastUnit(new IsConstructor())
+                 new IfFirstUnit(new IsConstructor())
                   .UseBuildAction(new GetConstructorByParameterTypes(), BuildStage.Create), // use empty ctor by default in this test
 
-                 new IfLastUnit(new IsParameterInfoList())
+                 new IfFirstUnit(new IsParameterInfoList())
                   .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-                 new IfLastUnit(new IsParameterInfo())
+                 new IfFirstUnit(new IsParameterInfo())
                   .UseBuildAction(Static<BuildArgumentByParameterType>.Instance, BuildStage.Create)
                }
              };

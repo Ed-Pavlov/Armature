@@ -11,7 +11,7 @@ namespace Armature
     {
       public IArgumentTuner InDirectOrder { get; } = new ArgumentTuner(
         node => node
-               .GetOrAddNode(new IfLastUnit(Static<IsParameterInfoList>.Instance))
+               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfoList>.Instance))
                .UseBuildAction(Static<BuildMethodArgumentsInDirectOrder>.Instance, BuildStage.Create));
     }
 
@@ -19,12 +19,12 @@ namespace Armature
     {
       public IArgumentTuner Type { get; } = new ArgumentTuner(
         node => node
-               .GetOrAddNode(new IfLastUnit(Static<IsParameterInfo>.Instance))
+               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance))
                .UseBuildAction(Static<BuildArgumentByParameterType>.Instance, BuildStage.Create));
 
       public IArgumentTuner Name { get; } = new ArgumentTuner(
         node => node
-               .GetOrAddNode(new IfLastUnit(Static<IsParameterInfo>.Instance))
+               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance))
                .UseBuildAction(Static<BuildArgumentByParameterName>.Instance, BuildStage.Create));
     }
   }

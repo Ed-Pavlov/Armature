@@ -17,9 +17,9 @@ namespace Armature.Core
   ///   {
   ///     new SkipToLastUnit
   ///     {
-  ///       new IfLastUnitMatches(new ConstructorPattern(), 0)
+  ///       new IfFirstUnitMatches(new ConstructorPattern(), 0)
   ///         .AddBuildAction(BuildStage.Create, new GetLongestConstructorBuildAction()),
-  ///       new IfLastUnitMatches(new MethodArgumentPattern(), ParameterMatchingWeight.Lowest)
+  ///       new IfFirstUnitMatches(new MethodArgumentPattern(), ParameterMatchingWeight.Lowest)
   ///         .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
   ///     }
   ///   };

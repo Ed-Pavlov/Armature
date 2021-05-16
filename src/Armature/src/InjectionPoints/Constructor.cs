@@ -10,7 +10,7 @@ namespace Armature
     /// </summary>
     public static IInjectPointTuner WithMaxParametersCount(short weight = 0)
       => new InjectPointTuner(
-        node => node.GetOrAddNode(new IfLastUnit(Static<IsConstructor>.Instance, weight))
+        node => node.GetOrAddNode(new IfFirstUnit(Static<IsConstructor>.Instance, weight))
                     .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create));
 
     /// <summary>
@@ -18,7 +18,7 @@ namespace Armature
     /// </summary>
     public static IInjectPointTuner MarkedWithInjectAttribute(object? injectionPointId, short weight = 0)
       => new InjectPointTuner(
-        node => node.GetOrAddNode(new IfLastUnit(Static<IsConstructor>.Instance, weight))
+        node => node.GetOrAddNode(new IfFirstUnit(Static<IsConstructor>.Instance, weight))
                     .UseBuildAction(new GetConstructorByInjectPointId(injectionPointId), BuildStage.Create));
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace Armature
     /// </summary>
     public static IInjectPointTuner WithParameters(short weight, params Type[] parameterTypes)
       => new InjectPointTuner(
-        node => node.GetOrAddNode(new IfLastUnit(Static<IsConstructor>.Instance, weight))
+        node => node.GetOrAddNode(new IfFirstUnit(Static<IsConstructor>.Instance, weight))
                     .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
   }
 }

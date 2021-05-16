@@ -16,7 +16,7 @@ namespace Tests.UnitTests
 
       // --arrange
       var unitIdMatcher = Match.Type<string>(null);
-      var matchString   = new IfLastUnit(unitIdMatcher).UseBuildAction(new CreateByReflection(), BuildStage.Cache);
+      var matchString   = new IfFirstUnit(unitIdMatcher).UseBuildAction(new CreateByReflection(), BuildStage.Cache);
       var matchAny      = new SkipTillUnit(unitIdMatcher).UseBuildAction(singletonAction, BuildStage.Cache);
 
       var target = new PatternTree();

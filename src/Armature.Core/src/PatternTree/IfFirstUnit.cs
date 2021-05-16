@@ -5,7 +5,7 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Checks if the first unit in the building unit sequence matches the specified patter.
+  ///   Checks if the first unit in the building unit sequence matches the specified pattern.
   /// </summary>
   public class IfFirstUnit : PatternTreeNodeWithChildren, IEquatable<IfFirstUnit>
   {
