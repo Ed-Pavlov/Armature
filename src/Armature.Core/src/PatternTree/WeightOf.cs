@@ -18,6 +18,6 @@ namespace Armature.Core
 
     public const short SkipToLastUnit = (Lowest - Step) << (sizeof(byte) * 8);
     public const short FindUnit       = (Lowest + Step) << (sizeof(byte) * 8);
-    public const short FirstUnit      = FindUnit + (Step << (sizeof(byte) * 8));
+    public const short FirstUnit      = FindUnit + ((Step / 2) << (sizeof(byte) * 8));
   }
 }

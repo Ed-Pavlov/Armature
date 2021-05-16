@@ -8,7 +8,7 @@ namespace Armature.Core
   ///   Moves along the building units sequence from the unit passed to the <see cref="BuildSession.BuildUnit(UnitId)"/> to its dependencies skipping units
   ///   until it encounters a matching unit. Behaves like string search with wildcard.
   /// </summary>
-  public class SkipTillUnit : PatternTreeNodeWithChildren, IEquatable<SkipTillUnit>
+  public class SkipTillUnit : PatternTreeNodeWithChildren
   {
     private readonly IUnitPattern _pattern;
 
@@ -44,17 +44,16 @@ namespace Armature.Core
 
     #region Equality
 
-    public bool Equals(SkipTillUnit? other)
+    public override bool Equals(IPatternTreeNode? other) => Equals(other as SkipTillUnit);
+    public override bool Equals(object? obj) => Equals(obj as SkipTillUnit);
+    
+    private bool Equals(SkipTillUnit? other)
     {
       if(ReferenceEquals(null, other)) return false;
       if(ReferenceEquals(this, other)) return true;
 
       return Equals(_pattern, other._pattern) && Weight == other.Weight;
     }
-
-    public override bool Equals(IPatternTreeNode? other) => Equals(other as SkipTillUnit);
-
-    public override bool Equals(object? obj) => Equals(obj as SkipTillUnit);
 
     public override int GetHashCode()
     {

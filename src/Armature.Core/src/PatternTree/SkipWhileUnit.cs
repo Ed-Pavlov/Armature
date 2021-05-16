@@ -4,13 +4,15 @@ using Armature.Core.Logging;
 
 namespace Armature.Core
 {
+  /// <summary>
+  /// Skips units from the building unit sequence while unit matches specified pattern till the last (under construction) unit. 
+  /// </summary>
   public class SkipWhileUnit : PatternTreeNodeWithChildren
   {
     private readonly IUnitPattern _pattern;
 
     public SkipWhileUnit(IUnitPattern unitPattern, int weight = 0) : base(weight)
       => _pattern = unitPattern ?? throw new ArgumentNullException(nameof(unitPattern));
-
 
     public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {
@@ -27,18 +29,17 @@ namespace Armature.Core
     public override string ToString() => $"{GetType().GetShortName()}( {_pattern.ToLogString()} ){{ Weight={Weight:n0} }}";
     
     #region Equality
-
-    public bool Equals(SkipWhileUnit? other)
+    
+    public override bool Equals(IPatternTreeNode? other) => Equals(other as SkipWhileUnit);
+    public override bool Equals(object?           obj)   => Equals(obj as SkipWhileUnit);
+    
+    private bool Equals(SkipWhileUnit? other)
     {
       if(ReferenceEquals(null, other)) return false;
       if(ReferenceEquals(this, other)) return true;
 
       return Equals(_pattern, other._pattern) && Weight == other.Weight;
     }
-
-    public override bool Equals(IPatternTreeNode? other) => Equals(other as SkipWhileUnit);
-
-    public override bool Equals(object? obj) => Equals(obj as SkipWhileUnit);
 
     public override int GetHashCode()
     {

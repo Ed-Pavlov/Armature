@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   ///   Checks if the first unit in the building unit sequence matches the specified pattern.
   /// </summary>
-  public class IfFirstUnit : PatternTreeNodeWithChildren, IEquatable<IfFirstUnit>
+  public class IfFirstUnit : PatternTreeNodeWithChildren
   {
     private readonly IUnitPattern _pattern;
 
@@ -26,17 +26,16 @@ namespace Armature.Core
 
     #region Equality
 
-    public bool Equals(IfFirstUnit? other)
+    public override bool Equals(IPatternTreeNode? other) => Equals(other as IfFirstUnit);
+    public override bool Equals(object?           obj)   => Equals(obj as IfFirstUnit);
+
+    private bool Equals(IfFirstUnit? other)
     {
       if(ReferenceEquals(null, other)) return false;
       if(ReferenceEquals(this, other)) return true;
 
       return Equals(_pattern, other._pattern) && Weight == other.Weight;
     }
-
-    public override bool Equals(IPatternTreeNode? other) => Equals(other as IfFirstUnit);
-
-    public override bool Equals(object? obj) => Equals(obj as IfFirstUnit);
 
     public override int GetHashCode()
     {
