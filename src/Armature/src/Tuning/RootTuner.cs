@@ -52,7 +52,7 @@ namespace Armature
     /// </summary>
     public TreatingOpenGenericTuner TreatOpenGeneric(Type openGenericType, object? key = null)
     {
-      var patternMatcher = new SkipTillUnit(new IsOpenGenericType(openGenericType, key), WeightOf.FindUnit | WeightOf.OpenGenericPattern);
+      var patternMatcher = new SkipTillUnit(new IsOpenGenericType(openGenericType, key), WeightOf.Match - 1);
       return new TreatingOpenGenericTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
     
@@ -62,7 +62,7 @@ namespace Armature
     /// </summary>
     public TreatingTuner TreatInheritorsOf(Type baseType, object? key = null)
     {
-      var patternMatcher = new SkipTillUnit(new IsSubtypeOf(baseType, key), WeightOf.FindUnit | WeightOf.SubtypePattern);
+      var patternMatcher = new SkipTillUnit(new IsSubtypeOf(baseType, key), WeightOf.Match - 1);
       return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
 
@@ -72,7 +72,7 @@ namespace Armature
     /// </summary>
     public TreatingTuner<T> TreatInheritorsOf<T>(object? key = null)
     {
-      var patternMatcher = new SkipTillUnit(new IsSubtypeOf(typeof(T), key), WeightOf.FindUnit | WeightOf.SubtypePattern);
+      var patternMatcher = new SkipTillUnit(new IsSubtypeOf(typeof(T), key), WeightOf.Match - 1);
       return new TreatingTuner<T>(ParentNode.GetOrAddNode(patternMatcher));
     }
 
@@ -80,10 +80,6 @@ namespace Armature
     ///   Configure build plans for any unit building in context of the unit.
     ///   See <see cref="BuildSession"/> for details.
     /// </summary>
-    public FinalTuner TreatAll()
-    {
-      var patternMatcher = new SkipAllUnits();
-      return new FinalTuner(ParentNode.GetOrAddNode(patternMatcher));
-    }
+    public FinalTuner TreatAll(short weight = WeightOf.SkipAll) => new(ParentNode.GetOrAddNode(new SkipAllUnits(weight)));
   }
 }

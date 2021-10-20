@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Armature;
 using Armature.Core;
+using Armature.Core.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -86,8 +87,7 @@ namespace Tests.Functional
        .AsIs()
        .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.StringCtor));
 
-      // --act
-      var actual = target.Build<Subject>(ForParameter.OfType<string>().UseValue(null));
+      var actual = target.Build<Subject>(ForParameter.OfType<string?>().UseValue(null));
 
       // --assert
       actual.String1.Should().BeNull();
@@ -114,11 +114,11 @@ namespace Tests.Functional
       public const string DisposableCtor = "Disposable";
 
       public readonly IDisposable Disposable;
-      public readonly string      String1;
+      public readonly string?     String1;
       public readonly string      String2;
 
       [Inject(StringCtor)]
-      public Subject(string string1) => String1 = string1;
+      public Subject(string? string1) => String1 = string1;
 
       [Inject(DisposableCtor)]
       public Subject(IDisposable disposable)

@@ -1,6 +1,7 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
+using Armature.Core.Logging;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -70,8 +71,10 @@ namespace Tests.Functional
        .AsCreated<Subject<string>>()
        .UsingArguments(closed);
 
+      target.PrintToLog();
       // --act
-      var actual = target.Build<ISubject<string>>();
+      using var log    = Log.Enabled(LogLevel.Verbose);
+      var       actual = target.Build<ISubject<string>>();
 
       // --assert
       actual.Value.Should().Be(closed);

@@ -44,6 +44,7 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>build\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Remove="src\InjectPointMatchingWeight.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\build\armature.public.snk">

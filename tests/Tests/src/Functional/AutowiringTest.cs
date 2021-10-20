@@ -55,7 +55,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_get_runtime_values_if_registered_also_presented()
+    public void should_get_registered_values_if_runtime_also_presented()
     {
       const string expectedText  = "expected 09765";
       const int    expectedValue = 93979;
@@ -63,15 +63,16 @@ namespace Tests.Functional
       // --arrange
       var target = CreateTarget();
 
-      target.Treat<string>().AsInstance(expectedText + "bad");
-      target.Treat<int>().AsInstance(expectedValue   + 39);
+      target.Treat<string>().AsInstance(expectedText);
+      target.Treat<int>().AsInstance(expectedValue);
 
       target
        .Treat<Subject>()
        .AsIs();
 
+      using var _ = Log.Enabled(LogLevel.Trace);
       // --act
-      var actual = target.Build<Subject>(expectedText, expectedValue);
+      var actual = target.Build<Subject>(expectedText + "bad", expectedValue + 38);
 
       // --assert
       actual.Text.Should().Be(expectedText);

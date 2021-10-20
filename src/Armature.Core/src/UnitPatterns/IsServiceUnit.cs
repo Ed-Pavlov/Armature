@@ -1,7 +1,11 @@
-﻿namespace Armature.Core
+﻿using Armature.Core.Logging;
+
+namespace Armature.Core
 {
-  public class IsServiceUnit : IUnitPattern
+  public record IsServiceUnit : IUnitPattern
   {
     public bool Matches(UnitId unitId) => unitId.Key is SpecialKey;
+
+    public override string ToString() => GetType().GetShortName();
   }
 }

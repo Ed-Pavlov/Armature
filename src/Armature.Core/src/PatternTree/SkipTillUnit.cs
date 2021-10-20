@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using Armature.Core.Logging;
 
 namespace Armature.Core
@@ -12,7 +13,7 @@ namespace Armature.Core
   {
     private readonly IUnitPattern _pattern;
 
-    public SkipTillUnit(IUnitPattern pattern, int weight = WeightOf.FindUnit) : base(weight)
+    public SkipTillUnit(IUnitPattern pattern, int weight = WeightOf.Match) : base(weight)
       => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
     /// <summary>
@@ -27,12 +28,16 @@ namespace Armature.Core
       {
         var unitInfo = unitSequence[i];
 
-        if(_pattern.Matches(unitInfo))
-          return GetOwnOrChildrenBuildActions(unitSequence.GetTail(i), realWeight);
+        var isPatternMatches = _pattern.Matches(unitInfo);
+        var newWeight        = realWeight + Weight; 
+        // Log.WriteLine(LogLevel.Trace, () => $"Pattern {_pattern.ToLogString()} {(isPatternMatches ? "matches the unit id" : $"doesn't match the unit id. Current weight = {newWeight}")}" );
+        
+        if(isPatternMatches)
+          return GetOwnOrChildrenBuildActions(unitSequence.GetTail(i), inputWeight);
 
         // increase weight on each "skipping" step, it will lead that "deeper" context has more weight then more common
         // it is needed when some Unit is registered several times
-        realWeight++;
+        realWeight = newWeight;
       }
 
       Log.WriteLine(LogLevel.Trace, () => $"{this}{LogConst.NoMatch}");

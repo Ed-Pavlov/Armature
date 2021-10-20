@@ -42,7 +42,7 @@ namespace Armature.Core
       }
       else
       {
-        actionBag = GetOwnBuildActions(Weight + inputWeight);
+        actionBag = GetOwnBuildActions(inputWeight + Weight);
 
         if(actionBag is null)
           Log.WriteLine(LogLevel.Trace, () => $"{this}{LogConst.NoMatch}");
@@ -93,7 +93,14 @@ namespace Armature.Core
         using(Log.Block(LogLevel.Info, "Build actions"))
         {
           foreach(var pair in _buildActions)
-            Log.WriteLine(LogLevel.Info, $"{pair.Value}{{ Stage={pair.Key} }}");
+          foreach(var buildAction in pair.Value)
+            if(buildAction is not ILogable printable)
+              Log.WriteLine(LogLevel.Info, $"{buildAction}{{ Stage={pair.Key} }}");
+            else
+            {
+              Log.WriteLine(LogLevel.Info, $"Stage={pair.Key}");
+              printable.PrintToLog();
+            }
         }
     }
   }

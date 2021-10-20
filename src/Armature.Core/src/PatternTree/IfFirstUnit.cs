@@ -11,7 +11,7 @@ namespace Armature.Core
   {
     private readonly IUnitPattern _pattern;
 
-    public IfFirstUnit(IUnitPattern pattern, int weight = WeightOf.FirstUnit) : base(weight)
+    public IfFirstUnit(IUnitPattern pattern, int weight = 0) : base(weight)
       => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
     /// <summary>

@@ -9,15 +9,16 @@ namespace Armature.Core
   [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
   public class WeightOf
   {
-    protected const byte Step   = 10;
+    public const byte Step   = 10;
     public const byte Lowest = Step * 2;
 
     public const byte OpenGenericPattern = Lowest             + Step;
     public const byte SubtypePattern     = OpenGenericPattern + Step;
     public const byte StrictPattern      = SubtypePattern     + Step;
 
-    public const short SkipToLastUnit = (Lowest - Step) << (sizeof(byte) * 8);
-    public const short FindUnit       = (Lowest + Step) << (sizeof(byte) * 8);
-    public const short FirstUnit      = FindUnit + ((Step / 2) << (sizeof(byte) * 8));
+    public const short SkipAll   = -10;
+    public const short Match  = 10;
+    // public const short SkipTillUnit  = 10;
+    // public const short FirstUnit = SkipTillUnit; // FindUnit + (Step << (sizeof(byte) * 8));
   }
 }

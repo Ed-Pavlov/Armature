@@ -192,7 +192,7 @@ namespace Tests.Functional
 
       target
        .Treat<ISubject1>()
-       .AsCreated<Subject>(key);
+       .As<Subject>(key);
 
       target
        .Treat<Subject>(key)

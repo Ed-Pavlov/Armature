@@ -7,11 +7,11 @@ namespace Armature.Core
   /// Checks if a unit is an argument for a method parameter marked with <see cref="InjectAttribute"/> attribute
   /// with an optional <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
-  public record IsParameterInfoWithAttribute : InjectPointAttributePattern
+  public record IsParameterMarkedWithAttribute : InjectPointAttributePattern
   {
     /// <inheritdoc />
     [DebuggerStepThrough]
-    public IsParameterInfoWithAttribute(object? injectPointId = null) : base(injectPointId) { }
+    public IsParameterMarkedWithAttribute(object? injectPointId = null) : base(injectPointId) { }
 
     protected override InjectAttribute? GetAttribute(UnitId unitId)
       => unitId.Kind is ParameterInfo parameterInfo ? parameterInfo.GetCustomAttribute<InjectAttribute>() : default;

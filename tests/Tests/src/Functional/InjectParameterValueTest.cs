@@ -13,7 +13,7 @@ namespace Tests.Functional
   public class InjectParameterValueTest
   {
     [Test]
-    public void should_autowire_values_passed_into_using_parameters_rather_then_registered()
+    public void should_autowire_values_passed_into_using_arguments_rather_then_registered()
     {
       const string expected = "expected 09765";
 
@@ -21,14 +21,17 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-       .Treat<string>()
-       .AsInstance("blogal");
+       .Treat<string>() //TODO: may be Treat should generate IfLastUnit? why should we perform know to be false matching? Building<> should generate SkipTillUnit 
+       .AsInstance(expected + "bad");
 
       target
        .Treat<LevelOne>()
        .AsIs()
        .UsingArguments(expected);
 
+      target.PrintToLog();
+
+      using var hz = Log.Enabled(LogLevel.Trace);
       // --act
       var actual = target.Build<LevelOne>();
 
@@ -77,7 +80,12 @@ namespace Tests.Functional
        .AsIs()
        .UsingArguments(asIsParameterValue);
 
+      using var _ = Log.Enabled(LogLevel.Verbose);
+      
       var asInterface = target.Build<ISubject1>();
+      Console.WriteLine("///////////////////////////////");
+      Console.WriteLine("///////////////////////////////");
+      Console.WriteLine("///////////////////////////////");
       var asIs        = target.Build<LevelOne>();
 
       // --assert
@@ -233,8 +241,8 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       var tuner = target
-                    .Treat<LevelOne>()
-                    .AsIs();
+                 .Treat<LevelOne>()
+                 .AsIs();
 
       // --act
       Action actual = () => tuner.UsingArguments(
@@ -242,7 +250,8 @@ namespace Tests.Functional
                         ForParameter.OfType<string>().UseValue("kldj"));
 
       // --assert
-      actual.Should().ThrowExactly<ArmatureException>()
+      actual.Should()
+            .ThrowExactly<ArmatureException>()
             .Where(_ => _.Message.StartsWith($"Building of an argument for the method parameter of type {typeof(string).ToLogString()} is already tuned"));
     }
 
@@ -344,6 +353,13 @@ namespace Tests.Functional
        .AsCreated<LevelTwo>()
        .BuildingWhich(_ => _.TreatAll().UsingArguments(expected + "bad"));
 
+      Console.WriteLine("Main Tree");
+      target.PrintToLog();
+      Console.WriteLine("");
+      Console.WriteLine("//////////////////////////////////////");
+
+      using var _ = Log.Enabled(LogLevel.Verbose);
+
       // --act
       var actual = (LevelTwo)target.Build<ISubject1>();
 
@@ -359,12 +375,18 @@ namespace Tests.Functional
 
       var target = CreateTarget();
 
-      target.Treat<ISubject1>().AsCreated<LevelThree>();
-      target.Building<ISubject1>().Building<LevelThree>().TreatAll().UsingArguments(levelThree); // longer path
-      target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected));                       // narrower context
+      // target.Treat<ISubject1>().AsCreated<LevelThree>();
+      // target.Building<ISubject1>().Building<LevelThree>().TreatAll().UsingArguments(levelThree); // longer path
+      // target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected)); // narrower context
+      // target.Treat<LevelOne>().AsIs();
+      
+      target.Treat<ISubject1>().AsCreated<LevelThree>().BuildingWhich(_ => _.TreatAll().UsingArguments(levelThree)); // longer path
+      target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected));                     // narrower context
       target.Treat<LevelOne>().AsIs();
 
-      var actual = target.Build<ISubject1>();
+      using var _ = Log.Enabled(LogLevel.Trace);
+
+      var actual = target.Build<ISubject1>(); //TODO: почему финальный вес 50? откуда берётся такое большое число?
 
       actual.Should().BeOfType<LevelThree>().Which.LevelTwo.LevelOne.Text.Should().Be(expected);
     }
@@ -464,11 +486,7 @@ namespace Tests.Functional
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(
-                 new TryInOrder()
-                 {
-                   Static<BuildArgumentByParameterType>.Instance, 
-                   Static<GetParameterDefaultValue>.Instance
-                 },
+                 new TryInOrder() { Static<BuildArgumentByParameterType>.Instance, Static<GetParameterDefaultValue>.Instance },
                  BuildStage.Create)
            }
          };

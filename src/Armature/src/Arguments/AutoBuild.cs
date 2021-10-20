@@ -2,7 +2,7 @@
 
 namespace Armature
 {
-  public class AutoBuild
+  public static class AutoBuild
   {
     public static ByParam   ByParameter      => Static<ByParam>.Instance;
     public static ParamList MethodParameters => Static<ParamList>.Instance;
@@ -17,14 +17,17 @@ namespace Armature
 
     public class ByParam
     {
+      private const short ByNameWeight = 10;
+      private const short ByTypeWeight = 5;
+      
       public IArgumentTuner Type { get; } = new ArgumentTuner(
         node => node
-               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance))
+               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance, ByTypeWeight))
                .UseBuildAction(Static<BuildArgumentByParameterType>.Instance, BuildStage.Create));
 
       public IArgumentTuner Name { get; } = new ArgumentTuner(
         node => node
-               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance))
+               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance, ByNameWeight))
                .UseBuildAction(Static<BuildArgumentByParameterName>.Instance, BuildStage.Create));
     }
   }

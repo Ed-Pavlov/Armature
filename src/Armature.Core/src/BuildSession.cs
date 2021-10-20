@@ -13,24 +13,24 @@ namespace Armature.Core
   public partial class BuildSession
   {
     private readonly object[]          _buildStages;
-    private readonly IPatternTreeNode  _buildPlans;
-    private readonly IPatternTreeNode? _auxBuildPlans;
+    private readonly IPatternTreeNode  _mainPatternTree;
+    private readonly IPatternTreeNode? _auxPatternTree;
     private readonly Builder[]?        _parentBuilders;
     private readonly List<UnitId>      _buildSequence;
 
     /// <param name="buildStages">The sequence of build stages. See <see cref="Builder" /> for details.</param>
     /// <param name="buildPlans">Build plans used to find build actions to build a unit.</param>
-    /// <param name="auxBuildPlans">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method
+    /// <param name="auxPatternTree">Build plans collection contains additional build plans passed into <see cref="Builder.BuildUnit" /> method
     /// they are passed to <paramref name="parentBuilders"/> in opposite to <paramref name="buildPlans"/> </param>
     /// <param name="parentBuilders">
     ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
     ///   parent builders one by one in the order they passed into constructor
     /// </param>
-    public BuildSession(object[] buildStages, IPatternTreeNode buildPlans, IPatternTreeNode? auxBuildPlans, Builder[]? parentBuilders)
+    public BuildSession(object[] buildStages, IPatternTreeNode buildPlans, IPatternTreeNode? auxPatternTree, Builder[]? parentBuilders)
     {
       _buildStages    = buildStages ?? throw new ArgumentNullException(nameof(buildStages));
-      _buildPlans     = buildPlans  ?? throw new ArgumentNullException(nameof(buildPlans));
-      _auxBuildPlans  = auxBuildPlans;
+      _mainPatternTree     = buildPlans  ?? throw new ArgumentNullException(nameof(buildPlans));
+      _auxPatternTree  = auxPatternTree;
       _parentBuilders = parentBuilders;
       _buildSequence  = new List<UnitId>(4);
     }
@@ -62,8 +62,9 @@ namespace Armature.Core
 
         using(Log.Block(LogLevel.Verbose, () => $"{nameof(IPatternTreeNode.GatherBuildActions)}( {string.Join(", ", _buildSequence)} )"))
         {
-          actions    = _buildPlans.GatherBuildActions(_buildSequence.AsArrayTail(), 0);
-          auxActions = _auxBuildPlans?.GatherBuildActions(_buildSequence.AsArrayTail(), 0);
+          var buildSequence = _buildSequence.AsArrayTail();
+          actions    = _mainPatternTree.GatherBuildActions(buildSequence, 0);
+          auxActions = _auxPatternTree?.GatherBuildActions(buildSequence, 0);
         }
 
         var actionBag = actions.Merge(auxActions);
@@ -199,7 +200,7 @@ namespace Armature.Core
         {
           using(Log.Block(LogLevel.Info, "Try build via parent builder #{0}", i))
           {
-            var buildResult = _parentBuilders[i].BuildUnit(unitId, _auxBuildPlans);
+            var buildResult = _parentBuilders[i].BuildUnit(unitId, _auxPatternTree);
 
             if(buildResult.HasValue)
               return buildResult;

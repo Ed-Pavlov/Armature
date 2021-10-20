@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -54,7 +53,7 @@ namespace Armature
     private static IReadOnlyList<object?> BuildAll<T>(this Builder builder, object? key, params object[]? arguments)
     {
       var unitId     = new UnitId(typeof(T), key);
-      var buildPlans = CreateAuxBuildPlansCollection(arguments);
+      var buildPlans = CreateAuxPatternTree(arguments);
 
       var unitList = builder.BuildAllUnits(unitId, buildPlans);
 
@@ -72,22 +71,30 @@ namespace Armature
       if(builder is null) throw new ArgumentNullException(nameof(builder));
 
       var unitId      = new UnitId(typeof(T), key);
-      var buildPlans  = CreateAuxBuildPlansCollection(arguments);
-      var buildResult = builder.BuildUnit(unitId, buildPlans);
+      var patternTree = CreateAuxPatternTree(arguments);
+      
+      Console.WriteLine("Aux Tree");
+      patternTree?.PrintToLog();
+      Console.WriteLine("");
+      Console.WriteLine("//////////////////////////////////////");
+      
+      var buildResult = builder.BuildUnit(unitId, patternTree);
 
+      //TODO: check code for build plan name
       return buildResult.HasValue
                ? (T?)buildResult.Value
                : throw new ArmatureException($"Unit {unitId} is not built").AddData($"{nameof(unitId)}", unitId);
     }
 
-    private static IPatternTreeNode? CreateAuxBuildPlansCollection(object[]? arguments)
+    private static IPatternTreeNode? CreateAuxPatternTree(object[]? arguments)
     {
       if(arguments is not { Length: > 0 }) return null;
 
       var buildPlans = new PatternTree();
 
+      // F < (F - K) + A < F + A, where K < A, F = WeightOf.FindUnit, K = WeightOfArgument.Lowest, A > WeightOfArgument.Xxx => A > WeightOfArgument.Lowest 
       buildPlans
-       .TreatAll()
+       .TreatAll(WeightOf.Match) //TODO: what does this weight mean?
        .UsingArguments(arguments);
 
       return buildPlans;
