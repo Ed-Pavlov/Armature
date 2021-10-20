@@ -30,6 +30,7 @@ dotnet_style_qualification_for_property = false:suggestion
 dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
 
 # ReSharper properties
+max_line_length = 145
 resharper_align_linq_query = true
 resharper_align_multiline_argument = true
 resharper_align_multiline_array_and_object_initializer = true
