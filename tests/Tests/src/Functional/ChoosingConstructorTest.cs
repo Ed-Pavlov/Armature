@@ -19,7 +19,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipToLastUnit {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                     new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
                    };
 
       target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
@@ -41,7 +41,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Create)
                    {
-                     new SkipToLastUnit {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                     new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
                    };
 
       target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
@@ -64,7 +64,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipToLastUnit {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                     new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
                    };
 
       target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
@@ -86,7 +86,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipToLastUnit
+                     new SkipAllUnits
                      {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
@@ -118,7 +118,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipToLastUnit
+                     new SkipAllUnits
                      {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
@@ -151,7 +151,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipToLastUnit
+                     new SkipAllUnits
                      {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(

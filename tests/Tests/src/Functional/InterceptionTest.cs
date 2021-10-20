@@ -29,7 +29,7 @@ namespace Tests.Functional
       // (postprocessing will be called last and buildAction will add a postfix to created or cached string
 
       target
-       .GetOrAddNode(new SkipToLastUnit())
+       .GetOrAddNode(new SkipAllUnits())
        .AddNode(new IfFirstUnit(new StringParameterPattern()))
        .UseBuildAction(new AddPostfixToString(Postfix), BuildStage.Intercept);
 
@@ -83,7 +83,7 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Intercept, BuildStage.Cache, BuildStage.Create)
          {
-           new SkipToLastUnit
+           new SkipAllUnits
            {
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),

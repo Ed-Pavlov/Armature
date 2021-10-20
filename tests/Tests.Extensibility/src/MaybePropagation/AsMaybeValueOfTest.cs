@@ -118,7 +118,7 @@ namespace Tests.Extensibility.MaybePropagation
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new SkipToLastUnit
+           new SkipAllUnits
            {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())

@@ -161,7 +161,7 @@ namespace Tests.Performance
 
     private static Builder CreateTarget(Builder parent = null)
     {
-      var treatAll = new SkipToLastUnit
+      var treatAll = new SkipAllUnits
                      {
                        // inject into constructor
                        new IfFirstUnit(new IsConstructor())

@@ -4,12 +4,11 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  ///   Matches any sequence of building units, thus passing the unit under construction to <see cref="IPatternTreeNode.Children" /> and merge their
-  ///   build actions with its own.
+  ///   Skips all units in the building unit sequence and pass the last (under construction) unit  to <see cref="IPatternTreeNode.Children" />.
   /// </summary>
-  public class SkipToLastUnit : PatternTreeNodeWithChildrenBase
+  public class SkipAllUnits : PatternTreeNodeWithChildrenBase
   {
-    public SkipToLastUnit(int weight = WeightOf.SkipToLastUnit) : base(weight) { }
+    public SkipAllUnits(int weight = WeightOf.SkipToLastUnit) : base(weight) { }
 
     public override BuildActionBag BuildActions
       => throw new NotSupportedException(

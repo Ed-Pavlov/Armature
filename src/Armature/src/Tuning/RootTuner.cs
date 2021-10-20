@@ -82,7 +82,7 @@ namespace Armature
     /// </summary>
     public FinalTuner TreatAll()
     {
-      var patternMatcher = new SkipToLastUnit();
+      var patternMatcher = new SkipAllUnits();
       return new FinalTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
   }

@@ -263,7 +263,7 @@ namespace Tests.Functional
      
       return new(BuildStage.Cache, BuildStage.Create)
              {
-               new SkipToLastUnit
+               new SkipAllUnits
                {
                  new SkipTillUnit(new IsSubtypeOf(typeof(IDisposable), null))
                   .UseBuildAction(new CreateByReflection(), BuildStage.Cache),
