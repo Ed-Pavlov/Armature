@@ -12,6 +12,8 @@ namespace Armature.Core
   /// but it is built in "context" of all the sequence of dependencies.</remarks>
   public partial class BuildSession
   {
+    private const string GatherBuildActions = "GatherBuildActions";
+    
     private readonly object[]          _buildStages;
     private readonly IPatternTreeNode  _mainPatternTree;
     private readonly IPatternTreeNode? _auxPatternTree;
@@ -53,15 +55,19 @@ namespace Armature.Core
     /// </summary>
     private T Build<T>(UnitId unitId, Func<WeightedBuildActionBag?, T> build)
     {
-      using(Log.Block(LogLevel.Info, () => $"Build( {unitId} )"))
+      T result;
+      using(Log.NamedBlock(LogLevel.Info, "Build"))
       {
+        Log.WriteLine(LogLevel.Verbose, () => $"UnitId = {unitId.ToLogString()}");
         _buildSequence.Add(unitId);
 
         WeightedBuildActionBag? actions;
         WeightedBuildActionBag? auxActions;
 
-        using(Log.Block(LogLevel.Verbose, () => $"{nameof(IPatternTreeNode.GatherBuildActions)}( {string.Join(", ", _buildSequence)} )"))
+        using(Log.NamedBlock(LogLevel.Verbose, GatherBuildActions))
         {
+          Log.WriteLine(LogLevel.Verbose, () => $"Context = {_buildSequence.ToLogString()}" ); 
+          
           var buildSequence = _buildSequence.AsArrayTail();
           actions    = _mainPatternTree.GatherBuildActions(buildSequence, 0);
           auxActions = _auxPatternTree?.GatherBuildActions(buildSequence, 0);
@@ -69,14 +75,16 @@ namespace Armature.Core
 
         var actionBag = actions.Merge(auxActions);
         LogGatheredActions(actionBag);
-
+        
         try {
-          return build(actionBag);
+          result = build(actionBag);
         }
         finally {
           _buildSequence.RemoveAt(_buildSequence.Count - 1);
         }
       }
+      Log.WriteLine(LogLevel.Info, ""); 
+      return result;
     }
 
     private BuildResult BuildUnit(WeightedBuildActionBag? buildActionBag)
@@ -103,11 +111,7 @@ namespace Armature.Core
           break; // object is built, unwind called actions in reverse orders
       }
 
-      Log.WriteLine(LogLevel.Verbose, "");
-
       LogBuildResult(buildSession.BuildResult);
-
-      Log.WriteLine(LogLevel.Trace, "");
 
       foreach(var buildAction in performedActions)
         BuildActionPostProcess(buildAction, buildSession);
@@ -154,40 +158,30 @@ namespace Armature.Core
 
     private void BuildActionProcess(IBuildAction buildAction, Interface buildSession)
     {
-      Log.WriteLine(LogLevel.Verbose, "");
-
-      using(Log.Block(LogLevel.Verbose, () => $"{buildAction}.{nameof(IBuildAction.Process)}( buildResult: {buildSession.BuildResult} )"))
-      {
-        try
-        {
+      using(Log.NamedBlock(LogLevel.Verbose, () => LogConst.BuildAction_Process(buildAction)))
+        try {
           buildAction.Process(buildSession);
         }
-        catch(Exception exc)
-        {
+        catch(Exception exc) {
           AddBuildSessionData(exc);
-          exc.ToLog(() => $"Exception was thrown during executing {buildAction}.{nameof(IBuildAction.Process)} method");
-          throw;
         }
-      }
     }
 
     private void BuildActionPostProcess(IBuildAction buildAction, IBuildSession buildSession)
     {
-      using(Log.Block(LogLevel.Trace, () => $"{buildAction}.{nameof(IBuildAction.PostProcess)}( buildResult: {buildSession.BuildResult} )"))
+      using(Log.NamedBlock(LogLevel.Trace, () => $"{buildAction.GetType().GetShortName()}.{nameof(IBuildAction.PostProcess)}"))
       {
-        try
-        {
+        Log.WriteLine(LogLevel.Trace, () => $"Build.Result = {buildSession.BuildResult.ToLogString()}");
+        try {
           buildAction.PostProcess(buildSession);
         }
-        catch(Exception exc)
-        {
+        catch(Exception exc) {
           AddBuildSessionData(exc);
-          exc.ToLog(() => $"Exception was thrown during executing {buildAction}.{nameof(IBuildAction.PostProcess)} method");
+          exc.WriteToLog(() => $"Exception was thrown during executing {buildAction}.{nameof(IBuildAction.PostProcess)} method");
           throw;
         }
       }
     }
-
 
     private BuildResult BuildViaParentBuilder(UnitId unitId)
     {
@@ -198,8 +192,9 @@ namespace Armature.Core
       for(var i = 0; i < _parentBuilders.Length; i++)
         try
         {
-          using(Log.Block(LogLevel.Info, "Try build via parent builder #{0}", i))
+          using(Log.NamedBlock(LogLevel.Info, "TryBuildViaParentUser"))
           {
+            Log.Write(LogLevel.Info, $"#{i}");
             var buildResult = _parentBuilders[i].BuildUnit(unitId, _auxPatternTree);
 
             if(buildResult.HasValue)
@@ -208,7 +203,7 @@ namespace Armature.Core
         }
         catch(Exception exc)
         {
-          exc.ToLog(() => "Exception");
+          exc.WriteToLog(() => "Exception");
           exceptions.Add(exc);
 
           // continue
@@ -227,20 +222,18 @@ namespace Armature.Core
     }
 
     private static void LogBuildResult(BuildResult buildResult)
-      => Log.WriteLine(
-        LogLevel.Info,
-        () => $"{nameof(BuildSession)}.{nameof(IBuildSession.BuildResult)} = "
-            + $"{(buildResult.HasValue ? $"{buildResult} : {buildResult.Value?.GetType().ToLogString()}" : buildResult)}");
+    {
+      Log.WriteLine(LogLevel.Info, "");
+      Log.WriteLine(LogLevel.Info, () => $"Build.Result = {buildResult.ToLogString()}");
+      Log.WriteLine(LogLevel.Info, "");
+    }
 
     private static void LogGatheredActions(WeightedBuildActionBag? actionBag)
     {
-      Log.WriteLine(LogLevel.Verbose, "");
-
-      if(actionBag is null)
-        Log.WriteLine(LogLevel.Verbose, "No matched actions");
-      else
-        using(Log.Block(LogLevel.Verbose, "Gathered actions"))
-          actionBag.ToLog(LogLevel.Verbose);
+      Log.WriteLine(LogLevel.Info, "");
+      Log.Write(LogLevel.Info, $"{GatherBuildActions}.Result: "); 
+      actionBag.WriteToLog(LogLevel.Info);
+      Log.WriteLine(LogLevel.Info, "");
     }
   }
 }

@@ -19,7 +19,16 @@ namespace Armature.Core
     ///   If it is the unit under construction, returns build actions for it, if no, pass the rest of the sequence to each child and returns merged actions.
     /// </summary>
     public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
-      => _pattern.Matches(unitSequence[0]) ? GetOwnOrChildrenBuildActions(unitSequence, inputWeight) : null;
+    {
+      using(Log.NamedBlock(LogLevel.Verbose, nameof(IfFirstUnit)))
+      {
+        Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {_pattern.ToLogString()}");
+        
+        var matches = _pattern.Matches(unitSequence[0]);
+        Log.WriteLine(LogLevel.Verbose, LogConst.Matched, matches);
+        return matches ? GetOwnOrChildrenBuildActions(unitSequence, inputWeight) : null;
+      }
+    }
 
     [DebuggerStepThrough]
     public override string ToString() => $"{GetType().GetShortName()}( {_pattern.ToLogString()} ){{ Weight={Weight:n0} }}";

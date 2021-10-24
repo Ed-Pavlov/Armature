@@ -18,11 +18,20 @@ namespace Armature.Core
     {
       var i = 0;
 
-      for(; i < unitSequence.Length - 1; i++)
-        if(!_pattern.Matches(unitSequence[i]))
-          break;
-
-      return GetChildrenActions(unitSequence.GetTail(i), inputWeight);
+      using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipWhileUnit)))
+      {
+        Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {_pattern.ToLogString()}");
+        
+        for(; i < unitSequence.Length - 1; i++)
+        {
+          if(!_pattern.Matches(unitSequence[i]))
+          {
+            Log.WriteLine(LogLevel.Verbose, LogConst.Matched, false);
+            break;
+          }
+        }
+        return GetChildrenActions(unitSequence.GetTail(i), inputWeight);
+      }
     }
     
     [DebuggerStepThrough]

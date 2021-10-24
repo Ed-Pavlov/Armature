@@ -6,6 +6,6 @@ namespace Armature.Core
   {
     public bool Matches(UnitId unitId) => unitId.Key is SpecialKey;
 
-    public override string ToString() => GetType().GetShortName();
+    public string ToLogString() => GetType().GetShortName();
   }
 }

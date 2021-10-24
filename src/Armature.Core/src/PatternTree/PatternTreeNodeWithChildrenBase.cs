@@ -22,8 +22,8 @@ namespace Armature.Core
   /// </remarks>
   public abstract class PatternTreeNodeWithChildrenBase : IPatternTreeNode, IEnumerable
   {
-    private HashSet<IPatternTreeNode>? _children;
-    private HashSet<IPatternTreeNode>  LazyChildren => _children ??= new HashSet<IPatternTreeNode>();
+    protected HashSet<IPatternTreeNode>? RawChildren;
+    private HashSet<IPatternTreeNode>  LazyChildren => RawChildren ??= new HashSet<IPatternTreeNode>();
 
     protected PatternTreeNodeWithChildrenBase(int weight) => Weight = weight;
 
@@ -40,17 +40,19 @@ namespace Armature.Core
     /// <param name="unitSequence">The sequence of units building in this build session.</param>
     /// <param name="inputMatchingWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
     protected WeightedBuildActionBag? GetChildrenActions(ArrayTail<UnitId> unitSequence, int inputMatchingWeight)
-      => _children?.Aggregate(
+      => RawChildren?.Aggregate(
         (WeightedBuildActionBag?)null,
         (current, child) => current.Merge(child.GatherBuildActions(unitSequence, inputMatchingWeight)));
 
     public virtual void PrintToLog()
     {
-      if(_children is not null)
-        foreach(var child in _children)
-          using(Log.Block(LogLevel.Info, child.ToString))
+      if(RawChildren is not null)
+        foreach(var child in RawChildren)
+          using(Log.NamedBlock(LogLevel.Info, child.ToString))
             child.PrintToLog();
     }
+
+    public string ToLogString() => ToString();
 
     [DebuggerStepThrough]
     public override string ToString() => $"{GetType().GetShortName()}{{ {Weight:n0} }}";

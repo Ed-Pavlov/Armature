@@ -1,7 +1,12 @@
 ﻿namespace Armature.Core.Logging
 {
-  public interface ILogable
+  public interface ILogable : ILogable1
   {
-    void PrintToLog();
+    void   PrintToLog();
+  }
+
+  public interface ILogable1
+  {
+    string ToLogString();
   }
 }

@@ -24,22 +24,12 @@ namespace Armature.Core
       var unitsToSkipCount = unitSequence.Length;
       var matchingWeight   = Weight + inputWeight - unitsToSkipCount;
 
-      WeightedBuildActionBag? actionBag = null;
-      using(Log.Deferred(LogLevel.Trace, LogMatchingState))
+      using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipAllUnits)))
       {
+        Log.WriteLine(LogLevel.Verbose, "");
         var lastUnitAsTail = unitSequence.GetTail(unitSequence.Length - 1);
-        actionBag = GetChildrenActions(lastUnitAsTail, matchingWeight);
-        return actionBag;
-      }
-
-      void LogMatchingState(Action? blockContent)
-      {
-         if(actionBag is not null)
-          using(Log.Block(LogLevel.Trace, ToString, unitsToSkipCount))
-            blockContent?.Invoke();
+        return GetChildrenActions(lastUnitAsTail, matchingWeight);
       }
     }
-
-    private string ToString(int unitsToSkip) => $"{GetType().GetShortName()}{{ Weight={Weight:n0}, Skipped={unitsToSkip} }}";
   }
 }

@@ -101,7 +101,8 @@ namespace Tests.Functional
     /// </summary>
     private class StringParameterPattern : IUnitPattern
     {
-      public bool Matches(UnitId unitId) => unitId.Kind is ParameterInfo parameterInfo && parameterInfo.ParameterType == typeof(string);
+      public bool   Matches(UnitId unitId) => unitId.Kind is ParameterInfo parameterInfo && parameterInfo.ParameterType == typeof(string);
+      public string ToLogString()          => throw new NotImplementedException();
     }
 
     /// <summary>

@@ -15,7 +15,9 @@ namespace Armature.Core
     {
       if(!buildSession.BuildResult.HasValue)
       {
-        var type = buildSession.GetUnitUnderConstruction().GetUnitType();
+        var type = buildSession.GetUnitUnderConstruction().GetUnitType(); 
+        
+        Log.WriteLine(LogLevel.Verbose, $"Type = {type.ToLogString()}"  );
 
         if(!type.IsInterface && !type.IsAbstract)
         {

@@ -16,6 +16,7 @@ namespace Armature.Core
 
     public void Process(IBuildSession buildSession)
     {
+      Log.WriteLine(LogLevel.Trace, "");
       var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
 
       var effectiveKey = _key == SpecialKey.Propagate ? unitUnderConstruction.Key : _key;

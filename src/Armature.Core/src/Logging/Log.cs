@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
@@ -9,11 +11,11 @@ namespace Armature.Core.Logging
   ///   Class is used to log Armature activities in human friendly form. Writes data into <see cref="System.Diagnostics.Trace" />, so
   ///   add a listener to see the log.
   /// </summary>
+  [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
   public static class Log
   {
     private static readonly Stack<List<string>> DeferredContent = new();
 
-    private static int      _indent;
     private static LogLevel _logLevel = LogLevel.None;
 
     /// <summary>
@@ -21,10 +23,16 @@ namespace Armature.Core.Logging
     /// </summary>
     public static bool LogFullTypeName = false;
 
+    static Log() => IndentSize = 2;
+
     /// <summary>
     ///   The count of spaces used to indent lines
     /// </summary>
-    public static int IndentSize = 2;
+    public static int IndentSize
+    {
+      get => Trace.IndentSize;
+      set => Trace.IndentSize = value;
+    }
 
     /// <summary>
     ///   Used to enable logging in a limited scope using "using" C# keyword
@@ -36,11 +44,33 @@ namespace Armature.Core.Logging
       return new Disposable(() => _logLevel = prevLevel);
     }
 
+    public static void Write(LogLevel logLevel, string text)
+    {
+      if(logLevel > _logLevel) return;
+     
+      DoWrite(text);
+    }
+
+    [StringFormatMethod("format")]
+    public static void Write(LogLevel logLevel, string format, params object[] parameters)
+    {
+      if(logLevel > _logLevel) return;
+      
+      DoWrite(string.Format(format, parameters));
+    }
+
+    public static void Write(LogLevel logLevel, Func<string> getText)
+    {
+      if(logLevel > _logLevel) return;
+      
+      DoWrite(getText());
+    }
+
     public static void WriteLine(LogLevel logLevel, string line)
     {
       if(logLevel > _logLevel) return;
 
-      DoWriteLine(GetIndent() + line);
+      DoWriteLine(line);
     }
 
     [StringFormatMethod("format")]
@@ -53,16 +83,6 @@ namespace Armature.Core.Logging
     public static void WriteLine<T1, T2, T3>(LogLevel logLevel, string format, T1 p1, T2 p2, T3 p3)
       => WriteLine(logLevel, string.Format(format, p1, p2, p3));
 
-    // [StringFormatMethod("format")]
-    // public static void Write(LogLevel logLevel, string format, params object[] parameters)
-    // {
-    //   if(logLevel > _logLevel) return;
-    //
-    //   // ReSharper disable once CoVariantArrayConversion
-    //   System.Diagnostics.Trace.Write(string.Format(format, parameters));
-    // }
-
-
     [StringFormatMethod("format")]
     public static void WriteLine(LogLevel logLevel, string format, params object[] parameters) => WriteLine(logLevel, string.Format(format, parameters));
 
@@ -74,52 +94,40 @@ namespace Armature.Core.Logging
     public static void WriteLine(LogLevel logLevel, [InstantHandle] Func<string> createMessage) => WriteLine(logLevel, createMessage());
 
     /// <summary>
-    ///   This message calls <paramref name="createMessage"/> only if Logging is enabled for <paramref name="logLevel"/>,
-    ///   use it calculating arguments for logging takes a time.
-    /// </summary>
-    [StringFormatMethod("format")]
-    public static void WriteLine<T1>(LogLevel logLevel, [InstantHandle] Func<T1, string> createMessage, T1 v1) => WriteLine(logLevel, createMessage(v1));
-
-    /// <summary>
     ///   Used to make an indented "block" in log data
     /// </summary>
-    public static IDisposable Block(LogLevel logLevel) => logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
+    public static IDisposable IndentBlock(LogLevel logLevel, string name, string brackets, int count = 1)
+    {
+      if(_logLevel < logLevel) return DumbDisposable.Instance;
+     
+      DoWrite(name);
+      return new Indenter(brackets, count);
+    }
 
     /// <summary>
     ///   Used to make a named and indented "block" in log data
     /// </summary>
     [StringFormatMethod("format")]
-    public static IDisposable Block(LogLevel logLevel, string format, params object[] parameters)
-    {
-      WriteLine(logLevel, format, parameters);
+    public static IDisposable NamedBlock(LogLevel logLevel, string name) => IndentBlock(logLevel, name, "{}");
 
-      return logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
+    /// <summary>
+    ///   Used to make a named and indented "block" in log data
+    /// </summary>
+    [StringFormatMethod("format")]
+    public static IDisposable NamedBlock(LogLevel logLevel, string format, params object[] parameters)
+    {
+      if(_logLevel < logLevel) return DumbDisposable.Instance;
+      return IndentBlock(logLevel, string.Format(format, parameters), "{}");
     }
 
     /// <summary>
     ///   Used to make a named and indented "block" in log data
     /// </summary>
-    public static IDisposable Block(LogLevel logLevel, Func<string> getName)
+    public static IDisposable NamedBlock(LogLevel logLevel, Func<string> getName)
     {
-      WriteLine(logLevel, getName);
-
-      return logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
+      if(_logLevel < logLevel) return DumbDisposable.Instance;
+      return IndentBlock(logLevel, getName(), "{}");
     }
-
-    /// <summary>
-    ///   Used to make a named and indented "block" in log data
-    /// </summary>
-    public static IDisposable Block<T1>(LogLevel logLevel, Func<T1, string> getName, T1 v1)
-    {
-      WriteLine(logLevel, getName, v1);
-
-      return logLevel <= _logLevel ? AddIndent(true) : DumbDisposable.Instance;
-    }
-
-    /// <summary>
-    ///   Used to make an indented "block" in log data
-    /// </summary>
-    public static IDisposable AddIndent(bool newBlock = false, int count = 1) => new Indenter(newBlock, count);
 
     /// <summary>
     /// Executes action if <paramref name="logLevel"/> satisfies current Log level. See <see cref="Enabled"/> for details
@@ -135,27 +143,12 @@ namespace Armature.Core.Logging
     }
 
 
-    /// <summary>
-    ///   Returns the name of <paramref name="type" /> respecting <see cref="LogFullTypeName" /> property
-    /// </summary>
-    public static string ToLogString(this Type type) => LogFullTypeName ? type.GetFullName() : type.GetShortName();
-
-    /// <summary>
-    ///   Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
-    /// </summary>
-    public static string ToLogString(this object? obj)
-    {
-      if(obj is null) return "null";
-
-      return obj is Type type ? type.ToLogString() : obj.ToString();
-    }
-
     public static IDisposable Deferred(LogLevel logLevel, Action<Action?> action)
     {
       if(_logLevel < logLevel) return DumbDisposable.Instance;
 
       DeferredContent.Push(new List<string>());
-      var originalIndent = _indent;
+      var originalIndent = Trace.IndentLevel;
 
       return new Disposable(
         () =>
@@ -167,7 +160,7 @@ namespace Armature.Core.Logging
               ? null
               : () =>
                 {
-                  var gap = new string(' ', _indent - originalIndent);
+                  var gap = new string(' ', Trace.IndentLevel - originalIndent);
 
                   foreach(var line in deferredContent)
                     DoWriteLine(gap + line);
@@ -175,38 +168,42 @@ namespace Armature.Core.Logging
         });
     }
 
-    private static string GetIndent() => new(' ', _indent * IndentSize);
-
-    private static void DoWriteLine(string line)
+    private static void DoWriteLine(string line) => DoWrite(line, true);
+    private static void DoWrite(string text, bool newLine = false)
     {
       // all "Write" methods should at the end call this method, so we check for deferred in one place only
-      if(DeferredContent.Count == 0)
-        System.Diagnostics.Trace.WriteLine(line);
+      if(DeferredContent.Count > 0)
+        DeferredContent.Peek().Add(text);
       else
-        DeferredContent.Peek().Add(line);
+      {
+        if(newLine)
+          Trace.WriteLine(text);
+        else
+          Trace.Write(text);
+      }
     }
 
-    private class Indenter : IDisposable
+    private class Indenter : Disposable
     {
-      private readonly int  _indent;
-      private readonly bool _isBlock;
+      public Indenter(string brackets, int indent) : base(() => Close(brackets, indent)) => Open(brackets, indent);
 
-      public Indenter(bool isBlock, int indent)
+      private static void Open(string brackets, int indent)
       {
-        if(isBlock)
-          WriteLine(LogLevel.Info, "{");
+        if(brackets.Length is not (0 or 2))
+          throw new ArgumentException("String should be empty or contain two simple symbols, at index 0 the opening bracket at index 1 the closing one");
+        
+        if(brackets.Length > 0)
+          Write(LogLevel.Info, " " + brackets[0] + " "); //TODO: is there is need to improve the performance of string concatenation?
 
-        _isBlock    =  isBlock;
-        _indent     =  indent;
-        Log._indent += _indent;
+        Trace.IndentLevel += indent;
       }
 
-      public void Dispose()
+      private static void Close(string brackets, int indent)
       {
-        Log._indent -= _indent;
+        Trace.IndentLevel -= indent;
 
-        if(_isBlock)
-          WriteLine(LogLevel.Info, "}");
+        if(brackets.Length > 0)
+          WriteLine(LogLevel.Info, brackets[1].ToString());
       }
     }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 using Armature.Core.Logging;
 
 namespace Armature.Core
@@ -24,23 +23,29 @@ namespace Armature.Core
     {
       var realWeight = inputWeight;
 
-      for(var i = 0; i < unitSequence.Length; i++)
+      using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipTillUnit)))
       {
-        var unitInfo = unitSequence[i];
+        Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {_pattern.ToLogString()}");
 
-        var isPatternMatches = _pattern.Matches(unitInfo);
-        var newWeight        = realWeight + Weight; 
-        // Log.WriteLine(LogLevel.Trace, () => $"Pattern {_pattern.ToLogString()} {(isPatternMatches ? "matches the unit id" : $"doesn't match the unit id. Current weight = {newWeight}")}" );
-        
-        if(isPatternMatches)
-          return GetOwnOrChildrenBuildActions(unitSequence.GetTail(i), inputWeight);
+        for(var i = 0; i < unitSequence.Length; i++)
+        {
+          var unitInfo = unitSequence[i];
 
-        // increase weight on each "skipping" step, it will lead that "deeper" context has more weight then more common
-        // it is needed when some Unit is registered several times
-        realWeight = newWeight;
+          var isPatternMatches = _pattern.Matches(unitInfo);
+          var newWeight        = realWeight + Weight;
+
+          if(isPatternMatches)
+          {
+            Log.WriteLine(LogLevel.Verbose, LogConst.Matched, true);
+            return GetOwnOrChildrenBuildActions(unitSequence.GetTail(i), inputWeight);
+          }
+
+          // increase weight on each "skipping" step, it will lead that "deeper" context has more weight then more common
+          // it is needed when some Unit is registered several times
+          realWeight = newWeight;
+        }
+        Log.WriteLine(LogLevel.Verbose, LogConst.Matched, false);
       }
-
-      Log.WriteLine(LogLevel.Trace, () => $"{this}{LogConst.NoMatch}");
       return null;
     }
 

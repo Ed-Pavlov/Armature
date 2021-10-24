@@ -17,16 +17,20 @@ namespace Armature.Core
     
     public void Process(IBuildSession buildSession)
     {
-      var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
+      Log.WriteLine(LogLevel.Verbose, () => $"PointId = {_injectPointId.ToLogString()}");
 
+      var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
       var constructors = unitType
                         .GetConstructors()
-                        .Where(ctor =>
-                               {
-                                 var attribute = ctor.GetCustomAttribute<InjectAttribute>();
-                                 return attribute is not null && Equals(_injectPointId, attribute.InjectionPointId);
-                               })
+                        .Where(
+                           ctor =>
+                           {
+                             var attribute = ctor.GetCustomAttribute<InjectAttribute>();
+                             return attribute is not null && Equals(_injectPointId, attribute.InjectionPointId);
+                           })
                         .ToArray();
+
+      LogConst.Log_Constructors(constructors);
 
       if(constructors.Length > 1)
       {
@@ -39,7 +43,7 @@ namespace Armature.Core
 
         throw exception;
       }
-      
+
       if(constructors.Length > 0)
         buildSession.BuildResult = new BuildResult(constructors[0]);
     }

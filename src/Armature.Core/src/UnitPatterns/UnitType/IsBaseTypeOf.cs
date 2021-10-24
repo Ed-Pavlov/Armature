@@ -1,4 +1,5 @@
 ﻿using System;
+using Armature.Core.Logging;
 
 namespace Armature.Core
 {
@@ -11,6 +12,7 @@ namespace Armature.Core
 
     public bool Matches(UnitId unitId) => Key.Matches(unitId.Key) && unitId.GetUnitTypeSafe()?.IsAssignableFrom(Type) == true;
     
-    public override string ToString() => base.ToString();
+    public override string ToString()    => base.ToString();
+    public          string ToLogString() => $"{{ IsAssignableFrom {{Type: {Type.ToLogString()}}} }}";
   }
 }

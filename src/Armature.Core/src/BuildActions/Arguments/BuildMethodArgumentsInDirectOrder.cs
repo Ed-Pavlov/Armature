@@ -12,6 +12,7 @@ namespace Armature.Core
     public void Process(IBuildSession buildSession)
     {
       if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
+      Log.WriteLine(LogLevel.Verbose, "");
 
       var parameters = (ParameterInfo[])buildSession.GetUnitUnderConstruction().Kind!;
       var arguments = new object?[parameters.Length];

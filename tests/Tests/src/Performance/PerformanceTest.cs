@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using Armature;
 using Armature.Core;
+using Armature.Core.Logging;
 using FluentAssertions;
 using JetBrains.dotMemoryUnit;
 using JetBrains.dotMemoryUnit.Kernel;
@@ -155,6 +156,8 @@ namespace Tests.Performance
 
         return _impl.GetHashCode();
       }
+
+      public string ToLogString() => GetType().GetShortName();
 
       public override bool Equals(object obj) => Equals(obj as Pattern);
     }

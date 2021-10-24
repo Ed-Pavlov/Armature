@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using Armature.Core.Logging;
-
-namespace Armature.Core
+﻿namespace Armature.Core
 {
   /// <summary>
   /// Checks if <see cref="UnitId.Kind"/> is a type which can be instantiated.
@@ -13,8 +10,7 @@ namespace Armature.Core
       var type = unitId.GetUnitTypeSafe();
       return unitId.Key is not SpecialKey && type is {IsAbstract: false, IsInterface: false, IsGenericTypeDefinition: false};
     }
-    
-    [DebuggerStepThrough]
-    public override string ToString() => GetType().GetShortName();
+
+    public string ToLogString() => "{{{ Can be instantiated: true }}}";
   }
 }

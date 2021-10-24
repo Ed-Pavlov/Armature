@@ -18,6 +18,7 @@ namespace Armature.Core
       var unitType     = buildSession.GetUnitUnderConstruction().GetUnitType();
       var constructors = unitType.GetConstructors();
 
+      Log.WriteLine(LogLevel.Trace, "");
       if(constructors.Length > 0)
       {
         var ctor = GetConstructor(constructors, unitType);
@@ -45,6 +46,8 @@ namespace Armature.Core
           suitableConstructors.Add(i, parametersCount);
         }
       }
+
+      Log.Execute(LogLevel.Trace, () => LogConst.Log_Constructors(suitableConstructors.Select(pair => constructors[pair.Key]).ToArray())); 
 
       if(suitableConstructors.Count != 1)
       {

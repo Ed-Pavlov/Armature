@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Armature.Core.Logging;
 
 namespace Armature.Core
 {
@@ -9,7 +9,7 @@ namespace Armature.Core
   /// Unlike <see cref="IPatternTreeNode" /> which works on unit sequence at whole, this pattern is used to match one unit id.
   /// Reuses logic of matching one unit in different <see cref="IPatternTreeNode" />
   /// </remarks>
-  public interface IUnitPattern
+  public interface IUnitPattern : ILogable1
   {
     /// <summary> Checks if passed <paramref name="unitId"/> matches the pattern </summary>
     bool Matches(UnitId unitId);

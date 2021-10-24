@@ -13,16 +13,13 @@ namespace Armature.Core
     public void Process(IBuildSession buildSession)
     {
       var parameterInfo = (ParameterInfo) buildSession.GetUnitUnderConstruction().Kind!;
+      Log.WriteLine(LogLevel.Verbose, () => $"{{ Parameter: {parameterInfo.ToLogString()} }}");
 
       var attribute = parameterInfo
                      .GetCustomAttributes<InjectAttribute>()
                      .SingleOrDefault();
 
-      if(attribute is null)
-      {
-        Log.WriteLine(LogLevel.Verbose, () => $"{this} => parameter is not marked with InjectAttribute");
-      }
-      else
+      if(attribute is not null)
       {
         var unitInfo = new UnitId(parameterInfo.ParameterType, attribute.InjectionPointId);
         buildSession.BuildResult = buildSession.BuildUnit(unitInfo);

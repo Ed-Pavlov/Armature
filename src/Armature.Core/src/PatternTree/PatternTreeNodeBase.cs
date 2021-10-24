@@ -31,26 +31,31 @@ namespace Armature.Core
 
     protected WeightedBuildActionBag? GetOwnOrChildrenBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {
-      WeightedBuildActionBag? actionBag;
+      WeightedBuildActionBag? actionBag = null;
 
       if(unitSequence.Length > 1)
       { // pass the rest of the sequence to children and return their actions
-        using(LogMatchingState())
+        // using(LogMatchingState())
         {
-          actionBag = GetChildrenActions(unitSequence.GetTail(1), inputWeight + Weight);
+          if(RawChildren is null)
+            Log.WriteLine(LogLevel.Trace, "Children: null");
+          else
+            actionBag = GetChildrenActions(unitSequence.GetTail(1), inputWeight + Weight);
         }
       }
       else
       {
         actionBag = GetOwnBuildActions(inputWeight + Weight);
+        Log.Write(LogLevel.Verbose, "Action: ");
+        actionBag.WriteToLog(LogLevel.Verbose);
 
-        if(actionBag is null)
-          Log.WriteLine(LogLevel.Trace, () => $"{this}{LogConst.NoMatch}");
-        else
-          using(Log.Block(LogLevel.Trace, ToString)) // pass group method, do not call ToString
-          {
-            actionBag.ToLog(LogLevel.Trace);
-          }
+        // if(actionBag is null)
+        //   Log.WriteLine(LogLevel.Trace, () => $"{this}{LogConst.NoMatch}");
+        // else
+        //   using(Log.NamedBlock(LogLevel.Trace, ToString)) // pass group method, do not call ToString
+        //   {
+        //     actionBag.WriteToLog(LogLevel.Trace);
+        //   }
       }
 
       return actionBag;
@@ -66,7 +71,7 @@ namespace Armature.Core
           if(blockContent is null)
             Log.WriteLine(LogLevel.Trace, GetLogLine);
           else
-            using(Log.Block(LogLevel.Trace, GetLogLine))
+            using(Log.NamedBlock(LogLevel.Trace, GetLogLine))
               blockContent();
         });
 
@@ -84,13 +89,13 @@ namespace Armature.Core
 
       if(children is not null)
         foreach(var child in children)
-          using(Log.Block(LogLevel.Info, child.ToString))
+          using(Log.NamedBlock(LogLevel.Info, child.ToString))
           {
             child.PrintToLog();
           }
 
       if(_buildActions is not null)
-        using(Log.Block(LogLevel.Info, "Build actions"))
+        using(Log.NamedBlock(LogLevel.Info, "Build actions"))
         {
           foreach(var pair in _buildActions)
           foreach(var buildAction in pair.Value)

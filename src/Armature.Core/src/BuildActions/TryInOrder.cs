@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Resources;
 using Armature.Core.Logging;
 
 namespace Armature.Core
@@ -34,13 +35,12 @@ namespace Armature.Core
     {
       var exceptions = new List<Exception>();
 
+      Log.WriteLine(LogLevel.Verbose, "");
       foreach(var buildAction in _buildActions)
         try
         {
-          using(LogBuildActionProcess(buildSession, buildAction))
-          {
+          using(Log.NamedBlock(LogLevel.Verbose, () => LogConst.BuildAction_Process(buildAction)))
             buildAction.Process(buildSession);
-          }
 
           if(buildSession.BuildResult.HasValue)
           {
@@ -50,7 +50,7 @@ namespace Armature.Core
         }
         catch(Exception exc)
         {
-          exc.ToLog(() => $"Exception was thrown during executing {buildAction}.{nameof(IBuildAction.Process)} method");
+          exc.WriteToLog(() => $"Exception was thrown during executing {buildAction}.{nameof(IBuildAction.Process)} method");
           exceptions.Add(exc);
         }
 
@@ -62,32 +62,15 @@ namespace Armature.Core
         }
     }
 
-    private static IDisposable LogBuildActionProcess(IBuildSession buildSession, IBuildAction buildAction)
-      => Log.Deferred(
-        LogLevel.Verbose,
-        writeDeferredLog =>
-        {
-          var buildResult = buildSession.BuildResult;
-          var logLevel    = buildResult.HasValue ? LogLevel.Verbose : LogLevel.Trace;
-
-          string GetLogLine() => $"{buildAction}.{nameof(IBuildAction.Process)}(...) => {buildResult}";
-
-          if(writeDeferredLog is null)
-            Log.WriteLine(logLevel, GetLogLine);
-          else
-            using(Log.Block(logLevel, GetLogLine))
-              writeDeferredLog();
-        });
-
     public void PostProcess(IBuildSession buildSession)
     {
-      if(_effectiveBuildActions.TryGetValue(buildSession, out var buildAction)) // TODO: why dictionary? smells
-      {
-        _effectiveBuildActions.Remove(buildSession);
+        if(_effectiveBuildActions.TryGetValue(buildSession, out var buildAction)) // TODO: why dictionary? smells
+        {
+          _effectiveBuildActions.Remove(buildSession);
 
-        buildAction.PostProcess(buildSession);
-        Log.WriteLine(LogLevel.Trace, () => string.Format("{0}.{1}(...)", buildAction, nameof(IBuildAction.PostProcess)));
-      }
+          using(Log.NamedBlock(LogLevel.Verbose, () => LogConst.BuildAction_PostProcess(buildAction)))
+            buildAction.PostProcess(buildSession);
+        }
     }
 
     public IEnumerator GetEnumerator() => throw new NotSupportedException();
@@ -100,11 +83,13 @@ namespace Armature.Core
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => GetType().ToLogString(); //TODO: somewhere we need to print it with content
+    public override string ToString() => GetType().ToLogString();
 
+    public string ToLogString() => $"[{string.Join(", ", _buildActions.Select(action => action.ToLogString()).ToArray())}]";
+    
     public void PrintToLog()
     {
-      using(Log.Block(LogLevel.Info, nameof(TryInOrder)))
+      using(Log.NamedBlock(LogLevel.Info, nameof(TryInOrder)))
       {
         foreach(var buildAction in _buildActions)
           Log.WriteLine(LogLevel.Info, buildAction.ToString);

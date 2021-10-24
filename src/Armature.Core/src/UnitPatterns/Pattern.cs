@@ -26,5 +26,7 @@ namespace Armature.Core
 
     [DebuggerStepThrough]
     public override string ToString() => string.Format("{0}({1}:{2})", GetType().GetShortName(), _unitKind.ToLogString(), _key.ToLogString());
+
+    public string ToLogString() => $"{{ kind: {_unitKind.ToLogString()}, key: {_key.ToLogString()} }}";
   }
 }

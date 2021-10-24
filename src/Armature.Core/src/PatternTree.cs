@@ -39,6 +39,8 @@ namespace Armature.Core
         _root.PrintToLog();
     }
 
+    public string ToLogString() => ToString();
+
     public BuildActionBag BuildActions                   => throw new NotSupportedException();
     public bool           Equals(IPatternTreeNode other) => throw new NotSupportedException();
 

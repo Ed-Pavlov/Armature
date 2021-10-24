@@ -20,5 +20,7 @@ namespace Armature.Core
 
     [DebuggerStepThrough]
     public override string ToString() => $"{GetType().GetShortName()}( {_name} )";
+
+    public string ToLogString() => GetType().GetShortName();
   }
 }
