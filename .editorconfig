@@ -1,11 +1,13 @@
 [*]
 end_of_line = crlf
-trim_trailing_whitespace = false
+trim_trailing_whitespace = true
 insert_final_newline = false
 indent_style = space
 indent_size = 2
 tab_width = 2
+max_line_length = 145
 
+[*.cs]
 # Microsoft .NET properties
 csharp_new_line_before_catch = true
 csharp_new_line_before_finally = true
@@ -30,7 +32,6 @@ dotnet_style_qualification_for_property = false:suggestion
 dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
 
 # ReSharper properties
-max_line_length = 145
 resharper_align_linq_query = true
 resharper_align_multiline_argument = true
 resharper_align_multiline_array_and_object_initializer = true
@@ -136,29 +137,6 @@ resharper_web_config_module_not_resolved_highlighting = warning
 resharper_web_config_type_not_resolved_highlighting = warning
 resharper_web_config_wrong_module_highlighting = warning
 
-[*.cs]
-indent_style = space
-indent_size = 2
-tab_width = 2
 
-[*.config]
-indent_style = space
-indent_size = 4
-
-[{*.androidproj,*.ccproj,*.csproj}]
-indent_style = space
-indent_size = 2
-
-[{*.yaml,*.yml}]
-indent_style = space
-indent_size = 2
-
-[*.{asax,ascx,aspx,cg,cginc,compute,cshtml,hlsl,hlsli,hlslinc,master,razor,resw,resx,skin,usf,ush,vb}]
-indent_style = space
-indent_size = 2
-tab_width = 2
-
-[*.{appxmanifest,axaml,build,dtd,nuspec,paml,xaml,xamlx,xoml,xsd}]
-indent_style = space
-indent_size = 2
-tab_width = 2
+[*.hocon]
+resharper_csharp_wrap_before_first_type_parameter_constraint = false

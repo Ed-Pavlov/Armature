@@ -71,6 +71,7 @@ namespace Tests.Functional
        .AsIs();
 
       using var _ = Log.Enabled(LogLevel.Trace);
+
       // --act
       var actual = target.Build<Subject>(expectedText + "bad", expectedValue + 38);
 
@@ -189,7 +190,7 @@ namespace Tests.Functional
               .UseBuildAction(
                  new TryInOrder
                  {
-                   Static<BuildArgumentByParameterInjectPointId>.Instance, 
+                   Static<BuildArgumentByParameterInjectPointId>.Instance,
                    Static<BuildArgumentByParameterType>.Instance
                  },
                  BuildStage.Create)

@@ -13,7 +13,7 @@ namespace Armature.Core
   public partial class BuildSession
   {
     private const string GatherBuildActions = "GatherBuildActions";
-    
+
     private readonly object[]          _buildStages;
     private readonly IPatternTreeNode  _mainPatternTree;
     private readonly IPatternTreeNode? _auxPatternTree;
@@ -66,8 +66,8 @@ namespace Armature.Core
 
         using(Log.NamedBlock(LogLevel.Verbose, GatherBuildActions))
         {
-          Log.WriteLine(LogLevel.Verbose, () => $"Context = {_buildSequence.ToLogString()}" ); 
-          
+          Log.WriteLine(LogLevel.Verbose, () => $"Context = {_buildSequence.ToLogString()}" );
+
           var buildSequence = _buildSequence.AsArrayTail();
           actions    = _mainPatternTree.GatherBuildActions(buildSequence, 0);
           auxActions = _auxPatternTree?.GatherBuildActions(buildSequence, 0);
@@ -75,7 +75,7 @@ namespace Armature.Core
 
         var actionBag = actions.Merge(auxActions);
         LogGatheredActions(actionBag);
-        
+
         try {
           result = build(actionBag);
         }
@@ -83,7 +83,7 @@ namespace Armature.Core
           _buildSequence.RemoveAt(_buildSequence.Count - 1);
         }
       }
-      Log.WriteLine(LogLevel.Info, ""); 
+      Log.WriteLine(LogLevel.Info, "");
       return result;
     }
 
@@ -169,7 +169,7 @@ namespace Armature.Core
 
     private void BuildActionPostProcess(IBuildAction buildAction, IBuildSession buildSession)
     {
-      using(Log.NamedBlock(LogLevel.Trace, () => $"{buildAction.GetType().GetShortName()}.{nameof(IBuildAction.PostProcess)}"))
+      using(Log.NamedBlock(LogLevel.Trace, () => LogConst.BuildAction_PostProcess(buildAction)))
       {
         Log.WriteLine(LogLevel.Trace, () => $"Build.Result = {buildSession.BuildResult.ToLogString()}");
         try {
@@ -231,7 +231,7 @@ namespace Armature.Core
     private static void LogGatheredActions(WeightedBuildActionBag? actionBag)
     {
       Log.WriteLine(LogLevel.Info, "");
-      Log.Write(LogLevel.Info, $"{GatherBuildActions}.Result: "); 
+      Log.Write(LogLevel.Info, $"{GatherBuildActions}.Result: ");
       actionBag.WriteToLog(LogLevel.Info);
       Log.WriteLine(LogLevel.Info, "");
     }

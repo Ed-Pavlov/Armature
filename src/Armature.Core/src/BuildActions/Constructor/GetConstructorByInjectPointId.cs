@@ -11,10 +11,10 @@ namespace Armature.Core
   public record GetConstructorByInjectPointId : IBuildAction
   {
     private readonly object? _injectPointId;
-    
+
     public GetConstructorByInjectPointId() {}
     public GetConstructorByInjectPointId(object? injectPointId) => _injectPointId = injectPointId;
-    
+
     public void Process(IBuildSession buildSession)
     {
       Log.WriteLine(LogLevel.Verbose, () => $"PointId = {_injectPointId.ToLogString()}");
@@ -50,7 +50,7 @@ namespace Armature.Core
 
     [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
-    
+
     public override string ToString() => GetType().GetShortName();
   }
 }

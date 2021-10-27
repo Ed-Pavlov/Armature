@@ -26,7 +26,7 @@ namespace Armature
       => new(parentNode =>
                parentNode
                 .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance))
-                .AddNode(new IfFirstUnit(new IsMethodParameterWithType(typeof(T), true), WeightOfArgument.ByType), 
+                .AddNode(new IfFirstUnit(new IsMethodParameterWithType(typeof(T), true), WeightOfArgument.ByType),
                          $"Building of an argument for the method parameter of type {typeof(T).ToLogString()} is already tuned"));
 
     /// <summary>
@@ -36,11 +36,11 @@ namespace Armature
       => new(parentNode =>
                parentNode
                 .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance))
-                .AddNode(new IfFirstUnit(new IsMethodParameterNamed(parameterName), WeightOfArgument.ByName), 
+                .AddNode(new IfFirstUnit(new IsMethodParameterNamed(parameterName), WeightOfArgument.ByName),
                          $"Building of an argument for the method parameter with name {parameterName} is already tuned"));
 
     /// <summary>
-    ///   Tunes up what argument inject into method parameter marked with <see cref="InjectAttribute"/> with the specified <paramref name="injectPointId"/>. 
+    ///   Tunes up what argument inject into method parameter marked with <see cref="InjectAttribute"/> with the specified <paramref name="injectPointId"/>.
     /// </summary>
     public static MethodArgumentTuner WithInjectPoint(object? injectPointId)
       => new(parentNode =>

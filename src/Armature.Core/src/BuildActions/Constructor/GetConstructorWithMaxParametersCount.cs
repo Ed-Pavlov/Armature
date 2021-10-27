@@ -47,7 +47,7 @@ namespace Armature.Core
         }
       }
 
-      Log.Execute(LogLevel.Trace, () => LogConst.Log_Constructors(suitableConstructors.Select(pair => constructors[pair.Key]).ToArray())); 
+      Log.Execute(LogLevel.Trace, () => LogConst.Log_Constructors(suitableConstructors.Select(pair => constructors[pair.Key]).ToArray()));
 
       if(suitableConstructors.Count != 1)
       {

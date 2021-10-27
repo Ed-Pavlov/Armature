@@ -21,7 +21,7 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-       .Treat<string>() //TODO: may be Treat should generate IfLastUnit? why should we perform know to be false matching? Building<> should generate SkipTillUnit 
+       .Treat<string>() //TODO: may be Treat should generate IfLastUnit? why should we perform know to be false matching? Building<> should generate SkipTillUnit
        .AsInstance(expected + "bad");
 
       target
@@ -81,7 +81,7 @@ namespace Tests.Functional
        .UsingArguments(asIsParameterValue);
 
       using var _ = Log.Enabled(LogLevel.Verbose);
-      
+
       var asInterface = target.Build<ISubject1>();
       Console.WriteLine("///////////////////////////////");
       Console.WriteLine("///////////////////////////////");
@@ -344,7 +344,7 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-       .Treat<LevelOne>() // short matching path 
+       .Treat<LevelOne>() // short matching path
        .AsIs()
        .UsingArguments(expected);
 
@@ -379,7 +379,7 @@ namespace Tests.Functional
       // target.Building<ISubject1>().Building<LevelThree>().TreatAll().UsingArguments(levelThree); // longer path
       // target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected)); // narrower context
       // target.Treat<LevelOne>().AsIs();
-      
+
       target.Treat<ISubject1>().AsCreated<LevelThree>().BuildingWhich(_ => _.TreatAll().UsingArguments(levelThree)); // longer path
       target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected));                     // narrower context
       target.Treat<LevelOne>().AsIs();

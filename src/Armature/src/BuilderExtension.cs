@@ -72,12 +72,7 @@ namespace Armature
 
       var unitId      = new UnitId(typeof(T), key);
       var patternTree = CreateAuxPatternTree(arguments);
-      
-      Console.WriteLine("Aux Tree");
-      patternTree?.PrintToLog();
-      Console.WriteLine("");
-      Console.WriteLine("//////////////////////////////////////");
-      
+
       var buildResult = builder.BuildUnit(unitId, patternTree);
 
       //TODO: check code for build plan name
@@ -92,7 +87,7 @@ namespace Armature
 
       var buildPlans = new PatternTree();
 
-      // F < (F - K) + A < F + A, where K < A, F = WeightOf.FindUnit, K = WeightOfArgument.Lowest, A > WeightOfArgument.Xxx => A > WeightOfArgument.Lowest 
+      // F < (F - K) + A < F + A, where K < A, F = WeightOf.FindUnit, K = WeightOfArgument.Lowest, A > WeightOfArgument.Xxx => A > WeightOfArgument.Lowest
       buildPlans
        .TreatAll(WeightOf.Match) //TODO: what does this weight mean?
        .UsingArguments(arguments);

@@ -13,7 +13,7 @@ namespace Armature.Core
     public void Process(IBuildSession buildSession)
     {
       var parameterInfo = (ParameterInfo) buildSession.GetUnitUnderConstruction().Kind!;
-      Log.WriteLine(LogLevel.Verbose, () => $"{{ Parameter: {parameterInfo.ToLogString()} }}");
+      Log.WriteLine(LogLevel.Verbose, () => $"Parameter: {parameterInfo.ToLogString()}");
 
       var attribute = parameterInfo
                      .GetCustomAttributes<InjectAttribute>()

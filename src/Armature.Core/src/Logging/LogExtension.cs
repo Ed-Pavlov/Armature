@@ -3,48 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 
 namespace Armature.Core.Logging
 {
   public static class LogExtension
   {
+    private static readonly HashSet<char> BadCharacters = new(
+      new[] { '$', '"', '{', '}', '[', ']', ':', '=', ',', '+', '#', '`', '^', '?', '!', '@', '*', '&', '/', '\\', ' ', '.' });
+
     public static string GetFullName(this Type type)
-      => type.IsGenericType
+      => (type.IsGenericType
            ? string.Format(
              "{0}<{1}>",
              type.GetGenericTypeDefinition().FullName,
              string.Join(", ", type.GenericTypeArguments.Select(GetFullName).ToArray()))
-           : type.FullName!;
+           : type.FullName!);
 
     public static string GetShortName(this Type type)
-      => type.IsGenericType
+      => (type.IsGenericType
            ? string.Format(
              "{0}<{1}>",
              type.GetGenericTypeDefinition().Name,
              string.Join(", ", type.GenericTypeArguments.Select(GetShortName).ToArray()))
-           : type.Name;
+           : type.Name);
 
     /// <summary>
     ///   Returns the name of <paramref name="type" /> respecting <see cref="Log.LogFullTypeName" /> property
     /// </summary>
-    public static string ToLogString(this Type type)
-    {
-      var typeName = $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})";
-      return type.IsArray || type.IsGenericType ? $"\"{typeName}\"" : typeName;
-    }
-    
-    /// <summary>
-    ///   Returns the name of <paramref name="type" /> respecting <see cref="Log.LogFullTypeName" /> property
-    /// </summary>
-    public static string ToLogString2(this Type type)
-    {
-      var typeName = Log.LogFullTypeName ? type.GetFullName() : type.GetShortName();
-      return type.IsArray || type.IsGenericType ? $"\"{typeName}\"" : typeName;
-    }
-
-    public static string ToLogString(this ConstructorInfo constructor) => $"\"{constructor}\"";
+    public static string ToLogString(this Type type) => Log.LogFullTypeName ? type.GetFullName() : type.GetShortName();
 
     /// <summary>
     ///   Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
@@ -52,25 +39,41 @@ namespace Armature.Core.Logging
     public static string ToLogString(this object? value)
       => value switch
          {
-           null                                             => "null",
-           ConstructorInfo constructor                      => constructor.ToLogString(),
-           IBuildAction buildAction                         => buildAction.ToLogString(),
-           IEnumerable<UnitId> unitIds                      => unitIds.ToLogString(),
-           ILogable logable                                 => logable.ToLogString(),
-           Type type                                        => type.ToLogString(),
-           var obj when obj.GetType() is
-             var type && type.IsArray || type.IsGenericType => $"{{ Object {{ Type: {type.ToLogString2()} }} }}",
-           _                                                => value.ToString()
+           null                        => "null",
+           string str                  => str,
+           IEnumerable<UnitId> unitIds => unitIds.ToLogString(),
+           ILogable logable            => logable.ToLogString(),
+           ILogable1 logable           => logable.ToLogString(),
+           IBuildAction buildAction    => buildAction.ToLogString(),
+           Type type                   => $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})".QuoteIfNeeded(),
+           // var obj when obj.GetType()
+           //   is var type && type.IsArray => $"{{ Object {{ Type: {type.ToLogString().Quote()} }} }}",
+           _                             => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
          };
 
-    public static string ToLogString(this BuildResult buildResult)
-      => $"{{ {(buildResult.HasValue ? $"Value: {buildResult.Value.ToLogString()}, Type: {buildResult.Value?.GetType().ToLogString()}" : "nothing")} }}";
-    
-    public static string ToLogString(this UnitId unitId) 
+    public static string Quote(this string str) => $"\"{str}\"";
+
+    public static string QuoteIfNeeded(this string str)
+    {
+      foreach(var symbol in str)
+        if(BadCharacters.Contains(symbol))
+          return Quote(str);
+
+      return str;
+    }
+
+    public static string ToLogString(this BuildResult buildResult) => buildResult.HasValue ? buildResult.Value.ToLogString() : "nothing";
+
+    public static string ToLogString(this UnitId unitId)
       => $"{{ kind: {unitId.Kind.ToLogString()}, key: {unitId.Key.ToLogString()}}}";
 
-    public static string ToLogString(this IBuildAction buildAction) 
-      => buildAction is ILogable logable ? logable.ToLogString() : buildAction.GetType().GetShortName();
+    public static string ToLogString(this IBuildAction buildAction)
+      => (buildAction switch
+          {
+            ILogable logable   => logable.ToLogString(),
+            ILogable1 logable1 => logable1.ToLogString(),
+            _                  => buildAction.GetType().GetShortName()
+          });
 
     public static string ToLogString(this IEnumerable<UnitId> array)
     {
@@ -122,7 +125,7 @@ namespace Armature.Core.Logging
           logLevel,
           "{{ Action: {0}, Stage: {1}, Weight: {2:n0} }}",
           weightedAction.Entity.ToLogString(),
-          stage,
+          stage.ToString().QuoteIfNeeded(),
           weightedAction.Weight);
     }
 

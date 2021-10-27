@@ -85,8 +85,8 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public override string ToString() => GetType().ToLogString();
 
-    public string ToLogString() => $"[{string.Join(", ", _buildActions.Select(action => action.ToLogString()).ToArray())}]";
-    
+    public string ToLogString() => $"{{ {nameof(TryInOrder)} {{ Actions: [{string.Join(", ", _buildActions.Select(action => action.ToLogString()).ToArray())}] }} }}";
+
     public void PrintToLog()
     {
       using(Log.NamedBlock(LogLevel.Info, nameof(TryInOrder)))
