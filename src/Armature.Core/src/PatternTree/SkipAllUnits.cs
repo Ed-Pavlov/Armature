@@ -26,7 +26,7 @@ namespace Armature.Core
 
       using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipAllUnits)))
       {
-        Log.WriteLine(LogLevel.Verbose, "");
+        Log.WriteLine(LogLevel.Verbose, $"Weight = {Weight}");
         var lastUnitAsTail = unitSequence.GetTail(unitSequence.Length - 1);
         return GetChildrenActions(lastUnitAsTail, matchingWeight);
       }

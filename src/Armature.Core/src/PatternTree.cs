@@ -61,7 +61,14 @@ namespace Armature.Core
 
       [DebuggerStepThrough]
       public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
-        => GetChildrenActions(unitSequence, inputWeight);
+      {
+        if(RawChildren is null) return null;
+
+        WeightedBuildActionBag? result = null;
+        foreach(var child in RawChildren)
+          result = result.Merge(child.GatherBuildActions(unitSequence, inputWeight));
+        return result;
+      }
 
       [DebuggerStepThrough]
       public override bool Equals(IPatternTreeNode? other) => throw new NotSupportedException();

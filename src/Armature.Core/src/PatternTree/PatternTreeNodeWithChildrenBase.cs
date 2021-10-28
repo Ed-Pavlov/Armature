@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Armature.Core.Logging;
 
 namespace Armature.Core
@@ -40,9 +39,24 @@ namespace Armature.Core
     /// <param name="unitSequence">The sequence of units building in this build session.</param>
     /// <param name="inputMatchingWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
     protected WeightedBuildActionBag? GetChildrenActions(ArrayTail<UnitId> unitSequence, int inputMatchingWeight)
-      => RawChildren?.Aggregate(
-        (WeightedBuildActionBag?)null,
-        (current, child) => current.Merge(child.GatherBuildActions(unitSequence, inputMatchingWeight)));
+    {
+      if(RawChildren is null)
+      {
+        Log.WriteLine(LogLevel.Trace, "Children: null");
+        return null;
+      }
+
+      WeightedBuildActionBag? result = null;
+
+      using(Log.NamedBlock(LogLevel.Trace, "PassTailToChildren"))
+      {
+        Log.WriteLine(LogLevel.Trace, $"Weight = {inputMatchingWeight}, Tail = {unitSequence.ToLogString()}");
+        foreach(var child in RawChildren)
+          result = result.Merge(child.GatherBuildActions(unitSequence, inputMatchingWeight));
+      }
+
+      return result;
+    }
 
     public virtual void PrintToLog()
     {

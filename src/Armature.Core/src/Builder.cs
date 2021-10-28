@@ -54,8 +54,8 @@ namespace Armature.Core
     /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies.</param>
     /// <returns>Returns build result with <see cref="BuildResult.HasValue"/> set to false if unit is not built.</returns>
 
-    //TODO: what about exceptions? if buildResult.HasValue == false does it mean that there is no a registration, or it can be some runtime problems? 
-    public BuildResult BuildUnit(UnitId unitId, IPatternTreeNode? auxBuildPlans = null) 
+    //TODO: what about exceptions? if buildResult.HasValue == false does it mean that there is no a registration, or it can be some runtime problems?
+    public BuildResult BuildUnit(UnitId unitId, IPatternTreeNode? auxBuildPlans = null)
       => new BuildSession(_stages, this, auxBuildPlans, _parentBuilders).BuildUnit(unitId);
 
     /// <summary>

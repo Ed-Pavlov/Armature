@@ -89,7 +89,7 @@ namespace Armature
 
       // F < (F - K) + A < F + A, where K < A, F = WeightOf.FindUnit, K = WeightOfArgument.Lowest, A > WeightOfArgument.Xxx => A > WeightOfArgument.Lowest
       buildPlans
-       .TreatAll(WeightOf.Match) //TODO: what does this weight mean?
+       .TreatAll(WeightOf.SkipAll - 1) //TODO: what does this weight mean?
        .UsingArguments(arguments);
 
       return buildPlans;
