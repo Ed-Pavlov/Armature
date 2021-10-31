@@ -24,7 +24,7 @@ namespace Armature
           throw new ArgumentException("IParameterValueBuildPlan or plain object value expected");
         else
           ParentNode
-           .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance))
+           .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance, 0))
            .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(argument.GetType()), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability))
            .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
 

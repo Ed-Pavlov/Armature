@@ -11,8 +11,8 @@ namespace Armature.Core
   public class SkipTillUnit : PatternTreeNodeBase
   {
     private readonly IUnitPattern _pattern;
-
-    public SkipTillUnit(IUnitPattern pattern, int weight = 0) : base(weight)
+    public SkipTillUnit(IUnitPattern pattern) : this(pattern, WeightOf.BuildingUnitSequencePattern.Neutral) { }
+    public SkipTillUnit(IUnitPattern pattern, int weight) : base(weight)
       => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
     /// <summary>
@@ -34,7 +34,7 @@ namespace Armature.Core
           if(isPatternMatches)
           {
             Log.WriteLine(LogLevel.Verbose, LogConst.Matched, true);
-            return GetOwnOrChildrenBuildActions(unitSequence.GetTail(i), inputWeight + Weight);
+            return GetOwnOrChildrenBuildActions(unitSequence.GetTail(i), inputWeight);
           }
         }
         Log.WriteLine(LogLevel.Verbose, LogConst.Matched, false);

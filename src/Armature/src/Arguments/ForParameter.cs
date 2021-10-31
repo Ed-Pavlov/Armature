@@ -15,7 +15,7 @@ namespace Armature
     public static MethodArgumentTuner OfType(Type type)
       => new(parentNode =>
                parentNode
-                .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance))
+                .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance, 0))
                 .AddNode(new IfFirstUnit(new IsMethodParameterWithType(type, true), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
                          $"Building of an argument for the method parameter of type {type.ToLogString()} is already tuned"));
 
@@ -25,7 +25,7 @@ namespace Armature
     public static MethodArgumentTuner<T> OfType<T>()
       => new(parentNode =>
                parentNode
-                .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance))
+                .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance, 0))
                 .AddNode(new IfFirstUnit(new IsMethodParameterWithType(typeof(T), true), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
                          $"Building of an argument for the method parameter of type {typeof(T).ToLogString()} is already tuned"));
 
@@ -35,7 +35,7 @@ namespace Armature
     public static MethodArgumentTuner Named(string parameterName)
       => new(parentNode =>
                parentNode
-                .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance))
+                .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance, 0))
                 .AddNode(new IfFirstUnit(new IsMethodParameterNamed(parameterName), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByName),
                          $"Building of an argument for the method parameter with name {parameterName} is already tuned"));
 
@@ -45,7 +45,7 @@ namespace Armature
     public static MethodArgumentTuner WithInjectPoint(object? injectPointId)
       => new(parentNode =>
                parentNode
-                .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance))
+                .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance, 0))
                 .AddNode(new IfFirstUnit(new IsParameterMarkedWithAttribute(injectPointId), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByInjectPointId),
                          $"Building of an argument for the method parameter marked with {nameof(InjectAttribute)}"
                        + $" with {nameof(InjectAttribute.InjectionPointId)} equal to {injectPointId.ToLogString()} is already tuned"));

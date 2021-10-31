@@ -33,7 +33,7 @@ namespace Armature
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var newPatternMatcher = new SkipTillUnit(new Pattern(type, key));
+      var newPatternMatcher = new SkipTillUnit(new Pattern(type, key), WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.ExactTypePattern);
       var oldPatternMatcher = buildPlans.Children.Single(_ => _.Equals(newPatternMatcher));
 
       buildPlans.Children.Remove(oldPatternMatcher);
@@ -47,7 +47,7 @@ namespace Armature
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var newPatternMatcher = new SkipTillUnit(new Pattern(typeof(T), key), WeightOf.UnitPattern.ExactTypePattern);
+      var newPatternMatcher = new SkipTillUnit(new Pattern(typeof(T), key), WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.ExactTypePattern);
       var oldPatternMatcher = buildPlans.Children.Single(_ => _.Equals(newPatternMatcher));
 
       buildPlans.Children.Remove(oldPatternMatcher);

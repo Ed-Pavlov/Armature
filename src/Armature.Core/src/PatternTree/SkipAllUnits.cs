@@ -8,7 +8,8 @@ namespace Armature.Core
   /// </summary>
   public class SkipAllUnits : PatternTreeNodeWithChildrenBase
   {
-    public SkipAllUnits(int weight = WeightOf.BuildingUnitSequencePattern.SkipAllUnits) : base(weight) { }
+    public SkipAllUnits() : this(WeightOf.BuildingUnitSequencePattern.SkipAllUnits){}
+    public SkipAllUnits(int weight) : base(weight) { }
 
     public override BuildActionBag BuildActions
       => throw new NotSupportedException(

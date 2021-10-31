@@ -11,7 +11,8 @@ namespace Armature.Core
   {
     private readonly IUnitPattern _pattern;
 
-    public SkipWhileUnit(IUnitPattern unitPattern, int weight = 0) : base(weight)
+    public SkipWhileUnit(IUnitPattern pattern) : this(pattern, WeightOf.BuildingUnitSequencePattern.Neutral) {}
+    public SkipWhileUnit(IUnitPattern unitPattern, int weight) : base(weight)
       => _pattern = unitPattern ?? throw new ArgumentNullException(nameof(unitPattern));
 
     public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)

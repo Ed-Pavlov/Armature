@@ -36,7 +36,7 @@ namespace Armature
       if(type is null) throw new ArgumentNullException(nameof(type));
       if(type.IsGenericTypeDefinition) throw new ArgumentException($"Use {nameof(TreatOpenGeneric)} to setup open generic types.");
 
-      var patternMatcher = new SkipTillUnit(new Pattern(type, key), WeightOf.UnitPattern.ExactTypePattern);
+      var patternMatcher = new SkipTillUnit(new Pattern(type, key), WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.ExactTypePattern);
       return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
 
@@ -45,7 +45,7 @@ namespace Armature
     ///   How it should be treated is specified by subsequence calls using returned object.
     /// </summary>
     public TreatingTuner<T> Treat<T>(object? key = null)
-      => new(ParentNode.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(T), key), WeightOf.UnitPattern.ExactTypePattern)));
+      => new(ParentNode.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(T), key), WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.ExactTypePattern)));
 
     /// <summary>
     ///   Configure build plans for whole class of open generic types.
@@ -53,7 +53,7 @@ namespace Armature
     /// </summary>
     public TreatingOpenGenericTuner TreatOpenGeneric(Type openGenericType, object? key = null)
     {
-      var patternMatcher = new SkipTillUnit(new IsOpenGenericType(openGenericType, key), WeightOf.UnitPattern.OpenGenericPattern);
+      var patternMatcher = new SkipTillUnit(new IsOpenGenericType(openGenericType, key), WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.OpenGenericPattern);
       return new TreatingOpenGenericTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
 
@@ -63,7 +63,7 @@ namespace Armature
     /// </summary>
     public TreatingTuner TreatInheritorsOf(Type baseType, object? key = null)
     {
-      var patternMatcher = new SkipTillUnit(new IsSubtypeOf(baseType, key), WeightOf.UnitPattern.SubtypePattern);
+      var patternMatcher = new SkipTillUnit(new IsSubtypeOf(baseType, key), WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.SubtypePattern);
       return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
 
@@ -73,7 +73,7 @@ namespace Armature
     /// </summary>
     public TreatingTuner<T> TreatInheritorsOf<T>(object? key = null)
     {
-      var patternMatcher = new SkipTillUnit(new IsSubtypeOf(typeof(T), key), WeightOf.UnitPattern.SubtypePattern);
+      var patternMatcher = new SkipTillUnit(new IsSubtypeOf(typeof(T), key), WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.SubtypePattern);
       return new TreatingTuner<T>(ParentNode.GetOrAddNode(patternMatcher));
     }
 
