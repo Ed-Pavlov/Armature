@@ -92,7 +92,7 @@ namespace Armature
       //  .TreatAll()
       //  .UsingArguments(arguments);
 
-      var treatAll = new SkipAllUnits(WeightOf.SkipAllUnits + 10);
+      var treatAll = new SkipAllUnits(WeightOf.BuildingUnitSequencePattern.SkipAllUnits + 10);
       buildPlans.Children.Add(treatAll);
 
       new FinalTuner(treatAll)

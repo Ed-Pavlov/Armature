@@ -22,12 +22,12 @@ namespace Armature
 
       public IArgumentTuner Type { get; } = new ArgumentTuner(
         node => node
-               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance, WeightOf.IfFirstUnit + ByTypeWeight))
+               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance, WeightOf.BuildingUnitSequencePattern.IfFirstUnit + ByTypeWeight))
                .UseBuildAction(Static<BuildArgumentByParameterType>.Instance, BuildStage.Create));
 
       public IArgumentTuner Name { get; } = new ArgumentTuner(
         node => node
-               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance, WeightOf.IfFirstUnit + ByNameWeight))
+               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance, WeightOf.BuildingUnitSequencePattern.IfFirstUnit + ByNameWeight))
                .UseBuildAction(Static<BuildArgumentByParameterName>.Instance, BuildStage.Create));
     }
   }

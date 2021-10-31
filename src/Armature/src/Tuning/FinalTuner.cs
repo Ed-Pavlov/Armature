@@ -25,7 +25,7 @@ namespace Armature
         else
           ParentNode
            .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance))
-           .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(argument.GetType()), WeightOf.IfFirstUnit + WeightOfArgument.ByTypeAssignability))
+           .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(argument.GetType()), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability))
            .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
 
       return this;
