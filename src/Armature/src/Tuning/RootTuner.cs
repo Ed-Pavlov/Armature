@@ -36,7 +36,7 @@ namespace Armature
       if(type is null) throw new ArgumentNullException(nameof(type));
       if(type.IsGenericTypeDefinition) throw new ArgumentException($"Use {nameof(TreatOpenGeneric)} to setup open generic types.");
 
-      var patternMatcher = new SkipTillUnit(new Pattern(type, key), WeightOf.StrictPattern);
+      var patternMatcher = new SkipTillUnit(new Pattern(type, key), WeightOf.ExactTypePattern);
       return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
 
@@ -45,7 +45,7 @@ namespace Armature
     ///   How it should be treated is specified by subsequence calls using returned object.
     /// </summary>
     public TreatingTuner<T> Treat<T>(object? key = null)
-      => new(ParentNode.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(T), key), WeightOf.StrictPattern)));
+      => new(ParentNode.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(T), key), WeightOf.ExactTypePattern)));
 
     /// <summary>
     ///   Configure build plans for whole class of open generic types.

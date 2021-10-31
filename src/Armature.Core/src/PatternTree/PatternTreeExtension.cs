@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Armature.Core.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Core
@@ -25,7 +24,7 @@ namespace Armature.Core
       parentNode.Children.Add(node);
       return node;
     }
-    
+
     /// <summary>
     /// Adds the <paramref name="node" /> into <paramref name="parentNode" />.
     /// </summary>
@@ -44,12 +43,12 @@ namespace Armature.Core
 
     /// <summary>
     ///   Adds a <see cref="IBuildAction" /> for a "to be built" unit which is matched by the branch of the pattern tree represented by this node
-    ///   with its parents. 
+    ///   with its parents.
     /// </summary>
     /// <param name="node"></param>
     /// <param name="buildAction">A build action.</param>
     /// <param name="buildStage">A build stage in which the build action is executed.</param>
-    /// <returns>Returns 'this' in order to use fluent syntax</returns>    
+    /// <returns>Returns 'this' in order to use fluent syntax</returns>
     public static IPatternTreeNode UseBuildAction([NotNull] this IPatternTreeNode node, IBuildAction buildAction, object buildStage)
     {
       if(node is null) throw new ArgumentNullException(nameof(node));
@@ -57,10 +56,10 @@ namespace Armature.Core
       if(buildStage is null) throw new ArgumentNullException(nameof(buildStage));
 
       var list = node.BuildActions.GetOrCreateValue(buildStage, () => new List<IBuildAction>());
-      
+
       if(list.Contains(buildAction))
         return node;
-      
+
       list.Add(buildAction);
       return node;
     }

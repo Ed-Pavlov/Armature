@@ -47,7 +47,7 @@ namespace Armature
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var newPatternMatcher = new SkipTillUnit(new Pattern(typeof(T), key), WeightOf.StrictPattern);
+      var newPatternMatcher = new SkipTillUnit(new Pattern(typeof(T), key), WeightOf.ExactTypePattern);
       var oldPatternMatcher = buildPlans.Children.Single(_ => _.Equals(newPatternMatcher));
 
       buildPlans.Children.Remove(oldPatternMatcher);

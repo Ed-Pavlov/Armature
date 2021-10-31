@@ -14,7 +14,7 @@ namespace Armature.Core
 
     public const byte OpenGenericPattern = Lowest             + Step;
     public const byte SubtypePattern     = OpenGenericPattern + Step;
-    public const byte StrictPattern      = SubtypePattern     + Step;
+    public const byte ExactTypePattern   = SubtypePattern     + Step;
 
     /// <summary>
     /// <see cref="Core.SkipAllUnits"/> building unit sequence pattern is used to set "default" rules for any building unit if it doesn't
