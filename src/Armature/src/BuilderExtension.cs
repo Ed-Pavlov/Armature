@@ -87,9 +87,15 @@ namespace Armature
 
       var buildPlans = new PatternTree();
 
-      // F < (F - K) + A < F + A, where K < A, F = WeightOf.FindUnit, K = WeightOfArgument.Lowest, A > WeightOfArgument.Xxx => A > WeightOfArgument.Lowest
-      buildPlans
-       .TreatAll(WeightOf.SkipAll - 1) //TODO: what does this weight mean?
+      // the logic is, but with increased weight of arguments
+      // buildPlans
+      //  .TreatAll()
+      //  .UsingArguments(arguments);
+
+      var treatAll = new SkipAllUnits(WeightOf.SkipAllUnits + 10);
+      buildPlans.Children.Add(treatAll);
+
+      new FinalTuner(treatAll)
        .UsingArguments(arguments);
 
       return buildPlans;

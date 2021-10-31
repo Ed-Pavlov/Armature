@@ -13,7 +13,7 @@ namespace Armature.Core
     private readonly object? _key;
 
     [DebuggerStepThrough]
-    public Pattern(object? unitKind, object? key)
+    public Pattern(object? unitKind, object? key = null)
     {
       if(unitKind is null && key is null) throw new ArgumentNullException(nameof(unitKind), @"Either id or key should be provided");
 

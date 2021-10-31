@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Core.Logging;
 
 namespace Armature.Core
 {
@@ -20,8 +19,5 @@ namespace Armature.Core
       var unitType = unitId.GetUnitTypeSafe();
       return Key.Matches(unitId.Key) && unitType is {IsGenericType: true} && unitType.GetGenericTypeDefinition() == Type;
     }
-    
-    public override string ToString()    => base.ToString();
-    public          string ToLogString() => GetType().GetShortName();
   }
 }

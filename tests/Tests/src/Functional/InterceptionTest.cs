@@ -87,10 +87,10 @@ namespace Tests.Functional
            {
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),
-             
+
              new IfFirstUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             
+
              new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
            }
@@ -102,7 +102,7 @@ namespace Tests.Functional
     private class StringParameterPattern : IUnitPattern
     {
       public bool   Matches(UnitId unitId) => unitId.Kind is ParameterInfo parameterInfo && parameterInfo.ParameterType == typeof(string);
-      public string ToLogString()          => throw new NotImplementedException();
+      public string ToLogString()          => ToString();
     }
 
     /// <summary>

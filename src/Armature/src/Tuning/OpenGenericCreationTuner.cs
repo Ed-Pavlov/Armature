@@ -20,15 +20,15 @@ namespace Armature
     /// </summary>
     public FinalTuner CreatedByDefault()
       => new(ParentNode
-            .GetOrAddNode(new IfFirstUnit(new IsOpenGenericType(OpenGenericType, Key), WeightOf.Match - 1))
+            .GetOrAddNode(new IfFirstUnit(new IsOpenGenericType(OpenGenericType, Key)))
             .UseBuildAction(Default.CreationBuildAction, BuildStage.Create));
 
     /// <summary>
     ///   Specifies that unit should be created using reflection.
     /// </summary>
-    public FinalTuner CreatedByReflection() => 
+    public FinalTuner CreatedByReflection() =>
       new(ParentNode
-         .GetOrAddNode(new SkipTillUnit(new IsOpenGenericType(OpenGenericType, Key), WeightOf.Match | WeightOf.OpenGenericPattern))
+         .GetOrAddNode(new SkipTillUnit(new IsOpenGenericType(OpenGenericType, Key)))
          .UseBuildAction(Static<CreateByReflection>.Instance, BuildStage.Create));
 
     Type IExtensibility<Type, object>.   Item1 => OpenGenericType;

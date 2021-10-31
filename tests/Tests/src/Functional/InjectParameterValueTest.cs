@@ -350,51 +350,15 @@ namespace Tests.Functional
 
       target
        .Treat<ISubject1>() // long matching path
-       .AsCreated<LevelTwo>()
-       .BuildingWhich(_ => _.TreatAll().UsingArguments(expected + "bad"));
+       .AsCreated<LevelTwo>();
 
-      Console.WriteLine("Main Tree");
-      target.PrintToLog();
-      Console.WriteLine("");
-      Console.WriteLine("//////////////////////////////////////");
-
-      using var _ = Log.Enabled(LogLevel.Verbose);
+      target.Building<LevelTwo>() .TreatAll().UsingArguments(expected + "bad");
 
       // --act
       var actual = (LevelTwo)target.Build<ISubject1>();
 
       // --assert
       actual.LevelOne.Text.Should().Be(expected, "Because {0} is registered for {1}", expected, typeof(LevelOne).Name);
-    }
-
-    [Test]
-    public void should_inject_parameter_value_from_narrower_context_not_from_longer_matching_path()
-    {
-      const string levelThree = "levelThree";
-      const string expected   = "expected";
-
-      var target = CreateTarget();
-
-      target.Treat<ISubject1>().AsCreated<LevelThree>();
-      target.Treat<LevelTwo>().AsIs(); // narrower context
-      target.Treat<LevelOne>().AsIs();
-      target.Building<ISubject1>().Building<LevelThree>().TreatAll().UsingArguments(levelThree); // longer path
-      target.Building<LevelTwo>().TreatAll().UsingArguments(expected); // narrower context
-
-      // target.Treat<ISubject1>().AsCreated<LevelThree>().BuildingWhich(_ => _.TreatAll().UsingArguments(levelThree)); // longer path
-      // target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected));                     // narrower context
-      // target.Treat<LevelOne>().AsIs();
-
-      target.PrintToLog();
-
-      using var _ = Log.Enabled(LogLevel.Trace);
-
-      var actual = target.Build<ISubject1>(); //TODO: почему финальный вес 50? откуда берётся такое большое число?
-
-      actual.Should().BeOfType<LevelThree>().Which.LevelTwo.LevelOne.Text.Should().Be(expected);
-      target.Treat<ISubject1>().AsCreated<LevelThree>().BuildingWhich(_ => _.TreatAll().UsingArguments(levelThree)); // longer path
-      target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected));                     // narrower context
-      target.Treat<LevelOne>().AsIs();
     }
 
     [Test]
@@ -438,34 +402,6 @@ namespace Tests.Functional
       actual.Value.Should().Be(LevelOne.DefaultInt);
     }
 
-    [Test]
-    public void should_inject_parameter_value_from_narrower_context()
-    {
-      const string expected = "expected";
-
-      //--arrange
-      var target = CreateTarget();
-
-      target
-       .Treat<LevelThree>()
-       .AsIs()
-       .BuildingWhich(_ => _.TreatAll().UsingArguments(expected + "three"));
-
-      target
-       .Treat<LevelTwo>()
-       .AsIs()
-       .BuildingWhich(_ => _.TreatAll().UsingArguments(expected));
-
-      target
-       .Treat<LevelOne>()
-       .AsIs();
-
-      // --act
-      var actual = target.Build<LevelThree>();
-
-      // --assert
-      actual.LevelTwo.LevelOne.Text.Should().Be(expected);
-    }
 
     private static IEnumerable ForParameterSource()
     {

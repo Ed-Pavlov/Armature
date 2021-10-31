@@ -104,10 +104,10 @@ namespace Tests.Functional
            {
              new IfFirstUnit(new IsConstructor()) // inject into constructor
               .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),
-             
+
              new IfFirstUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             
+
              new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
            }

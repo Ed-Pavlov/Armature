@@ -16,9 +16,30 @@ namespace Armature.Core
     public const byte SubtypePattern     = OpenGenericPattern + Step;
     public const byte StrictPattern      = SubtypePattern     + Step;
 
-    public const short SkipAll   = 0;
-    public const short Match  = 0;
-    // public const short SkipTillUnit  = 10;
-    // public const short FirstUnit = SkipTillUnit; // FindUnit + (Step << (sizeof(byte) * 8));
+    /// <summary>
+    /// <see cref="Core.SkipAllUnits"/> building unit sequence pattern is used to set "default" rules for any building unit if it doesn't
+    /// have a specific registration.
+    /// That is why by default its weight is set very low, but not to the minimal possible value to leave a gap for user's needs.
+    /// </summary>
+    public const short SkipAllUnits = -400;
+
+    /// <summary>
+    /// By default the weight of <see cref="Core.IfFirstUnit"/> building unit sequence pattern's weight is increased in order to registrations
+    /// like
+    ///  builder.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(MyType))))
+    ///         .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(typeof(string))))
+    ///    // ....
+    /// "win" registrations like
+    ///
+    ///  builder.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(MyType))))
+    ///         .GetOrAddNode(new SkipTillUnit(new IsAssignableFromType(typeof(string))))
+    ///    // ....
+    ///
+    /// Because the first one is a "personal" registration whereas the second one will be applied to all units building
+    /// in the context of "MyType".
+    ///
+    /// Note that provided sample is "synthetic" see <see cref="SpecialKey"/> and <see cref="SkipWhileUnit"/> for details.
+    /// </summary>
+    public const short IfFirstUnit = 200;
   }
 }

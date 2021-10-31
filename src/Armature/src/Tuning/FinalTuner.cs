@@ -25,7 +25,7 @@ namespace Armature
         else
           ParentNode
            .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance))
-           .GetOrAddNode(new IfFirstUnit(new IsBaseTypeOf(argument.GetType(), null), WeightOf.Match + WeightOfArgument.ByTypeAssignability))
+           .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(argument.GetType()), WeightOf.IfFirstUnit + WeightOfArgument.ByTypeAssignability))
            .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
 
       return this;
@@ -42,15 +42,5 @@ namespace Armature
     ///   Register Unit as an singleton with a lifetime equal to parent <see cref="PatternTree"/>. See <see cref="Singleton" /> for details
     /// </summary>
     public void AsSingleton() => ParentNode.UseBuildAction(new Singleton(), BuildStage.Cache);
-
-    /// <summary>
-    ///   Doing the same as <see cref="PatternTreeTunerExtension.Building{T}" /> but w/o breaking fluent syntax
-    /// </summary>
-    public void BuildingWhich(Action<RootTuner> tuneAction)
-    {
-      if(tuneAction is null) throw new ArgumentNullException(nameof(tuneAction));
-
-      tuneAction(new RootTuner(ParentNode));
-    }
   }
 }

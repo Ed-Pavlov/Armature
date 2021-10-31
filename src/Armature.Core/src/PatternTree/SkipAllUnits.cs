@@ -8,7 +8,7 @@ namespace Armature.Core
   /// </summary>
   public class SkipAllUnits : PatternTreeNodeWithChildrenBase
   {
-    public SkipAllUnits(int weight = WeightOf.SkipAll) : base(weight) { }
+    public SkipAllUnits(int weight = WeightOf.SkipAllUnits) : base(weight) { }
 
     public override BuildActionBag BuildActions
       => throw new NotSupportedException(
@@ -21,15 +21,11 @@ namespace Armature.Core
     /// </summary>
     public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {
-      var unitsToSkipCount = unitSequence.Length;
-      // var matchingWeight   = Weight + inputWeight - unitsToSkipCount;
-      var matchingWeight   = inputWeight;
-
       using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipAllUnits)))
       {
         Log.WriteLine(LogLevel.Verbose, $"Weight = {Weight}");
         var lastUnitAsTail = unitSequence.GetTail(unitSequence.Length - 1);
-        return GetChildrenActions(lastUnitAsTail, matchingWeight);
+        return GetChildrenActions(lastUnitAsTail, inputWeight + Weight);
       }
     }
   }

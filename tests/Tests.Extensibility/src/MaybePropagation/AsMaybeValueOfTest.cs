@@ -20,8 +20,8 @@ namespace Tests.Extensibility.MaybePropagation
       builder
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
-       .AsCreated<Reader>()
-       .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>());
+       .AsCreated<Reader>();
+      builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>();
 
       var actual = builder.Build<Maybe<IReader>>();
 
@@ -41,8 +41,9 @@ namespace Tests.Extensibility.MaybePropagation
       builder
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
-       .AsCreated<Reader>()
-       .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>());
+       .AsCreated<Reader>();
+
+      builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>();
 
       var actual = builder.Build<Maybe<IReader>>();
 
@@ -59,8 +60,9 @@ namespace Tests.Extensibility.MaybePropagation
       builder
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
-       .AsCreated<Reader>()
-       .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>());
+       .AsCreated<Reader>();
+
+      builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>();
 
       Action actual = () => builder.Build<Maybe<IReader>>();
 
@@ -79,8 +81,9 @@ namespace Tests.Extensibility.MaybePropagation
       builder
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
-       .AsCreated<Reader>()
-       .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>(key));
+       .AsCreated<Reader>();
+
+      builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>(key);
 
       var actual = builder.Build<Maybe<IReader>>();
 
@@ -101,12 +104,13 @@ namespace Tests.Extensibility.MaybePropagation
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
        .AsCreated<Reader1>()
-       .UsingArguments(ForParameter.OfType<Section>().UseInjectPointIdAsKey())
-       .BuildingWhich(
-          _ => _
-              .Treat<Section>(SpecialKey.Any)
-              .AsMaybeValueOf()
-              .As<Maybe<Section>>(SpecialKey.Propagate));
+       .UsingArguments(ForParameter.OfType<Section>().UseInjectPointIdAsKey());
+
+      builder
+       .Building<Reader1>()
+       .Treat<Section>(SpecialKey.Any)
+       .AsMaybeValueOf()
+       .As<Maybe<Section>>(SpecialKey.Propagate);
 
       var actual = builder.Build<Maybe<IReader>>();
 

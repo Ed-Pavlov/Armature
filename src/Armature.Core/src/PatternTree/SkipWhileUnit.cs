@@ -30,7 +30,7 @@ namespace Armature.Core
             break;
           }
         }
-        return GetChildrenActions(unitSequence.GetTail(i), inputWeight);
+        return GetChildrenActions(unitSequence.GetTail(i), inputWeight + Weight);
       }
     }
 

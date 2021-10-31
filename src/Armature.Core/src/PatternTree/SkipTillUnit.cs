@@ -12,7 +12,7 @@ namespace Armature.Core
   {
     private readonly IUnitPattern _pattern;
 
-    public SkipTillUnit(IUnitPattern pattern, int weight = WeightOf.Match) : base(weight)
+    public SkipTillUnit(IUnitPattern pattern, int weight = 0) : base(weight)
       => _pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
     /// <summary>
@@ -21,8 +21,6 @@ namespace Armature.Core
     /// </summary>
     public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {
-      var realWeight = inputWeight;
-
       using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipTillUnit)))
       {
         Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {_pattern.ToLogString()}, Weight = {Weight}");
@@ -36,12 +34,8 @@ namespace Armature.Core
           if(isPatternMatches)
           {
             Log.WriteLine(LogLevel.Verbose, LogConst.Matched, true);
-            return GetOwnOrChildrenBuildActions(unitSequence.GetTail(i), realWeight + 1); //matching weight is +1
+            return GetOwnOrChildrenBuildActions(unitSequence.GetTail(i), inputWeight + Weight);
           }
-
-          // increase weight on each "skipping" step, it will lead that "deeper" context has more weight then more common
-          // it is needed when some Unit is registered several times
-          realWeight += 2;
         }
         Log.WriteLine(LogLevel.Verbose, LogConst.Matched, false);
       }

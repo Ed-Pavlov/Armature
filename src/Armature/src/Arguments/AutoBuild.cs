@@ -19,15 +19,15 @@ namespace Armature
     {
       private const short ByNameWeight = 10;
       private const short ByTypeWeight = 5;
-      
+
       public IArgumentTuner Type { get; } = new ArgumentTuner(
         node => node
-               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance, ByTypeWeight))
+               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance, WeightOf.IfFirstUnit + ByTypeWeight))
                .UseBuildAction(Static<BuildArgumentByParameterType>.Instance, BuildStage.Create));
 
       public IArgumentTuner Name { get; } = new ArgumentTuner(
         node => node
-               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance, ByNameWeight))
+               .GetOrAddNode(new IfFirstUnit(Static<IsParameterInfo>.Instance, WeightOf.IfFirstUnit + ByNameWeight))
                .UseBuildAction(Static<BuildArgumentByParameterName>.Instance, BuildStage.Create));
     }
   }

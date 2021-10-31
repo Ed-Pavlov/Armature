@@ -1,4 +1,5 @@
-﻿using Armature;
+﻿using System;
+using Armature;
 using Armature.Core;
 using Armature.Core.Logging;
 using FluentAssertions;
@@ -9,7 +10,7 @@ namespace Tests.Functional
   public class BuildingSequenceTest
   {
     [Test]
-    public void should_use_value_matched_with_longest_sequence()
+    public void should_throw_exception_on_ambiguous_registrations()
     {
       const int expected = 9345;
 
@@ -18,12 +19,12 @@ namespace Tests.Functional
 
       target.Treat<ISubject>().AsCreated<Subject>();
 
-      target.Treat<int>().AsInstance(5);
+      target.Treat<int>().AsInstance(expected - 1);
 
       target
        .Building<Subject>()
        .Treat<int>()
-       .AsInstance(354);
+       .AsInstance(expected + 1);
 
       target
        .Building<ISubject>()
@@ -32,47 +33,12 @@ namespace Tests.Functional
        .AsInstance(expected);
 
       // --act
-      var actual = target.Build<ISubject>();
+      var actual = new Action(() => target.Build<ISubject>());
 
       // --assert
-      actual.Value.Should().Be(expected);
-    }
-
-    [Test]
-    public void should_use_value_matched_with_longest_sequence_and_key()
-    {
-      object    key      = "key";
-      const int expected = 9345;
-
-      // --arrange
-      var target = CreateTarget();
-
-      target.Treat<ISubject>(key).AsCreated<Subject>(key);
-
-      target.Treat<int>().AsInstance(5);
-
-      target
-       .Building<Subject>(key)
-       .Treat<int>()
-       .AsInstance(354);
-
-      target
-       .Building<ISubject>(key)
-       .Building<Subject>()
-       .Treat<int>()
-       .AsInstance(986);
-
-      target
-       .Building<ISubject>(key)
-       .Building<Subject>(key)
-       .Treat<int>()
-       .AsInstance(expected);
-
-      // --act
-      var actual = target.UsingKey(key).Build<ISubject>();
-
-      // --assert
-      actual.Value.Should().Be(expected);
+      actual.Should()
+            .ThrowExactly<ArmatureException>()
+            .Where(_ => _.Message.StartsWith("Two or more building actions matched with the same weight"));
     }
 
     private static Builder CreateTarget()
