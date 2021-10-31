@@ -375,20 +375,26 @@ namespace Tests.Functional
 
       var target = CreateTarget();
 
-      // target.Treat<ISubject1>().AsCreated<LevelThree>();
-      // target.Building<ISubject1>().Building<LevelThree>().TreatAll().UsingArguments(levelThree); // longer path
-      // target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected)); // narrower context
+      target.Treat<ISubject1>().AsCreated<LevelThree>();
+      target.Treat<LevelTwo>().AsIs(); // narrower context
+      target.Treat<LevelOne>().AsIs();
+      target.Building<ISubject1>().Building<LevelThree>().TreatAll().UsingArguments(levelThree); // longer path
+      target.Building<LevelTwo>().TreatAll().UsingArguments(expected); // narrower context
+
+      // target.Treat<ISubject1>().AsCreated<LevelThree>().BuildingWhich(_ => _.TreatAll().UsingArguments(levelThree)); // longer path
+      // target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected));                     // narrower context
       // target.Treat<LevelOne>().AsIs();
 
-      target.Treat<ISubject1>().AsCreated<LevelThree>().BuildingWhich(_ => _.TreatAll().UsingArguments(levelThree)); // longer path
-      target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected));                     // narrower context
-      target.Treat<LevelOne>().AsIs();
+      target.PrintToLog();
 
       using var _ = Log.Enabled(LogLevel.Trace);
 
       var actual = target.Build<ISubject1>(); //TODO: почему финальный вес 50? откуда берётся такое большое число?
 
       actual.Should().BeOfType<LevelThree>().Which.LevelTwo.LevelOne.Text.Should().Be(expected);
+      target.Treat<ISubject1>().AsCreated<LevelThree>().BuildingWhich(_ => _.TreatAll().UsingArguments(levelThree)); // longer path
+      target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected));                     // narrower context
+      target.Treat<LevelOne>().AsIs();
     }
 
     [Test]

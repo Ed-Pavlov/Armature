@@ -23,7 +23,7 @@ namespace Armature.Core
   ///   }
   /// </remarks>
 
-  public record TryInOrder : IBuildAction, ILogable, IEnumerable
+  public record TryInOrder : IBuildAction, IEnumerable
   {
     private readonly List<IBuildAction>                      _buildActions;
     private readonly Dictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new();
@@ -86,14 +86,5 @@ namespace Armature.Core
     public override string ToString() => GetType().ToLogString();
 
     public string ToLogString() => $"{{ {nameof(TryInOrder)} {{ Actions: [{string.Join(", ", _buildActions.Select(action => action.ToLogString()).ToArray())}] }} }}";
-
-    public void PrintToLog()
-    {
-      using(Log.NamedBlock(LogLevel.Info, nameof(TryInOrder)))
-      {
-        foreach(var buildAction in _buildActions)
-          Log.WriteLine(LogLevel.Info, buildAction.ToString);
-      }
-    }
   }
 }

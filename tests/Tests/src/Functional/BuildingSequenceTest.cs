@@ -31,8 +31,6 @@ namespace Tests.Functional
        .Treat<int>()
        .AsInstance(expected);
 
-      using var _ = Log.Enabled(LogLevel.Verbose);
-      
       // --act
       var actual = target.Build<ISubject>();
 

@@ -106,7 +106,8 @@ namespace Tests.Functional
             .InjectInto(Constructor.WithParameters<int, string>())
             .UsingArguments(4, "string"); // set value to inject into ctor
 
-      using var _ = Log.Enabled(LogLevel.Trace);
+      target.PrintToLog();
+
       // --act
       var actual = target.Build<Subject3>();
 
@@ -131,14 +132,14 @@ namespace Tests.Functional
                      }
                    };
       target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
-      
+
       // --arrange
       target.Treat<object>().AsInstance(new object());
-      
+
       target.Treat<Subject1>().AsIs().InjectInto(Constructor.WithParameters<Subject3, Subject2>());
       target.Treat<Subject2>().AsIs().InjectInto(Constructor.Parameterless());
       target.Treat<Subject3>().AsIs(); // use default rules, in this case the constructor with max parameters count
-      
+
       // --act
       var actual = target.Build<Subject1>();
 
@@ -146,7 +147,7 @@ namespace Tests.Functional
       actual.Subj2.ParameterlessConstructorIsCalled.Should().BeTrue();
       actual.Subj3.LongestPublicConstructorIsCalled.Should().BeTrue();
     }
-    
+
     [Test]
     public void should_fail_if_no_constructor_found()
     {
@@ -232,7 +233,7 @@ namespace Tests.Functional
 
       public readonly Subject2 Subj2;
       public readonly Subject3 Subj3;
-      
+
       [Inject(InjectPointId)]
       public Subject1() => CalledConstructorPointId = InjectPointId;
 

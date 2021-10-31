@@ -25,28 +25,37 @@ namespace Armature.Core
 
       using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipTillUnit)))
       {
-        Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {_pattern.ToLogString()}");
+        Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {_pattern.ToLogString()}, Weight = {Weight}");
 
         for(var i = 0; i < unitSequence.Length; i++)
         {
           var unitInfo = unitSequence[i];
 
           var isPatternMatches = _pattern.Matches(unitInfo);
-          var newWeight        = realWeight + Weight;
 
           if(isPatternMatches)
           {
             Log.WriteLine(LogLevel.Verbose, LogConst.Matched, true);
-            return GetOwnOrChildrenBuildActions(unitSequence.GetTail(i), inputWeight);
+            return GetOwnOrChildrenBuildActions(unitSequence.GetTail(i), realWeight + 1); //matching weight is +1
           }
 
           // increase weight on each "skipping" step, it will lead that "deeper" context has more weight then more common
           // it is needed when some Unit is registered several times
-          realWeight = newWeight;
+          realWeight += 2;
         }
         Log.WriteLine(LogLevel.Verbose, LogConst.Matched, false);
       }
       return null;
+    }
+
+    public override void PrintToLog()
+    {
+      using(Log.NamedBlock(LogLevel.Info, GetType().GetShortName()))
+      {
+        Log.WriteLine(LogLevel.Info, $"Pattern = {_pattern.ToLogString()}, Weight = {Weight:n0}");
+        PrintChildrenToLog();
+        PrintBuildActionsToLog();
+      }
     }
 
     [DebuggerStepThrough]
@@ -56,7 +65,7 @@ namespace Armature.Core
 
     public override bool Equals(IPatternTreeNode? other) => Equals(other as SkipTillUnit);
     public override bool Equals(object? obj) => Equals(obj as SkipTillUnit);
-    
+
     private bool Equals(SkipTillUnit? other)
     {
       if(ReferenceEquals(null, other)) return false;

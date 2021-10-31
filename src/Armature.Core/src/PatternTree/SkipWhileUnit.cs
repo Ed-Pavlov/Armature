@@ -5,7 +5,7 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  /// Skips units from the building unit sequence while unit matches specified pattern till the last (under construction) unit. 
+  /// Skips units from the building unit sequence while unit matches specified pattern till the last (under construction) unit.
   /// </summary>
   public class SkipWhileUnit : PatternTreeNodeBase
   {
@@ -21,7 +21,7 @@ namespace Armature.Core
       using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipWhileUnit)))
       {
         Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {_pattern.ToLogString()}");
-        
+
         for(; i < unitSequence.Length - 1; i++)
         {
           if(!_pattern.Matches(unitSequence[i]))
@@ -33,15 +33,25 @@ namespace Armature.Core
         return GetChildrenActions(unitSequence.GetTail(i), inputWeight);
       }
     }
-    
+
+    public override void PrintToLog()
+    {
+      using(Log.NamedBlock(LogLevel.Info, GetType().GetShortName()))
+      {
+        Log.WriteLine(LogLevel.Info, $"Pattern = {_pattern.ToLogString()}, Weight = {Weight:n0}");
+        PrintChildrenToLog();
+        PrintBuildActionsToLog();
+      }
+    }
+
     [DebuggerStepThrough]
     public override string ToString() => $"{GetType().GetShortName()}( {_pattern.ToLogString()} ){{ Weight={Weight:n0} }}";
-    
+
     #region Equality
-    
+
     public override bool Equals(IPatternTreeNode? other) => Equals(other as SkipWhileUnit);
     public override bool Equals(object?           obj)   => Equals(obj as SkipWhileUnit);
-    
+
     private bool Equals(SkipWhileUnit? other)
     {
       if(ReferenceEquals(null, other)) return false;

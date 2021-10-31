@@ -22,7 +22,8 @@ namespace Armature.Core
     public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
     {
       var unitsToSkipCount = unitSequence.Length;
-      var matchingWeight   = Weight + inputWeight - unitsToSkipCount;
+      // var matchingWeight   = Weight + inputWeight - unitsToSkipCount;
+      var matchingWeight   = inputWeight;
 
       using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipAllUnits)))
       {

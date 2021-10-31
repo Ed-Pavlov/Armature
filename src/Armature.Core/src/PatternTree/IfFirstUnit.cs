@@ -22,11 +22,21 @@ namespace Armature.Core
     {
       using(Log.NamedBlock(LogLevel.Verbose, nameof(IfFirstUnit)))
       {
-        Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {_pattern.ToLogString()}");
-        
+        Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {_pattern.ToLogString()}, Weight = {Weight}");
+
         var matches = _pattern.Matches(unitSequence[0]);
         Log.WriteLine(LogLevel.Verbose, LogConst.Matched, matches);
         return matches ? GetOwnOrChildrenBuildActions(unitSequence, inputWeight) : null;
+      }
+    }
+
+    public override void PrintToLog()
+    {
+      using(Log.NamedBlock(LogLevel.Info, GetType().GetShortName()))
+      {
+        Log.WriteLine(LogLevel.Info, $"Pattern = {_pattern.ToLogString()}, Weight = {Weight:n0}");
+        PrintChildrenToLog();
+        PrintBuildActionsToLog();
       }
     }
 

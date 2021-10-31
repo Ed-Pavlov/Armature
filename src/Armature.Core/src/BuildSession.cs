@@ -164,6 +164,7 @@ namespace Armature.Core
         }
         catch(Exception exc) {
           AddBuildSessionData(exc);
+          throw;
         }
     }
 

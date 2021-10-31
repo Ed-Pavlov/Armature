@@ -16,8 +16,8 @@ namespace Armature.Core
     public const byte SubtypePattern     = OpenGenericPattern + Step;
     public const byte StrictPattern      = SubtypePattern     + Step;
 
-    public const short SkipAll   = -10;
-    public const short Match  = 10;
+    public const short SkipAll   = 0;
+    public const short Match  = 0;
     // public const short SkipTillUnit  = 10;
     // public const short FirstUnit = SkipTillUnit; // FindUnit + (Step << (sizeof(byte) * 8));
   }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Armature.Core.Logging;
 
@@ -77,36 +76,27 @@ namespace Armature.Core
 
     public override void PrintToLog()
     {
-      ICollection<IPatternTreeNode>? children = null;
-
-      try
+      using(Log.NamedBlock(LogLevel.Info, GetType().GetShortName()))
       {
-        children = Children;
+        Log.WriteLine(LogLevel.Info, $"Weight = {Weight:n0}");
+        PrintChildrenToLog();
+        PrintBuildActionsToLog();
       }
-      catch
-      { // access to Children could throw an exception, do nothing
-      }
+    }
+    protected void PrintChildrenToLog()
+    {
+      if(RawChildren is not null)
+        foreach(var child in RawChildren)
+          child.PrintToLog();
+    }
 
-      if(children is not null)
-        foreach(var child in children)
-          using(Log.NamedBlock(LogLevel.Info, child.ToString))
-          {
-            child.PrintToLog();
-          }
-
+    protected void PrintBuildActionsToLog()
+    {
       if(_buildActions is not null)
-        using(Log.NamedBlock(LogLevel.Info, "Build actions"))
-        {
+        using(Log.IndentBlock(LogLevel.Info, "BuildActions: ", "[]"))
           foreach(var pair in _buildActions)
           foreach(var buildAction in pair.Value)
-            if(buildAction is not ILogable printable)
-              Log.WriteLine(LogLevel.Info, $"{buildAction}{{ Stage={pair.Key} }}");
-            else
-            {
-              Log.WriteLine(LogLevel.Info, $"Stage={pair.Key}");
-              printable.PrintToLog();
-            }
-        }
+            Log.WriteLine(LogLevel.Info, $"{{ Action: {buildAction.ToLogString()}, Stage: {pair.Key} }}");
     }
   }
 }

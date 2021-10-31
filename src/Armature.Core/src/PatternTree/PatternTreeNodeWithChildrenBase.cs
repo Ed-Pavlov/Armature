@@ -50,7 +50,7 @@ namespace Armature.Core
 
       using(Log.NamedBlock(LogLevel.Trace, "PassTailToChildren"))
       {
-        Log.WriteLine(LogLevel.Trace, $"Weight = {inputMatchingWeight}, Tail = {unitSequence.ToLogString()}");
+        Log.WriteLine(LogLevel.Trace, $"ActualWeight = {inputMatchingWeight}, Tail = {unitSequence.ToLogString()}");
         foreach(var child in RawChildren)
           result = result.Merge(child.GatherBuildActions(unitSequence, inputMatchingWeight));
       }
@@ -60,16 +60,19 @@ namespace Armature.Core
 
     public virtual void PrintToLog()
     {
-      if(RawChildren is not null)
-        foreach(var child in RawChildren)
-          using(Log.NamedBlock(LogLevel.Info, child.ToString))
+      using(Log.NamedBlock(LogLevel.Info, GetType().GetShortName()))
+      {
+        Log.WriteLine(LogLevel.Info, $"Weight: {Weight:n0}");
+        if(RawChildren is not null)
+          foreach(var child in RawChildren)
             child.PrintToLog();
+      }
     }
 
     public string ToLogString() => ToString();
 
     [DebuggerStepThrough]
-    public override string ToString() => $"{GetType().GetShortName()}{{ {Weight:n0} }}";
+    public override string ToString() => $"{GetType().GetShortName()}{{ Weight: {Weight:n0} }}";
 
     public virtual bool Equals(IPatternTreeNode? other)
       => other is PatternTreeNodeBase otherNode && Weight == otherNode.Weight && GetType() == otherNode.GetType();

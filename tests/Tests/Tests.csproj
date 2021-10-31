@@ -21,9 +21,6 @@
     <ProjectReference Include="..\..\src\Armature\Armature.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\build\armature.public.snk">
       <Link>build\armature.public.snk</Link>
     </None>
