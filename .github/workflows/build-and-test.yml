@@ -61,6 +61,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+        include-prerelease: true
 
     # Restore build and test as one command in order to not copy/paste the same arguments
     # -
