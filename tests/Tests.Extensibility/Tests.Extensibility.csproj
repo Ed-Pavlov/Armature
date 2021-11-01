@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net472;netcoreapp2.1;net6.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.3.0" />
