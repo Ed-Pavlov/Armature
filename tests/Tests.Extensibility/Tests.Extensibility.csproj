@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net461;net5.0</TargetFrameworks>
-    <LangVersion>default</LangVersion>
+    <LangVersion>preview</LangVersion>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.3.0" />
@@ -13,8 +13,5 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Armature.Core\Armature.Core.csproj" />
     <ProjectReference Include="..\..\src\Armature\Armature.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src" />
   </ItemGroup>
 </Project>

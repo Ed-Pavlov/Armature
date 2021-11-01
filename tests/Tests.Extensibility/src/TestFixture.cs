@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Armature.Core.Logging;
 using NUnit.Framework;
 
-namespace Tests;
+namespace Tests.Extensibility;
 
 [SetUpFixture]
 public class TestFixture
