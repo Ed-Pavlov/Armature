@@ -14,10 +14,39 @@ env:
   nugets-dir:    artifacts/nupkgs
 
 jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ macos-latest, windows-latest, ubuntu-latest ]
+        dotnet: ['2.1.x', '3.1.x', '5.0.x', '6.0.x']
+        include:
+        -
+          os: windows-latest
+          dotnet: '4.7.2'
+
+    steps:
+    -
+      name: Checkout
+      uses: actions/checkout@v2.3.4
+      with:
+        fetch-depth: 0
+
+    -
+      name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version:     ${{ matrix.dotnet }}
+        include-prerelease: true
+
+    # Restore build and test as one command in order to not copy/paste the same arguments
+    -
+      name: Restore, build, and run tests
+      run:  dotnet test -c ${{env.configuration}}
+
   build:
-
-    runs-on: windows-latest
-
+    needs: test
+    runs-on: ubuntu-latest
     steps:
     -
       name: Checkout
@@ -40,18 +69,26 @@ jobs:
       name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
-        include-prerelease: true
+        dotnet-version: 5.0.x
 
     # Restore build and test as one command in order to not copy/paste the same arguments
-    -
-      name: Restore, build, and run tests
-      run:  dotnet test -c ${{env.configuration}} -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }} -p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }} -p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }}
+    # -
+    #   name: Restore, build, and run tests
+    #   run:  dotnet test -c ${{env.configuration}} -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }} -p:FileVersion=${{ steps.gitversion
+    # - .outputs.assemblySemFileVer }} -p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }}
 
+    # Restore build and pack as one command in order to not copy/paste the same arguments
     # Place nuget packages into env.nugets-dir directory
     -
       name: Pack
-      run:  dotnet pack --no-build -c ${{ env.configuration }} -o:${{ env.nugets-dir }}  -p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }}
+      run: >
+            dotnet pack
+            -c ${{ env.configuration }}
+            -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }}
+            -p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }}
+            -p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }}
+            -o:${{ env.nugets-dir }}
+            -p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }}
 
     -
       name: Store Version
@@ -60,9 +97,9 @@ jobs:
         name: version.json
         json: |
               {
-                "assembly-version": "${{ steps.gitversion.outputs.assemblySemVer }}",
-                "assembly-file-version": "${{ steps.gitversion.outputs.assemblySemFileVer }}",
-                "nuget-version": "${{ steps.gitversion.outputs.nuGetVersionV2 }}"
+              "assembly-version": "${{ steps.gitversion.outputs.assemblySemVer }}",
+              "assembly-file-version": "${{ steps.gitversion.outputs.assemblySemFileVer }}",
+              "nuget-version": "${{ steps.gitversion.outputs.nuGetVersionV2 }}"
               }
         dir:  ${{ env.artifacts-dir }}
 
