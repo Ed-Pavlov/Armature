@@ -15,21 +15,7 @@ env:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ macos-latest, windows-latest, ubuntu-latest ]
-        dotnet: [
-          { ghv: '2.1.x', tfv: netcoreapp2.1 },
-          { ghv: '3.1.x', tfv: netcoreapp3.1 },
-          { ghv: '5.0.x', tfv: net5.0 },
-          { ghv: '6.0.x', tfv: net6.0 },
-        ]
-        include:
-        -
-          os: windows-latest
-          dotnet: { ghv: '4.7.2', tfv: net4.7.2 }
-
+    runs-on: ubuntu-latest
     steps:
     -
       name: Checkout
@@ -41,13 +27,13 @@ jobs:
       name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version:     ${{ matrix.dotnet.ghv }}
+        dotnet-version:     6.0.x
         include-prerelease: true
 
     # Restore build and test as one command in order to not copy/paste the same arguments
     -
       name: Restore, build, and run tests
-      run:  dotnet test -c ${{env.configuration}} --framework ${{ matrix.dotnet.tfv }}
+      run:  dotnet test -c ${{env.configuration}}
 
   build:
     needs: test
