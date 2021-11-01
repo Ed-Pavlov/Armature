@@ -42,7 +42,7 @@ jobs:
     # Restore build and test as one command in order to not copy/paste the same arguments
     -
       name: Restore, build, and run tests
-      run:  dotnet test -c ${{env.configuration}}
+      run:  dotnet test -c ${{env.configuration}} --framework ${{ matrix.dotnet }}
 
   build:
     needs: test
