@@ -28,7 +28,7 @@ jobs:
         include:
         -
           os: windows-latest
-          dotnet: { ghv: '4.7.2', tfv: net4.7.2 },
+          dotnet: { ghv: '4.7.2', tfv: net4.7.2 }
 
     steps:
     -
