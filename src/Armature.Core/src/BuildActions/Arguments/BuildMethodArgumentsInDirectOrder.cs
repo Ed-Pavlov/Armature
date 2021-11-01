@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using Armature.Core.Logging;
 
 namespace Armature.Core
 {
   /// <summary>
-  ///   Builds arguments for method parameters by building a unit {<see cref="ParameterInfo"/>, <see cref="SpecialKey.Argument"/> one by one. 
+  ///   Builds arguments for method parameters by building a unit {<see cref="ParameterInfo"/>, <see cref="SpecialKey.Argument"/> one by one.
   /// </summary>
   public record BuildMethodArgumentsInDirectOrder : IBuildAction
   {
@@ -20,7 +21,7 @@ namespace Armature.Core
       for(var i = 0; i < parameters.Length; i++)
       {
         var buildResult = buildSession.BuildUnit(new UnitId(parameters[i], SpecialKey.Argument));
-        
+
         if(!buildResult.HasValue)
         {
           var method = parameters[i].Member;
@@ -34,8 +35,10 @@ namespace Armature.Core
       buildSession.BuildResult = new BuildResult(arguments);
     }
 
+    [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
 
-    public override string ToString() => GetType().GetShortName();
+    [DebuggerStepThrough]
+    public override string ToString() => nameof(BuildMethodArgumentsInDirectOrder);
   }
 }

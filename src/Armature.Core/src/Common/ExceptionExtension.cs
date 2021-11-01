@@ -15,7 +15,7 @@ namespace Armature.Core
       if(exception is null) throw new ArgumentNullException(nameof(exception));
       if(key is null) throw new ArgumentNullException(nameof(key));
 
-      exception.Data.Add(key, value.ToLogString());
+      exception.Data.Add(key, value.ToHoconString());
 
       return exception;
     }

@@ -11,7 +11,5 @@ namespace Armature.Core
     public BuildArgumentByParameterName(object? key) : base(key) { }
 
     protected override string GetInjectPointName(UnitId unitId) => ((ParameterInfo) unitId.Kind!).Name;
-    
-    public override string ToString() => base.ToString();
   }
 }

@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   /// Base class for patterns check if a unit is an argument for an "inject point" requires argument of the specified type.
   /// </summary>
-  public abstract record InjectPointByTypePattern : IUnitPattern
+  public abstract record InjectPointByTypePattern : IUnitPattern, ILogString
   {
     private readonly Type _type;
     private readonly bool _exactMatch;
@@ -27,6 +27,9 @@ namespace Armature.Core
 
     protected abstract Type? GetInjectPointType(UnitId unitId);
 
-    public string ToLogString() => $"{{ {GetType().GetShortName()} {{ Type: {_type.ToLogString()} }} }}";
+    [DebuggerStepThrough]
+    public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ Type: {_type.ToLogString()}, ExactMatch: {_exactMatch} }} }}";
+    [DebuggerStepThrough]
+    public sealed override string ToString() => ToHoconString();
   }
 }

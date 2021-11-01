@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   ///   Redirects building of a unit of one type to the unit of another type. E.g. redirecting interface to the implementation.
   /// </summary>
-  public record RedirectType : IBuildAction
+  public record RedirectType : IBuildAction, ILogString
   {
     private readonly Type    _redirectTo;
     private readonly object? _key;
@@ -40,6 +40,9 @@ namespace Armature.Core
     public void PostProcess(IBuildSession buildSession) { }
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}( {1} )", GetType().GetShortName(), _redirectTo.ToLogString());
+    public string ToHoconString()
+      => $"{{ {nameof(RedirectOpenGenericType)} {{ RedirectToType: {_redirectTo.ToLogString().QuoteIfNeeded()}, Key: {_key.ToHoconString()} }} }}";
+    [DebuggerStepThrough]
+    public override string ToString() => ToHoconString();
   }
 }

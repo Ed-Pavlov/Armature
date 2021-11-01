@@ -74,29 +74,13 @@ namespace Armature.Core
               blockContent();
         });
 
-    public override void PrintToLog()
-    {
-      using(Log.NamedBlock(LogLevel.Info, GetType().GetShortName()))
-      {
-        Log.WriteLine(LogLevel.Info, $"Weight = {Weight:n0}");
-        PrintChildrenToLog();
-        PrintBuildActionsToLog();
-      }
-    }
-    protected void PrintChildrenToLog()
-    {
-      if(RawChildren is not null)
-        foreach(var child in RawChildren)
-          child.PrintToLog();
-    }
-
-    protected void PrintBuildActionsToLog()
+    protected override void PrintContentToLog(LogLevel logLevel)
     {
       if(_buildActions is not null)
-        using(Log.IndentBlock(LogLevel.Info, "BuildActions: ", "[]"))
+        using(Log.IndentBlock(logLevel, "BuildActions: ", "[]"))
           foreach(var pair in _buildActions)
           foreach(var buildAction in pair.Value)
-            Log.WriteLine(LogLevel.Info, $"{{ Action: {buildAction.ToLogString()}, Stage: {pair.Key} }}");
+            Log.WriteLine(LogLevel.Info, $"{{ Action: {buildAction.ToHoconString()}, Stage: {pair.Key} }}");
     }
   }
 }

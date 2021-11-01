@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   /// Base class for patterns check if a unit is an argument for an "inject point" with the specified name.
   /// </summary>
-  public abstract record InjectPointWithNamePattern : IUnitPattern
+  public abstract record InjectPointWithNamePattern : IUnitPattern, ILogString
   {
     private readonly string _name;
 
@@ -19,8 +19,8 @@ namespace Armature.Core
     protected abstract string? GetInjectPointName(UnitId unitId);
 
     [DebuggerStepThrough]
-    public override string ToString() => $"{GetType().GetShortName()}( {_name} )";
-
-    public string ToLogString() => GetType().GetShortName();
+    public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ Name: {_name.QuoteIfNeeded()} }} }}";
+    [DebuggerStepThrough]
+    public sealed override string ToString() => ToHoconString();
   }
 }

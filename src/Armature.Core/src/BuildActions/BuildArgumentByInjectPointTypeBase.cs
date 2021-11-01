@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   ///   Base class for build actions build arguments to inject.
   /// </summary>
-  public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction
+  public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogString
   {
     private readonly object? _key;
 
@@ -30,6 +30,9 @@ namespace Armature.Core
 
     protected abstract Type GetInjectPointType(UnitId unitId);
 
-    public override string ToString() => $"{GetType().GetShortName()}{{ Key = {_key.ToLogString()} }}";
+    [DebuggerStepThrough]
+    public string ToHoconString() => $"{{ {nameof(BuildArgumentByInjectPointTypeBase)} {{ Key: {_key.ToHoconString()} }} }}";
+    [DebuggerStepThrough]
+    public sealed override string ToString() => ToHoconString();
   }
 }

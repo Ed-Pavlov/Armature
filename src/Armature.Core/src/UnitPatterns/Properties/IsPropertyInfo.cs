@@ -10,10 +10,8 @@ namespace Armature.Core
   public record IsPropertyInfo : IUnitPattern
   {
     public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Argument && unitId.Kind is PropertyInfo;
-    
-    [DebuggerStepThrough]
-    public override string ToString() => GetType().GetShortName();
 
-    public string ToLogString() => GetType().GetShortName();
+    [DebuggerStepThrough]
+    public override string ToString() => nameof(IsPropertyInfo);
   }
 }

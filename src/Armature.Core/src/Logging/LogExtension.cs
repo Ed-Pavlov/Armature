@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Armature.Core.Logging
 {
+  [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
   public static class LogExtension
   {
     private static readonly HashSet<char> BadCharacters = new(
@@ -33,23 +34,27 @@ namespace Armature.Core.Logging
     /// </summary>
     public static string ToLogString(this Type type) => Log.LogFullTypeName ? type.GetFullName() : type.GetShortName();
 
+    public static string ToLogString(this BuildResult buildResult) => buildResult.HasValue ? buildResult.Value.ToHoconString() : "nothing";
+
+    public static string ToHoconString(this UnitId unitId) => $"{{ kind: {unitId.Kind.ToHoconString()}, key: {unitId.Key.ToHoconString()}}}";
     /// <summary>
     ///   Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
     /// </summary>
-    public static string ToLogString(this object? value)
+    public static string ToHoconString(this object? value)
       => value switch
          {
            null                        => "null",
-           string str                  => str,
-           IEnumerable<UnitId> unitIds => unitIds.ToLogString(),
-           ILogable logable            => logable.ToLogString(),
-           ILogable1 logable           => logable.ToLogString(),
-           IBuildAction buildAction    => buildAction.ToLogString(),
+           string str                  => str.QuoteIfNeeded(),
+           UnitId unitId               => unitId.ToHoconString(),
+           IEnumerable<UnitId> unitIds => unitIds.ToHoconArray(),
+           ILogString logable          => logable.ToHoconString(),
+           IBuildAction buildAction    => buildAction.GetType().GetShortName().QuoteIfNeeded(),
            Type type                   => $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})".QuoteIfNeeded(),
-           // var obj when obj.GetType()
-           //   is var type && type.IsArray => $"{{ Object {{ Type: {type.ToLogString().Quote()} }} }}",
-           _                             => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
+           _                           => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
          };
+
+    public static string ToHoconArray<T>(this IEnumerable<T>    items) => $"[{string.Join(", ", items.Select(_ => _.ToHoconString()))}]";
+    public static string ToHoconArray(this    IEnumerable<Type> items) => $"[{string.Join(", ", items.Select(_ => _.ToLogString().QuoteIfNeeded()))}]";
 
     public static string Quote(this string str) => $"\"{str}\"";
 
@@ -60,36 +65,6 @@ namespace Armature.Core.Logging
           return Quote(str);
 
       return str;
-    }
-
-    public static string ToLogString(this BuildResult buildResult) => buildResult.HasValue ? buildResult.Value.ToLogString() : "nothing";
-
-    public static string ToLogString(this UnitId unitId)
-      => $"{{ kind: {unitId.Kind.ToLogString()}, key: {unitId.Key.ToLogString()}}}";
-
-    public static string ToLogString(this IBuildAction buildAction)
-      => (buildAction switch
-          {
-            ILogable logable   => logable.ToLogString(),
-            ILogable1 logable1 => logable1.ToLogString(),
-            _                  => buildAction.GetType().GetShortName()
-          });
-
-    public static string ToLogString(this IEnumerable<UnitId> array)
-    {
-      var separator = string.Empty;
-
-      StringBuilder sb = new("[");
-
-      foreach(var unitId in array)
-      {
-        sb.Append(separator);
-        sb.Append(unitId.ToLogString());
-        separator = ", ";
-      }
-
-      sb.Append("]");
-      return sb.ToString();
     }
 
     public static void WriteToLog(this WeightedBuildActionBag? actions, LogLevel logLevel)
@@ -109,7 +84,6 @@ namespace Armature.Core.Logging
           else
             using(Log.IndentBlock(logLevel, "", "[]"))
             {
-              Log.WriteLine(logLevel, "");
               foreach(var pair in actions)
               {
                 var stage       = pair.Key;
@@ -124,11 +98,10 @@ namespace Armature.Core.Logging
         => Log.WriteLine(
           logLevel,
           "{{ Action: {0}, Stage: {1}, Weight: {2:n0} }}",
-          weightedAction.Entity.ToLogString(),
-          stage.ToString().QuoteIfNeeded(),
+          weightedAction.Entity.ToHoconString(),
+          stage.ToHoconString(),
           weightedAction.Weight);
     }
-
 
     public static void WriteToLog(this Exception exc, Func<string> getTitle)
       => Log.Execute(

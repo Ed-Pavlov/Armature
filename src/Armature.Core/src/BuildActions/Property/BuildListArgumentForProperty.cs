@@ -12,7 +12,5 @@ namespace Armature.Core
     public BuildListArgumentForProperty(object? key) : base(key) { }
 
     protected override Type GetArgumentType(UnitId unitId) => ((PropertyInfo) unitId.Kind!).PropertyType;
-    
-    public override string ToString() => base.ToString();
   }
 }

@@ -13,7 +13,7 @@ namespace Armature.Core
     public void Process(IBuildSession buildSession)
     {
       var parameterInfo = (ParameterInfo) buildSession.GetUnitUnderConstruction().Kind!;
-      Log.WriteLine(LogLevel.Verbose, () => $"Parameter: {parameterInfo.ToLogString()}");
+      Log.WriteLine(LogLevel.Verbose, () => $"Parameter: {parameterInfo.ToHoconString()}");
 
       var attribute = parameterInfo
                      .GetCustomAttributes<InjectAttribute>()
@@ -28,6 +28,6 @@ namespace Armature.Core
 
     public void PostProcess(IBuildSession buildSession) { }
 
-    public override string ToString() => GetType().GetShortName();
+    public override string ToString() => nameof(BuildArgumentByParameterInjectPointId);
   }
 }

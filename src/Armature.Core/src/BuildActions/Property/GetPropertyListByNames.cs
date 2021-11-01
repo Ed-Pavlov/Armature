@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Armature.Core.Logging;
 
@@ -8,7 +9,7 @@ namespace Armature.Core
   /// <summary>
   ///   "Builds" a constructor Unit of the currently building Unit with provided names
   /// </summary>
-  public record GetPropertyListByNames : IBuildAction
+  public record GetPropertyListByNames : IBuildAction, ILogString
   {
     private readonly IReadOnlyCollection<string> _names;
 
@@ -41,8 +42,12 @@ namespace Armature.Core
       buildSession.BuildResult = new BuildResult(properties);
     }
 
+    [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
 
-    public override string ToString() => string.Format("{0}( {1} )", GetType().GetShortName(), string.Join(", ", _names));
+    [DebuggerStepThrough]
+    public override string ToString() => ToHoconString();
+    [DebuggerStepThrough]
+    public string ToHoconString() => $"{{ {nameof(GetPropertyListByNames)} {{ Names: {_names.ToHoconArray()} }} }}";
   }
 }

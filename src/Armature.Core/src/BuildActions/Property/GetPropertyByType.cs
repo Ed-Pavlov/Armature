@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Armature.Core.Logging;
 
@@ -8,7 +9,7 @@ namespace Armature.Core
   ///   "Builds" a property Unit of the currently building Unit of specified type
   ///   specified <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
-  public record GetPropertyByType : IBuildAction
+  public record GetPropertyByType : IBuildAction, ILogString
   {
     private readonly Type _type;
 
@@ -32,6 +33,9 @@ namespace Armature.Core
 
     public void PostProcess(IBuildSession buildSession) { }
 
-    public override string ToString() => string.Format("{0}( {1} )", GetType().GetShortName(), _type);
+    [DebuggerStepThrough]
+    public string ToHoconString() => $"{{ {nameof(GetPropertyByType)} {{ Type: {_type.ToLogString().QuoteIfNeeded()} }} }}";
+    [DebuggerStepThrough]
+    public override string ToString() => ToHoconString();
   }
 }

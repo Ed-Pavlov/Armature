@@ -45,11 +45,11 @@ namespace Armature.Core
 
       for(; i < Length - 1; i++)
       {
-        sb.Append(this[i].ToLogString());
+        sb.Append(this[i].ToHoconString());
         sb.Append(", ");
       }
 
-      sb.Append(this[i].ToLogString());
+      sb.Append(this[i].ToHoconString());
       return sb.ToString();
     }
     public IEnumerator<T>   GetEnumerator() => new Enumerator(_array, _startIndex);

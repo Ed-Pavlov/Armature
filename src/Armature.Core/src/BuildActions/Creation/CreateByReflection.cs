@@ -53,6 +53,7 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
 
-    public override string ToString() => GetType().GetShortName();
+    [DebuggerStepThrough]
+    public override string ToString() => nameof(CreateByReflection);
   }
 }

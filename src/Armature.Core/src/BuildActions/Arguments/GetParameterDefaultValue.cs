@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using Armature.Core.Logging;
+﻿using System.Diagnostics;
+using System.Reflection;
 
 namespace Armature.Core
 {
@@ -14,8 +14,10 @@ namespace Armature.Core
         buildSession.BuildResult = new BuildResult(parameterInfo.DefaultValue);
     }
 
+    [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
 
-    public override string ToString() => GetType().GetShortName();
+    [DebuggerStepThrough]
+    public override string ToString() => nameof(GetParameterDefaultValue);
   }
 }

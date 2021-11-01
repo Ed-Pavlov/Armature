@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Resources;
 using Armature.Core.Logging;
 
 namespace Armature.Core
@@ -23,7 +22,7 @@ namespace Armature.Core
   ///   }
   /// </remarks>
 
-  public record TryInOrder : IBuildAction, IEnumerable
+  public record TryInOrder : IBuildAction, IEnumerable, ILogString
   {
     private readonly List<IBuildAction>                      _buildActions;
     private readonly Dictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new();
@@ -85,6 +84,6 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public override string ToString() => GetType().ToLogString();
 
-    public string ToLogString() => $"{{ {nameof(TryInOrder)} {{ Actions: [{string.Join(", ", _buildActions.Select(action => action.ToLogString()).ToArray())}] }} }}";
+    public string ToHoconString() => $"{{ {nameof(TryInOrder)} {{ Actions: {_buildActions.ToHoconArray()} }} }}";
   }
 }

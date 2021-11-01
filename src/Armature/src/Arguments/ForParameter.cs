@@ -48,6 +48,6 @@ namespace Armature
                 .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance, 0))
                 .AddNode(new IfFirstUnit(new IsParameterMarkedWithAttribute(injectPointId), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByInjectPointId),
                          $"Building of an argument for the method parameter marked with {nameof(InjectAttribute)}"
-                       + $" with {nameof(InjectAttribute.InjectionPointId)} equal to {injectPointId.ToLogString()} is already tuned"));
+                       + $" with {nameof(InjectAttribute.InjectionPointId)} equal to {injectPointId.ToHoconString()} is already tuned"));
   }
 }

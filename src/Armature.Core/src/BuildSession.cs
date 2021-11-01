@@ -58,7 +58,7 @@ namespace Armature.Core
       T result;
       using(Log.NamedBlock(LogLevel.Info, "Build"))
       {
-        Log.WriteLine(LogLevel.Verbose, () => $"UnitId = {unitId.ToLogString()}");
+        Log.WriteLine(LogLevel.Verbose, () => $"UnitId = {unitId.ToHoconString()}");
         _buildSequence.Add(unitId);
 
         WeightedBuildActionBag? actions;
@@ -66,7 +66,7 @@ namespace Armature.Core
 
         using(Log.NamedBlock(LogLevel.Verbose, GatherBuildActions))
         {
-          Log.WriteLine(LogLevel.Verbose, () => $"Context = {_buildSequence.ToLogString()}" );
+          Log.WriteLine(LogLevel.Verbose, () => $"Context = {_buildSequence.ToHoconArray()}" );
 
           var buildSequence = _buildSequence.AsArrayTail();
           actions    = _mainPatternTree.GatherBuildActions(buildSequence, 0);

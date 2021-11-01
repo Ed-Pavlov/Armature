@@ -44,7 +44,7 @@ namespace Armature
                 .AddNode(
                    new IfFirstUnit(new IsPropertyMarkedWithAttribute(injectPointId), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByInjectPointId),
                    $"Building of an argument for the property marked with {nameof(InjectAttribute)}"
-                 + $" with {nameof(InjectAttribute.InjectionPointId)} equal to {injectPointId.ToLogString()} is already tuned");
+                 + $" with {nameof(InjectAttribute.InjectionPointId)} equal to {injectPointId.ToHoconString()} is already tuned");
              });
   }
 }

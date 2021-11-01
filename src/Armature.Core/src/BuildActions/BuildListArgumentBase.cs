@@ -10,7 +10,7 @@ namespace Armature.Core
   /// <summary>
   /// Base class for build actions build a list of arguments by using <see cref="IBuildSession.BuildAllUnits"/> method.
   /// </summary>
-  public abstract record BuildListArgumentBase : IBuildAction
+  public abstract record BuildListArgumentBase : IBuildAction, ILogString
   {
     private static readonly object[] ParamContainer     = new object[1];
     private static readonly Type[]   TypeParamContainer = new Type[1];
@@ -24,7 +24,7 @@ namespace Armature.Core
     public void Process(IBuildSession buildSession)
     {
       var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
-      var effectiveKey          = _key.GetKey(unitUnderConstruction.Key);
+      var effectiveKey          = _key.GetEffectiveKey(unitUnderConstruction.Key);
 
       var injectionPointType = GetArgumentType(unitUnderConstruction);
 
@@ -96,6 +96,9 @@ namespace Armature.Core
       return type.IsAssignableFrom(listType);
     }
 
-    public override string ToString() => string.Format("{0}( {1} )", GetType().GetShortName(), _key.ToLogString());
+    [DebuggerStepThrough]
+    public string ToHoconString() => $"{{ {nameof(BuildListArgumentBase)} {{ Key: {_key.ToHoconString()} }} }}";
+    [DebuggerStepThrough]
+    public sealed override string ToString() => ToHoconString();
   }
 }

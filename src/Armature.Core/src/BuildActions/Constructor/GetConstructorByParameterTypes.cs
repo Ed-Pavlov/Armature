@@ -9,7 +9,7 @@ namespace Armature.Core
   /// <summary>
   ///   Gets a constructor of type which matches specified parameter types list.
   /// </summary>
-  public record GetConstructorByParameterTypes : IBuildAction
+  public record GetConstructorByParameterTypes : IBuildAction, ILogString
   {
     private readonly Type[] _parameterTypes;
 
@@ -44,7 +44,8 @@ namespace Armature.Core
     }
 
     [DebuggerStepThrough]
-    public override string ToString()
-      => string.Format("{0}( {1} )", GetType().GetShortName(), string.Join(", ", _parameterTypes.Select(_ => _.ToLogString()).ToArray()));
+    public override string ToString() => ToHoconString();
+    [DebuggerStepThrough]
+    public string ToHoconString() => $"{{ {nameof(GetConstructorByParameterTypes)} {{ Types: {_parameterTypes.ToHoconArray()} }} }}";
   }
 }

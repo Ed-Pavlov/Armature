@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   /// Checks if a unit matches with the specified kind and a key.
   /// </summary>
-  public sealed record Pattern : IUnitPattern
+  public sealed record Pattern : IUnitPattern, ILogString
   {
     private readonly object? _unitKind;
     private readonly object? _key;
@@ -25,8 +25,8 @@ namespace Armature.Core
     public bool Matches(UnitId unitId) => Equals(_unitKind, unitId.Kind) && _key.Matches(unitId.Key);
 
     [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}({1}:{2})", GetType().GetShortName(), _unitKind.ToLogString(), _key.ToLogString());
-
-    public string ToLogString() => $"{{ kind: {_unitKind.ToLogString()}, key: {_key.ToLogString()} }}";
+    public string ToHoconString() => $"{{ {nameof(Pattern)} {{ kind: {_unitKind.ToHoconString()}, key: {_key.ToHoconString()} }} }}";
+    [DebuggerStepThrough]
+    public override string ToString() => ToHoconString();
   }
 }

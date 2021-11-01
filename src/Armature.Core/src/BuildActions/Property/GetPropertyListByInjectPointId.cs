@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
@@ -8,7 +9,7 @@ namespace Armature.Core
   /// <summary>
   ///   Gets a list of  properties marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
-  public record GetPropertyListByInjectPointId : IBuildAction
+  public record GetPropertyListByInjectPointId : IBuildAction, ILogString
   {
     private readonly object?[] _pointIds;
 
@@ -40,8 +41,12 @@ namespace Armature.Core
         buildSession.BuildResult = new BuildResult(properties);
     }
 
+    [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
 
-    public override string ToString() => string.Format("{0}( {1} )", GetType().GetShortName(), string.Join(", ", _pointIds));
+    [DebuggerStepThrough]
+    public override string ToString() => ToHoconString();
+    [DebuggerStepThrough]
+    public string ToHoconString() => $"{{ {nameof(GetPropertyListByInjectPointId)} {{ Points: {_pointIds.ToHoconArray()} }} }}";
   }
 }

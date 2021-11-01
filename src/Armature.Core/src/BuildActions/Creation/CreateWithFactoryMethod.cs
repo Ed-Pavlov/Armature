@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   ///   Creates a Unit using specified factory method.
   /// </summary>
-  public class CreateWithFactoryMethod<TR> : IBuildAction
+  public class CreateWithFactoryMethod<TR> : IBuildAction, ILogString
   {
     private readonly Func<IBuildSession, TR> _factoryMethod;
 
@@ -25,6 +25,8 @@ namespace Armature.Core
     public void PostProcess(IBuildSession buildSession) { }
 
     [DebuggerStepThrough]
-    public override string ToString() => $"{GetType().GetShortName()}( {_factoryMethod.ToLogString()} )";
+    public string ToHoconString() => $"{{ {GetType().GetShortName()} {{ Method: {_factoryMethod.ToHoconString().QuoteIfNeeded()} }} }}";
+    [DebuggerStepThrough]
+    public override string ToString() => ToHoconString();
   }
 }

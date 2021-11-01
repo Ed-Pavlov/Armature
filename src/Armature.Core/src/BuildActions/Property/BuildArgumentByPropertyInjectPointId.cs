@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using Armature.Core.Logging;
 
@@ -29,8 +30,10 @@ namespace Armature.Core
       }
     }
 
+    [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
-    
-    public override string ToString() => GetType().GetShortName();
+
+    [DebuggerStepThrough]
+    public override string ToString() => nameof(BuildArgumentByPropertyInjectPointId);
   }
 }

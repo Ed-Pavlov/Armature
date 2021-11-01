@@ -1,4 +1,5 @@
-﻿using Armature.Core.Logging;
+﻿using System.Diagnostics;
+using Armature.Core.Logging;
 
 namespace Armature.Core
 {
@@ -6,7 +7,7 @@ namespace Armature.Core
   ///   Caches built unit in <see cref="PostProcess" /> and then set it as <see cref="BuildResult" /> in <see cref="Process" />.
   ///   Simplest eternal singleton.
   /// </summary>
-  public class Singleton : IBuildAction
+  public class Singleton : IBuildAction, ILogString
   {
     private bool    _hasInstance;
     private object? _instance;
@@ -26,6 +27,9 @@ namespace Armature.Core
       }
     }
 
-    public override string ToString() => $"{typeof(Singleton)}{{ {(_hasInstance ? _instance.ToLogString() : "no instance")} }}";
+    [DebuggerStepThrough]
+    public string ToHoconString() => $"{{ {nameof(Singleton)}{{ Instance: {(_hasInstance ? _instance.ToHoconString() : "nothing")} }} }}";
+    [DebuggerStepThrough]
+    public override string ToString() => ToHoconString();
   }
 }

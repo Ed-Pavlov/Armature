@@ -1,4 +1,4 @@
-﻿using Armature.Core.Logging;
+﻿using System.Diagnostics;
 
 namespace Armature.Core
 {
@@ -6,6 +6,7 @@ namespace Armature.Core
   {
     public bool Matches(UnitId unitId) => unitId.Key is SpecialKey;
 
-    public string ToLogString() => GetType().GetShortName();
+    [DebuggerStepThrough]
+    public override string ToString() => nameof(IsServiceUnit);
   }
 }

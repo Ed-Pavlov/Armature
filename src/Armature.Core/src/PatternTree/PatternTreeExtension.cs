@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Armature.Core.Logging;
 using JetBrains.Annotations;
 
 namespace Armature.Core
@@ -35,7 +36,7 @@ namespace Armature.Core
 
       if(parentNode.Children.Contains(node))
         throw new ArmatureException(exceptionMessage ?? string.Format("Node '{0}' is already added to the pattern tree.", node))
-         .AddData("PatternTreeNode", parentNode.ToLogString());
+         .AddData("PatternTreeNode", parentNode.ToHoconString());
 
       parentNode.Children.Add(node);
       return node;

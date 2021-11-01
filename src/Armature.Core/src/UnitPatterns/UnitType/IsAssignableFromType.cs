@@ -1,5 +1,4 @@
 ﻿using System;
-using Armature.Core.Logging;
 
 namespace Armature.Core
 {

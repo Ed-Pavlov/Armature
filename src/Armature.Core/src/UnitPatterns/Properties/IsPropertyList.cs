@@ -9,10 +9,8 @@ namespace Armature.Core
   public record IsPropertyList : IUnitPattern
   {
     public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.PropertyList && unitId.GetUnitTypeSafe() is not null;
-    
-    [DebuggerStepThrough]
-    public override string ToString() => GetType().GetShortName();
 
-    public string ToLogString() => GetType().GetShortName();
+    [DebuggerStepThrough]
+    public override string ToString() => nameof(IsPropertyList);
   }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Armature.Core.Logging;
 
 namespace Armature.Core
 {
@@ -20,7 +21,7 @@ namespace Armature.Core
         var type = buildSession.GetUnitUnderConstruction().GetUnitTypeSafe(); // ?? unit!.GetType(); //TODO: is it good implementation?
 
         var unitInfo = new UnitId(type, SpecialKey.PropertyList);
-        var unitList = buildSession.BuildAllUnits(unitInfo).Select(_ => _.Entity); //TODO: do we need to take into account weight of matching? 
+        var unitList = buildSession.BuildAllUnits(unitInfo).Select(_ => _.Entity); //TODO: do we need to take into account weight of matching?
 
         foreach(var property in unitList.Select(result => result.Value!).SelectMany(list => (PropertyInfo[])list))
         {
@@ -29,5 +30,8 @@ namespace Armature.Core
         }
       }
     }
+
+    [DebuggerStepThrough]
+    public override string ToString() => nameof(InjectDependenciesIntoProperties);
   }
 }

@@ -24,7 +24,7 @@ namespace Armature.Core
   ///     }
   ///   };
   /// </remarks>
-  public class PatternTree : IPatternTreeNode, IEnumerable
+  public class PatternTree : IPatternTreeNode, IEnumerable, ILogPrintable
   {
     private readonly Root _root = new();
 
@@ -33,13 +33,7 @@ namespace Armature.Core
     public WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight = 0)
       => _root.GatherBuildActions(unitSequence, 0);
 
-    public void PrintToLog()
-    {
-      using(Log.Enabled())
-        _root.PrintToLog();
-    }
-
-    public string ToLogString() => ToString();
+    public void PrintToLog(LogLevel logLevel = LogLevel.None) => _root.PrintToLog(logLevel);
 
     public BuildActionBag BuildActions                   => throw new NotSupportedException();
     public bool           Equals(IPatternTreeNode other) => throw new NotSupportedException();

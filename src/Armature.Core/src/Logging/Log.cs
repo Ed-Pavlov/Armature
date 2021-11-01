@@ -47,7 +47,7 @@ namespace Armature.Core.Logging
     public static void Write(LogLevel logLevel, string text)
     {
       if(logLevel > _logLevel) return;
-     
+
       DoWrite(text);
     }
 
@@ -55,14 +55,14 @@ namespace Armature.Core.Logging
     public static void Write(LogLevel logLevel, string format, params object[] parameters)
     {
       if(logLevel > _logLevel) return;
-      
+
       DoWrite(string.Format(format, parameters));
     }
 
     public static void Write(LogLevel logLevel, Func<string> getText)
     {
       if(logLevel > _logLevel) return;
-      
+
       DoWrite(getText());
     }
 
@@ -99,7 +99,7 @@ namespace Armature.Core.Logging
     public static IDisposable IndentBlock(LogLevel logLevel, string name, string brackets, int count = 1)
     {
       if(_logLevel < logLevel) return DumbDisposable.Instance;
-     
+
       DoWrite(name);
       return new Indenter(brackets, count);
     }
@@ -191,9 +191,9 @@ namespace Armature.Core.Logging
       {
         if(brackets.Length is not (0 or 2))
           throw new ArgumentException("String should be empty or contain two simple symbols, at index 0 the opening bracket at index 1 the closing one");
-        
+
         if(brackets.Length > 0)
-          Write(LogLevel.Info, " " + brackets[0] + " "); //TODO: is there is need to improve the performance of string concatenation?
+          WriteLine(LogLevel.Info, " " + brackets[0] + " "); //TODO: is there is need to improve the performance of string concatenation?
 
         Trace.IndentLevel += indent;
       }

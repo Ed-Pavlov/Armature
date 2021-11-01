@@ -8,7 +8,7 @@ namespace Armature.Core
   /// <summary>
   ///   Creates a Unit using specified factory method.
   /// </summary>
-  public abstract class CreateWithFactoryMethodBuildAction : IBuildAction
+  public abstract class CreateWithFactoryMethodBuildAction : IBuildAction, ILogString
   {
     public void Process(IBuildSession buildSession)
     {
@@ -27,7 +27,9 @@ namespace Armature.Core
     protected abstract object?    Execute(object?[] arguments);
 
     [DebuggerStepThrough]
-    public override string ToString() => $"{GetType().GetShortName()}( {GetMethod().ToLogString()} )";
+    public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ Method: {GetMethod().ToHoconString().QuoteIfNeeded()} }} }}";
+    [DebuggerStepThrough]
+    public override string ToString() => ToHoconString();
   }
 
   /// <inheritdoc />

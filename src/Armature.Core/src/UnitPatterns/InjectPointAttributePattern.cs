@@ -7,7 +7,7 @@ namespace Armature.Core
   /// Base class for patterns check if a unit is an inject point marked with with <see cref="InjectAttribute" />
   /// with an optional <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
-  public abstract record InjectPointAttributePattern : IUnitPattern
+  public abstract record InjectPointAttributePattern : IUnitPattern, ILogString
   {
     private readonly object? _injectPointId;
 
@@ -22,12 +22,12 @@ namespace Armature.Core
       var attribute = GetAttribute(unitId);
       return attribute is not null && Equals(attribute.InjectionPointId, _injectPointId);
     }
-    
-    protected abstract InjectAttribute? GetAttribute(UnitId unitId);
-    
-    [DebuggerStepThrough]
-    public override string ToString() => string.Format("{0}( {1} )", GetType().GetShortName(), _injectPointId.ToLogString());
 
-    public string ToLogString() => GetType().GetShortName();
+    protected abstract InjectAttribute? GetAttribute(UnitId unitId);
+
+    [DebuggerStepThrough]
+    public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ InjectPointId: {_injectPointId.ToHoconString()} }} }}";
+    [DebuggerStepThrough]
+    public sealed override string ToString() => ToHoconString();
   }
 }

@@ -21,6 +21,6 @@ namespace Armature.Core
     }
 
     [DebuggerStepThrough]
-    public override string ToString() => HasValue ? Value.ToLogString() : "nothing";
+    public override string ToString() => HasValue ? Value.ToHoconString() : "nothing";
   }
 }

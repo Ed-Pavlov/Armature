@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace Armature.Core
@@ -13,7 +12,5 @@ namespace Armature.Core
     public BuildArgumentByPropertyType(object? key = null) : base(key) { }
 
     protected override Type GetInjectPointType(UnitId unitId) => ((PropertyInfo) unitId.Kind!).PropertyType;
-    
-    public override string ToString() => base.ToString();
   }
 }

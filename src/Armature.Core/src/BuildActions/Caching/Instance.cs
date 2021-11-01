@@ -7,7 +7,7 @@ namespace Armature.Core
   ///   Caches passed object and set it as <see cref="BuildResult" /> in <see cref="Process" />.
   ///   Simplest eternal singleton.
   /// </summary>
-  public record Instance<T> : IBuildAction, ILogable1
+  public record Instance<T> : IBuildAction, ILogString
   {
     private readonly T _value;
 
@@ -16,11 +16,13 @@ namespace Armature.Core
 
     public void Process(IBuildSession buildSession) => buildSession.BuildResult = new BuildResult(_value);
 
+    [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
 
     [DebuggerStepThrough]
-    public override string ToString() => $"{GetType().Name}( {(_value.ToLogString())} )";
+    public string ToHoconString() => $"{{ {GetType().GetShortName().Quote()} {{ Instance: {_value.ToHoconString()} }} }}";
+    [DebuggerStepThrough]
 
-    public string ToLogString() => $"{{ {GetType().GetShortName().Quote()} {{ Instance: {_value.ToLogString().QuoteIfNeeded()} }} }}";
+    public override string ToString() => ToHoconString();
   }
 }

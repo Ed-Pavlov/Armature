@@ -11,6 +11,6 @@
       return unitId.Key is not SpecialKey && type is {IsAbstract: false, IsInterface: false, IsGenericTypeDefinition: false};
     }
 
-    public string ToLogString() => "{{{ Can be instantiated: true }}}";
+    public override string ToString() => nameof(CanBeInstantiated);
   }
 }

@@ -8,7 +8,7 @@ namespace Armature.Core
   /// <summary>
   ///   Gets a constructor of type marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute.InjectionPointId" />.
   /// </summary>
-  public record GetConstructorByInjectPointId : IBuildAction
+  public record GetConstructorByInjectPointId : IBuildAction, ILogString
   {
     private readonly object? _injectPointId;
 
@@ -17,7 +17,7 @@ namespace Armature.Core
 
     public void Process(IBuildSession buildSession)
     {
-      Log.WriteLine(LogLevel.Verbose, () => $"PointId = {_injectPointId.ToLogString()}");
+      Log.WriteLine(LogLevel.Verbose, () => $"PointId = {_injectPointId.ToHoconString()}");
 
       var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
       var constructors = unitType
@@ -36,7 +36,7 @@ namespace Armature.Core
       {
         var exception = new ArmatureException(
           $"More than one constructors of the type {unitType.ToLogString()} are marked with attribute "
-        + $"{nameof(InjectAttribute)} with {nameof(InjectAttribute.InjectionPointId)}={_injectPointId.ToLogString()}");
+        + $"{nameof(InjectAttribute)} with {nameof(InjectAttribute.InjectionPointId)}={_injectPointId.ToHoconString()}");
 
         for(var i = 0; i < constructors.Length; i++)
           exception.AddData($"Constructor #{i}", constructors[i]);
@@ -51,6 +51,9 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public void PostProcess(IBuildSession buildSession) { }
 
-    public override string ToString() => GetType().GetShortName();
+    [DebuggerStepThrough]
+    public string ToHoconString() => $"{{ {nameof(GetConstructorByInjectPointId)} {{ InjectPointId: {_injectPointId.ToHoconString()} }} }}";
+    [DebuggerStepThrough]
+    public override string ToString() => ToHoconString();
   }
 }

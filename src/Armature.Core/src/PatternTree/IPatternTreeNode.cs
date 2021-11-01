@@ -7,14 +7,14 @@ namespace Armature.Core
   /// <summary>
   /// A pattern used to match a unit in the building unit sequence.
   /// </summary>
-  public interface IPatternTreeNode : IEquatable<IPatternTreeNode>, ILogable
+  public interface IPatternTreeNode : IEquatable<IPatternTreeNode>
   {
     /// <summary>
     /// The collection of all children nodes used to find existing one, add new, or replace one with another.
-    /// All nodes with their children are a pattern tree.  
+    /// All nodes with their children are a pattern tree.
     /// </summary>
     ICollection<IPatternTreeNode> Children { get; }
-    
+
     BuildActionBag BuildActions { get; }
 
     /// <summary>

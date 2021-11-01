@@ -19,7 +19,7 @@ namespace Armature.Core
   ///     .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
   /// };
   /// </remarks>
-  public abstract class PatternTreeNodeWithChildrenBase : IPatternTreeNode, IEnumerable
+  public abstract class PatternTreeNodeWithChildrenBase : IPatternTreeNode, IEnumerable, ILogPrintable
   {
     protected HashSet<IPatternTreeNode>? RawChildren;
     private HashSet<IPatternTreeNode>  LazyChildren => RawChildren ??= new HashSet<IPatternTreeNode>();
@@ -50,7 +50,7 @@ namespace Armature.Core
 
       using(Log.NamedBlock(LogLevel.Trace, "PassTailToChildren"))
       {
-        Log.WriteLine(LogLevel.Trace, $"ActualWeight = {inputMatchingWeight}, Tail = {unitSequence.ToLogString()}");
+        Log.WriteLine(LogLevel.Trace, $"ActualWeight = {inputMatchingWeight}, Tail = {unitSequence.ToHoconArray()}");
         foreach(var child in RawChildren)
           result = result.Merge(child.GatherBuildActions(unitSequence, inputMatchingWeight));
       }
@@ -58,21 +58,30 @@ namespace Armature.Core
       return result;
     }
 
-    public virtual void PrintToLog()
+    public void PrintToLog(LogLevel logLevel = LogLevel.None)
     {
-      using(Log.NamedBlock(LogLevel.Info, GetType().GetShortName()))
+      using(Log.NamedBlock(logLevel, GetType().GetShortName()))
       {
         Log.WriteLine(LogLevel.Info, $"Weight: {Weight:n0}");
-        if(RawChildren is not null)
-          foreach(var child in RawChildren)
-            child.PrintToLog();
+        PrintContentToLog(logLevel);
+        PrintChildrenToLog(logLevel);
       }
     }
 
-    public string ToLogString() => ToString();
+    protected virtual void PrintContentToLog(LogLevel logLevel) { }
+
+    protected void PrintChildrenToLog(LogLevel logLevel)
+    {
+      if(RawChildren is not null)
+        foreach(var child in RawChildren)
+          if(child is ILogPrintable printable)
+            printable.PrintToLog(logLevel);
+          else
+            Log.WriteLine(logLevel, $"Child: {child.ToHoconString()}");
+    }
 
     [DebuggerStepThrough]
-    public override string ToString() => $"{GetType().GetShortName()}{{ Weight: {Weight:n0} }}";
+    public string ToLogString() => $"{GetType().GetShortName()}{{ Weight: {Weight:n0} }}";
 
     public virtual bool Equals(IPatternTreeNode? other)
       => other is PatternTreeNodeBase otherNode && Weight == otherNode.Weight && GetType() == otherNode.GetType();

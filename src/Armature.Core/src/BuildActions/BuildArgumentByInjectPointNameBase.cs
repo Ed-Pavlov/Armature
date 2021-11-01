@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Armature.Core.Logging;
 
 namespace Armature.Core
@@ -7,12 +6,12 @@ namespace Armature.Core
   /// <summary>
   ///   Base class for build actions build arguments to inject.
   /// </summary>
-  public abstract record BuildArgumentByInjectPointNameBase : IBuildAction
+  public abstract record BuildArgumentByInjectPointNameBase : IBuildAction, ILogString
   {
     private readonly object? _key;
 
     [DebuggerStepThrough]
-    protected BuildArgumentByInjectPointNameBase() : this(SpecialKey.Argument){} // TODO: why there is default key?
+    protected BuildArgumentByInjectPointNameBase() : this(SpecialKey.Argument) {}
     protected BuildArgumentByInjectPointNameBase(object? key) => _key = key;
 
     public void Process(IBuildSession buildSession)
@@ -30,6 +29,9 @@ namespace Armature.Core
 
     protected abstract string GetInjectPointName(UnitId unitId);
 
-    public override string ToString() => $"{GetType().GetShortName()}{{ Key = {_key.ToLogString()} }}";
+    [DebuggerStepThrough]
+    public string ToHoconString() => $"{{ {nameof(BuildArgumentByInjectPointNameBase)}{{ Key: {_key.ToHoconString()} }} }}";
+    [DebuggerStepThrough]
+    public sealed override string ToString() => ToHoconString();
   }
 }

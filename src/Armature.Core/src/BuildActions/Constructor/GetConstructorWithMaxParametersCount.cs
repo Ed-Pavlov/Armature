@@ -64,6 +64,7 @@ namespace Armature.Core
       return constructors[suitableConstructors.First().Key];
     }
 
-    public override string ToString() => GetType().GetShortName();
+    [DebuggerStepThrough]
+    public override string ToString() => nameof(GetConstructorWithMaxParametersCount);
   }
 }
