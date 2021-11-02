@@ -78,8 +78,7 @@ namespace Armature
       //TODO: check code for build plan name
       return buildResult.HasValue
                ? (T?)buildResult.Value
-               : throw new ArmatureException($"Unit {unitId} is not built").AddData($"{nameof(unitId)}", unitId);
-    }
+               : throw new ArmatureException($"Unit {unitId} is not built").AddData($"{nameof(UnitId)}", unitId.ToHoconString()); }
 
     private static IPatternTreeNode? CreateAuxPatternTree(object[]? arguments)
     {

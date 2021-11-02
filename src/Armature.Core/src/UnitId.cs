@@ -8,7 +8,7 @@ namespace Armature.Core
   ///   Describes a unit to be built.
   /// </summary>
   [Serializable]
-  public readonly struct UnitId
+  public readonly struct UnitId : ILogString
   {
     public readonly object? Kind;
     public readonly object? Key;
@@ -22,7 +22,8 @@ namespace Armature.Core
       Key  = key;
     }
 
-    public override string ToString() => $"{{{Kind.ToHoconString()}, {Key.ToHoconString()}}}";
+    public override string ToString()      => ToHoconString();
+    public          string ToHoconString() => $"{{ kind: {Kind.ToHoconString()}, key: {Key.ToHoconString()}}}";
 
     #region Equality implementation
 

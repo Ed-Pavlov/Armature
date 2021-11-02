@@ -2,9 +2,9 @@
 {
   public static class ExceptionConst
   {
-    public const string ArmaturePrefix = "[Armature]";
+    public const string ArmaturePrefix = "Armature_";
 
-    public const string BuildSequence = ArmaturePrefix + " Build Sequence";
-    public const string Logged        = ArmaturePrefix + " Logged";
+    public const string Context = ArmaturePrefix + "Context";
+    public const string Logged  = ArmaturePrefix + "Logged";
   }
 }

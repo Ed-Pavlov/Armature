@@ -39,7 +39,7 @@ namespace Armature.Core
         + $"{nameof(InjectAttribute)} with {nameof(InjectAttribute.InjectionPointId)}={_injectPointId.ToHoconString()}");
 
         for(var i = 0; i < constructors.Length; i++)
-          exception.AddData($"Constructor #{i}", constructors[i]);
+          exception.AddData($"Constructor #{i}".ToHoconString(), constructors[i].ToHoconString());
 
         throw exception;
       }

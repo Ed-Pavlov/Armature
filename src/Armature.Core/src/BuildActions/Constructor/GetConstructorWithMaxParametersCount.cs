@@ -56,7 +56,7 @@ namespace Armature.Core
         var counter = 0;
 
         foreach(var pair in suitableConstructors)
-          exception.AddData($"ctor#{++counter}", constructors[pair.Key]);
+          exception.AddData($"Constructor #{++counter}".ToHoconString(), constructors[pair.Key].ToHoconString());
 
         throw exception;
       }

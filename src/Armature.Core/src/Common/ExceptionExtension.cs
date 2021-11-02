@@ -15,7 +15,7 @@ namespace Armature.Core
       if(exception is null) throw new ArgumentNullException(nameof(exception));
       if(key is null) throw new ArgumentNullException(nameof(key));
 
-      exception.Data.Add(key, value.ToHoconString());
+      exception.Data.Add(key, value);
 
       return exception;
     }
@@ -39,7 +39,7 @@ namespace Armature.Core
       i = 0;
 
       foreach(var exc in exceptions)
-        exception.AddData($"Exception#{++i}", exc);
+        exception.AddData($"Exception#{++i}".Quote(), exc);// TODO: what is it? why not inner exception?
 
       return exception;
     }

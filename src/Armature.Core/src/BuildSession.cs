@@ -132,7 +132,7 @@ namespace Armature.Core
         var number = 1;
 
         foreach(var pair in buildActionBag)
-          exception.AddData($"Stage #{number++}", pair.Key);
+          exception.AddData($"Stage #{number++}".Quote(), pair.Key.ToHoconString());
 
         throw exception;
       }
@@ -164,6 +164,7 @@ namespace Armature.Core
         }
         catch(Exception exc) {
           AddBuildSessionData(exc);
+          exc.WriteToLog(() => LogConst.BuildAction_Process(buildAction));
           throw;
         }
     }
@@ -178,7 +179,7 @@ namespace Armature.Core
         }
         catch(Exception exc) {
           AddBuildSessionData(exc);
-          exc.WriteToLog(() => $"Exception was thrown during executing {buildAction}.{nameof(IBuildAction.PostProcess)} method");
+          exc.WriteToLog(() => LogConst.BuildAction_PostProcess(buildAction));
           throw;
         }
       }
@@ -218,8 +219,8 @@ namespace Armature.Core
 
     private void AddBuildSessionData(Exception exception)
     {
-      if(exception.Data.Contains(ExceptionConst.BuildSequence)) return;
-      exception.AddData(ExceptionConst.BuildSequence, string.Join(" -> ", _buildSequence));
+      if(exception.Data.Contains(ExceptionConst.Context)) return;
+      exception.AddData(ExceptionConst.Context, _buildSequence.ToHoconArray());
     }
 
     private static void LogBuildResult(BuildResult buildResult)

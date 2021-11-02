@@ -25,8 +25,8 @@ namespace Armature.Core
         if(!buildResult.HasValue)
         {
           var method = parameters[i].Member;
-          throw new ArmatureException(string.Format("Argument for parameter '{0}' of {1} {2} is not built", parameters[i], method.DeclaringType, method))
-           .AddData("Method", method);
+          throw new ArmatureException($"Argument for parameter '{parameters[i]}' of {method.DeclaringType}.{method} is not built")
+           .AddData("Method", method.ToHoconString());
         }
 
         arguments[i] = buildResult.Value;

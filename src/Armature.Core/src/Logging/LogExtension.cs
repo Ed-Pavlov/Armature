@@ -36,7 +36,6 @@ namespace Armature.Core.Logging
 
     public static string ToLogString(this BuildResult buildResult) => buildResult.HasValue ? buildResult.Value.ToHoconString() : "nothing";
 
-    public static string ToHoconString(this UnitId unitId) => $"{{ kind: {unitId.Kind.ToHoconString()}, key: {unitId.Key.ToHoconString()}}}";
     /// <summary>
     ///   Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
     /// </summary>
@@ -45,7 +44,6 @@ namespace Armature.Core.Logging
          {
            null                        => "null",
            string str                  => str.QuoteIfNeeded(),
-           UnitId unitId               => unitId.ToHoconString(),
            IEnumerable<UnitId> unitIds => unitIds.ToHoconArray(),
            ILogString logable          => logable.ToHoconString(),
            IBuildAction buildAction    => buildAction.GetType().GetShortName().QuoteIfNeeded(),
@@ -103,7 +101,7 @@ namespace Armature.Core.Logging
           weightedAction.Weight);
     }
 
-    public static void WriteToLog(this Exception exc, Func<string> getTitle)
+    public static void WriteToLog(this Exception exc, Func<string> getPrefix)
       => Log.Execute(
         LogLevel.Info,
         () =>
@@ -113,49 +111,48 @@ namespace Armature.Core.Logging
 
           Log.WriteLine(LogLevel.Info, "");
 
-          using(Log.NamedBlock(LogLevel.Info, getTitle))
+          using(Log.IndentBlock(LogLevel.Info, $"{getPrefix()}.Exceptions: ", "[]"))
           {
             var number    = 1;
             var exception = exc;
 
             while(exception is not null)
-            {
-              using(Log.NamedBlock(LogLevel.Info, $"Exception #{number}"))
+              using(Log.NamedBlock(LogLevel.Info, ""))
               {
-                Log.WriteLine(LogLevel.Info, "Exception.Message");
-                WriteText(LogLevel.Info, exception.Message);
+                Log.WriteLine(LogLevel.Info, $"Number: {number}");
 
-                Log.WriteLine(LogLevel.Info, "");
-                Log.WriteLine(LogLevel.Info, "Exception.StackTrace");
-                WriteText(LogLevel.Info, exception.StackTrace);
+                WriteText(LogLevel.Info, "Message", exception.Message);
 
+                WriteText(LogLevel.Info, "StackTrace", exception.StackTrace);
 
                 if(exception.Data.Count > 0)
-                {
-                  Log.WriteLine(LogLevel.Info, "");
-                  Log.WriteLine(LogLevel.Info, "Exception.Data");
-
-                  foreach(DictionaryEntry entry in exception.Data)
-                    Log.WriteLine(LogLevel.Info, "{0}: {1}", entry.Key, entry.Value);
-                }
+                  using(Log.NamedBlock(LogLevel.Info, "Data: "))
+                    foreach(DictionaryEntry entry in exception.Data)
+                      Log.WriteLine(LogLevel.Info, $"{entry.Key.ToHoconString()}: {entry.Value}");
 
                 exception = exception.InnerException;
                 number++;
               }
-            }
           }
         });
 
-    private static void WriteText(LogLevel logLevel, string text)
+    private static void WriteText(LogLevel logLevel, string propertyName, string text)
     {
-      using var stringReader = new StringReader(text);
-
-      var line = stringReader.ReadLine();
-
-      while(line is not null)
+      if(string.IsNullOrEmpty(text))
+        Log.WriteLine(logLevel, $"{propertyName}: \"\"");
+      else
       {
-        Log.WriteLine(logLevel, line);
-        line = stringReader.ReadLine();
+        using var stringReader = new StringReader(text);
+        Log.WriteLine(logLevel, $"{propertyName}: \"\"\"");
+        var line = stringReader.ReadLine();
+
+        while(line is not null)
+        {
+          Log.WriteLine(logLevel, line);
+          line = stringReader.ReadLine();
+        }
+
+        Log.WriteLine(logLevel, "\"\"\"");
       }
     }
   }
