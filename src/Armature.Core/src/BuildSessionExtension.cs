@@ -20,7 +20,7 @@ namespace Armature.Core
       var result = buildSession.BuildUnit(new UnitId(type, SpecialKey.Constructor));
 
       if(!result.HasValue)
-        throw new ArmatureException(string.Format("Can't find appropriate constructor for type {0}.", type));
+        throw new ArmatureException($"Constructor for type {type} is not found, check registrations for this type or default.");
 
       return (ConstructorInfo)result.Value!;
     }

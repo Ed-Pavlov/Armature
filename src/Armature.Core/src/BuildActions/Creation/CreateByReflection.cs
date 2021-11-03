@@ -29,20 +29,12 @@ namespace Armature.Core
 
           object instance;
 
-          try
+          if(parameters.Length == 0)
+            instance = constructor.Invoke(Empty<object>.Array);
+          else
           {
-            if(parameters.Length == 0)
-              instance = constructor.Invoke(Empty<object>.Array);
-            else
-            {
-              var arguments = buildSession.BuildArgumentsForMethod(parameters);
-              instance = constructor.Invoke(arguments);
-            }
-          }
-          catch(TargetInvocationException e)
-          {
-            Console.WriteLine(e);
-            throw;
+            var arguments = buildSession.BuildArgumentsForMethod(parameters);
+            instance = constructor.Invoke(arguments);
           }
 
           buildSession.BuildResult = new BuildResult(instance);
