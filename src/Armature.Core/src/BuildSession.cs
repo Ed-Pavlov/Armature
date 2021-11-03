@@ -12,7 +12,8 @@ namespace Armature.Core
   /// but it is built in "context" of all the sequence of dependencies.</remarks>
   public partial class BuildSession
   {
-    private const string GatherBuildActions = "GatherBuildActions";
+    private const string GatherBuildActions       = "GatherBuildActions";
+    private const string ParentBuilder = "ParentBuilder";
 
     private readonly object[]          _buildStages;
     private readonly IPatternTreeNode  _mainPatternTree;
@@ -66,7 +67,7 @@ namespace Armature.Core
 
         using(Log.NamedBlock(LogLevel.Verbose, GatherBuildActions))
         {
-          Log.WriteLine(LogLevel.Verbose, () => $"Context = {_buildSequence.ToHoconArray()}" );
+          Log.WriteLine(LogLevel.Verbose, () => $"Context = {_buildSequence.ToHoconString()}" );
 
           var buildSequence = _buildSequence.AsArrayTail();
           actions    = _mainPatternTree.GatherBuildActions(buildSequence, 0);
@@ -132,7 +133,7 @@ namespace Armature.Core
         var number = 1;
 
         foreach(var pair in buildActionBag)
-          exception.AddData($"Stage #{number++}".Quote(), pair.Key.ToHoconString());
+          exception.AddData($"Stage #{number++}", pair.Key);
 
         throw exception;
       }
@@ -163,8 +164,9 @@ namespace Armature.Core
           buildAction.Process(buildSession);
         }
         catch(Exception exc) {
-          AddBuildSessionData(exc);
-          exc.WriteToLog(() => LogConst.BuildAction_Process(buildAction));
+          using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_Process(buildAction)}.Exception: "))
+            exc.WriteToLog();
+          AddBuildSessionData(exc); // add build session data after logging the exception in order that data don't pollute the log, this data is already there
           throw;
         }
     }
@@ -178,8 +180,9 @@ namespace Armature.Core
           buildAction.PostProcess(buildSession);
         }
         catch(Exception exc) {
-          AddBuildSessionData(exc);
-          exc.WriteToLog(() => LogConst.BuildAction_PostProcess(buildAction));
+          using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_PostProcess(buildAction)}.Exception: "))
+            exc.WriteToLog();
+          AddBuildSessionData(exc); // add build session data after logging the exception in order that data don't pollute the log, this data is already there
           throw;
         }
       }
@@ -194,9 +197,9 @@ namespace Armature.Core
       for(var i = 0; i < _parentBuilders.Length; i++)
         try
         {
-          using(Log.NamedBlock(LogLevel.Info, "TryBuildViaParentUser"))
+          var parentBuilderNumber = i + 1;
+          using(Log.NamedBlock(LogLevel.Info, () => $"{ParentBuilder} #{parentBuilderNumber}".Quote()))
           {
-            Log.Write(LogLevel.Info, $"#{i}");
             var buildResult = _parentBuilders[i].BuildUnit(unitId, _auxPatternTree);
 
             if(buildResult.HasValue)
@@ -205,22 +208,24 @@ namespace Armature.Core
         }
         catch(Exception exc)
         {
-          exc.WriteToLog(() => "Exception");
-          exceptions.Add(exc);
-
+          exceptions.Add(exc); // it's already written to the log by the parent builder, so just collect it
           // continue
         }
 
-      if(exceptions.Count == 0)
-        return default;
-
-      throw exceptions.Aggregate($"{exceptions.Count} exceptions occured during building an unit via parent builders");
+      return exceptions.Count > 0
+                 ? throw new AggregateException(
+                           $"{exceptions.Count} exceptions occured during during building an unit via parent builders."
+                         + $"See {nameof(Exception)}.{nameof(Exception.Data)} and {nameof(AggregateException)}.{nameof(AggregateException.InnerExceptions)}"
+                         + $" for details or enable logging using {nameof(Log)}.{nameof(Log.Enabled)} to investigate the error.",
+                           exceptions)
+                      .AddData(ExceptionConst.Logged, true)
+                 : default;
     }
 
     private void AddBuildSessionData(Exception exception)
     {
       if(exception.Data.Contains(ExceptionConst.Context)) return;
-      exception.AddData(ExceptionConst.Context, _buildSequence.ToHoconArray());
+      exception.AddData(ExceptionConst.Context, _buildSequence);
     }
 
     private static void LogBuildResult(BuildResult buildResult)

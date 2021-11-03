@@ -50,7 +50,7 @@ namespace Armature.Core
 
       using(Log.NamedBlock(LogLevel.Trace, "PassTailToChildren"))
       {
-        Log.WriteLine(LogLevel.Trace, $"ActualWeight = {inputMatchingWeight}, Tail = {unitSequence.ToHoconArray()}");
+        Log.WriteLine(LogLevel.Trace, $"ActualWeight = {inputMatchingWeight}, Tail = {unitSequence.ToHoconString()}");
         foreach(var child in RawChildren)
           result = result.Merge(child.GatherBuildActions(unitSequence, inputMatchingWeight));
       }

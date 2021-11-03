@@ -48,6 +48,6 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public override string ToString() => ToHoconString();
     [DebuggerStepThrough]
-    public string ToHoconString() => $"{{ {nameof(GetPropertyListByNames)} {{ Names: {_names.ToHoconArray()} }} }}";
+    public string ToHoconString() => $"{{ {nameof(GetPropertyListByNames)} {{ Names: {_names.ToHoconString()} }} }}";
   }
 }

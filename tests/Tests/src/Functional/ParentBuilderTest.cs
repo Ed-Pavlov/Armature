@@ -161,31 +161,27 @@ namespace Tests.Functional
     [Test]
     public void should_report_all_exceptions_from_parent_builders()
     {
+      var argumentOutOfRangeException = new ArgumentOutOfRangeException();
+      var invalidProgramException     = new InvalidProgramException();
+
+      // --arrange
       var parent1 = new Builder(BuildStage.Create)
-       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArgumentOutOfRangeException()));
+       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw argumentOutOfRangeException));
 
       var parent2 = new Builder(BuildStage.Create)
-       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new InvalidProgramException()));
+       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw invalidProgramException));
 
       var target = CreateTarget(parent1, parent2);
 
-      try
-      {
-        target.Build<string>();
-      }
-      catch(Exception e)
-      {
-        Console.WriteLine(e);
-      }
-
+      // --act
       Action action = () => target.Build<string>();
 
+      // --assert
       action.Should()
-            .Throw<ArmatureException>()
+            .Throw<AggregateException>()
             .Which
-            .Data.Values.Cast<string>()
-            .With(values => values.SingleOrDefault(_ => _.Contains("ArgumentOutOfRangeException")).Should().NotBeNull())
-            .With(values => values.SingleOrDefault(_ => _.Contains("InvalidProgramException")).Should().NotBeNull());
+            .InnerExceptions.Should()
+            .Equal(argumentOutOfRangeException, invalidProgramException);
     }
 
     [Test]
@@ -216,7 +212,7 @@ namespace Tests.Functional
 
       var target = CreateTarget(parent);
 
-      // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder 
+      // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder
       target
        .GetOrAddNode(new SkipAllUnits())
        .AddNode(new IfFirstUnit(new CanBeInstantiated()))
@@ -241,7 +237,7 @@ namespace Tests.Functional
       Action actual = () => target.Build<Subject>();
 
       // --assert
-      actual.Should().ThrowExactly<ArmatureException>();
+      actual.Should().ThrowExactly<AggregateException>().WithInnerExceptionExactly<NotSerializableException>();
     }
 
     private class DebugOnlyBuildAction : IBuildAction

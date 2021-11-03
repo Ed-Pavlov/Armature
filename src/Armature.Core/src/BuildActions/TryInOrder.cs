@@ -49,16 +49,19 @@ namespace Armature.Core
         }
         catch(Exception exc)
         {
-          exc.WriteToLog(() => $"Exception was thrown during executing {buildAction}.{nameof(IBuildAction.Process)} method");
+          using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_Process(buildAction)}.Exception: "))
+            exc.WriteToLog();
           exceptions.Add(exc);
         }
 
       if(!buildSession.BuildResult.HasValue)
-        switch(exceptions)
-        {
-          case { Count: 1 }:   throw exceptions[0];
-          case { Count: > 0 }: throw exceptions.Aggregate($"{exceptions.Count} exceptions occured during processing build actions");
-        }
+        if(exceptions.Count > 0)
+          throw new AggregateException(
+                  $"{exceptions.Count} exceptions occured during executing build actions. "
+                + $"See {nameof(Exception)}.{nameof(Exception.Data)} and {nameof(AggregateException)}.{nameof(AggregateException.InnerExceptions)}"
+                + $" for details or enable logging using {nameof(Log)}.{nameof(Log.Enabled)} to investigate the error.",
+                  exceptions)
+             .AddData(ExceptionConst.Logged, true);
     }
 
     public void PostProcess(IBuildSession buildSession)
@@ -84,6 +87,6 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public override string ToString() => GetType().ToLogString();
 
-    public string ToHoconString() => $"{{ {nameof(TryInOrder)} {{ Actions: {_buildActions.ToHoconArray()} }} }}";
+    public string ToHoconString() => $"{{ {nameof(TryInOrder)} {{ Actions: {_buildActions.ToHoconString()} }} }}";
   }
 }

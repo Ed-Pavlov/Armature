@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using Armature.Core.Logging;
 
 
 namespace Armature
@@ -9,7 +10,7 @@ namespace Armature
   ///   if another framework is implemented on an Armature.Core base
   /// </summary>
   /// <remarks>Use objects but int or enum in order to avoid memory traffic on boxing</remarks>
-  public class BuildStage
+  public class BuildStage : ILogString
   {
     /// <summary>
     ///   Stage of intercepting any unit returned by build process
@@ -41,6 +42,7 @@ namespace Armature
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     protected BuildStage(string name) => _name = name ?? throw new ArgumentNullException(nameof(name));
 
-    public override string ToString() => _name;
+    public          string ToHoconString() => $"{GetType().GetShortName().QuoteIfNeeded()}.{_name.ToHoconString()}";
+    public override string ToString()      => ToHoconString();
   }
 }

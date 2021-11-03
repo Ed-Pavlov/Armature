@@ -47,6 +47,6 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public override string ToString() => ToHoconString();
     [DebuggerStepThrough]
-    public string ToHoconString() => $"{{ {nameof(GetPropertyListByInjectPointId)} {{ Points: {_pointIds.ToHoconArray()} }} }}";
+    public string ToHoconString() => $"{{ {nameof(GetPropertyListByInjectPointId)} {{ Points: {_pointIds.ToHoconString()} }} }}";
   }
 }

@@ -36,7 +36,7 @@ namespace Armature.Core
 
       if(parentNode.Children.Contains(node))
         throw new ArmatureException(exceptionMessage ?? string.Format("Node '{0}' is already added to the pattern tree.", node))
-         .AddData("PatternTreeNode", parentNode.ToHoconString());
+         .AddData("PatternTreeNode", parentNode);
 
       parentNode.Children.Add(node);
       return node;

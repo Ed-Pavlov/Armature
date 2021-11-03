@@ -25,7 +25,7 @@ namespace Armature.Core
     public void PostProcess(IBuildSession buildSession) { }
 
     [DebuggerStepThrough]
-    public string ToHoconString() => $"{{ {GetType().GetShortName()} {{ Method: {_factoryMethod.ToHoconString().QuoteIfNeeded()} }} }}";
+    public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ Method: {_factoryMethod.ToHoconString()} }} }}";
     [DebuggerStepThrough]
     public override string ToString() => ToHoconString();
   }

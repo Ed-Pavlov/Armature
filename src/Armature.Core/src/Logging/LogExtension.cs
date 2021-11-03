@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -42,20 +43,30 @@ namespace Armature.Core.Logging
     public static string ToHoconString(this object? value)
       => value switch
          {
-           null                        => "null",
-           string str                  => str.QuoteIfNeeded(),
-           IEnumerable<UnitId> unitIds => unitIds.ToHoconArray(),
-           ILogString logable          => logable.ToHoconString(),
-           IBuildAction buildAction    => buildAction.GetType().GetShortName().QuoteIfNeeded(),
-           Type type                   => $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})".QuoteIfNeeded(),
-           _                           => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
+           null                     => "null",
+           string str               => str.QuoteIfNeeded(),
+           ILogString logable       => logable.ToHoconString(),
+           IEnumerable items        => $"[{string.Join(", ", items.Cast<object>().Select(_ => _.ToHoconString()))}]",
+           IBuildAction buildAction => buildAction.GetType().GetShortName().QuoteIfNeeded(),
+           Type type                => $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})".QuoteIfNeeded(),
+           bool b                   => b.ToString(CultureInfo.CurrentUICulture),
+           char c                   => c.ToString(CultureInfo.CurrentUICulture),
+           short s                  => s.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+           ushort us                => us.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+           int i                    => i.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+           uint ui                  => ui.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+           long l                   => l.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+           ulong ul                 => ul.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+           float f                  => f.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+           double d                 => d.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+           decimal dc               => dc.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+           _                        => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
          };
 
-    public static string ToHoconArray<T>(this IEnumerable<T>    items) => $"[{string.Join(", ", items.Select(_ => _.ToHoconString()))}]";
-    public static string ToHoconArray(this    IEnumerable<Type> items) => $"[{string.Join(", ", items.Select(_ => _.ToLogString().QuoteIfNeeded()))}]";
+    public static string ToHoconString(this Type              type)  => type.ToLogString().QuoteIfNeeded();
+    public static string ToHoconArray(this  IEnumerable<Type> items) => $"[{string.Join(", ", items.Select(type => type.ToHoconString()))}]";
 
     public static string Quote(this string str) => $"\"{str}\"";
-
     public static string QuoteIfNeeded(this string str)
     {
       foreach(var symbol in str)
@@ -101,40 +112,40 @@ namespace Armature.Core.Logging
           weightedAction.Weight);
     }
 
-    public static void WriteToLog(this Exception exc, Func<string> getPrefix)
-      => Log.Execute(
-        LogLevel.Info,
-        () =>
-        {
-          if(exc.Data.Contains(ExceptionConst.Logged)) return;
-          exc.Data.Add(ExceptionConst.Logged, true);
+    public static void WriteToLog(this Exception exception)
+    {
+      if(exception.Data.Contains(ExceptionConst.Logged)) return;
 
-          Log.WriteLine(LogLevel.Info, "");
-
-          using(Log.IndentBlock(LogLevel.Info, $"{getPrefix()}.Exceptions: ", "[]"))
+      Log.Execute(
+          LogLevel.Info,
+          () =>
           {
-            var number    = 1;
-            var exception = exc;
+            exception.Data.Add(ExceptionConst.Logged, true);
+            Log.WriteLine(LogLevel.Info, $"Type: {exception.GetType().ToHoconString()}");
 
-            while(exception is not null)
-              using(Log.NamedBlock(LogLevel.Info, ""))
-              {
-                Log.WriteLine(LogLevel.Info, $"Number: {number}");
+            WriteText(LogLevel.Info, "Message", exception.Message);
 
-                WriteText(LogLevel.Info, "Message", exception.Message);
+            WriteText(LogLevel.Info, "StackTrace", exception.StackTrace);
 
-                WriteText(LogLevel.Info, "StackTrace", exception.StackTrace);
+            var data = exception.Data.Cast<DictionaryEntry>().Where(entry => !ExceptionConst.Logged.Equals(entry.Key)).ToArray();
+            if(data.Length > 0)
+              using(Log.NamedBlock(LogLevel.Info, "Data: "))
+                foreach(var entry in data)
+                  Log.WriteLine(LogLevel.Info, $"{entry.Key.ToHoconString()}: {entry.Value.ToHoconString()}");
 
-                if(exception.Data.Count > 0)
-                  using(Log.NamedBlock(LogLevel.Info, "Data: "))
-                    foreach(DictionaryEntry entry in exception.Data)
-                      Log.WriteLine(LogLevel.Info, $"{entry.Key.ToHoconString()}: {entry.Value}");
-
-                exception = exception.InnerException;
-                number++;
-              }
-          }
-        });
+            if(exception is AggregateException aggregateException)
+            {
+              if(aggregateException.InnerExceptions.Count > 0)
+                using(Log.IndentBlock(LogLevel.Info, "InnerExceptions: ", "[]"))
+                  foreach(var innerException in aggregateException.InnerExceptions)
+                    using(Log.NamedBlock(LogLevel.Info, ""))
+                      innerException.WriteToLog();
+            }
+            else if(exception.InnerException is not null)
+              using(Log.NamedBlock(LogLevel.Info, "InnerException: "))
+                exception.InnerException.WriteToLog();
+          });
+    }
 
     private static void WriteText(LogLevel logLevel, string propertyName, string text)
     {

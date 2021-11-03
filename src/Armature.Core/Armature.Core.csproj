@@ -56,13 +56,13 @@
     <Compile Remove="src\BuildActions\Arguments\BuildArgumentByParameterType.cs" />
     <Compile Remove="src\BuildActions\Arguments\BuildListArgumentForMethodParameter.cs" />
     <Compile Remove="src\BuildActions\Arguments\BuildMethodArgumentsInDirectOrder.cs" />
+    <Compile Remove="src\Common\ExceptionExtension.cs" />
+    <Compile Remove="src\ArmatureException.cs" />
+    <Compile Remove="src\Common\ExceptionConst.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\build\icon.png" Pack="true" PackagePath="">
       <Link>build\icon.png</Link>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\BuildActions\Arguments" />
   </ItemGroup>
 </Project>
