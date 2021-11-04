@@ -39,7 +39,7 @@ namespace Tests.Functional
       target.Treat<IDisposable>().AsSingleton(); // involve BuildStage.Cache for first level unit
 
       // --act
-      Action actual = () => target.BuildAllUnits(Unit.OfType<IDisposable>());
+      Action actual = () => target.BuildAllUnits(Unit.IsType<IDisposable>());
 
       // --assert
       actual.Should().ThrowExactly<ArmatureException>();

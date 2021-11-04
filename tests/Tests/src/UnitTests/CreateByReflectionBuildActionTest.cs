@@ -4,6 +4,7 @@ using Armature.Core;
 using FakeItEasy;
 using NUnit.Framework;
 using Tests.Common;
+using Tests.UnitTests.BuildActions;
 
 namespace Tests.UnitTests
 {
@@ -16,7 +17,7 @@ namespace Tests.UnitTests
       var target = Static<CreateByReflection>.Instance;
 
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<IDisposable>().AsArray());
+      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType<IDisposable>().ToBuildSequence());
 
       // --act
       target.Process(buildSession);
@@ -32,7 +33,7 @@ namespace Tests.UnitTests
       var target = Static<CreateByReflection>.Instance;
 
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<Stream>().AsArray());
+      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType<Stream>().ToBuildSequence());
 
       // --act
       target.Process(buildSession);

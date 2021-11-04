@@ -3,6 +3,7 @@ using Armature.Core;
 using FakeItEasy;
 using NUnit.Framework;
 using Tests.Common;
+using Tests.UnitTests.BuildActions;
 
 namespace Tests.UnitTests
 {
@@ -15,7 +16,7 @@ namespace Tests.UnitTests
 
       // --arrange
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<IEnumerable<int>>(SpecialKey.Propagate).AsArray());
+      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType<IEnumerable<int>>().Key(SpecialKey.Propagate).ToBuildSequence());
 
       var buildAction = new RedirectOpenGenericType(typeof(List<>), expectedKey);
 
@@ -23,7 +24,7 @@ namespace Tests.UnitTests
       buildAction.Process(buildSession);
 
       // --assert
-      A.CallTo(() => buildSession.BuildUnit(Unit.OfType<List<int>>(expectedKey))).MustHaveHappenedOnceExactly();
+      A.CallTo(() => buildSession.BuildUnit(Unit.IsType<List<int>>().Key(expectedKey))).MustHaveHappenedOnceExactly();
 
       // buildSession.AssertWasCalled(_ => _.BuildUnit(new UnitInfo(typeof(List<int>), expectedKey)));
     }

@@ -6,6 +6,7 @@ using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
+using Tests.UnitTests.BuildActions;
 
 namespace Tests.UnitTests
 {
@@ -20,7 +21,7 @@ namespace Tests.UnitTests
       var target = new GetConstructorByParameterTypes(parameterTypes);
 
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<SampleType>(SpecialKey.Constructor).AsArray());
+      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType<SampleType>().Key(SpecialKey.Constructor).ToBuildSequence());
 
       // --act
       target.Process(buildSession);
@@ -39,7 +40,7 @@ namespace Tests.UnitTests
       var target = new GetConstructorByParameterTypes(parameterTypes);
 
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.OfType<SampleType>(SpecialKey.Constructor).AsArray());
+      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType<SampleType>().Key(SpecialKey.Constructor).ToBuildSequence());
 
       // --act
       target.Process(buildSession);

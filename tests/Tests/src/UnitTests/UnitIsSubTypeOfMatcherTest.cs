@@ -4,6 +4,7 @@ using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
+using Tests.UnitTests.BuildActions;
 
 namespace Tests.UnitTests
 {
@@ -14,7 +15,7 @@ namespace Tests.UnitTests
     {
       var target = new IsSubtypeOf(typeof(int), key);
 
-      target.Matches(Unit.OfType<int>(key)).Should().BeTrue();
+      target.Matches(Unit.IsType<int>().Key).Should().BeTrue();
     }
 
     [Test]
@@ -22,7 +23,7 @@ namespace Tests.UnitTests
     {
       var target = new IsSubtypeOf(typeof(Stream), key);
 
-      target.Matches(Unit.OfType<MemoryStream>(key)).Should().BeTrue();
+      target.Matches(Unit.IsType<MemoryStream>().Key(key)).Should().BeTrue();
     }
 
     [Test]
@@ -30,7 +31,7 @@ namespace Tests.UnitTests
     {
       var target = new IsSubtypeOf(typeof(IDisposable), key);
 
-      target.Matches(Unit.OfType<MemoryStream>(key)).Should().BeTrue();
+      target.Matches(Unit.IsType<MemoryStream>().Key(key)).Should().BeTrue();
     }
   }
 }

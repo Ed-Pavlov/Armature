@@ -2,6 +2,8 @@
 using FakeItEasy;
 using NUnit.Framework;
 using Tests.Common;
+using Tests.UnitTests.BuildActions;
+using TestUtils = Tests.UnitTests.BuildActions.TestUtils;
 
 namespace Tests.UnitTests
 {
@@ -14,7 +16,7 @@ namespace Tests.UnitTests
 
       // --arrange
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildSequence).Returns(new UnitId(null, SpecialKey.Propagate).AsArray());
+      A.CallTo(() => buildSession.BuildSequence).Returns(Unit.Is(null).Key(SpecialKey.Propagate).ToBuildSequence());
 
       var buildAction = new RedirectType(typeof(int), expectedKey);
 
@@ -22,7 +24,7 @@ namespace Tests.UnitTests
       buildAction.Process(buildSession);
 
       // --assert
-      A.CallTo(() => buildSession.BuildUnit(Unit.OfType<int>(expectedKey))).MustHaveHappenedOnceExactly();
+      A.CallTo(() => buildSession.BuildUnit(Unit.IsType<int>().Key(expectedKey))).MustHaveHappenedOnceExactly();
     }
   }
 }

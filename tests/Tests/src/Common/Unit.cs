@@ -1,9 +1,13 @@
-﻿using Armature.Core;
+﻿using System;
+using Armature.Core;
 
 namespace Tests.Common
 {
-  internal static class Unit
+  internal class Unit
   {
-    public static UnitId OfType<T>(object key = null) => new(typeof(T), key);
+    public static UnitId IsType<T>() => new UnitId(typeof(T), null);
+
+    public static UnitId IsType(Type type) => new UnitId(type, null);
+    public static UnitId Is(object?  kind) => new UnitId(kind, null);
   }
 }

@@ -23,7 +23,7 @@ namespace Tests.UnitTests
 
       // --act
       var actual = target
-                  .GatherBuildActions(new[] {Unit.OfType<IDisposable>(), Unit.OfType<string>(), Unit.OfType<MemoryStream>()}.GetTail(0), 0)
+                  .GatherBuildActions(new[] {Unit.IsType<IDisposable>(), Unit.IsType<string>(), Unit.IsType<MemoryStream>()}.GetTail(0), 0)
                   .GetTopmostAction(BuildStage.Cache);
 
       // --assert
@@ -46,7 +46,7 @@ namespace Tests.UnitTests
       target.GetOrAddNode(buildStep2);
 
       // --act
-      var actual = target.GatherBuildActions(new[] {Unit.OfType<string>(), Unit.OfType<int>()}.GetTail(0), 0);
+      var actual = target.GatherBuildActions(new[] {Unit.IsType<string>(), Unit.IsType<int>()}.GetTail(0), 0);
 
       // --assert
       actual.Should().NotBeNull();
@@ -58,7 +58,7 @@ namespace Tests.UnitTests
        .And
        .Subject.Select(_ => _.Entity)
        .Should()
-       .BeEquivalentTo(Static<CreateByReflection>.Instance, singletonAction);
+       .BeEquivalentTo(new IBuildAction[]{Static<CreateByReflection>.Instance, singletonAction});
     }
   }
 }

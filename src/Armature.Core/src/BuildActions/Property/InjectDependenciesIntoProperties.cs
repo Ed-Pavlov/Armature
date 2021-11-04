@@ -15,19 +15,16 @@ namespace Armature.Core
 
     public void PostProcess(IBuildSession buildSession)
     {
-      if(buildSession.BuildResult.HasValue)
+      var unit = buildSession.BuildResult.Value;
+      var type = buildSession.GetUnitUnderConstruction().GetUnitTypeSafe(); // ?? unit!.GetType(); //TODO: is it good implementation?
+
+      var unitInfo = new UnitId(type, SpecialKey.PropertyList);
+      var unitList = buildSession.BuildAllUnits(unitInfo).Select(_ => _.Entity); //TODO: do we need to take into account weight of matching?
+
+      foreach(var property in unitList.Select(result => result.Value!).SelectMany(list => (PropertyInfo[])list))
       {
-        var unit = buildSession.BuildResult.Value;
-        var type = buildSession.GetUnitUnderConstruction().GetUnitTypeSafe(); // ?? unit!.GetType(); //TODO: is it good implementation?
-
-        var unitInfo = new UnitId(type, SpecialKey.PropertyList);
-        var unitList = buildSession.BuildAllUnits(unitInfo).Select(_ => _.Entity); //TODO: do we need to take into account weight of matching?
-
-        foreach(var property in unitList.Select(result => result.Value!).SelectMany(list => (PropertyInfo[])list))
-        {
-          var argument = buildSession.BuildPropertyArgument(property);
-          property.SetValue(unit, argument);
-        }
+        var argument = buildSession.BuildPropertyArgument(property);
+        property.SetValue(unit, argument);
       }
     }
 

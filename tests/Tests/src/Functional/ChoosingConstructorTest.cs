@@ -173,7 +173,7 @@ namespace Tests.Functional
       Action action = () => target.Build<bool>();
 
       // --assert
-      action.Should().Throw<ArmatureException>().And.Message.Should().StartWith("Can't find appropriate constructor for type System.Boolean.");
+      action.Should().Throw<ArmatureException>().And.Message.Should().StartWith($"Constructor for type {typeof(Boolean)} is not found, check registrations for this type or default.");
     }
 
     private static IEnumerable max_number_of_parameters()

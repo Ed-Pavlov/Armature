@@ -26,14 +26,11 @@ namespace Armature.Core
 
     public void Process(IBuildSession buildSession)
     {
-      if(!buildSession.BuildResult.HasValue)
-      {
-        var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
-        var effectiveKey          = Equals(_key, SpecialKey.Propagate) ? unitUnderConstruction.Key : _key;
+      var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
+      var effectiveKey          = Equals(_key, SpecialKey.Propagate) ? unitUnderConstruction.Key : _key;
 
-        var unitInfo = new UnitId(_redirectTo, effectiveKey);
-        buildSession.BuildResult = buildSession.BuildUnit(unitInfo);
-      }
+      var unitInfo = new UnitId(_redirectTo, effectiveKey);
+      buildSession.BuildResult = buildSession.BuildUnit(unitInfo);
     }
 
     [DebuggerStepThrough]

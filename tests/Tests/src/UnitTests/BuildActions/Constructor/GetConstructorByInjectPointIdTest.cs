@@ -6,6 +6,7 @@ using Armature;
 using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.Common;
 
 namespace Tests.UnitTests.BuildActions;
 
@@ -18,7 +19,7 @@ public class GetConstructorByInjectPointIdTest
     var target = new GetConstructorByInjectPointId(Subject.IntId);
 
     // --act
-    var actual = new BuildSessionMock(new UnitId(typeof(Subject), null));
+    var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildSequence());
     target.Process(actual);
 
     // --assert
@@ -32,7 +33,7 @@ public class GetConstructorByInjectPointIdTest
     var target = new GetConstructorByInjectPointId();
 
     // --act
-    var actual = new BuildSessionMock(new UnitId(typeof(Subject), null));
+    var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildSequence());
     target.Process(actual);
 
     // --assert
@@ -46,7 +47,7 @@ public class GetConstructorByInjectPointIdTest
     var target = new GetConstructorByInjectPointId("bad-id");
 
     // --act
-    var actual = new BuildSessionMock(new UnitId(typeof(Subject), null));
+    var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildSequence());
     target.Process(actual);
 
     // --assert
@@ -60,7 +61,7 @@ public class GetConstructorByInjectPointIdTest
     var target = new GetConstructorByInjectPointId(Subject.AmbiguousId);
 
     // --act
-    Action actual = () => target.Process(new BuildSessionMock(new UnitId(typeof(Subject), null)));
+    Action actual = () => target.Process(new BuildSessionMock(Unit.IsType<Subject>().ToBuildSequence()));
 
     // --assert
     actual.Should().ThrowExactly<ArmatureException>().Which.Message.Should().StartWith("More than one constructors of the type");
@@ -68,6 +69,7 @@ public class GetConstructorByInjectPointIdTest
 
   [SuppressMessage("ReSharper", "UnusedMember.Local")]
   [SuppressMessage("ReSharper", "UnusedParameter.Local")]
+  [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
   private class Subject
   {
     public const string AmbiguousId = nameof(AmbiguousId);

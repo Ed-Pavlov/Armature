@@ -5,11 +5,11 @@ namespace Tests.UnitTests.BuildActions;
 
 public class BuildSessionMock : IBuildSession
 {
-  private readonly UnitId[] _buildSequence;
+  private readonly IEnumerable<UnitId> _buildSequence;
 
   public BuildSessionMock() { }
   public BuildSessionMock(BuildResult buildResult) => BuildResult = buildResult;
-  public BuildSessionMock(UnitId unitId) => _buildSequence = new[] {unitId};
+  public BuildSessionMock(IEnumerable<UnitId> buildSequence) => _buildSequence = buildSequence;
 
   public BuildResult         BuildResult   { get; set; }
   public IEnumerable<UnitId> BuildSequence => _buildSequence;

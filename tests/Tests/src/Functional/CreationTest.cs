@@ -206,7 +206,7 @@ namespace Tests.Functional
       var actual = target.Build<ISubject1>();
 
       // --assert
-      actual.Should().BeOfType<Subject>().And.Should().NotBeSameAs(createdByFactory);
+      actual.Should().BeOfType<Subject>().And.NotBeSameAs(createdByFactory);
     }
 
     [Test]
@@ -259,15 +259,15 @@ namespace Tests.Functional
       //  .UsingArguments(AutoBuildByParameter.Type);
       //
       // return builder;
-      
-     
+
+
       return new(BuildStage.Cache, BuildStage.Create)
              {
                new SkipAllUnits
                {
                  new SkipTillUnit(new IsSubtypeOf(typeof(IDisposable), null))
                   .UseBuildAction(new CreateByReflection(), BuildStage.Cache),
-                 
+
                  new IfFirstUnit(new IsConstructor())
                   .UseBuildAction(new GetConstructorByParameterTypes(), BuildStage.Create), // use empty ctor by default in this test
 
