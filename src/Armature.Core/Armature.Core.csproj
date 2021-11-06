@@ -22,7 +22,7 @@
     <PackageTags>dependency-injection dependencyinjection di ioc .NET</PackageTags>
     <description>An interface part of Armature framework to use in the code which shouldn't depend on Armature implementation part</description>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -51,14 +51,6 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>build\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Remove="src\BuildActions\Arguments\BuildArgumentByParameterInjectPointId.cs" />
-    <Compile Remove="src\BuildActions\Arguments\BuildArgumentByParameterName.cs" />
-    <Compile Remove="src\BuildActions\Arguments\BuildArgumentByParameterType.cs" />
-    <Compile Remove="src\BuildActions\Arguments\BuildListArgumentForMethodParameter.cs" />
-    <Compile Remove="src\BuildActions\Arguments\BuildMethodArgumentsInDirectOrder.cs" />
-    <Compile Remove="src\Common\ExceptionExtension.cs" />
-    <Compile Remove="src\ArmatureException.cs" />
-    <Compile Remove="src\Common\ExceptionConst.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\build\icon.png" Pack="true" PackagePath="">

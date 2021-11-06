@@ -25,27 +25,5 @@
     <None Include="..\..\build\armature.public.snk">
       <Link>build\armature.public.snk</Link>
     </None>
-    <None Remove="Tests.csproj.DotSettings" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="src\Common\Extension.cs" />
-    <Compile Remove="src\UnitTests\BuildActions\BuildActionTestBase.cs" />
-    <Compile Remove="src\Common\FakeItEasyExtension.cs" />
-    <Compile Remove="src\UnitTests\WeakBuildSequenceBuildStepTest.cs" />
-    <Compile Remove="src\UnitTests\WhenBuildArgumentsOfTypeExtension.cs" />
-    <Compile Remove="src\UnitTests\UnitIsSubTypeOfMatcherTest.cs" />
-    <Compile Remove="src\UnitTests\UnitMatcherTest.cs" />
-    <Compile Remove="src\UnitTests\CreateByReflectionBuildActionTest.cs" />
-    <Compile Remove="src\UnitTests\FindAttributedConstructorBuildStepTest.cs" />
-    <Compile Remove="src\UnitTests\GetConstructorByParameterTypesBuildActionTest.cs" />
-    <Compile Remove="src\UnitTests\RedirectOpenGenericTypeBuildActionTest.cs" />
-    <Compile Remove="src\UnitTests\RedirectTypeBuildActionTest.cs" />
-    <Compile Remove="src\Common\ArrayTailExtension.cs" />
-    <Compile Remove="src\Common\Match.cs" />
-    <Compile Remove="src\Common\NotSerializableException.cs" />
-    <Compile Remove="src\Common\Unit.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\Common" />
   </ItemGroup>
 </Project>
