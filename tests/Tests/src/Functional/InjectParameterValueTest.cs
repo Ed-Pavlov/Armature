@@ -29,9 +29,6 @@ namespace Tests.Functional
        .AsIs()
        .UsingArguments(expected);
 
-      target.PrintToLog();
-
-      using var hz = Log.Enabled(LogLevel.Trace);
       // --act
       var actual = target.Build<LevelOne>();
 
@@ -80,12 +77,7 @@ namespace Tests.Functional
        .AsIs()
        .UsingArguments(asIsParameterValue);
 
-      using var _ = Log.Enabled(LogLevel.Verbose);
-
       var asInterface = target.Build<ISubject1>();
-      Console.WriteLine("///////////////////////////////");
-      Console.WriteLine("///////////////////////////////");
-      Console.WriteLine("///////////////////////////////");
       var asIs        = target.Build<LevelOne>();
 
       // --assert

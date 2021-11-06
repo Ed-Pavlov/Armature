@@ -25,11 +25,11 @@ public class BuildArgumentByParameterInjectPointIdTest
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.IsType<int>().Key(parameterInfo.Name))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Unit.IsType<int>().Key(Subject.IntId))).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]
-  public void key_should_be_null_if_no_point_id()
+  public void key_should_be_null_if_point_withoud_id()
   {
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo)).GetParameters().Single(_ => _.ParameterType == typeof(string));
 
@@ -49,7 +49,7 @@ public class BuildArgumentByParameterInjectPointIdTest
   [Test]
   public void should_do_nothing_if_no_attribute()
   {
-    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo)).GetParameters().Single(_ => _.Name == "i");
+    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo)).GetParameters().Single(_ => _.Name == "b");
 
     // --arrange
     var actual = A.Fake<IBuildSession>();

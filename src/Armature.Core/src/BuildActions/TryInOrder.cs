@@ -59,7 +59,7 @@ namespace Armature.Core
           throw new AggregateException(
                   $"{exceptions.Count} exceptions occured during executing build actions. "
                 + $"See {nameof(Exception)}.{nameof(Exception.Data)} and {nameof(AggregateException)}.{nameof(AggregateException.InnerExceptions)}"
-                + $" for details or enable logging using {nameof(Log)}.{nameof(Log.Enabled)} to investigate the error.",
+                + $" for details or enable logging using {nameof(Log)}.{nameof(Log.Enable)} to investigate the error.",
                   exceptions)
              .AddData(ExceptionConst.Logged, true);
     }

@@ -106,8 +106,6 @@ namespace Tests.Functional
             .InjectInto(Constructor.WithParameters<int, string>())
             .UsingArguments(4, "string"); // set value to inject into ctor
 
-      target.PrintToLog();
-
       // --act
       var actual = target.Build<Subject3>();
 

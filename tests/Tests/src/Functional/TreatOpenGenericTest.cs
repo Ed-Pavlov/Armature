@@ -71,10 +71,8 @@ namespace Tests.Functional
        .AsCreated<Subject<string>>()
        .UsingArguments(closed);
 
-      target.PrintToLog();
       // --act
-      using var log    = Log.Enabled(LogLevel.Verbose);
-      var       actual = target.Build<ISubject<string>>();
+      var actual = target.Build<ISubject<string>>();
 
       // --assert
       actual.Value.Should().Be(closed);

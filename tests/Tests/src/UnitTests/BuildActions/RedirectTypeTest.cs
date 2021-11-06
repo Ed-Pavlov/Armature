@@ -19,7 +19,7 @@ public class RedirectTypeTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType<IDisposable>().ToBuildSequence());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<MemoryStream>()));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<MemoryStream>().Key(key)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
     var target = new RedirectType(typeof(MemoryStream), key);
@@ -28,8 +28,8 @@ public class RedirectTypeTest
     target.Process(buildSession);
 
     // --assert
-    buildSession.BuildResult.Value.Should().Be(expected);
     buildUnitCall.MustHaveHappenedOnceAndOnly();
+    buildSession.BuildResult.Value.Should().Be(expected);
   }
 
   [Test]

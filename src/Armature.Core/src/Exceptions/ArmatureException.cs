@@ -14,7 +14,7 @@ namespace Armature.Core
   {
     private static readonly string Postfix =
       Environment.NewLine
-    + $"See {nameof(Exception)}.{nameof(Data)} for details or enable logging using {nameof(Log)}.{nameof(Log.Enabled)} to investigate the error.";
+    + $"See {nameof(Exception)}.{nameof(Data)} for details or enable logging using {nameof(Log)}.{nameof(Log.Enable)} to investigate the error.";
 
     [DebuggerStepThrough]
     public ArmatureException(string message) : base(message + Postfix) { }

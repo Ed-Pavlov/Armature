@@ -11,9 +11,11 @@ namespace Tests.UnitTests
     public void should_return_value()
     {
       const string expected = "one";
-      var          target   = new Dictionary<int, string> {{1, expected}, {2, "two"}};
 
-      // --act 
+      // --arrange
+      var target = new Dictionary<int, string> {{1, expected}, {2, "two"}};
+
+      // --act
       var actual = target.GetValueSafe(1);
 
       // ----assert
@@ -25,7 +27,7 @@ namespace Tests.UnitTests
     {
       var target = new Dictionary<int, string> {{1, "one"}, {2, "two"}};
 
-      // --act 
+      // --act
       var actual = target.GetValueSafe(3);
 
       // ----assert
@@ -37,7 +39,7 @@ namespace Tests.UnitTests
     {
       var target = new Dictionary<int, Weighted<string>> {{1, "one".WithWeight(1)}, {2, "two".WithWeight(2)}};
 
-      // --act 
+      // --act
       var actual = target.GetValueSafe(3);
 
       // ----assert

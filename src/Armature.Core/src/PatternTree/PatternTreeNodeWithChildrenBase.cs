@@ -22,7 +22,7 @@ namespace Armature.Core
   public abstract class PatternTreeNodeWithChildrenBase : IPatternTreeNode, IEnumerable, ILogPrintable
   {
     protected HashSet<IPatternTreeNode>? RawChildren;
-    private HashSet<IPatternTreeNode>  LazyChildren => RawChildren ??= new HashSet<IPatternTreeNode>();
+    private   HashSet<IPatternTreeNode>  LazyChildren => RawChildren ??= new HashSet<IPatternTreeNode>();
 
     protected PatternTreeNodeWithChildrenBase(int weight) => Weight = weight;
 
@@ -51,6 +51,7 @@ namespace Armature.Core
       using(Log.NamedBlock(LogLevel.Trace, "PassTailToChildren"))
       {
         Log.WriteLine(LogLevel.Trace, $"ActualWeight = {inputMatchingWeight}, Tail = {unitSequence.ToHoconString()}");
+
         foreach(var child in RawChildren)
           result = result.Merge(child.GatherBuildActions(unitSequence, inputMatchingWeight));
       }
@@ -92,8 +93,9 @@ namespace Armature.Core
 
     #region Syntax sugar
 
-    public void             Add(IPatternTreeNode patternTreeNode) => Children.Add(patternTreeNode);
-    IEnumerator IEnumerable.GetEnumerator()                       => throw new NotSupportedException();
+    public void Add(IPatternTreeNode patternTreeNode) => Children.Add(patternTreeNode);
+
+    IEnumerator IEnumerable.GetEnumerator() => RawChildren?.GetEnumerator() ?? Empty<IPatternTreeNode>.Array.GetEnumerator();
 
     #endregion
   }

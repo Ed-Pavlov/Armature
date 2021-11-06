@@ -15,7 +15,7 @@ namespace Tests.UnitTests
     {
       var target = new IsSubtypeOf(typeof(int), key);
 
-      target.Matches(Unit.IsType<int>().Key).Should().BeTrue();
+      target.Matches(Unit.IsType<int>().Key(key)).Should().BeTrue();
     }
 
     [Test]

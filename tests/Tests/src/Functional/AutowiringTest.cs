@@ -70,8 +70,6 @@ namespace Tests.Functional
        .Treat<Subject>()
        .AsIs();
 
-      using var _ = Log.Enabled(LogLevel.Trace);
-
       // --act
       var actual = target.Build<Subject>(expectedText + "bad", expectedValue + 38);
 

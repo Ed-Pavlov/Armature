@@ -24,7 +24,7 @@ namespace Tests.UnitTests
       target.Children.Add(matchAny);
 
       // --act
-      var actual = target.GatherBuildActions(new[] {Unit.IsType<string>()}.AsArrayTail());
+      var actual = target.GatherBuildActions(new[] {Unit.IsType<string>()}.AsArrayTail())!;
 
       // --assert
       actual[BuildStage.Cache]

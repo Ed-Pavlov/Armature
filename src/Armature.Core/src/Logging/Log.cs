@@ -37,10 +37,17 @@ namespace Armature.Core.Logging
     /// <summary>
     ///   Used to enable logging in a limited scope using "using" C# keyword
     /// </summary>
-    public static IDisposable Enabled(LogLevel logLevel = LogLevel.Info)
+    public static IDisposable Enable(LogLevel logLevel = LogLevel.Info)
     {
       var prevLevel = _logLevel;
       _logLevel = logLevel;
+      return new Disposable(() => _logLevel = prevLevel);
+    }
+
+    public static IDisposable Disable()
+    {
+      var prevLevel = _logLevel;
+      _logLevel = LogLevel.None;
       return new Disposable(() => _logLevel = prevLevel);
     }
 
@@ -130,7 +137,7 @@ namespace Armature.Core.Logging
     }
 
     /// <summary>
-    /// Executes action if <paramref name="logLevel"/> satisfies current Log level. See <see cref="Enabled"/> for details
+    /// Executes action if <paramref name="logLevel"/> satisfies current Log level. See <see cref="Enable"/> for details
     /// </summary>
     /// <param name="logLevel"></param>
     /// <param name="action"></param>
