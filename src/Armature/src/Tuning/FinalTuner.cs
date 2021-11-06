@@ -21,7 +21,7 @@ namespace Armature
         if(argument is IArgumentTuner buildPlan)
           buildPlan.Tune(ParentNode);
         else if(argument is ITuner)
-          throw new ArgumentException("IParameterValueBuildPlan or plain object value expected");
+          throw new ArgumentException($"{nameof(IArgumentTuner)} or instances expected");
         else
           ParentNode
            .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance, 0))
@@ -33,6 +33,7 @@ namespace Armature
 
     public FinalTuner InjectInto(params IInjectPointTuner[] propertyIds)
     {
+      if(propertyIds.Length == 0) throw new ArgumentNullException(nameof(propertyIds), "Specify one or more inject point tuners");
       foreach(var injectPointTuner in propertyIds)
         injectPointTuner.Tune(ParentNode);
       return this;

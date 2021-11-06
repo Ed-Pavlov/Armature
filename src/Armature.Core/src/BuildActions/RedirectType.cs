@@ -38,7 +38,7 @@ namespace Armature.Core
 
     [DebuggerStepThrough]
     public string ToHoconString()
-      => $"{{ {nameof(RedirectOpenGenericType)} {{ RedirectToType: {_redirectTo.ToLogString().QuoteIfNeeded()}, Key: {_key.ToHoconString()} }} }}";
+      => $"{{ {nameof(RedirectType)} {{ RedirectToType: {_redirectTo.ToLogString().QuoteIfNeeded()}, Key: {_key.ToHoconString()} }} }}";
     [DebuggerStepThrough]
     public override string ToString() => ToHoconString();
   }

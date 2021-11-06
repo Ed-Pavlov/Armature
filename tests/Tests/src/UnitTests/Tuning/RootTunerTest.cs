@@ -27,7 +27,7 @@ public class RootTunerTest
   }
 
   [Test]
-  public void generic_treat([Values(null, "key")] string key)
+  public void treat_generic([Values(null, "key")] string key)
   {
     var expected = new SkipWhileUnit(new Pattern(typeof(IDisposable), key));
 
@@ -59,7 +59,7 @@ public class RootTunerTest
   }
 
   [Test]
-  public void generic_building([Values(null, "key")] string key)
+  public void building_generic([Values(null, "key")] string key)
   {
     var expected = new SkipWhileUnit(new Pattern(typeof(IDisposable), key));
 
@@ -75,7 +75,7 @@ public class RootTunerTest
   }
 
   [Test]
-  public void add_weight([Values(null, "key")] string key)
+  public void amend_weight([Values(null, "key")] string key)
   {
     const int weight = 3875;
 
@@ -87,7 +87,7 @@ public class RootTunerTest
 
     // --act
     target.Building<IDisposable>(key)
-          .AddWeight(weight);
+          .AmendWeight(weight);
 
     // --assert
     tree.Children.Single().Should().BeEquivalentTo(expected);
@@ -126,7 +126,7 @@ public class RootTunerTest
   }
 
   [Test]
-  public void generic_treat_inheritors([Values(null, "key")] string key)
+  public void treat_inheritors_generic([Values(null, "key")] string key)
   {
     var expected = new SkipWhileUnit(new IsSubtypeOf(typeof(IDisposable), key));
 

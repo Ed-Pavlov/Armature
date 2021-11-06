@@ -8,7 +8,7 @@ namespace Armature.Core
   /// <summary>
   ///   Creates a Unit using specified factory method.
   /// </summary>
-  public abstract class CreateWithFactoryMethodBuildAction : IBuildAction, ILogString
+  public abstract record CreateWithFactoryMethodBuildAction : IBuildAction, ILogString
   {
     public void Process(IBuildSession buildSession)
     {
@@ -29,11 +29,11 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ Method: {GetMethod().ToHoconString().QuoteIfNeeded()} }} }}";
     [DebuggerStepThrough]
-    public override string ToString() => ToHoconString();
+    public sealed override string ToString() => ToHoconString();
   }
 
   /// <inheritdoc />
-  public class CreateWithFactoryMethodBuildAction<T1, TR> : CreateWithFactoryMethodBuildAction
+  public record CreateWithFactoryMethodBuildAction<T1, TR> : CreateWithFactoryMethodBuildAction
   {
     private readonly Func<T1?, TR?> _factoryMethod;
 
@@ -47,7 +47,7 @@ namespace Armature.Core
   }
 
   /// <inheritdoc />
-  public class CreateWithFactoryMethodBuildAction<T1, T2, TR> : CreateWithFactoryMethodBuildAction
+  public record CreateWithFactoryMethodBuildAction<T1, T2, TR> : CreateWithFactoryMethodBuildAction
   {
     private readonly Func<T1?, T2?, TR?> _factoryMethod;
 
@@ -61,7 +61,7 @@ namespace Armature.Core
   }
 
   /// <inheritdoc />
-  public class CreateWithFactoryMethodBuildAction<T1, T2, T3, TR> : CreateWithFactoryMethodBuildAction
+  public record CreateWithFactoryMethodBuildAction<T1, T2, T3, TR> : CreateWithFactoryMethodBuildAction
   {
     private readonly Func<T1?, T2?, T3?, TR?> _factoryMethod;
 
@@ -75,7 +75,7 @@ namespace Armature.Core
   }
 
   /// <inheritdoc />
-  public class CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, TR> : CreateWithFactoryMethodBuildAction
+  public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, TR> : CreateWithFactoryMethodBuildAction
   {
     private readonly Func<T1?, T2?, T3?, T4?, TR?> _factoryMethod;
 
@@ -89,7 +89,7 @@ namespace Armature.Core
   }
 
   /// <inheritdoc />
-  public class CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, TR> : CreateWithFactoryMethodBuildAction
+  public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, TR> : CreateWithFactoryMethodBuildAction
   {
     private readonly Func<T1?, T2?, T3?, T4?, T5?, TR?> _factoryMethod;
 
@@ -104,7 +104,7 @@ namespace Armature.Core
   }
 
   /// <inheritdoc />
-  public class CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, TR> : CreateWithFactoryMethodBuildAction
+  public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, TR> : CreateWithFactoryMethodBuildAction
   {
     private readonly Func<T1?, T2?, T3?, T4?, T5?, T6?, TR?> _factoryMethod;
 
@@ -125,7 +125,7 @@ namespace Armature.Core
   }
 
   /// <inheritdoc />
-  public class CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, TR> : CreateWithFactoryMethodBuildAction
+  public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, TR> : CreateWithFactoryMethodBuildAction
   {
     private readonly Func<T1?, T2?, T3?, T4?, T5?, T6?, T7?, TR?> _factoryMethod;
 

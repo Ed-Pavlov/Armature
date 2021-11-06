@@ -12,7 +12,7 @@ namespace Armature
     [DebuggerStepThrough]
     public RootTuner(IPatternTreeNode parentNode) : base(parentNode) { }
 
-    public RootTuner AddWeight(short weight)
+    public RootTuner AmendWeight(short weight)
     {
       Weight += weight;
       return this;

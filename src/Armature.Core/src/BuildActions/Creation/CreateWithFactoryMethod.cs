@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   ///   Creates a Unit using specified factory method.
   /// </summary>
-  public class CreateWithFactoryMethod<TR> : IBuildAction, ILogString
+  public record CreateWithFactoryMethod<TR> : IBuildAction, ILogString
   {
     private readonly Func<IBuildSession, TR> _factoryMethod;
 
