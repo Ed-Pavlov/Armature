@@ -45,7 +45,7 @@ namespace Armature.Core
       public static short OpenGenericPattern { get; protected set; } = Step;
 
       /// <summary>
-      /// Weight of type matched by base type, <see cref="IsSubtypeOf"/> unit pattern
+      /// Weight of type matched by base type, <see cref="IsInheritorOf"/> unit pattern
       /// </summary>
       public static short SubtypePattern { get; protected set; } = (short) (OpenGenericPattern + Step);
 

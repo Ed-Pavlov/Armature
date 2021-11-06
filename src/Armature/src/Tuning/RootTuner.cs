@@ -84,7 +84,7 @@ namespace Armature
     public TreatingTuner TreatInheritorsOf(Type baseType, object? key = null)
     {
       var patternMatcher = new SkipTillUnit(
-        new IsSubtypeOf(baseType, key),
+        new IsInheritorOf(baseType, key),
         Weight + WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.SubtypePattern);
 
       return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
@@ -97,7 +97,7 @@ namespace Armature
     public TreatingTuner<T> TreatInheritorsOf<T>(object? key = null)
     {
       var patternMatcher = new SkipTillUnit(
-        new IsSubtypeOf(typeof(T), key),
+        new IsInheritorOf(typeof(T), key),
         Weight
       + WeightOf.BuildingUnitSequencePattern.Neutral
       + WeightOf.UnitPattern.SubtypePattern);

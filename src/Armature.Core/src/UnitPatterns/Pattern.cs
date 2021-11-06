@@ -15,7 +15,7 @@ namespace Armature.Core
     [DebuggerStepThrough]
     public Pattern(object? unitKind, object? key = null)
     {
-      if(unitKind is null && key is null) throw new ArgumentNullException(nameof(unitKind), @"Either id or key should be provided");
+      if(unitKind is null && key is null) throw new ArgumentNullException(nameof(unitKind), "Either unit kind or key should be provided");
 
       _unitKind = unitKind;
       _key    = key;

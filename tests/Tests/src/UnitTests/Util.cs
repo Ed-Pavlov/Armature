@@ -3,7 +3,7 @@ using System.Linq;
 using Armature;
 using Armature.Core;
 
-namespace Tests.UnitTests.Armature;
+namespace Tests.UnitTests;
 
 public static class Util
 {

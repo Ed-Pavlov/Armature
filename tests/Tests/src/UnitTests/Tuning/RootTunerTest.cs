@@ -112,7 +112,7 @@ public class RootTunerTest
   [Test]
   public void treat_inheritors([Values(null, "key")] string key)
   {
-    var expected = new SkipWhileUnit(new IsSubtypeOf(typeof(IDisposable), key));
+    var expected = new SkipWhileUnit(new IsInheritorOf(typeof(IDisposable), key));
 
     // --arrange
     var tree   = new PatternTree();
@@ -128,7 +128,7 @@ public class RootTunerTest
   [Test]
   public void treat_inheritors_generic([Values(null, "key")] string key)
   {
-    var expected = new SkipWhileUnit(new IsSubtypeOf(typeof(IDisposable), key));
+    var expected = new SkipWhileUnit(new IsInheritorOf(typeof(IDisposable), key));
 
     // --arrange
     var tree   = new PatternTree();

@@ -265,7 +265,7 @@ namespace Tests.Functional
              {
                new SkipAllUnits
                {
-                 new SkipTillUnit(new IsSubtypeOf(typeof(IDisposable), null))
+                 new SkipTillUnit(new IsInheritorOf(typeof(IDisposable), null))
                   .UseBuildAction(new CreateByReflection(), BuildStage.Cache),
 
                  new IfFirstUnit(new IsConstructor())
