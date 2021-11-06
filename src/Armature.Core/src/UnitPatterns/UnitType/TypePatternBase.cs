@@ -9,8 +9,7 @@ namespace Armature.Core
   /// </summary>
   public abstract record TypePatternBase(Type Type, object? Key) : ILogString
   {
-    protected readonly Type    Type = Type ?? throw new ArgumentNullException(nameof(Type));
-    protected readonly object? Key  = Key;
+    protected readonly Type Type = Type ?? throw new ArgumentNullException(nameof(Type));
 
     [DebuggerStepThrough]
     public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} "

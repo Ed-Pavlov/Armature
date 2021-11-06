@@ -71,7 +71,7 @@ namespace Armature
     public TreatingOpenGenericTuner TreatOpenGeneric(Type openGenericType, object? key = null)
     {
       var patternMatcher = new SkipTillUnit(
-        new IsOpenGenericType(openGenericType, key),
+        new IsGenericTypeDefinition(openGenericType, key),
         Weight + WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.OpenGenericPattern);
 
       return new TreatingOpenGenericTuner(ParentNode.GetOrAddNode(patternMatcher));

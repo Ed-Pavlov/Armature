@@ -12,7 +12,11 @@ namespace Armature.Core
     private readonly string _name;
 
     [DebuggerStepThrough]
-    protected InjectPointWithNamePattern(string name) => _name = name ?? throw new ArgumentNullException(nameof(name));
+    protected InjectPointWithNamePattern(string name)
+    {
+      if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+      _name = name;
+    }
 
     public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Argument && GetInjectPointName(unitId) == _name;
 

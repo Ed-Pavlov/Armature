@@ -9,26 +9,24 @@ namespace Armature.Core
   /// </summary>
   public abstract record InjectPointByTypePattern : IUnitPattern, ILogString
   {
-    private readonly Type _type;
-    private readonly bool _exactMatch;
+    private readonly IUnitPattern _typePattern;
 
     [DebuggerStepThrough]
-    protected InjectPointByTypePattern(Type type, bool exactMatch)
-    {
-      _type       = type ?? throw new ArgumentNullException(nameof(type));
-      _exactMatch = exactMatch;
-    }
+    protected InjectPointByTypePattern(IUnitPattern typePattern)
+      => _typePattern = typePattern ?? throw new ArgumentNullException(nameof(typePattern));
 
     public bool Matches(UnitId unitId)
-      => unitId.Key == SpecialKey.Argument
-      && _exactMatch
-           ? GetInjectPointType(unitId)                          == _type
-           : GetInjectPointType(unitId)?.IsAssignableFrom(_type) == true;
+    {
+      if(unitId.Key != SpecialKey.Argument) return false;
+
+      var type = GetInjectPointType(unitId);
+      return type is not null && _typePattern.Matches(new UnitId(type, null));
+    }
 
     protected abstract Type? GetInjectPointType(UnitId unitId);
 
     [DebuggerStepThrough]
-    public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ Type: {_type.ToLogString()}, ExactMatch: {_exactMatch} }} }}";
+    public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ TypePattern: {_typePattern.ToHoconString()} }} }}";
     [DebuggerStepThrough]
     public sealed override string ToString() => ToHoconString();
   }

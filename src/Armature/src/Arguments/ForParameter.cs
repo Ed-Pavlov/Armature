@@ -16,7 +16,7 @@ namespace Armature
       => new(parentNode =>
                parentNode
                 .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance, 0))
-                .AddNode(new IfFirstUnit(new IsMethodParameterWithType(type, true), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
+                .AddNode(new IfFirstUnit(new IsMethodParameterWithType(new Pattern(type)), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
                          $"Building of an argument for the method parameter of type {type.ToLogString()} is already tuned"));
 
     /// <summary>
@@ -26,7 +26,7 @@ namespace Armature
       => new(parentNode =>
                parentNode
                 .GetOrAddNode(new SkipWhileUnit(Static<IsServiceUnit>.Instance, 0))
-                .AddNode(new IfFirstUnit(new IsMethodParameterWithType(typeof(T), true), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
+                .AddNode(new IfFirstUnit(new IsMethodParameterWithType(new Pattern(typeof(T))), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
                          $"Building of an argument for the method parameter of type {typeof(T).ToLogString()} is already tuned"));
 
     /// <summary>

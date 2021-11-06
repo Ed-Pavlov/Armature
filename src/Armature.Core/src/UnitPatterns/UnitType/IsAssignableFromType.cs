@@ -3,7 +3,7 @@
 namespace Armature.Core
 {
   /// <summary>
-  /// Checks if a building unit kind is a type and if yes can substitute the specified type.
+  /// Determines whether an instance of a specified type can be assigned to an instance of the type represented by <see cref="UnitId.Kind"/>
   /// See <see cref="Type.IsAssignableFrom"/> documentation for details.
   /// </summary>
   public record IsAssignableFromType(Type Type, object? Key = null) : TypePatternBase(Type, Key), IUnitPattern

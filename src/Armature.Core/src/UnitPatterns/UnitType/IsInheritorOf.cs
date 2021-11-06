@@ -3,10 +3,22 @@
 namespace Armature.Core
 {
   /// <summary>
-  /// Checks if a unit is a subtype of the specified base type.
+  /// Checks if a unit is an inheritor of the specified type.
   /// </summary>
-  public record IsInheritorOf(Type Type, object? Key) : TypePatternBase(Type, Key), IUnitPattern
+  public record IsInheritorOf : TypePatternBase, IUnitPattern
   {
-    public bool Matches(UnitId unitId) => Key.Matches(unitId.Key) && Type.IsAssignableFrom(unitId.GetUnitTypeSafe());
+    private readonly bool _isInterface;
+    public IsInheritorOf(Type type, object? key) : base(type, key)
+    {
+      if(type.IsGenericTypeDefinition) throw new ArgumentException("Type should not be open generic", nameof(type));
+      _isInterface = type.IsInterface;
+    }
+
+    public bool Matches(UnitId unitId)
+      => Key.Matches(unitId.Key)
+      && unitId.GetUnitTypeSafe() is { } unitType
+      && (_isInterface
+            ? Type.IsAssignableFrom(unitType)
+            : unitType.IsSubclassOf(Type));
   }
 }

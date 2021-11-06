@@ -10,7 +10,7 @@ namespace Armature.Core
   public record IsPropertyWithType : InjectPointByTypePattern
   {
     [DebuggerStepThrough]
-    public IsPropertyWithType(Type type, bool exactMatch) : base(type, exactMatch) { }
+    public IsPropertyWithType(IUnitPattern typePattern) : base(typePattern) { }
 
     protected override Type? GetInjectPointType(UnitId unitId) => (unitId.Kind as PropertyInfo)?.PropertyType;
   }

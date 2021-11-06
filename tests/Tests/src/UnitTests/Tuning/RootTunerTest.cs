@@ -143,7 +143,7 @@ public class RootTunerTest
   [Test]
   public void treat_open_generic([Values(null, "key")] string key)
   {
-    var expected = new SkipWhileUnit(new IsOpenGenericType(typeof(List<>), key));
+    var expected = new SkipWhileUnit(new IsGenericTypeDefinition(typeof(List<>), key));
 
     // --arrange
     var tree   = new PatternTree();

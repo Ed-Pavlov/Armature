@@ -15,7 +15,7 @@ namespace Armature
                Property.OfType<T>().Tune(parentNode);
 
                return parentNode.AddNode(
-                 new IfFirstUnit(new IsPropertyWithType(typeof(T), true), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
+                 new IfFirstUnit(new IsPropertyWithType(new Pattern(typeof(T))), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
                  $"Building of an argument for the property with type {typeof(T).ToLogString()} is already tuned");
              });
 

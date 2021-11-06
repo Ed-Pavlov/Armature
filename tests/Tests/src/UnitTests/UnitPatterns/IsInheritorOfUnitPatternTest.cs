@@ -10,12 +10,12 @@ namespace Tests.UnitTests.UnitPatterns
   public class IsInheritorOfUnitPatternTest
   {
     [Test]
-    public void should_match_exact_type([Values(null, "key")] object key)
+    public void should_not_match_exact_type([Values(null, "key")] object key)
     {
-      var unitId = new UnitId(typeof(int), key);
-      var target = new IsInheritorOf(typeof(int), key);
+      var unitId = new UnitId(typeof(Stream), key);
+      var target = new IsInheritorOf(typeof(Stream), key);
 
-      target.Matches(unitId).Should().BeTrue();
+      target.Matches(unitId).Should().BeFalse();
     }
 
     [Test]
