@@ -4,11 +4,13 @@ using Armature.Core.Logging;
 namespace Armature.Core
 {
   /// <summary>
-  /// Checks if a unit is a constructor needed to build some other unit.
+  /// Checks if a unit is a constructor of a type
   /// </summary>
   public record IsConstructor : IUnitPattern
   {
-    public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Constructor && unitId.GetUnitTypeSafe() is not null;
+    private static readonly CanBeInstantiated CanBeInstantiated = Static<CanBeInstantiated>.Instance;
+
+    public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Constructor && CanBeInstantiated.Matches(unitId);
 
     [DebuggerStepThrough]
     public override string ToString() => nameof(IsConstructor);

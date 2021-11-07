@@ -124,7 +124,7 @@ namespace Tests.Performance
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
-      var unitMatcher = new UnitPatternWrapper(new Pattern(unitId.Kind, unitId.Key));
+      var unitMatcher = new UnitPatternWrapper(new UnitPattern(unitId.Kind, unitId.Key));
 
       var query = new SkipTillUnit(unitMatcher);
 
@@ -159,7 +159,7 @@ namespace Tests.Performance
 
       public string ToLogString() => GetType().GetShortName();
 
-      public override bool Equals(object obj) => Equals(obj as Pattern);
+      public override bool Equals(object obj) => Equals(obj as UnitPattern);
     }
 
     private static Builder CreateTarget(Builder parent = null)

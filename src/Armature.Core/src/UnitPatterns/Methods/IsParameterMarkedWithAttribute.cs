@@ -7,7 +7,7 @@ namespace Armature.Core
   /// Checks if a unit is an argument for a method parameter marked with <see cref="InjectAttribute"/> attribute
   /// with an optional <see cref="InjectAttribute.InjectionPointId" />
   /// </summary>
-  public record IsParameterMarkedWithAttribute : InjectPointAttributePattern
+  public record IsParameterMarkedWithAttribute : InjectPointAttributePatternBase
   {
     /// <inheritdoc />
     [DebuggerStepThrough]

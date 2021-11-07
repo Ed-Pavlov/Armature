@@ -20,7 +20,7 @@ namespace Armature
     /// </summary>
     public FinalTuner CreatedByDefault()
       => new(ParentNode
-            .GetOrAddNode(new IfFirstUnit(new IsGenericTypeDefinition(OpenGenericType, Key)))
+            .GetOrAddNode(new IfFirstUnit(new IsGenericOfDefinition(OpenGenericType, Key)))
             .UseBuildAction(Default.CreationBuildAction, BuildStage.Create));
 
     /// <summary>
@@ -28,7 +28,7 @@ namespace Armature
     /// </summary>
     public FinalTuner CreatedByReflection() =>
       new(ParentNode
-         .GetOrAddNode(new SkipTillUnit(new IsGenericTypeDefinition(OpenGenericType, Key)))
+         .GetOrAddNode(new SkipTillUnit(new IsGenericOfDefinition(OpenGenericType, Key)))
          .UseBuildAction(Static<CreateByReflection>.Instance, BuildStage.Create));
 
     Type IExtensibility<Type, object>.   Item1 => OpenGenericType;

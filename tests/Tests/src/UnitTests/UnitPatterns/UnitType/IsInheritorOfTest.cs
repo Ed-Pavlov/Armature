@@ -5,9 +5,9 @@ using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Tests.UnitTests.UnitPatterns
+namespace Tests.UnitTests.UnitPatterns.UnitType
 {
-  public class IsInheritorOfUnitPatternTest
+  public class IsInheritorOfTest
   {
     [Test]
     public void should_not_match_exact_type([Values(null, "key")] object key)
@@ -64,19 +64,12 @@ namespace Tests.UnitTests.UnitPatterns
     }
 
     [Test]
-    public void should_not_match_if_key_differs_and_not_null([Values(null, "key")] object key)
+    public void should_not_match_if_key_differs([Values(null, "unitKey")] object unitKey, [Values(null, "patternKey")] object? patternKey)
     {
-      var unitId = new UnitId(typeof(MemoryStream), key);
-      var target = new IsInheritorOf(typeof(Stream), "different key");
+      if(Equals(unitKey, patternKey)) Assert.Ignore("Not the case");
 
-      target.Matches(unitId).Should().BeFalse();
-    }
-
-    [Test]
-    public void should_not_match_if_key_differs_and_null()
-    {
-      var unitId = new UnitId(typeof(MemoryStream), "key");
-      var target = new IsInheritorOf(typeof(Stream), null);
+      var unitId = new UnitId(typeof(MemoryStream), unitKey);
+      var target = new IsInheritorOf(typeof(Stream), patternKey);
 
       target.Matches(unitId).Should().BeFalse();
     }

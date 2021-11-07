@@ -6,7 +6,7 @@ namespace Armature.Core
   /// <summary>
   /// Checks if a unit is an argument to inject into the parameter with the specified name.
   /// </summary>
-  public record IsMethodParameterNamed : InjectPointWithNamePattern
+  public record IsMethodParameterNamed : InjectPointWithNamePatternBase
   {
     [DebuggerStepThrough]
     public IsMethodParameterNamed(string name) : base(name) { }

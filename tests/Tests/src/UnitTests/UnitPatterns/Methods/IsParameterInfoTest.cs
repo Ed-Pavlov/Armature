@@ -61,6 +61,19 @@ public class IsParameterInfoTest
     target2.Equals(target1).Should().BeTrue();
   }
 
+  [SuppressMessage("ReSharper", "SuspiciousTypeConversion.Global")]
+  [Test]
+  public void should_not_be_equal_to_other_unit_patterns()
+  {
+    // --arrange
+    var target1 = new IsParameterInfo();
+    var target2 = new Util.OtherUnitPattern();
+
+    // --assert
+    target1.Equals(target2).Should().BeFalse();
+    target2.Equals(target1).Should().BeFalse();
+  }
+
   [SuppressMessage("ReSharper", "UnusedParameter.Local")]
   private class Subject
   {

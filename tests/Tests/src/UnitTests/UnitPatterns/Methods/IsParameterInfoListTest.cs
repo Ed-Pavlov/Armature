@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
@@ -58,6 +57,19 @@ public class IsParameterInfoListTest
     // --assert
     target1.Equals(target2).Should().BeTrue();
     target2.Equals(target1).Should().BeTrue();
+  }
+
+  [SuppressMessage("ReSharper", "SuspiciousTypeConversion.Global")]
+  [Test]
+  public void should_not_be_equal_to_other_unit_patterns()
+  {
+    // --arrange
+    var target1 = new IsParameterInfoList();
+    var target2 = new Util.OtherUnitPattern();
+
+    // --assert
+    target1.Equals(target2).Should().BeFalse();
+    target2.Equals(target1).Should().BeFalse();
   }
 
   [SuppressMessage("ReSharper", "UnusedParameter.Local")]

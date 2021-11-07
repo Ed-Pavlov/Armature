@@ -14,40 +14,40 @@ namespace Tests.UnitTests.UnitPatterns
       if(kind is null && key is null) Assert.Ignore("Impossible arguments combination");
 
       var unitInfo = new UnitId(kind, key);
-      var matcher  = new Pattern(kind, key);
+      var target  = new UnitPattern(kind, key);
 
       // --assert
-      matcher.Matches(unitInfo).Should().BeTrue();
+      target.Matches(unitInfo).Should().BeTrue();
     }
 
     [Test]
     public void should_match_if_key_any_provided([Values(null, "key")] object key)
     {
       var unitInfo = new UnitId("kind", key);
-      var matcher  = new Pattern("kind", SpecialKey.Any);
+      var target  = new UnitPattern("kind", SpecialKey.Any);
 
       // --assert
-      matcher.Matches(unitInfo).Should().BeTrue();
+      target.Matches(unitInfo).Should().BeTrue();
     }
 
     [Test]
     public void should_not_match_if_kind_differs([Values(null, "key")] object key)
     {
       var unitInfo = new UnitId("kind1", key);
-      var matcher  = new Pattern("kind2", key);
+      var target  = new UnitPattern("kind2", key);
 
       // --assert
-      matcher.Matches(unitInfo).Should().BeFalse();
+      target.Matches(unitInfo).Should().BeFalse();
     }
 
     [Test]
     public void should_not_match_if_key_differs([Values(null, "kind")] object kind)
     {
       var unitInfo = new UnitId(kind, "key1");
-      var matcher  = new Pattern(kind, "key2");
+      var target  = new UnitPattern(kind, "key2");
 
       // --assert
-      matcher.Matches(unitInfo).Should().BeFalse();
+      target.Matches(unitInfo).Should().BeFalse();
     }
 
     [Test]
@@ -55,12 +55,12 @@ namespace Tests.UnitTests.UnitPatterns
     {
       if(kind is null && key is null) Assert.Ignore("Impossible arguments combination");
 
-      var matcher1 = new Pattern(kind, key);
-      var matcher2 = new Pattern(kind, key);
+      var target1 = new UnitPattern(kind, key);
+      var target2 = new UnitPattern(kind, key);
 
       // --assert
-      matcher1.Equals(matcher2).Should().BeTrue();
-      matcher2.Equals(matcher1).Should().BeTrue();
+      target1.Equals(target2).Should().BeTrue();
+      target2.Equals(target1).Should().BeTrue();
     }
 
     [Test]
@@ -68,12 +68,12 @@ namespace Tests.UnitTests.UnitPatterns
     {
       if(kind is null && key is null) Assert.Ignore("Impossible arguments combination");
 
-      var matcher1 = new Pattern(kind, key);
-      var matcher2 = new Pattern(kind, SpecialKey.Any); // fix key value
+      var target1 = new UnitPattern(kind, key);
+      var target2 = new UnitPattern(kind, SpecialKey.Any); // fix key value
 
       // --assert
-      matcher1.Equals(matcher2).Should().BeFalse();
-      matcher2.Equals(matcher1).Should().BeFalse();
+      target1.Equals(target2).Should().BeFalse();
+      target2.Equals(target1).Should().BeFalse();
     }
 
     [Test]
@@ -81,18 +81,18 @@ namespace Tests.UnitTests.UnitPatterns
     {
       if(kind is null && key is null) Assert.Ignore("Impossible arguments combination");
 
-      var matcher1 = new Pattern(kind, key);
-      var matcher2 = new Pattern("fixed kind", key); // fix kind value
+      var target1 = new UnitPattern(kind, key);
+      var target2 = new UnitPattern("fixed kind", key); // fix kind value
 
       // --assert
-      matcher1.Equals(matcher2).Should().BeFalse();
-      matcher2.Equals(matcher1).Should().BeFalse();
+      target1.Equals(target2).Should().BeFalse();
+      target2.Equals(target1).Should().BeFalse();
     }
 
     [Test]
     public void should_throw_if_both_arguments_are_null()
     {
-      var actual = () => new Pattern(null, null);
+      var actual = () => new UnitPattern(null, null);
 
       actual.Should().ThrowExactly<ArgumentNullException>().WithParameterName("unitKind").WithMessage("Either unit kind or key should be provided*");
     }

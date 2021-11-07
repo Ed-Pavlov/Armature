@@ -40,7 +40,7 @@ namespace Armature.Core
     public class UnitPattern
     {
       /// <summary>
-      /// Weight of type matched by open generic type, <see cref="IsGenericTypeDefinition"/> unit pattern and <see cref="RedirectOpenGenericType"/> for details
+      /// Weight of type matched by open generic type, <see cref="IsGenericOfDefinition"/> unit pattern and <see cref="RedirectOpenGenericType"/> for details
       /// </summary>
       public static short OpenGenericPattern { get; protected set; } = Step;
 

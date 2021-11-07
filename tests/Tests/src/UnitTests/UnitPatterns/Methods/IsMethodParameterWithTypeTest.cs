@@ -44,8 +44,8 @@ public class IsMethodParameterWithTypeTest
   public void should_be_equal_if_pattern_equal()
   {
     // --arrange
-    var target1 = new IsMethodParameterWithType(new Pattern("1"));
-    var target2 = new IsMethodParameterWithType(new Pattern("1"));
+    var target1 = new IsMethodParameterWithType(new UnitPattern("1"));
+    var target2 = new IsMethodParameterWithType(new UnitPattern("1"));
 
     // --assert
     target1.Equals(target2).Should().BeTrue();
@@ -56,8 +56,8 @@ public class IsMethodParameterWithTypeTest
   public void should_not_be_equal_if_pattern_differs()
   {
     // --arrange
-    var target1 = new IsMethodParameterWithType(new Pattern("1"));
-    var target2 = new IsMethodParameterWithType(new Pattern("2"));
+    var target1 = new IsMethodParameterWithType(new UnitPattern("1"));
+    var target2 = new IsMethodParameterWithType(new UnitPattern("2"));
 
     // --assert
     target1.Equals(target2).Should().BeFalse();

@@ -9,6 +9,8 @@ namespace Armature.Core
   /// <summary>
   ///   These keys are used by Armature to build such units as a constructor needed to instantiate an object,
   ///   or an argument for the method parameter and so on.
+  ///
+  ///   If you need to extend the set of special keys with your own, make a derived class and create keys using protected constructor.
   /// </summary>
   /// <remarks>
   ///   No equality member are needed for this class, <see cref="_name" /> is used only for debug purpose, keys should be equal by the reference.
@@ -23,17 +25,17 @@ namespace Armature.Core
     /// <summary>
     ///   Is used to "build" a <see cref="ConstructorInfo" /> for a type
     /// </summary>
-    public static readonly object Constructor = new SpecialKey(nameof(Constructor));
+    public static readonly SpecialKey Constructor = new SpecialKey(nameof(Constructor));
 
     /// <summary>
     /// Is used to build a list of properties of a type
     /// </summary>
-    public static readonly object PropertyList = new SpecialKey(nameof(PropertyList));
+    public static readonly SpecialKey  PropertyList = new SpecialKey(nameof(PropertyList));
 
     /// <summary>
     ///   Is used to build an argument for the inject point
     /// </summary>
-    public static readonly object Argument = new SpecialKey(nameof(Argument));
+    public static readonly SpecialKey  Argument = new SpecialKey(nameof(Argument));
 
     /// <summary>
     ///   Means "any key", it is used in patterns to match a unit regardless a key

@@ -7,7 +7,7 @@ namespace Armature.Core
   /// <summary>
   /// Checks if a unit is an argument to inject into a property requires argument of the specified type.
   /// </summary>
-  public record IsPropertyWithType : InjectPointByTypePattern
+  public record IsPropertyWithType : InjectPointByTypePatternBase
   {
     [DebuggerStepThrough]
     public IsPropertyWithType(IUnitPattern typePattern) : base(typePattern) { }

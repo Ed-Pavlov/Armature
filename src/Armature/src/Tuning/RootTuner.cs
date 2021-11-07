@@ -25,7 +25,7 @@ namespace Armature
     {
       if(type is null) throw new ArgumentNullException(nameof(type));
 
-      var patternMatcher = new SkipTillUnit(new Pattern(type, key), Weight);
+      var patternMatcher = new SkipTillUnit(new UnitPattern(type, key), Weight);
       return new RootTuner(ParentNode.GetOrAddNode(patternMatcher));
     }
 
@@ -45,7 +45,7 @@ namespace Armature
       if(type.IsGenericTypeDefinition) throw new ArgumentException($"Use {nameof(TreatOpenGeneric)} to setup open generic types.");
 
       var patternMatcher = new SkipTillUnit(
-        new Pattern(type, key),
+        new UnitPattern(type, key),
         Weight + WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.ExactTypePattern);
 
       return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
@@ -59,7 +59,7 @@ namespace Armature
       => new(
         ParentNode.GetOrAddNode(
           new SkipTillUnit(
-            new Pattern(typeof(T), key),
+            new UnitPattern(typeof(T), key),
             Weight
           + WeightOf.BuildingUnitSequencePattern.Neutral
           + WeightOf.UnitPattern.ExactTypePattern)));
@@ -71,7 +71,7 @@ namespace Armature
     public TreatingOpenGenericTuner TreatOpenGeneric(Type openGenericType, object? key = null)
     {
       var patternMatcher = new SkipTillUnit(
-        new IsGenericTypeDefinition(openGenericType, key),
+        new IsGenericOfDefinition(openGenericType, key),
         Weight + WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.OpenGenericPattern);
 
       return new TreatingOpenGenericTuner(ParentNode.GetOrAddNode(patternMatcher));

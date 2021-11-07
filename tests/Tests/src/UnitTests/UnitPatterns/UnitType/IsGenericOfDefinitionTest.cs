@@ -6,14 +6,14 @@ using NUnit.Framework;
 
 namespace Tests.UnitTests.UnitPatterns.UnitType;
 
-public class IsGenericTypeOfGenericDefinitionTest
+public class IsGenericOfDefinitionTest
 {
   [Test]
   public void should_match_open_generic_type([Values(null, "key")] object? key)
   {
     // --arrange
     var unitId = new UnitId(typeof(List<>), key);
-    var target = new IsGenericTypeDefinition(typeof(List<>), key);
+    var target = new IsGenericOfDefinition(typeof(List<>), key);
 
     // --assert
     target.Matches(unitId).Should().BeTrue();
@@ -24,7 +24,7 @@ public class IsGenericTypeOfGenericDefinitionTest
   {
     // --arrange
     var unitId = new UnitId(typeof(List<int>), key);
-    var target = new IsGenericTypeDefinition(typeof(List<>), key);
+    var target = new IsGenericOfDefinition(typeof(List<>), key);
 
     // --assert
     target.Matches(unitId).Should().BeTrue();
@@ -35,7 +35,7 @@ public class IsGenericTypeOfGenericDefinitionTest
   {
     // --arrange
     var unitId = new UnitId(typeof(IList<>), key);
-    var target = new IsGenericTypeDefinition(typeof(List<>), key);
+    var target = new IsGenericOfDefinition(typeof(List<>), key);
 
     // --assert
     target.Matches(unitId).Should().BeFalse();
@@ -46,7 +46,7 @@ public class IsGenericTypeOfGenericDefinitionTest
   {
     // --arrange
     var unitId = new UnitId(typeof(List<int>), key);
-    var target = new IsGenericTypeDefinition(typeof(List<>), SpecialKey.Any);
+    var target = new IsGenericOfDefinition(typeof(List<>), SpecialKey.Any);
 
     // --assert
     target.Matches(unitId).Should().BeTrue();
@@ -56,7 +56,7 @@ public class IsGenericTypeOfGenericDefinitionTest
   public void should_not_allow_null_type_argument()
   {
     // --arrange
-    var target = () => new IsGenericTypeDefinition(null!, null);
+    var target = () => new IsGenericOfDefinition(null!, null);
 
     // --assert
     target.Should().ThrowExactly<ArgumentNullException>().WithParameterName("Type");
@@ -66,8 +66,8 @@ public class IsGenericTypeOfGenericDefinitionTest
   public void should_equal_if_arguments_equal([Values(null, "key")] object? key)
   {
     // --arrange
-    var target1 = new IsGenericTypeDefinition(typeof(List<>), key);
-    var target2 = new IsGenericTypeDefinition(typeof(List<>), key);
+    var target1 = new IsGenericOfDefinition(typeof(List<>), key);
+    var target2 = new IsGenericOfDefinition(typeof(List<>), key);
 
     // --assert
     target1.Equals(target2).Should().BeTrue();
@@ -78,8 +78,8 @@ public class IsGenericTypeOfGenericDefinitionTest
   public void should_not_equal_if_type_differ([Values(null, "key")] object? key)
   {
     // --arrange
-    var target1 = new IsGenericTypeDefinition(typeof(IList<>), key);
-    var target2 = new IsGenericTypeDefinition(typeof(List<>), key);
+    var target1 = new IsGenericOfDefinition(typeof(IList<>), key);
+    var target2 = new IsGenericOfDefinition(typeof(List<>), key);
 
     // --assert
     target1.Equals(target2).Should().BeFalse();
@@ -90,8 +90,8 @@ public class IsGenericTypeOfGenericDefinitionTest
   public void should_not_equal_if_key_differ([Values(null, "key")] object? key)
   {
     // --arrange
-    var target1 = new IsGenericTypeDefinition(typeof(List<>), key);
-    var target2 = new IsGenericTypeDefinition(typeof(List<>), "different key");
+    var target1 = new IsGenericOfDefinition(typeof(List<>), key);
+    var target2 = new IsGenericOfDefinition(typeof(List<>), "different key");
 
     // --assert
     target1.Equals(target2).Should().BeFalse();
