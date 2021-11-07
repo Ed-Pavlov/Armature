@@ -1,6 +1,7 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
+using Armature.Core.Sdk;
 using NUnit.Framework;
 
 namespace Tests.Functional
@@ -44,7 +45,7 @@ namespace Tests.Functional
            new SkipAllUnits
            {
              new IfFirstUnit(new IsConstructor()) // inject into constructor
-              .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
              
              new IfFirstUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),

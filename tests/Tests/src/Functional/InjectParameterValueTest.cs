@@ -3,6 +3,7 @@ using System.Collections;
 using Armature;
 using Armature.Core;
 using Armature.Core.Logging;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -420,7 +421,7 @@ namespace Tests.Functional
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(
-                 new TryInOrder() { Static<BuildArgumentByParameterType>.Instance, Static<GetParameterDefaultValue>.Instance },
+                 new TryInOrder() { Static.Of<BuildArgumentByParameterType>(), Static.Of<GetParameterDefaultValue>() },
                  BuildStage.Create)
            }
          };

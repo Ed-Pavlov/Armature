@@ -5,6 +5,7 @@ using System.IO;
 using Armature;
 using Armature.Core;
 using Armature.Core.Logging;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using JetBrains.dotMemoryUnit;
 using JetBrains.dotMemoryUnit.Kernel;
@@ -171,15 +172,15 @@ namespace Tests.Performance
                         .UseBuildAction(
                            new TryInOrder
                            {
-                             new GetConstructorByInjectPointId(), // constructor marked with [Inject] attribute has more priority
-                             Static<GetConstructorWithMaxParametersCount>.Instance       // constructor with largest number of parameters has less priority
+                             new GetConstructorByInjectPointId(),              // constructor marked with [Inject] attribute has more priority
+                             Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has less priority
                            },
                            BuildStage.Create),
                        new IfFirstUnit(new IsParameterInfo())
                         .UseBuildAction(
                            new TryInOrder
                            {
-                             Static<BuildArgumentByParameterInjectPointId>.Instance, Static<BuildArgumentByParameterType>.Instance
+                             Static.Of<BuildArgumentByParameterInjectPointId>(), Static.Of<BuildArgumentByParameterType>()
                            },
                            BuildStage.Create),
                        new IfFirstUnit(new IsPropertyInfo())

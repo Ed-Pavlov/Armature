@@ -1,4 +1,5 @@
 ﻿using System;
+using Armature.Core.Sdk;
 
 namespace Armature.Core
 {

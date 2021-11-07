@@ -2,6 +2,7 @@
 using Armature;
 using Armature.Core;
 using Armature.Core.Logging;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -101,7 +102,7 @@ namespace Tests.Functional
            new SkipAllUnits
            {
              new IfFirstUnit(new IsConstructor()) // inject into constructor
-              .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
 
              new IfFirstUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),

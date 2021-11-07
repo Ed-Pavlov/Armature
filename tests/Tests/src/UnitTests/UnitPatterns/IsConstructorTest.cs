@@ -3,30 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Armature.Core;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
-using Tests.Common;
 
 namespace Tests.UnitTests.UnitPatterns;
 
 public class IsConstructorTest
 {
   [Test]
-  public void should_match_if_key_is_constructor_and_unit_kind_is_suitable_type(
-    [Values(typeof(int), typeof(string), typeof(List<int>), typeof(MemoryStream))]
-    Type unitType)
-  {
-    // --arrange
-    var unitId = new UnitId(unitType, SpecialKey.Constructor);
-    var target = new IsConstructor();
-
-    // --assert
-    target.Matches(unitId).Should().BeTrue();
-  }
-
-  [Test]
-  public void should_not_match_if_key_is_constructor_and_unit_kind_is_suitable_type(
-    [Values(typeof(IDisposable), typeof(Stream), typeof(List<>), "not a type", null)]
+  public void should_match_if_key_is_constructor(
+    [Values(typeof(int), typeof(string), typeof(List<int>), typeof(List<>), null, "not a type at all")]
     object? kind)
   {
     // --arrange
@@ -34,7 +21,7 @@ public class IsConstructorTest
     var target = new IsConstructor();
 
     // --assert
-    target.Matches(unitId).Should().BeFalse();
+    target.Matches(unitId).Should().BeTrue();
   }
 
   [Test]

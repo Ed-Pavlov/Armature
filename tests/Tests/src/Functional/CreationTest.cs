@@ -2,6 +2,7 @@
 using Armature;
 using Armature.Core;
 using Armature.Core.Logging;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -274,7 +275,7 @@ namespace Tests.Functional
                  new IfFirstUnit(new IsParameterInfoList())
                   .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
                  new IfFirstUnit(new IsParameterInfo())
-                  .UseBuildAction(Static<BuildArgumentByParameterType>.Instance, BuildStage.Create)
+                  .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
                }
              };
     }

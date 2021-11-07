@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Armature;
 using Armature.Core;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -65,8 +66,8 @@ namespace Tests.Functional
               .UseBuildAction(
                  new TryInOrder
                  {
-                   new GetConstructorByInjectPointId(),          // constructor marked with [Inject] attribute has more priority
-                   Static<GetConstructorWithMaxParametersCount>.Instance // constructor with largest number of parameters has less priority
+                   new GetConstructorByInjectPointId(),              // constructor marked with [Inject] attribute has more priority
+                   Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
              new IfFirstUnit(new IsParameterInfoList())
@@ -75,7 +76,7 @@ namespace Tests.Functional
               .UseBuildAction(
                  new TryInOrder()
                  {
-                   Static<BuildArgumentByParameterType>.Instance, Static<BuildListArgumentForMethodParameter>.Instance, Static<GetParameterDefaultValue>.Instance
+                   Static.Of<BuildArgumentByParameterType>(), Static.Of<BuildListArgumentForMethodParameter>(), Static.Of<GetParameterDefaultValue>()
                  },
                  BuildStage.Create) // autowiring
            }

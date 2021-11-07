@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-
-namespace Armature.Core
+namespace Armature.Core.Sdk
 {
   public static class UnitIdExtension
   {

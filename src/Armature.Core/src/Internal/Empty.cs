@@ -6,7 +6,7 @@ namespace Armature.Core
   {
     // ReSharper disable once InconsistentNaming
     private static readonly T[]? _array;
-    public static readonly  T[]  Array = _array ??= new T[0];
+    public static readonly  T[]  Array = _array ??= System.Array.Empty<T>();
 
     // ReSharper disable once InconsistentNaming
     private static readonly List<T>? _list;

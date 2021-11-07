@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Armature.Core
+namespace Armature.Core.Sdk
 {
   public static class BuildSessionExtension
   {

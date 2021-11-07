@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Armature;
 using Armature.Core;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
@@ -36,7 +37,7 @@ namespace Tests.UnitTests
       // --arrange
       var unitIdMatcher = Match.Type<int>(null);
       var buildStep1    = new IfFirstUnit(unitIdMatcher);
-      buildStep1.UseBuildAction(Static<CreateByReflection>.Instance, BuildStage.Cache);
+      buildStep1.UseBuildAction(Static.Of<CreateByReflection>(), BuildStage.Cache);
       var singletonAction = new Singleton();
       var buildStep2      = new SkipTillUnit(unitIdMatcher);
       buildStep2.UseBuildAction(singletonAction, BuildStage.Cache);
@@ -58,7 +59,7 @@ namespace Tests.UnitTests
        .And
        .Subject.Select(_ => _.Entity)
        .Should()
-       .BeEquivalentTo(new IBuildAction[]{Static<CreateByReflection>.Instance, singletonAction});
+       .BeEquivalentTo(new IBuildAction[]{Static.Of<CreateByReflection>(), singletonAction});
     }
   }
 }

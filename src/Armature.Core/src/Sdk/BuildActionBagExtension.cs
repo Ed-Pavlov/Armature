@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Armature.Core.Logging;
 
-
-namespace Armature.Core
+namespace Armature.Core.Sdk
 {
   /// <summary>
   /// These methods are implemented as extensions instead of class members in order to be able to operation with 'null' BuildActionBag

@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Armature;
 using Armature.Core;
+using Armature.Core.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -72,7 +73,7 @@ public class FinalTunerTest
     var expectedWeight = WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability;
 
     var expectedChildNode =
-      new SkipWhileUnit(Static<IsServiceUnit>.Instance)
+      new SkipWhileUnit(Static.Of<IsServiceUnit>())
       {
         Children =
         {

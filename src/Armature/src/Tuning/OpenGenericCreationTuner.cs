@@ -1,5 +1,6 @@
 ﻿using System;
 using Armature.Core;
+using Armature.Core.Sdk;
 using Armature.Extensibility;
 
 namespace Armature
@@ -29,7 +30,7 @@ namespace Armature
     public FinalTuner CreatedByReflection() =>
       new(ParentNode
          .GetOrAddNode(new SkipTillUnit(new IsGenericOfDefinition(OpenGenericType, Key)))
-         .UseBuildAction(Static<CreateByReflection>.Instance, BuildStage.Create));
+         .UseBuildAction(Static.Of<CreateByReflection>(), BuildStage.Create));
 
     Type IExtensibility<Type, object>.   Item1 => OpenGenericType;
     object? IExtensibility<Type, object>.Item2 => Key;

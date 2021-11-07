@@ -1,5 +1,6 @@
 ﻿using Armature;
 using Armature.Core;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -93,7 +94,7 @@ namespace Tests.Functional
            {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
-              .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
 
              new IfFirstUnit(new IsPropertyInfo())
               .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Reflection;
 using Armature;
 using Armature.Core;
+using Armature.Core.Sdk;
 using NUnit.Framework;
 using JetBrains.Annotations;
 
@@ -86,7 +87,7 @@ namespace Tests.Functional
            new SkipAllUnits
            {
              new IfFirstUnit(new IsConstructor())
-              .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
 
              new IfFirstUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),

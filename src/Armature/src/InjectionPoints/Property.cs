@@ -1,5 +1,6 @@
 ﻿using System;
 using Armature.Core;
+using Armature.Core.Sdk;
 
 namespace Armature
 {
@@ -11,9 +12,9 @@ namespace Armature
       => new InjectPointTuner(
         node =>
         {
-          node.UseBuildAction(Static<InjectDependenciesIntoProperties>.Instance, BuildStage.Initialize);
+          node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-          node.GetOrAddNode(new IfFirstUnit(Static<IsPropertyList>.Instance, weight))
+          node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
               .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
         });
 
@@ -29,9 +30,9 @@ namespace Armature
       => new InjectPointTuner(
         node =>
         {
-          node.UseBuildAction(Static<InjectDependenciesIntoProperties>.Instance, BuildStage.Initialize);
+          node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-          node.GetOrAddNode(new IfFirstUnit(Static<IsPropertyList>.Instance, weight))
+          node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
               .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
         });
 
@@ -47,9 +48,9 @@ namespace Armature
       => new InjectPointTuner(
         node =>
         {
-          node.UseBuildAction(Static<InjectDependenciesIntoProperties>.Instance, BuildStage.Initialize);
+          node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-          node.GetOrAddNode(new IfFirstUnit(Static<IsPropertyList>.Instance, weight))
+          node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
               .UseBuildAction(new GetPropertyListByInjectPointId(pointIds), BuildStage.Create);
         });
   }

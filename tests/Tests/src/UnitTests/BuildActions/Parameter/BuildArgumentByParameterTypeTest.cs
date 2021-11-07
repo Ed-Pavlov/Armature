@@ -1,5 +1,6 @@
 using System.Linq;
 using Armature.Core;
+using Armature.Core.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;

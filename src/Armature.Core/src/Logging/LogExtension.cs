@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Armature.Core.Sdk;
 
 namespace Armature.Core.Logging
 {

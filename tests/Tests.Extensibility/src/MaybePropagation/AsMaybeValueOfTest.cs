@@ -1,6 +1,7 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Extensibility.MaybePropagation.Implementation;
@@ -126,11 +127,11 @@ namespace Tests.Extensibility.MaybePropagation
            {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
-              .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
              new IfFirstUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfFirstUnit(new IsParameterInfo())
-              .UseBuildAction(Static<BuildArgumentByParameterType>.Instance, BuildStage.Create)
+              .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
            }
          };
   }

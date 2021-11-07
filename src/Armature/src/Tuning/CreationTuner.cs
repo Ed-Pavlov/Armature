@@ -1,5 +1,6 @@
 ﻿using System;
 using Armature.Core;
+using Armature.Core.Sdk;
 using Armature.Extensibility;
 
 namespace Armature
@@ -26,7 +27,7 @@ namespace Armature
     /// </summary>
     public FinalTuner CreatedByReflection()
       => new(ParentNode.GetOrAddNode(new IfFirstUnit(new UnitPattern(Type, Key))
-                       .UseBuildAction(Static<CreateByReflection>.Instance, BuildStage.Create)));
+                       .UseBuildAction(Static.Of<CreateByReflection>(), BuildStage.Create)));
 
     Type IExtensibility<Type, object>.   Item1 => Type;
     object? IExtensibility<Type, object>.Item2 => Key;

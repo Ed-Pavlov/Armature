@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Armature.Core;
+using Armature.Core.Sdk;
 using JetBrains.Annotations;
 
 namespace Armature
@@ -23,7 +24,7 @@ namespace Armature
     ///   For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute.InjectionPointId" /> as key
     /// </summary>
     public IArgumentTuner UseInjectPointIdAsKey()
-      => new ArgumentTuner(node => TuneTreeNodePattern(node).UseBuildAction(Static<BuildArgumentByPropertyInjectPointId>.Instance, BuildStage.Create));
+      => new ArgumentTuner(node => TuneTreeNodePattern(node).UseBuildAction(Static.Of<BuildArgumentByPropertyInjectPointId>(), BuildStage.Create));
   }
 
   public class PropertyArgumentTuner : PropertyArgumentTuner<object?>

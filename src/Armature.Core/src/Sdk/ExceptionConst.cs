@@ -1,4 +1,4 @@
-﻿namespace Armature.Core
+﻿namespace Armature.Core.Sdk
 {
   public static class ExceptionConst
   {

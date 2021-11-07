@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Armature;
 using Armature.Core;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
@@ -33,7 +34,7 @@ namespace Tests.UnitTests
        .And
        .Subject.Select(_ => _.Entity)
        .Should()
-       .Equal(Static<CreateByReflection>.Instance, singletonAction);
+       .Equal(Static.Of<CreateByReflection>(), singletonAction);
     }
   }
 }

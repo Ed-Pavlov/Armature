@@ -2,6 +2,7 @@
 using Armature;
 using Armature.Core;
 using Armature.Core.Logging;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -188,8 +189,8 @@ namespace Tests.Functional
               .UseBuildAction(
                  new TryInOrder
                  {
-                   Static<BuildArgumentByParameterInjectPointId>.Instance,
-                   Static<BuildArgumentByParameterType>.Instance
+                   Static.Of<BuildArgumentByParameterInjectPointId>(),
+                   Static.Of<BuildArgumentByParameterType>()
                  },
                  BuildStage.Create)
            }

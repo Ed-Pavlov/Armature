@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Armature.Core.Logging;
 
-namespace Armature.Core
+namespace Armature.Core.Sdk
 {
   /// <summary>
   ///   These keys are used by Armature to build such units as a constructor needed to instantiate an object,

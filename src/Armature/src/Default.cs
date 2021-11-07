@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Armature.Core;
+using Armature.Core.Sdk;
 
 namespace Armature
 {
@@ -10,6 +11,6 @@ namespace Armature
     ///   You can set your own build action which will be used by these tuners.
     /// </summary>
     [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
-    public static IBuildAction CreationBuildAction = Static<CreateByReflection>.Instance;
+    public static IBuildAction CreationBuildAction = Static.Of<CreateByReflection>();
   }
 }

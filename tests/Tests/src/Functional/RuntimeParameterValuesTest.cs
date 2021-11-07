@@ -3,6 +3,7 @@ using System.IO;
 using Armature;
 using Armature.Core;
 using Armature.Core.Logging;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -100,11 +101,11 @@ namespace Tests.Functional
            {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
-              .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create),
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
              new IfFirstUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfFirstUnit(new IsParameterInfo())
-              .UseBuildAction(Static<BuildArgumentByParameterType>.Instance, BuildStage.Create) // autowiring
+              .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create) // autowiring
            }
          };
 

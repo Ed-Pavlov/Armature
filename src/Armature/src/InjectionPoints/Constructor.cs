@@ -1,5 +1,6 @@
 ﻿using System;
 using Armature.Core;
+using Armature.Core.Sdk;
 
 namespace Armature
 {
@@ -10,15 +11,15 @@ namespace Armature
     /// </summary>
     public static IInjectPointTuner WithMaxParametersCount(short weight = 0)
       => new InjectPointTuner(
-        node => node.GetOrAddNode(new IfFirstUnit(Static<IsConstructor>.Instance, weight))
-                    .UseBuildAction(Static<GetConstructorWithMaxParametersCount>.Instance, BuildStage.Create));
+        node => node.GetOrAddNode(new IfFirstUnit(Static.Of<IsConstructor>(), weight))
+                    .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create));
 
     /// <summary>
     ///   Instantiate a Unit using a constructor marked with <see cref="InjectAttribute" />(<paramref name="injectionPointId" />)
     /// </summary>
     public static IInjectPointTuner MarkedWithInjectAttribute(object? injectionPointId, short weight = 0)
       => new InjectPointTuner(
-        node => node.GetOrAddNode(new IfFirstUnit(Static<IsConstructor>.Instance, weight))
+        node => node.GetOrAddNode(new IfFirstUnit(Static.Of<IsConstructor>(), weight))
                     .UseBuildAction(new GetConstructorByInjectPointId(injectionPointId), BuildStage.Create));
 
     /// <summary>
@@ -52,7 +53,7 @@ namespace Armature
     /// </summary>
     public static IInjectPointTuner WithParameters(params Type[] parameterTypes)
       => new InjectPointTuner(
-        node => node.GetOrAddNode(new IfFirstUnit(Static<IsConstructor>.Instance))
+        node => node.GetOrAddNode(new IfFirstUnit(Static.Of<IsConstructor>()))
                     .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
   }
 }
