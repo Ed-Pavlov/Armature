@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Armature.Core.Logging
+namespace Armature.Core.Sdk
 {
   public static class LogConst
   {

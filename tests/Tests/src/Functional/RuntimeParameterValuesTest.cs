@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using Armature;
 using Armature.Core;
-using Armature.Core.Logging;
 using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;

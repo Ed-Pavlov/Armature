@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Armature.Core.Logging;
+using Armature.Core.Sdk;
 
 
 namespace Armature

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Armature.Core.Logging;
+using Armature.Core.Internal;
 using JetBrains.Annotations;
 
 namespace Armature.Core

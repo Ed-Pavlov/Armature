@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Armature.Core.Logging;
+using Armature.Core;
 using NUnit.Framework;
 
 namespace Tests.Extensibility;

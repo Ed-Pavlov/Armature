@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
-namespace Armature.Core
+namespace Armature.Core.Internal
 {
   internal static class DictionaryExtension
   {

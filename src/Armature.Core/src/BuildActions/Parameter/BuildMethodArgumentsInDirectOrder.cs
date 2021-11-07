@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using Armature.Core.Logging;
+using Armature.Core.Internal;
 using Armature.Core.Sdk;
 
 namespace Armature.Core

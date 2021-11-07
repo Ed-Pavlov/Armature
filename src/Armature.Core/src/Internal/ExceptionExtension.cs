@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Armature.Core
+namespace Armature.Core.Internal
 {
   internal static class ExceptionExtension
   {

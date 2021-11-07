@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Armature.Core;
+using Armature.Core.Internal;
 
 namespace Armature
 {

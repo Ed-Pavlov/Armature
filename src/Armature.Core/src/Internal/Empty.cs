@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Armature.Core
+namespace Armature.Core.Internal
 {
   internal static class Empty<T>
   {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Armature.Core.Internal;
 
 namespace Armature.Core.Sdk
 {

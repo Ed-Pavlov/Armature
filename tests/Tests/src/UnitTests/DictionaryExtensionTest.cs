@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Armature.Core;
+using Armature.Core.Internal;
 using FluentAssertions;
 using NUnit.Framework;
 

@@ -5,9 +5,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Armature.Core.Sdk;
 
-namespace Armature.Core.Logging
+namespace Armature.Core.Sdk
 {
   [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
   public static class LogExtension

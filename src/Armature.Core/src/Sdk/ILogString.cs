@@ -1,4 +1,4 @@
-﻿namespace Armature.Core.Logging
+﻿namespace Armature.Core.Sdk
 {
   public interface ILogString
   {

@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Armature.Core.Logging;
 
 namespace Armature.Core.Sdk
 {

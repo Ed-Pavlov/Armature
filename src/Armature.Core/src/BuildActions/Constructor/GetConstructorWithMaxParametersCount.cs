@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Armature.Core.Logging;
+using Armature.Core.Internal;
 using Armature.Core.Sdk;
 
 namespace Armature.Core

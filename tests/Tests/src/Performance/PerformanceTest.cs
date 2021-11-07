@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using Armature;
 using Armature.Core;
-using Armature.Core.Logging;
 using Armature.Core.Sdk;
 using FluentAssertions;
 using JetBrains.dotMemoryUnit;

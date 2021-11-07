@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Core.Logging;
+using Armature.Core.Sdk;
 
 namespace Armature.Core
 {
