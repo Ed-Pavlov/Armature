@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Armature;
 using Armature.Core;
@@ -10,6 +11,15 @@ namespace Tests.UnitTests;
 public static class Util
 {
   public static BuildActionBag CreateBag(BuildStage buildStage, params IBuildAction[] buildActions) => new() {{buildStage, buildActions.ToList()}};
+
+  [DebuggerStepThrough]
+  public static ArrayTail<T> MakeArrayTail<T>(params T?[] array) => new ArrayTail<T>(array, 0);
+
+  [DebuggerStepThrough]
+  public static ArrayTail<T> ToArrayTail<T>(this T[] array) => new(array, 0);
+
+  [DebuggerStepThrough]
+  public static ArrayTail<T> ToArrayTail<T>(this T item) => new(new []{item}, 0);
 
   public class TestPatternTreeNode : PatternTreeNodeBase
   {

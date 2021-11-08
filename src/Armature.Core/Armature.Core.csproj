@@ -51,10 +51,23 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>build\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Remove="src\PatternTree\IfFirstUnit.cs" />
+    <Compile Remove="src\PatternTree\IPatternTreeNode.cs" />
+    <Compile Remove="src\PatternTree\PatternTree.cs" />
+    <Compile Remove="src\PatternTree\PatternTreeExtension.cs" />
+    <Compile Remove="src\PatternTree\PatternTreeNodeBase.cs" />
+    <Compile Remove="src\PatternTree\PatternTreeNodeWithChildrenBase.cs" />
+    <Compile Remove="src\PatternTree\SkipAllUnits.cs" />
+    <Compile Remove="src\PatternTree\SkipTillUnit.cs" />
+    <Compile Remove="src\PatternTree\SkipWhileUnit.cs" />
+    <Compile Remove="src\PatternTree\UnitPatternTreeNodeBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\build\icon.png" Pack="true" PackagePath="">
       <Link>build\icon.png</Link>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\PatternTree" />
   </ItemGroup>
 </Project>

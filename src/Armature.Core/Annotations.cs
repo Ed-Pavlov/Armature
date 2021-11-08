@@ -22,7 +22,7 @@ namespace JetBrains.Annotations
   /// <example>
   ///   <code>
   /// [CanBeNull] object Test() => null;
-  /// 
+  ///
   /// void UseTest() {
   ///   var p = Test();
   ///   var s = p.ToString(); // Warning: Possible 'System.NullReferenceException'
@@ -62,7 +62,7 @@ namespace JetBrains.Annotations
   | AttributeTargets.Class
   | AttributeTargets.Interface
   | AttributeTargets.GenericParameter)]
-  [Conditional("JETBRAINS_ANNOTATIONS")]
+  // [Conditional("JETBRAINS_ANNOTATIONS")]
   internal sealed class NotNullAttribute : Attribute { }
 
   /// <summary>
@@ -103,7 +103,7 @@ namespace JetBrains.Annotations
   ///   <code>
   /// [StringFormatMethod("message")]
   /// void ShowError(string message, params object[] args) { /* do something */ }
-  /// 
+  ///
   /// void Foo() {
   ///   ShowError("Failed: {0}"); // Warning: Non-existing argument in format string
   /// }
@@ -182,12 +182,12 @@ namespace JetBrains.Annotations
   ///   <code>
   ///  public class Foo : INotifyPropertyChanged {
   ///    public event PropertyChangedEventHandler PropertyChanged;
-  ///  
+  ///
   ///    [NotifyPropertyChangedInvocator]
   ///    protected virtual void NotifyChanged(string propertyName) { ... }
-  /// 
+  ///
   ///    string _name;
-  ///  
+  ///
   ///    public string Name {
   ///      get { return _name; }
   ///      set { _name = value; NotifyChanged("LastName"); /* Warning */ }
@@ -265,7 +265,7 @@ namespace JetBrains.Annotations
   /// // A method that returns null if the parameter is null,
   /// // and not null if the parameter is not null
   /// [ContractAnnotation("null => null; notnull => notnull")]
-  /// public object Transform(object data) 
+  /// public object Transform(object data)
   /// </code>
   ///     </item>
   ///     <item>
@@ -325,7 +325,7 @@ namespace JetBrains.Annotations
   ///   <code>
   /// [CannotApplyEqualityOperator]
   /// class NoEquality { }
-  /// 
+  ///
   /// class UsesNoEquality {
   ///   void Test() {
   ///     var ca1 = new NoEquality();
@@ -349,7 +349,7 @@ namespace JetBrains.Annotations
   ///   <code>
   /// [BaseTypeRequired(typeof(IComponent)] // Specify requirement
   /// class ComponentAttribute : Attribute { }
-  /// 
+  ///
   /// [Component] // ComponentAttribute requires implementing IComponent interface
   /// class MyComponent : IComponent { }
   /// </code>
@@ -491,7 +491,7 @@ namespace JetBrains.Annotations
   /// <example>
   ///   <code>
   /// [Pure] int Multiply(int x, int y) => x * y;
-  /// 
+  ///
   /// void M() {
   ///   Multiply(123, 42); // Waring: Return value of pure method is not used
   /// }
@@ -524,7 +524,7 @@ namespace JetBrains.Annotations
   ///   <code>
   /// class Foo {
   ///   [ProvidesContext] IBarService _barService = ...;
-  /// 
+  ///
   ///   void ProcessNode(INode node) {
   ///     DoSomething(node, node.GetGlobalServices().Bar);
   ///     //              ^ Warning: use value of '_barService' field

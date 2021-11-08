@@ -30,7 +30,7 @@ namespace Armature.Core
     /// Adds the <paramref name="node" /> into <paramref name="parentNode" />.
     /// </summary>
     /// <exception cref="ArmatureException">A node already exists in the collection</exception>
-    public static T AddNode<T>(this IPatternTreeNode parentNode, T node, string? exceptionMessage = null) where T : IPatternTreeNode
+    public static T AddNode<T>(this IPatternTreeNode parentNode, T node, string? exceptionMessage = null) where T : IPatternTreeNode //TODO: what a message? what a dich'?
     {
       if(parentNode is null) throw new ArgumentNullException(nameof(parentNode));
 
