@@ -2,14 +2,13 @@
 using System.Reflection;
 using Armature.Core;
 using Armature.Core.Sdk;
-using JetBrains.Annotations;
 
 namespace Armature
 {
   public class PropertyArgumentTuner<T> : ArgumentTunerBase<T>
   {
     public PropertyArgumentTuner(Func<IPatternTreeNode, IPatternTreeNode> tuneTreeNodePattern) : base(tuneTreeNodePattern) { }
-    
+
     /// <summary>
     ///   For building a value for the parameter use <see cref="PropertyInfo.PropertyType" /> and <paramref name="key" />
     /// </summary>
@@ -19,7 +18,7 @@ namespace Armature
 
       return new ArgumentTuner(node => TuneTreeNodePattern(node).UseBuildAction(new BuildArgumentByPropertyType(key), BuildStage.Create));
     }
-    
+
     /// <summary>
     ///   For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute.InjectionPointId" /> as key
     /// </summary>
@@ -29,6 +28,6 @@ namespace Armature
 
   public class PropertyArgumentTuner : PropertyArgumentTuner<object?>
   {
-    public PropertyArgumentTuner([NotNull] Func<IPatternTreeNode, IPatternTreeNode> tuneTreeNodePattern) : base(tuneTreeNodePattern) { }
+    public PropertyArgumentTuner(Func<IPatternTreeNode, IPatternTreeNode> tuneTreeNodePattern) : base(tuneTreeNodePattern) { }
   }
 }

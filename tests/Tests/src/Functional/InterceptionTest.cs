@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
 using NUnit.Framework;
-using JetBrains.Annotations;
 
 namespace Tests.Functional
 {
@@ -113,7 +113,7 @@ namespace Tests.Functional
     {
       private readonly string _postfix;
 
-      public AddPostfixToString([NotNull] string postfix) => _postfix = postfix ?? throw new ArgumentNullException(nameof(postfix));
+      public AddPostfixToString(string postfix) => _postfix = postfix ?? throw new ArgumentNullException(nameof(postfix));
 
       public void Process(IBuildSession buildSession) { }
 
@@ -122,13 +122,13 @@ namespace Tests.Functional
         var buildResult = buildSession.BuildResult;
         if(buildResult.HasValue)
         {
-          var value = (string) buildResult.Value;
+          var value = (string) buildResult.Value!;
           buildSession.BuildResult = new BuildResult(value + _postfix);
         }
       }
     }
 
-    [UsedImplicitly]
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
     private class StringConsumer
     {
       public readonly string Value;

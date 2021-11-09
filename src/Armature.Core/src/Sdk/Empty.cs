@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Armature.Core.Internal
+namespace Armature.Core.Sdk
 {
-  internal static class Empty<T>
+  public static class Empty<T>
   {
     // ReSharper disable once InconsistentNaming
     private static readonly T[]? _array;

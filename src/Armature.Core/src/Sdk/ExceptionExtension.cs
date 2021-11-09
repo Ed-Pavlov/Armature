@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 
-namespace Armature.Core.Internal
+namespace Armature.Core.Sdk
 {
-  internal static class ExceptionExtension
+  public static class ExceptionExtension
   {
     [DebuggerStepThrough]
     public static T AddData<T>(this T exception, object key, object? value)

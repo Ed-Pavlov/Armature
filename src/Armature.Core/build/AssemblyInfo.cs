@@ -7,7 +7,7 @@ using Armature.Core.build;
 [assembly: AssemblyDescription("The core part of Armature, can be used to make another frameworks")]
 
 [assembly: InternalsVisibleTo("Tests, PublicKey="    + Public.Key)]
-[assembly: InternalsVisibleTo("Armature, PublicKey=" + Public.Key)]
+// [assembly: InternalsVisibleTo("Armature, PublicKey=" + Public.Key)]
 
 namespace Armature.Core.build
 {

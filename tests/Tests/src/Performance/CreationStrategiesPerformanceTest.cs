@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Armature.Core;
 using Armature.Core.Internal;
+using Armature.Core.Sdk;
 using NUnit.Framework;
 
 namespace Tests.Performance

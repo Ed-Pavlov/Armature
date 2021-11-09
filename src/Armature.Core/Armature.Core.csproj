@@ -61,13 +61,13 @@
     <Compile Remove="src\PatternTree\SkipTillUnit.cs" />
     <Compile Remove="src\PatternTree\SkipWhileUnit.cs" />
     <Compile Remove="src\PatternTree\UnitPatternTreeNodeBase.cs" />
+    <Compile Remove="src\Internal\Empty.cs" />
+    <Compile Remove="src\Internal\ExceptionExtension.cs" />
+    <Compile Remove="Annotations.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\build\icon.png" Pack="true" PackagePath="">
       <Link>build\icon.png</Link>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\PatternTree" />
   </ItemGroup>
 </Project>

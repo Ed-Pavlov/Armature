@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Armature.Core.Internal;
-using JetBrains.Annotations;
+using Armature.Core.Sdk;
 
 namespace Armature.Core
 {
@@ -14,7 +14,7 @@ namespace Armature.Core
     /// </summary>
     /// <remarks>Call it first and then fill returned <see cref="IPatternTreeNode" /> with build actions or perform other needed actions due to
     /// it can return other instance of <see cref="IPatternTreeNode"/> then <paramref name="node"/>.</remarks>
-    public static T GetOrAddNode<T>(this IPatternTreeNode parentNode, [NotNull] T node) where T : IPatternTreeNode
+    public static T GetOrAddNode<T>(this IPatternTreeNode parentNode, T node) where T : IPatternTreeNode
     {
       if(parentNode is null) throw new ArgumentNullException(nameof(parentNode));
       if(node is null) throw new ArgumentNullException(nameof(node));
@@ -50,7 +50,7 @@ namespace Armature.Core
     /// <param name="buildAction">A build action.</param>
     /// <param name="buildStage">A build stage in which the build action is executed.</param>
     /// <returns>Returns 'this' in order to use fluent syntax</returns>
-    public static IPatternTreeNode UseBuildAction([NotNull] this IPatternTreeNode node, IBuildAction buildAction, object buildStage)
+    public static IPatternTreeNode UseBuildAction(this IPatternTreeNode node, IBuildAction buildAction, object buildStage)
     {
       if(node is null) throw new ArgumentNullException(nameof(node));
       if(buildAction is null) throw new ArgumentNullException(nameof(buildAction));

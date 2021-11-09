@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using JetBrains.Annotations;
 
 namespace Armature.Core
 {
@@ -9,7 +8,7 @@ namespace Armature.Core
   /// </summary>
   public record IsMethodParameterWithType : InjectPointByTypePatternBase
   {
-    public IsMethodParameterWithType([NotNull] IUnitPattern typePattern) : base(typePattern) { }
+    public IsMethodParameterWithType(IUnitPattern typePattern) : base(typePattern) { }
 
     protected override Type? GetInjectPointType(UnitId unitId) => (unitId.Kind as ParameterInfo)?.ParameterType;
   }
