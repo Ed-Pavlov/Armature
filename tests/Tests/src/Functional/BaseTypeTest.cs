@@ -29,7 +29,7 @@ namespace Tests.Functional
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.InjectThere.Should().Be(expected);
@@ -54,7 +54,7 @@ namespace Tests.Functional
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.InjectThere.Should().Be(expected);
@@ -80,7 +80,7 @@ namespace Tests.Functional
        .InjectInto(Property.Named(nameof(Subject.InjectHere)));
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.InjectHere.Should().Be(expected);

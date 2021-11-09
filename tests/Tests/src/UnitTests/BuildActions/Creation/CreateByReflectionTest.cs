@@ -8,7 +8,6 @@ using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
-using Tests.UnitTests.UnitSequencePatterns;
 
 namespace Tests.UnitTests.BuildActions.Creation;
 

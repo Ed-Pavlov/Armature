@@ -54,32 +54,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void closed_generic_registration_should_have_advantage_over_open_generic()
-    {
-      // --arrange
-      var target = CreateTarget();
-
-      target
-       .TreatOpenGeneric(typeof(ISubject<>))
-       .AsCreated(typeof(Subject<>))
-       .UsingArguments("open");
-
-      const string closed = "closed";
-
-      target
-       .Treat<ISubject<string>>()
-       .AsCreated<Subject<string>>()
-       .UsingArguments(closed);
-
-      // --act
-      var actual = target.Build<ISubject<string>>();
-
-      // --assert
-      actual.Value.Should().Be(closed);
-    }
-
-    [Test]
-    public void should_not_add_creation_strategy()
+    public void should_not_add_creation_strategy() //TODO: should be unit test
     {
       // --arrange
       var target = CreateTarget();

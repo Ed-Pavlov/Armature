@@ -1,12 +1,11 @@
-﻿namespace Armature.Core.Sdk
-{
-  public interface ILogString
-  {
-    string ToHoconString();
-  }
+﻿namespace Armature.Core.Sdk;
 
-  public interface ILogPrintable
-  {
-    void PrintToLog(LogLevel logLevel = LogLevel.None);
-  }
+public interface ILogString
+{
+  string ToHoconString();
+}
+
+public interface ILogPrintable
+{
+  void PrintToLog(LogLevel logLevel = LogLevel.None);
 }

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
-namespace Armature.Core
+namespace Armature.Core;
+
+/// <summary>
+/// Checks if a unit is an argument for a parameter of the method or the constructor requires argument of the specified type.
+/// </summary>
+public record IsMethodParameterWithType : InjectPointByTypePatternBase
 {
-  /// <summary>
-  /// Checks if a unit is an argument for a parameter of the method or the constructor requires argument of the specified type.
-  /// </summary>
-  public record IsMethodParameterWithType : InjectPointByTypePatternBase
-  {
-    public IsMethodParameterWithType(IUnitPattern typePattern) : base(typePattern) { }
+  public IsMethodParameterWithType(IUnitPattern typePattern) : base(typePattern) { }
 
-    protected override Type? GetInjectPointType(UnitId unitId) => (unitId.Kind as ParameterInfo)?.ParameterType;
-  }
+  protected override Type? GetInjectPointType(UnitId unitId) => (unitId.Kind as ParameterInfo)?.ParameterType;
 }

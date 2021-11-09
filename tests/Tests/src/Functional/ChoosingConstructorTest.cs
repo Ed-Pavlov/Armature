@@ -21,7 +21,7 @@ namespace Tests.Functional
                      new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
                    };
 
-      target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
+      target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type); //TODO: i'm not sure that it is a good idea to use UsingArguments to tune meta behaviour
 
       // --arrange
       target.Treat<Subject2>()

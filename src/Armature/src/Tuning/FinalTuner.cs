@@ -4,45 +4,44 @@ using Armature.Core;
 using Armature.Core.Sdk;
 using Armature.Extensibility;
 
-namespace Armature
+namespace Armature;
+
+public class FinalTuner : UnitSequenceExtensibility
 {
-  public class FinalTuner : UnitSequenceExtensibility
+  [DebuggerStepThrough]
+  public FinalTuner(IPatternTreeNode parentNode) : base(parentNode) { }
+
+  /// <summary>
+  ///   Provides arguments to inject into building unit. See <see cref="ForParameter" /> for details.
+  /// </summary>
+  public FinalTuner UsingArguments(params object[] arguments)
   {
-    [DebuggerStepThrough]
-    public FinalTuner(IPatternTreeNode parentNode) : base(parentNode) { }
+    if(arguments is null || arguments.Length == 0) throw new ArgumentNullException(nameof(arguments));
 
-    /// <summary>
-    ///   Provides arguments to inject into building unit. See <see cref="ForParameter" /> for details.
-    /// </summary>
-    public FinalTuner UsingArguments(params object[] arguments)
-    {
-      if(arguments is null || arguments.Length == 0) throw new ArgumentNullException(nameof(arguments));
+    foreach(var argument in arguments)
+      if(argument is IArgumentTuner buildPlan)
+        buildPlan.Tune(ParentNode);
+      else if(argument is ITuner)
+        throw new ArgumentException($"{nameof(IArgumentTuner)} or instances expected");
+      else
+        ParentNode
+         .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
+         .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(argument.GetType()), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability))
+         .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
 
-      foreach(var argument in arguments)
-        if(argument is IArgumentTuner buildPlan)
-          buildPlan.Tune(ParentNode);
-        else if(argument is ITuner)
-          throw new ArgumentException($"{nameof(IArgumentTuner)} or instances expected");
-        else
-          ParentNode
-           .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-           .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(argument.GetType()), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability))
-           .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
-
-      return this;
-    }
-
-    public FinalTuner InjectInto(params IInjectPointTuner[] propertyIds)
-    {
-      if(propertyIds.Length == 0) throw new ArgumentNullException(nameof(propertyIds), "Specify one or more inject point tuners");
-      foreach(var injectPointTuner in propertyIds)
-        injectPointTuner.Tune(ParentNode);
-      return this;
-    }
-
-    /// <summary>
-    ///   Register Unit as an singleton with a lifetime equal to parent <see cref="PatternTree"/>. See <see cref="Singleton" /> for details
-    /// </summary>
-    public void AsSingleton() => ParentNode.UseBuildAction(new Singleton(), BuildStage.Cache);
+    return this;
   }
+
+  public FinalTuner InjectInto(params IInjectPointTuner[] propertyIds)
+  {
+    if(propertyIds.Length == 0) throw new ArgumentNullException(nameof(propertyIds), "Specify one or more inject point tuners");
+    foreach(var injectPointTuner in propertyIds)
+      injectPointTuner.Tune(ParentNode);
+    return this;
+  }
+
+  /// <summary>
+  ///   Register Unit as an singleton with a lifetime equal to parent <see cref="PatternTree"/>. See <see cref="Singleton" /> for details
+  /// </summary>
+  public void AsSingleton() => ParentNode.UseBuildAction(new Singleton(), BuildStage.Cache);
 }

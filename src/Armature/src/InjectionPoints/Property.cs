@@ -2,56 +2,55 @@
 using Armature.Core;
 using Armature.Core.Sdk;
 
-namespace Armature
+namespace Armature;
+
+public static class Property
 {
-  public static class Property
-  {
-    public static IInjectPointTuner OfType<T>(short weight = 0) => OfType(typeof(T), weight);
+  public static IInjectPointTuner OfType<T>(short weight = 0) => OfType(typeof(T), weight);
 
-    public static IInjectPointTuner OfType(Type type, short weight = 0)
-      => new InjectPointTuner(
-        node =>
-        {
-          node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+  public static IInjectPointTuner OfType(Type type, short weight = 0)
+    => new InjectPointTuner(
+      node =>
+      {
+        node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-          node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
-              .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
-        });
+        node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
+            .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
+      });
 
-    /// <summary>
-    ///   Adds a plan injecting dependencies into properties with corresponding <paramref name="names" />
-    /// </summary>
-    public static IInjectPointTuner Named(params string[] names) => Named(0, names);
+  /// <summary>
+  ///   Adds a plan injecting dependencies into properties with corresponding <paramref name="names" />
+  /// </summary>
+  public static IInjectPointTuner Named(params string[] names) => Named(0, names);
 
-    /// <summary>
-    ///   Adds a plan injecting dependencies into properties with corresponding <paramref name="names" />
-    /// </summary>
-    public static IInjectPointTuner Named(short weight, params string[] names)
-      => new InjectPointTuner(
-        node =>
-        {
-          node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+  /// <summary>
+  ///   Adds a plan injecting dependencies into properties with corresponding <paramref name="names" />
+  /// </summary>
+  public static IInjectPointTuner Named(short weight, params string[] names)
+    => new InjectPointTuner(
+      node =>
+      {
+        node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-          node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
-              .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
-        });
+        node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
+            .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
+      });
 
-    /// <summary>
-    ///   Adds a plan injecting dependencies into properties marked with <see cref="InjectAttribute" /> with corresponding <paramref name="pointIds" />
-    /// </summary>
-    public static IInjectPointTuner ByInjectPoint(params object?[] pointIds) => ByInjectPoint(0, pointIds);
+  /// <summary>
+  ///   Adds a plan injecting dependencies into properties marked with <see cref="InjectAttribute" /> with corresponding <paramref name="pointIds" />
+  /// </summary>
+  public static IInjectPointTuner ByInjectPoint(params object?[] pointIds) => ByInjectPoint(0, pointIds);
 
-    /// <summary>
-    ///   Adds a plan injecting dependencies into properties marked with <see cref="InjectAttribute" /> with corresponding <paramref name="pointIds" />
-    /// </summary>
-    public static IInjectPointTuner ByInjectPoint(short weight, params object?[] pointIds)
-      => new InjectPointTuner(
-        node =>
-        {
-          node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+  /// <summary>
+  ///   Adds a plan injecting dependencies into properties marked with <see cref="InjectAttribute" /> with corresponding <paramref name="pointIds" />
+  /// </summary>
+  public static IInjectPointTuner ByInjectPoint(short weight, params object?[] pointIds)
+    => new InjectPointTuner(
+      node =>
+      {
+        node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-          node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
-              .UseBuildAction(new GetPropertyListByInjectPointId(pointIds), BuildStage.Create);
-        });
-  }
+        node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
+            .UseBuildAction(new GetPropertyListByInjectPointId(pointIds), BuildStage.Create);
+      });
 }

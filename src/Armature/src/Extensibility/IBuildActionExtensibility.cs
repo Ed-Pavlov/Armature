@@ -1,9 +1,8 @@
 ﻿using Armature.Core;
 
-namespace Armature.Extensibility
+namespace Armature.Extensibility;
+
+internal interface IBuildActionExtensibility : IUnitMatcherExtensibility
 {
-  internal interface IBuildActionExtensibility : IUnitMatcherExtensibility
-  {
-    IBuildAction BuildAction { get; }
-  }
+  IBuildAction BuildAction { get; }
 }

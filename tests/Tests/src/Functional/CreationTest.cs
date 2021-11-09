@@ -128,7 +128,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void creation_build_action_should_be_added_only_once()
+    public void creation_build_action_should_be_added_only_once() //TODO: should be unit test
     {
       // --arrange
       var target = CreateTarget();

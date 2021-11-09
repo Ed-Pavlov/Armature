@@ -1,15 +1,13 @@
-﻿using System;
-using Armature.Core.Sdk;
+﻿using Armature.Core.Sdk;
 
-namespace Armature.Core
+namespace Armature.Core;
+
+/// <summary>
+/// Checks if <see cref="UnitId.Kind"/> is a type which can be instantiated.
+/// </summary>
+public record CanBeInstantiated : IUnitPattern
 {
-  /// <summary>
-  /// Checks if <see cref="UnitId.Kind"/> is a type which can be instantiated.
-  /// </summary>
-  public record CanBeInstantiated : IUnitPattern
-  {
-    public bool Matches(UnitId unitId) => unitId.GetUnitTypeSafe() is {IsAbstract: false, IsInterface: false, IsGenericTypeDefinition: false};
+  public bool Matches(UnitId unitId) => unitId.GetUnitTypeSafe() is {IsAbstract: false, IsInterface: false, IsGenericTypeDefinition: false};
 
-    public override string ToString() => nameof(CanBeInstantiated);
-  }
+  public override string ToString() => nameof(CanBeInstantiated);
 }

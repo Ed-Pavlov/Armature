@@ -1,10 +1,12 @@
-﻿namespace Armature.Core.Sdk
-{
-  public static class ExceptionConst
-  {
-    public const string ArmaturePrefix = "Armature_";
+﻿using JetBrains.Annotations;
 
-    public const string Context = ArmaturePrefix + "Context";
-    public const string Logged  = ArmaturePrefix + "Logged";
-  }
+namespace Armature.Core.Sdk;
+
+[PublicAPI]
+public static class ExceptionConst
+{
+  public const string ArmaturePrefix = "Armature_";
+
+  public const string Context = ArmaturePrefix + "Context";
+  public const string Logged  = ArmaturePrefix + "Logged";
 }

@@ -2,14 +2,13 @@
 using Armature.Core;
 
 
-namespace Armature.Extensibility
+namespace Armature.Extensibility;
+
+public abstract class UnitSequenceExtensibility : IUnitSequenceExtensibility
 {
-  public abstract class UnitSequenceExtensibility : IUnitSequenceExtensibility
-  {
-    protected readonly IPatternTreeNode ParentNode;
+  protected readonly IPatternTreeNode ParentNode;
 
-    protected UnitSequenceExtensibility(IPatternTreeNode parentNode) => ParentNode = parentNode ?? throw new ArgumentNullException(nameof(parentNode));
+  protected UnitSequenceExtensibility(IPatternTreeNode parentNode) => ParentNode = parentNode ?? throw new ArgumentNullException(nameof(parentNode));
 
-    IPatternTreeNode IUnitSequenceExtensibility.PatternTreeNode => ParentNode;
-  }
+  IPatternTreeNode IUnitSequenceExtensibility.PatternTreeNode => ParentNode;
 }

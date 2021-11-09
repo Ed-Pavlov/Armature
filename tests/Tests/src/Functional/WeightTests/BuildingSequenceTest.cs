@@ -4,7 +4,7 @@ using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Tests.Functional
+namespace Tests.Functional.WeightTests
 {
   public class BuildingSequenceTest
   {
@@ -21,15 +21,15 @@ namespace Tests.Functional
       target.Treat<int>().AsInstance(expected - 1);
 
       target
-       .Building<Subject>()
-       .Treat<int>()
-       .AsInstance(expected + 1);
+         .Building<Subject>()
+         .Treat<int>()
+         .AsInstance(expected + 1);
 
       target
-       .Building<ISubject>()
-       .Building<Subject>()
-       .Treat<int>()
-       .AsInstance(expected);
+         .Building<ISubject>()
+         .Building<Subject>()
+         .Treat<int>()
+         .AsInstance(expected);
 
       // --act
       var actual = new Action(() => target.Build<ISubject>());
@@ -43,16 +43,16 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
-             // inject into constructor
-             new IfFirstUnit(new IsConstructor())
-              .UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoList())
-              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfo())
-              .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
-           }
+             new SkipAllUnits
+             {
+                 // inject into constructor
+                 new IfFirstUnit(new IsConstructor())
+                    .UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
+                 new IfFirstUnit(new IsParameterInfoList())
+                    .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                 new IfFirstUnit(new IsParameterInfo())
+                    .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
+             }
          };
 
     private interface ISubject

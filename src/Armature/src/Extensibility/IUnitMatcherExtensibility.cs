@@ -1,10 +1,9 @@
 ﻿using Armature.Core;
 
-namespace Armature.Extensibility
+namespace Armature.Extensibility;
+
+public interface IUnitMatcherExtensibility
 {
-  public interface IUnitMatcherExtensibility
-  {
-    IUnitPattern UnitPattern { get; }
-    int            Weight      { get; }
-  }
+  IUnitPattern UnitPattern { get; }
+  int          Weight      { get; }
 }

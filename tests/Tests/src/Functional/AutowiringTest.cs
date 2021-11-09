@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
@@ -21,12 +22,10 @@ namespace Tests.Functional
       target.Treat<string>().AsInstance(expectedText);
       target.Treat<int>().AsInstance(expectedValue);
 
-      target
-       .Treat<Subject>()
-       .AsIs();
+      target.Treat<Subject>().AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Text.Should().Be(expectedText);
@@ -42,36 +41,10 @@ namespace Tests.Functional
       // --arrange
       var target = CreateTarget();
 
-      target
-       .Treat<Subject>()
-       .AsIs();
+      target.Treat<Subject>().AsIs();
 
       // --act
-      var actual = target.Build<Subject>(expectedText, expectedValue);
-
-      // --assert
-      actual.Text.Should().Be(expectedText);
-      actual.Value.Should().Be(expectedValue);
-    }
-
-    [Test]
-    public void should_get_registered_values_if_runtime_also_presented()
-    {
-      const string expectedText  = "expected 09765";
-      const int    expectedValue = 93979;
-
-      // --arrange
-      var target = CreateTarget();
-
-      target.Treat<string>().AsInstance(expectedText);
-      target.Treat<int>().AsInstance(expectedValue);
-
-      target
-       .Treat<Subject>()
-       .AsIs();
-
-      // --act
-      var actual = target.Build<Subject>(expectedText + "bad", expectedValue + 38);
+      var actual = target.Build<Subject>(expectedText, expectedValue)!;
 
       // --assert
       actual.Text.Should().Be(expectedText);
@@ -93,7 +66,7 @@ namespace Tests.Functional
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>(expectedValue);
+      var actual = target.Build<Subject>(expectedValue)!;
 
       // --assert
       actual.Text.Should().Be(expectedText);
@@ -108,7 +81,7 @@ namespace Tests.Functional
       // --arrange
       var target = CreateTarget();
 
-      target.Treat<string>().AsInstance(null);
+      target.Treat<string>().AsInstance(null!);
       target.Treat<int>().AsInstance(expectedValue);
 
       target
@@ -116,7 +89,7 @@ namespace Tests.Functional
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Text.Should().BeNull();
@@ -140,7 +113,7 @@ namespace Tests.Functional
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Text.Should().Be(expectedText);
@@ -205,6 +178,7 @@ namespace Tests.Functional
       string Text { get; }
     }
 
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
     private class Subject : ISubject1, ISubject2
     {
       public const string TextParameterId = "Text";

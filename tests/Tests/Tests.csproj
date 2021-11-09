@@ -31,5 +31,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="src\UnitTests\PatternTree\WhenBuildArgumentsOfTypeExtension.cs" />
+    <Compile Remove="src\Functional\BuildingSequenceTest.cs" />
   </ItemGroup>
 </Project>

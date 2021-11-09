@@ -1,45 +1,43 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using Armature.Core.Internal;
 using Armature.Core.Sdk;
 
-namespace Armature.Core
+namespace Armature.Core;
+
+/// <summary>
+///   Builds arguments for method parameters by building a unit {<see cref="ParameterInfo"/>, <see cref="SpecialKey.Argument"/> one by one.
+/// </summary>
+public record BuildMethodArgumentsInDirectOrder : IBuildAction
 {
-  /// <summary>
-  ///   Builds arguments for method parameters by building a unit {<see cref="ParameterInfo"/>, <see cref="SpecialKey.Argument"/> one by one.
-  /// </summary>
-  public record BuildMethodArgumentsInDirectOrder : IBuildAction
+  public void Process(IBuildSession buildSession)
   {
-    public void Process(IBuildSession buildSession)
+    if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
+    Log.WriteLine(LogLevel.Verbose, "");
+
+    var parameters = (ParameterInfo[])buildSession.GetUnitUnderConstruction().Kind!;
+    var arguments  = new object?[parameters.Length];
+
+    for(var i = 0; i < parameters.Length; i++)
     {
-      if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
-      Log.WriteLine(LogLevel.Verbose, "");
+      var buildResult = buildSession.BuildUnit(new UnitId(parameters[i], SpecialKey.Argument));
 
-      var parameters = (ParameterInfo[])buildSession.GetUnitUnderConstruction().Kind!;
-      var arguments = new object?[parameters.Length];
-
-      for(var i = 0; i < parameters.Length; i++)
+      if(!buildResult.HasValue)
       {
-        var buildResult = buildSession.BuildUnit(new UnitId(parameters[i], SpecialKey.Argument));
-
-        if(!buildResult.HasValue)
-        {
-          var method = parameters[i].Member;
-          throw new ArmatureException($"Argument for parameter '{parameters[i]}' of {method.DeclaringType?.ToLogString()}.{method} is not built")
-           .AddData("Method", method);
-        }
-
-        arguments[i] = buildResult.Value;
+        var method = parameters[i].Member;
+        throw new ArmatureException($"Argument for parameter '{parameters[i]}' of {method.DeclaringType?.ToLogString()}.{method} is not built")
+         .AddData("Method", method);
       }
 
-      buildSession.BuildResult = new BuildResult(arguments);
+      arguments[i] = buildResult.Value;
     }
 
-    [DebuggerStepThrough]
-    public void PostProcess(IBuildSession buildSession) { }
-
-    [DebuggerStepThrough]
-    public override string ToString() => nameof(BuildMethodArgumentsInDirectOrder);
+    buildSession.BuildResult = new BuildResult(arguments);
   }
+
+  [DebuggerStepThrough]
+  public void PostProcess(IBuildSession buildSession) { }
+
+  [DebuggerStepThrough]
+  public override string ToString() => nameof(BuildMethodArgumentsInDirectOrder);
 }
