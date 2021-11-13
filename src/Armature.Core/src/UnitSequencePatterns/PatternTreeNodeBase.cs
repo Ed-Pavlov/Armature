@@ -17,7 +17,7 @@ public abstract class PatternTreeNodeBase : PatternTreeNodeWithChildrenBase
   public override BuildActionBag BuildActions => LazyBuildAction;
 
   [PublicAPI]
-  protected WeightedBuildActionBag? GetOwnBuildActions(int matchingWeight)
+  protected WeightedBuildActionBag? GetOwnBuildActions(int matchingWeight) //TODO: why dont use Weight property itself
   {
     if(_buildActions is null) return null;
 

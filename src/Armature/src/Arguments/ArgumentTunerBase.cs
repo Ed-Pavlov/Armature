@@ -15,15 +15,15 @@ public abstract class ArgumentTunerBase<T> // : UnitMatcherExtensibility
   /// <summary>
   ///   Use the <paramref name="value" /> as an argument for the parameter.
   /// </summary>
-  public IArgumentTuner UseValue(T value)
+  public IArgumentTuner UseValue(T? value)
     => new ArgumentTuner(node => TuneTreeNodePattern(node).UseBuildAction(new Instance<T>(value), BuildStage.Create));
 
   /// <summary>
   ///   For building a value for the parameter use <paramref name="factoryMethod" /> factory method
   /// </summary>
-  public IArgumentTuner UseFactoryMethod(Func<object> factoryMethod)
+  public IArgumentTuner UseFactoryMethod(Func<T?> factoryMethod)
     => new ArgumentTuner(
-      node => TuneTreeNodePattern(node).UseBuildAction(new CreateWithFactoryMethod<object>(_ => factoryMethod()), BuildStage.Create));
+      node => TuneTreeNodePattern(node).UseBuildAction(new CreateWithFactoryMethod<T>(_ => factoryMethod()), BuildStage.Create));
 
   /// <summary>
   ///   For building a value for the parameter use <paramref name="factoryMethod" /> factory method
@@ -81,8 +81,8 @@ public abstract class ArgumentTunerBase<T> // : UnitMatcherExtensibility
   /// <summary>
   ///   For building a value for the parameter use <paramref name="factoryMethod" /> factory method
   /// </summary>
-  public IArgumentTuner UseFactoryMethod(Func<IBuildSession, object> factoryMethod)
+  public IArgumentTuner UseFactoryMethod<TR>(Func<IBuildSession, TR?> factoryMethod)
     => new ArgumentTuner(
       node => TuneTreeNodePattern(node)
-       .UseBuildAction(new CreateWithFactoryMethod<object>(factoryMethod), BuildStage.Create));
+       .UseBuildAction(new CreateWithFactoryMethod<TR?>(factoryMethod), BuildStage.Create));
 }

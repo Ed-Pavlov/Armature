@@ -10,7 +10,7 @@ public static class Constructor
   /// <summary>
   ///   Instantiate a Unit using a constructor with the biggest number of parameters
   /// </summary>
-  public static IInjectPointTuner WithMaxParametersCount(short weight = 0)
+  public static IInjectPointTuner WithMaxParametersCount(short weight = 0) //TODO: what to do with weights?
     => new InjectPointTuner(
       node => node.GetOrAddNode(new IfFirstUnit(Static.Of<IsConstructor>(), weight))
                   .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create));

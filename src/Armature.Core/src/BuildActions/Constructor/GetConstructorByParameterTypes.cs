@@ -47,4 +47,27 @@ public record GetConstructorByParameterTypes : IBuildAction, ILogString
   public override string ToString() => ToHoconString();
   [DebuggerStepThrough]
   public string ToHoconString() => $"{{ {nameof(GetConstructorByParameterTypes)} {{ Types: {_parameterTypes.ToHoconArray()} }} }}";
+
+  public virtual bool Equals(GetConstructorByParameterTypes? other)
+  {
+    if(ReferenceEquals(null, other)) return false;
+    if(ReferenceEquals(this, other)) return true;
+    if(_parameterTypes.Length != other._parameterTypes.Length) return false;
+
+    for(var i = 0; i < _parameterTypes.Length; i++)
+      if(_parameterTypes[i] != other._parameterTypes[i])
+        return false;
+
+    return true;
+  }
+
+  public override int GetHashCode()
+  {
+    var hash = _parameterTypes.Length.GetHashCode();
+
+    foreach(var type in _parameterTypes)
+      hash ^= type.GetHashCode();
+
+    return hash;
+  }
 }

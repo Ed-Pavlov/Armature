@@ -6,7 +6,7 @@ using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Tests.UnitTests.Armature;
+namespace Tests.UnitTests.Tuning;
 
 public class RootTunerTest
 {

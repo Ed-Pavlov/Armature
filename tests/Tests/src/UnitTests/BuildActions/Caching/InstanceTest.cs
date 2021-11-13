@@ -7,7 +7,7 @@ namespace Tests.UnitTests.BuildActions;
 public class InstanceTest
 {
   [Test]
-  public void process_should_return_instance([Values("expected", null)] string expected)
+  public void process_should_return_instance([Values("expected", null)] string? expected)
   {
     // --arrange
     var buildSession = new BuildSessionMock();

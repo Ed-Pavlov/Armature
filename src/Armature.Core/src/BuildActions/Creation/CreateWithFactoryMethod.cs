@@ -9,10 +9,10 @@ namespace Armature.Core;
 /// </summary>
 public record CreateWithFactoryMethod<TR> : IBuildAction, ILogString
 {
-  private readonly Func<IBuildSession, TR> _factoryMethod;
+  private readonly Func<IBuildSession, TR?> _factoryMethod;
 
   [DebuggerStepThrough]
-  public CreateWithFactoryMethod(Func<IBuildSession, TR> factoryMethod)
+  public CreateWithFactoryMethod(Func<IBuildSession, TR?> factoryMethod)
     => _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
 
   public void Process(IBuildSession buildSession)

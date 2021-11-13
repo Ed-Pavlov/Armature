@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Linq;
 using Armature;
 using Armature.Core;
@@ -9,7 +8,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
 
-namespace Tests.UnitTests.Armature;
+namespace Tests.UnitTests.Tuning;
 
 public class FinalTunerTest
 {
