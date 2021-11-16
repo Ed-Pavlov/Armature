@@ -33,7 +33,7 @@ public static class BuilderExtension
   /// <param name="builder"></param>
   /// <param name="runtimeArguments">Additional temporary arguments which could be passed into the build session, they are not stored
   /// anywhere and used only for this build session. Normally, registrations take over these arguments because the weight
-  /// of runtime arguments is <see cref="WeightOf.BuildingUnitSequencePattern.SkipAllUnits"/> + 10.</param>
+  /// of runtime arguments is <see cref="WeightOf.BuildContextPattern.SkipAllUnits"/> + 10.</param>
   /// <returns>Returns an instance or null if null is registered as a unit.</returns>
   /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
   [DebuggerStepThrough]
@@ -57,7 +57,7 @@ public static class BuilderExtension
   /// <param name="builder"></param>
   /// <param name="runtimeArguments">Additional temporary arguments which could be passed into the build session, they are not stored
   /// anywhere and used only for this build session. Normally, registrations take over these arguments because the weight
-  /// of runtime arguments is <see cref="WeightOf.BuildingUnitSequencePattern.SkipAllUnits"/> + 10.</param>
+  /// of runtime arguments is <see cref="WeightOf.BuildContextPattern.SkipAllUnits"/> + 10.</param>
   /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
   /// <exception cref="ArmatureException">Throws if not unit was built by this or any parent containers</exception>
   [DebuggerStepThrough]
@@ -98,14 +98,14 @@ public static class BuilderExtension
                ? (T?)buildResult.Value
                : throw new ArmatureException($"Unit {unitId} is not built").AddData($"{nameof(UnitId)}", unitId); }
 
-  private static IPatternTreeNode? CreateAuxPatternTree(object[]? arguments)
+  private static IBuildChainPattern? CreateAuxPatternTree(object[]? arguments)
   {
     if(arguments is not { Length: > 0 }) return null;
 
 
     // the logic is buildPlans.TreatAll().UsingArguments(arguments), but with increased weight of arguments
-    var buildPlans = new PatternTree();
-    var treatAll   = new SkipAllUnits(WeightOf.BuildingUnitSequencePattern.SkipAllUnits + 10);
+    var buildPlans = new BuildChainPatternTree();
+    var treatAll   = new SkipAllUnits(WeightOf.BuildContextPattern.SkipAllUnits + 10);
     buildPlans.Children.Add(treatAll);
 
     new FinalTuner(treatAll).UsingArguments(arguments);

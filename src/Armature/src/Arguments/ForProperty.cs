@@ -15,7 +15,7 @@ public static class ForProperty
              Property.OfType<T>().Tune(parentNode);
 
              return parentNode.AddNode(
-               new IfFirstUnit(new IsPropertyWithType(new UnitPattern(typeof(T))), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
+               new IfFirstUnitBuildChain(new IsPropertyWithType(new UnitPattern(typeof(T))), WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
                $"Building of an argument for the property with type {typeof(T).ToLogString()} is already tuned");
            });
 
@@ -28,7 +28,7 @@ public static class ForProperty
              Property.Named(propertyName).Tune(parentNode);
 
              return parentNode.AddNode(
-               new IfFirstUnit(new IsPropertyNamed(propertyName), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByName),
+               new IfFirstUnitBuildChain(new IsPropertyNamed(propertyName), WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByName),
                $"Building of an argument for the property with name {propertyName} is already tuned");
            });
 
@@ -42,7 +42,7 @@ public static class ForProperty
 
              return parentNode
               .AddNode(
-                 new IfFirstUnit(new IsPropertyMarkedWithAttribute(injectPointId), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByInjectPointId),
+                 new IfFirstUnitBuildChain(new IsPropertyMarkedWithAttribute(injectPointId), WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByInjectPointId),
                  $"Building of an argument for the property marked with {nameof(InjectAttribute)}"
                + $" with {nameof(InjectAttribute.InjectionPointId)} equal to {injectPointId.ToHoconString()} is already tuned");
            });

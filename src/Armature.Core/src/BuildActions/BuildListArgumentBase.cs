@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -30,9 +32,6 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
 
     if(IsCollection(injectionPointType, out var listType))
     {
-      if(listType is null)
-        throw new InvalidOperationException("Remove this assert when support of .NET4.x will be discarded and use Roslyn analyzer attributes");
-
       var collectionItemType = injectionPointType.GenericTypeArguments[0];
       var arguments          = buildSession.BuildAllUnits(new UnitId(collectionItemType, effectiveKey));
 
@@ -43,6 +42,7 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
     }
   }
 
+  [WithoutTest]
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public void PostProcess(IBuildSession buildSession) { }
@@ -84,7 +84,7 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
   }
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  private static bool IsCollection(Type type, out Type? listType)
+  private static bool IsCollection(Type type, [NotNullWhen(true)] out Type? listType)
   {
     listType = null;
 

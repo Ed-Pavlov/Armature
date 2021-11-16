@@ -19,7 +19,7 @@ public class BuildMethodArgumentsInDirectOrderTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildSequence).Returns(Unit.Is(parametersList).Key(SpecialKey.Argument).ToBuildSequence());
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.Is(parametersList).Key(SpecialKey.Argument).ToBuildChain());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(default)).WithAnyArguments();
 
     buildUnitCall.ReturnsLazily(
@@ -52,7 +52,7 @@ public class BuildMethodArgumentsInDirectOrderTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildSequence).Returns(Unit.Is(parametersList).Key(SpecialKey.Argument).ToBuildSequence());
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.Is(parametersList).Key(SpecialKey.Argument).ToBuildChain());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(default)).WithAnyArguments();
 
     var target = new BuildMethodArgumentsInDirectOrder();

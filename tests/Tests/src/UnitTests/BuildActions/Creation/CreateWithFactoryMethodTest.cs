@@ -27,23 +27,4 @@ public class CreateWithFactoryMethodTest
     buildSession.BuildResult.Value.Should().Be(expected);
     callToFactory.MustHaveHappenedOnceExactly();
   }
-
-  [Test]
-  public void should_not_do_anything_if_unit_is_already_build()
-  {
-    // --arrange
-    var buildSession = A.Fake<IBuildSession>();
-    buildSession.BuildResult = new BuildResult(283);
-    Fake.ClearRecordedCalls(buildSession);
-
-    var factory      = A.Fake<Func<IBuildSession, int>>();
-    var target       = new CreateWithFactoryMethod<int>(factory);
-
-    // --act
-    target.Process(buildSession);
-
-    // --assert
-    A.CallToSet(() => buildSession.BuildResult).MustNotHaveHappened();
-    A.CallTo(() => factory(null!)).WithAnyArguments().MustNotHaveHappened();
-  }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -42,6 +43,7 @@ public record GetPropertyListByNames : IBuildAction, ILogString
     buildSession.BuildResult = new BuildResult(properties);
   }
 
+  [WithoutTest]
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 

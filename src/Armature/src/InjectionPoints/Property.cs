@@ -14,7 +14,7 @@ public static class Property
       {
         node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-        node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
+        node.GetOrAddNode(new IfFirstUnitBuildChain(Static.Of<IsPropertyList>(), weight))
             .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
       });
 
@@ -32,7 +32,7 @@ public static class Property
       {
         node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-        node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
+        node.GetOrAddNode(new IfFirstUnitBuildChain(Static.Of<IsPropertyList>(), weight))
             .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
       });
 
@@ -50,7 +50,7 @@ public static class Property
       {
         node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-        node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
+        node.GetOrAddNode(new IfFirstUnitBuildChain(Static.Of<IsPropertyList>(), weight))
             .UseBuildAction(new GetPropertyListByInjectPointId(pointIds), BuildStage.Create);
       });
 }

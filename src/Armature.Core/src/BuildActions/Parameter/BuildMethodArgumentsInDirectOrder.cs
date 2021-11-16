@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -12,7 +13,6 @@ public record BuildMethodArgumentsInDirectOrder : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
-    if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
     Log.WriteLine(LogLevel.Verbose, "");
 
     var parameters = (ParameterInfo[])buildSession.GetUnitUnderConstruction().Kind!;
@@ -35,6 +35,7 @@ public record BuildMethodArgumentsInDirectOrder : IBuildAction
     buildSession.BuildResult = new BuildResult(arguments);
   }
 
+  [WithoutTest]
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 

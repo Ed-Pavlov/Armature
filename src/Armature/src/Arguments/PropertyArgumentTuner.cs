@@ -7,7 +7,7 @@ namespace Armature;
 
 public class PropertyArgumentTuner<T> : ArgumentTunerBase<T>
 {
-  public PropertyArgumentTuner(Func<IPatternTreeNode, IPatternTreeNode> tuneTreeNodePattern) : base(tuneTreeNodePattern) { }
+  public PropertyArgumentTuner(Func<IBuildChainPattern, IBuildChainPattern> tuneTreeNodePattern) : base(tuneTreeNodePattern) { }
 
   /// <summary>
   ///   For building a value for the parameter use <see cref="PropertyInfo.PropertyType" /> and <paramref name="key" />
@@ -28,5 +28,5 @@ public class PropertyArgumentTuner<T> : ArgumentTunerBase<T>
 
 public class PropertyArgumentTuner : PropertyArgumentTuner<object?>
 {
-  public PropertyArgumentTuner(Func<IPatternTreeNode, IPatternTreeNode> tuneTreeNodePattern) : base(tuneTreeNodePattern) { }
+  public PropertyArgumentTuner(Func<IBuildChainPattern, IBuildChainPattern> tuneTreeNodePattern) : base(tuneTreeNodePattern) { }
 }

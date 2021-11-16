@@ -6,12 +6,12 @@ using JetBrains.Annotations;
 
 namespace Armature;
 
-public class RootTuner : UnitSequenceExtensibility
+public class RootTuner : BuildChainExtensibility
 {
   [PublicAPI] protected int Weight;
 
   [DebuggerStepThrough]
-  public RootTuner(IPatternTreeNode parentNode) : base(parentNode) { }
+  public RootTuner(IBuildChainPattern parentNode) : base(parentNode) { }
 
   public RootTuner AmendWeight(short weight)
   {
@@ -26,7 +26,7 @@ public class RootTuner : UnitSequenceExtensibility
   {
     if(type is null) throw new ArgumentNullException(nameof(type));
 
-    var patternMatcher = new SkipTillUnit(new UnitPattern(type, key), Weight);
+    var patternMatcher = new SkipTillUnitBuildChain(new UnitPattern(type, key), Weight);
     return new RootTuner(ParentNode.GetOrAddNode(patternMatcher));
   }
 
@@ -45,9 +45,9 @@ public class RootTuner : UnitSequenceExtensibility
     if(type is null) throw new ArgumentNullException(nameof(type));
     if(type.IsGenericTypeDefinition) throw new ArgumentException($"Use {nameof(TreatOpenGeneric)} to setup open generic types.");
 
-    var patternMatcher = new SkipTillUnit(
+    var patternMatcher = new SkipTillUnitBuildChain(
       new UnitPattern(type, key),
-      Weight + WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.ExactTypePattern);
+      Weight + WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.ExactTypePattern);
 
     return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
   }
@@ -59,10 +59,10 @@ public class RootTuner : UnitSequenceExtensibility
   public TreatingTuner<T> Treat<T>(object? key = null)
     => new(
       ParentNode.GetOrAddNode(
-        new SkipTillUnit(
+        new SkipTillUnitBuildChain(
           new UnitPattern(typeof(T), key),
           Weight
-        + WeightOf.BuildingUnitSequencePattern.Neutral
+        + WeightOf.BuildContextPattern.Neutral
         + WeightOf.UnitPattern.ExactTypePattern)));
 
   /// <summary>
@@ -71,9 +71,9 @@ public class RootTuner : UnitSequenceExtensibility
   /// </summary>
   public TreatingOpenGenericTuner TreatOpenGeneric(Type openGenericType, object? key = null)
   {
-    var patternMatcher = new SkipTillUnit(
+    var patternMatcher = new SkipTillUnitBuildChain(
       new IsGenericOfDefinition(openGenericType, key),
-      Weight + WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.OpenGenericPattern);
+      Weight + WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.OpenGenericPattern);
 
     return new TreatingOpenGenericTuner(ParentNode.GetOrAddNode(patternMatcher));
   }
@@ -84,9 +84,9 @@ public class RootTuner : UnitSequenceExtensibility
   /// </summary>
   public TreatingTuner TreatInheritorsOf(Type baseType, object? key = null)
   {
-    var patternMatcher = new SkipTillUnit(
+    var patternMatcher = new SkipTillUnitBuildChain(
       new IsInheritorOf(baseType, key),
-      Weight + WeightOf.BuildingUnitSequencePattern.Neutral + WeightOf.UnitPattern.SubtypePattern);
+      Weight + WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.SubtypePattern);
 
     return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
   }
@@ -97,10 +97,10 @@ public class RootTuner : UnitSequenceExtensibility
   /// </summary>
   public TreatingTuner<T> TreatInheritorsOf<T>(object? key = null)
   {
-    var patternMatcher = new SkipTillUnit(
+    var patternMatcher = new SkipTillUnitBuildChain(
       new IsInheritorOf(typeof(T), key),
       Weight
-    + WeightOf.BuildingUnitSequencePattern.Neutral
+    + WeightOf.BuildContextPattern.Neutral
     + WeightOf.UnitPattern.SubtypePattern);
 
     return new TreatingTuner<T>(ParentNode.GetOrAddNode(patternMatcher));
@@ -110,5 +110,5 @@ public class RootTuner : UnitSequenceExtensibility
   ///   Configure build plans for any unit building in context of the unit.
   ///   See <see cref="BuildSession"/> for details.
   /// </summary>
-  public FinalTuner TreatAll() => new(ParentNode.GetOrAddNode(new SkipAllUnits(Weight + WeightOf.BuildingUnitSequencePattern.SkipAllUnits)));
+  public FinalTuner TreatAll() => new(ParentNode.GetOrAddNode(new SkipAllUnits(Weight + WeightOf.BuildContextPattern.SkipAllUnits)));
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -33,6 +34,7 @@ public record RedirectType : IBuildAction, ILogString
     buildSession.BuildResult = buildSession.BuildUnit(unitInfo);
   }
 
+  [WithoutTest]
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 

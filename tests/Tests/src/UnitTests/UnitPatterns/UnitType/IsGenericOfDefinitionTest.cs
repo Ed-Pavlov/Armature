@@ -60,7 +60,7 @@ public class IsGenericOfDefinitionTest
     var target = () => new IsGenericOfDefinition(null!, null);
 
     // --assert
-    target.Should().ThrowExactly<ArgumentNullException>().WithParameterName("Type");
+    target.Should().ThrowExactly<ArgumentNullException>().WithParameterName("type");
   }
 
   [Test]
@@ -97,5 +97,15 @@ public class IsGenericOfDefinitionTest
     // --assert
     target1.Equals(target2).Should().BeFalse();
     target2.Equals(target1).Should().BeFalse();
+  }
+
+  [Test]
+  public void should_check_argument([Values(null, "key")] object? key)
+  {
+    // --arrange
+    var actual = () => new IsGenericOfDefinition(typeof(List<int>), key);
+
+    // --assert
+    actual.Should().ThrowExactly<ArgumentException>().WithParameterName("genericTypeDefinition").WithMessage("Should be an open generic type*");
   }
 }

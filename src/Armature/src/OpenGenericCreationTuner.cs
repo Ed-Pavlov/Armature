@@ -6,12 +6,12 @@ using JetBrains.Annotations;
 
 namespace Armature;
 
-public class OpenGenericCreationTuner : UnitSequenceExtensibility, IExtensibility<Type, object>
+public class OpenGenericCreationTuner : BuildChainExtensibility, IExtensibility<Type, object>
 {
   [PublicAPI] protected readonly Type    OpenGenericType;
   [PublicAPI] protected readonly object? Key;
 
-  public OpenGenericCreationTuner(IPatternTreeNode parentNode, Type openGenericType, object? key) : base(parentNode)
+  public OpenGenericCreationTuner(IBuildChainPattern parentNode, Type openGenericType, object? key) : base(parentNode)
   {
     OpenGenericType = openGenericType ?? throw new ArgumentNullException(nameof(openGenericType));
     Key             = key;
@@ -22,7 +22,7 @@ public class OpenGenericCreationTuner : UnitSequenceExtensibility, IExtensibilit
   /// </summary>
   public FinalTuner CreatedByDefault()
     => new(ParentNode
-          .GetOrAddNode(new IfFirstUnit(new IsGenericOfDefinition(OpenGenericType, Key)))
+          .GetOrAddNode(new IfFirstUnitBuildChain(new IsGenericOfDefinition(OpenGenericType, Key)))
           .UseBuildAction(Default.CreationBuildAction, BuildStage.Create));
 
   /// <summary>
@@ -30,7 +30,7 @@ public class OpenGenericCreationTuner : UnitSequenceExtensibility, IExtensibilit
   /// </summary>
   public FinalTuner CreatedByReflection() =>
     new(ParentNode
-       .GetOrAddNode(new SkipTillUnit(new IsGenericOfDefinition(OpenGenericType, Key)))
+       .GetOrAddNode(new SkipTillUnitBuildChain(new IsGenericOfDefinition(OpenGenericType, Key)))
        .UseBuildAction(Static.Of<CreateByReflection>(), BuildStage.Create));
 
   Type IExtensibility<Type, object>.   Item1 => OpenGenericType;

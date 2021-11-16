@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -12,14 +13,12 @@ public abstract record CreateWithFactoryMethodBuildAction : IBuildAction, ILogSt
 {
   public void Process(IBuildSession buildSession)
   {
-    if(!buildSession.BuildResult.HasValue)
-    {
-      var arguments = buildSession.BuildArgumentsForMethod(GetMethod().GetParameters());
-      var result    = Execute(arguments);
-      buildSession.BuildResult = new BuildResult(result);
-    }
+    var arguments = buildSession.BuildArgumentsForMethod(GetMethod().GetParameters());
+    var result    = Execute(arguments);
+    buildSession.BuildResult = new BuildResult(result);
   }
 
+  [WithoutTest]
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 

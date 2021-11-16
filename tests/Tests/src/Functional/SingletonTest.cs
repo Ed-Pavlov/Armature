@@ -68,7 +68,7 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {
-           new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create)}
+           new SkipAllUnits {new IfFirstUnitBuildChain(new IsConstructor()).UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create)}
          };
 
     private interface ISubject { }

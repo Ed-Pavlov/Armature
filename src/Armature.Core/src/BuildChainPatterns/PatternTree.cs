@@ -7,9 +7,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   The collection of build plans. Build plan of the unit is the tree of units sequence matchers containing build actions.
-///   All build plans are contained as a forest of trees.
-///   See <see cref="IPatternTreeNode" /> for details.
+///   The reusable implementation of <see cref="IBuildChainPattern" /> which is used as a root node of the tree.
 /// </summary>
 /// <remarks>
 ///   This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
@@ -24,47 +22,47 @@ namespace Armature.Core;
 ///     }
 ///   };
 /// </remarks>
-public class PatternTree : IPatternTreeNode, IEnumerable, ILogPrintable
+public class BuildChainPatternTree : IBuildChainPattern, IEnumerable, ILogPrintable
 {
   private readonly Root _root = new();
 
-  public ICollection<IPatternTreeNode> Children => _root.Children;
+  public ICollection<IBuildChainPattern> Children => _root.Children;
 
-  public WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight = 0)
-    => _root.GatherBuildActions(unitSequence, 0);
+  public WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight = 0)
+    => _root.GatherBuildActions(buildChain, 0);
 
   public void PrintToLog(LogLevel logLevel = LogLevel.None) => _root.PrintToLog(logLevel);
 
   public BuildActionBag BuildActions                   => throw new NotSupportedException();
-  public bool           Equals(IPatternTreeNode other) => throw new NotSupportedException();
+  public bool           Equals(IBuildChainPattern other) => throw new NotSupportedException();
 
   #region Syntax sugar
 
-  public void             Add(IPatternTreeNode patternTreeNode) => Children.Add(patternTreeNode);
+  public void             Add(IBuildChainPattern buildChainPattern) => Children.Add(buildChainPattern);
   IEnumerator IEnumerable.GetEnumerator()                       => throw new NotSupportedException();
 
   #endregion
 
   /// <summary>
-  ///   Reuse implementation of <see cref="PatternTreeNodeWithChildrenBase" /> to implement <see cref="PatternTree" /> public interface
+  ///   Reuse implementation of <see cref="BuildChainPatternWithChildrenBase" /> to implement <see cref="BuildChainPatternTree" /> public interface
   /// </summary>
-  private class Root : PatternTreeNodeBase
+  private class Root : BuildChainPatternBase
   {
     [DebuggerStepThrough]
     public Root() : base(0) { }
 
     [DebuggerStepThrough]
-    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
+    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight)
     {
       if(RawChildren is null) return null;
 
       WeightedBuildActionBag? result = null;
       foreach(var child in RawChildren)
-        result = result.Merge(child.GatherBuildActions(unitSequence, inputWeight));
+        result = result.Merge(child.GatherBuildActions(buildChain, inputWeight));
       return result;
     }
 
     [DebuggerStepThrough]
-    public override bool Equals(IPatternTreeNode? other) => throw new NotSupportedException();
+    public override bool Equals(IBuildChainPattern? other) => throw new NotSupportedException();
   }
 }

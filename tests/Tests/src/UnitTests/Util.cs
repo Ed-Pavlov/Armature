@@ -21,10 +21,10 @@ public static class Util
   [DebuggerStepThrough]
   public static ArrayTail<T> ToArrayTail<T>(this T item) => new(new []{item}, 0);
 
-  public class TestPatternTreeNode : PatternTreeNodeBase
+  public class TestBuildChainPattern : BuildChainPatternBase
   {
-    public TestPatternTreeNode(int weight = 0) : base(weight) { }
-    public override WeightedBuildActionBag GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight) => throw new NotImplementedException();
+    public TestBuildChainPattern(int weight = 0) : base(weight) { }
+    public override WeightedBuildActionBag GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight) => throw new NotImplementedException();
   }
 
   public record OtherUnitPattern : IUnitPattern

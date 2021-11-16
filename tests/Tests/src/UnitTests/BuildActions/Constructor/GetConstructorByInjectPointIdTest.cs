@@ -19,7 +19,7 @@ public class GetConstructorByInjectPointIdTest
     var target = new GetConstructorByInjectPointId(Subject.IntId);
 
     // --act
-    var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildSequence());
+    var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildChain());
     target.Process(actual);
 
     // --assert
@@ -33,7 +33,7 @@ public class GetConstructorByInjectPointIdTest
     var target = new GetConstructorByInjectPointId();
 
     // --act
-    var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildSequence());
+    var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildChain());
     target.Process(actual);
 
     // --assert
@@ -47,7 +47,7 @@ public class GetConstructorByInjectPointIdTest
     var target = new GetConstructorByInjectPointId("bad-id");
 
     // --act
-    var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildSequence());
+    var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildChain());
     target.Process(actual);
 
     // --assert
@@ -61,7 +61,7 @@ public class GetConstructorByInjectPointIdTest
     var target = new GetConstructorByInjectPointId(Subject.AmbiguousId);
 
     // --act
-    Action actual = () => target.Process(new BuildSessionMock(Unit.IsType<Subject>().ToBuildSequence()));
+    Action actual = () => target.Process(new BuildSessionMock(Unit.IsType<Subject>().ToBuildChain()));
 
     // --assert
     actual.Should().ThrowExactly<ArmatureException>().Which.Message.Should().StartWith("More than one constructors of the type");

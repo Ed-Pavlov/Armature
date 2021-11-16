@@ -19,26 +19,26 @@ namespace Armature.Core;
 ///     .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
 /// };
 /// </remarks>
-public abstract class PatternTreeNodeWithChildrenBase : IPatternTreeNode, IEnumerable, ILogPrintable
+public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IEnumerable, ILogPrintable
 {
-  protected HashSet<IPatternTreeNode>? RawChildren;
-  private   HashSet<IPatternTreeNode>  LazyChildren => RawChildren ??= new HashSet<IPatternTreeNode>();
+  protected HashSet<IBuildChainPattern>? RawChildren;
+  private   HashSet<IBuildChainPattern>  LazyChildren => RawChildren ??= new HashSet<IBuildChainPattern>();
 
-  protected PatternTreeNodeWithChildrenBase(int weight) => Weight = weight;
+  protected BuildChainPatternWithChildrenBase(int weight) => Weight = weight;
 
-  public abstract WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight);
+  public abstract WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight);
   public abstract BuildActionBag          BuildActions { get; }
 
-  public ICollection<IPatternTreeNode> Children => LazyChildren;
+  public ICollection<IBuildChainPattern> Children => LazyChildren;
 
   protected int Weight { [DebuggerStepThrough] get; }
 
   /// <summary>
   ///   Gathers and merges build actions from all children nodes.
   /// </summary>
-  /// <param name="unitSequence">The sequence of units building in this build session.</param>
+  /// <param name="buildChain">The build chain to pass to children nodes if any.</param>
   /// <param name="inputMatchingWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
-  protected WeightedBuildActionBag? GetChildrenActions(ArrayTail<UnitId> unitSequence, int inputMatchingWeight)
+  protected WeightedBuildActionBag? GetChildrenActions(ArrayTail<UnitId> buildChain, int inputMatchingWeight)
   {
     if(RawChildren is null)
     {
@@ -50,10 +50,10 @@ public abstract class PatternTreeNodeWithChildrenBase : IPatternTreeNode, IEnume
 
     using(Log.NamedBlock(LogLevel.Trace, "PassTailToChildren"))
     {
-      Log.WriteLine(LogLevel.Trace, $"ActualWeight = {inputMatchingWeight}, Tail = {unitSequence.ToHoconString()}");
+      Log.WriteLine(LogLevel.Trace, $"ActualWeight = {inputMatchingWeight}, Tail = {buildChain.ToHoconString()}");
 
       foreach(var child in RawChildren)
-        result = result.Merge(child.GatherBuildActions(unitSequence, inputMatchingWeight));
+        result = result.Merge(child.GatherBuildActions(buildChain, inputMatchingWeight));
     }
 
     return result;
@@ -85,18 +85,18 @@ public abstract class PatternTreeNodeWithChildrenBase : IPatternTreeNode, IEnume
   [DebuggerStepThrough]
   public string ToLogString() => $"{GetType().GetShortName()}{{ Weight: {Weight:n0} }}";
 
-  public virtual bool Equals(IPatternTreeNode? other)
-    => other is PatternTreeNodeBase otherNode && Weight == otherNode.Weight && GetType() == otherNode.GetType();
+  public virtual bool Equals(IBuildChainPattern? other)
+    => other is BuildChainPatternBase otherNode && Weight == otherNode.Weight && GetType() == otherNode.GetType();
 
-  public override bool Equals(object? obj) => Equals(obj as IPatternTreeNode);
+  public override bool Equals(object? obj) => Equals(obj as IBuildChainPattern);
 
   public override int GetHashCode() => Weight.GetHashCode();
 
   #region Syntax sugar
 
-  public void Add(IPatternTreeNode patternTreeNode) => Children.Add(patternTreeNode);
+  public void Add(IBuildChainPattern buildChainPattern) => Children.Add(buildChainPattern);
 
-  IEnumerator IEnumerable.GetEnumerator() => RawChildren?.GetEnumerator() ?? Empty<IPatternTreeNode>.Array.GetEnumerator();
+  IEnumerator IEnumerable.GetEnumerator() => RawChildren?.GetEnumerator() ?? Empty<IBuildChainPattern>.Array.GetEnumerator();
 
   #endregion
 }

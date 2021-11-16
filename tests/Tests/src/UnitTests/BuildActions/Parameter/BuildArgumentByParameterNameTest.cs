@@ -17,7 +17,7 @@ public class BuildArgumentByParameterNameTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildSequence).Returns(Unit.Is(parameterInfo).ToBuildSequence());
+    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
 
     var target = new BuildArgumentByParameterName(key);
 
@@ -35,7 +35,7 @@ public class BuildArgumentByParameterNameTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildSequence).Returns(Unit.Is(parameterInfo).Key(key).ToBuildSequence());
+    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).Key(key).ToBuildChain());
 
     var target = new BuildArgumentByParameterName(SpecialKey.Propagate);
 
@@ -55,7 +55,7 @@ public class BuildArgumentByParameterNameTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildSequence).Returns(Unit.Is(parameterInfo).ToBuildSequence());
+    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
     A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.Name).Key(key))).Returns(expected.ToBuildResult());
 
     var target = new BuildArgumentByParameterName(key);

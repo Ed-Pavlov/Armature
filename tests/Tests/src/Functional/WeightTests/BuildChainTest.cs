@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace Tests.Functional.WeightTests
 {
-  public class BuildingSequenceTest
+  public class BuildChainTest
   {
     [Test]
     public void should_throw_exception_on_ambiguous_registrations()
@@ -46,11 +46,11 @@ namespace Tests.Functional.WeightTests
              new SkipAllUnits
              {
                  // inject into constructor
-                 new IfFirstUnit(new IsConstructor())
+                 new IfFirstUnitBuildChain(new IsConstructor())
                     .UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
-                 new IfFirstUnit(new IsParameterInfoList())
+                 new IfFirstUnitBuildChain(new IsParameterInfoList())
                     .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-                 new IfFirstUnit(new IsParameterInfo())
+                 new IfFirstUnitBuildChain(new IsParameterInfo())
                     .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
              }
          };

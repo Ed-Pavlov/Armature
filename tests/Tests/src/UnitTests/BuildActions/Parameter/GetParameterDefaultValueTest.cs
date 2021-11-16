@@ -15,7 +15,7 @@ public class GetParameterDefaultValueTest
     var parameter = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => _.HasDefaultValue);
 
     // --arrange
-    var buildSession = new BuildSessionMock(Unit.Is(parameter).Key(SpecialKey.Argument).ToBuildSequence());
+    var buildSession = new BuildSessionMock(Unit.Is(parameter).Key(SpecialKey.Argument).ToBuildChain());
     var target       = new GetParameterDefaultValue();
 
     // --act
@@ -31,7 +31,7 @@ public class GetParameterDefaultValueTest
     var parameter = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => !_.HasDefaultValue);
 
     // --arrange
-    var buildSession = new BuildSessionMock(Unit.Is(parameter).Key(SpecialKey.Argument).ToBuildSequence());
+    var buildSession = new BuildSessionMock(Unit.Is(parameter).Key(SpecialKey.Argument).ToBuildChain());
     var target       = new GetParameterDefaultValue();
 
     // --act

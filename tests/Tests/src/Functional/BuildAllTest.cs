@@ -76,7 +76,7 @@ namespace Tests.Functional
          {
            new SkipAllUnits
            {
-             new IfFirstUnit(new IsConstructor())
+             new IfFirstUnitBuildChain(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create)
            }
          };

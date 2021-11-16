@@ -6,18 +6,18 @@ namespace Armature;
 
 public class TreatingTuner : TreatingTuner<object>
 {
-  public TreatingTuner(IPatternTreeNode parentNode) : base(parentNode) { }
+  public TreatingTuner(IBuildChainPattern parentNode) : base(parentNode) { }
 }
 
 public class TreatingTuner<T> : FinalTuner
 {
-  public TreatingTuner(IPatternTreeNode parentNode) : base(parentNode) { }
+  public TreatingTuner(IBuildChainPattern parentNode) : base(parentNode) { }
 
   /// <summary>
   ///   Use specified <paramref name="instance"/> as a unit.
   /// </summary>
   public void AsInstance(T instance) => ParentNode.UseBuildAction(new Instance<T>(instance), BuildStage.Cache);
-    
+
   /// <summary>
   ///   Build an object of the specified <paramref name="type"/> instead.
   ///   Tune plan of creating the object by subsequence calls.
@@ -27,7 +27,7 @@ public class TreatingTuner<T> : FinalTuner
     ParentNode.UseBuildAction(new RedirectType(type, key), BuildStage.Create);
     return new CreationTuner(ParentNode, type, key);
   }
-    
+
   /// <summary>
   ///   Build an object of the <typeparamref name="TRedirect"/> type instead.
   ///   Tune plan of creating the object by subsequence calls.
@@ -43,7 +43,7 @@ public class TreatingTuner<T> : FinalTuner
     ParentNode.UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
     return this;
   }
-    
+
   /// <summary>
   ///   Build an object of the specified <paramref name="type"/> instead. Also use default creation strategy for that type.
   ///   See <see cref="Default.CreationBuildAction"/> for details.

@@ -8,18 +8,18 @@ namespace Armature.Core;
 /// <summary>
 ///   Represents whole build session of the one Unit, all dependency of the built unit are built in context of one build session.
 /// </summary>
-/// <remarks>It could be for example IA -> A -> IB -> B -> int. This sequence means that for now unit of type int is under construction
-/// but it is built in "context" of all the sequence of dependencies.</remarks>
+/// <remarks>It could be for example IA -> A -> IB -> B -> int. This chain means that for now unit of type int is under construction
+/// but it is built in the "context" of the whole build chain.</remarks>
 public partial class BuildSession
 {
   private const string GatherBuildActions = "GatherBuildActions";
   private const string ParentBuilder      = "ParentBuilder";
 
   private readonly object[]          _buildStages;
-  private readonly IPatternTreeNode  _mainPatternTree;
-  private readonly IPatternTreeNode? _auxPatternTree;
+  private readonly IBuildChainPattern  _mainBuildChainPatternTree;
+  private readonly IBuildChainPattern? _auxPatternTree;
   private readonly Builder[]?        _parentBuilders;
-  private readonly List<UnitId>      _buildSequence;
+  private readonly List<UnitId>      _buildChain;
 
   /// <param name="buildStages">The sequence of build stages. See <see cref="Builder" /> for details.</param>
   /// <param name="buildPlans">Build plans used to find build actions to build a unit.</param>
@@ -29,26 +29,26 @@ public partial class BuildSession
   ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
   ///   parent builders one by one in the order they passed into constructor
   /// </param>
-  public BuildSession(object[] buildStages, IPatternTreeNode buildPlans, IPatternTreeNode? auxPatternTree, Builder[]? parentBuilders)
+  public BuildSession(object[] buildStages, IBuildChainPattern buildPlans, IBuildChainPattern? auxPatternTree, Builder[]? parentBuilders)
   {
     _buildStages     = buildStages ?? throw new ArgumentNullException(nameof(buildStages));
-    _mainPatternTree = buildPlans  ?? throw new ArgumentNullException(nameof(buildPlans));
+    _mainBuildChainPatternTree = buildPlans  ?? throw new ArgumentNullException(nameof(buildPlans));
     _auxPatternTree  = auxPatternTree;
     _parentBuilders  = parentBuilders;
-    _buildSequence   = new List<UnitId>(4);
+    _buildChain   = new List<UnitId>(4);
   }
 
   /// <summary>
   ///   Builds a Unit represented by <paramref name="unitId" />
   /// </summary>
-  /// <param name="unitId">"Id" of the unit to build. See <see cref="IPatternTreeNode" /> for details</param>
+  /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildChainPattern" /> for details</param>
   public BuildResult BuildUnit(UnitId unitId) => Build(unitId, BuildUnit);
 
   /// <summary>
   ///   Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
   ///   This can be useful to build all implementers of an interface.
   /// </summary>
-  /// <param name="unitId">"Id" of the unit to build. See <see cref="IPatternTreeNode" /> for details</param>
+  /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildChainPattern" /> for details</param>
   public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId) => Build(unitId, BuildAllUnits);
 
   /// <summary>
@@ -60,18 +60,18 @@ public partial class BuildSession
     using(Log.NamedBlock(LogLevel.Info, "Build"))
     {
       Log.WriteLine(LogLevel.Verbose, () => $"UnitId = {unitId.ToHoconString()}");
-      _buildSequence.Add(unitId);
+      _buildChain.Add(unitId);
 
       WeightedBuildActionBag? actions;
       WeightedBuildActionBag? auxActions;
 
       using(Log.NamedBlock(LogLevel.Verbose, GatherBuildActions))
       {
-        Log.WriteLine(LogLevel.Verbose, () => $"Context = {_buildSequence.ToHoconString()}" );
+        Log.WriteLine(LogLevel.Verbose, () => $"Context = {_buildChain.ToHoconString()}" );
 
-        var buildSequence = _buildSequence.AsArrayTail();
-        actions    = _mainPatternTree.GatherBuildActions(buildSequence, 0);
-        auxActions = _auxPatternTree?.GatherBuildActions(buildSequence, 0);
+        var buildChain = _buildChain.AsArrayTail();
+        actions    = _mainBuildChainPatternTree.GatherBuildActions(buildChain, 0);
+        auxActions = _auxPatternTree?.GatherBuildActions(buildChain, 0);
       }
 
       var actionBag = actions.Merge(auxActions);
@@ -81,7 +81,7 @@ public partial class BuildSession
         result = build(actionBag);
       }
       finally {
-        _buildSequence.RemoveAt(_buildSequence.Count - 1);
+        _buildChain.RemoveAt(_buildChain.Count - 1);
       }
     }
     Log.WriteLine(LogLevel.Info, "");
@@ -91,10 +91,10 @@ public partial class BuildSession
   private BuildResult BuildUnit(WeightedBuildActionBag? buildActionBag)
   {
     if(buildActionBag is null)
-      return BuildViaParentBuilder(_buildSequence.Last());
+      return BuildViaParentBuilder(_buildChain.Last());
 
     // builder to pass into IBuildActon.Execute
-    var buildSession     = new Interface(this, _buildSequence);
+    var buildSession     = new Interface(this, _buildChain);
     var performedActions = new Stack<IBuildAction>();
 
     foreach(var stage in _buildStages)
@@ -119,7 +119,7 @@ public partial class BuildSession
 
     return buildSession.BuildResult.HasValue
              ? buildSession.BuildResult
-             : BuildViaParentBuilder(_buildSequence.Last());
+             : BuildViaParentBuilder(_buildChain.Last());
   }
 
   private List<Weighted<BuildResult>> BuildAllUnits(WeightedBuildActionBag? buildActionBag)
@@ -142,7 +142,7 @@ public partial class BuildSession
 
     foreach(var weightedBuildAction in buildActionBag.Values.Single())
     {
-      var buildSession = new Interface(this, _buildSequence);
+      var buildSession = new Interface(this, _buildChain);
 
       var buildAction = weightedBuildAction.Entity;
       BuildActionProcess(buildAction, buildSession);
@@ -225,7 +225,7 @@ public partial class BuildSession
   private void AddBuildSessionData(Exception exception)
   {
     if(exception.Data.Contains(ExceptionConst.Context)) return;
-    exception.AddData(ExceptionConst.Context, _buildSequence);
+    exception.AddData(ExceptionConst.Context, _buildChain);
   }
 
   private static void LogBuildResult(BuildResult buildResult)

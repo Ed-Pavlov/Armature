@@ -14,9 +14,9 @@ public partial class BuildSession
   {
     private readonly BuildSession _buildSession;
 
-    public Interface(BuildSession buildSession, IEnumerable<UnitId> buildSequence)
+    public Interface(BuildSession buildSession, IEnumerable<UnitId> buildChain)
     {
-      BuildSequence = buildSequence ?? throw new ArgumentNullException(nameof(buildSequence));
+      BuildChain = buildChain ?? throw new ArgumentNullException(nameof(buildChain));
       _buildSession = buildSession  ?? throw new ArgumentNullException(nameof(buildSession));
     }
 
@@ -24,7 +24,7 @@ public partial class BuildSession
     public BuildResult BuildResult { get; set; }
 
     ///<inheritdoc />
-    public IEnumerable<UnitId> BuildSequence { get; }
+    public IEnumerable<UnitId> BuildChain { get; }
 
     ///<inheritdoc />
     public BuildResult BuildUnit(UnitId unitId) => _buildSession.BuildUnit(unitId);

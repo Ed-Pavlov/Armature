@@ -12,12 +12,12 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     /// </summary>
     public static TreatingTuner<T> TreatMaybeValue<T>(this TreatingTuner<Maybe<T>> treatingTuner)
     {
-      var treat     = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
+      var treat     = treatingTuner.AsExtensibility<IBuildChainExtensibility>();
       var uniqueKey = Guid.NewGuid();
-      treat.PatternTreeNode.UseBuildAction(new BuildMaybeAction<T>(uniqueKey), BuildStage.Create);
+      treat.BuildChainPattern.UseBuildAction(new BuildMaybeAction<T>(uniqueKey), BuildStage.Create);
 
       return new TreatingTuner<T>(
-        treat.PatternTreeNode.GetOrAddNode(new SkipTillUnit(new UnitPattern(typeof(T), uniqueKey), 0)));
+        treat.BuildChainPattern.GetOrAddNode(new SkipTillUnitBuildChain(new UnitPattern(typeof(T), uniqueKey), 0)));
     }
 
     /// <summary>
@@ -25,8 +25,8 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     /// </summary>
     public static TreatingTuner<Maybe<T>> AsMaybeValueOf<T>(this TreatingTuner<T> treatingTuner)
     {
-      var treat = treatingTuner.AsExtensibility<IUnitSequenceExtensibility>();
-      return new TreatingTuner<Maybe<T>>(treat.PatternTreeNode.UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize));
+      var treat = treatingTuner.AsExtensibility<IBuildChainExtensibility>();
+      return new TreatingTuner<Maybe<T>>(treat.BuildChainPattern.UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize));
     }
   }
 }

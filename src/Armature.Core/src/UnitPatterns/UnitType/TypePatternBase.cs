@@ -7,9 +7,19 @@ namespace Armature.Core;
 /// <summary>
 /// Base class for matchers matching unit with a <see cref="System.Type"/> pattern
 /// </summary>
-public abstract record TypePatternBase(Type Type, object? Key) : ILogString
+public abstract record TypePatternBase : ILogString
 {
-  protected readonly Type Type = Type ?? throw new ArgumentNullException(nameof(Type));
+  protected readonly   object? Key;
+  protected readonly Type    Type;
+
+  /// <summary>
+  /// Base class for matchers matching unit with a <see cref="System.Type"/> pattern
+  /// </summary>
+  protected TypePatternBase(Type type, object? key)
+  {
+    Type = type ?? throw new ArgumentNullException(nameof(type));
+    Key = key;
+  }
 
   [DebuggerStepThrough]
   public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} "

@@ -14,10 +14,10 @@ public interface IBuildSession
   BuildResult BuildResult { get; set; }
 
   /// <summary>
-  ///   The sequence of units representing a build session, the last one is the unit under construction,
+  ///   The chain of units representing a build session, the last one is the unit under construction,
   ///   the previous are the context of the build session. Each next unit info is the dependency of the previous one.
   /// </summary>
-  IEnumerable<UnitId> BuildSequence { get; }
+  IEnumerable<UnitId> BuildChain { get; }
 
   /// <summary>
   ///   Builds a unit represented by <see cref="UnitId" /> in the context of the current build session

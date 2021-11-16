@@ -17,7 +17,7 @@ namespace Tests.UnitTests
       // --arrange
       var target       = new BuildListArgumentForProperty();
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildSequence).Returns(new[] {new UnitId(propertyInfo, null)});
+      A.CallTo(() => buildSession.BuildChain).Returns(new[] {new UnitId(propertyInfo, null)});
 
       A.CallTo(() => buildSession.BuildAllUnits(default))
        .WithAnyArguments()

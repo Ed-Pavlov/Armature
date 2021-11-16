@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -33,6 +34,7 @@ public readonly struct UnitId : ILogString
   [DebuggerStepThrough]
   public override bool Equals(object obj) => obj is UnitId other && Equals(other);
 
+  [WithoutTest]
   [DebuggerStepThrough]
   public override int GetHashCode()
   {

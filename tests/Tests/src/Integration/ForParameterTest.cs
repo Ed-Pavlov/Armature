@@ -16,7 +16,7 @@ namespace Tests.Integration;
 public class ForParameterTest
 {
   private static readonly ParameterInfo[] ParameterList   = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters();
-  private static readonly UnitId[]        BuildSequence   = {new UnitId(ParameterList, SpecialKey.Argument)};
+  private static readonly UnitId[]        BuildChain   = {new UnitId(ParameterList, SpecialKey.Argument)};
   private static readonly UnitId          NamedParameter  = new(ParameterList.Single(_ => _.Name          == Subject.ParamName), SpecialKey.Argument);
   private static readonly UnitId          TypedParameter  = new(ParameterList.Single(_ => _.ParameterType == typeof(int)), SpecialKey.Argument);
   private static readonly UnitId          IdNullParameter = new(ParameterList.Single(_ => _.ParameterType == typeof(string)), SpecialKey.Argument);
@@ -25,17 +25,17 @@ public class ForParameterTest
   private static readonly List<IForParameter> ForParameterWithInjectAttributeCases =
       new()
       {
-          new ArrangeForParameterWithInjectAttribute($"{nameof(ForParameter)}.{nameof(ForParameter.WithInjectPoint)}(null)", () => ForParameter.WithInjectPoint(null), BuildSequence.Concat(new[] {IdNullParameter}).ToArray().ToArrayTail()),
-          new ArrangeForParameterWithInjectAttribute($"{nameof(ForParameter)}.{nameof(ForParameter.WithInjectPoint)}({Subject.Id})", () => ForParameter.WithInjectPoint(Subject.Id), BuildSequence.Concat(new[] {IdParameter}).ToArray().ToArrayTail()),
+          new ArrangeForParameterWithInjectAttribute($"{nameof(ForParameter)}.{nameof(ForParameter.WithInjectPoint)}(null)", () => ForParameter.WithInjectPoint(null), BuildChain.Concat(new[] {IdNullParameter}).ToArray().ToArrayTail()),
+          new ArrangeForParameterWithInjectAttribute($"{nameof(ForParameter)}.{nameof(ForParameter.WithInjectPoint)}({Subject.Id})", () => ForParameter.WithInjectPoint(Subject.Id), BuildChain.Concat(new[] {IdParameter}).ToArray().ToArrayTail()),
       };
   private static readonly List<IForParameter> ForParameterCases =
       new()
       {
 
-          new ArrangeForParameter<object?>($"{nameof(ForParameter)}.{nameof(ForParameter.Named)}({Subject.ParamName})", () => ForParameter.Named(Subject.ParamName), BuildSequence.Concat(new[] {NamedParameter}).ToArray().ToArrayTail()),
+          new ArrangeForParameter<object?>($"{nameof(ForParameter)}.{nameof(ForParameter.Named)}({Subject.ParamName})", () => ForParameter.Named(Subject.ParamName), BuildChain.Concat(new[] {NamedParameter}).ToArray().ToArrayTail()),
           // ReSharper disable once ConvertClosureToMethodGroup
-          new ArrangeForParameter<int>($"{nameof(ForParameter)}.{nameof(ForParameter.OfType)}<int>()", () => ForParameter.OfType<int>(), BuildSequence.Concat(new[] {TypedParameter}).ToArray().ToArrayTail()),
-          new ArrangeForParameter<object?>($"{nameof(ForParameter)}.{nameof(ForParameter.OfType)}(typeof(int))", () => ForParameter.OfType(typeof(int)), BuildSequence.Concat(new[] {TypedParameter}).ToArray().ToArrayTail()),
+          new ArrangeForParameter<int>($"{nameof(ForParameter)}.{nameof(ForParameter.OfType)}<int>()", () => ForParameter.OfType<int>(), BuildChain.Concat(new[] {TypedParameter}).ToArray().ToArrayTail()),
+          new ArrangeForParameter<object?>($"{nameof(ForParameter)}.{nameof(ForParameter.OfType)}(typeof(int))", () => ForParameter.OfType(typeof(int)), BuildChain.Concat(new[] {TypedParameter}).ToArray().ToArrayTail()),
       };
 
   private static IEnumerable<ActAssert> CombineCommonCases<T>(ArrangeForParameter<T> arrange)
@@ -48,11 +48,11 @@ public class ForParameterTest
 
           // --arrange
           var argumentTuner = arrange.ForParameter().UseKey(key);
-          var patternTree   = new PatternTree();
+          var patternTree   = new BuildChainPatternTree();
           argumentTuner.Tune(patternTree);
 
           // --act
-          var actionBag = patternTree.GatherBuildActions(arrange.Sequence)!;
+          var actionBag = patternTree.GatherBuildActions(arrange.Chain)!;
 
           // --assert
           actionBag.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
@@ -67,11 +67,11 @@ public class ForParameterTest
 
           // --arrange
           var argumentTuner = arrange.ForParameter().UseValue(value);
-          var patternTree   = new PatternTree();
+          var patternTree   = new BuildChainPatternTree();
           argumentTuner.Tune(patternTree);
 
           // --act
-          var actionBag = patternTree.GatherBuildActions(arrange.Sequence)!;
+          var actionBag = patternTree.GatherBuildActions(arrange.Chain)!;
 
           // --assert
           actionBag.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
@@ -84,11 +84,11 @@ public class ForParameterTest
         {
           // --arrange
           var argumentTuner = arrange.ForParameter().UseValue(default);
-          var patternTree   = new PatternTree();
+          var patternTree   = new BuildChainPatternTree();
           argumentTuner.Tune(patternTree);
 
           // --act
-          var actionBag = patternTree.GatherBuildActions(arrange.Sequence)!;
+          var actionBag = patternTree.GatherBuildActions(arrange.Chain)!;
 
           // --assert
           actionBag.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
@@ -101,11 +101,11 @@ public class ForParameterTest
         {
           // --arrange
           var argumentTuner = arrange.ForParameter().UseFactoryMethod(() => default);
-          var patternTree   = new PatternTree();
+          var patternTree   = new BuildChainPatternTree();
           argumentTuner.Tune(patternTree);
 
           // --act
-          var actionBag = patternTree.GatherBuildActions(arrange.Sequence)!;
+          var actionBag = patternTree.GatherBuildActions(arrange.Chain)!;
 
           // --assert
           actionBag.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
@@ -121,11 +121,11 @@ public class ForParameterTest
         {
           // --arrange
           var argumentTuner = arrange.ForParameter().UseInjectPointIdAsKey();
-          var patternTree   = new PatternTree();
+          var patternTree   = new BuildChainPatternTree();
           argumentTuner.Tune(patternTree);
 
           // --act
-          var actionBag = patternTree.GatherBuildActions(arrange.Sequence)!;
+          var actionBag = patternTree.GatherBuildActions(arrange.Chain)!;
 
           // --assert
           actionBag.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
@@ -151,13 +151,13 @@ public class ForParameterTest
     IEnumerable CreateCases();
   }
 
-  private record ArrangeForParameter<T>(string Name, Func<MethodArgumentTuner<T>> ForParameter, ArrayTail<UnitId> Sequence) : IForParameter
+  private record ArrangeForParameter<T>(string Name, Func<MethodArgumentTuner<T>> ForParameter, ArrayTail<UnitId> Chain) : IForParameter
   {
     public virtual IEnumerable CreateCases() => CombineCommonCases(this);
   }
 
-  private record ArrangeForParameterWithInjectAttribute(string Name, Func<MethodArgumentTuner<object?>> ForParameter, ArrayTail<UnitId> Sequence)
-      : ArrangeForParameter<object?>(Name, ForParameter, Sequence)
+  private record ArrangeForParameterWithInjectAttribute(string Name, Func<MethodArgumentTuner<object?>> ForParameter, ArrayTail<UnitId> Chain)
+      : ArrangeForParameter<object?>(Name, ForParameter, Chain)
   {
     public override IEnumerable CreateCases() => CombineCommonCases(this).Concat(CombineInjectAttributeCases(this));
   }

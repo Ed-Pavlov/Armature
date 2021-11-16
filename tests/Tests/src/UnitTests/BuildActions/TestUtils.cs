@@ -7,7 +7,7 @@ public static class TestUtils
 {
   public static BuildResult         ToArguments<T>(this  T?      value)  => new BuildResult(value?.GetType().IsArray == true ? value : new object?[] {value});
   public static BuildResult         ToBuildResult(this   object? value)  => new BuildResult(value);
-  public static IEnumerable<UnitId> ToBuildSequence(this UnitId  unitId) => new[] {unitId};
+  public static IEnumerable<UnitId> ToBuildChain(this UnitId  unitId) => new[] {unitId};
 }
 
 public static class Kind

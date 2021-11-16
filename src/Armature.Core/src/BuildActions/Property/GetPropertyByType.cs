@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -31,6 +32,8 @@ public record GetPropertyByType : IBuildAction, ILogString
       };
   }
 
+  [WithoutTest]
+  [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 
   [DebuggerStepThrough]

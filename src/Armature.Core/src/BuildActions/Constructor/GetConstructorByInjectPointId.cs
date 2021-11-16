@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -48,6 +49,7 @@ public record GetConstructorByInjectPointId : IBuildAction, ILogString
       buildSession.BuildResult = new BuildResult(constructors[0]);
   }
 
+  [WithoutTest]
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 

@@ -13,7 +13,7 @@ namespace Tests.Functional
   public class InjectDependenciesToPropertyTest
   {
     [TestCaseSource(nameof(test_case_source))]
-    public void value_should_be_injected_into_property_by_name(Func<PatternTree, FinalTuner> tune)
+    public void value_should_be_injected_into_property_by_name(Func<BuildChainPatternTree, FinalTuner> tune)
     {
       const string expected = "expectedString";
 
@@ -35,7 +35,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(test_case_source))]
-    public void should_use_argument_for_property_by_name(Func<PatternTree, FinalTuner> tune)
+    public void should_use_argument_for_property_by_name(Func<BuildChainPatternTree, FinalTuner> tune)
     {
       const string expected = "expectedString";
       const string bad      = expected + "bad";
@@ -56,11 +56,11 @@ namespace Tests.Functional
       actual.StringProperty.Should().Be(expected);
       actual.InjectProperty.Should().BeNull();
     }
-    
+
     // target.TreatAll().InjectInto(Property.ByInjectPoint()); //TODO: is it possible to make it working
 
     [TestCaseSource(nameof(test_case_source))]
-    public void should_use_argument_for_property_by_type(Func<PatternTree, FinalTuner> tune)
+    public void should_use_argument_for_property_by_type(Func<BuildChainPatternTree, FinalTuner> tune)
     {
       const int expected = 3254;
 
@@ -77,7 +77,7 @@ namespace Tests.Functional
       actual.Should().NotBeNull();
       actual.IntProperty.Should().Be(expected);
     }
-    
+
     [Test]
     public void should_inject_into_property_by_injectpointid([Values(null, Subject.InjectPointId)] object injectPointId)
     {
@@ -151,7 +151,7 @@ namespace Tests.Functional
       actual.InjectProperty.Should().Be(expected);
       actual.StringProperty.Should().BeNull();
     }
-    
+
     [Test]
     public void should_use_key_for_interface_property_argument_by_inject_point()
     {
@@ -176,7 +176,7 @@ namespace Tests.Functional
       actual.InjectProperty.Should().Be(expected);
       actual.StringProperty.Should().BeNull();
     }
-    
+
     [Test]
     public void should_use_inject_point_id_as_key_for_property_by_inject_point()
     {
@@ -202,7 +202,7 @@ namespace Tests.Functional
       actual.InjectProperty.Should().Be(expected);
       actual.StringProperty.Should().BeNull();
     }
-    
+
     [Test]
     public void should_use_inject_point_id_as_key_for_interface_property_by_inject_point()
     {
@@ -217,7 +217,7 @@ namespace Tests.Functional
 
       target.Treat<ISubject>().UsingArguments(ForProperty.WithInjectPoint(Subject.InterfaceInjectPointId).UseInjectPointIdAsKey());
       target.Treat<ISubject>().AsCreated<Subject>();
-      
+
       // --act
       var actual = target.Build<ISubject>();
 
@@ -233,19 +233,19 @@ namespace Tests.Functional
            new SkipAllUnits
            {
              // inject into constructor
-             new IfFirstUnit(new IsConstructor())
+             new IfFirstUnitBuildChain(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
-             new IfFirstUnit(new IsPropertyInfo())
+             new IfFirstUnitBuildChain(new IsPropertyInfo())
               .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)
            }
          };
 
     private static IEnumerable test_case_source()
     {
-      yield return new TestCaseData(new Func<PatternTree, FinalTuner>(tree => tree.Treat<ISubject>().AsCreated<Subject>())).SetName("Subject");
+      yield return new TestCaseData(new Func<BuildChainPatternTree, FinalTuner>(tree => tree.Treat<ISubject>().AsCreated<Subject>())).SetName("Subject");
 
       yield return new TestCaseData(
-        new Func<PatternTree, FinalTuner>(
+        new Func<BuildChainPatternTree, FinalTuner>(
           tree =>
           {
             tree.Treat<ISubject>().AsCreated<Subject>();

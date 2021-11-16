@@ -7,12 +7,12 @@ namespace Armature.Core;
 /// <summary>
 ///   Base class implementing the logic of adding build actions
 /// </summary>
-public abstract class PatternTreeNodeBase : PatternTreeNodeWithChildrenBase
+public abstract class BuildChainPatternBase : BuildChainPatternWithChildrenBase
 {
   private BuildActionBag? _buildActions;
   private BuildActionBag  LazyBuildAction => _buildActions ??= new BuildActionBag();
 
-  protected PatternTreeNodeBase(int weight) : base(weight) { }
+  protected BuildChainPatternBase(int weight) : base(weight) { }
 
   public override BuildActionBag BuildActions => LazyBuildAction;
 
@@ -29,18 +29,18 @@ public abstract class PatternTreeNodeBase : PatternTreeNodeWithChildrenBase
     return result;
   }
 
-  protected WeightedBuildActionBag? GetOwnOrChildrenBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight)
+  protected WeightedBuildActionBag? GetOwnOrChildrenBuildActions(ArrayTail<UnitId> buildChain, int inputWeight)
   {
     WeightedBuildActionBag? actionBag = null;
 
-    if(unitSequence.Length > 1)
-    { // pass the rest of the sequence to children and return their actions
+    if(buildChain.Length > 1)
+    { // pass the rest of the chain to children and return their actions
       // using(LogMatchingState())
       {
         if(RawChildren is null)
           Log.WriteLine(LogLevel.Trace, "Children: null");
         else
-          actionBag = GetChildrenActions(unitSequence.GetTail(1), inputWeight + Weight);
+          actionBag = GetChildrenActions(buildChain.GetTail(1), inputWeight + Weight);
       }
     }
     else

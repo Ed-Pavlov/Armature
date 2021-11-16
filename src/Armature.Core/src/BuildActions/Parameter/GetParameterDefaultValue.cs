@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -15,6 +16,7 @@ public record GetParameterDefaultValue : IBuildAction
       buildSession.BuildResult = new BuildResult(parameterInfo.DefaultValue);
   }
 
+  [WithoutTest]
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 

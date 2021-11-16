@@ -59,10 +59,10 @@ public class MethodArgumentTunerTest
                        });
   }
 
-  private class Root : PatternTreeNodeBase
+  private class Root : BuildChainPatternBase
   {
     public Root(int expectedWeight) : base(expectedWeight) { }
 
-    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> unitSequence, int inputWeight) => GetOwnBuildActions(Weight);
+    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight) => GetOwnBuildActions(Weight);
   }
 }

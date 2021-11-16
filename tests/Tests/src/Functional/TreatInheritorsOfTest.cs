@@ -19,7 +19,7 @@ namespace Tests.Functional
 
 
       var actual = target.Build<C2>();
-      
+
       Console.WriteLine(actual.Value);
     }
 
@@ -33,24 +33,24 @@ namespace Tests.Functional
     {
       public C1(string value) : base(value) { }
     }
-    
+
     class C2 : Base
     {
       public C2(string value) : base(value) { }
     }
-    
+
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {
            new SkipAllUnits
            {
-             new IfFirstUnit(new IsConstructor()) // inject into constructor
+             new IfFirstUnitBuildChain(new IsConstructor()) // inject into constructor
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
-             
-             new IfFirstUnit(new IsParameterInfoList())
+
+             new IfFirstUnitBuildChain(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             
-             new IfFirstUnit(new IsParameterInfo())
+
+             new IfFirstUnitBuildChain(new IsParameterInfo())
               .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
            }
          };

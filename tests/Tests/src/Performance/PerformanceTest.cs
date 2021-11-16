@@ -93,8 +93,8 @@ namespace Tests.Performance
     }
 
 
-    // There were 71994021 class of Equals on count == 3 000. Count of GetHashCode was exactly the count of IUnitSequenceMatchers added into children collection
-    // After the fix it becomes 42 of Equals and 23999 of GetHashCode 
+    // There were 71994021 class of Equals on count == 3 000. Count of GetHashCode was exactly the count of IPatternTreeNode added into children collection
+    // After the fix it becomes 42 of Equals and 23999 of GetHashCode
     [Test]
     public void AddOrGetUnitTestMatcherTest()
     {
@@ -120,13 +120,13 @@ namespace Tests.Performance
       UnitPatternWrapper.GetHashCodeCallsCount.Should().BeLessThan(250_000);
     }
 
-    private static TreatingTuner Treat(IPatternTreeNode buildPlans, UnitId unitId)
+    private static TreatingTuner Treat(IBuildChainPattern buildPlans, UnitId unitId)
     {
       if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
 
       var unitMatcher = new UnitPatternWrapper(new UnitPattern(unitId.Kind, unitId.Key));
 
-      var query = new SkipTillUnit(unitMatcher);
+      var query = new SkipTillUnitBuildChain(unitMatcher);
 
       return new TreatingTuner(buildPlans.GetOrAddNode(query));
     }
@@ -167,7 +167,7 @@ namespace Tests.Performance
       var treatAll = new SkipAllUnits
                      {
                        // inject into constructor
-                       new IfFirstUnit(new IsConstructor())
+                       new IfFirstUnitBuildChain(new IsConstructor())
                         .UseBuildAction(
                            new TryInOrder
                            {
@@ -175,14 +175,14 @@ namespace Tests.Performance
                              Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has less priority
                            },
                            BuildStage.Create),
-                       new IfFirstUnit(new IsParameterInfo())
+                       new IfFirstUnitBuildChain(new IsParameterInfo())
                         .UseBuildAction(
                            new TryInOrder
                            {
                              Static.Of<BuildArgumentByParameterInjectPointId>(), Static.Of<BuildArgumentByParameterType>()
                            },
                            BuildStage.Create),
-                       new IfFirstUnit(new IsPropertyInfo())
+                       new IfFirstUnitBuildChain(new IsPropertyInfo())
                         .UseBuildAction(new TryInOrder {new BuildArgumentByPropertyType()}, BuildStage.Create)
                      };
 

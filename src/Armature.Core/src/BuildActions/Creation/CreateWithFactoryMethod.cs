@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -15,12 +16,9 @@ public record CreateWithFactoryMethod<TR> : IBuildAction, ILogString
   public CreateWithFactoryMethod(Func<IBuildSession, TR?> factoryMethod)
     => _factoryMethod = factoryMethod ?? throw new ArgumentNullException(nameof(factoryMethod));
 
-  public void Process(IBuildSession buildSession)
-  {
-    if(!buildSession.BuildResult.HasValue)
-      buildSession.BuildResult = new BuildResult(_factoryMethod(buildSession));
-  }
+  public void Process(IBuildSession buildSession) => buildSession.BuildResult = new BuildResult(_factoryMethod(buildSession));
 
+  [WithoutTest]
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 

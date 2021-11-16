@@ -265,15 +265,15 @@ namespace Tests.Functional
              {
                new SkipAllUnits
                {
-                 new SkipTillUnit(new IsInheritorOf(typeof(IDisposable), null))
+                 new SkipTillUnitBuildChain(new IsInheritorOf(typeof(IDisposable), null))
                   .UseBuildAction(new CreateByReflection(), BuildStage.Cache),
 
-                 new IfFirstUnit(new IsConstructor())
+                 new IfFirstUnitBuildChain(new IsConstructor())
                   .UseBuildAction(new GetConstructorByParameterTypes(), BuildStage.Create), // use empty ctor by default in this test
 
-                 new IfFirstUnit(new IsParameterInfoList())
+                 new IfFirstUnitBuildChain(new IsParameterInfoList())
                   .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-                 new IfFirstUnit(new IsParameterInfo())
+                 new IfFirstUnitBuildChain(new IsParameterInfo())
                   .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
                }
              };

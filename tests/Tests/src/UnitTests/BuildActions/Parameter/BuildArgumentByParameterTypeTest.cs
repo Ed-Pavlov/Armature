@@ -19,7 +19,7 @@ public class BuildArgumentByParameterTypeTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildSequence).Returns(Unit.Is(parameterInfo).ToBuildSequence());
+    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
     A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.ParameterType).Key(key))).Returns(expected.ToBuildResult());
 
     var target = new BuildArgumentByParameterType(key);
@@ -39,7 +39,7 @@ public class BuildArgumentByParameterTypeTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildSequence).Returns(Unit.Is(parameterInfo).Key(key).ToBuildSequence());
+    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).Key(key).ToBuildChain());
 
     var target = new BuildArgumentByParameterType(SpecialKey.Propagate);
 

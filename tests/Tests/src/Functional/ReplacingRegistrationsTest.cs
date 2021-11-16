@@ -33,13 +33,13 @@ namespace Tests.Functional
          {
            new SkipAllUnits
            {
-             new IfFirstUnit(new IsConstructor()) // inject into constructor
+             new IfFirstUnitBuildChain(new IsConstructor()) // inject into constructor
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
-             
-             new IfFirstUnit(new IsParameterInfoList())
+
+             new IfFirstUnitBuildChain(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             
-             new IfFirstUnit(new IsParameterInfo())
+
+             new IfFirstUnitBuildChain(new IsParameterInfo())
               .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
            }
          };

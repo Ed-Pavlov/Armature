@@ -18,7 +18,7 @@ public class FinalTunerTest
     var expectedBuildActions = Util.CreateBag(BuildStage.Cache, new Singleton());
 
     // --arrange
-    var actual = new Util.TestPatternTreeNode();
+    var actual = new Util.TestBuildChainPattern();
     var target = new FinalTuner(actual);
 
     // --act
@@ -31,7 +31,7 @@ public class FinalTunerTest
   [Test]
   public void inject_into_should_call_all_passed_tuners()
   {
-    var expectedNode = new PatternTree();
+    var expectedNode = new BuildChainPatternTree();
 
     // --arrange
     var tuner1 = A.Dummy<IInjectPointTuner>();
@@ -51,7 +51,7 @@ public class FinalTunerTest
   public void inject_into_should_throw_if_no_tuner_passed()
   {
     // --arrange
-    var target = new FinalTuner(new PatternTree());
+    var target = new FinalTuner(new BuildChainPatternTree());
 
     // --act
     var actual = () => target.InjectInto();
@@ -69,22 +69,22 @@ public class FinalTunerTest
     var tuner1 = A.Dummy<IArgumentTuner>();
     var tuner2 = A.Dummy<IArgumentTuner>();
 
-    var expectedWeight = WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability;
+    var expectedWeight = WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability;
 
     var expectedChildNode =
-      new SkipWhileUnit(Static.Of<IsServiceUnit>())
+      new SkipWhileUnitBuildChain(Static.Of<IsServiceUnit>())
       {
         Children =
         {
-          new IfFirstUnit(new IsAssignableFromType(expectedString.GetType()), expectedWeight)
+          new IfFirstUnitBuildChain(new IsAssignableFromType(expectedString.GetType()), expectedWeight)
            .UseBuildAction(new Instance<object>(expectedString), BuildStage.Cache),
-          new IfFirstUnit(new IsAssignableFromType(expectedInt.GetType()), expectedWeight)
+          new IfFirstUnitBuildChain(new IsAssignableFromType(expectedInt.GetType()), expectedWeight)
            .UseBuildAction(new Instance<object>(expectedInt), BuildStage.Cache)
         }
       };
 
     // --arrange
-    var actual = new Util.TestPatternTreeNode();
+    var actual = new Util.TestBuildChainPattern();
     var target = new FinalTuner(actual);
 
     // --act
@@ -101,7 +101,7 @@ public class FinalTunerTest
   public void using_arguments_should_throw_if_not_argument_tuner_is_passed()
   {
     // --arrange
-    var target = new FinalTuner(new PatternTree());
+    var target = new FinalTuner(new BuildChainPatternTree());
 
     // --act
     var actual = () => target.UsingArguments(A.Dummy<ITuner>());
@@ -112,6 +112,6 @@ public class FinalTunerTest
 
   private class BadTuner : ITuner
   {
-    public void Tune(IPatternTreeNode patternTreeNode) => throw new NotImplementedException();
+    public void Tune(IBuildChainPattern buildChainPattern) => throw new NotImplementedException();
   }
 }

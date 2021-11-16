@@ -13,10 +13,10 @@ public class RootTunerTest
   [Test]
   public void treat([Values(null, "key")] string key)
   {
-    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), key));
+    var expected = new SkipWhileUnitBuildChain(new UnitPattern(typeof(IDisposable), key));
 
     // --arrange
-    var tree   = new PatternTree();
+    var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
@@ -29,10 +29,10 @@ public class RootTunerTest
   [Test]
   public void treat_generic([Values(null, "key")] string key)
   {
-    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), key));
+    var expected = new SkipWhileUnitBuildChain(new UnitPattern(typeof(IDisposable), key));
 
     // --arrange
-    var tree   = new PatternTree();
+    var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
@@ -45,10 +45,10 @@ public class RootTunerTest
   [Test]
   public void building([Values(null, "key")] string key)
   {
-    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), key));
+    var expected = new SkipWhileUnitBuildChain(new UnitPattern(typeof(IDisposable), key));
 
     // --arrange
-    var tree   = new PatternTree();
+    var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
@@ -61,10 +61,10 @@ public class RootTunerTest
   [Test]
   public void building_generic([Values(null, "key")] string key)
   {
-    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), key));
+    var expected = new SkipWhileUnitBuildChain(new UnitPattern(typeof(IDisposable), key));
 
     // --arrange
-    var tree   = new PatternTree();
+    var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
@@ -79,10 +79,10 @@ public class RootTunerTest
   {
     const int weight = 3875;
 
-    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), key), weight);
+    var expected = new SkipWhileUnitBuildChain(new UnitPattern(typeof(IDisposable), key), weight);
 
     // --arrange
-    var tree   = new PatternTree();
+    var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
@@ -99,7 +99,7 @@ public class RootTunerTest
     var expected = new SkipAllUnits();
 
     // --arrange
-    var tree   = new PatternTree();
+    var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
@@ -112,10 +112,10 @@ public class RootTunerTest
   [Test]
   public void treat_inheritors([Values(null, "key")] string key)
   {
-    var expected = new SkipWhileUnit(new IsInheritorOf(typeof(IDisposable), key));
+    var expected = new SkipWhileUnitBuildChain(new IsInheritorOf(typeof(IDisposable), key));
 
     // --arrange
-    var tree   = new PatternTree();
+    var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
@@ -128,10 +128,10 @@ public class RootTunerTest
   [Test]
   public void treat_inheritors_generic([Values(null, "key")] string key)
   {
-    var expected = new SkipWhileUnit(new IsInheritorOf(typeof(IDisposable), key));
+    var expected = new SkipWhileUnitBuildChain(new IsInheritorOf(typeof(IDisposable), key));
 
     // --arrange
-    var tree   = new PatternTree();
+    var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
@@ -143,10 +143,10 @@ public class RootTunerTest
   [Test]
   public void treat_open_generic([Values(null, "key")] string key)
   {
-    var expected = new SkipWhileUnit(new IsGenericOfDefinition(typeof(List<>), key));
+    var expected = new SkipWhileUnitBuildChain(new IsGenericOfDefinition(typeof(List<>), key));
 
     // --arrange
-    var tree   = new PatternTree();
+    var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act

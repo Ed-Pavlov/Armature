@@ -5,7 +5,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
 
-namespace Tests.UnitTests.UnitSequencePatterns;
+namespace Tests.UnitTests.BuildChainPatterns;
 
 public class IfFirstUnitTest
 {
@@ -17,15 +17,15 @@ public class IfFirstUnitTest
     var expected = new UnitId("expected", "expected");
 
     // --arrange
-    var target   = new IfFirstUnit(new UnitPattern(kind));
-    var child1 = A.Fake<IPatternTreeNode>();
-    var child2 = A.Fake<IPatternTreeNode>();
+    var target   = new IfFirstUnitBuildChain(new UnitPattern(kind));
+    var child1 = A.Fake<IBuildChainPattern>();
+    var child2 = A.Fake<IBuildChainPattern>();
     target.AddNode(child1);
     target.AddNode(child2);
 
     // --act
-    var sequence = new[] {new UnitId(kind, null), expected}.ToArrayTail();
-    target.GatherBuildActions(sequence, 0);
+    var chain = new[] {new UnitId(kind, null), expected}.ToArrayTail();
+    target.GatherBuildActions(chain, 0);
 
     // --assert
     A.CallTo(() => child1.GatherBuildActions(An<ArrayTail<UnitId>>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()), An<int>._))
@@ -42,15 +42,15 @@ public class IfFirstUnitTest
     var expected = new UnitId("expected", "expected");
 
     // --arrange
-    var target   = new IfFirstUnit(new UnitPattern(kind));
-    var child1 = A.Fake<IPatternTreeNode>();
-    var child2 = A.Fake<IPatternTreeNode>();
+    var target   = new IfFirstUnitBuildChain(new UnitPattern(kind));
+    var child1 = A.Fake<IBuildChainPattern>();
+    var child2 = A.Fake<IBuildChainPattern>();
     target.AddNode(child1);
     target.AddNode(child2);
 
     // --act
-    var sequence = new[] {new UnitId("bad", null), new UnitId(kind, null), expected}.ToArrayTail();
-    target.GatherBuildActions(sequence, 0);
+    var chain = new[] {new UnitId("bad", null), new UnitId(kind, null), expected}.ToArrayTail();
+    target.GatherBuildActions(chain, 0);
 
     // --assert
     A.CallTo(() => child1.GatherBuildActions(default, default)).WithAnyArguments().MustNotHaveHappened();
@@ -65,15 +65,15 @@ public class IfFirstUnitTest
     const int inputWeight   = 21;
 
     // --arrange
-    var target   = new IfFirstUnit(new UnitPattern(kind), patternWeight);
-    var child1 = A.Fake<IPatternTreeNode>();
-    var child2 = A.Fake<IPatternTreeNode>();
+    var target   = new IfFirstUnitBuildChain(new UnitPattern(kind), patternWeight);
+    var child1 = A.Fake<IBuildChainPattern>();
+    var child2 = A.Fake<IBuildChainPattern>();
     target.AddNode(child1);
     target.AddNode(child2);
 
     // --act
-    var sequence = new[] {new UnitId(kind, null), new UnitId(kind, null)}.ToArrayTail();
-    target.GatherBuildActions(sequence, inputWeight);
+    var chain = new[] {new UnitId(kind, null), new UnitId(kind, null)}.ToArrayTail();
+    target.GatherBuildActions(chain, inputWeight);
 
     // --assert
     A.CallTo(() => child1.GatherBuildActions(An<ArrayTail<UnitId>>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
@@ -84,7 +84,7 @@ public class IfFirstUnitTest
   public void should_check_arguments_validity()
   {
     // --arrange
-    var target = () => new IfFirstUnit(null!);
+    var target = () => new IfFirstUnitBuildChain(null!);
 
     // --assert
     target.Should().ThrowExactly<ArgumentNullException>().WithParameterName("unitPattern");

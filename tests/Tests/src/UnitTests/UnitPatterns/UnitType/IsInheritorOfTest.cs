@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using Armature.Core;
 using Armature.Core.Sdk;
@@ -107,7 +108,15 @@ namespace Tests.UnitTests.UnitPatterns.UnitType
     {
       var actual = () => new IsInheritorOf(null!, key);
 
-      actual.Should().ThrowExactly<ArgumentNullException>().WithParameterName("Type");
+      actual.Should().ThrowExactly<ArgumentNullException>().WithParameterName("type");
+    }
+
+    [Test]
+    public void should_throw_if_type_is_open_generic([Values(null, "key")] object key)
+    {
+      var actual = () => new IsInheritorOf(typeof(IList<>), key);
+
+      actual.Should().ThrowExactly<ArgumentException>().WithParameterName("type");
     }
   }
 }

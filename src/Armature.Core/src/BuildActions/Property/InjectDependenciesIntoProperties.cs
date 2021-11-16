@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -10,6 +11,7 @@ namespace Armature.Core;
 /// </summary>
 public record InjectDependenciesIntoProperties : IBuildAction
 {
+  [WithoutTest]
   [DebuggerStepThrough]
   public void Process(IBuildSession buildSession) { }
 

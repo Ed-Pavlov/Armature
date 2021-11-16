@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -24,6 +25,7 @@ public abstract record BuildArgumentByInjectPointNameBase : IBuildAction, ILogSt
     buildSession.BuildResult = buildSession.BuildUnit(new UnitId(injectPointName, effectiveKey));
   }
 
+  [WithoutTest]
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 

@@ -6,10 +6,10 @@ namespace Armature;
 
 public abstract class ArgumentTunerBase<T> // : UnitMatcherExtensibility
 {
-  protected readonly Func<IPatternTreeNode, IPatternTreeNode> TuneTreeNodePattern;
+  protected readonly Func<IBuildChainPattern, IBuildChainPattern> TuneTreeNodePattern;
 
   [DebuggerStepThrough]
-  protected ArgumentTunerBase(Func<IPatternTreeNode, IPatternTreeNode> tuneTreeNodePattern)
+  protected ArgumentTunerBase(Func<IBuildChainPattern, IBuildChainPattern> tuneTreeNodePattern)
     => TuneTreeNodePattern = tuneTreeNodePattern ?? throw new ArgumentNullException(nameof(tuneTreeNodePattern));
 
   /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -56,6 +57,7 @@ public record RedirectOpenGenericType : IBuildAction, ILogString
     buildSession.BuildResult = buildSession.BuildUnit(new UnitId(genericType, effectiveKey));
   }
 
+  [WithoutTest]
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 

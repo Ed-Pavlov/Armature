@@ -7,10 +7,10 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   The builder of units. It is the convenient way to keep corresponding build plans (<see cref="PatternTree" />),
+///   The builder of units. It is the convenient way to keep corresponding build plans (<see cref="BuildChainPatternTree" />),
 ///   build stages, and parent builders to pass into <see cref="BuildSession" /> which can be instantiated independently.
 /// </summary>
-public class Builder : PatternTree
+public class Builder : BuildChainPatternTree
 {
   private readonly object[]   _stages;
   private readonly Builder[]? _parentBuilders;
@@ -56,7 +56,7 @@ public class Builder : PatternTree
   /// <returns>Returns build result with <see cref="BuildResult.HasValue"/> set to false if unit is not built.</returns>
 
   //TODO: what about exceptions? if buildResult.HasValue == false does it mean that there is no a registration, or it can be some runtime problems?
-  public BuildResult BuildUnit(UnitId unitId, IPatternTreeNode? auxBuildPlans = null)
+  public BuildResult BuildUnit(UnitId unitId, IBuildChainPattern? auxBuildPlans = null)
     => new BuildSession(_stages, this, auxBuildPlans, _parentBuilders).BuildUnit(unitId);
 
   /// <summary>
@@ -66,6 +66,6 @@ public class Builder : PatternTree
   /// <param name="unitId">Building unit "id"</param>
   /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>
   /// <returns>Returns <see cref="Empty{BuildResult}.List"/> if no units were built. </returns>
-  public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId, IPatternTreeNode? auxBuildPlans = null)
+  public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId, IBuildChainPattern? auxBuildPlans = null)
     => new BuildSession(_stages, this, auxBuildPlans, _parentBuilders).BuildAllUnits(unitId);
 }

@@ -36,7 +36,7 @@ public class RuntimeArgumentsTest
            new SkipAllUnits
            {
              // inject into constructor
-             new IfFirstUnit(new IsConstructor())
+             new IfFirstUnitBuildChain(new IsConstructor())
               .UseBuildAction(
                  new TryInOrder
                  {
@@ -44,9 +44,9 @@ public class RuntimeArgumentsTest
                    new GetConstructorWithMaxParametersCount() // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoList())
+             new IfFirstUnitBuildChain(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfo())
+             new IfFirstUnitBuildChain(new IsParameterInfo())
               .UseBuildAction(
                  new TryInOrder
                  {

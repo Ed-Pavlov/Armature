@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -41,6 +42,7 @@ public record GetPropertyListByInjectPointId : IBuildAction, ILogString
       buildSession.BuildResult = new BuildResult(properties);
   }
 
+  [WithoutTest]
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 

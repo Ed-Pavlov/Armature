@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Armature.Core;
@@ -18,7 +19,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType<IEnumerable<int>>().ToBuildSequence());
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType<IEnumerable<int>>().ToBuildChain());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<List<int>>().Key(key)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -39,7 +40,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType<IEnumerable<int>>().Key(key).ToBuildSequence());
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType<IEnumerable<int>>().Key(key).ToBuildChain());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<List<int>>().Key(key)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -60,7 +61,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType<string>().ToBuildSequence());
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType<string>().ToBuildChain());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<List<int>>()));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -81,7 +82,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType<string>().ToBuildSequence());
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType<string>().ToBuildChain());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<List<int>>()));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -103,7 +104,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType(typeof(IEnumerable<>)).ToBuildSequence());
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType(typeof(IEnumerable<>)).ToBuildChain());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<List<int>>()));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -124,7 +125,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType(typeof(IEnumerable<>)).ToBuildSequence());
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType(typeof(IEnumerable<>)).ToBuildChain());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<List<int>>()));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -146,7 +147,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType<Dictionary<int, int>>().ToBuildSequence());
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType<Dictionary<int, int>>().ToBuildChain());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<List<int>>()));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -167,7 +168,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildSequence).Returns(Unit.IsType<Dictionary<int, int>>().ToBuildSequence());
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType<Dictionary<int, int>>().ToBuildChain());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<List<int>>()));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -180,5 +181,25 @@ public class RedirectOpenGenericTypeTest
     actual.Should().NotThrow();
     buildUnitCall.MustNotHaveHappened();
     buildSession.BuildResult.HasValue.Should().BeFalse();
+  }
+
+  [Test]
+  public void should_check_type_argument_for_null([Values(null, "key")] object? key)
+  {
+    // --arrange
+    var actual = () => new RedirectOpenGenericType(null!, key, false);
+
+    // --assert
+    actual.Should().Throw<ArgumentNullException>().WithParameterName("redirectTo");
+  }
+
+  [Test]
+  public void should_check_type_argument([Values(null, "key")] object? key)
+  {
+    // --arrange
+    var actual = () => new RedirectOpenGenericType(typeof(string), key, false);
+
+    // --assert
+    actual.Should().Throw<ArgumentException>().WithParameterName("redirectTo");
   }
 }

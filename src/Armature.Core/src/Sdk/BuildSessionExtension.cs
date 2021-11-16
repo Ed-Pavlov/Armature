@@ -51,5 +51,5 @@ public static class BuildSessionExtension
   /// </summary>
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public static UnitId GetUnitUnderConstruction(this IBuildSession buildSession) => buildSession.BuildSequence.Last();
+  public static UnitId GetUnitUnderConstruction(this IBuildSession buildSession) => buildSession.BuildChain.Last();
 }

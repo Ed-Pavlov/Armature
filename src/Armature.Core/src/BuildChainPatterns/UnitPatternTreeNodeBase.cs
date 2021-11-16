@@ -4,13 +4,13 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Some base logic to reuse in unit building sequence patterns based on <see cref="IUnitPattern"/>
+/// Some base logic to reuse in build chain patterns based on <see cref="IUnitPattern"/>
 /// </summary>
-public abstract class UnitPatternTreeNodeBase : PatternTreeNodeBase
+public abstract class UnitBuildChainPatternBase : BuildChainPatternBase
 {
   protected readonly IUnitPattern UnitPattern;
 
-  protected UnitPatternTreeNodeBase(IUnitPattern unitPattern, int weight) : base(weight)
+  protected UnitBuildChainPatternBase(IUnitPattern unitPattern, int weight) : base(weight)
     => UnitPattern = unitPattern ?? throw new ArgumentNullException(nameof(unitPattern));
 
   protected override void PrintContentToLog(LogLevel logLevel)
@@ -19,7 +19,7 @@ public abstract class UnitPatternTreeNodeBase : PatternTreeNodeBase
     base.PrintContentToLog(logLevel);
   }
 
-  private bool Equals(UnitPatternTreeNodeBase? other)
+  private bool Equals(UnitBuildChainPatternBase? other)
   {
     if(ReferenceEquals(null, other)) return false;
     if(ReferenceEquals(this, other)) return true;
@@ -27,10 +27,10 @@ public abstract class UnitPatternTreeNodeBase : PatternTreeNodeBase
     return Weight == other.Weight && GetType() == other.GetType() && Equals(UnitPattern, other.UnitPattern);
   }
 
-  public override bool Equals(IPatternTreeNode? other) => Equals(other as UnitPatternTreeNodeBase);
+  public override bool Equals(IBuildChainPattern? other) => Equals(other as UnitBuildChainPatternBase);
   public override bool Equals(object?           obj)
   {
-    var result = Equals(obj as UnitPatternTreeNodeBase);
+    var result = Equals(obj as UnitBuildChainPatternBase);
     return result;
   }
 

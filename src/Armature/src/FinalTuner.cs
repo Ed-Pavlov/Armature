@@ -6,10 +6,10 @@ using Armature.Extensibility;
 
 namespace Armature;
 
-public class FinalTuner : UnitSequenceExtensibility
+public class FinalTuner : BuildChainExtensibility
 {
   [DebuggerStepThrough]
-  public FinalTuner(IPatternTreeNode parentNode) : base(parentNode) { }
+  public FinalTuner(IBuildChainPattern parentNode) : base(parentNode) { }
 
   /// <summary>
   ///   Provides arguments to inject into building unit. See <see cref="ForParameter" /> for details.
@@ -25,8 +25,8 @@ public class FinalTuner : UnitSequenceExtensibility
         throw new ArgumentException($"{nameof(IArgumentTuner)} or instances expected");
       else
         ParentNode
-         .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-         .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(argument.GetType()), WeightOf.BuildingUnitSequencePattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability))
+         .GetOrAddNode(new SkipWhileUnitBuildChain(Static.Of<IsServiceUnit>(), 0))
+         .GetOrAddNode(new IfFirstUnitBuildChain(new IsAssignableFromType(argument.GetType()), WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability))
          .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
 
     return this;
@@ -41,7 +41,7 @@ public class FinalTuner : UnitSequenceExtensibility
   }
 
   /// <summary>
-  ///   Register Unit as an singleton with a lifetime equal to parent <see cref="PatternTree"/>. See <see cref="Singleton" /> for details
+  ///   Register Unit as an singleton with a lifetime equal to parent <see cref="BuildChainPatternTree"/>. See <see cref="Singleton" /> for details
   /// </summary>
   public void AsSingleton() => ParentNode.UseBuildAction(new Singleton(), BuildStage.Cache);
 }

@@ -5,7 +5,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using Tests.Common;
 
-namespace Tests.UnitTests.UnitSequencePatterns;
+namespace Tests.UnitTests.BuildChainPatterns;
 
 public class SkipWhileUnitTest
 {
@@ -18,15 +18,15 @@ public class SkipWhileUnitTest
       var expected2 = new UnitId("expected1l", "expected");
 
       // --arrange
-      var target = new SkipWhileUnit(new UnitPattern(kind));
-      var child1 = A.Fake<IPatternTreeNode>();
-      var child2 = A.Fake<IPatternTreeNode>();
+      var target = new SkipWhileUnitBuildChain(new UnitPattern(kind));
+      var child1 = A.Fake<IBuildChainPattern>();
+      var child2 = A.Fake<IBuildChainPattern>();
       target.AddNode(child1);
       target.AddNode(child2);
 
       // --act
-      var sequence = new[] {new UnitId(kind, null), new UnitId(kind, null), new UnitId(kind, null), expected1, expected2}.ToArrayTail();
-      target.GatherBuildActions(sequence, 0);
+      var chain = new[] {new UnitId(kind, null), new UnitId(kind, null), new UnitId(kind, null), expected1, expected2}.ToArrayTail();
+      target.GatherBuildActions(chain, 0);
 
       // --assert
       A.CallTo(
@@ -50,15 +50,15 @@ public class SkipWhileUnitTest
       var expected = new UnitId("expected", "expected");
 
       // --arrange
-      var target = new SkipWhileUnit(new UnitPattern(kind));
-      var child1 = A.Fake<IPatternTreeNode>();
-      var child2 = A.Fake<IPatternTreeNode>();
+      var target = new SkipWhileUnitBuildChain(new UnitPattern(kind));
+      var child1 = A.Fake<IBuildChainPattern>();
+      var child2 = A.Fake<IBuildChainPattern>();
       target.AddNode(child1);
       target.AddNode(child2);
 
       // --act
-      var sequence = new[] {new UnitId(kind, null), new UnitId(kind, null), new UnitId(kind, null), expected}.ToArrayTail();
-      target.GatherBuildActions(sequence, 0);
+      var chain = new[] {new UnitId(kind, null), new UnitId(kind, null), new UnitId(kind, null), expected}.ToArrayTail();
+      target.GatherBuildActions(chain, 0);
 
       // --assert
       // --assert
@@ -83,15 +83,15 @@ public class SkipWhileUnitTest
       const int    inputWeight   = 21;
 
       // --arrange
-      var target = new SkipWhileUnit(new UnitPattern(kind), patternWeight);
-      var child1 = A.Fake<IPatternTreeNode>();
-      var child2 = A.Fake<IPatternTreeNode>();
+      var target = new SkipWhileUnitBuildChain(new UnitPattern(kind), patternWeight);
+      var child1 = A.Fake<IBuildChainPattern>();
+      var child2 = A.Fake<IBuildChainPattern>();
       target.AddNode(child1);
       target.AddNode(child2);
 
       // --act
-      var sequence = new[] {new UnitId(kind, null), new UnitId(kind, null), new UnitId("not" + kind, null)}.ToArrayTail();
-      target.GatherBuildActions(sequence, inputWeight);
+      var chain = new[] {new UnitId(kind, null), new UnitId(kind, null), new UnitId("not" + kind, null)}.ToArrayTail();
+      target.GatherBuildActions(chain, inputWeight);
 
       // --assert
       A.CallTo(() => child1.GatherBuildActions(An<ArrayTail<UnitId>>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
@@ -102,7 +102,7 @@ public class SkipWhileUnitTest
     public void should_check_arguments_validity()
     {
       // --arrange
-      var target = () => new SkipWhileUnit(null!);
+      var target = () => new SkipWhileUnitBuildChain(null!);
 
       // --assert
       target.Should().ThrowExactly<ArgumentNullException>().WithParameterName("unitPattern");

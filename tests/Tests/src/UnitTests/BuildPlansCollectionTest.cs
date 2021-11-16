@@ -17,10 +17,10 @@ namespace Tests.UnitTests
 
       // --arrange
       var unitIdMatcher = Match.Type<string>(null);
-      var matchString   = new IfFirstUnit(unitIdMatcher).UseBuildAction(new CreateByReflection(), BuildStage.Cache);
-      var matchAny      = new SkipTillUnit(unitIdMatcher).UseBuildAction(singletonAction, BuildStage.Cache);
+      var matchString   = new IfFirstUnitBuildChain(unitIdMatcher).UseBuildAction(new CreateByReflection(), BuildStage.Cache);
+      var matchAny      = new SkipTillUnitBuildChain(unitIdMatcher).UseBuildAction(singletonAction, BuildStage.Cache);
 
-      var target = new PatternTree();
+      var target = new BuildChainPatternTree();
       target.Children.Add(matchString);
       target.Children.Add(matchAny);
 

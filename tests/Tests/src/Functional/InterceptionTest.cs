@@ -31,7 +31,7 @@ namespace Tests.Functional
 
       target
        .GetOrAddNode(new SkipAllUnits())
-       .AddNode(new IfFirstUnit(new StringParameterPattern()))
+       .AddNode(new IfFirstUnitBuildChain(new StringParameterPattern()))
        .UseBuildAction(new AddPostfixToString(Postfix), BuildStage.Intercept);
 
       // --act
@@ -86,13 +86,13 @@ namespace Tests.Functional
          {
            new SkipAllUnits
            {
-             new IfFirstUnit(new IsConstructor())
+             new IfFirstUnitBuildChain(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
 
-             new IfFirstUnit(new IsParameterInfoList())
+             new IfFirstUnitBuildChain(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
 
-             new IfFirstUnit(new IsParameterInfo())
+             new IfFirstUnitBuildChain(new IsParameterInfo())
               .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
            }
          };

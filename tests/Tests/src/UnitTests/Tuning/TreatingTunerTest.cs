@@ -8,13 +8,13 @@ using NUnit.Framework;
 
 namespace Tests.UnitTests.Tuning;
 
-public class TreatTunerTest
+public class TreatingTunerTest
 {
   [Test]
   public void As([Values(null, "key")] string key)
   {
     // --arrange
-    var actual = new Util.TestPatternTreeNode();
+    var actual = new Util.TestBuildChainPattern();
     var target = new TreatingTuner<IDisposable>(actual);
 
     // --act
@@ -27,7 +27,7 @@ public class TreatTunerTest
   public void AsT([Values(null, "key")] string key)
   {
     // --arrange
-    var actual = new Util.TestPatternTreeNode();
+    var actual = new Util.TestBuildChainPattern();
     var target = new TreatingTuner<IDisposable>(actual);
 
     // --act
@@ -41,11 +41,11 @@ public class TreatTunerTest
   public void AsCreated([Values(null, "key")] string key)
   {
     var expectedBuildActions = Util.CreateBag(BuildStage.Create, new RedirectType(typeof(MemoryStream), key));
-    var expectedChildNode = new IfFirstUnit(new UnitPattern(typeof(MemoryStream), key))
+    var expectedChildNode = new IfFirstUnitBuildChain(new UnitPattern(typeof(MemoryStream), key))
      .UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
 
     // --arrange
-    var actual = new Util.TestPatternTreeNode();
+    var actual = new Util.TestBuildChainPattern();
     var target = new TreatingTuner<IDisposable>(actual);
 
     // --act
@@ -60,11 +60,11 @@ public class TreatTunerTest
   public void AsCreatedT([Values(null, "key")] string key)
   {
     var expectedBuildActions = Util.CreateBag(BuildStage.Create, new RedirectType(typeof(MemoryStream), key));
-    var expectedChildNode = new IfFirstUnit(new UnitPattern(typeof(MemoryStream), key))
+    var expectedChildNode = new IfFirstUnitBuildChain(new UnitPattern(typeof(MemoryStream), key))
      .UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
 
     // --arrange
-    var actual = new Util.TestPatternTreeNode();
+    var actual = new Util.TestBuildChainPattern();
     var target = new TreatingTuner<IDisposable>(actual);
 
     // --act
@@ -82,7 +82,7 @@ public class TreatTunerTest
     var expectedBuildActions = Util.CreateBag(BuildStage.Cache, new Instance<IDisposable>(expectedInstance));
 
     // --arrange
-    var actual = new Util.TestPatternTreeNode();
+    var actual = new Util.TestBuildChainPattern();
     var target = new TreatingTuner<IDisposable>(actual);
 
     // --act
@@ -98,7 +98,7 @@ public class TreatTunerTest
     var expectedBuildActions = Util.CreateBag(BuildStage.Create, Default.CreationBuildAction);
 
     // --arrange
-    var actual = new Util.TestPatternTreeNode();
+    var actual = new Util.TestBuildChainPattern();
     var target = new TreatingTuner<MemoryStream>(actual);
 
     // --act
@@ -116,7 +116,7 @@ public class TreatTunerTest
     var expectedBuildActions = Util.CreateBag(BuildStage.Create, new CreateWithFactoryMethod<IDisposable>(factoryMethod));
 
     // --arrange
-    var actual = new Util.TestPatternTreeNode();
+    var actual = new Util.TestBuildChainPattern();
     var target = new TreatingTuner<IDisposable>(actual);
 
     // --act

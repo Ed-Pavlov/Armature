@@ -4,11 +4,11 @@ using Armature.Core;
 
 namespace Armature.Extensibility;
 
-public abstract class UnitSequenceExtensibility : IUnitSequenceExtensibility
+public abstract class BuildChainExtensibility : IBuildChainExtensibility
 {
-  protected readonly IPatternTreeNode ParentNode;
+  protected readonly IBuildChainPattern ParentNode;
 
-  protected UnitSequenceExtensibility(IPatternTreeNode parentNode) => ParentNode = parentNode ?? throw new ArgumentNullException(nameof(parentNode));
+  protected BuildChainExtensibility(IBuildChainPattern parentNode) => ParentNode = parentNode ?? throw new ArgumentNullException(nameof(parentNode));
 
-  IPatternTreeNode IUnitSequenceExtensibility.PatternTreeNode => ParentNode;
+  IBuildChainPattern IBuildChainExtensibility.BuildChainPattern => ParentNode;
 }
