@@ -26,7 +26,7 @@ public class RootTuner : BuildChainExtensibility
   {
     if(type is null) throw new ArgumentNullException(nameof(type));
 
-    var patternMatcher = new SkipTillUnitBuildChain(new UnitPattern(type, key), Weight);
+    var patternMatcher = new SkipTillUnit(new UnitPattern(type, key), Weight);
     return new RootTuner(ParentNode.GetOrAddNode(patternMatcher));
   }
 
@@ -45,7 +45,7 @@ public class RootTuner : BuildChainExtensibility
     if(type is null) throw new ArgumentNullException(nameof(type));
     if(type.IsGenericTypeDefinition) throw new ArgumentException($"Use {nameof(TreatOpenGeneric)} to setup open generic types.");
 
-    var patternMatcher = new SkipTillUnitBuildChain(
+    var patternMatcher = new SkipTillUnit(
       new UnitPattern(type, key),
       Weight + WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.ExactTypePattern);
 
@@ -59,7 +59,7 @@ public class RootTuner : BuildChainExtensibility
   public TreatingTuner<T> Treat<T>(object? key = null)
     => new(
       ParentNode.GetOrAddNode(
-        new SkipTillUnitBuildChain(
+        new SkipTillUnit(
           new UnitPattern(typeof(T), key),
           Weight
         + WeightOf.BuildContextPattern.Neutral
@@ -71,7 +71,7 @@ public class RootTuner : BuildChainExtensibility
   /// </summary>
   public TreatingOpenGenericTuner TreatOpenGeneric(Type openGenericType, object? key = null)
   {
-    var patternMatcher = new SkipTillUnitBuildChain(
+    var patternMatcher = new SkipTillUnit(
       new IsGenericOfDefinition(openGenericType, key),
       Weight + WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.OpenGenericPattern);
 
@@ -84,7 +84,7 @@ public class RootTuner : BuildChainExtensibility
   /// </summary>
   public TreatingTuner TreatInheritorsOf(Type baseType, object? key = null)
   {
-    var patternMatcher = new SkipTillUnitBuildChain(
+    var patternMatcher = new SkipTillUnit(
       new IsInheritorOf(baseType, key),
       Weight + WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.SubtypePattern);
 
@@ -97,7 +97,7 @@ public class RootTuner : BuildChainExtensibility
   /// </summary>
   public TreatingTuner<T> TreatInheritorsOf<T>(object? key = null)
   {
-    var patternMatcher = new SkipTillUnitBuildChain(
+    var patternMatcher = new SkipTillUnit(
       new IsInheritorOf(typeof(T), key),
       Weight
     + WeightOf.BuildContextPattern.Neutral

@@ -12,7 +12,7 @@ public static class AutoBuild
   {
     public IArgumentTuner InDirectOrder { get; } = new ArgumentTuner(
       node => node
-             .GetOrAddNode(new IfFirstUnitBuildChain(Static.Of<IsParameterInfoList>()))
+             .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoList>()))
              .UseBuildAction(Static.Of<BuildMethodArgumentsInDirectOrder>(), BuildStage.Create));
   }
 
@@ -23,12 +23,12 @@ public static class AutoBuild
 
     public IArgumentTuner Type { get; } = new ArgumentTuner(
       node => node
-             .GetOrAddNode(new IfFirstUnitBuildChain(Static.Of<IsParameterInfo>(), WeightOf.BuildContextPattern.IfFirstUnit + ByTypeWeight))
+             .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfo>(), WeightOf.BuildContextPattern.IfFirstUnit + ByTypeWeight))
              .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create));
 
     public IArgumentTuner Name { get; } = new ArgumentTuner(
       node => node
-             .GetOrAddNode(new IfFirstUnitBuildChain(Static.Of<IsParameterInfo>(), WeightOf.BuildContextPattern.IfFirstUnit + ByNameWeight))
+             .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfo>(), WeightOf.BuildContextPattern.IfFirstUnit + ByNameWeight))
              .UseBuildAction(Static.Of<BuildArgumentByParameterName>(), BuildStage.Create));
   }
 }

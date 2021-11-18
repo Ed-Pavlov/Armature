@@ -5,10 +5,10 @@ namespace Armature.Core;
 /// <summary>
 ///   Moves along the build chain skipping units until it encounters a matching unit. Behaves like string search with wildcard.
 /// </summary>
-public class SkipTillUnitBuildChain : UnitBuildChainPatternBase
+public class SkipTillUnit : BuildChainPatternByUnitBase
 {
-  public SkipTillUnitBuildChain(IUnitPattern pattern) : base(pattern, WeightOf.BuildContextPattern.Neutral) { }
-  public SkipTillUnitBuildChain(IUnitPattern pattern, int weight) : base(pattern, weight) { }
+  public SkipTillUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildContextPattern.Neutral) { }
+  public SkipTillUnit(IUnitPattern pattern, int weight) : base(pattern, weight) { }
 
   /// <summary>
   ///   Moves along the build chain skipping units until it finds the matching unit.
@@ -16,7 +16,7 @@ public class SkipTillUnitBuildChain : UnitBuildChainPatternBase
   /// </summary>
   public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight)
   {
-    using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipTillUnitBuildChain)))
+    using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipTillUnit)))
     {
       Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight}");
 

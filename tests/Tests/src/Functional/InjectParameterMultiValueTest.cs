@@ -62,7 +62,7 @@ namespace Tests.Functional
            new SkipAllUnits
            {
              // inject into constructor
-             new IfFirstUnitBuildChain(new IsConstructor())
+             new IfFirstUnit(new IsConstructor())
               .UseBuildAction(
                  new TryInOrder
                  {
@@ -70,9 +70,9 @@ namespace Tests.Functional
                    Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
-             new IfFirstUnitBuildChain(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             new IfFirstUnitBuildChain(new IsParameterInfo())
+             new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(
                  new TryInOrder()
                  {

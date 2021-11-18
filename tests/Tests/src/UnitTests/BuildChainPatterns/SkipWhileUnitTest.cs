@@ -18,7 +18,7 @@ public class SkipWhileUnitTest
       var expected2 = new UnitId("expected1l", "expected");
 
       // --arrange
-      var target = new SkipWhileUnitBuildChain(new UnitPattern(kind));
+      var target = new SkipWhileUnit(new UnitPattern(kind));
       var child1 = A.Fake<IBuildChainPattern>();
       var child2 = A.Fake<IBuildChainPattern>();
       target.AddNode(child1);
@@ -50,7 +50,7 @@ public class SkipWhileUnitTest
       var expected = new UnitId("expected", "expected");
 
       // --arrange
-      var target = new SkipWhileUnitBuildChain(new UnitPattern(kind));
+      var target = new SkipWhileUnit(new UnitPattern(kind));
       var child1 = A.Fake<IBuildChainPattern>();
       var child2 = A.Fake<IBuildChainPattern>();
       target.AddNode(child1);
@@ -83,7 +83,7 @@ public class SkipWhileUnitTest
       const int    inputWeight   = 21;
 
       // --arrange
-      var target = new SkipWhileUnitBuildChain(new UnitPattern(kind), patternWeight);
+      var target = new SkipWhileUnit(new UnitPattern(kind), patternWeight);
       var child1 = A.Fake<IBuildChainPattern>();
       var child2 = A.Fake<IBuildChainPattern>();
       target.AddNode(child1);
@@ -102,7 +102,7 @@ public class SkipWhileUnitTest
     public void should_check_arguments_validity()
     {
       // --arrange
-      var target = () => new SkipWhileUnitBuildChain(null!);
+      var target = () => new SkipWhileUnit(null!);
 
       // --assert
       target.Should().ThrowExactly<ArgumentNullException>().WithParameterName("unitPattern");

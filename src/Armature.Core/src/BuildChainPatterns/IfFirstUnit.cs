@@ -5,10 +5,10 @@ namespace Armature.Core;
 /// <summary>
 ///   Checks if the first unit in the build chain matches the specified pattern.
 /// </summary>
-public class IfFirstUnitBuildChain : UnitBuildChainPatternBase
+public class IfFirstUnit : BuildChainPatternByUnitBase
 {
-  public IfFirstUnitBuildChain(IUnitPattern pattern) : base(pattern, WeightOf.BuildContextPattern.IfFirstUnit) { }
-  public IfFirstUnitBuildChain(IUnitPattern pattern, int weight) : base(pattern, weight) { }
+  public IfFirstUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildContextPattern.IfFirstUnit) { }
+  public IfFirstUnit(IUnitPattern pattern, int weight) : base(pattern, weight) { }
 
   /// <summary>
   ///   Checks if the first unit in the build chain matches the specified patter.
@@ -16,7 +16,7 @@ public class IfFirstUnitBuildChain : UnitBuildChainPatternBase
   /// </summary>
   public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight)
   {
-    using(Log.NamedBlock(LogLevel.Verbose, nameof(IfFirstUnitBuildChain)))
+    using(Log.NamedBlock(LogLevel.Verbose, nameof(IfFirstUnit)))
     {
       Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight}");
 

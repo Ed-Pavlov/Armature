@@ -59,7 +59,7 @@ public class WeightOf
   public class BuildContextPattern
   {
     /// <summary>
-    /// Neutral weight, by default is used in <see cref="SkipTillUnitBuildChain"/> and <see cref="SkipWhileUnitBuildChain"/> build chain patterns, in order
+    /// Neutral weight, by default is used in <see cref="SkipTillUnit"/> and <see cref="SkipWhileUnit"/> build chain patterns, in order
     /// to not "longest" registration branch take over "shorter" one. All ambiguity should be resolved by user.
     /// </summary>
     /// <remarks>!!! BE CAREFUL !!! Changing this value could lead unpredictable result in which registrations take over which.
@@ -74,7 +74,7 @@ public class WeightOf
     public static short SkipAllUnits { get; protected set; } = (short) (Neutral - Step);
 
     /// <summary>
-    /// By default the weight of <see cref="IfFirstUnitBuildChain"/> build chain pattern's weight is increased in order to registrations
+    /// By default the weight of <see cref="IfFirstUnit"/> build chain pattern's weight is increased in order to registrations
     /// like
     ///  builder.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(MyType))))
     ///         .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(typeof(string))))
@@ -88,7 +88,7 @@ public class WeightOf
     /// Because the first one is a "personal" registration whereas the second one will be applied to all units building
     /// in the context of "MyType".
     ///
-    /// Note that provided sample is "synthetic" see <see cref="SpecialKey"/> and <see cref="SkipWhileUnitBuildChain"/> for details.
+    /// Note that provided sample is "synthetic" see <see cref="SpecialKey"/> and <see cref="SkipWhileUnit"/> for details.
     /// </summary>
     public static short IfFirstUnit { get; protected set; } = (short) (Neutral + Step);
   }

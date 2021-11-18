@@ -6,7 +6,7 @@ using Armature.Core.Sdk;
 
 namespace Armature.Core;
 
-public static class PatternTreeExtension
+public static class BuildChainPatternTreeExtension
 {
   /// <summary>
   /// Adds a <paramref name="node" /> to the <see cref="IBuildChainPattern.Children"/> collection of <paramref name="parentNode"/>

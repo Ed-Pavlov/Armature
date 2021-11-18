@@ -18,7 +18,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipAllUnits {new IfFirstUnitBuildChain(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                     new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
                    };
 
       target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type); //TODO: i'm not sure that it is a good idea to use UsingArguments to tune meta behaviour
@@ -40,7 +40,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Create)
                    {
-                     new SkipAllUnits {new IfFirstUnitBuildChain(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                     new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
                    };
 
       target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
@@ -63,7 +63,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipAllUnits {new IfFirstUnitBuildChain(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                     new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
                    };
 
       target.TreatAll().UsingArguments(AutoBuild.MethodParameters.InDirectOrder, AutoBuild.ByParameter.Type);
@@ -87,7 +87,7 @@ namespace Tests.Functional
                    {
                      new SkipAllUnits
                      {
-                       new IfFirstUnitBuildChain(new IsConstructor()).UseBuildAction(
+                       new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
                            new GetConstructorByInjectPointId(),
                            new GetConstructorWithMaxParametersCount(),
@@ -119,7 +119,7 @@ namespace Tests.Functional
                    {
                      new SkipAllUnits
                      {
-                       new IfFirstUnitBuildChain(new IsConstructor()).UseBuildAction(
+                       new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
                            new GetConstructorByInjectPointId(),
                            new GetConstructorWithMaxParametersCount(),
@@ -152,7 +152,7 @@ namespace Tests.Functional
                    {
                      new SkipAllUnits
                      {
-                       new IfFirstUnitBuildChain(new IsConstructor()).UseBuildAction(
+                       new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
                            new GetConstructorByInjectPointId(),
                            new GetConstructorWithMaxParametersCount(),

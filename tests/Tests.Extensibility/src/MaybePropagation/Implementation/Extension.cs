@@ -17,7 +17,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
       treat.BuildChainPattern.UseBuildAction(new BuildMaybeAction<T>(uniqueKey), BuildStage.Create);
 
       return new TreatingTuner<T>(
-        treat.BuildChainPattern.GetOrAddNode(new SkipTillUnitBuildChain(new UnitPattern(typeof(T), uniqueKey), 0)));
+        treat.BuildChainPattern.GetOrAddNode(new SkipTillUnit(new UnitPattern(typeof(T), uniqueKey), 0)));
     }
 
     /// <summary>

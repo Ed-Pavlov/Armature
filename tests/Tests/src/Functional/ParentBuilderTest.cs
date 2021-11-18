@@ -216,7 +216,7 @@ namespace Tests.Functional
       // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder
       target
        .GetOrAddNode(new SkipAllUnits())
-       .AddNode(new IfFirstUnitBuildChain(new CanBeInstantiated()))
+       .AddNode(new IfFirstUnit(new CanBeInstantiated()))
        .UseBuildAction(new DebugOnlyBuildAction(), BuildStage.Cache);
 
       // --act
@@ -253,11 +253,11 @@ namespace Tests.Functional
          {
            new SkipAllUnits
            {
-             new IfFirstUnitBuildChain(new IsConstructor())
+             new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
-             new IfFirstUnitBuildChain(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoList())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             new IfFirstUnitBuildChain(new IsParameterInfo())
+             new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
            }
          };

@@ -126,7 +126,7 @@ namespace Tests.Performance
 
       var unitMatcher = new UnitPatternWrapper(new UnitPattern(unitId.Kind, unitId.Key));
 
-      var query = new SkipTillUnitBuildChain(unitMatcher);
+      var query = new SkipTillUnit(unitMatcher);
 
       return new TreatingTuner(buildPlans.GetOrAddNode(query));
     }
@@ -167,7 +167,7 @@ namespace Tests.Performance
       var treatAll = new SkipAllUnits
                      {
                        // inject into constructor
-                       new IfFirstUnitBuildChain(new IsConstructor())
+                       new IfFirstUnit(new IsConstructor())
                         .UseBuildAction(
                            new TryInOrder
                            {
@@ -175,14 +175,14 @@ namespace Tests.Performance
                              Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has less priority
                            },
                            BuildStage.Create),
-                       new IfFirstUnitBuildChain(new IsParameterInfo())
+                       new IfFirstUnit(new IsParameterInfo())
                         .UseBuildAction(
                            new TryInOrder
                            {
                              Static.Of<BuildArgumentByParameterInjectPointId>(), Static.Of<BuildArgumentByParameterType>()
                            },
                            BuildStage.Create),
-                       new IfFirstUnitBuildChain(new IsPropertyInfo())
+                       new IfFirstUnit(new IsPropertyInfo())
                         .UseBuildAction(new TryInOrder {new BuildArgumentByPropertyType()}, BuildStage.Create)
                      };
 

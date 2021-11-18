@@ -21,7 +21,7 @@ namespace Tests.UnitTests.BuildChainPatterns
       var expected2 = new UnitId("expected1l", "expected");
 
       // --arrange
-      var target = new SkipTillUnitBuildChain(new UnitPattern(kind));
+      var target = new SkipTillUnit(new UnitPattern(kind));
       var child1 = A.Fake<IBuildChainPattern>();
       var child2 = A.Fake<IBuildChainPattern>();
       target.AddNode(child1);
@@ -52,7 +52,7 @@ namespace Tests.UnitTests.BuildChainPatterns
       var expected2 = new UnitId("expected1l", "expected");
 
       // --arrange
-      var target = new SkipTillUnitBuildChain(new UnitPattern("absent"));
+      var target = new SkipTillUnit(new UnitPattern("absent"));
       var child1 = A.Fake<IBuildChainPattern>();
       var child2 = A.Fake<IBuildChainPattern>();
       target.AddNode(child1);
@@ -75,7 +75,7 @@ namespace Tests.UnitTests.BuildChainPatterns
       const int    inputWeight   = 21;
 
       // --arrange
-      var target = new SkipTillUnitBuildChain(new UnitPattern(kind), patternWeight);
+      var target = new SkipTillUnit(new UnitPattern(kind), patternWeight);
       var child1 = A.Fake<IBuildChainPattern>();
       var child2 = A.Fake<IBuildChainPattern>();
       target.AddNode(child1);
@@ -94,7 +94,7 @@ namespace Tests.UnitTests.BuildChainPatterns
     public void should_check_arguments_validity()
     {
       // --arrange
-      var target = () => new SkipTillUnitBuildChain(null!);
+      var target = () => new SkipTillUnit(null!);
 
       // --assert
       target.Should().ThrowExactly<ArgumentNullException>().WithParameterName("unitPattern");
@@ -105,14 +105,14 @@ namespace Tests.UnitTests.BuildChainPatterns
     {
       // --arrange
       var unitIdMatcher = Match.Type<int>(null);
-      var buildStep1    = new IfFirstUnitBuildChain(unitIdMatcher);
+      var buildStep1    = new IfFirstUnit(unitIdMatcher);
       buildStep1.UseBuildAction(Static.Of<CreateByReflection>(), BuildStage.Cache);
 
       var singletonAction = new Singleton();
-      var buildStep2      = new SkipTillUnitBuildChain(unitIdMatcher);
+      var buildStep2      = new SkipTillUnit(unitIdMatcher);
       buildStep2.UseBuildAction(singletonAction, BuildStage.Cache);
 
-      var target = new SkipTillUnitBuildChain(Match.Type<string>(null));
+      var target = new SkipTillUnit(Match.Type<string>(null));
       target.GetOrAddNode(buildStep1);
       target.GetOrAddNode(buildStep2);
 

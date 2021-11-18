@@ -46,11 +46,11 @@ namespace Tests.Functional.WeightTests
              new SkipAllUnits
              {
                  // inject into constructor
-                 new IfFirstUnitBuildChain(new IsConstructor())
+                 new IfFirstUnit(new IsConstructor())
                     .UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
-                 new IfFirstUnitBuildChain(new IsParameterInfoList())
+                 new IfFirstUnit(new IsParameterInfoList())
                     .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-                 new IfFirstUnitBuildChain(new IsParameterInfo())
+                 new IfFirstUnit(new IsParameterInfo())
                     .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
              }
          };

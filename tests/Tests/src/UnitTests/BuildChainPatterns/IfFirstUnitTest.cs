@@ -17,7 +17,7 @@ public class IfFirstUnitTest
     var expected = new UnitId("expected", "expected");
 
     // --arrange
-    var target   = new IfFirstUnitBuildChain(new UnitPattern(kind));
+    var target   = new IfFirstUnit(new UnitPattern(kind));
     var child1 = A.Fake<IBuildChainPattern>();
     var child2 = A.Fake<IBuildChainPattern>();
     target.AddNode(child1);
@@ -42,7 +42,7 @@ public class IfFirstUnitTest
     var expected = new UnitId("expected", "expected");
 
     // --arrange
-    var target   = new IfFirstUnitBuildChain(new UnitPattern(kind));
+    var target   = new IfFirstUnit(new UnitPattern(kind));
     var child1 = A.Fake<IBuildChainPattern>();
     var child2 = A.Fake<IBuildChainPattern>();
     target.AddNode(child1);
@@ -65,7 +65,7 @@ public class IfFirstUnitTest
     const int inputWeight   = 21;
 
     // --arrange
-    var target   = new IfFirstUnitBuildChain(new UnitPattern(kind), patternWeight);
+    var target   = new IfFirstUnit(new UnitPattern(kind), patternWeight);
     var child1 = A.Fake<IBuildChainPattern>();
     var child2 = A.Fake<IBuildChainPattern>();
     target.AddNode(child1);
@@ -84,7 +84,7 @@ public class IfFirstUnitTest
   public void should_check_arguments_validity()
   {
     // --arrange
-    var target = () => new IfFirstUnitBuildChain(null!);
+    var target = () => new IfFirstUnit(null!);
 
     // --assert
     target.Should().ThrowExactly<ArgumentNullException>().WithParameterName("unitPattern");

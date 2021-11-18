@@ -12,7 +12,7 @@ public static class Constructor
   /// </summary>
   public static IInjectPointTuner WithMaxParametersCount(short weight = 0) //TODO: what to do with weights?
     => new InjectPointTuner(
-      node => node.GetOrAddNode(new IfFirstUnitBuildChain(Static.Of<IsConstructor>(), weight))
+      node => node.GetOrAddNode(new IfFirstUnit(Static.Of<IsConstructor>(), weight))
                   .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create));
 
   /// <summary>
@@ -20,7 +20,7 @@ public static class Constructor
   /// </summary>
   public static IInjectPointTuner MarkedWithInjectAttribute(object? injectionPointId, short weight = 0)
     => new InjectPointTuner(
-      node => node.GetOrAddNode(new IfFirstUnitBuildChain(Static.Of<IsConstructor>(), weight))
+      node => node.GetOrAddNode(new IfFirstUnit(Static.Of<IsConstructor>(), weight))
                   .UseBuildAction(new GetConstructorByInjectPointId(injectionPointId), BuildStage.Create));
 
   /// <summary>
@@ -55,6 +55,6 @@ public static class Constructor
   [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
   public static IInjectPointTuner WithParameters(params Type[] parameterTypes)
     => new InjectPointTuner(
-      node => node.GetOrAddNode(new IfFirstUnitBuildChain(Static.Of<IsConstructor>()))
+      node => node.GetOrAddNode(new IfFirstUnit(Static.Of<IsConstructor>()))
                   .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
 }

@@ -74,9 +74,9 @@ public class TypeRegistrationTest
        {
          new SkipAllUnits
          {
-           new IfFirstUnitBuildChain(new IsConstructor()).UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
-           new IfFirstUnitBuildChain(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-           new IfFirstUnitBuildChain(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
+           new IfFirstUnit(new IsConstructor()).UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
+           new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+           new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
          }
        };
 

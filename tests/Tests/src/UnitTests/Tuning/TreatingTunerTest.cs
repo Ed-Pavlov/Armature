@@ -41,7 +41,7 @@ public class TreatingTunerTest
   public void AsCreated([Values(null, "key")] string key)
   {
     var expectedBuildActions = Util.CreateBag(BuildStage.Create, new RedirectType(typeof(MemoryStream), key));
-    var expectedChildNode = new IfFirstUnitBuildChain(new UnitPattern(typeof(MemoryStream), key))
+    var expectedChildNode = new IfFirstUnit(new UnitPattern(typeof(MemoryStream), key))
      .UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
 
     // --arrange
@@ -60,7 +60,7 @@ public class TreatingTunerTest
   public void AsCreatedT([Values(null, "key")] string key)
   {
     var expectedBuildActions = Util.CreateBag(BuildStage.Create, new RedirectType(typeof(MemoryStream), key));
-    var expectedChildNode = new IfFirstUnitBuildChain(new UnitPattern(typeof(MemoryStream), key))
+    var expectedChildNode = new IfFirstUnit(new UnitPattern(typeof(MemoryStream), key))
      .UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
 
     // --arrange

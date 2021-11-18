@@ -14,13 +14,10 @@ public class SkipAllUnits : BuildChainPatternWithChildrenBase
   [WithoutTest]
   public override BuildActionBag BuildActions
     => throw new NotSupportedException(
-         "This pattern is used to skip a build chain to the unit under construction (the last one) and pass it to children."
+         "This pattern is used to skip a build context right to the unit under construction and pass it to children."
        + "It can't contain build actions due to they are used to build the unit under construction only."
        );
 
-  /// <summary>
-  ///   Decreases the matching weight by each skipped unit then pass unit under construction to children nodes
-  /// </summary>
   public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight)
   {
     using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipAllUnits)))

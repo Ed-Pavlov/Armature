@@ -25,8 +25,8 @@ public class FinalTuner : BuildChainExtensibility
         throw new ArgumentException($"{nameof(IArgumentTuner)} or instances expected");
       else
         ParentNode
-         .GetOrAddNode(new SkipWhileUnitBuildChain(Static.Of<IsServiceUnit>(), 0))
-         .GetOrAddNode(new IfFirstUnitBuildChain(new IsAssignableFromType(argument.GetType()), WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability))
+         .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
+         .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(argument.GetType()), WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability))
          .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
 
     return this;

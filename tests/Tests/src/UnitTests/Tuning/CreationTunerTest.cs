@@ -13,7 +13,7 @@ public class CreationTunerTest
   public void should_add_default_creation_strategy([Values(null, "key")] object? key)
   {
     var expectedType = typeof(IDisposable);
-    var expected     = new IfFirstUnitBuildChain(new UnitPattern(expectedType, key)).UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
+    var expected     = new IfFirstUnit(new UnitPattern(expectedType, key)).UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
 
     // --arrange
     var actual = new BuildChainPatternTree();
@@ -30,7 +30,7 @@ public class CreationTunerTest
   public void should_add_reflection_creation_strategy([Values(null, "key")] object? key)
   {
     var expectedType = typeof(IDisposable);
-    var expected     = new IfFirstUnitBuildChain(new UnitPattern(expectedType, key)).UseBuildAction(new CreateByReflection(), BuildStage.Create);
+    var expected     = new IfFirstUnit(new UnitPattern(expectedType, key)).UseBuildAction(new CreateByReflection(), BuildStage.Create);
 
     // --arrange
     var actual = new BuildChainPatternTree();

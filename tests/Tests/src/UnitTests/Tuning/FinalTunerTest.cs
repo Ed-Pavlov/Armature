@@ -72,13 +72,13 @@ public class FinalTunerTest
     var expectedWeight = WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability;
 
     var expectedChildNode =
-      new SkipWhileUnitBuildChain(Static.Of<IsServiceUnit>())
+      new SkipWhileUnit(Static.Of<IsServiceUnit>())
       {
         Children =
         {
-          new IfFirstUnitBuildChain(new IsAssignableFromType(expectedString.GetType()), expectedWeight)
+          new IfFirstUnit(new IsAssignableFromType(expectedString.GetType()), expectedWeight)
            .UseBuildAction(new Instance<object>(expectedString), BuildStage.Cache),
-          new IfFirstUnitBuildChain(new IsAssignableFromType(expectedInt.GetType()), expectedWeight)
+          new IfFirstUnit(new IsAssignableFromType(expectedInt.GetType()), expectedWeight)
            .UseBuildAction(new Instance<object>(expectedInt), BuildStage.Cache)
         }
       };

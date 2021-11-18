@@ -37,7 +37,7 @@ public class TreatingOpenGenericTunerTest
   {
     var expectedType   = typeof(List<>);
     var expectedAction = new RedirectOpenGenericType(expectedType, key);
-    var expectedChild = new IfFirstUnitBuildChain(new IsGenericOfDefinition(expectedType, key))
+    var expectedChild = new IfFirstUnit(new IsGenericOfDefinition(expectedType, key))
        .UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
 
     // --arrange
