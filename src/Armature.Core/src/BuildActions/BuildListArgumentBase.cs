@@ -20,7 +20,10 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
 
   private readonly object? _key;
 
+  [WithoutTest]
+  [DebuggerStepThrough]
   protected BuildListArgumentBase() { }
+  [DebuggerStepThrough]
   protected BuildListArgumentBase(object? key) => _key = key;
 
   public void Process(IBuildSession buildSession)

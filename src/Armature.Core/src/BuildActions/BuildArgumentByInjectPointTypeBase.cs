@@ -12,6 +12,7 @@ public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogSt
 {
   private readonly object? _key;
 
+  [WithoutTest]
   protected BuildArgumentByInjectPointTypeBase() {}
   protected BuildArgumentByInjectPointTypeBase(object? key) => _key = key;
 

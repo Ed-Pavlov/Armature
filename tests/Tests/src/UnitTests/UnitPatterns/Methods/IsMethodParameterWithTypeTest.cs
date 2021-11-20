@@ -31,6 +31,23 @@ public class IsMethodParameterWithTypeTest
   }
 
   [Test]
+  public void should_match_only_argument_special_key([Values(null, "key")] object? key)
+  {
+    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(int))!;
+
+    // --arrange
+    var typePattern = A.Fake<IUnitPattern>();
+    var target      = new IsMethodParameterWithType(typePattern);
+    var unitId      = new UnitId(parameterInfo, key);
+
+    // --act
+    target.Matches(unitId);
+
+    // --assert
+    A.CallTo(() => typePattern.Matches(An<UnitId>._)).MustNotHaveHappened();
+  }
+
+  [Test]
   public void should_check_argument_for_null()
   {
     // --arrange

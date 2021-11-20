@@ -4,6 +4,7 @@ using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
 
 namespace Tests.Functional
@@ -82,6 +83,7 @@ namespace Tests.Functional
            }
          };
 
+    [UsedImplicitly]
     private class Subject
     {
       public readonly string           Str;

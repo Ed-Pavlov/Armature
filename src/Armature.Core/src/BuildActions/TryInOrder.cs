@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -26,8 +27,14 @@ public record TryInOrder : IBuildAction, IEnumerable, ILogString
   private readonly List<IBuildAction>                      _buildActions;
   private readonly Dictionary<IBuildSession, IBuildAction> _effectiveBuildActions = new();
 
-  public TryInOrder() => _buildActions = new();
-  public TryInOrder(params IBuildAction[] buildActions) => _buildActions = buildActions.ToList();
+  public TryInOrder() => _buildActions = new List<IBuildAction>();
+  public TryInOrder(params IBuildAction[] buildActions)
+  {
+    if(buildActions is null) throw new ArgumentNullException(nameof(buildActions));
+    if(buildActions.Any(_ => _ is null)) throw new ArgumentNullException(nameof(buildActions), "Items should not be null");
+
+    _buildActions = buildActions.ToList();
+  }
 
   public void Process(IBuildSession buildSession)
   {
@@ -65,7 +72,7 @@ public record TryInOrder : IBuildAction, IEnumerable, ILogString
 
   public void PostProcess(IBuildSession buildSession)
   {
-    if(_effectiveBuildActions.TryGetValue(buildSession, out var buildAction)) // TODO: why dictionary? smells
+    if(_effectiveBuildActions.TryGetValue(buildSession, out var buildAction))
     {
       _effectiveBuildActions.Remove(buildSession);
 
@@ -74,14 +81,39 @@ public record TryInOrder : IBuildAction, IEnumerable, ILogString
     }
   }
 
-  public IEnumerator GetEnumerator() => throw new NotSupportedException();
+  public virtual bool Equals(TryInOrder? other)
+  {
+    if(ReferenceEquals(null, other)) return false;
+    if(ReferenceEquals(this, other)) return true;
+    if(_buildActions.Count != other._buildActions.Count) return false;
+
+    for(var i = 0; i < _buildActions.Count; i++)
+      if(!_buildActions[i].Equals(other._buildActions[i]))
+        return false;
+
+    return true;
+  }
+
+  public override int GetHashCode()
+  {
+    var hash = _buildActions.Count.GetHashCode();
+
+    foreach(var buildAction in _buildActions)
+      hash ^= buildAction.GetHashCode();
+
+    return hash;
+  }
 
   public TryInOrder Add(IBuildAction buildAction)
   {
-    _buildActions.Add(buildAction);
+    if(buildAction is null) throw new ArgumentNullException(nameof(buildAction));
 
+    _buildActions.Add(buildAction);
     return this;
   }
+
+  [WithoutTest]
+  public IEnumerator GetEnumerator() => throw new NotSupportedException();
 
   [DebuggerStepThrough]
   public override string ToString() => GetType().ToLogString();

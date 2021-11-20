@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -17,6 +18,8 @@ public readonly struct ArrayTail<T> : IEnumerable<T>
   private readonly IList<T> _array;
   private readonly int      _startIndex;
 
+  [DebuggerStepThrough]
+  public ArrayTail() => throw new ArgumentException("Use constructor with parameters");
   [DebuggerStepThrough]
   public ArrayTail(IList<T> array, int startIndex)
   {
@@ -84,7 +87,9 @@ public readonly struct ArrayTail<T> : IEnumerable<T>
 
     public T? Current => _current;
 
+    [WithoutTest]
     public void Reset()   => _iterator = _startIndex - 1;
+    [WithoutTest]
     public void Dispose() { }
 
     object? IEnumerator.Current => Current;

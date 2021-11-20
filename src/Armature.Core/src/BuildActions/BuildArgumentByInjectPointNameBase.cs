@@ -11,8 +11,12 @@ public abstract record BuildArgumentByInjectPointNameBase : IBuildAction, ILogSt
 {
   private readonly object? _key;
 
+  [WithoutTest]
   [DebuggerStepThrough]
   protected BuildArgumentByInjectPointNameBase() : this(SpecialKey.Argument) {}
+
+  [WithoutTest]
+  [DebuggerStepThrough]
   protected BuildArgumentByInjectPointNameBase(object? key) => _key = key;
 
   public void Process(IBuildSession buildSession)

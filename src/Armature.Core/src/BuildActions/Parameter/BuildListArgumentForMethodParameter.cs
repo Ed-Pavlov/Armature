@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
+using Armature.Core.Annotations;
 
 namespace Armature.Core;
 
@@ -8,7 +10,11 @@ namespace Armature.Core;
 /// </summary>
 public record BuildListArgumentForMethodParameter : BuildListArgumentBase
 {
+  [WithoutTest]
+  [DebuggerStepThrough]
   public BuildListArgumentForMethodParameter() { }
+
+  [DebuggerStepThrough]
   public BuildListArgumentForMethodParameter(object? key) : base(key) { }
 
   protected override Type GetArgumentType(UnitId unitId) => ((ParameterInfo) unitId.Kind!).ParameterType;

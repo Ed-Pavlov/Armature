@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -19,13 +20,14 @@ public readonly struct Weighted<T> : IComparable<Weighted<T>>
     Weight = weight;
   }
 
+  [WithoutTest]
   [DebuggerStepThrough]
   public int CompareTo(Weighted<T> other) => Weight.CompareTo(other.Weight);
 
   [DebuggerStepThrough]
   public override string ToString() => string.Format("{0}, Weight={1:n0}", Entity.ToHoconString(), Weight);
 }
-  
+
 public static class WeightedExtension
 {
   [DebuggerStepThrough]

@@ -15,7 +15,10 @@ public record GetConstructorByParameterTypes : IBuildAction, ILogString
   private readonly Type[] _parameterTypes;
 
   public GetConstructorByParameterTypes(params Type[] parameterTypes)
-    => _parameterTypes = parameterTypes ?? throw new ArgumentNullException(nameof(parameterTypes));
+  {
+    _parameterTypes = parameterTypes ?? throw new ArgumentNullException(nameof(parameterTypes));
+    if(parameterTypes.Any(_ => _ is null)) throw new ArgumentNullException(nameof(parameterTypes), "One or more items is null");
+  }
 
   public void Process(IBuildSession buildSession)
   {
@@ -62,6 +65,7 @@ public record GetConstructorByParameterTypes : IBuildAction, ILogString
 
     return true;
   }
+
 
   public override int GetHashCode()
   {

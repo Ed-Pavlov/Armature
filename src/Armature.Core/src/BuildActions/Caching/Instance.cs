@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -16,6 +17,7 @@ public record Instance<T> : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession) => buildSession.BuildResult = new BuildResult(_value);
 
+  [WithoutTest]
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 
