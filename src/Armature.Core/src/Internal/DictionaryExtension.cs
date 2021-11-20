@@ -6,7 +6,12 @@ namespace Armature.Core.Internal;
 internal static class DictionaryExtension
 {
   public static TValue? GetValueSafe<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue? defaultValue = default)
-    => dictionary.TryGetValue(key, out var value) ? value : defaultValue;
+  {
+    if(dictionary is null) throw new ArgumentNullException(nameof(dictionary));
+    if(key is null) throw new ArgumentNullException(nameof(key));
+
+    return dictionary.TryGetValue(key, out var value) ? value : defaultValue;
+  }
 
   public static TValue GetOrCreateValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TValue> createValue)
   {

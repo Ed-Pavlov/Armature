@@ -107,7 +107,7 @@ public class FinalTunerTest
     var actual = () => target.UsingArguments(A.Dummy<ITuner>());
 
     // --assert
-    actual.Should().ThrowExactly<ArgumentException>().WithMessage($"{nameof(IArgumentTuner)} or instances expected");
+    actual.Should().ThrowExactly<ArgumentException>().WithMessage($"{nameof(IArgumentTuner)} or instance expected");
   }
 
   private class BadTuner : ITuner

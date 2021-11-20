@@ -39,10 +39,10 @@ namespace Tests.UnitTests
     [Test]
     public void should_add_null_as_value()
     {
-      var target = new Dictionary<int, string> {{1, "one"}, {2, "two"}};
+      var target = new Dictionary<int, string?> {{1, "one"}, {2, "two"}};
 
       // --act
-      var actual = target.GetValueSafe(3, null);
+      var actual = target.GetOrCreateValue(3, () => null);
 
       // ----assert
       actual.Should().BeNull();
