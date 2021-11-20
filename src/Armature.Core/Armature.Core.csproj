@@ -51,6 +51,10 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>build\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Remove="src\BuildResult.cs" />
+    <Compile Remove="src\BuildSession.cs" />
+    <Compile Remove="src\BuildSession.Interface.cs" />
+    <Compile Remove="src\IBuildSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\build\icon.png" Pack="true" PackagePath="">

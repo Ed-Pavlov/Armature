@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Armature.Core;
 using Armature.Core.Sdk;
 using Armature.Extensibility;
@@ -17,12 +18,17 @@ public class FinalTuner : BuildChainExtensibility
   public FinalTuner UsingArguments(params object[] arguments)
   {
     if(arguments is null || arguments.Length == 0) throw new ArgumentNullException(nameof(arguments));
+    if(arguments.Any(arg => arg is null))
+      throw new ArgumentNullException(
+          nameof(arguments),
+          $"Argument should be either {nameof(IArgumentTuner)} or a not null instance. "
+        + $"Use {nameof(ForParameter)} or custom {nameof(IArgumentTuner)} to provide null as an argument for a parameter.");
 
     foreach(var argument in arguments)
       if(argument is IArgumentTuner buildPlan)
         buildPlan.Tune(ParentNode);
       else if(argument is ITuner)
-        throw new ArgumentException($"{nameof(IArgumentTuner)} or instances expected");
+        throw new ArgumentException($"{nameof(IArgumentTuner)} or instance expected");
       else
         ParentNode
          .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
@@ -34,7 +40,9 @@ public class FinalTuner : BuildChainExtensibility
 
   public FinalTuner InjectInto(params IInjectPointTuner[] propertyIds)
   {
+    if(propertyIds is null) throw new ArgumentNullException(nameof(propertyIds));
     if(propertyIds.Length == 0) throw new ArgumentNullException(nameof(propertyIds), "Specify one or more inject point tuners");
+
     foreach(var injectPointTuner in propertyIds)
       injectPointTuner.Tune(ParentNode);
     return this;

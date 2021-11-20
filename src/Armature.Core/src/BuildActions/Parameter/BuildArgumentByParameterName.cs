@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
+using Armature.Core.Annotations;
 
 namespace Armature.Core;
 
@@ -7,7 +9,12 @@ namespace Armature.Core;
 /// </summary>
 public record BuildArgumentByParameterName : BuildArgumentByInjectPointNameBase
 {
+  [WithoutTest]
+  [DebuggerStepThrough]
   public BuildArgumentByParameterName() { }
+
+  [WithoutTest]
+  [DebuggerStepThrough]
   public BuildArgumentByParameterName(object? key) : base(key) { }
 
   protected override string GetInjectPointName(UnitId unitId) => ((ParameterInfo) unitId.Kind!).Name;

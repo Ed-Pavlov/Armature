@@ -15,11 +15,11 @@ public partial class BuildSession
   private const string GatherBuildActions = "GatherBuildActions";
   private const string ParentBuilder      = "ParentBuilder";
 
-  private readonly object[]          _buildStages;
+  private readonly object[]            _buildStages;
   private readonly IBuildChainPattern  _mainBuildChainPatternTree;
   private readonly IBuildChainPattern? _auxPatternTree;
-  private readonly Builder[]?        _parentBuilders;
-  private readonly List<UnitId>      _buildChain;
+  private readonly IBuilder[]?         _parentBuilders;
+  private readonly List<UnitId>        _buildChain;
 
   /// <param name="buildStages">The sequence of build stages. See <see cref="Builder" /> for details.</param>
   /// <param name="buildPlans">Build plans used to find build actions to build a unit.</param>
@@ -29,13 +29,18 @@ public partial class BuildSession
   ///   If unit is not built and <paramref name="parentBuilders" /> are provided, trying to build a unit using
   ///   parent builders one by one in the order they passed into constructor
   /// </param>
-  public BuildSession(object[] buildStages, IBuildChainPattern buildPlans, IBuildChainPattern? auxPatternTree, Builder[]? parentBuilders)
+  public BuildSession(object[] buildStages, IBuildChainPattern buildPlans, IBuildChainPattern? auxPatternTree, IBuilder[]? parentBuilders)
   {
-    _buildStages     = buildStages ?? throw new ArgumentNullException(nameof(buildStages));
-    _mainBuildChainPatternTree = buildPlans  ?? throw new ArgumentNullException(nameof(buildPlans));
-    _auxPatternTree  = auxPatternTree;
-    _parentBuilders  = parentBuilders;
-    _buildChain   = new List<UnitId>(4);
+    _buildStages = buildStages ?? throw new ArgumentNullException(nameof(buildStages));
+    if(buildStages.Length == 0) throw new ArgumentException("Should contain at least one build stage", nameof(buildStages));
+    if(buildStages.Any(stage => stage is null)) throw new ArgumentException("Should not contain null values", nameof(buildStages));
+    if(buildStages.Length != buildStages.Distinct().Count()) throw new ArgumentException("Should not contain duplicate values", nameof(buildStages));
+    if(parentBuilders?.Any(_ => _ is null) == true) throw new ArgumentException("Should not contain null values", nameof(parentBuilders));
+
+    _mainBuildChainPatternTree = buildPlans ?? throw new ArgumentNullException(nameof(buildPlans));
+    _auxPatternTree            = auxPatternTree;
+    _parentBuilders            = parentBuilders;
+    _buildChain                = new List<UnitId>(4);
   }
 
   /// <summary>
