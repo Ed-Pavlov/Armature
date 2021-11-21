@@ -7,8 +7,8 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   The builder of units. It is the convenient way to keep corresponding build plans (<see cref="BuildChainPatternTree" />),
-///   build stages, and parent builders to pass into <see cref="BuildSession" /> which can be instantiated independently.
+///   The builder of units. It is the convenient way to couple a build chain pattern tree, (<see cref="BuildChainPatternTree" />),
+///   build stages, and parent builders together to pass into a <see cref="BuildSession" />, which could be used independently.
 /// </summary>
 public class Builder : BuildChainPatternTree, IBuilder
 {
@@ -45,12 +45,12 @@ public class Builder : BuildChainPatternTree, IBuilder
   ///   Builds a unit represented by <see cref="UnitId" />
   /// </summary>
   /// <param name="unitId">The id of the unit to build.</param>
-  /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies.</param>
+  /// <param name="auxPatternTree">Additional build chain pattern tree containing build actions to build a unit or its dependencies.</param>
   /// <returns>Returns build result with <see cref="BuildResult.HasValue"/> set to false if unit is not built.</returns>
 
   //TODO: what about exceptions? if buildResult.HasValue == false does it mean that there is no a registration, or it can be some runtime problems?
-  public BuildResult BuildUnit(UnitId unitId, IBuildChainPattern? auxBuildPlans = null)
-    => new BuildSession(_buildStages, this, auxBuildPlans, _parentBuilders).BuildUnit(unitId);
+  public BuildResult BuildUnit(UnitId unitId, IBuildChainPattern? auxPatternTree = null)
+    => new BuildSession(_buildStages, this, auxPatternTree, _parentBuilders).BuildUnit(unitId);
 
   /// <summary>
   ///   Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.

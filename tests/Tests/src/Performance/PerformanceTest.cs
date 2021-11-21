@@ -120,15 +120,15 @@ namespace Tests.Performance
       UnitPatternWrapper.GetHashCodeCallsCount.Should().BeLessThan(250_000);
     }
 
-    private static TreatingTuner Treat(IBuildChainPattern buildPlans, UnitId unitId)
+    private static TreatingTuner Treat(IBuildChainPattern pattern, UnitId unitId)
     {
-      if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
+      if(pattern is null) throw new ArgumentNullException(nameof(pattern));
 
       var unitMatcher = new UnitPatternWrapper(new UnitPattern(unitId.Kind, unitId.Key));
 
       var query = new SkipTillUnit(unitMatcher);
 
-      return new TreatingTuner(buildPlans.GetOrAddNode(query));
+      return new TreatingTuner(pattern.GetOrAddNode(query));
     }
 
     private class UnitPatternWrapper : IUnitPattern

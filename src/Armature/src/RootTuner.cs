@@ -20,7 +20,7 @@ public class RootTuner : BuildChainExtensibility
   }
 
   /// <summary>
-  ///   Configure build plans for the unit representing by <paramref name="type"/>.
+  /// Add build actions for units building in the context of unit representing by <paramref name="type"/> and <paramref name="key"/> in subsequence calls.
   /// </summary>
   public RootTuner Building(Type type, object? key = null)
   {
@@ -31,14 +31,12 @@ public class RootTuner : BuildChainExtensibility
   }
 
   /// <summary>
-  ///   Configure build plans for the unit representing by type <typeparamref name="T"/>
-  ///   See <see cref="BuildSession"/> for details.
+  /// Add build actions for units building in the context of unit representing by <typeparamref name="T"/> and <paramref name="key"/> in subsequence calls.
   /// </summary>
   public RootTuner Building<T>(object? key = null) => Building(typeof(T), key);
 
   /// <summary>
-  ///   Configure build plans for Unit of type <paramref name="type"/>.
-  ///   How it should be treated is specified by subsequence calls using returned object.
+  /// Add build actions to build a unit representing by <paramref name="type"/> and <paramref name="key"/> in subsequence calls.
   /// </summary>
   public TreatingTuner Treat(Type type, object? key = null)
   {
@@ -53,8 +51,7 @@ public class RootTuner : BuildChainExtensibility
   }
 
   /// <summary>
-  ///   Configure build plans for Unit of type <typeparamref name="T"/>.
-  ///   How it should be treated is specified by subsequence calls using returned object.
+  /// Add build actions to build a unit representing by <typeparamref name="T"/> and <paramref name="key"/> in subsequence calls.
   /// </summary>
   public TreatingTuner<T> Treat<T>(object? key = null)
     => new(
@@ -66,8 +63,7 @@ public class RootTuner : BuildChainExtensibility
         + WeightOf.UnitPattern.ExactTypePattern)));
 
   /// <summary>
-  ///   Configure build plans for whole class of open generic types.
-  ///   How <paramref name="openGenericType" /> should be treated is specified by subsequence calls using returned object.
+  /// Add build actions applied all generic types match the generic type definition specified by <paramref name="openGenericType"/> in subsequence calls.
   /// </summary>
   public TreatingOpenGenericTuner TreatOpenGeneric(Type openGenericType, object? key = null)
   {
@@ -79,8 +75,7 @@ public class RootTuner : BuildChainExtensibility
   }
 
   /// <summary>
-  ///   Configure build plans for all inheritors of <paramref name="baseType"/>.
-  ///   How it should be treated is specified by subsequence calls using returned object.
+  /// Add build actions applied to all inheritors of <paramref name="baseType"/> in subsequence calls.
   /// </summary>
   public TreatingTuner TreatInheritorsOf(Type baseType, object? key = null)
   {
@@ -92,8 +87,7 @@ public class RootTuner : BuildChainExtensibility
   }
 
   /// <summary>
-  ///   Configure build plans for all inheritors of <typeparamref name="T" />.
-  ///   How <typeparamref name="T" /> should be treated is specified by subsequence calls using returned object.
+  /// Add build actions applied to all inheritors of <typeparamref name="T"/> in subsequence calls.
   /// </summary>
   public TreatingTuner<T> TreatInheritorsOf<T>(object? key = null)
   {
@@ -107,8 +101,8 @@ public class RootTuner : BuildChainExtensibility
   }
 
   /// <summary>
-  ///   Configure build plans for any unit building in context of the unit.
-  ///   See <see cref="BuildSession"/> for details.
+  /// Add build action applied to any building unit in subsequence calls. It's needed to setup common build actions like which constructor to call or
+  /// inject dependencies into properties or not.
   /// </summary>
   public FinalTuner TreatAll() => new(ParentNode.GetOrAddNode(new SkipAllUnits(Weight + WeightOf.BuildContextPattern.SkipAllUnits)));
 }

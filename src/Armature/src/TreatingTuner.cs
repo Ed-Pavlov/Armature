@@ -19,8 +19,7 @@ public class TreatingTuner<T> : FinalTuner
   public void AsInstance(T instance) => ParentNode.UseBuildAction(new Instance<T>(instance), BuildStage.Cache);
 
   /// <summary>
-  ///   Build an object of the specified <paramref name="type"/> instead.
-  ///   Tune plan of creating the object by subsequence calls.
+  /// Set that object of the specified <paramref name="type"/> should be build.
   /// </summary>
   public CreationTuner As(Type type, object? key = null)
   {
@@ -29,14 +28,12 @@ public class TreatingTuner<T> : FinalTuner
   }
 
   /// <summary>
-  ///   Build an object of the <typeparamref name="TRedirect"/> type instead.
-  ///   Tune plan of creating the object by subsequence calls.
+  /// Set that object of the specified <typeparamref name="TRedirect"/> should be build.
   /// </summary>
   public CreationTuner As<TRedirect>(object? key = null) => As(typeof(TRedirect), key);
 
   /// <summary>
-  ///   Use default creation strategy for a unit. See <see cref="Default.CreationBuildAction"/> for details.
-  ///   Tune plan of building it by subsequence calls.
+  /// Set that the <see cref="Default.CreationBuildAction"/> build action should be used to build a unit.
   /// </summary>
   public FinalTuner AsIs()
   {
@@ -45,21 +42,19 @@ public class TreatingTuner<T> : FinalTuner
   }
 
   /// <summary>
-  ///   Build an object of the specified <paramref name="type"/> instead. Also use default creation strategy for that type.
-  ///   See <see cref="Default.CreationBuildAction"/> for details.
-  ///   Tune plan of building it by subsequence calls.
+  /// Set that object of the specified <paramref name="type"/> should be build and
+  /// the <see cref="Default.CreationBuildAction"/> build action should be used to build a unit.
   /// </summary>
   public FinalTuner AsCreated(Type type, object? key = null) => As(type, key).CreatedByDefault();
 
   /// <summary>
-  ///   Build an object of the <typeparamref name="TRedirect"/> type instead. Also use default creation strategy for that type.
-  ///   See <see cref="Default.CreationBuildAction"/> for details.
-  ///   Tune plan of building it by subsequence calls.
+  /// Set that object of the specified <typeparamref name="TRedirect"/> should be build and
+  /// the <see cref="Default.CreationBuildAction"/> build action should be used to build a unit.
   /// </summary>
   public FinalTuner AsCreated<TRedirect>(object? key = null) => AsCreated(typeof(TRedirect), key);
 
   /// <summary>
-  ///   Use specified <paramref name="factoryMethod"/> to create a unit.
+  ///   Use specified <paramref name="factoryMethod"/> to build a unit.
   /// </summary>
   public FinalTuner AsCreatedWith(Func<T> factoryMethod)
     => new(ParentNode.UseBuildAction(new CreateWithFactoryMethod<T>(_ => factoryMethod()), BuildStage.Create));

@@ -25,8 +25,8 @@ public class FinalTuner : BuildChainExtensibility
         + $"Use {nameof(ForParameter)} or custom {nameof(IArgumentTuner)} to provide null as an argument for a parameter.");
 
     foreach(var argument in arguments)
-      if(argument is IArgumentTuner buildPlan)
-        buildPlan.Tune(ParentNode);
+      if(argument is IArgumentTuner argumentTuner)
+        argumentTuner.Tune(ParentNode);
       else if(argument is ITuner)
         throw new ArgumentException($"{nameof(IArgumentTuner)} or instance expected");
       else

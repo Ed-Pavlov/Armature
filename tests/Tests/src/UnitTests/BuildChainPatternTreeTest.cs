@@ -8,7 +8,7 @@ using Tests.Common;
 
 namespace Tests.UnitTests
 {
-  public class BuildPlansCollectionTest
+  public class BuildChainPatternTreeTest
   {
     [Test]
     public void should_return_all_merged_actions()

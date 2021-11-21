@@ -19,12 +19,12 @@ public static class Property
       });
 
   /// <summary>
-  ///   Adds a plan injecting dependencies into properties with corresponding <paramref name="names" />
+  ///   Adds a build action injecting dependencies into properties with corresponding <paramref name="names" />
   /// </summary>
   public static IInjectPointTuner Named(params string[] names) => Named(0, names);
 
   /// <summary>
-  ///   Adds a plan injecting dependencies into properties with corresponding <paramref name="names" />
+  ///   Adds a build action injecting dependencies into properties with corresponding <paramref name="names" />
   /// </summary>
   public static IInjectPointTuner Named(short weight, params string[] names)
     => new InjectPointTuner(
@@ -37,12 +37,12 @@ public static class Property
       });
 
   /// <summary>
-  ///   Adds a plan injecting dependencies into properties marked with <see cref="InjectAttribute" /> with corresponding <paramref name="pointIds" />
+  ///   Adds a build action injecting dependencies into properties marked with <see cref="InjectAttribute" /> with corresponding <paramref name="pointIds" />
   /// </summary>
   public static IInjectPointTuner ByInjectPoint(params object?[] pointIds) => ByInjectPoint(0, pointIds);
 
   /// <summary>
-  ///   Adds a plan injecting dependencies into properties marked with <see cref="InjectAttribute" /> with corresponding <paramref name="pointIds" />
+  ///   Adds a build action injecting dependencies into properties marked with <see cref="InjectAttribute" /> with corresponding <paramref name="pointIds" />
   /// </summary>
   public static IInjectPointTuner ByInjectPoint(short weight, params object?[] pointIds)
     => new InjectPointTuner(

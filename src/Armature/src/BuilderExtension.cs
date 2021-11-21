@@ -70,10 +70,10 @@ public static class BuilderExtension
   /// </summary>
   private static IReadOnlyList<object?> BuildAll<T>(this Builder builder, object? key, params object[]? arguments)
   {
-    var unitId     = new UnitId(typeof(T), key);
-    var buildPlans = CreateAuxPatternTree(arguments);
+    var unitId         = new UnitId(typeof(T), key);
+    var auxPatternTree = CreateAuxPatternTree(arguments);
 
-    var unitList = builder.BuildAllUnits(unitId, buildPlans);
+    var unitList = builder.BuildAllUnits(unitId, auxPatternTree);
 
     return ReferenceEquals(unitList, Empty<Weighted<BuildResult>>.List)
                ? Empty<object?>.List
@@ -92,8 +92,6 @@ public static class BuilderExtension
     var patternTree = CreateAuxPatternTree(arguments);
 
     var buildResult = builder.BuildUnit(unitId, patternTree);
-
-    //TODO: check code for build plan name
     return buildResult.HasValue
                ? (T?)buildResult.Value
                : throw new ArmatureException($"Unit {unitId} is not built").AddData($"{nameof(UnitId)}", unitId); }
@@ -102,14 +100,13 @@ public static class BuilderExtension
   {
     if(arguments is not { Length: > 0 }) return null;
 
-
-    // the logic is buildPlans.TreatAll().UsingArguments(arguments), but with increased weight of arguments
-    var buildPlans = new BuildChainPatternTree();
+    // the logic is patternTree.TreatAll().UsingArguments(arguments), but with increased weight of arguments
+    var patternTree = new BuildChainPatternTree();
     var treatAll   = new SkipAllUnits(WeightOf.BuildContextPattern.SkipAllUnits + 10);
-    buildPlans.Children.Add(treatAll);
+    patternTree.Children.Add(treatAll);
 
     new FinalTuner(treatAll).UsingArguments(arguments);
-    return buildPlans;
+    return patternTree;
   }
 
   public readonly struct WithKey
