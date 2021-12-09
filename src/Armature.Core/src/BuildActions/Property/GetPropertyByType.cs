@@ -7,8 +7,8 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   "Builds" a property Unit of the currently building Unit of specified type
-///   specified <see cref="InjectAttribute.InjectionPointId" />
+/// "Builds" a property Unit of the currently building Unit of specified type
+/// specified <see cref="InjectAttribute.InjectionPointId" />
 /// </summary>
 public record GetPropertyByType : IBuildAction, ILogString
 {

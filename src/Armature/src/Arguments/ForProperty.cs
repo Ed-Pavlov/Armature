@@ -1,13 +1,30 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Armature.Core;
 using Armature.Core.Sdk;
 
 namespace Armature;
 
+/// <summary>
+/// This class provides methods to tune up how to build arguments to inject to object properties.
+/// </summary>
 public static class ForProperty
 {
   /// <summary>
-  ///   Matches with property with <see cref="PropertyInfo.PropertyType" /> equals to <typeparamref name="T" />
+  /// Tunes up how to build an argument to inject into a property of type <paramref name="type"/>.
+  /// </summary>
+  public static PropertyArgumentTuner OfType(Type type)
+    => new(parentNode =>
+           {
+             Property.OfType(type).Tune(parentNode);
+
+             return parentNode.AddNode(
+               new IfFirstUnit(new IsPropertyWithType(new UnitPattern(type)), WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
+               $"Building of an argument for the property with type {type.ToLogString()} is already tuned");
+           });
+
+  /// <summary>
+  /// Tunes up how to build an argument to inject into a property of type<typeparamref name="T" />
   /// </summary>
   public static PropertyArgumentTuner<T> OfType<T>()
     => new(parentNode =>
@@ -20,9 +37,9 @@ public static class ForProperty
            });
 
   /// <summary>
-  ///   Matches with property with <see cref="MemberInfo.Name" /> equals to <paramref name="propertyName" />
+  /// Tunes up how to build an argument to inject into a property named <see cref="MemberInfo.Name" />
   /// </summary>
-  public static PropertyArgumentTuner<object?> Named(string propertyName)
+  public static PropertyArgumentTuner Named(string propertyName)
     => new(parentNode =>
            {
              Property.Named(propertyName).Tune(parentNode);
@@ -33,9 +50,10 @@ public static class ForProperty
            });
 
   /// <summary>
-  ///   Matches with property marked with <see cref="InjectAttribute" />(<paramref name="injectPointId" />)
+  /// Tunes up how to build and argument to inject into a property marked with <see cref="InjectAttribute"/>
+  /// with the specified <paramref name="injectPointId"/>.
   /// </summary>
-  public static PropertyArgumentTuner<object?> WithInjectPoint(object? injectPointId)
+  public static PropertyArgumentTuner WithInjectPoint(object? injectPointId)
     => new(parentNode =>
            {
              Property.ByInjectPoint(injectPointId).Tune(parentNode);

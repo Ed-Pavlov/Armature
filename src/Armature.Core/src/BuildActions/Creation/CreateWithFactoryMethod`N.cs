@@ -7,7 +7,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   Creates a Unit using specified factory method.
+/// Creates a Unit using specified factory method.
 /// </summary>
 public abstract record CreateWithFactoryMethodBuildAction : IBuildAction, ILogString
 {

@@ -128,35 +128,6 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void creation_build_action_should_be_added_only_once() //TODO: should be unit test
-    {
-      // --arrange
-      var target = CreateTarget();
-
-      target
-       .Treat<ISubject1>()
-       .As<Subject>();
-
-      target
-       .Treat<ISubject2>()
-       .As<Subject>();
-
-      target
-       .Treat<Subject>()
-       .AsIs()
-       .AsSingleton();
-
-      // --act
-      var actual1 = target.Build<ISubject1>();
-      var actual2 = target.Build<ISubject2>();
-      var actual3 = target.Build<Subject>();
-
-      // --assert
-      actual1.Should().BeSameAs(actual2);
-      actual1.Should().BeSameAs(actual3);
-    }
-
-    [Test]
     public void should_use_creation_strategy_registered_with_key()
     {
       const string key      = "key";

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
 using Armature.Core.Annotations;
 using Armature.Core.Sdk;
@@ -7,7 +6,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   Builds arguments for method parameters by building a unit {<see cref="ParameterInfo"/>, <see cref="SpecialKey.Argument"/> one by one.
+/// Builds arguments for method parameters by building a unit {<see cref="ParameterInfo"/>, <see cref="SpecialKey.Argument"/> one by one.
 /// </summary>
 public record BuildMethodArgumentsInDirectOrder : IBuildAction
 {

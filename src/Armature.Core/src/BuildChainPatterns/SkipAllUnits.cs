@@ -4,7 +4,7 @@ using Armature.Core.Annotations;
 namespace Armature.Core;
 
 /// <summary>
-///   Skips all units in the build chain and pass the last (under construction) unit  to <see cref="IBuildChainPattern.Children" />.
+/// Skips all units in the build chain and pass the last (under construction) unit  to <see cref="IBuildChainPattern.Children" />.
 /// </summary>
 public class SkipAllUnits : BuildChainPatternWithChildrenBase
 {

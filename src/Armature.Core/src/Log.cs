@@ -7,8 +7,8 @@ using JetBrains.Annotations;
 namespace Armature.Core;
 
 /// <summary>
-///   Class is used to log Armature activities in human friendly form. Writes data into <see cref="System.Diagnostics.Trace" />, so
-///   add a listener to see the log.
+/// Class is used to log Armature activities in human friendly form. Writes data into <see cref="System.Diagnostics.Trace" />, so
+/// add a listener to see the log.
 /// </summary>
 [PublicAPI]
 public static class Log
@@ -18,14 +18,14 @@ public static class Log
   private static LogLevel _logLevel = LogLevel.None;
 
   /// <summary>
-  ///   Set should full type name be logged or only short name w/o namespace to simplify reading.
+  /// Set should full type name be logged or only short name w/o namespace to simplify reading.
   /// </summary>
   public static bool LogFullTypeName = false;
 
   static Log() => IndentSize = 2;
 
   /// <summary>
-  ///   The count of spaces used to indent lines
+  /// The count of spaces used to indent lines
   /// </summary>
   public static int IndentSize
   {
@@ -34,7 +34,7 @@ public static class Log
   }
 
   /// <summary>
-  ///   Used to enable logging in a limited scope using "using" C# keyword
+  /// Used to enable logging in a limited scope using "using" C# keyword
   /// </summary>
   public static IDisposable Enable(LogLevel logLevel = LogLevel.Info)
   {
@@ -93,14 +93,14 @@ public static class Log
   public static void WriteLine(LogLevel logLevel, string format, params object[] parameters) => WriteLine(logLevel, string.Format(format, parameters));
 
   /// <summary>
-  ///   This message calls <paramref name="createMessage"/> only if Logging is enabled for <paramref name="logLevel"/>,
-  ///   use it calculating arguments for logging takes a time.
+  /// This message calls <paramref name="createMessage"/> only if Logging is enabled for <paramref name="logLevel"/>,
+  /// use it calculating arguments for logging takes a time.
   /// </summary>
   [StringFormatMethod("format")]
   public static void WriteLine(LogLevel logLevel, [InstantHandle] Func<string> createMessage) => WriteLine(logLevel, createMessage());
 
   /// <summary>
-  ///   Used to make an indented "block" in log data
+  /// Used to make an indented "block" in log data
   /// </summary>
   public static IDisposable IndentBlock(LogLevel logLevel, string name, string brackets, int count = 1)
   {
@@ -111,13 +111,13 @@ public static class Log
   }
 
   /// <summary>
-  ///   Used to make a named and indented "block" in log data
+  /// Used to make a named and indented "block" in log data
   /// </summary>
   [StringFormatMethod("format")]
   public static IDisposable NamedBlock(LogLevel logLevel, string name) => IndentBlock(logLevel, name, "{}");
 
   /// <summary>
-  ///   Used to make a named and indented "block" in log data
+  /// Used to make a named and indented "block" in log data
   /// </summary>
   [StringFormatMethod("format")]
   public static IDisposable NamedBlock(LogLevel logLevel, string format, params object[] parameters)
@@ -127,7 +127,7 @@ public static class Log
   }
 
   /// <summary>
-  ///   Used to make a named and indented "block" in log data
+  /// Used to make a named and indented "block" in log data
   /// </summary>
   public static IDisposable NamedBlock(LogLevel logLevel, Func<string> getName)
   {

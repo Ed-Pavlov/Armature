@@ -5,7 +5,7 @@ using Armature.Core.Sdk;
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {
   /// <summary>
-  ///   Builds <typeparamref name="T" /> and wraps it into <see cref="Maybe{T}" />
+  /// Builds <typeparamref name="T" /> and wraps it into <see cref="Maybe{T}" />
   /// </summary>
   internal class BuildMaybeAction<T> : IBuildAction
   {

@@ -26,7 +26,7 @@ public static class PatternTreeTunerExtension
   public static RootTuner Building<T>(this IBuildChainPattern pattern, object? key = null) => new RootTuner(pattern).Building<T>(key);
 
   /// <summary>
-  ///   Overrides a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems.
+  /// Overrides a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems.
   /// </summary>
   public static TreatingTuner TreatOverride(this IBuildChainPattern pattern, Type type, object? key = null)
   {
@@ -41,7 +41,7 @@ public static class PatternTreeTunerExtension
   }
 
   /// <summary>
-  ///   Overrides a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems.
+  /// Overrides a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems.
   /// </summary>
   public static TreatingTuner<T> TreatOverride<T>(this IBuildChainPattern pattern, object? key = null)
   {

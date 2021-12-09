@@ -6,7 +6,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   Instantiates an object using reflection <see cref="ConstructorInfo.Invoke(object[])"/> method.
+/// Instantiates an object using reflection <see cref="ConstructorInfo.Invoke(object[])"/> method.
 /// </summary>
 public record CreateByReflection : IBuildAction
 {

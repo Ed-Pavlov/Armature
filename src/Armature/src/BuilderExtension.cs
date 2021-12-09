@@ -12,13 +12,13 @@ namespace Armature;
 public static class BuilderExtension
 {
   /// <summary>
-  ///   Use key for building a unit. See <see cref="UnitId" /> for details.
+  /// Use key to build a unit. See <see cref="UnitId" /> for details.
   /// </summary>
   [DebuggerStepThrough]
   public static WithKey UsingKey(this Builder builder, object key) => new(builder, key);
 
   /// <summary>
-  ///   Builds a Unit registered as type <typeparamref name="T" />
+  /// Builds a Unit registered as type <typeparamref name="T" />
   /// </summary>
   /// <returns>Returns an instance or null if null is registered as a unit.</returns>
   /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
@@ -27,8 +27,8 @@ public static class BuilderExtension
   public static T? Build<T>(this Builder builder) => builder.Build<T>(null, null);
 
   /// <summary>
-  ///   Builds a Unit registered as type <typeparamref name="T" /> passing additional <paramref name="runtimeArguments" /> they can be values or
-  ///   implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> and <see cref="ForProperty"/> for details.
+  /// Builds a Unit registered as type <typeparamref name="T" /> passing additional <paramref name="runtimeArguments" /> they can be values or
+  /// implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> and <see cref="ForProperty"/> for details.
   /// </summary>
   /// <param name="builder"></param>
   /// <param name="runtimeArguments">Additional temporary arguments which could be passed into the build session, they are not stored
@@ -41,8 +41,8 @@ public static class BuilderExtension
   public static T? Build<T>(this Builder builder, params object[] runtimeArguments) => builder.Build<T>(null, runtimeArguments);
 
   /// <summary>
-  ///   Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
-  ///   This can be useful to build all implementers of an interface.
+  /// Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
+  /// This can be useful to build all implementers of an interface.
   /// </summary>
   /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
   /// <exception cref="ArmatureException">Throws if no unit was built by this or any parent containers</exception>
@@ -51,8 +51,8 @@ public static class BuilderExtension
   public static IReadOnlyList<object?> BuildAll<T>(this Builder builder) => builder.BuildAll<T>(null);
 
   /// <summary>
-  ///   Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
-  ///   This can be useful to build all implementers of an interface.
+  /// Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
+  /// This can be useful to build all implementers of an interface.
   /// </summary>
   /// <param name="builder"></param>
   /// <param name="runtimeArguments">Additional temporary arguments which could be passed into the build session, they are not stored
@@ -66,7 +66,7 @@ public static class BuilderExtension
   public static IReadOnlyList<object?> BuildAll<T>(this Builder builder, params object[]? runtimeArguments) => builder.BuildAll<T>(null, runtimeArguments);
 
   /// <summary>
-  ///   All other BuildAll... methods should delegate to this one. This is the real implementation
+  /// All other BuildAll... methods should delegate to this one. This is the real implementation
   /// </summary>
   private static IReadOnlyList<object?> BuildAll<T>(this Builder builder, object? key, params object[]? arguments)
   {
@@ -81,7 +81,7 @@ public static class BuilderExtension
   }
 
   /// <summary>
-  ///   All other Build... methods should delegate to this one. This is the real implementation
+  /// All other Build... methods should delegate to this one. This is the real implementation
   /// </summary>
   [DebuggerStepThrough]
   private static T? Build<T>(this Builder builder, object? key, params object[]? arguments)
@@ -121,16 +121,16 @@ public static class BuilderExtension
     }
 
     /// <summary>
-    ///   Builds a Unit registered as type <typeparamref name="T" /> with an additional key passed into <see cref="BuilderExtension.UsingKey"/> method.
+    /// Builds a Unit registered as type <typeparamref name="T" /> with an additional key passed into <see cref="BuilderExtension.UsingKey"/> method.
     /// </summary>
     [DebuggerStepThrough]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T? Build<T>() => _builder.Build<T>(_key);
 
     /// <summary>
-    ///   Builds a Unit registered as type <typeparamref name="T" /> with an additional key passed into <see cref="BuilderExtension.UsingKey"/> method
-    ///   passing additional <paramref name="arguments" /> they can be values or
-    ///   implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> for details.
+    /// Builds a Unit registered as type <typeparamref name="T" /> with an additional key passed into <see cref="BuilderExtension.UsingKey"/> method
+    /// passing additional <paramref name="arguments" /> they can be values or
+    /// implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> for details.
     /// </summary>
     [DebuggerStepThrough]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -138,9 +138,9 @@ public static class BuilderExtension
 
 
     /// <summary>
-    ///   Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight with an additional key
-    ///   passed into <see cref="BuilderExtension.UsingKey"/> method.
-    ///   This can be useful to build all implementers of an interface.
+    /// Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight with an additional key
+    /// passed into <see cref="BuilderExtension.UsingKey"/> method.
+    /// This can be useful to build all implementers of an interface.
     /// </summary>
     /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
     /// <exception cref="ArmatureException">Throws if no unit was built by this or any parent containers</exception>
@@ -150,10 +150,10 @@ public static class BuilderExtension
 
 
     /// <summary>
-    ///   Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight with an additional
-    ///   key passed into <see cref="BuilderExtension.UsingKey"/> method passing additional <paramref name="arguments" /> they can be values or
-    ///   implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> for details.
-    ///   This can be useful to build all implementers of an interface.
+    /// Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight with an additional
+    /// key passed into <see cref="BuilderExtension.UsingKey"/> method passing additional <paramref name="arguments" /> they can be values or
+    /// implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> for details.
+    /// This can be useful to build all implementers of an interface.
     /// </summary>
     /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
     /// <exception cref="ArmatureException">Throws if no unit was built by this or any parent containers</exception>

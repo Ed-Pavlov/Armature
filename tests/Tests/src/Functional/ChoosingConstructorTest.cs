@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Runtime.InteropServices.ComTypes;
 using Armature;
 using Armature.Core;
 using FluentAssertions;
@@ -104,6 +105,15 @@ namespace Tests.Functional
             .AsIs()
             .InjectInto(Constructor.WithParameters<int, string>())
             .UsingArguments(4, "string"); // set value to inject into ctor
+
+      target
+         .TreatInheritorsOf<object>()
+         .InjectInto(Constructor.WithMaxParametersCount());
+
+      target
+         .TreatInheritorsOf<IStream>()
+         .AmendWeight(392)
+         .InjectInto(Constructor.Parameterless());
 
       // --act
       var actual = target.Build<Subject3>();

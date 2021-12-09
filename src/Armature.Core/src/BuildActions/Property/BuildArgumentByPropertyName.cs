@@ -3,7 +3,7 @@
 namespace Armature.Core;
 
 /// <summary>
-///   Builds an argument for the property using <see cref="MemberInfo.Name"/> and specified key as an <see cref="UnitId"/>.
+/// Builds an argument for the property using <see cref="MemberInfo.Name"/> and specified key as an <see cref="UnitId"/>.
 /// </summary>
 public record BuildArgumentByPropertyName : BuildArgumentByInjectPointNameBase
 {

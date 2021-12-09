@@ -7,8 +7,8 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   Builds an argument for the property marked with <see cref="InjectAttribute"/> using <see cref="InjectAttribute.InjectionPointId"/>
-///   as the <see cref="UnitId.Key"/>
+/// Builds an argument for the property marked with <see cref="InjectAttribute"/> using <see cref="InjectAttribute.InjectionPointId"/>
+/// as the <see cref="UnitId.Key"/>
 /// </summary>
 public record BuildArgumentByPropertyInjectPointId : IBuildAction
 {

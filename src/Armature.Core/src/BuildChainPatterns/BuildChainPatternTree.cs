@@ -7,20 +7,20 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   The reusable implementation of <see cref="IBuildChainPattern" /> which is used as a root node of the tree.
+/// The reusable implementation of <see cref="IBuildChainPattern" /> which is used as a root node of the tree.
 /// </summary>
 /// <remarks>
-///   This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
-///   new Builder(...)
-///   {
-///     new SkipToLastUnit
-///     {
-///       new IfFirstUnitMatches(new ConstructorPattern(), 0)
-///         .AddBuildAction(BuildStage.Create, new GetLongestConstructorBuildAction()),
-///       new IfFirstUnitMatches(new MethodArgumentPattern(), ParameterMatchingWeight.Lowest)
-///         .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
-///     }
-///   };
+/// This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
+/// new Builder(...)
+/// {
+///  new SkipToLastUnit
+///  {
+///    new IfFirstUnitMatches(new ConstructorPattern(), 0)
+///      .AddBuildAction(BuildStage.Create, new GetLongestConstructorBuildAction()),
+///    new IfFirstUnitMatches(new MethodArgumentPattern(), ParameterMatchingWeight.Lowest)
+///      .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
+///  }
+/// };
 /// </remarks>
 public class BuildChainPatternTree : IBuildChainPattern, IEnumerable, ILogPrintable
 {
@@ -44,7 +44,7 @@ public class BuildChainPatternTree : IBuildChainPattern, IEnumerable, ILogPrinta
   #endregion
 
   /// <summary>
-  ///   Reuse implementation of <see cref="BuildChainPatternWithChildrenBase" /> to implement <see cref="BuildChainPatternTree" /> public interface
+  /// Reuse implementation of <see cref="BuildChainPatternWithChildrenBase" /> to implement <see cref="BuildChainPatternTree" /> public interface
   /// </summary>
   private class Root : BuildChainPatternBase
   {

@@ -10,6 +10,17 @@ namespace Tests.UnitTests;
 public class ArrayTailTest
 {
   [Test]
+  public void inline()
+  {
+    var target = new ArrayTail<int>(new[] {1, 2, 34, 6, 3}, 0);
+
+    foreach(var i in target)
+    {
+
+    }
+  }
+
+  [Test]
   public void Length()
   {
     // --arrange

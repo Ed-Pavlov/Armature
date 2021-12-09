@@ -16,8 +16,8 @@
   ///
   /// public class SummaryData
   /// {
-  ///   [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-  ///   public SummaryData() {}
+  /// [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+  /// public SummaryData() {}
   /// }
   ///
   /// [UsedImplicitly(ImplicitUseTargetFlags.WithInheritors | ImplicitUseTargetFlags.Default)]

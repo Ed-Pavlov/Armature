@@ -9,8 +9,8 @@ namespace Armature.Core.Sdk;
 public static class BuildSessionExtension
 {
   /// <summary>
-  ///   Builds a <see cref="ConstructorInfo" /> for a <see creaf="type" /> by building a unit represented
-  ///   by <see cref="UnitId" />(<paramref name="type" />, <see cref="SpecialKey.Constructor" />) via current build session.
+  /// Builds a <see cref="ConstructorInfo" /> for a <see creaf="type" /> by building a unit represented
+  /// by <see cref="UnitId" />(<paramref name="type" />, <see cref="SpecialKey.Constructor" />) via current build session.
   /// </summary>
   public static ConstructorInfo GetConstructorOf(this IBuildSession buildSession, Type type)
   {
@@ -35,7 +35,7 @@ public static class BuildSessionExtension
   }
 
   /// <summary>
-  ///   Builds an argument to inject into the property representing by <paramref name="propertyInfo" />
+  /// Builds an argument to inject into the property representing by <paramref name="propertyInfo" />
   /// </summary>
   public static object? BuildPropertyArgument(this IBuildSession buildSession, PropertyInfo propertyInfo)
   {
@@ -47,7 +47,7 @@ public static class BuildSessionExtension
   }
 
   /// <summary>
-  ///   Returns the currently building Unit in the build session
+  /// Returns the currently building Unit in the build session
   /// </summary>
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]

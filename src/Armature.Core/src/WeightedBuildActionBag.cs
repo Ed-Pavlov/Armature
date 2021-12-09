@@ -5,7 +5,7 @@ using System.Text;
 namespace Armature.Core;
 
 /// <summary>
-///   Collection of matched build actions with matching weight grouped by the build stage
+/// Collection of matched build actions with matching weight grouped by the build stage
 /// </summary>
 public class WeightedBuildActionBag : Dictionary<object, List<Weighted<IBuildAction>>>
 {

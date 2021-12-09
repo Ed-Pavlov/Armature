@@ -4,7 +4,7 @@ using System.Reflection;
 namespace Armature.Core;
 
 /// <summary>
-///   Builds an argument for the property using <see cref="PropertyInfo.PropertyType"/> and specified key as <see cref="UnitId"/>.
+/// Builds an argument for the property using <see cref="PropertyInfo.PropertyType"/> and specified key as <see cref="UnitId"/>.
 /// </summary>
 public record BuildArgumentByPropertyType : BuildArgumentByInjectPointTypeBase
 {

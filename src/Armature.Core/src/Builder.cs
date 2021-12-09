@@ -7,8 +7,8 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   The builder of units. It is the convenient way to couple a build chain pattern tree, (<see cref="BuildChainPatternTree" />),
-///   build stages, and parent builders together to pass into a <see cref="BuildSession" />, which could be used independently.
+/// The builder of units. It is the convenient way to couple a build chain pattern tree, (<see cref="BuildChainPatternTree" />),
+/// build stages, and parent builders together to pass into a <see cref="BuildSession" />, which could be used independently.
 /// </summary>
 public class Builder : BuildChainPatternTree, IBuilder
 {
@@ -25,8 +25,8 @@ public class Builder : BuildChainPatternTree, IBuilder
 
   /// <param name="buildStages">The ordered collection of build stages all of which are performed to build a unit.</param>
   /// <param name="parentBuilders">
-  ///   If unit is not built and <paramref name="parentBuilders" /> are provided, tries to build a unit using
-  ///   parent builders one by one in the order they passed into the constructor.
+  /// If unit is not built and <paramref name="parentBuilders" /> are provided, tries to build a unit using
+  /// parent builders one by one in the order they passed into the constructor.
   /// </param>
   public Builder(object[] buildStages, params Builder[]? parentBuilders)
   {
@@ -42,19 +42,18 @@ public class Builder : BuildChainPatternTree, IBuilder
   }
 
   /// <summary>
-  ///   Builds a unit represented by <see cref="UnitId" />
+  /// Builds a unit represented by <see cref="UnitId" />
   /// </summary>
   /// <param name="unitId">The id of the unit to build.</param>
   /// <param name="auxPatternTree">Additional build chain pattern tree containing build actions to build a unit or its dependencies.</param>
   /// <returns>Returns build result with <see cref="BuildResult.HasValue"/> set to false if unit is not built.</returns>
 
-  //TODO: what about exceptions? if buildResult.HasValue == false does it mean that there is no a registration, or it can be some runtime problems?
   public BuildResult BuildUnit(UnitId unitId, IBuildChainPattern? auxPatternTree = null)
     => new BuildSession(_buildStages, this, auxPatternTree, _parentBuilders).BuildUnit(unitId);
 
   /// <summary>
-  ///   Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
-  ///   This can be useful to build all implementers of an interface.
+  /// Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
+  /// This can be useful to build all implementers of an interface.
   /// </summary>
   /// <param name="unitId">Building unit "id"</param>
   /// <param name="auxBuildPlans">Additional build plans to build a unit or its dependencies</param>

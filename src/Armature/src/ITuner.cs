@@ -3,14 +3,13 @@
 namespace Armature;
 
 /// <summary>
-/// Inheritors of this interface can be used to create "tuners" which can append the pattern tree at any time, in opposite to static "tuners" like
-/// <see cref="TreatingTuner"/>, <see cref="CreationTuner"/> and so on, which are append pattern tree nodes immediately during the call of their methods.
+/// Tunes the build chain pattern at any time, in opposite to static "tuners" like
+/// <see cref="TreatingTuner"/>, <see cref="CreationTuner"/> which append build chain pattern and build actions immediately during the call of their methods.
 /// </summary>
-/// <remarks>See usages for details</remarks>
 public interface ITuner
 {
   /// <summary>
   /// Append pattern tree nodes to the passed <paramref name="buildChainPattern"/>
   /// </summary>
-  void Tune(IBuildChainPattern buildChainPattern);
+  void Tune(IBuildChainPattern buildChainPattern, int weight = 0);
 }

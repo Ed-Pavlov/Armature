@@ -29,22 +29,24 @@ public static class BuildChainPatternTreeExtension
   /// <summary>
   /// Adds the <paramref name="node" /> into <paramref name="parentNode" />.
   /// </summary>
-  /// <exception cref="ArmatureException">A node already exists in the collection</exception>
-  public static T AddNode<T>(this IBuildChainPattern parentNode, T node, string? exceptionMessage = null) where T : IBuildChainPattern //TODO: what a message? what a dich'?
+  /// <exception cref="ArmatureException">A node is already in the tree</exception>
+  public static T AddNode<T>(this IBuildChainPattern parentNode, T node, string? exceptionMessage = null) where T : IBuildChainPattern
   {
     if(parentNode is null) throw new ArgumentNullException(nameof(parentNode));
+    if(node is null) throw new ArgumentNullException(nameof(node));
 
     if(parentNode.Children.Contains(node))
-      throw new ArmatureException(exceptionMessage ?? string.Format("Node '{0}' is already added to the pattern tree.", node))
-       .AddData("PatternTreeNode", parentNode);
+      throw new ArmatureException(exceptionMessage ?? $"Node '{node}' is already in the tree.")
+       .AddData($"{nameof(parentNode)}", parentNode)
+       .AddData($"{nameof(node)}", node);
 
     parentNode.Children.Add(node);
     return node;
   }
 
   /// <summary>
-  ///   Adds a <see cref="IBuildAction" /> for a "to be built" unit which is matched by the branch of the pattern tree represented by this node
-  ///   with its parents.
+  /// Adds a <see cref="IBuildAction" /> for a "to be built" unit which is matched by the branch of the pattern tree represented by this node
+  /// with its parents.
   /// </summary>
   /// <param name="node"></param>
   /// <param name="buildAction">A build action.</param>
@@ -58,10 +60,9 @@ public static class BuildChainPatternTreeExtension
 
     var list = node.BuildActions.GetOrCreateValue(buildStage, () => new List<IBuildAction>());
 
-    if(list.Contains(buildAction))
-      return node;
+    if(!list.Contains(buildAction))
+      list.Add(buildAction);
 
-    list.Add(buildAction);
     return node;
   }
 }

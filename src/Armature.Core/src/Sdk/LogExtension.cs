@@ -31,14 +31,14 @@ public static class LogExtension
          : type.Name;
 
   /// <summary>
-  ///   Returns the name of <paramref name="type" /> respecting <see cref="Log.LogFullTypeName" /> property
+  /// Returns the name of <paramref name="type" /> respecting <see cref="Log.LogFullTypeName" /> property
   /// </summary>
   public static string ToLogString(this Type type) => Log.LogFullTypeName ? type.GetFullName() : type.GetShortName();
 
   public static string ToLogString(this BuildResult buildResult) => buildResult.HasValue ? buildResult.Value.ToHoconString() : "nothing";
 
   /// <summary>
-  ///   Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
+  /// Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
   /// </summary>
   public static string ToHoconString(this object? value)
     => value switch
@@ -76,12 +76,13 @@ public static class LogExtension
     return str;
   }
 
-  public static void WriteToLog(this WeightedBuildActionBag? actions, LogLevel logLevel)
+  public static void WriteToLog(this WeightedBuildActionBag? actions, LogLevel logLevel, string propertyName)
   {
     Log.Execute(
       logLevel,
       () =>
       {
+        Log.Write(LogLevel.Info, propertyName);
         if(actions is null)
           Log.WriteLine(logLevel, "null");
         else if(actions.Count == 1 && actions.Values.First().Count == 1) // a single action is found

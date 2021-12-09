@@ -15,6 +15,6 @@ public class BuildSessionMock : IBuildSession
   public BuildResult         BuildResult   { get; set; }
   public IEnumerable<UnitId> BuildChain => _buildChain ?? throw new InvalidOperationException("Build chain is not initialized");
 
-  public BuildResult                 BuildUnit(UnitId     unitId) => throw new System.NotImplementedException();
-  public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId) => throw new System.NotImplementedException();
+  public BuildResult                 BuildUnit(UnitId     unitId) => throw new NotSupportedException();
+  public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId) => throw new NotSupportedException();
 }

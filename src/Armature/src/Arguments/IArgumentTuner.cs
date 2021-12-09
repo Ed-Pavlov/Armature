@@ -5,12 +5,12 @@ namespace Armature;
 
 /// <inheritdoc />
 /// <summary>
-///  This interface is used as a marker of a tuner which tunes rules of building arguments. It's needed to ensure that not suitable tuner
+/// This interface is used as a marker of a tuner which tunes rules of building arguments. It's needed to ensure that not suitable tuner
 /// like <see cref="IInjectPointTuner"/> are not passed to <see cref="FinalTuner.UsingArguments"/>
 /// </summary>
 public interface IArgumentTuner : ITuner { }
 
 public class ArgumentTuner : Tuner, IArgumentTuner
 {
-  public ArgumentTuner(Action<IBuildChainPattern> tune) : base(tune) { }
+  public ArgumentTuner(Action<IBuildChainPattern> tune) : base((pattern, _) => tune(pattern)) { } //TODO: do we need weight here?
 }

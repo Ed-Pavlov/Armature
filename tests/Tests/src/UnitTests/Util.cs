@@ -24,12 +24,12 @@ public static class Util
   public class TestBuildChainPattern : BuildChainPatternBase
   {
     public TestBuildChainPattern(int weight = 0) : base(weight) { }
-    public override WeightedBuildActionBag GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight) => throw new NotImplementedException();
+    public override WeightedBuildActionBag GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight) => throw new NotSupportedException();
   }
 
   public record OtherUnitPattern : IUnitPattern
   {
-    public bool Matches(UnitId unitId) => throw new NotImplementedException();
+    public bool Matches(UnitId unitId) => throw new NotSupportedException();
   }
 
   public static IEnumerable<SpecialKey> all_special_keys()

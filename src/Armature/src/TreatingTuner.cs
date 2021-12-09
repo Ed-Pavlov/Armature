@@ -13,8 +13,14 @@ public class TreatingTuner<T> : FinalTuner
 {
   public TreatingTuner(IBuildChainPattern parentNode) : base(parentNode) { }
 
+  public TreatingTuner<T> AmendWeight(short weight)
+  {
+    Weight += weight;
+    return this;
+  }
+
   /// <summary>
-  ///   Use specified <paramref name="instance"/> as a unit.
+  /// Use specified <paramref name="instance"/> as a unit.
   /// </summary>
   public void AsInstance(T instance) => ParentNode.UseBuildAction(new Instance<T>(instance), BuildStage.Cache);
 
@@ -54,7 +60,7 @@ public class TreatingTuner<T> : FinalTuner
   public FinalTuner AsCreated<TRedirect>(object? key = null) => AsCreated(typeof(TRedirect), key);
 
   /// <summary>
-  ///   Use specified <paramref name="factoryMethod"/> to build a unit.
+  /// Use specified <paramref name="factoryMethod"/> to build a unit.
   /// </summary>
   public FinalTuner AsCreatedWith(Func<T> factoryMethod)
     => new(ParentNode.UseBuildAction(new CreateWithFactoryMethod<T>(_ => factoryMethod()), BuildStage.Create));

@@ -3,7 +3,7 @@
 namespace Armature.Core;
 
 /// <summary>
-///   Checks if the first unit in the build chain matches the specified pattern.
+/// Checks if the first unit in the build chain matches the specified pattern.
 /// </summary>
 public class IfFirstUnit : BuildChainPatternByUnitBase
 {
@@ -11,8 +11,8 @@ public class IfFirstUnit : BuildChainPatternByUnitBase
   public IfFirstUnit(IUnitPattern pattern, int weight) : base(pattern, weight) { }
 
   /// <summary>
-  ///   Checks if the first unit in the build chain matches the specified patter.
-  ///   If it is the unit under construction, returns build actions for it, if no, pass the rest of the chain to each child and returns merged actions.
+  /// Checks if the first unit in the build chain matches the specified patter.
+  /// If it is the unit under construction, returns build actions for it, if no, pass the rest of the chain to each child and returns merged actions.
   /// </summary>
   public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight)
   {

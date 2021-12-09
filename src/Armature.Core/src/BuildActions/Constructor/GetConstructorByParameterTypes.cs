@@ -8,7 +8,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   Gets a constructor of type which matches specified parameter types list.
+/// Gets a constructor of type which matches specified parameter types list.
 /// </summary>
 public record GetConstructorByParameterTypes : IBuildAction, ILogString
 {

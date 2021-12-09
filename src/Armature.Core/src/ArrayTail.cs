@@ -10,7 +10,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   Data structure used to take a tail of the collection w/o memory allocations
+/// Data structure used to take a tail of the collection w/o memory allocations
 /// </summary>
 /// <remarks>It implements <see cref="IEnumerable{T}"/> for rare and mostly debugging cases, use it wisely</remarks>
 public readonly struct ArrayTail<T> : IEnumerable<T>
@@ -62,33 +62,40 @@ public readonly struct ArrayTail<T> : IEnumerable<T>
   public IEnumerator<T>   GetEnumerator() => new Enumerator(_array, _startIndex);
   IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-  private struct Enumerator : IEnumerator<T?>
+  private struct Enumerator : IEnumerator<T>
   {
     private readonly IList<T> _array;
     private readonly int      _startIndex;
     private          int      _iterator;
+    private          bool     _isInRange;
     private          T?       _current;
 
     public Enumerator(IList<T> array, int startIndex) : this()
     {
-      _array      = array;
-      _startIndex = startIndex;
-      _iterator   = startIndex - 1;
-      _current    = default;
+      _array        = array;
+      _startIndex   = startIndex;
+      Reset();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool MoveNext() //TODO: check if it inlined, if no, return logic with exception
+    public bool MoveNext()
     {
-      var result = ++_iterator < _array.Count;
-      _current = result ? _array[_iterator] : default;
-      return result;
+      _isInRange = ++_iterator < _array.Count;
+
+      if(_isInRange)
+        _current = _array[_iterator];
+
+      return _isInRange;
     }
 
-    public T? Current => _current;
+    public T Current =>  _isInRange ? _current! : throw new InvalidOperationException();
 
     [WithoutTest]
-    public void Reset()   => _iterator = _startIndex - 1;
+    public void Reset()
+    {
+      _iterator  = _startIndex - 1;
+      _isInRange = false;
+      _current   = default;
+    }
     [WithoutTest]
     public void Dispose() { }
 

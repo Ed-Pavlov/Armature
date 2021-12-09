@@ -7,16 +7,16 @@ using JetBrains.Annotations;
 namespace Armature.Core;
 
 /// <summary>
-///   Base class exposing the collection of children nodes, gathering, and merging build actions from children.
+/// Base class exposing the collection of children nodes, gathering, and merging build actions from children.
 /// </summary>
 /// <remarks>
 /// This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
 /// new FooNode
 /// {
-///   new SubNode(Pattern1.Instance, 0)
-///     .UseBuildAction(BuildStage.Create, new GetLongestConstructorBuildAction()),
-///   new SubNode(Pattern2.Instance, ParameterMatchingWeight.Lowest)
-///     .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
+/// new SubNode(Pattern1.Instance, 0)
+///  .UseBuildAction(BuildStage.Create, new GetLongestConstructorBuildAction()),
+/// new SubNode(Pattern2.Instance, ParameterMatchingWeight.Lowest)
+///  .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
 /// };
 /// </remarks>
 public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IEnumerable, ILogPrintable
@@ -34,7 +34,7 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
   protected int Weight { [DebuggerStepThrough] get; }
 
   /// <summary>
-  ///   Gathers and merges build actions from all children nodes.
+  /// Gathers and merges build actions from all children nodes.
   /// </summary>
   /// <param name="buildChain">The build chain to pass to children nodes if any.</param>
   /// <param name="inputMatchingWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>

@@ -7,7 +7,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   Injects values into building Unit properties specified for injection
+/// Injects values into building Unit properties specified for injection
 /// </summary>
 public record InjectDependenciesIntoProperties : IBuildAction
 {
@@ -18,10 +18,10 @@ public record InjectDependenciesIntoProperties : IBuildAction
   public void PostProcess(IBuildSession buildSession)
   {
     var unit = buildSession.BuildResult.Value;
-    var type = buildSession.GetUnitUnderConstruction().GetUnitTypeSafe(); // ?? unit!.GetType(); //TODO: is it good implementation?
+    var type = buildSession.GetUnitUnderConstruction().GetUnitTypeSafe();
 
     var unitInfo = new UnitId(type, SpecialKey.PropertyList);
-    var unitList = buildSession.BuildAllUnits(unitInfo).Select(_ => _.Entity); //TODO: do we need to take into account weight of matching?
+    var unitList = buildSession.BuildAllUnits(unitInfo).OrderByDescending(_ => _.Weight).Select(_ => _.Entity);
 
     foreach(var property in unitList.Select(result => result.Value!).SelectMany(list => (PropertyInfo[])list))
     {

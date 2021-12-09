@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
-using Armature.Extensibility;
 using JetBrains.Annotations;
 
 namespace Armature;
 
-public class RootTuner : BuildChainExtensibility
+public class RootTuner : TunerBase
 {
   [PublicAPI] protected int Weight;
 

@@ -18,22 +18,22 @@ public class WeightOf
   public class InjectionPoint
   {
     /// <summary>
-    ///   Weight of argument matched by assignability to a parameter/property.
+    /// Weight of argument matched by assignability to a parameter/property.
     /// </summary>
     public static short ByTypeAssignability { get; protected set; } = Step;
 
     /// <summary>
-    ///   Weight of injection point (method parameter or property) matched by strict equality of a parameter/property type.
+    /// Weight of injection point (method parameter or property) matched by strict equality of a parameter/property type.
     /// </summary>
     public static short ByExactType { get; protected set; } = (short) (ByTypeAssignability + Step);
 
     /// <summary>
-    ///   Weight of argument matched by an attribute used to mark a parameter/property.
+    /// Weight of argument matched by an attribute used to mark a parameter/property.
     /// </summary>
     public static short ByInjectPointId { get; protected set; } = (short) (ByExactType + Step);
 
     /// <summary>
-    ///   Weight of argument matched by a parameter name.
+    /// Weight of argument matched by a parameter name.
     /// </summary>
     public static short ByName { get; protected set; } = (short) (ByInjectPointId + Step);
   }
@@ -76,14 +76,14 @@ public class WeightOf
     /// <summary>
     /// By default the weight of <see cref="IfFirstUnit"/> build chain pattern's weight is increased in order to registrations
     /// like
-    ///  builder.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(MyType))))
-    ///         .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(typeof(string))))
-    ///    // ....
+    /// builder.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(MyType))))
+    ///      .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(typeof(string))))
+    /// // ....
     /// "win" registrations like
     ///
-    ///  builder.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(MyType))))
-    ///         .GetOrAddNode(new SkipTillUnit(new IsAssignableFromType(typeof(string))))
-    ///    // ....
+    /// builder.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(MyType))))
+    ///      .GetOrAddNode(new SkipTillUnit(new IsAssignableFromType(typeof(string))))
+    /// // ....
     ///
     /// Because the first one is a "personal" registration whereas the second one will be applied to all units building
     /// in the context of "MyType".

@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace Armature;
 
-public class OpenGenericCreationTuner : BuildChainExtensibility, IExtensibility<Type, object>
+public class OpenGenericCreationTuner : TunerBase, IInternal<Type, object?>
 {
   [PublicAPI] protected readonly Type    OpenGenericType;
   [PublicAPI] protected readonly object? Key;
@@ -18,7 +18,7 @@ public class OpenGenericCreationTuner : BuildChainExtensibility, IExtensibility<
   }
 
   /// <summary>
-  ///   Specifies that unit should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
+  /// Specifies that unit should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
   /// </summary>
   public FinalTuner CreatedByDefault()
     => new(ParentNode
@@ -26,13 +26,13 @@ public class OpenGenericCreationTuner : BuildChainExtensibility, IExtensibility<
           .UseBuildAction(Default.CreationBuildAction, BuildStage.Create));
 
   /// <summary>
-  ///   Specifies that unit should be created using reflection.
+  /// Specifies that unit should be created using reflection.
   /// </summary>
   public FinalTuner CreatedByReflection() =>
     new(ParentNode
        .GetOrAddNode(new SkipTillUnit(new IsGenericOfDefinition(OpenGenericType, Key)))
        .UseBuildAction(Static.Of<CreateByReflection>(), BuildStage.Create));
 
-  Type IExtensibility<Type, object>.   Item1 => OpenGenericType;
-  object? IExtensibility<Type, object>.Item2 => Key;
+  Type IInternal<Type>.            Member1 => OpenGenericType;
+  object? IInternal<Type, object?>.Member2 => Key;
 }

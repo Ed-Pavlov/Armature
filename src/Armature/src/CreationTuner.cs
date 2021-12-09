@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace Armature;
 
-public class CreationTuner : BuildChainExtensibility, IExtensibility<Type, object>
+public class CreationTuner : TunerBase, IInternal<Type, object?>
 {
   [PublicAPI] protected readonly Type Type;
   [PublicAPI] protected readonly object? Key;
@@ -18,18 +18,19 @@ public class CreationTuner : BuildChainExtensibility, IExtensibility<Type, objec
   }
 
   /// <summary>
-  ///   Specifies that unit should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
+  /// Specifies that unit should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
   /// </summary>
   public FinalTuner CreatedByDefault()
     => new(ParentNode.GetOrAddNode(new IfFirstUnit(new UnitPattern(Type, Key))
                                     .UseBuildAction(Default.CreationBuildAction, BuildStage.Create)));
+
   /// <summary>
-  ///   Specifies that unit should be created using reflection.
+  /// Specifies that unit should be created using reflection.
   /// </summary>
   public FinalTuner CreatedByReflection()
     => new(ParentNode.GetOrAddNode(new IfFirstUnit(new UnitPattern(Type, Key))
                                     .UseBuildAction(Static.Of<CreateByReflection>(), BuildStage.Create)));
 
-  Type IExtensibility<Type, object>.   Item1 => Type;
-  object? IExtensibility<Type, object>.Item2 => Key;
+  Type IInternal<Type>.            Member1 => Type;
+  object? IInternal<Type, object?>.Member2 => Key;
 }

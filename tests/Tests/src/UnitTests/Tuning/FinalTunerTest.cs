@@ -42,9 +42,9 @@ public class FinalTunerTest
     target.InjectInto(tuner1, tuner2);
 
     // --assert
-    A.CallTo(() => tuner1.Tune(expectedNode))
+    A.CallTo(() => tuner1.Tune(expectedNode, 0))
      .MustHaveHappenedOnceAndOnly()
-     .Then(A.CallTo(() => tuner2.Tune(expectedNode)).MustHaveHappenedOnceAndOnly());
+     .Then(A.CallTo(() => tuner2.Tune(expectedNode, 0)).MustHaveHappenedOnceAndOnly());
   }
 
   [Test]
@@ -91,8 +91,8 @@ public class FinalTunerTest
     target.UsingArguments(tuner1, expectedString, expectedInt, tuner2);
 
     // --assert
-    A.CallTo(() => tuner1.Tune(actual)).MustHaveHappenedOnceAndOnly().Then(
-      A.CallTo(() => tuner2.Tune(actual)).MustHaveHappenedOnceAndOnly());
+    A.CallTo(() => tuner1.Tune(actual, 0)).MustHaveHappenedOnceAndOnly().Then(
+      A.CallTo(() => tuner2.Tune(actual, 0)).MustHaveHappenedOnceAndOnly());
 
     actual.Children.Single().Should().BeEquivalentTo(expectedChildNode);
   }
@@ -108,10 +108,5 @@ public class FinalTunerTest
 
     // --assert
     actual.Should().ThrowExactly<ArgumentException>().WithMessage($"{nameof(IArgumentTuner)} or instance expected");
-  }
-
-  private class BadTuner : ITuner
-  {
-    public void Tune(IBuildChainPattern buildChainPattern) => throw new NotImplementedException();
   }
 }

@@ -9,18 +9,18 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   This container is used mostly for "default" build actions applied to any unit under construction.
-///   For example by default we want to find attributed constructor and if there is no any get longest constructor, set these two actions in right order
-///   into <see cref="TryInOrder" /> to reach such behaviour. If a build action did not build a unit container calls the next one till
-///   a unit will be built.
+/// This container is used mostly for "default" build actions applied to any unit under construction.
+/// For example by default we want to find attributed constructor and if there is no any get longest constructor, set these two actions in right order
+/// into <see cref="TryInOrder" /> to reach such behaviour. If a build action did not build a unit container calls the next one till
+/// a unit will be built.
 /// </summary>
 /// <remarks>
-///   This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
-///   new OrderedBuildActionContainer
-///   {
-///     new GetInjectPointConstructorBuildAction(),
-///     new GetLongestConstructorBuildAction()
-///   }
+/// This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
+/// new OrderedBuildActionContainer
+/// {
+///  new GetInjectPointConstructorBuildAction(),
+///  new GetLongestConstructorBuildAction()
+/// }
 /// </remarks>
 public record TryInOrder : IBuildAction, IEnumerable, ILogString
 {

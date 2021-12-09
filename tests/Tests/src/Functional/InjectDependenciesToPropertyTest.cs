@@ -57,7 +57,18 @@ namespace Tests.Functional
       actual.InjectProperty.Should().BeNull();
     }
 
-    // target.TreatAll().InjectInto(Property.ByInjectPoint()); //TODO: is it possible to make it working
+    // [Test]
+    public void should()
+    {
+      // --arrange
+      var target = CreateTarget();
+      target.TreatAll().InjectInto(Property.ByInjectPoint()); //TODO: is it possible to make it working
+      target.Treat<Subject>().AsIs();
+
+      // --act
+      target.Build<Subject>();
+
+    }
 
     [TestCaseSource(nameof(test_case_source))]
     public void should_use_argument_for_property_by_type(Func<BuildChainPatternTree, FinalTuner> tune)
@@ -94,7 +105,7 @@ namespace Tests.Functional
        .InjectInto(injectPointId is null ? Property.ByInjectPoint() : Property.ByInjectPoint(new[] { injectPointId }));
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Should().NotBeNull();

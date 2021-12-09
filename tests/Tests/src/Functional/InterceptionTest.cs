@@ -107,7 +107,7 @@ namespace Tests.Functional
     }
 
     /// <summary>
-    ///   BuildAction adds a postfix to a string, should be registered only for strings
+    /// BuildAction adds a postfix to a string, should be registered only for strings
     /// </summary>
     private class AddPostfixToString : IBuildAction
     {

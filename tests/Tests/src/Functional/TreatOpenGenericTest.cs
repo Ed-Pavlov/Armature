@@ -53,23 +53,6 @@ namespace Tests.Functional
       actual.Value.Should().Be(expected);
     }
 
-    [Test]
-    public void should_not_add_creation_strategy() //TODO: should be unit test
-    {
-      // --arrange
-      var target = CreateTarget();
-
-      target
-       .TreatOpenGeneric(typeof(ISubject<>))
-       .As(typeof(Subject<>));
-
-      // --act
-      Action actual = () => target.Build<ISubject<int>>(5);
-
-      // --assert
-      actual.Should().Throw<ArmatureException>();
-    }
-
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {

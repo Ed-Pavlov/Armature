@@ -8,7 +8,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   Gets a list of  properties marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute.InjectionPointId" />
+/// Gets a list of  properties marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute.InjectionPointId" />
 /// </summary>
 public record GetPropertyListByInjectPointId : IBuildAction, ILogString
 {

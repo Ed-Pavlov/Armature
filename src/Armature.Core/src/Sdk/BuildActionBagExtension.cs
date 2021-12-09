@@ -11,7 +11,7 @@ namespace Armature.Core.Sdk;
 public static class BuildActionBagExtension
 {
   /// <summary>
-  ///   Merges two collections into one
+  /// Merges two collections into one
   /// </summary>
   [DebuggerStepThrough]
   public static WeightedBuildActionBag? Merge(this WeightedBuildActionBag? left, WeightedBuildActionBag? right)
@@ -46,7 +46,7 @@ public static class BuildActionBagExtension
   }
 
   /// <summary>
-  ///   Returns the build action with biggest matching weight for the build stage
+  /// Returns the build action with biggest matching weight for the build stage
   /// </summary>
   /// <exception cref="ArmatureException">Throws if there are more than one action with equal matching weight</exception>
   public static IBuildAction? GetTopmostAction(this WeightedBuildActionBag? buildActionBag, object stage)

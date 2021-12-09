@@ -6,7 +6,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   Represents whole build session of the one Unit, all dependency of the built unit are built in context of one build session.
+/// Represents whole build session of the one Unit, all dependency of the built unit are built in context of one build session.
 /// </summary>
 /// <remarks>It could be for example IA -> A -> IB -> B -> int. This chain means that for now unit of type int is under construction
 /// but it is built in the "context" of the whole build chain.</remarks>
@@ -26,8 +26,8 @@ public partial class BuildSession
   /// <param name="auxPatternTree">Additional build chain patterns tree, in opposite to <paramref name="patternTree"/> these patterns
   /// are passed to <paramref name="parentBuilders"/> if unit is being tried to build via parent builders.</param>
   /// <param name="parentBuilders">
-  ///   If unit is not built and <paramref name="parentBuilders" /> are provided, tries to build a unit using
-  ///   parent builders one by one in the order they passed into the constructor.
+  /// If unit is not built and <paramref name="parentBuilders" /> are provided, tries to build a unit using
+  /// parent builders one by one in the order they passed into the constructor.
   /// </param>
   public BuildSession(object[] buildStages, IBuildChainPattern patternTree, IBuildChainPattern? auxPatternTree, IBuilder[]? parentBuilders)
   {
@@ -44,14 +44,14 @@ public partial class BuildSession
   }
 
   /// <summary>
-  ///   Builds a Unit represented by <paramref name="unitId" />
+  /// Builds a Unit represented by <paramref name="unitId" />
   /// </summary>
   /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildChainPattern" /> for details</param>
   public BuildResult BuildUnit(UnitId unitId) => Build(unitId, BuildUnit);
 
   /// <summary>
-  ///   Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
-  ///   This can be useful to build all implementers of an interface.
+  /// Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
+  /// This can be useful to build all implementers of an interface.
   /// </summary>
   /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildChainPattern" /> for details</param>
   public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId) => Build(unitId, BuildAllUnits);
@@ -243,8 +243,7 @@ public partial class BuildSession
   private static void LogGatheredActions(WeightedBuildActionBag? actionBag)
   {
     Log.WriteLine(LogLevel.Info, "");
-    Log.Write(LogLevel.Info, $"{GatherBuildActions}.Result: ");
-    actionBag.WriteToLog(LogLevel.Info);
+    actionBag.WriteToLog(LogLevel.Info, $"{GatherBuildActions}.Result: ");
     Log.WriteLine(LogLevel.Info, "");
   }
 }

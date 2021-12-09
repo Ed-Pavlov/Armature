@@ -7,8 +7,8 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   Redirects building of a unit of one open generic type to the unit of another open generic type.
-///   E.g. redirecting interface to the implementation
+/// Redirects building of a unit of one open generic type to the unit of another open generic type.
+/// E.g. redirecting interface to the implementation
 /// </summary>
 public record RedirectOpenGenericType : IBuildAction, ILogString
 {

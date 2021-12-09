@@ -3,17 +3,19 @@ using System.Diagnostics;
 using System.Linq;
 using Armature.Core;
 using Armature.Core.Sdk;
-using Armature.Extensibility;
+using JetBrains.Annotations;
 
 namespace Armature;
 
-public class FinalTuner : BuildChainExtensibility
+public class FinalTuner : TunerBase
 {
+  [PublicAPI] protected int Weight;
+
   [DebuggerStepThrough]
   public FinalTuner(IBuildChainPattern parentNode) : base(parentNode) { }
 
   /// <summary>
-  ///   Provides arguments to inject into building unit. See <see cref="ForParameter" /> for details.
+  /// Provides arguments to inject into building unit. See <see cref="ForParameter" /> for details.
   /// </summary>
   public FinalTuner UsingArguments(params object[] arguments)
   {
@@ -44,12 +46,12 @@ public class FinalTuner : BuildChainExtensibility
     if(propertyIds.Length == 0) throw new ArgumentNullException(nameof(propertyIds), "Specify one or more inject point tuners");
 
     foreach(var injectPointTuner in propertyIds)
-      injectPointTuner.Tune(ParentNode);
+      injectPointTuner.Tune(ParentNode, Weight);
     return this;
   }
 
   /// <summary>
-  ///   Register Unit as an singleton with a lifetime equal to parent <see cref="BuildChainPatternTree"/>. See <see cref="Singleton" /> for details
+  /// Register Unit as an singleton with a lifetime equal to parent <see cref="BuildChainPatternTree"/>. See <see cref="Singleton" /> for details
   /// </summary>
   public void AsSingleton() => ParentNode.UseBuildAction(new Singleton(), BuildStage.Cache);
 }

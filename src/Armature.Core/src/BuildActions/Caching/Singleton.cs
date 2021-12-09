@@ -4,8 +4,8 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-///   Caches built unit in <see cref="PostProcess" /> and then set it as <see cref="BuildResult" /> in <see cref="Process" />.
-///   Simplest eternal singleton.
+/// Caches built unit in <see cref="PostProcess" /> and then set it as <see cref="BuildResult" /> in <see cref="Process" />.
+/// Simplest eternal singleton.
 /// </summary>
 public record Singleton : IBuildAction, ILogString
 {

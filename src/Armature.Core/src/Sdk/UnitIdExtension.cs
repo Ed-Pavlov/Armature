@@ -7,14 +7,17 @@ namespace Armature.Core.Sdk;
 public static class UnitIdExtension
 {
   /// <summary>
-  ///   Returns a <see cref="Type" /> if <see cref="UnitId.Kind" /> is a type, otherwise throws exception.
+  /// Returns a <see cref="Type" /> if <see cref="UnitId.Kind" /> is a type, otherwise throws exception.
   /// </summary>
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public static Type GetUnitType(this UnitId unitId) => (Type) unitId.Kind! ?? throw new ArgumentNullException(nameof(unitId.Kind));
+  public static Type GetUnitType(this UnitId unitId)
+    => unitId.Kind as Type ??
+       throw new ArmatureException($"Unit {nameof(UnitId.Kind)} is not an instance of the class {nameof(Type)}")
+          .AddData(nameof(unitId), unitId.ToString());
 
   /// <summary>
-  ///   Returns a <see cref="Type" /> if <see cref="UnitId.Kind" /> is a type, otherwise null.
+  /// Returns a <see cref="Type" /> if <see cref="UnitId.Kind" /> is a type, otherwise null.
   /// </summary>
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]

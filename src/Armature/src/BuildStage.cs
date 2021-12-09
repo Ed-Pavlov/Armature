@@ -6,34 +6,34 @@ using JetBrains.Annotations;
 namespace Armature;
 
 /// <summary>
-///   Represents predefined build stages used by Armature framework. This list can be extended or completely replaced
-///   if another framework is implemented on an Armature.Core base
+/// Represents predefined build stages used by Armature framework. This list can be extended or completely replaced
+/// if another framework is implemented on an Armature.Core base
 /// </summary>
 /// <remarks>Use objects but int or enum in order to avoid memory traffic on boxing</remarks>
 public class BuildStage : ILogString
 {
   /// <summary>
-  ///   Stage of intercepting any unit returned by build process
+  /// Stage of intercepting any unit returned by build process
   /// </summary>
   public static readonly BuildStage Intercept = new("Intercept");
 
   /// <summary>
-  ///   Stage of building when already built and cached object can be reused
+  /// Stage of building when already built and cached object can be reused
   /// </summary>
   public static readonly BuildStage Cache = new("Cache");
 
   /// <summary>
-  ///   Stage of awareness that some unit was built
+  /// Stage of awareness that some unit was built
   /// </summary>
   public static readonly BuildStage Aware = new("Aware");
 
   /// <summary>
-  ///   Stage of injecting dependencies into newly created unit
+  /// Stage of injecting dependencies into newly created unit
   /// </summary>
   public static readonly BuildStage Initialize = new("Initialize");
 
   /// <summary>
-  ///   Stage of creating a unit, injects dependencies into a constructor, due it must be called to create the unit
+  /// Stage of creating a unit, injects dependencies into a constructor, due it must be called to create the unit
   /// </summary>
   public static readonly BuildStage Create = new("Create");
 

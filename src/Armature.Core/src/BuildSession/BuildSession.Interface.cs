@@ -7,8 +7,8 @@ namespace Armature.Core;
 public partial class BuildSession
 {
   /// <summary>
-  ///   This is an restricted interface of the <see cref="BuildSession" /> passed
-  ///   to <see cref="IBuildAction.Process" /> and <see cref="IBuildAction.PostProcess" />
+  /// This is an restricted interface of the <see cref="BuildSession" /> passed
+  /// to <see cref="IBuildAction.Process" /> and <see cref="IBuildAction.PostProcess" />
   /// </summary>
   private class Interface : IBuildSession
   {
