@@ -1,7 +1,7 @@
 ﻿using System;
 using Armature.Core;
 
-namespace Tests.Common
+namespace Tests.Util
 {
   internal class Unit
   {

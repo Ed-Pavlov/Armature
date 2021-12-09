@@ -33,5 +33,5 @@ public interface IBuildChainPattern : IEquatable<IBuildChainPattern>
   /// Returns all matched build actions for the <paramref name="buildChain" />. All actions are grouped by a building stage
   /// and coupled with a "weight of matching". See <see cref="WeightedBuildActionBag" /> for details.
   /// </returns>
-  WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight);
+  WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight);
 }

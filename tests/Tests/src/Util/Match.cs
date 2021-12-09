@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Armature.Core;
 
-namespace Tests.Common
+namespace Tests.Util
 {
   /// <summary>
   /// Utility class to simplify the reading of the code creates different <see cref="IUnitPattern" />s.

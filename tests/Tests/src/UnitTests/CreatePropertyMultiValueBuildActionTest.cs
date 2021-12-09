@@ -6,6 +6,7 @@ using FakeItEasy;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;
+using Tests.UnitTests.BuildActions;
 
 namespace Tests.UnitTests
 {
@@ -19,7 +20,7 @@ namespace Tests.UnitTests
       // --arrange
       var target       = new BuildListArgumentForProperty(key);
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildChain).Returns(new[] {new UnitId(propertyInfo, key)});
+      A.CallTo(() => buildSession.BuildChain).Returns(new UnitId(propertyInfo, key).ToBuildChain());
 
       A.CallTo(() => buildSession.BuildAllUnits(new UnitId(propertyInfo, key)))
        .Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());

@@ -17,7 +17,7 @@ public interface IBuildSession
   /// The chain of units representing a build session, the last one is the unit under construction,
   /// the previous are the context of the build session. Each next unit info is the dependency of the previous one.
   /// </summary>
-  IEnumerable<UnitId> BuildChain { get; }
+  BuildChain BuildChain { get; }
 
   /// <summary>
   /// Builds a unit represented by <see cref="UnitId" /> in the context of the current build session

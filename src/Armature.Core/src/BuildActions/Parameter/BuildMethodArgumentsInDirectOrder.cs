@@ -14,7 +14,7 @@ public record BuildMethodArgumentsInDirectOrder : IBuildAction
   {
     Log.WriteLine(LogLevel.Verbose, "");
 
-    var parameters = (ParameterInfo[])buildSession.GetUnitUnderConstruction().Kind!;
+    var parameters = (ParameterInfo[])buildSession.BuildChain.TargetUnit.Kind!;
     var arguments  = new object?[parameters.Length];
 
     for(var i = 0; i < parameters.Length; i++)

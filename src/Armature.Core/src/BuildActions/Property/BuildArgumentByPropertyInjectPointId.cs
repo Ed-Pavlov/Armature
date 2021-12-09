@@ -14,7 +14,7 @@ public record BuildArgumentByPropertyInjectPointId : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
-    var propertyInfo = (PropertyInfo) buildSession.GetUnitUnderConstruction().Kind!;
+    var propertyInfo = (PropertyInfo) buildSession.BuildChain.TargetUnit.Kind!;
 
     var attribute = propertyInfo
                    .GetCustomAttributes<InjectAttribute>()

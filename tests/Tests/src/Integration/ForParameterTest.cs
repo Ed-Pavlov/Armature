@@ -151,12 +151,12 @@ public class ForParameterTest
     IEnumerable CreateCases();
   }
 
-  private record ArrangeForParameter<T>(string Name, Func<MethodArgumentTuner<T>> ForParameter, ArrayTail<UnitId> Chain) : IForParameter
+  private record ArrangeForParameter<T>(string Name, Func<MethodArgumentTuner<T>> ForParameter, BuildChain Chain) : IForParameter
   {
     public virtual IEnumerable CreateCases() => CombineCommonCases(this);
   }
 
-  private record ArrangeForParameterWithInjectAttribute(string Name, Func<MethodArgumentTuner<object?>> ForParameter, ArrayTail<UnitId> Chain)
+  private record ArrangeForParameterWithInjectAttribute(string Name, Func<MethodArgumentTuner<object?>> ForParameter, BuildChain Chain)
       : ArrangeForParameter<object?>(Name, ForParameter, Chain)
   {
     public override IEnumerable CreateCases() => CombineCommonCases(this).Concat(CombineInjectAttributeCases(this));

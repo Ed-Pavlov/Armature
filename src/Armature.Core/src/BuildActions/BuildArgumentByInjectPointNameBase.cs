@@ -21,7 +21,7 @@ public abstract record BuildArgumentByInjectPointNameBase : IBuildAction, ILogSt
 
   public void Process(IBuildSession buildSession)
   {
-    var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
+    var unitUnderConstruction = buildSession.BuildChain.TargetUnit;
 
     var effectiveKey = _key == SpecialKey.Propagate ? unitUnderConstruction.Key : _key;
 

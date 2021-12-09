@@ -3,7 +3,7 @@ using System.Reflection;
 using Armature.Core;
 using Armature.Core.Sdk;
 using FakeItEasy.Configuration;
-using Tests.Common;
+using Tests.Util;
 
 namespace Tests.UnitTests;
 

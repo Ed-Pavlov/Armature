@@ -29,21 +29,21 @@ public abstract class BuildChainPatternBase : BuildChainPatternWithChildrenBase
     return result;
   }
 
-  protected WeightedBuildActionBag? GetOwnOrChildrenBuildActions(ArrayTail<UnitId> buildChain, int inputWeight)
+  protected WeightedBuildActionBag? GetOwnOrChildrenBuildActions(BuildChain buildChain, int inputWeight)
   {
     WeightedBuildActionBag? actionBag = null;
 
-    if(buildChain.Length > 1)
+    if(buildChain.Length == 1)
+    {
+      actionBag = GetOwnBuildActions(inputWeight + Weight);
+      actionBag.WriteToLog(LogLevel.Verbose, "Actions: ");
+    }
+    else
     { // pass the rest of the chain to children and return their actions
       if(RawChildren is null)
         Log.WriteLine(LogLevel.Trace, "Children: null");
       else
         actionBag = GetChildrenActions(buildChain.GetTail(1), inputWeight + Weight);
-    }
-    else
-    {
-      actionBag = GetOwnBuildActions(inputWeight + Weight);
-      actionBag.WriteToLog(LogLevel.Verbose, "Actions: ");
     }
 
     return actionBag;

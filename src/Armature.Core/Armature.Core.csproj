@@ -55,6 +55,8 @@
     <Compile Remove="src\BuildSession.cs" />
     <Compile Remove="src\BuildSession.Interface.cs" />
     <Compile Remove="src\IBuildSession.cs" />
+    <Compile Remove="src\Sdk\ArrayTailExtension.cs" />
+    <Compile Remove="src\ArrayTail.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\build\icon.png" Pack="true" PackagePath="">

@@ -20,7 +20,7 @@ public record GetConstructorByInjectPointId : IBuildAction, ILogString
   {
     Log.WriteLine(LogLevel.Verbose, () => $"PointId = {_injectPointId.ToHoconString()}");
 
-    var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
+    var unitType = buildSession.BuildChain.TargetUnit.GetUnitType();
     var constructors = unitType
                       .GetConstructors()
                       .Where(

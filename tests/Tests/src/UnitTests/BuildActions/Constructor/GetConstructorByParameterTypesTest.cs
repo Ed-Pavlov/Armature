@@ -6,7 +6,7 @@ using Armature.Core;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using Tests.Common;
+using Tests.Util;
 
 namespace Tests.UnitTests.BuildActions;
 

@@ -4,7 +4,7 @@ using Armature;
 using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
-using Tests.Common;
+using Tests.Util;
 
 namespace Tests.UnitTests.Tuning.Arguments;
 
@@ -71,6 +71,6 @@ public class ArgumentTunerBaseTest
   {
     public Root(int expectedWeight) : base(expectedWeight) { }
 
-    public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight) => GetOwnBuildActions(Weight);
+    public override WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight) => GetOwnBuildActions(Weight);
   }
 }

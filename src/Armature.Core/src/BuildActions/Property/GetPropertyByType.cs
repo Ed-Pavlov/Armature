@@ -18,7 +18,7 @@ public record GetPropertyByType : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession)
   {
-    var unitType   = buildSession.GetUnitUnderConstruction().GetUnitType();
+    var unitType   = buildSession.BuildChain.TargetUnit.GetUnitType();
     var properties = unitType.GetProperties().Where(_ => _.PropertyType == _type).ToArray();
 
     buildSession.BuildResult =

@@ -5,9 +5,9 @@ namespace Tests.UnitTests.BuildActions;
 
 public static class TestUtils
 {
-  public static BuildResult         ToArguments<T>(this  T?      value)  => new BuildResult(value?.GetType().IsArray == true ? value : new object?[] {value});
-  public static BuildResult         ToBuildResult(this   object? value)  => new BuildResult(value);
-  public static IEnumerable<UnitId> ToBuildChain(this UnitId  unitId) => new[] {unitId};
+  public static BuildResult       ToArguments<T>(this T?      value)  => new BuildResult(value?.GetType().IsArray == true ? value : new object?[] {value});
+  public static BuildResult       ToBuildResult(this  object? value)  => new BuildResult(value);
+  public static BuildChain ToBuildChain(this   UnitId  unitId) => new BuildChain(new[] {unitId}, 0);
 }
 
 public static class Kind

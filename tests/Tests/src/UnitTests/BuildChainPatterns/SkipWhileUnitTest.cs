@@ -3,7 +3,7 @@ using Armature.Core;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
-using Tests.Common;
+using Tests.Util;
 
 namespace Tests.UnitTests.BuildChainPatterns;
 
@@ -31,13 +31,13 @@ public class SkipWhileUnitTest
       // --assert
       A.CallTo(
             () => child1.GatherBuildActions(
-                An<ArrayTail<UnitId>>.That.IsEqualTo(Util.MakeArrayTail(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
+                An<BuildChain>.That.IsEqualTo(Util.MakeArrayTail(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
                 An<int>._))
        .MustHaveHappenedOnceAndOnly();
 
       A.CallTo(
             () => child2.GatherBuildActions(
-                An<ArrayTail<UnitId>>.That.IsEqualTo(Util.MakeArrayTail(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
+                An<BuildChain>.That.IsEqualTo(Util.MakeArrayTail(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
                 An<int>._))
        .MustHaveHappenedOnceAndOnly();
     }
@@ -64,13 +64,13 @@ public class SkipWhileUnitTest
       // --assert
       A.CallTo(
             () => child1.GatherBuildActions(
-                An<ArrayTail<UnitId>>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()),
+                An<BuildChain>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()),
                 An<int>._))
        .MustHaveHappenedOnceAndOnly();
 
       A.CallTo(
             () => child2.GatherBuildActions(
-                An<ArrayTail<UnitId>>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()),
+                An<BuildChain>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()),
                 An<int>._))
        .MustHaveHappenedOnceAndOnly();
     }
@@ -94,8 +94,8 @@ public class SkipWhileUnitTest
       target.GatherBuildActions(chain, inputWeight);
 
       // --assert
-      A.CallTo(() => child1.GatherBuildActions(An<ArrayTail<UnitId>>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
-      A.CallTo(() => child2.GatherBuildActions(An<ArrayTail<UnitId>>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
+      A.CallTo(() => child1.GatherBuildActions(An<BuildChain>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
+      A.CallTo(() => child2.GatherBuildActions(An<BuildChain>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
     }
 
     [Test]

@@ -3,7 +3,7 @@ using Armature.Core;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
-using Tests.Common;
+using Tests.Util;
 
 namespace Tests.UnitTests.BuildChainPatterns;
 
@@ -28,9 +28,9 @@ public class IfFirstUnitTest
     target.GatherBuildActions(chain, 0);
 
     // --assert
-    A.CallTo(() => child1.GatherBuildActions(An<ArrayTail<UnitId>>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()), An<int>._))
+    A.CallTo(() => child1.GatherBuildActions(An<BuildChain>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()), An<int>._))
      .MustHaveHappenedOnceAndOnly();
-    A.CallTo(() => child2.GatherBuildActions(An<ArrayTail<UnitId>>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()), An<int>._))
+    A.CallTo(() => child2.GatherBuildActions(An<BuildChain>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()), An<int>._))
      .MustHaveHappenedOnceAndOnly();
   }
 
@@ -76,8 +76,8 @@ public class IfFirstUnitTest
     target.GatherBuildActions(chain, inputWeight);
 
     // --assert
-    A.CallTo(() => child1.GatherBuildActions(An<ArrayTail<UnitId>>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
-    A.CallTo(() => child2.GatherBuildActions(An<ArrayTail<UnitId>>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => child1.GatherBuildActions(An<BuildChain>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => child2.GatherBuildActions(An<BuildChain>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]

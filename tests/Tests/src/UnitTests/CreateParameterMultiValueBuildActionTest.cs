@@ -5,6 +5,7 @@ using Armature.Core;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.UnitTests.BuildActions;
 
 // ReSharper disable UnusedParameter.Local
 
@@ -18,7 +19,7 @@ namespace Tests.UnitTests
       // --arrange
       var target       = new BuildListArgumentForMethodParameter();
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildChain).Returns(new[] {new UnitId(parameterInfo, null)});
+      A.CallTo(() => buildSession.BuildChain).Returns(new UnitId(parameterInfo, null).ToBuildChain());
       A.CallTo(() => buildSession.BuildAllUnits(default)).WithAnyArguments().Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());
 
       // --act

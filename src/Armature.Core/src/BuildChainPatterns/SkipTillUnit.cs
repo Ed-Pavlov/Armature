@@ -14,7 +14,7 @@ public class SkipTillUnit : BuildChainPatternByUnitBase
   /// Moves along the build chain skipping units until it finds the matching unit.
   /// If it is the unit under construction, returns build actions for it, if no, pass the rest of the chain to each child and returns merged actions.
   /// </summary>
-  public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight)
+  public override WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight)
   {
     using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipTillUnit)))
     {

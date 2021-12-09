@@ -13,18 +13,18 @@ public static class Util
   public static BuildActionBag CreateBag(BuildStage buildStage, params IBuildAction[] buildActions) => new() {{buildStage, buildActions.ToList()}};
 
   [DebuggerStepThrough]
-  public static ArrayTail<T> MakeArrayTail<T>(params T?[] array) => new ArrayTail<T>(array, 0);
+  public static BuildChain MakeArrayTail(params UnitId[] array) => new BuildChain(array, 0);
 
   [DebuggerStepThrough]
-  public static ArrayTail<T> ToArrayTail<T>(this T[] array) => new(array, 0);
+  public static BuildChain ToArrayTail(this UnitId[] array) => new(array, 0);
 
   [DebuggerStepThrough]
-  public static ArrayTail<T> ToArrayTail<T>(this T item) => new(new []{item}, 0);
+  public static BuildChain ToArrayTail(this UnitId item) => new(new []{item}, 0);
 
   public class TestBuildChainPattern : BuildChainPatternBase
   {
     public TestBuildChainPattern(int weight = 0) : base(weight) { }
-    public override WeightedBuildActionBag GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight) => throw new NotSupportedException();
+    public override WeightedBuildActionBag GatherBuildActions(BuildChain buildChain, int inputWeight) => throw new NotSupportedException();
   }
 
   public record OtherUnitPattern : IUnitPattern

@@ -14,7 +14,7 @@ public record BuildArgumentByParameterInjectPointId : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
-    var parameterInfo = (ParameterInfo) buildSession.GetUnitUnderConstruction().Kind!;
+    var parameterInfo = (ParameterInfo) buildSession.BuildChain.TargetUnit.Kind!;
     Log.WriteLine(LogLevel.Verbose, () => $"Parameter: {parameterInfo.ToHoconString()}");
 
     var attribute = parameterInfo

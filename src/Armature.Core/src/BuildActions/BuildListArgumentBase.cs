@@ -28,7 +28,7 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession)
   {
-    var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
+    var unitUnderConstruction = buildSession.BuildChain.TargetUnit;
     var effectiveKey          = _key.GetEffectiveKey(unitUnderConstruction.Key);
 
     var injectionPointType = GetArgumentType(unitUnderConstruction);

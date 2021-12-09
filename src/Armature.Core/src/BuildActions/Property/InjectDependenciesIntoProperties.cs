@@ -18,7 +18,7 @@ public record InjectDependenciesIntoProperties : IBuildAction
   public void PostProcess(IBuildSession buildSession)
   {
     var unit = buildSession.BuildResult.Value;
-    var type = buildSession.GetUnitUnderConstruction().GetUnitTypeSafe();
+    var type = buildSession.BuildChain.TargetUnit.GetUnitTypeSafe();
 
     var unitInfo = new UnitId(type, SpecialKey.PropertyList);
     var unitList = buildSession.BuildAllUnits(unitInfo).OrderByDescending(_ => _.Weight).Select(_ => _.Entity);

@@ -18,13 +18,13 @@ public class SkipAllUnits : BuildChainPatternWithChildrenBase
        + "It can't contain build actions due to they are used to build the unit under construction only."
        );
 
-  public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight)
+  public override WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight)
   {
     using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipAllUnits)))
     {
       Log.WriteLine(LogLevel.Verbose, $"Weight = {Weight}");
-      var lastUnitAsTail = buildChain.GetTail(buildChain.Length - 1);
-      return GetChildrenActions(lastUnitAsTail, inputWeight + Weight);
+      var targetUnit = buildChain.GetTail(buildChain.Length - 1);
+      return GetChildrenActions(targetUnit, inputWeight + Weight);
     }
   }
 }

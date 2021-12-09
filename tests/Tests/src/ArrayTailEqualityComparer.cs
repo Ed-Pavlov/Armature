@@ -6,12 +6,12 @@ namespace Tests;
 
 public static class Comparer
 {
-  public static IEqualityComparer<ArrayTail<T>> OfArrayTail<T>() => new ArrayTailEqualityComparer<T>();
+  public static IEqualityComparer<BuildChain> OfArrayTail<T>() => new ArrayTailEqualityComparer<T>();
 }
 
-public class ArrayTailEqualityComparer<T> : IEqualityComparer<ArrayTail<T>>
+public class ArrayTailEqualityComparer<T> : IEqualityComparer<BuildChain>
 {
-  public bool Equals(ArrayTail<T> x, ArrayTail<T> y)
+  public bool Equals(BuildChain x, BuildChain y)
   {
     if(x.Length != y.Length) return false;
 
@@ -21,7 +21,7 @@ public class ArrayTailEqualityComparer<T> : IEqualityComparer<ArrayTail<T>>
 
     return true;
   }
-  public int GetHashCode(ArrayTail<T> array)
+  public int GetHashCode(BuildChain array)
   {
     var hash = HashCode.Combine(array.GetHashCode());
     foreach(var item in array)

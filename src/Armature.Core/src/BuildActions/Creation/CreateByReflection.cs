@@ -12,7 +12,7 @@ public record CreateByReflection : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
-    var type = buildSession.GetUnitUnderConstruction().GetUnitType();
+    var type = buildSession.BuildChain.TargetUnit.GetUnitType();
     Log.WriteLine(LogLevel.Verbose, () => $"Type = {type.ToLogString().QuoteIfNeeded()}");
 
     if(!type.IsInterface && !type.IsAbstract)

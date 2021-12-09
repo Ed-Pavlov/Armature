@@ -18,7 +18,7 @@ public record GetPropertyListByInjectPointId : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession)
   {
-    var type = buildSession.GetUnitUnderConstruction().GetUnitType();
+    var type = buildSession.BuildChain.TargetUnit.GetUnitType();
 
     var propertiesWithAttributes =
       type.GetProperties()

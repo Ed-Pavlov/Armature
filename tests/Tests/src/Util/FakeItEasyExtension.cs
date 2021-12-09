@@ -1,7 +1,7 @@
 using FakeItEasy;
 using FakeItEasy.Configuration;
 
-namespace Tests.Common;
+namespace Tests.Util;
 
 public static class FakeItEasyExtension
 {

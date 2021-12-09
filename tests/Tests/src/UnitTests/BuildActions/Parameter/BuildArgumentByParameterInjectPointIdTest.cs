@@ -4,7 +4,7 @@ using Armature.Core;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
-using Tests.Common;
+using Tests.Util;
 
 namespace Tests.UnitTests.BuildActions;
 

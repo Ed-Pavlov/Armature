@@ -1,25 +1,13 @@
 ﻿using System;
 using Armature.Core;
-using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
-using Tests.Common;
+using Tests.Util;
 
 namespace Tests.UnitTests;
 
-public class ArrayTailTest
+public class BuildChainTest
 {
-  [Test]
-  public void inline()
-  {
-    var target = new ArrayTail<int>(new[] {1, 2, 34, 6, 3}, 0);
-
-    foreach(var i in target)
-    {
-
-    }
-  }
-
   [Test]
   public void Length()
   {
@@ -27,8 +15,8 @@ public class ArrayTailTest
     const int arrayLength = 3;
     const int startIndex  = 1;
 
-    var array     = new int[arrayLength];
-    var arrayTail = array.GetTail(startIndex);
+    var array     = new UnitId[arrayLength];
+    var arrayTail = array.ToBuildChain().GetTail(startIndex);
 
     // --assert
     arrayTail.Length.Should().Be(arrayLength - startIndex);
@@ -40,18 +28,18 @@ public class ArrayTailTest
     const int startIndex = 2;
 
     // --arrange
-    var array = new[] {0, 1, 2, 3};
+    var array = new UnitId[] {new(0, null), new(1, null), new (2, 0), new(3, 0)};
 
-    var expected = new int[array.Length - startIndex];
+    var expected = new UnitId[array.Length - startIndex];
 
     for(var i = startIndex; i < array.Length; i++)
       expected[i - startIndex] = array[i];
 
     // --act
-    var actual = array.GetTail(startIndex);
+    var actual = array.ToBuildChain().GetTail(startIndex);
 
     // --assert
-    var actualArray = new int[actual.Length];
+    var actualArray = new UnitId[actual.Length];
 
     for(var i = 0; i < actual.Length; i++)
       actualArray[i] = actual[i];
@@ -64,31 +52,32 @@ public class ArrayTailTest
   {
     // --arrange
     const int startIndex = 2;
-    const int lastItem   = 23;
+    var       lastItem   = new UnitId(23, null);
 
-    var array = new[] {0, 1, 2, lastItem};
+    var array = new UnitId[] {new(0, null), new(1, null), new (2, 0), lastItem};
 
     // --act
-    var actual = array.GetTail(startIndex);
+    var actual = array.ToBuildChain().GetTail(startIndex);
 
     // --assert
-    actual.Last().Should().Be(lastItem);
+    actual.TargetUnit.Should().Be(lastItem);
   }
 
   [Test]
   public void should_allow_default()
   {
     // --arrange
-    var actual = default(ArrayTail<string>);
+    var actual = default(BuildChain);
 
     // --assert
-    actual.Should().BeOfType<ArrayTail<string>>();
+    actual.Should().BeOfType<BuildChain>();
   }
+
   [Test]
   public void should_not_allow_default_ctor()
   {
     // --arrange
-    var actual = () => new ArrayTail<string>();
+    var actual = () => new BuildChain();
 
     // --assert
     actual.Should().ThrowExactly<ArgumentException>();
@@ -98,7 +87,7 @@ public class ArrayTailTest
   public void should_check_array_argument()
   {
     // --arrange
-    var actual = () => new ArrayTail<string>(null!, 4);
+    var actual = () => new BuildChain(null!, 4);
 
     // --assert
     actual.Should().ThrowExactly<ArgumentNullException>().WithParameterName("array");
@@ -107,11 +96,11 @@ public class ArrayTailTest
   [Test]
   public void should_check_start_index_argument([Values(-3, 24)] int startIndex)
   {
-    var array = new[] {"1", "2"};
+    var array = new UnitId[] {new(0, null), new (2, 0)};
 
     // --arrange
     startIndex = Math.Min(startIndex, array.Length);
-    var actual = () => new ArrayTail<string>(array, startIndex);
+    var actual = () => new BuildChain(array, startIndex);
 
     // --assert
     actual.Should().ThrowExactly<ArgumentOutOfRangeException>().WithParameterName("startIndex");

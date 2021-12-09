@@ -45,11 +45,4 @@ public static class BuildSessionExtension
              ? buildResult.Value
              : throw new ArmatureException(string.Format("Argument for property '{0}' of {1} is not built", propertyInfo, propertyInfo.DeclaringType));
   }
-
-  /// <summary>
-  /// Returns the currently building Unit in the build session
-  /// </summary>
-  [DebuggerStepThrough]
-  [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public static UnitId GetUnitUnderConstruction(this IBuildSession buildSession) => buildSession.BuildChain.Last();
 }

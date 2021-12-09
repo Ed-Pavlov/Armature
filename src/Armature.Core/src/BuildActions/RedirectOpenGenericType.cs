@@ -29,7 +29,7 @@ public record RedirectOpenGenericType : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession)
   {
-    var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
+    var unitUnderConstruction = buildSession.BuildChain.TargetUnit;
     var unitType              = unitUnderConstruction.GetUnitType();
 
     if(!unitType.IsGenericType)

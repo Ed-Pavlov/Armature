@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Common
+namespace Tests.Util
 {
   public static class WithExtension
   {

@@ -24,7 +24,7 @@ public record GetPropertyListByNames : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession)
   {
-    var unitType = buildSession.GetUnitUnderConstruction().GetUnitType();
+    var unitType = buildSession.BuildChain.TargetUnit.GetUnitType();
 
     var properties =
       _names.Select(

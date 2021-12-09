@@ -26,7 +26,7 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
 
   protected BuildChainPatternWithChildrenBase(int weight) => Weight = weight;
 
-  public abstract WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight);
+  public abstract WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight);
   public abstract BuildActionBag          BuildActions { get; }
 
   public ICollection<IBuildChainPattern> Children => LazyChildren;
@@ -38,7 +38,7 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
   /// </summary>
   /// <param name="buildChain">The build chain to pass to children nodes if any.</param>
   /// <param name="inputMatchingWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
-  protected WeightedBuildActionBag? GetChildrenActions(ArrayTail<UnitId> buildChain, int inputMatchingWeight)
+  protected WeightedBuildActionBag? GetChildrenActions(BuildChain buildChain, int inputMatchingWeight)
   {
     if(RawChildren is null)
     {
@@ -81,9 +81,6 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
         else
           Log.WriteLine(logLevel, $"Child: {child.ToHoconString()}");
   }
-
-  [DebuggerStepThrough]
-  public string ToLogString() => $"{GetType().GetShortName()}{{ Weight: {Weight:n0} }}";
 
   public virtual bool Equals(IBuildChainPattern? other)
     => other is BuildChainPatternBase otherNode && Weight == otherNode.Weight && GetType() == otherNode.GetType();

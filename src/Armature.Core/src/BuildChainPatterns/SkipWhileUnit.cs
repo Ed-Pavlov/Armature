@@ -10,7 +10,7 @@ public class SkipWhileUnit : BuildChainPatternByUnitBase
   public SkipWhileUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildContextPattern.Neutral) {}
   public SkipWhileUnit(IUnitPattern unitPattern, int weight) : base(unitPattern, weight) { }
 
-  public override WeightedBuildActionBag? GatherBuildActions(ArrayTail<UnitId> buildChain, int inputWeight)
+  public override WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight)
   {
     var i = 0;
 

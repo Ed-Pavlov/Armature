@@ -12,7 +12,7 @@ public record GetParameterDefaultValue : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
-    if(buildSession.GetUnitUnderConstruction().Kind is ParameterInfo {HasDefaultValue: true} parameterInfo)
+    if(buildSession.BuildChain.TargetUnit.Kind is ParameterInfo {HasDefaultValue: true} parameterInfo)
       buildSession.BuildResult = new BuildResult(parameterInfo.DefaultValue);
   }
 

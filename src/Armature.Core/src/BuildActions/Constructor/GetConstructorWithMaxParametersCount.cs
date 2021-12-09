@@ -15,7 +15,7 @@ public record GetConstructorWithMaxParametersCount : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
-    var unitType     = buildSession.GetUnitUnderConstruction().GetUnitType();
+    var unitType     = buildSession.BuildChain.TargetUnit.GetUnitType();
     var constructors = unitType.GetConstructors();
 
     Log.WriteLine(LogLevel.Trace, "");

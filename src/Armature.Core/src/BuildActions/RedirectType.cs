@@ -27,7 +27,7 @@ public record RedirectType : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession)
   {
-    var unitUnderConstruction = buildSession.GetUnitUnderConstruction();
+    var unitUnderConstruction = buildSession.BuildChain.TargetUnit;
     var effectiveKey          = Equals(_key, SpecialKey.Propagate) ? unitUnderConstruction.Key : _key;
 
     var unitInfo = new UnitId(_redirectTo, effectiveKey);
