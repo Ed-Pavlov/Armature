@@ -37,8 +37,8 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
   /// Gathers and merges build actions from all children nodes.
   /// </summary>
   /// <param name="buildChain">The build chain to pass to children nodes if any.</param>
-  /// <param name="inputMatchingWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
-  protected WeightedBuildActionBag? GetChildrenActions(BuildChain buildChain, int inputMatchingWeight)
+  /// <param name="inputWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
+  protected WeightedBuildActionBag? GetChildrenActions(BuildChain buildChain, int inputWeight)
   {
     if(RawChildren is null)
     {
@@ -48,12 +48,13 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
 
     WeightedBuildActionBag? result = null;
 
+    var matchingWeight = inputWeight + Weight;
     using(Log.NamedBlock(LogLevel.Trace, "PassTailToChildren"))
     {
-      Log.WriteLine(LogLevel.Trace, $"ActualWeight = {inputMatchingWeight}, Tail = {buildChain.ToHoconString()}");
+      Log.WriteLine(LogLevel.Trace, $"ActualWeight = {matchingWeight}, Tail = {buildChain.ToHoconString()}");
 
       foreach(var child in RawChildren)
-        result = result.Merge(child.GatherBuildActions(buildChain, inputMatchingWeight));
+        result = result.Merge(child.GatherBuildActions(buildChain, matchingWeight));
     }
 
     return result;

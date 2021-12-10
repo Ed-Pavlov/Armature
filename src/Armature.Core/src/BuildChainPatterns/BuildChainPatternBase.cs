@@ -17,10 +17,11 @@ public abstract class BuildChainPatternBase : BuildChainPatternWithChildrenBase
   public override BuildActionBag BuildActions => LazyBuildAction;
 
   [PublicAPI]
-  protected WeightedBuildActionBag? GetOwnBuildActions(int matchingWeight)
+  protected WeightedBuildActionBag? GetOwnBuildActions(int inputWeight)
   {
     if(_buildActions is null) return null;
 
+    var matchingWeight = inputWeight + Weight;
     var result = new WeightedBuildActionBag();
 
     foreach(var pair in _buildActions)
@@ -35,7 +36,7 @@ public abstract class BuildChainPatternBase : BuildChainPatternWithChildrenBase
 
     if(buildChain.Length == 1)
     {
-      actionBag = GetOwnBuildActions(inputWeight + Weight);
+      actionBag = GetOwnBuildActions(inputWeight);
       actionBag.WriteToLog(LogLevel.Verbose, "Actions: ");
     }
     else
@@ -43,7 +44,7 @@ public abstract class BuildChainPatternBase : BuildChainPatternWithChildrenBase
       if(RawChildren is null)
         Log.WriteLine(LogLevel.Trace, "Children: null");
       else
-        actionBag = GetChildrenActions(buildChain.GetTail(1), inputWeight + Weight);
+        actionBag = GetChildrenActions(buildChain.GetTail(1), inputWeight);
     }
 
     return actionBag;

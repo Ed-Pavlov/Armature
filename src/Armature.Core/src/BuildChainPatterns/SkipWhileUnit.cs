@@ -26,7 +26,7 @@ public class SkipWhileUnit : BuildChainPatternByUnitBase
           break;
         }
       }
-      return GetChildrenActions(buildChain.GetTail(i), inputWeight + Weight);
+      return GetChildrenActions(buildChain.GetTail(i), inputWeight);
     }
   }
 }

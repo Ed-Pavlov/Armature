@@ -71,6 +71,6 @@ public class ArgumentTunerBaseTest
   {
     public Root(int expectedWeight) : base(expectedWeight) { }
 
-    public override WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight) => GetOwnBuildActions(Weight);
+    public override WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight) => GetOwnBuildActions(inputWeight);
   }
 }
