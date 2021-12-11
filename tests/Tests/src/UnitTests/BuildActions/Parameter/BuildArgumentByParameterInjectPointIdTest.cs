@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Armature;
 using Armature.Core;
@@ -13,7 +14,7 @@ public class BuildArgumentByParameterInjectPointIdTest
   [Test]
   public void should_use_point_id_as_unit_key()
   {
-    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo)).GetParameters().Single(_ => _.ParameterType == typeof(int));
+    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => _.ParameterType == typeof(int));
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
@@ -29,9 +30,9 @@ public class BuildArgumentByParameterInjectPointIdTest
   }
 
   [Test]
-  public void key_should_be_null_if_point_withoud_id()
+  public void key_should_be_null_if_point_without_id()
   {
-    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo)).GetParameters().Single(_ => _.ParameterType == typeof(string));
+    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => _.ParameterType == typeof(string));
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
@@ -49,7 +50,7 @@ public class BuildArgumentByParameterInjectPointIdTest
   [Test]
   public void should_do_nothing_if_no_attribute()
   {
-    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo)).GetParameters().Single(_ => _.Name == "b");
+    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => _.Name == "b");
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
@@ -70,7 +71,7 @@ public class BuildArgumentByParameterInjectPointIdTest
   {
     const string expected = "expected";
 
-    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo)).GetParameters().Single(_ => _.Name == "i");
+    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => _.Name == "i");
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
@@ -86,10 +87,11 @@ public class BuildArgumentByParameterInjectPointIdTest
     actual.BuildResult.Value.Should().Be(expected);
   }
 
+  [SuppressMessage("ReSharper", "UnusedParameter.Local")]
   private class Subject
   {
     public const string IntId = nameof(IntId);
 
-    public void Foo([Inject(IntId)] int i, [Inject]string s, bool b) { }
+    public static void Foo([Inject(IntId)] int i, [Inject]string s, bool b) { }
   }
 }

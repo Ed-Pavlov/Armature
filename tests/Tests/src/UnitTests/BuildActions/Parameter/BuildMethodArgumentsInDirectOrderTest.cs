@@ -26,7 +26,7 @@ public class BuildMethodArgumentsInDirectOrderTest
         call =>
         {
           var unitId = call.Arguments.Get<UnitId>(0);
-          return ((ParameterInfo) unitId.Kind).Name.ToBuildResult();
+          return ((ParameterInfo) unitId.Kind!).Name.ToBuildResult();
         });
 
     var target = new BuildMethodArgumentsInDirectOrder();

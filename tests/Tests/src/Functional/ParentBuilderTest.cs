@@ -3,6 +3,7 @@ using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
 using Tests.Util;
 
@@ -111,7 +112,7 @@ namespace Tests.Functional
     [Test]
     public void should_build_parameter_value_via_parent()
     {
-      const string expected = "expectedstring";
+      const string expected = "expectedString";
 
       // --arrange
       var parentBuilder = new Builder(BuildStage.Cache);
@@ -124,7 +125,7 @@ namespace Tests.Functional
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -134,7 +135,7 @@ namespace Tests.Functional
     [Test]
     public void should_use_parameter_value_from_local_build_plan()
     {
-      const string expected = "expectedstring";
+      const string expected = "expectedString";
 
       // --arrange
       var parentBuilder = new Builder(BuildStage.Cache);
@@ -151,7 +152,7 @@ namespace Tests.Functional
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -248,7 +249,7 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget(params Builder[] parents)
-      => new(new[] {BuildStage.Cache, BuildStage.Create}, parents)
+      => new(new object[] {BuildStage.Cache, BuildStage.Create}, parents)
          {
            new SkipAllUnits
            {
@@ -261,6 +262,7 @@ namespace Tests.Functional
            }
          };
 
+    [UsedImplicitly]
     private class Subject
     {
       public readonly string String;

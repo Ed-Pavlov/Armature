@@ -20,13 +20,19 @@ public class SkipAllUnitsTest
     target.AddNode(child2);
 
     // --act
-    var chain = new[] {new UnitId(1, null), new UnitId(null, 2), new UnitId(3, null), expected}.ToArrayTail();
-    target.GatherBuildActions(chain, 0);
+    var                     chain = new[] {new UnitId(1, null), new UnitId(null, 2), new UnitId(3, null), expected}.ToArrayTail();
+    WeightedBuildActionBag? actionBag;
+    target.GatherBuildActions(chain, out actionBag, 0);
 
     // --assert
-    A.CallTo(() => child1.GatherBuildActions(An<BuildChain>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()), An<int>._))
+    WeightedBuildActionBag? weightedBuildActionBag;
+
+    A.CallTo(() => child1.GatherBuildActions(An<BuildChain>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()), out weightedBuildActionBag, An<int>._))
      .MustHaveHappenedOnceAndOnly();
-    A.CallTo(() => child2.GatherBuildActions(An<BuildChain>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()), An<int>._))
+
+    WeightedBuildActionBag? actionBag1;
+
+    A.CallTo(() => child2.GatherBuildActions(An<BuildChain>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()), out actionBag1, An<int>._))
      .MustHaveHappenedOnceAndOnly();
   }
 
@@ -44,11 +50,14 @@ public class SkipAllUnitsTest
     target.AddNode(child2);
 
     // --act
-    var chain = new[] {new UnitId(1, null), new UnitId(null, 2), new UnitId(3, null)}.ToArrayTail();
-    target.GatherBuildActions(chain, inputWeight);
+    var                     chain = new[] {new UnitId(1, null), new UnitId(null, 2), new UnitId(3, null)}.ToArrayTail();
+    WeightedBuildActionBag? actionBag;
+    target.GatherBuildActions(chain, out actionBag, inputWeight);
 
     // --assert
-    A.CallTo(() => child1.GatherBuildActions(An<BuildChain>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
-    A.CallTo(() => child2.GatherBuildActions(An<BuildChain>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
+    WeightedBuildActionBag? weightedBuildActionBag;
+    A.CallTo(() => child1.GatherBuildActions(An<BuildChain>._, out weightedBuildActionBag, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
+    WeightedBuildActionBag? actionBag1;
+    A.CallTo(() => child2.GatherBuildActions(An<BuildChain>._, out actionBag1, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
   }
 }

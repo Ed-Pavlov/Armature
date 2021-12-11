@@ -10,7 +10,7 @@ public class SkipWhileUnit : BuildChainPatternByUnitBase
   public SkipWhileUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildContextPattern.Neutral) {}
   public SkipWhileUnit(IUnitPattern unitPattern, int weight) : base(unitPattern, weight) { }
 
-  public override WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight)
+  public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight)
   {
     var i = 0;
 
@@ -26,7 +26,8 @@ public class SkipWhileUnit : BuildChainPatternByUnitBase
           break;
         }
       }
-      return GetChildrenActions(buildChain.GetTail(i), inputWeight);
+
+      return GetChildrenActions(buildChain.GetTail(i), inputWeight, out actionBag);
     }
   }
 }

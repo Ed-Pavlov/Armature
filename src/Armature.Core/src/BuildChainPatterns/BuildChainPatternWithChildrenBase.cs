@@ -26,8 +26,8 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
 
   protected BuildChainPatternWithChildrenBase(int weight) => Weight = weight;
 
-  public abstract WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight);
-  public abstract BuildActionBag          BuildActions { get; }
+  public abstract bool           GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight);
+  public abstract BuildActionBag BuildActions { get; }
 
   public ICollection<IBuildChainPattern> Children => LazyChildren;
 
@@ -38,15 +38,15 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
   /// </summary>
   /// <param name="buildChain">The build chain to pass to children nodes if any.</param>
   /// <param name="inputWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
-  protected WeightedBuildActionBag? GetChildrenActions(BuildChain buildChain, int inputWeight)
+  /// <param name="actionBag"></param>
+  protected bool GetChildrenActions(BuildChain buildChain, int inputWeight, out WeightedBuildActionBag? actionBag)
   {
+    actionBag = null;
     if(RawChildren is null)
     {
       Log.WriteLine(LogLevel.Trace, "Children: null");
-      return null;
+      return false;
     }
-
-    WeightedBuildActionBag? result = null;
 
     var matchingWeight = inputWeight + Weight;
     using(Log.NamedBlock(LogLevel.Trace, "PassTailToChildren"))
@@ -54,10 +54,12 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
       Log.WriteLine(LogLevel.Trace, $"ActualWeight = {matchingWeight}, Tail = {buildChain.ToHoconString()}");
 
       foreach(var child in RawChildren)
-        result = result.Merge(child.GatherBuildActions(buildChain, matchingWeight));
+      {
+        if(child.GatherBuildActions(buildChain, out var childBag, matchingWeight))
+         actionBag = actionBag.Merge(childBag);
+      }
     }
-
-    return result;
+    return actionBag is not null;
   }
 
   public void PrintToLog(LogLevel logLevel = LogLevel.None)

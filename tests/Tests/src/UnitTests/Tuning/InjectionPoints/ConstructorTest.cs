@@ -5,6 +5,7 @@ using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
 
 namespace Tests.UnitTests.Tuning.InjectionPoints;
@@ -97,10 +98,11 @@ public class ConstructorTest
     yield return new[] {typeof(int), typeof(string)};
   }
 
+  [UsedImplicitly]
   private class Root : BuildChainPatternBase
   {
     public Root(int expectedWeight) : base(expectedWeight) { }
 
-    public override WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight) => GetOwnBuildActions(inputWeight);
+    public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight) => GetOwnBuildActions(inputWeight, out actionBag);
   }
 }

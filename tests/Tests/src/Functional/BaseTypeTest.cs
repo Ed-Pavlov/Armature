@@ -2,9 +2,8 @@
 using Armature.Core;
 using Armature.Core.Sdk;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
-
-//Resharper disable all
 
 namespace Tests.Functional
 {
@@ -111,6 +110,7 @@ namespace Tests.Functional
       public int InjectThere { get; set; }
     }
 
+    [UsedImplicitly]
     private class Subject : SubjectBase, ISubject
     {
       public int InjectHere { get; set; }

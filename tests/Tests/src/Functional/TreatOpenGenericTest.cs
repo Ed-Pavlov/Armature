@@ -1,11 +1,9 @@
-﻿using System;
-using Armature;
+﻿using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
-
-// Resharper disable all
 
 namespace Tests.Functional
 {
@@ -47,7 +45,7 @@ namespace Tests.Functional
        .UsingArguments(expected);
 
       // --act
-      var actual = target.Build<ISubject<int>>();
+      var actual = target.Build<ISubject<int>>()!;
 
       // --assert
       actual.Value.Should().Be(expected);
@@ -71,16 +69,17 @@ namespace Tests.Functional
 
     private interface ISubject<out T>
     {
-      T Value { get; }
+      T? Value { get; }
     }
 
     private class Subject<T> : ISubject<T>
     {
+      [UsedImplicitly]
       public Subject() { }
 
       public Subject(T value) => Value = value;
 
-      public T Value { get; }
+      public T? Value { get; }
 
       public override string ToString() => string.Format("{0}", Value);
     }

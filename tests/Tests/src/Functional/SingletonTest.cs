@@ -1,9 +1,8 @@
 using Armature;
 using Armature.Core;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
-
-// ReSharper disable all
 
 namespace Tests.Functional
 {
@@ -73,6 +72,7 @@ namespace Tests.Functional
 
     private interface ISubject { }
 
+    [UsedImplicitly]
     private class Subject : ISubject { }
   }
 }

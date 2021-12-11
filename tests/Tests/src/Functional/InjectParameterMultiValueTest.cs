@@ -27,7 +27,7 @@ namespace Tests.Functional
       target.Treat<string>().AsInstance(expectedText);
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Str.Should().Be(expectedText);

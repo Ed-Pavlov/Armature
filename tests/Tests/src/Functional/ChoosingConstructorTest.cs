@@ -4,6 +4,7 @@ using System.Runtime.InteropServices.ComTypes;
 using Armature;
 using Armature.Core;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
 
 #pragma warning disable 8618
@@ -11,7 +12,6 @@ using NUnit.Framework;
 
 namespace Tests.Functional
 {
-  // ReSharper disable All
   public class ChoosingConstructorTest
   {
     [TestCaseSource(nameof(max_number_of_parameters))]
@@ -216,6 +216,7 @@ namespace Tests.Functional
       ).SetName($"PointId = {pointId}");
     }
 
+    [UsedImplicitly]
     private class Subject2
     {
       public readonly bool LongestPublicConstructorIsCalled;
@@ -232,6 +233,7 @@ namespace Tests.Functional
       private Subject2(object _1, object _2, object _3, object _4) { }
     }
 
+    [UsedImplicitly]
     private class Subject1
     {
       public const    string   InjectPointId = nameof(Subject1) + nameof(InjectPointId);
@@ -257,6 +259,7 @@ namespace Tests.Functional
       private Subject1(object   _1, object   _2, object _3, object _4) { }
     }
 
+    [UsedImplicitly]
     private class Subject3
     {
       public readonly bool IntStringConstructorIsCalled;

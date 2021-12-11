@@ -28,8 +28,8 @@ public class BuildChainPatternTree : IBuildChainPattern, IEnumerable, ILogPrinta
 
   public ICollection<IBuildChainPattern> Children => _root.Children;
 
-  public WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight = 0)
-    => _root.GatherBuildActions(buildChain, 0);
+  public bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight = 0)
+    => _root.GatherBuildActions(buildChain, out actionBag, 0);
 
   public void PrintToLog(LogLevel logLevel = LogLevel.None) => _root.PrintToLog(logLevel);
 
@@ -52,14 +52,18 @@ public class BuildChainPatternTree : IBuildChainPattern, IEnumerable, ILogPrinta
     public Root() : base(0) { }
 
     [DebuggerStepThrough]
-    public override WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight)
+    public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight)
     {
-      if(RawChildren is null) return null;
+      actionBag = null;
+      if(RawChildren is null) return false;
 
-      WeightedBuildActionBag? result = null;
       foreach(var child in RawChildren)
-        result = result.Merge(child.GatherBuildActions(buildChain, inputWeight));
-      return result;
+      {
+        if(child.GatherBuildActions(buildChain, out var childBag, inputWeight))
+          actionBag = actionBag.Merge(childBag);
+      }
+
+      return true;
     }
 
     [DebuggerStepThrough]

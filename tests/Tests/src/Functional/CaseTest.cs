@@ -5,9 +5,8 @@ using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
-
-// Resharper disable all
 
 namespace Tests.Functional
 {
@@ -21,7 +20,7 @@ namespace Tests.Functional
 
       target
        .Treat<string>()
-       .AsCreatedWith(assembler => assembler.BuildChain.First().Kind.ToString());
+       .AsCreatedWith(assembler => assembler.BuildChain.First().Kind!.ToString()!);
 
       target
        .Treat<TwoDisposableStringCtorClass>()
@@ -29,10 +28,11 @@ namespace Tests.Functional
        .UsingArguments(new MemoryStream());
 
       // --act
-      var actual = target.Build<TwoDisposableStringCtorClass>();
+      var actual = target.Build<TwoDisposableStringCtorClass>()!;
 
       // --assert
-      Assert.That(actual.String, Is.EqualTo(actual.GetType().ToString()));
+      actual.Should().NotBeNull();
+      actual.String.Should().Be(actual.GetType().ToString());
     }
 
     [Test]
@@ -52,10 +52,11 @@ namespace Tests.Functional
             .UsingArguments(expected);
 
       // --act
-      var instance = target.Build<IDisposableValue2>();
+      var instance = target.Build<IDisposableValue2>()!;
 
       // --assert
-      Assert.That(instance.Disposable, Is.SameAs(expected));
+      instance.Should().NotBeNull();
+      instance.Value.Should().BeSameAs(expected);
     }
 
     [Test]
@@ -140,80 +141,38 @@ namespace Tests.Functional
 
     private interface IEmptyInterface2 { }
 
+    [UsedImplicitly]
     private class EmptyCtorClass : IEmptyInterface1, IEmptyInterface2
     {
       private static   int _counter = 1;
       private readonly int _id      = _counter++;
 
-      public override string ToString()
-      {
-        return _id.ToString();
-      }
+      public override string ToString() => _id.ToString();
     }
 
     private interface IDisposableValue1
     {
-      IDisposable Disposable { get; }
+      IDisposable? Value { get; }
     }
 
     private interface IDisposableValue2
     {
-      IDisposable Disposable { get; }
+      IDisposable? Value { get; }
     }
 
     private class OneDisposableCtorClass : IDisposableValue1, IDisposableValue2
     {
-      private readonly IDisposable _disposable;
+      public OneDisposableCtorClass(IDisposable? value) => Value = value;
 
-      public OneDisposableCtorClass(IDisposable disposable)
-      {
-        _disposable = disposable;
-      }
-
-      public IDisposable Disposable
-      {
-        get { return _disposable; }
-      }
+      public IDisposable? Value { get; }
     }
 
-    private class OneStringCtorClass : IDisposableValue1, IDisposableValue2
-    {
-      private readonly string _text;
-
-      public OneStringCtorClass(string text)
-      {
-        _text = text;
-      }
-
-      public string Text
-      {
-        get { return _text; }
-      }
-
-      IDisposable IDisposableValue1.Disposable
-      {
-        get { throw new NotSupportedException(); }
-      }
-
-      IDisposable IDisposableValue2.Disposable
-      {
-        get { throw new NotSupportedException(); }
-      }
-    }
-
+    [UsedImplicitly]
     private class TwoDisposableStringCtorClass : OneDisposableCtorClass
     {
       public readonly string String;
 
-      public TwoDisposableStringCtorClass(IDisposable disposable, string @string) : base(disposable)
-      {
-        String = @string;
-      }
-    }
-
-    private class Disposable : IDisposable
-    {
-      public void Dispose() { }
+      public TwoDisposableStringCtorClass(IDisposable? value, string @string) : base(value) => String = @string;
     }
   }
 }

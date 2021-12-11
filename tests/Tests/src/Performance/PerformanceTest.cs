@@ -142,7 +142,7 @@ namespace Tests.Performance
 
       public bool Matches(UnitId unitId) => _impl.Matches(unitId);
 
-      public bool Equals(IUnitPattern other)
+      private bool Equals(IUnitPattern? other)
       {
         EqualsCallsCount++;
 
@@ -157,12 +157,10 @@ namespace Tests.Performance
         return _impl.GetHashCode();
       }
 
-      public string ToLogString() => GetType().GetShortName();
-
-      public override bool Equals(object obj) => Equals(obj as UnitPattern);
+      public override bool Equals(object? obj) => Equals(obj as UnitPattern);
     }
 
-    private static Builder CreateTarget(Builder parent = null)
+    private static Builder CreateTarget(Builder? parent = null)
     {
       var treatAll = new SkipAllUnits
                      {

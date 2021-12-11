@@ -214,41 +214,36 @@ namespace Tests.Functional
        .InjectInto(Constructor.WithParameters<int>());
 
       // --act
-      var actual = target.UsingKey(key).Build<Subject>(expected);
+      var actual = target.UsingKey(key).Build<Subject>(expected)!;
 
       // --assert
       actual.Value.Should().Be(expected);
     }
 
-    private static Builder CreateTarget()
-    {
-      var builder = new Builder(BuildStage.Cache, BuildStage.Create);
+    private static Builder CreateTarget() =>
 
-      // builder
-      //  .TreatAll()
-      //  .InjectInto(Constructor.Parameterless())
-      //  .UsingArguments(AutoBuildByParameter.Type);
-      //
-      // return builder;
+        // builder
+        //  .TreatAll()
+        //  .InjectInto(Constructor.Parameterless())
+        //  .UsingArguments(AutoBuildByParameter.Type);
+        //
+        // return builder;
+        new(BuildStage.Cache, BuildStage.Create)
+                                             {
+                                                 new SkipAllUnits
+                                                 {
+                                                     new SkipTillUnit(new IsInheritorOf(typeof(IDisposable), null))
+                                                        .UseBuildAction(new CreateByReflection(), BuildStage.Cache),
 
+                                                     new IfFirstUnit(new IsConstructor())
+                                                        .UseBuildAction(new GetConstructorByParameterTypes(), BuildStage.Create), // use empty ctor by default in this test
 
-      return new(BuildStage.Cache, BuildStage.Create)
-             {
-               new SkipAllUnits
-               {
-                 new SkipTillUnit(new IsInheritorOf(typeof(IDisposable), null))
-                  .UseBuildAction(new CreateByReflection(), BuildStage.Cache),
-
-                 new IfFirstUnit(new IsConstructor())
-                  .UseBuildAction(new GetConstructorByParameterTypes(), BuildStage.Create), // use empty ctor by default in this test
-
-                 new IfFirstUnit(new IsParameterInfoList())
-                  .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-                 new IfFirstUnit(new IsParameterInfo())
-                  .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
-               }
-             };
-    }
+                                                     new IfFirstUnit(new IsParameterInfoList())
+                                                        .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                                                     new IfFirstUnit(new IsParameterInfo())
+                                                        .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
+                                                 }
+                                             };
 
     private interface ISubject1 { }
 

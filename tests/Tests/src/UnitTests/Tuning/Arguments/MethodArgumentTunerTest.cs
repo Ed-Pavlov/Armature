@@ -22,9 +22,10 @@ public class MethodArgumentTunerTest
     target.UseKey(key).Tune(root);
 
     // --assert
-    var buildActionBag = root.GatherBuildActions(default, 0);
+    var result = root.GatherBuildActions(default, out var actionBag, 0);
 
-    buildActionBag.Should().ContainKey(BuildStage.Create)
+    result.Should().BeTrue();
+    actionBag!.Should().ContainKey(BuildStage.Create)
                   .And.Subject.Values.Single().Single()
                   .With(
                        actual =>
@@ -47,9 +48,10 @@ public class MethodArgumentTunerTest
     target.UseInjectPointIdAsKey().Tune(root);
 
     // --assert
-    var buildActionBag = root.GatherBuildActions(default, 0);
+    var result = root.GatherBuildActions(default, out var actionBag, 0);
 
-    buildActionBag.Should().ContainKey(BuildStage.Create)
+    result.Should().BeTrue();
+    actionBag.Should().ContainKey(BuildStage.Create)
                   .And.Subject.Values.Single().Single()
                   .With(
                        actual =>
@@ -63,6 +65,6 @@ public class MethodArgumentTunerTest
   {
     public Root(int expectedWeight) : base(expectedWeight) { }
 
-    public override WeightedBuildActionBag? GatherBuildActions(BuildChain buildChain, int inputWeight) => GetOwnBuildActions(inputWeight);
+    public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight) => GetOwnBuildActions(inputWeight, out actionBag);
   }
 }

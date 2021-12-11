@@ -69,14 +69,14 @@ public partial class BuildSession
       var buildChain = new BuildChain(_buildChainList, 0);
 
       WeightedBuildActionBag? actions;
-      WeightedBuildActionBag? auxActions;
+      WeightedBuildActionBag? auxActions = null;
 
       using(Log.NamedBlock(LogLevel.Verbose, GatherBuildActions))
       {
         Log.WriteLine(LogLevel.Verbose, () => $"Context = {_buildChainList.ToHoconString()}" );
 
-        actions    = _mainBuildChainPatternTree.GatherBuildActions(buildChain, 0);
-        auxActions = _auxPatternTree?.GatherBuildActions(buildChain, 0);
+        _mainBuildChainPatternTree.GatherBuildActions(buildChain, out actions, 0);
+        _auxPatternTree?.GatherBuildActions(buildChain, out auxActions, 0);
       }
 
       var actionBag = actions.Merge(auxActions);

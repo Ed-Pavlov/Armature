@@ -17,26 +17,28 @@ public abstract class BuildChainPatternBase : BuildChainPatternWithChildrenBase
   public override BuildActionBag BuildActions => LazyBuildAction;
 
   [PublicAPI]
-  protected WeightedBuildActionBag? GetOwnBuildActions(int inputWeight)
+  protected bool GetOwnBuildActions(int inputWeight, out WeightedBuildActionBag? actionBag)
   {
-    if(_buildActions is null) return null;
+    actionBag = null;
+    if(_buildActions is null) return false;
 
     var matchingWeight = inputWeight + Weight;
-    var result = new WeightedBuildActionBag();
+    actionBag = new WeightedBuildActionBag();
 
     foreach(var pair in _buildActions)
-      result.Add(pair.Key, pair.Value.Select(_ => _.WithWeight(matchingWeight)).ToList());
+      actionBag.Add(pair.Key, pair.Value.Select(_ => _.WithWeight(matchingWeight)).ToList());
 
-    return result;
+    return true;
   }
 
-  protected WeightedBuildActionBag? GetOwnOrChildrenBuildActions(BuildChain buildChain, int inputWeight)
+  protected bool GetOwnOrChildrenBuildActions(BuildChain buildChain, int inputWeight, out WeightedBuildActionBag? actionBag)
   {
-    WeightedBuildActionBag? actionBag = null;
+    var result = false;
+    actionBag = null;
 
     if(buildChain.Length == 1)
     {
-      actionBag = GetOwnBuildActions(inputWeight);
+      result = GetOwnBuildActions(inputWeight, out actionBag);
       actionBag.WriteToLog(LogLevel.Verbose, "Actions: ");
     }
     else
@@ -44,10 +46,10 @@ public abstract class BuildChainPatternBase : BuildChainPatternWithChildrenBase
       if(RawChildren is null)
         Log.WriteLine(LogLevel.Trace, "Children: null");
       else
-        actionBag = GetChildrenActions(buildChain.GetTail(1), inputWeight);
+        result = GetChildrenActions(buildChain.GetTail(1), inputWeight, out actionBag);
     }
 
-    return actionBag;
+    return result;
   }
 
   protected override void PrintContentToLog(LogLevel logLevel)

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Armature.Core;
 using Armature.Core.Sdk;
@@ -13,7 +14,7 @@ public class BuildArgumentByParameterNameTest
   [Test]
   public void should_use_parameter_name_as_unit_id([Values(null, "key")] string key)
   {
-    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo)).GetParameters().Single(_ => _.ParameterType == typeof(int));
+    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => _.ParameterType == typeof(int));
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
@@ -31,7 +32,7 @@ public class BuildArgumentByParameterNameTest
   [Test]
   public void should_use_unit_key_if_propagate_key_is_used([Values(null, "key")] string key)
   {
-    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo)).GetParameters().Single(_ => _.ParameterType == typeof(int));
+    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => _.ParameterType == typeof(int));
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
@@ -51,7 +52,7 @@ public class BuildArgumentByParameterNameTest
   {
     const string expected = "expected";
 
-    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo)).GetParameters().Single(_ => _.ParameterType == typeof(int));
+    var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => _.ParameterType == typeof(int));
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
@@ -68,8 +69,9 @@ public class BuildArgumentByParameterNameTest
   }
 
 
+  [SuppressMessage("ReSharper", "UnusedParameter.Local")]
   private class Subject
   {
-    public void Foo(int i) { }
+    public static void Foo(int i) { }
   }
 }

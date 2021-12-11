@@ -28,19 +28,26 @@ namespace Tests.UnitTests.BuildChainPatterns
       target.AddNode(child2);
 
       // --act
-      var chain = new[] {new UnitId(1, null), new UnitId(2, null), new UnitId(kind, null), expected1, expected2}.ToArrayTail();
-      target.GatherBuildActions(chain, 0);
+      var                     chain = new[] {new UnitId(1, null), new UnitId(2, null), new UnitId(kind, null), expected1, expected2}.ToArrayTail();
+      WeightedBuildActionBag? actionBag;
+      target.GatherBuildActions(chain, out actionBag, 0);
 
       // --assert
+      WeightedBuildActionBag? weightedBuildActionBag;
+
       A.CallTo(
             () => child1.GatherBuildActions(
                 An<BuildChain>.That.IsEqualTo(Util.MakeArrayTail(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
+                out weightedBuildActionBag,
                 An<int>._))
        .MustHaveHappenedOnceAndOnly();
+
+      WeightedBuildActionBag? actionBag1;
 
       A.CallTo(
             () => child2.GatherBuildActions(
                 An<BuildChain>.That.IsEqualTo(Util.MakeArrayTail(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
+                out actionBag1,
                 An<int>._))
        .MustHaveHappenedOnceAndOnly();
     }
@@ -59,12 +66,15 @@ namespace Tests.UnitTests.BuildChainPatterns
       target.AddNode(child2);
 
       // --act
-      var chain = new[] {new UnitId(1, null), new UnitId(2, null), expected1, expected2}.ToArrayTail();
-      target.GatherBuildActions(chain, 0);
+      var                     chain = new[] {new UnitId(1, null), new UnitId(2, null), expected1, expected2}.ToArrayTail();
+      WeightedBuildActionBag? actionBag;
+      target.GatherBuildActions(chain, out actionBag, 0);
 
       // --assert
-      A.CallTo(() => child1.GatherBuildActions(An<BuildChain>._, An<int>._)).WithAnyArguments().MustNotHaveHappened();
-      A.CallTo(() => child2.GatherBuildActions(An<BuildChain>._, An<int>._)).WithAnyArguments().MustNotHaveHappened();
+      WeightedBuildActionBag? weightedBuildActionBag;
+      A.CallTo(() => child1.GatherBuildActions(An<BuildChain>._, out weightedBuildActionBag, An<int>._)).WithAnyArguments().MustNotHaveHappened();
+      WeightedBuildActionBag? actionBag1;
+      A.CallTo(() => child2.GatherBuildActions(An<BuildChain>._, out actionBag1, An<int>._)).WithAnyArguments().MustNotHaveHappened();
     }
 
     [Test]
@@ -82,12 +92,15 @@ namespace Tests.UnitTests.BuildChainPatterns
       target.AddNode(child2);
 
       // --act
-      var chain = new[] {new UnitId(kind, null), new UnitId(kind, null)}.ToArrayTail();
-      target.GatherBuildActions(chain, inputWeight);
+      var                     chain = new[] {new UnitId(kind, null), new UnitId(kind, null)}.ToArrayTail();
+      WeightedBuildActionBag? actionBag;
+      target.GatherBuildActions(chain, out actionBag, inputWeight);
 
       // --assert
-      A.CallTo(() => child1.GatherBuildActions(An<BuildChain>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
-      A.CallTo(() => child2.GatherBuildActions(An<BuildChain>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
+      WeightedBuildActionBag? weightedBuildActionBag;
+      A.CallTo(() => child1.GatherBuildActions(An<BuildChain>._, out weightedBuildActionBag, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
+      WeightedBuildActionBag? actionBag1;
+      A.CallTo(() => child2.GatherBuildActions(An<BuildChain>._, out actionBag1, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
     }
 
     [Test]
@@ -117,13 +130,13 @@ namespace Tests.UnitTests.BuildChainPatterns
       target.GetOrAddNode(buildStep2);
 
       // --act
-      var actual = target.GatherBuildActions(new[] {Unit.IsType<string>(), Unit.IsType<int>()}.ToBuildChain(), 0);
+      var actual = target.GatherBuildActions(new[] {Unit.IsType<string>(), Unit.IsType<int>()}.ToBuildChain(), out var actionBag, 0);
 
       // --assert
-      actual.Should().NotBeNull();
+      actual.Should().BeTrue();
+      actionBag.Should().NotBeNull();
 
-      // ReSharper disable once PossibleNullReferenceException
-      actual[BuildStage.Cache]
+      actionBag![BuildStage.Cache]
          .Should()
          .HaveCount(2)
          .And

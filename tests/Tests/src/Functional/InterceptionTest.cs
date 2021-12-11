@@ -35,7 +35,7 @@ namespace Tests.Functional
        .UseBuildAction(new AddPostfixToString(Postfix), BuildStage.Intercept);
 
       // --act
-      var actual = target.Build<StringConsumer>();
+      var actual = target.Build<StringConsumer>()!;
 
       // --assert
       Assert.That(actual.Value, Is.EqualTo(Expected + Postfix));
@@ -102,8 +102,7 @@ namespace Tests.Functional
     /// </summary>
     private class StringParameterPattern : IUnitPattern
     {
-      public bool   Matches(UnitId unitId) => unitId.Kind is ParameterInfo parameterInfo && parameterInfo.ParameterType == typeof(string);
-      public string ToLogString()          => ToString();
+      public bool Matches(UnitId unitId) => unitId.Kind is ParameterInfo parameterInfo && parameterInfo.ParameterType == typeof(string);
     }
 
     /// <summary>

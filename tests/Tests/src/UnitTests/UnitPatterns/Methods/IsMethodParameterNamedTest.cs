@@ -82,7 +82,7 @@ public class IsMethodParameterNamedTest
   public void should_not_allow_null_argument([Values(null, "")] string? methodName)
   {
     // --arrange
-    var actual = () => new IsMethodParameterNamed(methodName);
+    var actual = () => new IsMethodParameterNamed(methodName!);
 
     // --act
     // --assert

@@ -25,10 +25,11 @@ namespace Tests.UnitTests
       target.Children.Add(matchAny);
 
       // --act
-      var actual = target.GatherBuildActions(new[] {Unit.IsType<string>()}.ToArrayTail())!;
+      var actual = target.GatherBuildActions(new[] {Unit.IsType<string>()}.ToArrayTail(), out var actionBag);
 
       // --assert
-      actual[BuildStage.Cache]
+      actual.Should().BeTrue();
+      actionBag![BuildStage.Cache]
        .Should()
        .HaveCount(2)
        .And

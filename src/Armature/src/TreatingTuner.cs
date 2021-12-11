@@ -4,7 +4,7 @@ using Armature.Core;
 
 namespace Armature;
 
-public class TreatingTuner : TreatingTuner<object>
+public class TreatingTuner : TreatingTuner<object?>
 {
   public TreatingTuner(IBuildChainPattern parentNode) : base(parentNode) { }
 }

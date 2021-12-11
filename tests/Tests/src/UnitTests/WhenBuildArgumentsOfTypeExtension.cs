@@ -41,11 +41,11 @@ public static class WhenBuildArgumentsOfTypeExtension
           var types      = new[] {typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7)}.Where(_ => _ != typeof(Unit)).ToArray();
           var unitId     = arguments.Get<UnitId>(0);
           var parameters = unitId.Kind as ParameterInfo[];
-          if(unitId.Key != SpecialKey.Argument || parameters.Length != types.Length)
+          if(unitId.Key != SpecialKey.Argument || parameters?.Length != types.Length)
             return false;
 
           for(var i = 0; i < parameters.Length; i++)
-            if(parameters?[i].ParameterType != types[i])
+            if(parameters[i].ParameterType != types[i])
               return false;
 
           return true;

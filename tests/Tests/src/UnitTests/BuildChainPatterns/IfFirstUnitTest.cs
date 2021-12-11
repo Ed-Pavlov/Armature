@@ -24,13 +24,14 @@ public class IfFirstUnitTest
     target.AddNode(child2);
 
     // --act
-    var chain = new[] {new UnitId(kind, null), expected}.ToArrayTail();
-    target.GatherBuildActions(chain, 0);
+    var                     chain = new[] {new UnitId(kind, null), expected}.ToArrayTail();
+    target.GatherBuildActions(chain, out var actionBag, 0);
 
     // --assert
-    A.CallTo(() => child1.GatherBuildActions(An<BuildChain>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()), An<int>._))
+    A.CallTo(() => child1.GatherBuildActions(An<BuildChain>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()), out actionBag, An<int>._))
      .MustHaveHappenedOnceAndOnly();
-    A.CallTo(() => child2.GatherBuildActions(An<BuildChain>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()), An<int>._))
+
+    A.CallTo(() => child2.GatherBuildActions(An<BuildChain>.That.IsEqualTo(expected.ToArrayTail(), Comparer.OfArrayTail<UnitId>()), out actionBag, An<int>._))
      .MustHaveHappenedOnceAndOnly();
   }
 
@@ -50,11 +51,11 @@ public class IfFirstUnitTest
 
     // --act
     var chain = new[] {new UnitId("bad", null), new UnitId(kind, null), expected}.ToArrayTail();
-    target.GatherBuildActions(chain, 0);
+    target.GatherBuildActions(chain, out var actionBag, 0);
 
     // --assert
-    A.CallTo(() => child1.GatherBuildActions(default, default)).WithAnyArguments().MustNotHaveHappened();
-    A.CallTo(() => child2.GatherBuildActions(default, default)).WithAnyArguments().MustNotHaveHappened();
+    A.CallTo(() => child1.GatherBuildActions(default, out actionBag, default)).WithAnyArguments().MustNotHaveHappened();
+    A.CallTo(() => child2.GatherBuildActions(default, out actionBag, default)).WithAnyArguments().MustNotHaveHappened();
   }
 
   [Test]
@@ -73,11 +74,11 @@ public class IfFirstUnitTest
 
     // --act
     var chain = new[] {new UnitId(kind, null), new UnitId(kind, null)}.ToArrayTail();
-    target.GatherBuildActions(chain, inputWeight);
+    target.GatherBuildActions(chain, out var actionBag, inputWeight);
 
     // --assert
-    A.CallTo(() => child1.GatherBuildActions(An<BuildChain>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
-    A.CallTo(() => child2.GatherBuildActions(An<BuildChain>._, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => child1.GatherBuildActions(An<BuildChain>._, out actionBag, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => child2.GatherBuildActions(An<BuildChain>._, out actionBag, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]

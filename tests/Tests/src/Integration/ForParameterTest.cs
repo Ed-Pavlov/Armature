@@ -52,10 +52,10 @@ public class ForParameterTest
           argumentTuner.Tune(patternTree);
 
           // --act
-          var actionBag = patternTree.GatherBuildActions(arrange.Chain)!;
+          patternTree.GatherBuildActions(arrange.Chain, out var actionBag);
 
           // --assert
-          actionBag.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
+          actionBag!.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
           actionBag.Values.Single().Single().Entity.Should().Be(new BuildArgumentByParameterType(key));
         });
 
@@ -71,10 +71,11 @@ public class ForParameterTest
           argumentTuner.Tune(patternTree);
 
           // --act
-          var actionBag = patternTree.GatherBuildActions(arrange.Chain)!;
+          var result = patternTree.GatherBuildActions(arrange.Chain, out var actionBag);
 
           // --assert
-          actionBag.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
+          result.Should().BeTrue();
+          actionBag!.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
           actionBag.Values.Single().Single().Entity.Should().Be(new Instance<T>(value));
         });
 
@@ -88,10 +89,11 @@ public class ForParameterTest
           argumentTuner.Tune(patternTree);
 
           // --act
-          var actionBag = patternTree.GatherBuildActions(arrange.Chain)!;
+          var result = patternTree.GatherBuildActions(arrange.Chain, out var actionBag);
 
           // --assert
-          actionBag.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
+          result.Should().BeTrue();
+          actionBag!.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
           actionBag.Values.Single().Single().Entity.Should().Be(new Instance<T>(default));
         });
 
@@ -105,10 +107,11 @@ public class ForParameterTest
           argumentTuner.Tune(patternTree);
 
           // --act
-          var actionBag = patternTree.GatherBuildActions(arrange.Chain)!;
+          var result = patternTree.GatherBuildActions(arrange.Chain, out var actionBag);
 
           // --assert
-          actionBag.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
+          result.Should().BeTrue();
+          actionBag!.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
           actionBag.Values.Single().Single().Entity.Should().BeOfType(typeof(CreateWithFactoryMethod<T>));
         });
   }
@@ -125,10 +128,11 @@ public class ForParameterTest
           argumentTuner.Tune(patternTree);
 
           // --act
-          var actionBag = patternTree.GatherBuildActions(arrange.Chain)!;
+          var result = patternTree.GatherBuildActions(arrange.Chain, out var actionBag);
 
           // --assert
-          actionBag.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
+          result.Should().BeTrue();
+          actionBag!.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
           actionBag.Values.Single().Single().Entity.Should().Be(new BuildArgumentByParameterInjectPointId());
         });
   }

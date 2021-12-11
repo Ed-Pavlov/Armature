@@ -4,9 +4,8 @@ using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
-
-// Resharper disable all
 
 namespace Tests.Functional
 {
@@ -26,7 +25,7 @@ namespace Tests.Functional
        .InjectInto(Property.Named(nameof(Subject.StringProperty)));
 
       // --act
-      var actual = target.Build<ISubject>();
+      var actual = target.Build<ISubject>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -49,7 +48,7 @@ namespace Tests.Functional
        .UsingArguments(ForProperty.Named(nameof(Subject.StringProperty)).UseValue(expected));
 
       // --act
-      var actual = target.Build<ISubject>();
+      var actual = target.Build<ISubject>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -82,7 +81,7 @@ namespace Tests.Functional
        .UsingArguments(ForProperty.OfType<int>().UseFactoryMethod(_ => expected));
 
       // --act
-      var actual = target.Build<ISubject>();
+      var actual = target.Build<ISubject>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -90,7 +89,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_inject_into_property_by_injectpointid([Values(null, Subject.InjectPointId)] object injectPointId)
+    public void should_inject_into_property_by_inject_point_id([Values(null, Subject.InjectPointId)] object? injectPointId)
     {
       const string expected = "expectedString";
 
@@ -114,8 +113,8 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_inject_into_property_of_interface_by_injectpointid(
-      [Values(null, Subject.InterfaceInjectPointId)] object injectPointId)
+    public void should_inject_into_property_of_interface_by_inject_point_id(
+      [Values(null, Subject.InterfaceInjectPointId)] object? injectPointId)
     {
       const string expected = "expectedString";
 
@@ -128,7 +127,7 @@ namespace Tests.Functional
       target.Treat<ISubject>().InjectInto(injectPointId is null ? Property.ByInjectPoint() : Property.ByInjectPoint(new[] { injectPointId }));
 
       // --act
-      var actual = target.Build<ISubject>();
+      var actual = target.Build<ISubject>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -155,7 +154,7 @@ namespace Tests.Functional
        .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseKey(key));
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -180,7 +179,7 @@ namespace Tests.Functional
       target.Treat<ISubject>().AsCreated<Subject>();
 
       // --act
-      var actual = target.Build<ISubject>();
+      var actual = target.Build<ISubject>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -206,7 +205,7 @@ namespace Tests.Functional
        .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsKey());
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -230,7 +229,7 @@ namespace Tests.Functional
       target.Treat<ISubject>().AsCreated<Subject>();
 
       // --act
-      var actual = target.Build<ISubject>();
+      var actual = target.Build<ISubject>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -238,7 +237,7 @@ namespace Tests.Functional
       actual.StringProperty.Should().BeNull();
     }
 
-    public static Builder CreateTarget()
+    private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
            new SkipAllUnits
@@ -267,21 +266,22 @@ namespace Tests.Functional
     private interface ISubject
     {
       [Inject(Subject.InterfaceInjectPointId)]
-      string InjectProperty { get; set; }
+      string? InjectProperty { get; set; }
 
-      string StringProperty { get; set; }
+      string? StringProperty { get; set; }
       int    IntProperty    { get; set; }
     }
 
+    [UsedImplicitly]
     private class Subject : ISubject
     {
       public const string InjectPointId          = "id";
-      public const string InterfaceInjectPointId = Subject.InjectPointId + "Interface";
+      public const string InterfaceInjectPointId = InjectPointId + "Interface";
 
       [Inject(InjectPointId)]
-      public string InjectProperty { get; set; }
+      public string? InjectProperty { get; set; }
 
-      public string StringProperty { get; set; }
+      public string? StringProperty { get; set; }
 
       public int IntProperty { get; set; }
     }
