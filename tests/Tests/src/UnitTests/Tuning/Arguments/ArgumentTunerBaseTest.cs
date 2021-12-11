@@ -64,7 +64,7 @@ public class ArgumentTunerBaseTest
 
   private class Impl<T> : ArgumentTunerBase<T>
   {
-    public Impl() : base(_ => _) { }
+    public Impl() : base((node, _) => node) { }
   }
 
   private class Root : BuildChainPatternBase

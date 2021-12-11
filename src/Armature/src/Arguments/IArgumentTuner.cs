@@ -12,5 +12,5 @@ public interface IArgumentTuner : ITuner { }
 
 public class ArgumentTuner : Tuner, IArgumentTuner
 {
-  public ArgumentTuner(Action<IBuildChainPattern> tune) : base((pattern, _) => tune(pattern)) { } //TODO: do we need weight here?
+  public ArgumentTuner(Action<IBuildChainPattern, int> tune) : base(tune) { }
 }

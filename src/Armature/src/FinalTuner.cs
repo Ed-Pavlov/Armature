@@ -28,13 +28,13 @@ public class FinalTuner : TunerBase
 
     foreach(var argument in arguments)
       if(argument is IArgumentTuner argumentTuner)
-        argumentTuner.Tune(ParentNode);
+        argumentTuner.Tune(ParentNode, Weight);
       else if(argument is ITuner)
         throw new ArgumentException($"{nameof(IArgumentTuner)} or instance expected");
       else
         ParentNode
          .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-         .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(argument.GetType()), WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability))
+         .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(argument.GetType()), WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability + Weight))
          .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
 
     return this;

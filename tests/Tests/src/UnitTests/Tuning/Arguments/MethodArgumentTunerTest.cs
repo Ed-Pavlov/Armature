@@ -15,7 +15,7 @@ public class MethodArgumentTunerTest
     const int expectedWeight = 298;
 
     // --arrange
-    var target = new MethodArgumentTuner(_ => _);
+    var target = new MethodArgumentTuner((node, _) => node);
     var root   = new Root(expectedWeight);
 
     // --act
@@ -40,7 +40,7 @@ public class MethodArgumentTunerTest
     const int expectedWeight = 298;
 
     // --arrange
-    var target = new MethodArgumentTuner(_ => _);
+    var target = new MethodArgumentTuner((node, _) => node);
     var root   = new Root(expectedWeight);
 
     // --act
