@@ -6,10 +6,6 @@
 </p>
 
 ___
-
-[![Nuget](https://img.shields.io/nuget/dt/Armature)](https://www.nuget.org/packages/Armature/)
-[![Build & Test](https://github.com/Ed-Pavlov/Armature/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/Ed-Pavlov/Armature/actions/workflows/build-and-test.yml)
-___
 <p align="center">
   <img src="/build/logo.svg" width="128" height="128">
 </p>
@@ -62,8 +58,5 @@ It adds support for `Maybe` as an injected value.
      .AsCreated<Subject>()
      .AsSingleton();
 
-    builder
-      .Building<ISubject>()
-      .Building<Subject>()
-      .TreatAll()
-      .UsingArguments(logger);
+    builder.Building<ISubject>().Building<Subject>().TreatAll().UsingArguments(logger);
+}

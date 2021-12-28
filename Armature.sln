@@ -24,6 +24,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{81A9B7E9-1A47-4059-BE8D-0AEB0F44EDB9}"
 ProjectSection(SolutionItems) = preProject
 	GitVersion.yml = GitVersion.yml
+	build\armature.public.snk = build\armature.public.snk
+	build\icon.png = build\icon.png
+	build\nuget-readme.md = build\nuget-readme.md
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "global", "global", "{4F748C60-736D-47F4-A487-AC7C9D988184}"

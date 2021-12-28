@@ -37,18 +37,12 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\..\build\armature.public.snk">
-      <Link>build\armature.public.snk</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>build\GlobalAssemblyInfo.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\build\icon.png" Pack="true" PackagePath="">
-      <Link>build\icon.png</Link>
-    </None>
+    <None Include="..\..\build\icon.png" Pack="true" PackagePath="\icon.png"/>
+    <None Include="..\..\build\nuget-readme.md" Pack="true" PackagePath="\readme.md"/>
   </ItemGroup>
 </Project>

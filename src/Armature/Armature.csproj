@@ -21,8 +21,8 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>dependency-injection dependencyinjection di ioc .NET</PackageTags>
     <description>Armature dependency injection framework based on Armature.Core</description>
-  </PropertyGroup>  
-  
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -44,23 +44,9 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>build\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Remove="src\Extensibility\BuildActionExtensibility.cs" />
-    <Compile Remove="src\Extensibility\ExtensibilityExtension.cs" />
-    <Compile Remove="src\Extensibility\IBuildActionExtensibility.cs" />
-    <Compile Remove="src\Extensibility\IExtensibility.cs" />
-    <Compile Remove="src\Extensibility\IUnitMatcherExtensibility.cs" />
-    <Compile Remove="src\Extensibility\IUnitSequenceExtensibility.cs" />
-    <Compile Remove="src\Extensibility\UnitMatcherExtensibility.cs" />
-    <Compile Remove="src\Extensibility\UnitSequenceExtensibility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\build\armature.public.snk">
-      <Link>build\armature.public.snk</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\build\icon.png" Pack="true" PackagePath="">
-      <Link>build\icon.png</Link>
-    </None>
+    <None Include="..\..\build\icon.png" Pack="true" PackagePath="\icon.png"/>
+    <None Include="..\..\build\nuget-readme.md" Pack="true" PackagePath="\readme.md" />
   </ItemGroup>
 </Project>

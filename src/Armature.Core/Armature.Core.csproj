@@ -43,24 +43,12 @@
     <ProjectReference Include="..\Armature.Interface\Armature.Interface.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\build\armature.public.snk">
-      <Link>build\armature.public.snk</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>build\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Remove="src\BuildResult.cs" />
-    <Compile Remove="src\BuildSession.cs" />
-    <Compile Remove="src\BuildSession.Interface.cs" />
-    <Compile Remove="src\IBuildSession.cs" />
-    <Compile Remove="src\Sdk\ArrayTailExtension.cs" />
-    <Compile Remove="src\ArrayTail.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\build\icon.png" Pack="true" PackagePath="">
-      <Link>build\icon.png</Link>
-    </None>
+    <None Include="..\..\build\icon.png" Pack="true" PackagePath="\icon.png"/>
+    <None Include="..\..\build\nuget-readme.md" Pack="true" PackagePath="\readme.md"/>
   </ItemGroup>
 </Project>
