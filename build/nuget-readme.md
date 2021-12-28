@@ -6,10 +6,6 @@
 </p>
 
 ___
-<p align="center">
-  <img src="/build/logo.svg" width="128" height="128">
-</p>
-
 # Armature
 
 Lightweight and extremely easily extensible dependency injection framework
@@ -58,5 +54,8 @@ It adds support for `Maybe` as an injected value.
      .AsCreated<Subject>()
      .AsSingleton();
 
-    builder.Building<ISubject>().Building<Subject>().TreatAll().UsingArguments(logger);
-}
+    builder
+     .Building<ISubject>()
+     .Building<Subject>()
+     .TreatAll()
+     .UsingArguments(logger);

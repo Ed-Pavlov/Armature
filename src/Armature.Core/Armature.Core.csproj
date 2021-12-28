@@ -20,7 +20,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>dependency-injection dependencyinjection di ioc .NET</PackageTags>
-    <description>An interface part of Armature framework to use in the code which shouldn't depend on Armature implementation part</description>
+    <description>The core part of the Armature framework, can be used to build your own framework with syntax and features of your choice</description>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
