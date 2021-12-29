@@ -1,10 +1,10 @@
 ﻿using Armature.Core;
-using Armature.Core.Logging;
+using Armature.Core.Sdk;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {
   /// <summary>
-  ///   Uses <see cref="Maybe{T}.Value" /> as a build unit
+  /// Uses <see cref="Maybe{T}.Value" /> as a build unit
   /// </summary>
   public class GetMaybeValueBuildAction<T> : IBuildAction
   {

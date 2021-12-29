@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Armature.Core.Common;
+using Armature.Core.Sdk;
 using NUnit.Framework;
 
 namespace Tests.Performance
@@ -25,7 +25,7 @@ namespace Tests.Performance
 
       for(var i = 0; i < Count; i++)
       {
-        var value = _emptyConstructorInfo.Invoke(EmptyArray<object>.Instance);
+        var value = _emptyConstructorInfo.Invoke(Empty<object>.Array);
         GC.KeepAlive(value);
       }
 
@@ -41,7 +41,7 @@ namespace Tests.Performance
 
       for(var i = 0; i < Count; i++)
       {
-        var value = Activator.CreateInstance(typeof(Subject), EmptyArray<object>.Instance);
+        var value = Activator.CreateInstance(typeof(Subject), Empty<object>.Array);
         GC.KeepAlive(value);
       }
 
@@ -107,7 +107,7 @@ namespace Tests.Performance
 
       for(var i = 0; i < Count; i++)
       {
-        var value = factory(EmptyArray<object>.Instance);
+        var value = factory(Empty<object>.Array);
         GC.KeepAlive(value);
       }
 

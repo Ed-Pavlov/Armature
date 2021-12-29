@@ -1,13 +1,9 @@
-﻿using System;
-using Armature;
+﻿using Armature;
 using Armature.Core;
-using Armature.Core.BuildActions.Constructor;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Sdk;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
-
-// Resharper disable all
 
 namespace Tests.Functional
 {
@@ -26,7 +22,7 @@ namespace Tests.Functional
       target
        .Treat<ISubject<int>>()
        .AsCreated<Subject<int>>()
-       .UsingParameterlessConstructor();
+       .InjectInto(Constructor.Parameterless());
 
       // --act
       var actual = target.Build<ISubject<int>>();
@@ -46,80 +42,44 @@ namespace Tests.Functional
       target
        .TreatOpenGeneric(typeof(ISubject<>))
        .AsCreated(typeof(Subject<>))
-       .UsingParameters(expected);
+       .UsingArguments(expected);
 
       // --act
-      var actual = target.Build<ISubject<int>>();
+      var actual = target.Build<ISubject<int>>()!;
 
       // --assert
       actual.Value.Should().Be(expected);
     }
 
-    [Test]
-    public void closed_generic_registration_should_have_advantage_over_open_generic()
-    {
-      // --arrange
-      var target = CreateTarget();
-
-      target
-       .TreatOpenGeneric(typeof(ISubject<>))
-       .AsCreated(typeof(Subject<>))
-       .UsingParameters("open");
-
-      const string closed = "closed";
-
-      target
-       .Treat<ISubject<string>>()
-       .AsCreated<Subject<string>>()
-       .UsingParameters(closed);
-
-      // --act
-      var actual = target.Build<ISubject<string>>();
-
-      // --assert
-      actual.Value.Should().Be(closed);
-    }
-
-    [Test]
-    public void should_not_add_creation_strategy()
-    {
-      // --arrange
-      var target = CreateTarget();
-
-      target
-       .TreatOpenGeneric(typeof(ISubject<>))
-       .As(typeof(Subject<>));
-
-      // --act
-      Action actual = () => target.Build<ISubject<int>>(5);
-
-      // --assert
-      actual.Should().Throw<ArmatureException>();
-    }
-
     private static Builder CreateTarget()
-      => new(BuildStage.Create)
+      => new(BuildStage.Cache, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipAllUnits
            {
-             // inject into constructor
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
+             new IfFirstUnit(new IsConstructor()) // inject into constructor
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
+
+             new IfFirstUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+
+             new IfFirstUnit(new IsParameterInfo())
+              .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
            }
          };
 
     private interface ISubject<out T>
     {
-      T Value { get; }
+      T? Value { get; }
     }
 
     private class Subject<T> : ISubject<T>
     {
+      [UsedImplicitly]
       public Subject() { }
 
       public Subject(T value) => Value = value;
 
-      public T Value { get; }
+      public T? Value { get; }
 
       public override string ToString() => string.Format("{0}", Value);
     }

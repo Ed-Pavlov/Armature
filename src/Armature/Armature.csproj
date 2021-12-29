@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net45;net461;netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\build\armature.public.snk</AssemblyOriginatorKeyFile>
     <PublicSign>true</PublicSign>
-    <LangVersion>default</LangVersion>
+    <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Label="nuspec">
@@ -20,9 +20,9 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>dependency-injection dependencyinjection di ioc .NET</PackageTags>
-    <description>Armature dependency injection framework based on Armature.Core</description>
-  </PropertyGroup>  
-  
+    <description>Armature dependency injection framework, provides fluent syntax and syntax sugar over Armature.Core framework</description>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -46,13 +46,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\build\armature.public.snk">
-      <Link>build\armature.public.snk</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\build\icon.png" Pack="true" PackagePath="">
-      <Link>build\icon.png</Link>
-    </None>
+    <None Include="..\..\build\icon.png" Pack="true" PackagePath="\icon.png"/>
+    <None Include="..\..\build\nuget-readme.md" Pack="true" PackagePath="\readme.md" />
   </ItemGroup>
 </Project>

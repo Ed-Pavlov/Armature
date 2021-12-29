@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Armature;
 using Armature.Core;
-using Armature.Core.BuildActions.Constructor;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Sdk;
 using NUnit.Framework;
-using JetBrains.Annotations;
 
 namespace Tests.Functional
 {
@@ -26,18 +24,18 @@ namespace Tests.Functional
       target
        .Treat<StringConsumer>()
        .AsIs()
-       .UsingParameters(Expected);
+       .UsingArguments(Expected);
 
       // register AddPostfixToString buildAction for any string on the very first stage
       // (postprocessing will be called last and buildAction will add a postfix to created or cached string
 
       target
-       .AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
-       .AddOrGetUnitSequenceMatcher(new LastUnitSequenceMatcher(new AnyStringMatcher()))
-       .AddBuildAction(BuildStage.Intercept, new AddPostfixToString(Postfix));
+       .GetOrAddNode(new SkipAllUnits())
+       .AddNode(new IfFirstUnit(new StringParameterPattern()))
+       .UseBuildAction(new AddPostfixToString(Postfix), BuildStage.Intercept);
 
       // --act
-      var actual = target.Build<StringConsumer>();
+      var actual = target.Build<StringConsumer>()!;
 
       // --assert
       Assert.That(actual.Value, Is.EqualTo(Expected + Postfix));
@@ -51,7 +49,7 @@ namespace Tests.Functional
               target
                .Treat<StringConsumer>()
                .AsIs()
-               .UsingParameters(Expected)))
+               .UsingArguments(Expected)))
        .SetName("RegisteredAsParameterValue");
 
       yield return new TestCaseData(
@@ -86,53 +84,50 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Intercept, BuildStage.Cache, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipAllUnits
            {
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
+             new IfFirstUnit(new IsConstructor())
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
+
+             new IfFirstUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+
+             new IfFirstUnit(new IsParameterInfo())
+              .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
            }
          };
 
     /// <summary>
-    ///   GetBuildAction with any string not depending on token
+    /// Checks if <see cref="UnitId.Kind"/> is <see cref="ParameterInfo"/> with <see cref="ParameterInfo.ParameterType"/> is <see cref="string"/>
     /// </summary>
-    private class AnyStringMatcher : IUnitMatcher
+    private class StringParameterPattern : IUnitPattern
     {
-      public bool Matches(UnitInfo unitInfo)
-      {
-        var type = unitInfo.Id is ParameterInfo parameterInfo ? parameterInfo.ParameterType : null;
-
-        return type == typeof(string);
-      }
-
-      public bool Equals(IUnitMatcher other) => throw new NotSupportedException();
+      public bool Matches(UnitId unitId) => unitId.Kind is ParameterInfo parameterInfo && parameterInfo.ParameterType == typeof(string);
     }
 
     /// <summary>
-    ///   BuildAction adds a postfix to a string, should be registered only for strings
+    /// BuildAction adds a postfix to a string, should be registered only for strings
     /// </summary>
     private class AddPostfixToString : IBuildAction
     {
       private readonly string _postfix;
 
-      public AddPostfixToString([NotNull] string postfix)
-      {
-        if(postfix is null) throw new ArgumentNullException(nameof(postfix));
-
-        _postfix = postfix;
-      }
+      public AddPostfixToString(string postfix) => _postfix = postfix ?? throw new ArgumentNullException(nameof(postfix));
 
       public void Process(IBuildSession buildSession) { }
 
       public void PostProcess(IBuildSession buildSession)
       {
-        var assembleResult = buildSession.BuildResult;
-        var value          = (string) assembleResult.Value;
-        buildSession.BuildResult = new BuildResult(value + _postfix);
+        var buildResult = buildSession.BuildResult;
+        if(buildResult.HasValue)
+        {
+          var value = (string) buildResult.Value!;
+          buildSession.BuildResult = new BuildResult(value + _postfix);
+        }
       }
     }
 
-    [UsedImplicitly]
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
     private class StringConsumer
     {
       public readonly string Value;

@@ -4,14 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using Armature;
 using Armature.Core;
-using Armature.Core.BuildActions;
-using Armature.Core.BuildActions.Constructor;
-using Armature.Core.BuildActions.Parameter;
-using Armature.Core.BuildActions.Property;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitMatchers.Parameters;
-using Armature.Core.UnitMatchers.Properties;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using JetBrains.dotMemoryUnit;
 using JetBrains.dotMemoryUnit.Kernel;
@@ -76,7 +69,7 @@ namespace Tests.Performance
          .Building(type)
          .Treat<IDisposable>()
          .AsCreated<MemoryStream>()
-         .UsingParameters(0);
+         .UsingArguments(0);
 
 
       var mem1 = dotMemory.Check();
@@ -100,8 +93,8 @@ namespace Tests.Performance
     }
 
 
-    // There were 71994021 class of Equals on count == 3 000. Count of GetHashCode was exactly the count of IUnitSequenceMatchers added into children collection
-    // After the fix it becomes 42 of Equals and 23999 of GetHashCode 
+    // There were 71994021 class of Equals on count == 3 000. Count of GetHashCode was exactly the count of IPatternTreeNode added into children collection
+    // After the fix it becomes 42 of Equals and 23999 of GetHashCode
     [Test]
     public void AddOrGetUnitTestMatcherTest()
     {
@@ -111,11 +104,11 @@ namespace Tests.Performance
 
       for(var i = 0; i < count; i++)
       {
-        var u1  = new UnitInfo(i, null);
-        var u2  = new UnitInfo(i, i);
+        var u1  = new UnitId(i, null);
+        var u2  = new UnitId(i, i);
         var str = i.ToString();
-        var u3  = new UnitInfo(str, null);
-        var u4  = new UnitInfo(str, str);
+        var u3  = new UnitId(str, null);
+        var u4  = new UnitId(str, str);
 
         Treat(builder, u1).AsCreatedWith(() => null);
         Treat(builder, u2).AsInstance(null);
@@ -123,33 +116,33 @@ namespace Tests.Performance
         Treat(builder, u4).AsCreatedWith(() => null).AsSingleton();
       }
 
-      MockUnitMatcher.EqualsCallsCount.Should().BeLessThan(1_000);
-      MockUnitMatcher.GetHashCodeCallsCount.Should().BeLessThan(250_000);
+      UnitPatternWrapper.EqualsCallsCount.Should().BeLessThan(1_000);
+      UnitPatternWrapper.GetHashCodeCallsCount.Should().BeLessThan(250_000);
     }
 
-    private static TreatingTuner Treat(BuildPlansCollection buildPlans, UnitInfo unitInfo)
+    private static TreatingTuner Treat(IBuildChainPattern pattern, UnitId unitId)
     {
-      if(buildPlans is null) throw new ArgumentNullException(nameof(buildPlans));
+      if(pattern is null) throw new ArgumentNullException(nameof(pattern));
 
-      var unitMatcher = new MockUnitMatcher(new UnitInfoMatcher(unitInfo));
+      var unitMatcher = new UnitPatternWrapper(new UnitPattern(unitId.Kind, unitId.Tag));
 
-      var unitSequenceMatcher = new WildcardUnitSequenceMatcher(unitMatcher);
+      var query = new SkipTillUnit(unitMatcher);
 
-      return new TreatingTuner(buildPlans.AddOrGetUnitSequenceMatcher(unitSequenceMatcher));
+      return new TreatingTuner(pattern.GetOrAddNode(query));
     }
 
-    private class MockUnitMatcher : IUnitMatcher
+    private class UnitPatternWrapper : IUnitPattern
     {
-      private readonly IUnitMatcher _impl;
+      private readonly IUnitPattern _impl;
 
-      public MockUnitMatcher(IUnitMatcher impl) => _impl = impl;
+      public UnitPatternWrapper(IUnitPattern impl) => _impl = impl;
 
       public static long EqualsCallsCount      { get; private set; }
       public static long GetHashCodeCallsCount { get; private set; }
 
-      public bool Matches(UnitInfo unitInfo) => _impl.Matches(unitInfo);
+      public bool Matches(UnitId unitId) => _impl.Matches(unitId);
 
-      public bool Equals(IUnitMatcher other)
+      private bool Equals(IUnitPattern? other)
       {
         EqualsCallsCount++;
 
@@ -164,30 +157,31 @@ namespace Tests.Performance
         return _impl.GetHashCode();
       }
 
-      public override bool Equals(object obj) => Equals(obj as UnitInfoMatcher);
+      public override bool Equals(object? obj) => Equals(obj as UnitPattern);
     }
 
-    private static Builder CreateTarget(Builder parent = null)
+    private static Builder CreateTarget(Builder? parent = null)
     {
-      var treatAll = new AnyUnitSequenceMatcher
+      var treatAll = new SkipAllUnits
                      {
                        // inject into constructor
-                       new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-                        .AddBuildAction(
-                           BuildStage.Create,
-                           new OrderedBuildActionContainer
+                       new IfFirstUnit(new IsConstructor())
+                        .UseBuildAction(
+                           new TryInOrder
                            {
-                             new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-                             GetLongestConstructorBuildAction.Instance   // constructor with largest number of parameters has less priority
-                           }),
-                       new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-                        .AddBuildAction(
-                           BuildStage.Create,
-                           new OrderedBuildActionContainer {CreateParameterValueForInjectPointBuildAction.Instance, CreateParameterValueBuildAction.Instance}),
-                       new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
-                        .AddBuildAction(
-                           BuildStage.Create,
-                           new OrderedBuildActionContainer {new CreatePropertyValueBuildAction()})
+                             new GetConstructorByInjectPointId(),              // constructor marked with [Inject] attribute has more priority
+                             Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has less priority
+                           },
+                           BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfo())
+                        .UseBuildAction(
+                           new TryInOrder
+                           {
+                             Static.Of<BuildArgumentByParameterInjectPointId>(), Static.Of<BuildArgumentByParameterType>()
+                           },
+                           BuildStage.Create),
+                       new IfFirstUnit(new IsPropertyInfo())
+                        .UseBuildAction(new TryInOrder {new BuildArgumentByPropertyType()}, BuildStage.Create)
                      };
 
       var buildStages = new object[] {BuildStage.Cache, BuildStage.Initialize, BuildStage.Create};

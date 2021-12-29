@@ -1,3 +1,12 @@
+<p align='right'>If <b>Armature</b> has done you any good, consider support my future initiatives</p>
+<p align="right">
+  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ed@pavlov.is&lc=US&item_name=Kudos+for+Armature&no_note=0&cn=&currency_code=EUR">
+    <img src="https://ed.pavlov.is/Images/donate-button-small.png" />
+  </a>
+</p>
+
+___
+
 [![Nuget](https://img.shields.io/nuget/dt/Armature)](https://www.nuget.org/packages/Armature/)
 [![Build & Test](https://github.com/Ed-Pavlov/Armature/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/Ed-Pavlov/Armature/actions/workflows/build-and-test.yml)
 ___
@@ -9,55 +18,52 @@ ___
 
 Lightweight and extremely easily extensible dependency injection framework
 
+## Example of extensibility
+See the project `Tests.Extensibility` to see the example of powerful extensibility possibility without changing the framework itself.
+It adds support for `Maybe` as an injected value.
+
 ## Examples of using
-
-    var builder = new Builder(BuildStage.Cache, BuildStage.Create)
+    var builder = new Builder(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+    {
+      new SkipAllUnits
       {
-        new AnyUnitSequenceMatcher
-        {
-          // inject into constructor
-          new LastUnitSequenceMatcher(ConstructorMatcher.Instance) // matches if the last unit in a sequence is a constructor
-            .AddBuildAction(
-              BuildStage.Create,
-              new OrderedBuildActionContainer
-              {
-                new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-                GetLongestConstructorBuildAction.Instance // constructor with largest number of parameters has less priority
-              }),
-
-
-          new LastUnitSequenceMatcher(ParameterValueMatcher.Instance) // matches if the last unit in a sequence is a value for parameter
-            .AddBuildAction(
-              BuildStage.Create,
-              new OrderedBuildActionContainer
-              {
-                CreateParameterValueForInjectPointBuildAction.Instance,
-                CreateParameterValueBuildAction.Instance
-              })
-        }
+        // inject into constructor
+        new IfFirstUnit(new IsConstructor())
+         .UseBuildAction(
+            new TryInOrder(
+              new GetConstructorByInjectPointId(),
+              new GetConstructorWithMaxParametersCount()
+            ),
+            BuildStage.Create),
+        new IfFirstUnit(new IsParameterInfoList())
+         .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+        new IfFirstUnit(new IsParameterInfo())
+         .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
       }
-    
-    
+    };
+
+
     builder
-        .TreatOpenGeneric(typeof(ISubject<>))
-        .AsCreated(typeof(Subject<>));
-          
-    var actual = builder.Build<ISubject<int>>();
-    actual.Should().BeOfType<Subject<int>>();
-    
+     .TreatOpenGeneric(typeof(ISubject<>))
+     .AsCreated(typeof(Subject<>));
+
     builder
-        .Treat<Subject>(token)
-        .AsIs()
-        .UsingConstructorWithParameters<int, string, Stream>();
-    
+     .Treat<Subject>(tag)
+     .AsIs()
+     .InjectInto(Constructor.WithParameters<int, string, Stream>());
+
     builder
-        .Treat<Subject>()
-        .AsIs()
-        .UsingInjectPointConstructor(Subject.InjectPointId);
-        
+     .Treat<Subject>()
+     .AsIs()
+     .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.InjectPointId));
+
     builder
-        .Treat<ISubject>()
-        .AsCreated<Subject>()
-        .BuildingWhich(_ => _.TreatAll().UsingParameters(logger))
-        .AsSingleton();
-        
+     .Treat<ISubject>()
+     .AsCreated<Subject>()
+     .AsSingleton();
+
+    builder
+      .Building<ISubject>()
+      .Building<Subject>()
+      .TreatAll()
+      .UsingArguments(logger);

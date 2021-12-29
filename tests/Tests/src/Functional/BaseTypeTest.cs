@@ -1,14 +1,9 @@
 ﻿using Armature;
 using Armature.Core;
-using Armature.Core.BuildActions.Constructor;
-using Armature.Core.BuildActions.Property;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitMatchers.Properties;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Sdk;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
-
-//Resharper disable all
 
 namespace Tests.Functional
 {
@@ -26,14 +21,14 @@ namespace Tests.Functional
 
       target
        .TreatInheritorsOf<SubjectBase>()
-       .InjectProperty(Property.Named(nameof(SubjectBase.InjectThere)));
+       .InjectInto(Property.Named(nameof(SubjectBase.InjectThere)));
 
       target
        .Treat<Subject>()
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.InjectThere.Should().Be(expected);
@@ -51,14 +46,14 @@ namespace Tests.Functional
 
       target
        .TreatInheritorsOf<ISubject>()
-       .InjectProperty(Property.Named(nameof(ISubject.InjectThere)));
+       .InjectInto(Property.Named(nameof(ISubject.InjectThere)));
 
       target
        .Treat<Subject>()
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.InjectThere.Should().Be(expected);
@@ -76,15 +71,15 @@ namespace Tests.Functional
 
       target
        .TreatInheritorsOf<ISubject>()
-       .InjectProperty(Property.Named(nameof(ISubject.InjectThere)));
+       .InjectInto(Property.Named(nameof(ISubject.InjectThere)));
 
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectProperty(Property.Named(nameof(Subject.InjectHere)));
+       .InjectInto(Property.Named(nameof(Subject.InjectHere)));
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.InjectHere.Should().Be(expected);
@@ -94,17 +89,14 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipAllUnits
            {
              // inject into constructor
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-              .AddBuildAction(
-                 BuildStage.Create,
-                 GetLongestConstructorBuildAction
-                  .Instance), // constructor with largest number of parameters has less priority
+             new IfFirstUnit(new IsConstructor())
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
 
-             new LastUnitSequenceMatcher(PropertyValueMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, new CreatePropertyValueBuildAction())
+             new IfFirstUnit(new IsPropertyInfo())
+              .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)
            }
          };
 
@@ -118,6 +110,7 @@ namespace Tests.Functional
       public int InjectThere { get; set; }
     }
 
+    [UsedImplicitly]
     private class Subject : SubjectBase, ISubject
     {
       public int InjectHere { get; set; }

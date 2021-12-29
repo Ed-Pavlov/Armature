@@ -1,11 +1,7 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
-using Armature.Core.BuildActions.Constructor;
-using Armature.Core.BuildActions.Parameter;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitMatchers.Parameters;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Extensibility.MaybePropagation.Implementation;
@@ -25,10 +21,10 @@ namespace Tests.Extensibility.MaybePropagation
       builder
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
-       .AsCreated<Reader>()
-       .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>());
+       .AsCreated<Reader>();
+      builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>();
 
-      var actual = builder.Build<Maybe<IReader>>();
+      var actual = builder.Build<Maybe<IReader>>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -46,10 +42,11 @@ namespace Tests.Extensibility.MaybePropagation
       builder
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
-       .AsCreated<Reader>()
-       .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>());
+       .AsCreated<Reader>();
 
-      var actual = builder.Build<Maybe<IReader>>();
+      builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>();
+
+      var actual = builder.Build<Maybe<IReader>>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -64,8 +61,9 @@ namespace Tests.Extensibility.MaybePropagation
       builder
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
-       .AsCreated<Reader>()
-       .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>());
+       .AsCreated<Reader>();
+
+      builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>();
 
       Action actual = () => builder.Build<Maybe<IReader>>();
 
@@ -74,20 +72,21 @@ namespace Tests.Extensibility.MaybePropagation
     }
 
     [Test]
-    public void should_build_maybe_use_token_for_dependency()
+    public void should_build_maybe_use_tag_for_dependency()
     {
       var builder = CreateTarget();
 
-      const string token = "token";
-      builder.Treat<Maybe<Section>>(token).AsInstance(new Section().ToMaybe());
+      const string tag = "tag";
+      builder.Treat<Maybe<Section>>(tag).AsInstance(new Section().ToMaybe());
 
       builder
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
-       .AsCreated<Reader>()
-       .BuildingWhich(_ => _.Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>(token));
+       .AsCreated<Reader>();
 
-      var actual = builder.Build<Maybe<IReader>>();
+      builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>(tag);
+
+      var actual = builder.Build<Maybe<IReader>>()!;
 
       // --assert
       actual.HasValue.Should().BeTrue();
@@ -95,25 +94,26 @@ namespace Tests.Extensibility.MaybePropagation
     }
 
     [Test]
-    public void should_build_maybe_use_inject_point_id_as_token_for_dependency()
+    public void should_build_maybe_use_inject_point_id_as_tag_for_dependency()
     {
       var builder = CreateTarget();
 
-      const string token = Reader1.InjectPointId;
-      builder.Treat<Maybe<Section>>(token).AsInstance(new Section().ToMaybe());
+      const string tag = Reader1.InjectPointId;
+      builder.Treat<Maybe<Section>>(tag).AsInstance(new Section().ToMaybe());
 
       builder
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
        .AsCreated<Reader1>()
-       .BuildingWhich(
-          _ => _
-              .Treat<Section>(Token.Any)
-              .AsMaybeValueOf()
-              .As<Maybe<Section>>(Token.Propagate))
-       .UsingParameters(ForParameter.OfType<Section>().UseInjectPointIdAsToken());
+       .UsingArguments(ForParameter.OfType<Section>().UseInjectPointIdAsTag());
 
-      var actual = builder.Build<Maybe<IReader>>();
+      builder
+       .Building<Reader1>()
+       .Treat<Section>(SpecialTag.Any)
+       .AsMaybeValueOf()
+       .As<Maybe<Section>>(SpecialTag.Propagate);
+
+      var actual = builder.Build<Maybe<IReader>>()!;
 
       // --assert
       actual.HasValue.Should().BeTrue();
@@ -123,13 +123,15 @@ namespace Tests.Extensibility.MaybePropagation
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipAllUnits
            {
              // inject into constructor
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+             new IfFirstUnit(new IsConstructor())
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
+             new IfFirstUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+             new IfFirstUnit(new IsParameterInfo())
+              .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
            }
          };
   }

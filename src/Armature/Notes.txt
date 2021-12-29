@@ -1,0 +1,27 @@
+Possible performance optimization
+
+If we introduce IfTargetUnit and IfDirectContextUnit build chain patterns they could be used in the following registrations
+
+Treat<string>().AsInstance("str")       // IfTargetUnit<string> -> InstanceBuildAction
+This case will have significant boost.
+
+Treat<I>()            // IfTargetUnit<I> -> Redirect<C>
+  .AsCreated<C>()     // IfDirectContext<T>
+                      //   IfFirstUnit<C> -> CreateBuildAction
+  .UsingArguments()   //     Further nodes
+  .AsSingleton()      //     SingletonBuildActions
+
+Because IfTargetUnit and IfDirectContext uses only one "if" per BuildUnit call, it could be performance boost.
+For now, as SkipTillUnit is used, it performs N "if"s, where N is the length of the Build Chain.
+But in the suggested approach will be two build chain patterns instead of one, and therefore performance will be increased if the average
+build chain length is > 3, which looks like true.
+
+ BuildChain length | SkipTillUnit | IfTargetUnit + IfDirectContext |
+--------------------------------------------------------------------
+        1          |       1      |               2                |
+        2          |       2      |               2                |
+        3          |       3      |               2                | balance point 1 + 2 + 3 = 2 + 2 + 2
+        4          |       4      |               2                | boost
+
+
+Need to decide what to pass to the base FinalTuner, functor?

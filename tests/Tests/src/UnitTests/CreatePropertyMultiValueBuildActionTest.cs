@@ -1,28 +1,29 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Armature.Core;
-using Armature.Core.BuildActions.Property;
 using FakeItEasy;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
+using Tests.UnitTests.BuildActions;
 
 namespace Tests.UnitTests
 {
   public class CreatePropertyMultiValueBuildActionTest
   {
-    [TestCaseSource(nameof(should_build_list_of_values_for_any_collection_cases))]
-    public void should_build_list_of_values_for_any_collection(PropertyInfo propertyInfo)
+    [Test]
+    public void should_build_list_of_values_for_any_collection(
+        [ValueSource(nameof(should_build_list_of_values_for_any_collection_cases))] PropertyInfo propertyInfo,
+        [Values(null, "tag")]                                                       object?      tag)
     {
       // --arrange
-      var target       = new CreatePropertyMultiValueToInjectBuildAction();
+      var target       = new BuildListArgumentForProperty(tag);
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildSequence).Returns(new[] {new UnitInfo(propertyInfo, null)});
+      A.CallTo(() => buildSession.BuildChain).Returns(new UnitId(propertyInfo, tag).ToBuildChain());
 
-      A.CallTo(() => buildSession.BuildAllUnits(null))
-       .WithAnyArguments()
-       .Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_)).ToArray());
+      A.CallTo(() => buildSession.BuildAllUnits(new UnitId(propertyInfo, tag)))
+       .Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());
 
       // --act
       target.Process(buildSession);
@@ -44,14 +45,20 @@ namespace Tests.UnitTests
       yield return properties[4];
     }
 
-    [SuppressMessage("ReSharper", "UnusedMember.Local")]
     private class TargetType
     {
+#pragma warning disable CS8618
+      [UsedImplicitly]
       public IEnumerable<int>         Enumerable         { get; set; }
+      [UsedImplicitly]
       public IReadOnlyCollection<int> ReadOnlyCollection { get; set; }
+      [UsedImplicitly]
       public ICollection<int>         Collection         { get; set; }
+      [UsedImplicitly]
       public IReadOnlyList<int>       ReadOnlyList       { get; set; }
+      [UsedImplicitly]
       public IList<int>               List               { get; set; }
+#pragma warning restore CS8618
     }
   }
 }

@@ -2,12 +2,10 @@
 using System.Linq;
 using Armature;
 using Armature.Core;
-using Armature.Core.BuildActions.Constructor;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
-using Tests.Common;
+using Tests.Util;
 
 namespace Tests.Functional
 {
@@ -23,7 +21,7 @@ namespace Tests.Functional
       target.Treat<IDisposable>().AsCreated<SampleType2>();
 
       // --act
-      var actual = target.BuildAllUnits(Unit.OfType<IDisposable>());
+      var actual = target.BuildAll<IDisposable>();
 
       // --assert
       actual.Should().HaveCount(2);
@@ -42,7 +40,7 @@ namespace Tests.Functional
       target.Treat<IDisposable>().AsSingleton(); // involve BuildStage.Cache for first level unit
 
       // --act
-      Action actual = () => target.BuildAllUnits(Unit.OfType<IDisposable>());
+      Action actual = () => target.BuildAllUnits(Unit.IsType<IDisposable>());
 
       // --assert
       actual.Should().ThrowExactly<ArmatureException>();
@@ -58,14 +56,14 @@ namespace Tests.Functional
       target.Treat<IDisposable>().AsCreated<SampleType2>();
 
       // --precondition
-      var precondition = target.BuildAllUnits(Unit.OfType<IDisposable>());
+      var precondition = target.BuildAll<IDisposable>();
       precondition.Should().HaveCount(2);
       precondition.Should().ContainSingle(_ => _ is SampleType1);
       precondition.Should().ContainSingle(_ => _ is SampleType2);
       var expected = precondition.Single(_ => _ is SampleType1);
 
       // --act
-      var actual = target.BuildAllUnits(Unit.OfType<IDisposable>());
+      var actual = target.BuildAll<IDisposable>();
       actual.Should().HaveCount(2);
       actual.Should().ContainSingle(_ => _ is SampleType1);
       actual.Should().ContainSingle(_ => _ is SampleType2);
@@ -76,10 +74,10 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipAllUnits
            {
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
+             new IfFirstUnit(new IsConstructor())
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create)
            }
          };
 

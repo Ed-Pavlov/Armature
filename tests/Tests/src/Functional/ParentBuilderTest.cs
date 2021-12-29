@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Linq;
 using Armature;
 using Armature.Core;
-using Armature.Core.BuildActions.Constructor;
-using Armature.Core.BuildActions.Parameter;
-using Armature.Core.Common;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitMatchers.Parameters;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Sdk;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
-using Tests.Common;
+using Tests.Util;
 
 namespace Tests.Functional
 {
@@ -117,7 +112,7 @@ namespace Tests.Functional
     [Test]
     public void should_build_parameter_value_via_parent()
     {
-      const string expected = "expectedstring";
+      const string expected = "expectedString";
 
       // --arrange
       var parentBuilder = new Builder(BuildStage.Cache);
@@ -130,7 +125,7 @@ namespace Tests.Functional
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -140,7 +135,7 @@ namespace Tests.Functional
     [Test]
     public void should_use_parameter_value_from_local_build_plan()
     {
-      const string expected = "expectedstring";
+      const string expected = "expectedString";
 
       // --arrange
       var parentBuilder = new Builder(BuildStage.Cache);
@@ -157,7 +152,7 @@ namespace Tests.Functional
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -167,31 +162,27 @@ namespace Tests.Functional
     [Test]
     public void should_report_all_exceptions_from_parent_builders()
     {
+      var argumentOutOfRangeException = new ArgumentOutOfRangeException();
+      var invalidProgramException     = new InvalidProgramException();
+
+      // --arrange
       var parent1 = new Builder(BuildStage.Create)
-       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArgumentOutOfRangeException()));
+       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw argumentOutOfRangeException));
 
       var parent2 = new Builder(BuildStage.Create)
-       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new InvalidProgramException()));
+       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw invalidProgramException));
 
       var target = CreateTarget(parent1, parent2);
 
-      try
-      {
-        target.Build<string>();
-      }
-      catch(Exception e)
-      {
-        Console.WriteLine(e);
-      }
-
+      // --act
       Action action = () => target.Build<string>();
 
+      // --assert
       action.Should()
-            .Throw<ArmatureException>()
+            .Throw<AggregateException>()
             .Which
-            .Data.Values.Cast<string>()
-            .With(values => values.SingleOrDefault(_ => _.Contains("ArgumentOutOfRangeException")).Should().NotBeNull())
-            .With(values => values.SingleOrDefault(_ => _.Contains("InvalidProgramException")).Should().NotBeNull());
+            .InnerExceptions.Should()
+            .Equal(argumentOutOfRangeException, invalidProgramException);
     }
 
     [Test]
@@ -222,11 +213,11 @@ namespace Tests.Functional
 
       var target = CreateTarget(parent);
 
-      // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder 
-      target.AddOrGetUnitSequenceMatcher(new AnyUnitSequenceMatcher())
-            .Add(
-               new LastUnitSequenceMatcher(AnyTypeMatcher.Instance)
-                .AddBuildAction(BuildStage.Cache, new DebugOnlyBuildAction()));
+      // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder
+      target
+       .GetOrAddNode(new SkipAllUnits())
+       .AddNode(new IfFirstUnit(new CanBeInstantiated()))
+       .UseBuildAction(new DebugOnlyBuildAction(), BuildStage.Cache);
 
       // --act
       var actual = target.Build<string>();
@@ -247,7 +238,7 @@ namespace Tests.Functional
       Action actual = () => target.Build<Subject>();
 
       // --assert
-      actual.Should().ThrowExactly<ArmatureException>();
+      actual.Should().ThrowExactly<AggregateException>().WithInnerExceptionExactly<NotSerializableException>();
     }
 
     private class DebugOnlyBuildAction : IBuildAction
@@ -258,17 +249,20 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget(params Builder[] parents)
-      => new(new[] {BuildStage.Cache, BuildStage.Create}, parents)
+      => new(new object[] {BuildStage.Cache, BuildStage.Create}, parents)
          {
-           new AnyUnitSequenceMatcher
+           new SkipAllUnits
            {
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance)
+             new IfFirstUnit(new IsConstructor())
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
+             new IfFirstUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+             new IfFirstUnit(new IsParameterInfo())
+              .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
            }
          };
 
+    [UsedImplicitly]
     private class Subject
     {
       public readonly string String;

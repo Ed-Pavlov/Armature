@@ -1,12 +1,9 @@
 ﻿using Armature;
 using Armature.Core;
-using Armature.Core.BuildActions.Constructor;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Sdk;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
-
-// Resharper disable all
 
 namespace Tests.Functional
 {
@@ -20,12 +17,12 @@ namespace Tests.Functional
       builder
        .Treat<Subject>()
        .AsIs()
-       .UsingParameterlessConstructor();
+       .InjectInto(Constructor.Parameterless());
 
       builder
-       .OverrideTreat<Subject>()
+       .TreatOverride<Subject>()
        .AsIs()
-       .UsingParameters(10);
+       .UsingArguments(10);
 
       builder.Build<Subject>().Should().BeOfType<Subject>().Which.Value.Should().Be(10);
     }
@@ -33,14 +30,20 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipAllUnits
            {
-             // inject into constructor
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance)
+             new IfFirstUnit(new IsConstructor()) // inject into constructor
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
+
+             new IfFirstUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+
+             new IfFirstUnit(new IsParameterInfo())
+              .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
            }
          };
 
+    [UsedImplicitly]
     private class Subject
     {
       public Subject() { }

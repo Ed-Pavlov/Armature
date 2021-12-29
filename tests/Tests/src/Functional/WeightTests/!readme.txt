@@ -1,0 +1,1 @@
+There are placed tests which checks weights (or priority) of registrations resolving the same unit.

@@ -1,40 +1,35 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
-using Armature.Core.BuildActions;
-using Armature.Extensibility;
 
+namespace Armature;
 
-namespace Armature
+public class TreatingOpenGenericTuner : TunerBase
 {
-  public class TreatingOpenGenericTuner : UnitSequenceExtensibility
+  [DebuggerStepThrough]
+  public TreatingOpenGenericTuner(IBuildChainPattern parentNode) : base(parentNode) { }
+
+  /// <summary>
+  /// Build an object of the specified <paramref name="openGenericType"/> instead. Also use default creation strategy for that type.
+  /// See <see cref="Default.CreationBuildAction"/> for details.
+  /// </summary>
+  public FinalTuner AsCreated(Type openGenericType, object? tag = null) => As(openGenericType, tag).CreatedByDefault();
+
+  /// <summary>
+  /// Build an object of the specified <paramref name="openGenericType"/> instead.
+  /// </summary>
+  public OpenGenericCreationTuner As(Type openGenericType, object? tag = null)
   {
-    [DebuggerStepThrough]
-    public TreatingOpenGenericTuner(IUnitSequenceMatcher unitSequenceMatcher) : base(unitSequenceMatcher) { }
+    ParentNode.UseBuildAction(new RedirectOpenGenericType(openGenericType, tag), BuildStage.Create);
+    return new OpenGenericCreationTuner(ParentNode, openGenericType, tag);
+  }
 
-    /// <summary>
-    ///   When generic type belonging to class described by open generic type passed to <see cref="BuildPlansCollectionExtension.TreatOpenGeneric"/>
-    ///   is requested to inject, object of generic type <paramref name="openGenericType"/> created by default creation strategy is created and injected.
-    ///   See <see cref="Default.CreationBuildAction"/> for details.
-    /// </summary>
-    public Tuner AsCreated(Type openGenericType, object? token = null) => As(openGenericType, token).CreatedByDefault();
-
-    /// <summary>
-    ///   When generic type belonging to class described by open generic type passed to <see cref="BuildPlansCollectionExtension.TreatOpenGeneric"/>
-    ///   is requested to inject, object of generic type <paramref name="openGenericType"/> injected. Tune how it is created by subsequence tuner calls. 
-    /// </summary>
-    public OpenGenericCreationTuner As(Type openGenericType, object? token = null)
-    {
-      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, new RedirectOpenGenericTypeBuildAction(openGenericType, token));
-
-      return new OpenGenericCreationTuner(UnitSequenceMatcher, openGenericType, token);
-    }
-
-    public Tuner AsIs()
-    {
-      UnitSequenceMatcher.AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
-
-      return new Tuner(UnitSequenceMatcher);
-    }
+  /// <summary>
+  /// Use default creation strategy for a unit. See <see cref="Default.CreationBuildAction"/> for details.
+  /// </summary>
+  public FinalTuner AsIs()
+  {
+    ParentNode.UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
+    return new FinalTuner(ParentNode);
   }
 }

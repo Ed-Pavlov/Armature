@@ -1,8 +1,7 @@
-﻿using Armature;
+﻿using System;
+using Armature;
 using Armature.Core;
-using Armature.Core.BuildActions.Constructor;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -119,7 +118,7 @@ namespace Tests.Functional
 
             return expected;
           })
-       .UsingParameters(expectedString);
+       .UsingArguments(expectedString);
 
       // --act
       var actual = target.Build<Subject>();
@@ -129,38 +128,9 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void creation_build_action_should_be_added_only_once()
+    public void should_use_creation_strategy_registered_with_tag()
     {
-      // --arrange
-      var target = CreateTarget();
-
-      target
-       .Treat<ISubject1>()
-       .As<Subject>();
-
-      target
-       .Treat<ISubject2>()
-       .As<Subject>();
-
-      target
-       .Treat<Subject>()
-       .AsIs()
-       .AsSingleton();
-
-      // --act
-      var actual1 = target.Build<ISubject1>();
-      var actual2 = target.Build<ISubject2>();
-      var actual3 = target.Build<Subject>();
-
-      // --assert
-      actual1.Should().BeSameAs(actual2);
-      actual1.Should().BeSameAs(actual3);
-    }
-
-    [Test]
-    public void should_use_creation_strategy_registered_with_token()
-    {
-      const string token    = "token";
+      const string tag      = "tag";
       var          expected = new Subject();
 
       // --arrange
@@ -171,21 +141,21 @@ namespace Tests.Functional
        .AsIs();
 
       target
-       .Treat<Subject>(token)
+       .Treat<Subject>(tag)
        .AsCreatedWith(_ => expected);
 
 
       // --act
-      var actual = target.UsingToken(token).Build<Subject>();
+      var actual = target.UsingTag(tag).Build<Subject>();
 
       // --assert
       actual.Should().Be(expected);
     }
 
     [Test]
-    public void should_pass_token_to_creation_strategy()
+    public void should_pass_tag_to_creation_strategy()
     {
-      const string token            = "token";
+      const string tag              = "tag";
       var          createdByFactory = new Subject();
 
       // --arrange
@@ -193,10 +163,10 @@ namespace Tests.Functional
 
       target
        .Treat<ISubject1>()
-       .AsCreated<Subject>(token);
+       .As<Subject>(tag);
 
       target
-       .Treat<Subject>(token)
+       .Treat<Subject>(tag)
        .AsIs();
 
       target
@@ -207,7 +177,7 @@ namespace Tests.Functional
       var actual = target.Build<ISubject1>();
 
       // --assert
-      actual.Should().BeOfType<Subject>().And.Should().NotBeSameAs(createdByFactory);
+      actual.Should().BeOfType<Subject>().And.NotBeSameAs(createdByFactory);
     }
 
     [Test]
@@ -230,38 +200,50 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_runtime_parameters_when_build_with_token()
+    public void should_use_runtime_parameters_when_build_with_tag()
     {
-      const string token    = "token";
+      const string tag      = "tag";
       const int    expected = 98347;
 
       // --arrange
       var target = CreateTarget();
 
       target
-       .Treat<Subject>(token)
+       .Treat<Subject>(tag)
        .AsIs()
-       .UsingConstructorWithParameters<int>();
+       .InjectInto(Constructor.WithParameters<int>());
 
       // --act
-      var actual = target.UsingToken(token).Build<Subject>(expected);
+      var actual = target.UsingTag(tag).Build<Subject>(expected)!;
 
       // --assert
       actual.Value.Should().Be(expected);
     }
 
-    private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Create)
-         {
-           new AnyUnitSequenceMatcher
-           {
-             // inject into constructor
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-              .AddBuildAction(
-                 BuildStage.Create,
-                 new GetConstructorByParameterTypesBuildAction()) // use empty ctor by default in this test
-           }
-         };
+    private static Builder CreateTarget() =>
+
+        // builder
+        //  .TreatAll()
+        //  .InjectInto(Constructor.Parameterless())
+        //  .UsingArguments(AutoBuildByParameter.Type);
+        //
+        // return builder;
+        new(BuildStage.Cache, BuildStage.Create)
+                                             {
+                                                 new SkipAllUnits
+                                                 {
+                                                     new SkipTillUnit(new IsInheritorOf(typeof(IDisposable), null))
+                                                        .UseBuildAction(new CreateByReflection(), BuildStage.Cache),
+
+                                                     new IfFirstUnit(new IsConstructor())
+                                                        .UseBuildAction(new GetConstructorByParameterTypes(), BuildStage.Create), // use empty ctor by default in this test
+
+                                                     new IfFirstUnit(new IsParameterInfoList())
+                                                        .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                                                     new IfFirstUnit(new IsParameterInfo())
+                                                        .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
+                                                 }
+                                             };
 
     private interface ISubject1 { }
 

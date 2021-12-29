@@ -1,12 +1,8 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Armature;
 using Armature.Core;
-using Armature.Core.BuildActions;
-using Armature.Core.BuildActions.Constructor;
-using Armature.Core.BuildActions.Parameter;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitMatchers.Parameters;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -26,12 +22,10 @@ namespace Tests.Functional
       target.Treat<string>().AsInstance(expectedText);
       target.Treat<int>().AsInstance(expectedValue);
 
-      target
-       .Treat<Subject>()
-       .AsIs();
+      target.Treat<Subject>().AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Text.Should().Be(expectedText);
@@ -47,36 +41,10 @@ namespace Tests.Functional
       // --arrange
       var target = CreateTarget();
 
-      target
-       .Treat<Subject>()
-       .AsIs();
+      target.Treat<Subject>().AsIs();
 
       // --act
-      var actual = target.Build<Subject>(expectedText, expectedValue);
-
-      // --assert
-      actual.Text.Should().Be(expectedText);
-      actual.Value.Should().Be(expectedValue);
-    }
-
-    [Test]
-    public void should_get_runtime_values_if_registered_also_presented()
-    {
-      const string expectedText  = "expected 09765";
-      const int    expectedValue = 93979;
-
-      // --arrange
-      var target = CreateTarget();
-
-      target.Treat<string>().AsInstance(expectedText + "bad");
-      target.Treat<int>().AsInstance(expectedValue   + 39);
-
-      target
-       .Treat<Subject>()
-       .AsIs();
-
-      // --act
-      var actual = target.Build<Subject>(expectedText, expectedValue);
+      var actual = target.Build<Subject>(expectedText, expectedValue)!;
 
       // --assert
       actual.Text.Should().Be(expectedText);
@@ -98,7 +66,7 @@ namespace Tests.Functional
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>(expectedValue);
+      var actual = target.Build<Subject>(expectedValue)!;
 
       // --assert
       actual.Text.Should().Be(expectedText);
@@ -113,7 +81,7 @@ namespace Tests.Functional
       // --arrange
       var target = CreateTarget();
 
-      target.Treat<string>().AsInstance(null);
+      target.Treat<string>().AsInstance(null!);
       target.Treat<int>().AsInstance(expectedValue);
 
       target
@@ -121,7 +89,7 @@ namespace Tests.Functional
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Text.Should().BeNull();
@@ -129,7 +97,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_inject_point_id_as_token()
+    public void should_use_inject_point_id_as_tag()
     {
       const string expectedText  = "expected 09765";
       const int    expectedValue = 93979;
@@ -145,7 +113,7 @@ namespace Tests.Functional
        .AsIs();
 
       // --act
-      var actual = target.Build<Subject>();
+      var actual = target.Build<Subject>()!;
 
       // --assert
       actual.Text.Should().Be(expectedText);
@@ -153,13 +121,13 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_fail_if_there_is_no_value_wo_token_registered()
+    public void should_fail_if_there_is_no_value_wo_tag_registered()
     {
       // --arrange
       var target = CreateTarget();
 
       target
-       .Treat<string>("token")
+       .Treat<string>("tag")
        .AsInstance("09765");
 
       target
@@ -176,22 +144,27 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipAllUnits
            {
              // inject into constructor
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-              .AddBuildAction(
-                 BuildStage.Create,
-                 new OrderedBuildActionContainer
+             new IfFirstUnit(new IsConstructor())
+              .UseBuildAction(
+                 new TryInOrder
                  {
-                   new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-                   GetLongestConstructorBuildAction
-                    .Instance // constructor with largest number of parameters has less priority
-                 }),
-             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-              .AddBuildAction(
-                 BuildStage.Create,
-                 new OrderedBuildActionContainer {CreateParameterValueForInjectPointBuildAction.Instance, CreateParameterValueBuildAction.Instance})
+                   new GetConstructorByInjectPointId(),       // constructor marked with [Inject] attribute has more priority
+                   new GetConstructorWithMaxParametersCount() // constructor with largest number of parameters has less priority
+                 },
+                 BuildStage.Create),
+             new IfFirstUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+             new IfFirstUnit(new IsParameterInfo())
+              .UseBuildAction(
+                 new TryInOrder
+                 {
+                   Static.Of<BuildArgumentByParameterInjectPointId>(),
+                   Static.Of<BuildArgumentByParameterType>()
+                 },
+                 BuildStage.Create)
            }
          };
 
@@ -205,6 +178,7 @@ namespace Tests.Functional
       string Text { get; }
     }
 
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
     private class Subject : ISubject1, ISubject2
     {
       public const string TextParameterId = "Text";

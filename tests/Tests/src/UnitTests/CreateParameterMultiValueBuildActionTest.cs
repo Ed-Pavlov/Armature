@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Reflection;
 using Armature.Core;
-using Armature.Core.BuildActions.Parameter;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.UnitTests.BuildActions;
 
 // ReSharper disable UnusedParameter.Local
 
@@ -17,10 +17,10 @@ namespace Tests.UnitTests
     public void should_build_list_of_values_for_any_collection(ParameterInfo parameterInfo)
     {
       // --arrange
-      var target       = new CreateParameterMultiValueToInjectBuildAction();
+      var target       = new BuildListArgumentForMethodParameter();
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildSequence).Returns(new[] {new UnitInfo(parameterInfo, null)});
-      A.CallTo(() => buildSession.BuildAllUnits(null)).WithAnyArguments().Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_)).ToArray());
+      A.CallTo(() => buildSession.BuildChain).Returns(new UnitId(parameterInfo, null).ToBuildChain());
+      A.CallTo(() => buildSession.BuildAllUnits(default)).WithAnyArguments().Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());
 
       // --act
       target.Process(buildSession);

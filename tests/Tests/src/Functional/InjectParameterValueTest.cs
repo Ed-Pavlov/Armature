@@ -2,23 +2,17 @@
 using System.Collections;
 using Armature;
 using Armature.Core;
-using Armature.Core.BuildActions;
-using Armature.Core.BuildActions.Constructor;
-using Armature.Core.BuildActions.Parameter;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitMatchers.Parameters;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Sdk;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
-
-// Resharper disable all
 
 namespace Tests.Functional
 {
   public class InjectParameterValueTest
   {
     [Test]
-    public void should_autowire_values_passed_into_using_parameters_rather_then_registered()
+    public void should_autowire_values_passed_into_using_arguments_rather_then_registered()
     {
       const string expected = "expected 09765";
 
@@ -26,16 +20,16 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-       .Treat<string>()
-       .AsInstance("blogal");
+       .Treat<string>() //TODO: may be Treat should generate IfLastUnit? why should we perform know to be false matching? Building<> should generate SkipTillUnit
+       .AsInstance(expected + "bad");
 
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingParameters(expected);
+       .UsingArguments(expected);
 
       // --act
-      var actual = target.Build<LevelOne>();
+      var actual = target.Build<LevelOne>()!;
 
       // --assert
       actual.Text.Should().Be(expected);
@@ -46,18 +40,18 @@ namespace Tests.Functional
     {
       // --arrange
       const int    expectedInt    = 389;
-      const string expectedString = "ldksjf";
+      const string expectedString = "expected";
 
       var target = CreateTarget();
 
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingInjectPointConstructor(LevelOne.TwoParameterCtor)
-       .UsingParameters(expectedInt, expectedString);
+       .InjectInto(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor))
+       .UsingArguments(expectedInt, expectedString);
 
       // --act
-      var actual = target.Build<LevelOne>();
+      var actual = target.Build<LevelOne>()!;
 
       // --assert
       actual.Value.Should().Be(expectedInt);
@@ -75,23 +69,23 @@ namespace Tests.Functional
       target
        .Treat<ISubject1>()
        .AsCreated<LevelOne>()
-       .UsingParameters(asInterfaceParameterValue);
+       .UsingArguments(asInterfaceParameterValue);
 
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingParameters(asIsParameterValue);
+       .UsingArguments(asIsParameterValue);
 
-      var asInterface = target.Build<ISubject1>();
-      var asIs        = target.Build<LevelOne>();
+      var asInterface = target.Build<ISubject1>()!;
+      var asIs        = target.Build<LevelOne>()!;
 
       // --assert
       asInterface.Text.Should().Be(asInterfaceParameterValue);
       asIs.Text.Should().Be(asIsParameterValue);
     }
 
-    [TestCaseSource("ForParameterSource")]
-    public void should_pass_null_as_parameter_value(ParameterValueTuner forParameter)
+    [TestCaseSource(nameof(ForParameterSource))]
+    public void should_pass_null_as_parameter_value(MethodArgumentTuner forParameter)
     {
       // --arrange
       var target = CreateTarget();
@@ -103,17 +97,17 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingParameters(forParameter.UseValue(null));
+       .UsingArguments(forParameter.UseValue(null));
 
       // --act
-      var actual = target.Build<LevelOne>();
+      var actual = target.Build<LevelOne>()!;
 
       // --assert
       actual.Text.Should().BeNull();
     }
 
-    [TestCaseSource("ForParameterSource")]
-    public void should_use_value_for_parameter(ParameterValueTuner forParameter)
+    [TestCaseSource(nameof(ForParameterSource))]
+    public void should_use_value_for_parameter(MethodArgumentTuner forParameter)
     {
       const string expected = "expected";
 
@@ -125,19 +119,19 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingParameters(forParameter.UseValue(expected), "bad");
+       .UsingArguments(forParameter.UseValue(expected), "bad");
 
       // --act
-      var actual = target.Build<LevelOne>();
+      var actual = target.Build<LevelOne>()!;
 
       // --assert
       actual.Text.Should().Be(expected);
     }
 
-    [TestCaseSource("ForParameterSource")]
-    public void should_build_value_for_parameter_using_parameter_type_and_token(ParameterValueTuner forParameter)
+    [TestCaseSource(nameof(ForParameterSource))]
+    public void should_build_value_for_parameter_using_parameter_type_and_tag(MethodArgumentTuner forParameter)
     {
-      const string token    = "token398";
+      const string tag      = "tag398";
       const string expected = "expected 398752";
 
       // --arrange
@@ -146,14 +140,14 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingParameters(forParameter.UseToken(token), "bad");
+       .UsingArguments(forParameter.UseTag(tag), "bad");
 
       target
-       .Treat<string>(token)
+       .Treat<string>(tag)
        .AsInstance(expected);
 
       target
-       .Treat<string>("bad_token")
+       .Treat<string>("bad_tag")
        .AsInstance("bad");
 
       target
@@ -161,14 +155,14 @@ namespace Tests.Functional
        .AsInstance("bad");
 
       // --act
-      var actual = target.Build<LevelOne>();
+      var actual = target.Build<LevelOne>()!;
 
       // --assert
       actual.Text.Should().Be(expected);
     }
 
-    [TestCaseSource("ForParameterSource")]
-    public void should_fail_if_there_is_no_value_w_token_registered(ParameterValueTuner forParameter)
+    [TestCaseSource(nameof(ForParameterSource))]
+    public void should_fail_if_there_is_no_value_w_tag_registered(MethodArgumentTuner forParameter)
     {
       // --arrange
       var target = CreateTarget();
@@ -180,7 +174,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingParameters(forParameter.UseToken("token"));
+       .UsingArguments(forParameter.UseTag("tag"));
 
       // --act
       Action actual = () => target.Build<LevelOne>();
@@ -189,8 +183,8 @@ namespace Tests.Functional
       actual.Should().ThrowExactly<ArmatureException>();
     }
 
-    [TestCaseSource("ForParameterSource")]
-    public void should_use_factory_method(ParameterValueTuner forParameter)
+    [TestCaseSource(nameof(ForParameterSource))]
+    public void should_use_factory_method(MethodArgumentTuner forParameter)
     {
       const int expectedInt = 392;
 
@@ -202,10 +196,10 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingParameters(forParameter.UseFactoryMethod<int>(intValue => intValue.ToString()));
+       .UsingArguments(forParameter.UseFactoryMethod<int>(intValue => intValue.ToString()));
 
       // --act
-      var actual = target.Build<LevelOne>();
+      var actual = target.Build<LevelOne>()!;
 
       // --assert
       actual.Text.Should().Be(expectedInt.ToString());
@@ -222,10 +216,10 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingParameters(expected);
+       .UsingArguments(expected);
 
       // --act
-      var actual = target.Build<LevelOne>("bad");
+      var actual = target.Build<LevelOne>("bad")!;
 
       // --assert
       actual.Text.Should().Be(expected);
@@ -237,15 +231,19 @@ namespace Tests.Functional
       // --arrange
       var target = CreateTarget();
 
-      var adjuster = target
-                    .Treat<LevelOne>()
-                    .AsIs();
+      var tuner = target
+                 .Treat<LevelOne>()
+                 .AsIs();
 
       // --act
-      Action actual = () => adjuster.UsingParameters(ForParameter.OfType<string>().UseToken("expected29083"), ForParameter.OfType<string>().UseValue("kldj"));
+      Action actual = () => tuner.UsingArguments(
+                        ForParameter.OfType<string>().UseTag("expected29083"),
+                        ForParameter.OfType<string>().UseValue("bad"));
 
       // --assert
-      actual.Should().ThrowExactly<ArmatureException>();
+      actual.Should()
+            .ThrowExactly<ArmatureException>()
+            .Where(_ => _.Message.StartsWith($"Building of an argument for the method parameter of type {typeof(string).ToLogString()} is already tuned"));
     }
 
     [Test]
@@ -263,7 +261,7 @@ namespace Tests.Functional
       target
        .Treat<LevelTwo>()
        .AsIs()
-       .UsingParameters(expected);
+       .UsingArguments(expected);
 
       Action actual = () => target.Build<LevelTwo>();
 
@@ -286,10 +284,10 @@ namespace Tests.Functional
 
       target
        .TreatAll()
-       .UsingParameters(expected);
+       .UsingArguments(expected);
 
       // --act
-      var actual = target.Build<LevelThree>();
+      var actual = target.Build<LevelThree>()!;
 
       // --assert
       actual.Text.Should().Be(expected);
@@ -312,20 +310,20 @@ namespace Tests.Functional
       target
        .Treat<LevelThree>()
        .AsIs()
-       .UsingParameters(expectedOnLevelThree);
+       .UsingArguments(expectedOnLevelThree);
 
       target
        .Building<LevelThree>()
        .TreatAll()
-       .UsingParameters(expected);
+       .UsingArguments(expected);
 
       // --act
-      var actual = target.Build<LevelThree>();
+      var actual = target.Build<LevelThree>()!;
 
       // --assert
-      actual.Text.Should().Be(expectedOnLevelThree, "Because {0} is registered for {1}", expectedOnLevelThree, typeof(LevelThree).Name);
-      actual.LevelTwo.Text.Should().Be(expected, "Because {0} is registered for all {1} dependencies", expected, typeof(LevelThree).Name);
-      actual.LevelTwo.LevelOne.Text.Should().Be(expected, "Because {0} is registered for all {1} dependencies", expected, typeof(LevelThree).Name);
+      actual.Text.Should().Be(expectedOnLevelThree, "Because {0} is registered for {1}", expectedOnLevelThree, nameof(LevelThree));
+      actual.LevelTwo.Text.Should().Be(expected, "Because {0} is registered for all {1} dependencies", expected, nameof(LevelThree));
+      actual.LevelTwo.LevelOne.Text.Should().Be(expected, "Because {0} is registered for all {1} dependencies", expected, nameof(LevelThree));
     }
 
     [Test]
@@ -337,37 +335,21 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-       .Treat<LevelOne>() // short matching path 
+       .Treat<LevelOne>() // short matching path
        .AsIs()
-       .UsingParameters(expected);
+       .UsingArguments(expected);
 
       target
        .Treat<ISubject1>() // long matching path
-       .AsCreated<LevelTwo>()
-       .BuildingWhich(_ => _.TreatAll().UsingParameters(expected + "bad"));
+       .AsCreated<LevelTwo>();
+
+      target.Building<LevelTwo>() .TreatAll().UsingArguments(expected + "bad");
 
       // --act
-      var actual = (LevelTwo) target.Build<ISubject1>();
+      var actual = (LevelTwo)target.Build<ISubject1>()!;
 
       // --assert
-      actual.LevelOne.Text.Should().Be(expected, "Because {0} is registered for {1}", expected, typeof(LevelOne).Name);
-    }
-
-    [Test]
-    public void should_inject_parameter_value_from_narrower_context_not_from_longer_matching_path()
-    {
-      const string levelThree = "levelThree";
-      const string expected   = "expected";
-
-      var target = CreateTarget();
-
-      target.Treat<ISubject1>().AsCreated<LevelThree>().BuildingWhich(_ => _.TreatAll().UsingParameters(levelThree)); // longer path
-      target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingParameters(expected));                     // narrower context
-      target.Treat<LevelOne>().AsIs();
-
-      var actual = target.Build<ISubject1>();
-
-      actual.Should().BeOfType<LevelThree>().Which.LevelTwo.LevelOne.Text.Should().Be(expected);
+      actual.LevelOne.Text.Should().Be(expected, "Because {0} is registered for {1}", expected, nameof(LevelOne));
     }
 
     [Test]
@@ -381,11 +363,11 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingInjectPointConstructor(LevelOne.TwoParameterCtor)
-       .UsingParameters(expectedInt);
+       .InjectInto(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor))
+       .UsingArguments(expectedInt);
 
       // --act
-      var actual = target.Build<LevelOne>();
+      var actual = target.Build<LevelOne>()!;
 
       // --assert
       actual.Text.Should().Be(LevelOne.DefaultText);
@@ -401,48 +383,20 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingInjectPointConstructor(LevelOne.TwoParameterCtor);
+       .InjectInto(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor));
 
       // --act
-      var actual = target.Build<LevelOne>();
+      var actual = target.Build<LevelOne>()!;
 
       // --assert
       actual.Text.Should().Be(LevelOne.DefaultText);
       actual.Value.Should().Be(LevelOne.DefaultInt);
     }
 
-    [Test]
-    public void should_inject_parameter_value_from_narrower_context()
-    {
-      const string expected = "expected";
-
-      //--arrange
-      var target = CreateTarget();
-
-      target
-       .Treat<LevelThree>()
-       .AsIs()
-       .BuildingWhich(_ => _.TreatAll().UsingParameters(expected + "three"));
-
-      target
-       .Treat<LevelTwo>()
-       .AsIs()
-       .BuildingWhich(_ => _.TreatAll().UsingParameters(expected));
-
-      target
-       .Treat<LevelOne>()
-       .AsIs();
-
-      // --act
-      var actual = target.Build<LevelThree>();
-
-      // --assert
-      actual.LevelTwo.LevelOne.Text.Should().Be(expected);
-    }
 
     private static IEnumerable ForParameterSource()
     {
-      yield return new TestCaseData(ForParameter.OfType<string>()).SetName("OfType");
+      yield return new TestCaseData(ForParameter.OfType(typeof(string))).SetName("OfType");
       yield return new TestCaseData(ForParameter.Named("text")).SetName("Named");
       yield return new TestCaseData(ForParameter.WithInjectPoint(null)).SetName("WithInjectPoint");
     }
@@ -450,22 +404,23 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipAllUnits
            {
              // inject into constructor
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-              .AddBuildAction(
-                 BuildStage.Create,
-                 new OrderedBuildActionContainer
+             new IfFirstUnit(new IsConstructor())
+              .UseBuildAction(
+                 new TryInOrder
                  {
-                   new GetInjectPointConstructorBuildAction(), // constructor marked with [Inject] attribute has more priority
-                   GetLongestConstructorBuildAction
-                    .Instance // constructor with largest number of parameters has less priority
-                 }),
-             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-              .AddBuildAction(
-                 BuildStage.Create,
-                 new OrderedBuildActionContainer() {CreateParameterValueBuildAction.Instance, GetDefaultParameterValueBuildAction.Instance}) // autowiring
+                   new GetConstructorByInjectPointId(),       // constructor marked with [Inject] attribute has more priority
+                   new GetConstructorWithMaxParametersCount() // constructor with largest number of parameters has less priority
+                 },
+                 BuildStage.Create),
+             new IfFirstUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+             new IfFirstUnit(new IsParameterInfo())
+              .UseBuildAction(
+                 new TryInOrder() { Static.Of<BuildArgumentByParameterType>(), Static.Of<GetParameterDefaultValue>() },
+                 BuildStage.Create)
            }
          };
 
@@ -490,6 +445,7 @@ namespace Tests.Functional
       public LevelOne([Inject] string text) => Text = text;
 
       [Inject(TwoParameterCtor)]
+      [UsedImplicitly]
       public LevelOne(string text = DefaultText, int value = DefaultInt)
       {
         Text  = text;
@@ -500,6 +456,7 @@ namespace Tests.Functional
       public string Text  { get; }
     }
 
+    [UsedImplicitly]
     private class LevelTwo : LevelOne
     {
       public readonly LevelOne LevelOne;
@@ -507,6 +464,7 @@ namespace Tests.Functional
       public LevelTwo(LevelOne levelOne, string text) : base(text) => LevelOne = levelOne;
     }
 
+    [UsedImplicitly]
     private class LevelThree : LevelOne
     {
       public readonly LevelTwo LevelTwo;

@@ -1,46 +1,42 @@
 ﻿using System;
 using Armature.Core;
-using Armature.Core.BuildActions.Creation;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Sdk;
 using Armature.Extensibility;
+using JetBrains.Annotations;
 
+namespace Armature;
 
-namespace Armature
+public class OpenGenericCreationTuner : TunerBase, IInternal<Type, object?>
 {
-  public class OpenGenericCreationTuner : UnitSequenceExtensibility, IExtensibility<Type, object>
+  [PublicAPI]
+  protected readonly Type OpenGenericType;
+  [PublicAPI]
+  protected readonly object? Tag;
+
+  public OpenGenericCreationTuner(IBuildChainPattern parentNode, Type openGenericType, object? tag) : base(parentNode)
   {
-    protected readonly Type    OpenGenericType;
-    protected readonly object? Token;
-
-    public OpenGenericCreationTuner(IUnitSequenceMatcher unitSequenceMatcher, Type openGenericType, object? token) : base(unitSequenceMatcher)
-    {
-      OpenGenericType = openGenericType;
-      Token           = token;
-    }
-
-    Type IExtensibility<Type, object>.   Item1 => OpenGenericType;
-    object? IExtensibility<Type, object>.Item2 => Token;
-
-    public Tuner CreatedByDefault()
-    {
-      var childMatcher = new WildcardUnitSequenceMatcher(Match.OpenGenericType(OpenGenericType, Token), UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
-
-      UnitSequenceMatcher
-       .AddOrGetUnitSequenceMatcher(childMatcher)
-       .AddBuildAction(BuildStage.Create, Default.CreationBuildAction);
-
-      return new Tuner(childMatcher);
-    }
-
-    public Tuner CreatedByReflection()
-    {
-      var childMatcher = new WildcardUnitSequenceMatcher(Match.OpenGenericType(OpenGenericType, Token), UnitSequenceMatchingWeight.WildcardMatchingUnit - 1);
-
-      UnitSequenceMatcher
-       .AddOrGetUnitSequenceMatcher(childMatcher)
-       .AddBuildAction(BuildStage.Create, CreateByReflectionBuildAction.Instance);
-
-      return new Tuner(childMatcher);
-    }
+    OpenGenericType = openGenericType ?? throw new ArgumentNullException(nameof(openGenericType));
+    Tag             = tag;
   }
+
+  /// <summary>
+  /// Specifies that unit should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
+  /// </summary>
+  public FinalTuner CreatedByDefault()
+    => new(
+      ParentNode
+       .GetOrAddNode(new IfFirstUnit(new IsGenericOfDefinition(OpenGenericType, Tag)))
+       .UseBuildAction(Default.CreationBuildAction, BuildStage.Create));
+
+  /// <summary>
+  /// Specifies that unit should be created using reflection.
+  /// </summary>
+  public FinalTuner CreatedByReflection()
+    => new(
+      ParentNode
+       .GetOrAddNode(new SkipTillUnit(new IsGenericOfDefinition(OpenGenericType, Tag)))
+       .UseBuildAction(Static.Of<CreateByReflection>(), BuildStage.Create));
+
+  Type IInternal<Type>.            Member1 => OpenGenericType;
+  object? IInternal<Type, object?>.Member2 => Tag;
 }

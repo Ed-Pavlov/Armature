@@ -1,23 +1,23 @@
 ﻿using System;
 using Armature.Core;
-using Armature.Core.Logging;
+using Armature.Core.Sdk;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {
   /// <summary>
-  ///   Builds <typeparamref name="T" /> and wraps it into <see cref="Maybe{T}" />
+  /// Builds <typeparamref name="T" /> and wraps it into <see cref="Maybe{T}" />
   /// </summary>
   internal class BuildMaybeAction<T> : IBuildAction
   {
-    private readonly Guid _uniqueToken;
+    private readonly Guid _uniqueTag;
 
-    public BuildMaybeAction(Guid uniqueToken) => _uniqueToken = uniqueToken;
+    public BuildMaybeAction(Guid uniqueTag) => _uniqueTag = uniqueTag;
 
     public void Process(IBuildSession buildSession)
     {
       try
       {
-        var result = buildSession.BuildUnit(new UnitInfo(typeof(T), _uniqueToken));
+        var result = buildSession.BuildUnit(new UnitId(typeof(T), _uniqueTag));
 
         if(!result.HasValue) throw new InvalidOperationException();
 

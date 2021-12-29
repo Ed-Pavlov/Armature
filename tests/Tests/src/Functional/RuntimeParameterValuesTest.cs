@@ -2,24 +2,19 @@ using System;
 using System.IO;
 using Armature;
 using Armature.Core;
-using Armature.Core.BuildActions.Constructor;
-using Armature.Core.BuildActions.Parameter;
-using Armature.Core.UnitMatchers;
-using Armature.Core.UnitMatchers.Parameters;
-using Armature.Core.UnitSequenceMatcher;
+using Armature.Core.Sdk;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
-
-// ReSharper disable all
 
 namespace Tests.Functional
 {
   public class RuntimeParameterValuesTest
   {
     [Test]
-    public void should_use_sessional_parameter_of_exact_type()
+    public void should_use_argument_of_exact_type()
     {
-      const string expected = "megastring";
+      const string expected = "megaString";
 
       // --arrange
       var target = CreateTarget();
@@ -27,17 +22,17 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingInjectPointConstructor(Subject.StringCtor);
+       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.StringCtor));
 
       // --act
-      var actual = target.Build<Subject>(expected);
+      var actual = target.Build<Subject>(expected)!;
 
       // --assert
       actual.String1.Should().Be(expected);
     }
 
     [Test]
-    public void should_use_sessional_parameter_of_derived_type()
+    public void should_use_argument_of_derived_type()
     {
       var expected = new MemoryStream();
 
@@ -47,10 +42,10 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingInjectPointConstructor(Subject.DisposableCtor);
+       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.DisposableCtor));
 
       // --act
-      var actual = target.Build<Subject>(expected);
+      var actual = target.Build<Subject>(expected)!;
 
       // --assert
       actual.Disposable.Should().Be(expected);
@@ -59,8 +54,8 @@ namespace Tests.Functional
     [Test]
     public void typed_and_named_parameters_should_work()
     {
-      const string expectedString1 = "dslfj";
-      const string expectedString2 = "l;kjsf";
+      const string expectedString1 = "expected1";
+      const string expectedString2 = "expected2";
 
       // --arrange
       var target = CreateTarget();
@@ -73,7 +68,7 @@ namespace Tests.Functional
       var actual = target
        .Build<Subject>(
           ForParameter.OfType<string>().UseValue(expectedString1),
-          ForParameter.Named("string2").UseValue(expectedString2));
+          ForParameter.Named("string2").UseValue(expectedString2))!;
 
       // --assert
       actual.String1.Should().Be(expectedString1);
@@ -89,45 +84,44 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingInjectPointConstructor(Subject.StringCtor);
+       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.StringCtor));
 
-      // --act
-      var actual = target.Build<Subject>(ForParameter.OfType<string>().UseValue(null));
+      var actual = target.Build<Subject>(ForParameter.OfType<string?>().UseValue(null))!;
 
       // --assert
       actual.String1.Should().BeNull();
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Initialize, BuildStage.Create)
+      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new AnyUnitSequenceMatcher
+           new SkipAllUnits
            {
              // inject into constructor
-             new LastUnitSequenceMatcher(ConstructorMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, GetLongestConstructorBuildAction.Instance),
-             new LastUnitSequenceMatcher(ParameterValueMatcher.Instance)
-              .AddBuildAction(BuildStage.Create, CreateParameterValueBuildAction.Instance) // autowiring
+             new IfFirstUnit(new IsConstructor())
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
+             new IfFirstUnit(new IsParameterInfoList())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+             new IfFirstUnit(new IsParameterInfo())
+              .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create) // autowiring
            }
          };
 
+    [UsedImplicitly]
     private class Subject
     {
       public const string StringCtor     = "String";
       public const string DisposableCtor = "Disposable";
 
-      public readonly IDisposable Disposable;
-      public readonly string      String1;
-      public readonly string      String2;
+      public readonly IDisposable? Disposable;
+      public readonly string?      String1;
+      public readonly string       String2 = "bad";
 
       [Inject(StringCtor)]
-      public Subject(string string1) => String1 = string1;
+      public Subject(string? string1) => String1 = string1;
 
       [Inject(DisposableCtor)]
-      public Subject(IDisposable disposable)
-      {
-        Disposable = disposable;
-      }
+      public Subject(IDisposable disposable) => Disposable = disposable;
 
       public Subject([Inject] string string1, string string2)
       {
