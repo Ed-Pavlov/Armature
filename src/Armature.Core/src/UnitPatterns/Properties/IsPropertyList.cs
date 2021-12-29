@@ -8,7 +8,7 @@ namespace Armature.Core;
 /// </summary>
 public record IsPropertyList : IUnitPattern
 {
-  public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.PropertyList && unitId.GetUnitTypeSafe() is not null;
+  public bool Matches(UnitId unitId) => unitId.Tag == SpecialTag.PropertyList && unitId.GetUnitTypeSafe() is not null;
 
   [DebuggerStepThrough]
   public override string ToString() => nameof(IsPropertyList);

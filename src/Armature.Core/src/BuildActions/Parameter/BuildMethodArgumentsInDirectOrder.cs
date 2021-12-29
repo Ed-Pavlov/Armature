@@ -6,7 +6,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Builds arguments for method parameters by building a unit {<see cref="ParameterInfo"/>, <see cref="SpecialKey.Argument"/> one by one.
+/// Builds arguments for method parameters by building a unit {<see cref="ParameterInfo"/>, <see cref="SpecialTag.Argument"/> one by one.
 /// </summary>
 public record BuildMethodArgumentsInDirectOrder : IBuildAction
 {
@@ -14,16 +14,17 @@ public record BuildMethodArgumentsInDirectOrder : IBuildAction
   {
     Log.WriteLine(LogLevel.Verbose, "");
 
-    var parameters = (ParameterInfo[])buildSession.BuildChain.TargetUnit.Kind!;
+    var parameters = (ParameterInfo[]) buildSession.BuildChain.TargetUnit.Kind!;
     var arguments  = new object?[parameters.Length];
 
     for(var i = 0; i < parameters.Length; i++)
     {
-      var buildResult = buildSession.BuildUnit(new UnitId(parameters[i], SpecialKey.Argument));
+      var buildResult = buildSession.BuildUnit(new UnitId(parameters[i], SpecialTag.Argument));
 
       if(!buildResult.HasValue)
       {
         var method = parameters[i].Member;
+
         throw new ArmatureException($"Argument for parameter '{parameters[i]}' of {method.DeclaringType?.ToLogString()}.{method} is not built")
          .AddData("Method", method);
       }

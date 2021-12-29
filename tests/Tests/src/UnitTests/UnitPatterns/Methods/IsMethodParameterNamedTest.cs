@@ -16,7 +16,7 @@ public class IsMethodParameterNamedTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.Name == "i")!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialKey.Argument);
+    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
     var target = new IsMethodParameterNamed(parameterInfo.Name!);
 
     // --act
@@ -30,7 +30,7 @@ public class IsMethodParameterNamedTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.Name == "i")!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialKey.Argument);
+    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
     var target = new IsMethodParameterNamed("another parameter name");
 
     // --act
@@ -39,12 +39,12 @@ public class IsMethodParameterNamedTest
   }
 
   [Test]
-  public void should_not_match_if_key_is_not_argument([Values(null, "key")] object key)
+  public void should_not_match_if_tag_is_not_argument([Values(null, "tag")] object tag)
   {
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.Name == "i")!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, key);
+    var unitId = new UnitId(parameterInfo, tag);
     var target = new IsMethodParameterNamed(parameterInfo.Name!);
 
     // --act

@@ -11,10 +11,10 @@ namespace Armature.Core;
 public record RedirectType : IBuildAction, ILogString
 {
   private readonly Type    _redirectTo;
-  private readonly object? _key;
+  private readonly object? _tag;
 
   [DebuggerStepThrough]
-  public RedirectType(Type redirectTo, object? key)
+  public RedirectType(Type redirectTo, object? tag)
   {
     if(redirectTo is null) throw new ArgumentNullException(nameof(redirectTo));
 
@@ -22,15 +22,15 @@ public record RedirectType : IBuildAction, ILogString
       throw new ArgumentException($"Type should not be open generic, use {nameof(RedirectOpenGenericType)} for open generics", nameof(redirectTo));
 
     _redirectTo = redirectTo;
-    _key        = key;
+    _tag        = tag;
   }
 
   public void Process(IBuildSession buildSession)
   {
     var unitUnderConstruction = buildSession.BuildChain.TargetUnit;
-    var effectiveKey          = Equals(_key, SpecialKey.Propagate) ? unitUnderConstruction.Key : _key;
+    var effectiveTag          = Equals(_tag, SpecialTag.Propagate) ? unitUnderConstruction.Tag : _tag;
 
-    var unitInfo = new UnitId(_redirectTo, effectiveKey);
+    var unitInfo = new UnitId(_redirectTo, effectiveTag);
     buildSession.BuildResult = buildSession.BuildUnit(unitInfo);
   }
 
@@ -40,7 +40,7 @@ public record RedirectType : IBuildAction, ILogString
 
   [DebuggerStepThrough]
   public string ToHoconString()
-    => $"{{ {nameof(RedirectType)} {{ RedirectToType: {_redirectTo.ToLogString().QuoteIfNeeded()}, Key: {_key.ToHoconString()} }} }}";
+    => $"{{ {nameof(RedirectType)} {{ RedirectToType: {_redirectTo.ToLogString().QuoteIfNeeded()}, Tag: {_tag.ToHoconString()} }} }}";
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
 }

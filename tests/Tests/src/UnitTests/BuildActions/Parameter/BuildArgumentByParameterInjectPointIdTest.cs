@@ -12,7 +12,7 @@ namespace Tests.UnitTests.BuildActions;
 public class BuildArgumentByParameterInjectPointIdTest
 {
   [Test]
-  public void should_use_point_id_as_unit_key()
+  public void should_use_point_id_as_unit_tag()
   {
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => _.ParameterType == typeof(int));
 
@@ -26,11 +26,11 @@ public class BuildArgumentByParameterInjectPointIdTest
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.IsType<int>().Key(Subject.IntId))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Unit.IsType<int>().Tag(Subject.IntId))).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]
-  public void key_should_be_null_if_point_without_id()
+  public void tag_should_be_null_if_point_without_id()
   {
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => _.ParameterType == typeof(string));
 
@@ -76,7 +76,7 @@ public class BuildArgumentByParameterInjectPointIdTest
     // --arrange
     var actual = A.Fake<IBuildSession>();
     A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
-    A.CallTo(() => actual.BuildUnit(Unit.IsType<int>().Key(Subject.IntId))).Returns(expected.ToBuildResult());
+    A.CallTo(() => actual.BuildUnit(Unit.IsType<int>().Tag(Subject.IntId))).Returns(expected.ToBuildResult());
 
     var target = new BuildArgumentByParameterInjectPointId();
 

@@ -129,9 +129,9 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(ForParameterSource))]
-    public void should_build_value_for_parameter_using_parameter_type_and_key(MethodArgumentTuner forParameter)
+    public void should_build_value_for_parameter_using_parameter_type_and_tag(MethodArgumentTuner forParameter)
     {
-      const string key      = "key398";
+      const string tag      = "tag398";
       const string expected = "expected 398752";
 
       // --arrange
@@ -140,14 +140,14 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingArguments(forParameter.UseKey(key), "bad");
+       .UsingArguments(forParameter.UseTag(tag), "bad");
 
       target
-       .Treat<string>(key)
+       .Treat<string>(tag)
        .AsInstance(expected);
 
       target
-       .Treat<string>("bad_key")
+       .Treat<string>("bad_tag")
        .AsInstance("bad");
 
       target
@@ -162,7 +162,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(ForParameterSource))]
-    public void should_fail_if_there_is_no_value_w_key_registered(MethodArgumentTuner forParameter)
+    public void should_fail_if_there_is_no_value_w_tag_registered(MethodArgumentTuner forParameter)
     {
       // --arrange
       var target = CreateTarget();
@@ -174,7 +174,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .UsingArguments(forParameter.UseKey("key"));
+       .UsingArguments(forParameter.UseTag("tag"));
 
       // --act
       Action actual = () => target.Build<LevelOne>();
@@ -237,7 +237,7 @@ namespace Tests.Functional
 
       // --act
       Action actual = () => tuner.UsingArguments(
-                        ForParameter.OfType<string>().UseKey("expected29083"),
+                        ForParameter.OfType<string>().UseTag("expected29083"),
                         ForParameter.OfType<string>().UseValue("bad"));
 
       // --assert

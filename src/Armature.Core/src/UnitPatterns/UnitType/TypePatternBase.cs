@@ -9,21 +9,22 @@ namespace Armature.Core;
 /// </summary>
 public abstract record TypePatternBase : ILogString
 {
-  protected readonly   object? Key;
+  protected readonly object? Tag;
   protected readonly Type    Type;
 
   /// <summary>
   /// Base class for matchers matching unit with a <see cref="System.Type"/> pattern
   /// </summary>
-  protected TypePatternBase(Type type, object? key)
+  protected TypePatternBase(Type type, object? tag)
   {
     Type = type ?? throw new ArgumentNullException(nameof(type));
-    Key = key;
+    Tag  = tag;
   }
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} "
-                                 + $"{{ Type: {Type.ToLogString().QuoteIfNeeded()}, Key: {Key.ToHoconString()} }} }}";
+  public string ToHoconString()
+    => $"{{ {GetType().GetShortName().QuoteIfNeeded()} "
+     + $"{{ Type: {Type.ToLogString().QuoteIfNeeded()}, Tag: {Tag.ToHoconString()} }} }}";
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
 }

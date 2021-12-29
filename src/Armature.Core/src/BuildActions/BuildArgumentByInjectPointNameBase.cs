@@ -9,24 +9,24 @@ namespace Armature.Core;
 /// </summary>
 public abstract record BuildArgumentByInjectPointNameBase : IBuildAction, ILogString
 {
-  private readonly object? _key;
+  private readonly object? _tag;
 
   [WithoutTest]
   [DebuggerStepThrough]
-  protected BuildArgumentByInjectPointNameBase() : this(SpecialKey.Argument) {}
+  protected BuildArgumentByInjectPointNameBase() : this(SpecialTag.Argument) { }
 
   [WithoutTest]
   [DebuggerStepThrough]
-  protected BuildArgumentByInjectPointNameBase(object? key) => _key = key;
+  protected BuildArgumentByInjectPointNameBase(object? tag) => _tag = tag;
 
   public void Process(IBuildSession buildSession)
   {
     var unitUnderConstruction = buildSession.BuildChain.TargetUnit;
 
-    var effectiveKey = _key == SpecialKey.Propagate ? unitUnderConstruction.Key : _key;
+    var effectiveTag = _tag == SpecialTag.Propagate ? unitUnderConstruction.Tag : _tag;
 
     var injectPointName = GetInjectPointName(unitUnderConstruction);
-    buildSession.BuildResult = buildSession.BuildUnit(new UnitId(injectPointName, effectiveKey));
+    buildSession.BuildResult = buildSession.BuildUnit(new UnitId(injectPointName, effectiveTag));
   }
 
   [WithoutTest]
@@ -36,7 +36,7 @@ public abstract record BuildArgumentByInjectPointNameBase : IBuildAction, ILogSt
   protected abstract string GetInjectPointName(UnitId unitId);
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(BuildArgumentByInjectPointNameBase)}{{ Key: {_key.ToHoconString()} }} }}";
+  public string ToHoconString() => $"{{ {nameof(BuildArgumentByInjectPointNameBase)}{{ Tag: {_tag.ToHoconString()} }} }}";
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
 }

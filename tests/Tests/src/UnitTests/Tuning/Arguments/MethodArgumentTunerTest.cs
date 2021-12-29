@@ -10,7 +10,7 @@ namespace Tests.UnitTests.Tuning.Arguments;
 public class MethodArgumentTunerTest
 {
   [Test]
-  public void should_add_build_argument_by_parameter_type_with_key_build_action([Values(39, "key")] object key)
+  public void should_add_build_argument_by_parameter_type_with_tag_build_action([Values(39, "tag")] object tag)
   {
     const int expectedWeight = 298;
 
@@ -19,7 +19,7 @@ public class MethodArgumentTunerTest
     var root   = new Root(expectedWeight);
 
     // --act
-    target.UseKey(key).Tune(root);
+    target.UseTag(tag).Tune(root);
 
     // --assert
     var result = root.GatherBuildActions(default, out var actionBag, 0);
@@ -31,12 +31,12 @@ public class MethodArgumentTunerTest
                        actual =>
                        {
                          actual.Weight.Should().Be(expectedWeight);
-                         actual.Entity.Should().Be(new BuildArgumentByParameterType(key));
+                         actual.Entity.Should().Be(new BuildArgumentByParameterType(tag));
                        });
   }
 
   [Test]
-  public void should_add_build_argument_by_parameter_type_with_inject_point_id_as_key_build_action()
+  public void should_add_build_argument_by_parameter_type_with_inject_point_id_as_tag_build_action()
   {
     const int expectedWeight = 298;
 
@@ -45,7 +45,7 @@ public class MethodArgumentTunerTest
     var root   = new Root(expectedWeight);
 
     // --act
-    target.UseInjectPointIdAsKey().Tune(root);
+    target.UseInjectPointIdAsTag().Tune(root);
 
     // --assert
     var result = root.GatherBuildActions(default, out var actionBag, 0);

@@ -124,7 +124,7 @@ namespace Tests.Performance
     {
       if(pattern is null) throw new ArgumentNullException(nameof(pattern));
 
-      var unitMatcher = new UnitPatternWrapper(new UnitPattern(unitId.Kind, unitId.Key));
+      var unitMatcher = new UnitPatternWrapper(new UnitPattern(unitId.Kind, unitId.Tag));
 
       var query = new SkipTillUnit(unitMatcher);
 

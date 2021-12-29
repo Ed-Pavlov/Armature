@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using Armature.Core;
 
-
 namespace Armature;
 
 public class TreatingOpenGenericTuner : TunerBase
@@ -14,15 +13,15 @@ public class TreatingOpenGenericTuner : TunerBase
   /// Build an object of the specified <paramref name="openGenericType"/> instead. Also use default creation strategy for that type.
   /// See <see cref="Default.CreationBuildAction"/> for details.
   /// </summary>
-  public FinalTuner AsCreated(Type openGenericType, object? key = null) => As(openGenericType, key).CreatedByDefault();
+  public FinalTuner AsCreated(Type openGenericType, object? tag = null) => As(openGenericType, tag).CreatedByDefault();
 
   /// <summary>
   /// Build an object of the specified <paramref name="openGenericType"/> instead.
   /// </summary>
-  public OpenGenericCreationTuner As(Type openGenericType, object? key = null)
+  public OpenGenericCreationTuner As(Type openGenericType, object? tag = null)
   {
-    ParentNode.UseBuildAction(new RedirectOpenGenericType(openGenericType, key), BuildStage.Create);
-    return new OpenGenericCreationTuner(ParentNode, openGenericType, key);
+    ParentNode.UseBuildAction(new RedirectOpenGenericType(openGenericType, tag), BuildStage.Create);
+    return new OpenGenericCreationTuner(ParentNode, openGenericType, tag);
   }
 
   /// <summary>

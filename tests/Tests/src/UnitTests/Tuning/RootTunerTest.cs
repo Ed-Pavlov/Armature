@@ -11,82 +11,82 @@ namespace Tests.UnitTests.Tuning;
 public class RootTunerTest
 {
   [Test]
-  public void treat([Values(null, "key")] string key)
+  public void treat([Values(null, "tag")] string tag)
   {
-    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), key));
+    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), tag));
 
     // --arrange
     var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
-    target.Treat(typeof(IDisposable), key);
+    target.Treat(typeof(IDisposable), tag);
 
     // --assert
     tree.Children.Single().Should().BeEquivalentTo(expected);
   }
 
   [Test]
-  public void treat_generic([Values(null, "key")] string key)
+  public void treat_generic([Values(null, "tag")] string tag)
   {
-    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), key));
+    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), tag));
 
     // --arrange
     var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
-    target.Treat<IDisposable>(key);
+    target.Treat<IDisposable>(tag);
 
     // --assert
     tree.Children.Single().Should().BeEquivalentTo(expected);
   }
 
   [Test]
-  public void building([Values(null, "key")] string key)
+  public void building([Values(null, "tag")] string tag)
   {
-    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), key));
+    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), tag));
 
     // --arrange
     var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
-    target.Building(typeof(IDisposable), key);
+    target.Building(typeof(IDisposable), tag);
 
     // --assert
     tree.Children.Single().Should().BeEquivalentTo(expected);
   }
 
   [Test]
-  public void building_generic([Values(null, "key")] string key)
+  public void building_generic([Values(null, "tag")] string tag)
   {
-    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), key));
+    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), tag));
 
     // --arrange
     var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
-    target.Building<IDisposable>(key);
+    target.Building<IDisposable>(tag);
 
     // --assert
     tree.Children.Single().Should().BeEquivalentTo(expected);
   }
 
   [Test]
-  public void amend_weight([Values(null, "key")] string key)
+  public void amend_weight([Values(null, "tag")] string tag)
   {
     const int weight = 3875;
 
-    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), key), weight);
+    var expected = new SkipWhileUnit(new UnitPattern(typeof(IDisposable), tag), weight);
 
     // --arrange
     var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
-    target.Building<IDisposable>(key)
+    target.Building<IDisposable>(tag)
           .AmendWeight(weight);
 
     // --assert
@@ -94,7 +94,7 @@ public class RootTunerTest
   }
 
   [Test]
-  public void treat_all([Values(null, "key")] string key)
+  public void treat_all([Values(null, "tag")] string tag)
   {
     var expected = new SkipAllUnits();
 
@@ -110,25 +110,25 @@ public class RootTunerTest
   }
 
   [Test]
-  public void treat_inheritors([Values(null, "key")] string key)
+  public void treat_inheritors([Values(null, "tag")] string tag)
   {
-    var expected = new SkipWhileUnit(new IsInheritorOf(typeof(IDisposable), key));
+    var expected = new SkipWhileUnit(new IsInheritorOf(typeof(IDisposable), tag));
 
     // --arrange
     var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
-    target.TreatInheritorsOf(typeof(IDisposable), key);
+    target.TreatInheritorsOf(typeof(IDisposable), tag);
 
     // --assert
     tree.Children.Single().Should().BeEquivalentTo(expected);
   }
 
   [Test]
-  public void treat_inheritors_generic([Values(null, "key")] string key)
+  public void treat_inheritors_generic([Values(null, "tag")] string tag)
   {
-    var expected = new SkipWhileUnit(new IsInheritorOf(typeof(IDisposable), key));
+    var expected = new SkipWhileUnit(new IsInheritorOf(typeof(IDisposable), tag));
 
     // --arrange
     var tree   = new BuildChainPatternTree();
@@ -136,21 +136,21 @@ public class RootTunerTest
 
     // --act
     // --assert
-    target.TreatInheritorsOf<IDisposable>(key);
+    target.TreatInheritorsOf<IDisposable>(tag);
     tree.Children.Single().Should().BeEquivalentTo(expected);
   }
 
   [Test]
-  public void treat_open_generic([Values(null, "key")] string key)
+  public void treat_open_generic([Values(null, "tag")] string tag)
   {
-    var expected = new SkipWhileUnit(new IsGenericOfDefinition(typeof(List<>), key));
+    var expected = new SkipWhileUnit(new IsGenericOfDefinition(typeof(List<>), tag));
 
     // --arrange
     var tree   = new BuildChainPatternTree();
     var target = new RootTuner(tree);
 
     // --act
-    var tuner = target.TreatOpenGeneric(typeof(List<>), key);
+    var tuner = target.TreatOpenGeneric(typeof(List<>), tag);
 
     // --assert
     tree.Children.Single().Should().BeEquivalentTo(expected);

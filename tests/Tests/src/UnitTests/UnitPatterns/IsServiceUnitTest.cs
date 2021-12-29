@@ -11,10 +11,10 @@ public class IsServiceUnitTest
   [Test]
   public void should_match_any_kind(
     [Values(null, "kind", typeof(string))]                     object?    kind,
-    [ValueSource(typeof(Util), nameof(Util.all_special_keys))] SpecialKey key)
+    [ValueSource(typeof(Util), nameof(Util.all_special_tags))] SpecialTag tag)
   {
     // --arrange
-    var unitId = new UnitId(kind, key);
+    var unitId = new UnitId(kind, tag);
     var target = new IsServiceUnit();
 
     // --assert
@@ -22,14 +22,14 @@ public class IsServiceUnitTest
   }
 
   [Test]
-  public void should_not_match_any_kind_if_key_is_not_special(
+  public void should_not_match_any_kind_if_tag_is_not_special(
     [Values(null, "kind", typeof(string))] object? kind,
-    [Values(null, "key")]                  object? key)
+    [Values(null, "tag")]                  object? tag)
   {
-    if(kind is null && key is null) Assert.Ignore("Impossible argument combination");
+    if(kind is null && tag is null) Assert.Ignore("Impossible argument combination");
 
     // --arrange
-    var unitId = new UnitId(kind, key);
+    var unitId = new UnitId(kind, tag);
     var target = new IsServiceUnit();
 
     // --assert

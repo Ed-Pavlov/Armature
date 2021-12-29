@@ -24,6 +24,5 @@ public record Instance<T> : IBuildAction, ILogString
   [DebuggerStepThrough]
   public string ToHoconString() => $"{{ {GetType().GetShortName().Quote()} {{ Instance: {_value.ToHoconString()} }} }}";
   [DebuggerStepThrough]
-
   public override string ToString() => ToHoconString();
 }

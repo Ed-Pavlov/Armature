@@ -27,16 +27,16 @@ public class TreatingTuner<T> : FinalTuner
   /// <summary>
   /// Set that object of the specified <paramref name="type"/> should be build.
   /// </summary>
-  public CreationTuner As(Type type, object? key = null)
+  public CreationTuner As(Type type, object? tag = null)
   {
-    ParentNode.UseBuildAction(new RedirectType(type, key), BuildStage.Create);
-    return new CreationTuner(ParentNode, type, key);
+    ParentNode.UseBuildAction(new RedirectType(type, tag), BuildStage.Create);
+    return new CreationTuner(ParentNode, type, tag);
   }
 
   /// <summary>
   /// Set that object of the specified <typeparamref name="TRedirect"/> should be build.
   /// </summary>
-  public CreationTuner As<TRedirect>(object? key = null) => As(typeof(TRedirect), key);
+  public CreationTuner As<TRedirect>(object? tag = null) => As(typeof(TRedirect), tag);
 
   /// <summary>
   /// Set that the <see cref="Default.CreationBuildAction"/> build action should be used to build a unit.
@@ -51,13 +51,13 @@ public class TreatingTuner<T> : FinalTuner
   /// Set that object of the specified <paramref name="type"/> should be build and
   /// the <see cref="Default.CreationBuildAction"/> build action should be used to build a unit.
   /// </summary>
-  public FinalTuner AsCreated(Type type, object? key = null) => As(type, key).CreatedByDefault();
+  public FinalTuner AsCreated(Type type, object? tag = null) => As(type, tag).CreatedByDefault();
 
   /// <summary>
   /// Set that object of the specified <typeparamref name="TRedirect"/> should be build and
   /// the <see cref="Default.CreationBuildAction"/> build action should be used to build a unit.
   /// </summary>
-  public FinalTuner AsCreated<TRedirect>(object? key = null) => AsCreated(typeof(TRedirect), key);
+  public FinalTuner AsCreated<TRedirect>(object? tag = null) => AsCreated(typeof(TRedirect), tag);
 
   /// <summary>
   /// Use specified <paramref name="factoryMethod"/> to build a unit.

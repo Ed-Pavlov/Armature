@@ -32,12 +32,12 @@ public static class Util
     public bool Matches(UnitId unitId) => throw new NotSupportedException();
   }
 
-  public static IEnumerable<SpecialKey> all_special_keys()
+  public static IEnumerable<SpecialTag> all_special_tags()
   {
-    yield return SpecialKey.Any;
-    yield return SpecialKey.Argument;
-    yield return SpecialKey.Constructor;
-    yield return SpecialKey.Propagate;
-    yield return SpecialKey.PropertyList;
+    yield return SpecialTag.Any;
+    yield return SpecialTag.Argument;
+    yield return SpecialTag.Constructor;
+    yield return SpecialTag.Propagate;
+    yield return SpecialTag.PropertyList;
   }
 }

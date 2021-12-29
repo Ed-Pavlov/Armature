@@ -12,12 +12,12 @@ namespace Tests.UnitTests.UnitPatterns;
 public class IsConstructorTest
 {
   [Test]
-  public void should_match_if_key_is_constructor(
+  public void should_match_if_tag_is_constructor(
     [Values(typeof(int), typeof(string), typeof(List<int>), typeof(List<>), null, "not a type at all")]
     object? kind)
   {
     // --arrange
-    var unitId = new UnitId(kind, SpecialKey.Constructor);
+    var unitId = new UnitId(kind, SpecialTag.Constructor);
     var target = new IsConstructor();
 
     // --assert
@@ -25,12 +25,12 @@ public class IsConstructorTest
   }
 
   [Test]
-  public void should_not_match_if_key_is_not_constructor(
+  public void should_not_match_if_tag_is_not_constructor(
     [Values(typeof(int), typeof(string), typeof(List<int>), typeof(MemoryStream))]
     Type unitType)
   {
     // --arrange
-    var unitId = new UnitId(unitType, SpecialKey.Any);
+    var unitId = new UnitId(unitType, SpecialTag.Any);
     var target = new IsConstructor();
 
     // --assert

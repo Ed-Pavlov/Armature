@@ -13,17 +13,17 @@ namespace Tests.UnitTests.BuildActions;
 public class RedirectTypeTest
 {
   [Test]
-  public void should_call_build_unit_with_redirected_type([Values(null, "key")] string key)
+  public void should_call_build_unit_with_redirected_type([Values(null, "tag")] string tag)
   {
     var expected = new MemoryStream();
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType<IDisposable>().ToBuildChain());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<MemoryStream>().Key(key)));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<MemoryStream>().Tag(tag)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
-    var target = new RedirectType(typeof(MemoryStream), key);
+    var target = new RedirectType(typeof(MemoryStream), tag);
 
     // --act
     target.Process(buildSession);
@@ -34,17 +34,17 @@ public class RedirectTypeTest
   }
 
   [Test]
-  public void should_propagate_unit_key([Values(null, "key")] string key)
+  public void should_propagate_unit_tag([Values(null, "tag")] string tag)
   {
     var expected = new MemoryStream();
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType<IDisposable>().Key(key).ToBuildChain());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<MemoryStream>().Key(key)));
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType<IDisposable>().Tag(tag).ToBuildChain());
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<MemoryStream>().Tag(tag)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
-    var target = new RedirectType(typeof(MemoryStream), SpecialKey.Propagate);
+    var target = new RedirectType(typeof(MemoryStream), SpecialTag.Propagate);
 
     // --act
     target.Process(buildSession);
@@ -55,20 +55,20 @@ public class RedirectTypeTest
   }
 
   [Test]
-  public void should_check_type_is_not_null([Values(null, "key")] object? key)
+  public void should_check_type_is_not_null([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var actual = () => new RedirectType(null!, key);
+    var actual = () => new RedirectType(null!, tag);
 
     // --assert
     actual.Should().ThrowExactly<ArgumentNullException>().WithParameterName("redirectTo");
   }
 
   [Test]
-  public void should_check_type_is_not_open_generic([Values(null, "key")] object? key)
+  public void should_check_type_is_not_open_generic([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var actual = () => new RedirectType(typeof(List<>), key);
+    var actual = () => new RedirectType(typeof(List<>), tag);
 
     // --assert
     actual.Should().ThrowExactly<ArgumentException>().WithParameterName("redirectTo").WithMessage("Type should not be open generic*");

@@ -21,7 +21,7 @@ public class CreateByReflectionTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType(unitType).ToBuildChain());
-    var buildConstructor = A.CallTo(() => buildSession.BuildUnit(Kind.Is(unitType).Key(SpecialKey.Constructor)));
+    var buildConstructor = A.CallTo(() => buildSession.BuildUnit(Kind.Is(unitType).Tag(SpecialTag.Constructor)));
     buildConstructor.Returns(new BuildResult(unitType.GetConstructors().Single(_ => _.GetParameters().Length == 0))); // default constructor
 
     var target = new CreateByReflection();
@@ -45,7 +45,7 @@ public class CreateByReflectionTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType(unitType).ToBuildChain());
-    var buildConstructor = A.CallTo(() => buildSession.BuildUnit(Kind.Is(unitType).Key(SpecialKey.Constructor)));
+    var buildConstructor = A.CallTo(() => buildSession.BuildUnit(Kind.Is(unitType).Tag(SpecialTag.Constructor)));
     buildConstructor.Returns(new BuildResult(unitType.GetConstructors().Single(_ => _.GetParameters().Length == 1))); // constructor(int i)
 
     var buildArguments = A.CallTo(() => buildSession.BuildUnit(default)).WhenBuildArgumentsOfType<int>();
@@ -70,7 +70,7 @@ public class CreateByReflectionTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType(unitType).ToBuildChain());
-    var buildConstructor = A.CallTo(() => buildSession.BuildUnit(Kind.Is(unitType).Key(SpecialKey.Constructor)));
+    var buildConstructor = A.CallTo(() => buildSession.BuildUnit(Kind.Is(unitType).Tag(SpecialTag.Constructor)));
     buildConstructor.Returns(new BuildResult(unitType.GetConstructors().Single(_ => _.GetParameters().Length == 0))); // default constructor
 
     var target = new CreateByReflection();
@@ -107,7 +107,7 @@ public class CreateByReflectionTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType(unitType).ToBuildChain());
-    A.CallTo(() => buildSession.BuildUnit(Kind.Is(unitType).Key(SpecialKey.Constructor))).Returns(default);
+    A.CallTo(() => buildSession.BuildUnit(Kind.Is(unitType).Tag(SpecialTag.Constructor))).Returns(default);
 
     var target = new CreateByReflection();
 

@@ -16,11 +16,11 @@ namespace Tests.Integration;
 public class ForParameterTest
 {
   private static readonly ParameterInfo[] ParameterList   = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters();
-  private static readonly UnitId[]        BuildChain   = {new UnitId(ParameterList, SpecialKey.Argument)};
-  private static readonly UnitId          NamedParameter  = new(ParameterList.Single(_ => _.Name          == Subject.ParamName), SpecialKey.Argument);
-  private static readonly UnitId          TypedParameter  = new(ParameterList.Single(_ => _.ParameterType == typeof(int)), SpecialKey.Argument);
-  private static readonly UnitId          IdNullParameter = new(ParameterList.Single(_ => _.ParameterType == typeof(string)), SpecialKey.Argument);
-  private static readonly UnitId          IdParameter     = new(ParameterList.Single(_ => _.ParameterType == typeof(IDisposable)), SpecialKey.Argument);
+  private static readonly UnitId[]        BuildChain   = {new UnitId(ParameterList, SpecialTag.Argument)};
+  private static readonly UnitId          NamedParameter  = new(ParameterList.Single(_ => _.Name          == Subject.ParamName), SpecialTag.Argument);
+  private static readonly UnitId          TypedParameter  = new(ParameterList.Single(_ => _.ParameterType == typeof(int)), SpecialTag.Argument);
+  private static readonly UnitId          IdNullParameter = new(ParameterList.Single(_ => _.ParameterType == typeof(string)), SpecialTag.Argument);
+  private static readonly UnitId          IdParameter     = new(ParameterList.Single(_ => _.ParameterType == typeof(IDisposable)), SpecialTag.Argument);
 
   private static readonly List<IForParameter> ForParameterWithInjectAttributeCases =
       new()
@@ -41,13 +41,13 @@ public class ForParameterTest
   private static IEnumerable<ActAssert> CombineCommonCases<T>(ArrangeForParameter<T> arrange)
   {
     yield return new ActAssert(
-        $"{arrange.Name}.{nameof(MethodArgumentTuner.UseKey)}",
+        $"{arrange.Name}.{nameof(MethodArgumentTuner.UseTag)}",
         () =>
         {
-          const string key = "unitKey";
+          const string tag = "unitTag";
 
           // --arrange
-          var argumentTuner = arrange.ForParameter().UseKey(key);
+          var argumentTuner = arrange.ForParameter().UseTag(tag);
           var patternTree   = new BuildChainPatternTree();
           argumentTuner.Tune(patternTree);
 
@@ -56,7 +56,7 @@ public class ForParameterTest
 
           // --assert
           actionBag!.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
-          actionBag.Values.Single().Single().Entity.Should().Be(new BuildArgumentByParameterType(key));
+          actionBag.Values.Single().Single().Entity.Should().Be(new BuildArgumentByParameterType(tag));
         });
 
     yield return new ActAssert(
@@ -119,11 +119,11 @@ public class ForParameterTest
   private static IEnumerable<ActAssert> CombineInjectAttributeCases<T>(ArrangeForParameter<T> arrange)
   {
     yield return new ActAssert(
-        $"{arrange.Name}.{nameof(MethodArgumentTuner.UseInjectPointIdAsKey)}",
+        $"{arrange.Name}.{nameof(MethodArgumentTuner.UseInjectPointIdAsTag)}",
         () =>
         {
           // --arrange
-          var argumentTuner = arrange.ForParameter().UseInjectPointIdAsKey();
+          var argumentTuner = arrange.ForParameter().UseInjectPointIdAsTag();
           var patternTree   = new BuildChainPatternTree();
           argumentTuner.Tune(patternTree);
 

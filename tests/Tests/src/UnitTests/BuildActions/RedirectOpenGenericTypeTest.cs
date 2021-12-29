@@ -13,17 +13,17 @@ namespace Tests.UnitTests.BuildActions;
 public class RedirectOpenGenericTypeTest
 {
   [Test]
-  public void should_call_build_unit_with_redirected_type([Values(null, "key")] string key)
+  public void should_call_build_unit_with_redirected_type([Values(null, "tag")] string tag)
   {
     var expected = new List<int>();
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType<IEnumerable<int>>().ToBuildChain());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<List<int>>().Key(key)));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<List<int>>().Tag(tag)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
-    var target = new RedirectOpenGenericType(typeof(List<>), key);
+    var target = new RedirectOpenGenericType(typeof(List<>), tag);
 
     // --act
     target.Process(buildSession);
@@ -34,17 +34,17 @@ public class RedirectOpenGenericTypeTest
   }
 
   [Test]
-  public void should_propagate_unit_key([Values(null, "key")] string key)
+  public void should_propagate_unit_tag([Values(null, "tag")] string tag)
   {
     var expected = new List<int>();
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType<IEnumerable<int>>().Key(key).ToBuildChain());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<List<int>>().Key(key)));
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType<IEnumerable<int>>().Tag(tag).ToBuildChain());
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Unit.IsType<List<int>>().Tag(tag)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
-    var target = new RedirectOpenGenericType(typeof(List<>), SpecialKey.Propagate);
+    var target = new RedirectOpenGenericType(typeof(List<>), SpecialTag.Propagate);
 
     // --act
     target.Process(buildSession);
@@ -184,20 +184,20 @@ public class RedirectOpenGenericTypeTest
   }
 
   [Test]
-  public void should_check_type_argument_for_null([Values(null, "key")] object? key)
+  public void should_check_type_argument_for_null([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var actual = () => new RedirectOpenGenericType(null!, key, false);
+    var actual = () => new RedirectOpenGenericType(null!, tag, false);
 
     // --assert
     actual.Should().Throw<ArgumentNullException>().WithParameterName("redirectTo");
   }
 
   [Test]
-  public void should_check_type_argument([Values(null, "key")] object? key)
+  public void should_check_type_argument([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var actual = () => new RedirectOpenGenericType(typeof(string), key, false);
+    var actual = () => new RedirectOpenGenericType(typeof(string), tag, false);
 
     // --assert
     actual.Should().Throw<ArgumentException>().WithParameterName("redirectTo");

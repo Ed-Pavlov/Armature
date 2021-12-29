@@ -33,13 +33,13 @@ public class BuildChainPatternTree : IBuildChainPattern, IEnumerable, ILogPrinta
 
   public void PrintToLog(LogLevel logLevel = LogLevel.None) => _root.PrintToLog(logLevel);
 
-  public BuildActionBag BuildActions                   => throw new NotSupportedException();
+  public BuildActionBag BuildActions                     => throw new NotSupportedException();
   public bool           Equals(IBuildChainPattern other) => throw new NotSupportedException();
 
   #region Syntax sugar
 
   public void             Add(IBuildChainPattern buildChainPattern) => Children.Add(buildChainPattern);
-  IEnumerator IEnumerable.GetEnumerator()                       => throw new NotSupportedException();
+  IEnumerator IEnumerable.GetEnumerator()                           => throw new NotSupportedException();
 
   #endregion
 

@@ -136,9 +136,9 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_key_for_property_argument_by_inject_point()
+    public void should_use_tag_for_property_argument_by_inject_point()
     {
-      const string key      = "key";
+      const string tag      = "tag";
       const string expected = "expectedString";
       const string bad      = expected + "bad";
 
@@ -146,12 +146,12 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target.Treat<string>().AsInstance(bad);
-      target.Treat<string>(key).AsInstance(expected);
+      target.Treat<string>(tag).AsInstance(expected);
 
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseKey(key));
+       .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseTag(tag));
 
       // --act
       var actual = target.Build<Subject>()!;
@@ -163,9 +163,9 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_key_for_interface_property_argument_by_inject_point()
+    public void should_use_tag_for_interface_property_argument_by_inject_point()
     {
-      const string key      = "key";
+      const string tag      = "tag";
       const string expected = "expectedString";
       const string bad      = expected + "bad";
 
@@ -173,9 +173,9 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target.Treat<string>().AsInstance(bad);
-      target.Treat<string>(key).AsInstance(expected);
+      target.Treat<string>(tag).AsInstance(expected);
 
-      target.Treat<ISubject>().UsingArguments(ForProperty.WithInjectPoint(Subject.InterfaceInjectPointId).UseKey(key));
+      target.Treat<ISubject>().UsingArguments(ForProperty.WithInjectPoint(Subject.InterfaceInjectPointId).UseTag(tag));
       target.Treat<ISubject>().AsCreated<Subject>();
 
       // --act
@@ -188,7 +188,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_inject_point_id_as_key_for_property_by_inject_point()
+    public void should_use_inject_point_id_as_tag_for_property_by_inject_point()
     {
       const string expected = "expectedString";
       const string bad      = expected + "bad";
@@ -202,7 +202,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsKey());
+       .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsTag());
 
       // --act
       var actual = target.Build<Subject>()!;
@@ -214,7 +214,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_inject_point_id_as_key_for_interface_property_by_inject_point()
+    public void should_use_inject_point_id_as_tag_for_interface_property_by_inject_point()
     {
       const string expected = "expectedString";
       const string bad      = expected + "bad";
@@ -225,7 +225,7 @@ namespace Tests.Functional
       target.Treat<string>().AsInstance(bad);
       target.Treat<string>(Subject.InterfaceInjectPointId).AsInstance(expected);
 
-      target.Treat<ISubject>().UsingArguments(ForProperty.WithInjectPoint(Subject.InterfaceInjectPointId).UseInjectPointIdAsKey());
+      target.Treat<ISubject>().UsingArguments(ForProperty.WithInjectPoint(Subject.InterfaceInjectPointId).UseInjectPointIdAsTag());
       target.Treat<ISubject>().AsCreated<Subject>();
 
       // --act

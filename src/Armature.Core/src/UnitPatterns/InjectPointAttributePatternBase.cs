@@ -17,7 +17,7 @@ public abstract record InjectPointAttributePatternBase : IUnitPattern, ILogStrin
 
   public bool Matches(UnitId unitId)
   {
-    if(unitId.Key != SpecialKey.Argument) return false;
+    if(unitId.Tag != SpecialTag.Argument) return false;
 
     var attribute = GetAttribute(unitId);
     return attribute is not null && Equals(attribute.InjectionPointId, _injectPointId);

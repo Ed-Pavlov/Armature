@@ -10,7 +10,7 @@ namespace Armature.Core;
 public record IsGenericOfDefinition : TypePatternBase, IUnitPattern
 {
   [DebuggerStepThrough]
-  public IsGenericOfDefinition(Type genericTypeDefinition, object? key) : base(genericTypeDefinition, key)
+  public IsGenericOfDefinition(Type genericTypeDefinition, object? tag) : base(genericTypeDefinition, tag)
   {
     if(!genericTypeDefinition.IsGenericTypeDefinition) throw new ArgumentException("Should be an open generic type", nameof(genericTypeDefinition));
   }
@@ -18,6 +18,6 @@ public record IsGenericOfDefinition : TypePatternBase, IUnitPattern
   public bool Matches(UnitId unitId)
   {
     var unitType = unitId.GetUnitTypeSafe();
-    return Key.Matches(unitId.Key) && unitType is {IsGenericType: true} && unitType.GetGenericTypeDefinition() == Type;
+    return Tag.Matches(unitId.Tag) && unitType is {IsGenericType: true} && unitType.GetGenericTypeDefinition() == Type;
   }
 }

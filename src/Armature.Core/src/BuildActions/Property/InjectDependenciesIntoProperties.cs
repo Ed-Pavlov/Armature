@@ -20,10 +20,10 @@ public record InjectDependenciesIntoProperties : IBuildAction
     var unit = buildSession.BuildResult.Value;
     var type = buildSession.BuildChain.TargetUnit.GetUnitTypeSafe();
 
-    var unitInfo = new UnitId(type, SpecialKey.PropertyList);
+    var unitInfo = new UnitId(type, SpecialTag.PropertyList);
     var unitList = buildSession.BuildAllUnits(unitInfo).OrderByDescending(_ => _.Weight).Select(_ => _.Entity);
 
-    foreach(var property in unitList.Select(result => result.Value!).SelectMany(list => (PropertyInfo[])list))
+    foreach(var property in unitList.Select(result => result.Value!).SelectMany(list => (PropertyInfo[]) list))
     {
       var argument = buildSession.BuildPropertyArgument(property);
       property.SetValue(unit, argument);

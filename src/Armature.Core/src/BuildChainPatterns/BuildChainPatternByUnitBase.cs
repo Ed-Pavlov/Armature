@@ -28,7 +28,7 @@ public abstract class BuildChainPatternByUnitBase : BuildChainPatternBase
   }
 
   public override bool Equals(IBuildChainPattern? other) => Equals(other as BuildChainPatternByUnitBase);
-  public override bool Equals(object?           obj)
+  public override bool Equals(object? obj)
   {
     var result = Equals(obj as BuildChainPatternByUnitBase);
     return result;

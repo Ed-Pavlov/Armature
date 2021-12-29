@@ -15,14 +15,14 @@ namespace Tests.UnitTests
     [Test]
     public void should_build_list_of_values_for_any_collection(
         [ValueSource(nameof(should_build_list_of_values_for_any_collection_cases))] PropertyInfo propertyInfo,
-        [Values(null, "key")]                                                       object?      key)
+        [Values(null, "tag")]                                                       object?      tag)
     {
       // --arrange
-      var target       = new BuildListArgumentForProperty(key);
+      var target       = new BuildListArgumentForProperty(tag);
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildChain).Returns(new UnitId(propertyInfo, key).ToBuildChain());
+      A.CallTo(() => buildSession.BuildChain).Returns(new UnitId(propertyInfo, tag).ToBuildChain());
 
-      A.CallTo(() => buildSession.BuildAllUnits(new UnitId(propertyInfo, key)))
+      A.CallTo(() => buildSession.BuildAllUnits(new UnitId(propertyInfo, tag)))
        .Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());
 
       // --act

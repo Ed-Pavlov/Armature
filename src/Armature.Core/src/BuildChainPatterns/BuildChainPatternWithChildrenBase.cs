@@ -42,6 +42,7 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
   protected bool GetChildrenActions(BuildChain buildChain, int inputWeight, out WeightedBuildActionBag? actionBag)
   {
     actionBag = null;
+
     if(RawChildren is null)
     {
       Log.WriteLine(LogLevel.Trace, "Children: null");
@@ -49,6 +50,7 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
     }
 
     var matchingWeight = inputWeight + Weight;
+
     using(Log.NamedBlock(LogLevel.Trace, "PassTailToChildren"))
     {
       Log.WriteLine(LogLevel.Trace, $"ActualWeight = {matchingWeight}, Tail = {buildChain.ToHoconString()}");
@@ -56,9 +58,10 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
       foreach(var child in RawChildren)
       {
         if(child.GatherBuildActions(buildChain, out var childBag, matchingWeight))
-         actionBag = actionBag.Merge(childBag);
+          actionBag = actionBag.Merge(childBag);
       }
     }
+
     return actionBag is not null;
   }
 

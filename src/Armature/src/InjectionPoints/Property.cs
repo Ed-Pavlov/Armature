@@ -39,13 +39,13 @@ public static class Property
     if(names.Any(string.IsNullOrEmpty)) throw new ArgumentNullException(nameof(names), "One or more items are null or empty string.");
 
     return new InjectPointTuner(
-        (node, weight) =>
-        {
-          node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+      (node, weight) =>
+      {
+        node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-          node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
-              .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
-        });
+        node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
+            .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
+      });
   }
 
   /// <summary>

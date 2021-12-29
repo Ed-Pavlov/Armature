@@ -15,7 +15,7 @@ public record BuildListArgumentForMethodParameter : BuildListArgumentBase
   public BuildListArgumentForMethodParameter() { }
 
   [DebuggerStepThrough]
-  public BuildListArgumentForMethodParameter(object? key) : base(key) { }
+  public BuildListArgumentForMethodParameter(object? tag) : base(tag) { }
 
   protected override Type GetArgumentType(UnitId unitId) => ((ParameterInfo) unitId.Kind!).ParameterType;
 }

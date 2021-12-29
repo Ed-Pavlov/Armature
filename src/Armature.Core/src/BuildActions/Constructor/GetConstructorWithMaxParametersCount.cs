@@ -19,6 +19,7 @@ public record GetConstructorWithMaxParametersCount : IBuildAction
     var constructors = unitType.GetConstructors();
 
     Log.WriteLine(LogLevel.Trace, "");
+
     if(constructors.Length > 0)
     {
       var ctor = GetConstructor(constructors, unitType);
@@ -32,7 +33,7 @@ public record GetConstructorWithMaxParametersCount : IBuildAction
 
   private static ConstructorInfo GetConstructor(ConstructorInfo[] constructors, Type unitType)
   {
-    var suitableConstructors = new Dictionary<int, int> { { 0, constructors[0].GetParameters().Length } };
+    var suitableConstructors = new Dictionary<int, int> {{0, constructors[0].GetParameters().Length}};
 
     for(var i = 1; i < constructors.Length; i++)
     {

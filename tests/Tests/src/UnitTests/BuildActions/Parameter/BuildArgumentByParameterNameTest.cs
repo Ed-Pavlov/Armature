@@ -12,7 +12,7 @@ namespace Tests.UnitTests.BuildActions;
 public class BuildArgumentByParameterNameTest
 {
   [Test]
-  public void should_use_parameter_name_as_unit_id([Values(null, "key")] string key)
+  public void should_use_parameter_name_as_unit_id([Values(null, "tag")] string tag)
   {
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => _.ParameterType == typeof(int));
 
@@ -20,35 +20,35 @@ public class BuildArgumentByParameterNameTest
     var actual = A.Fake<IBuildSession>();
     A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
 
-    var target = new BuildArgumentByParameterName(key);
+    var target = new BuildArgumentByParameterName(tag);
 
     // --act
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.Name).Key(key))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.Name).Tag(tag))).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]
-  public void should_use_unit_key_if_propagate_key_is_used([Values(null, "key")] string key)
+  public void should_use_unit_tag_if_propagate_tag_is_used([Values(null, "tag")] string tag)
   {
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => _.ParameterType == typeof(int));
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).Key(key).ToBuildChain());
+    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).Tag(tag).ToBuildChain());
 
-    var target = new BuildArgumentByParameterName(SpecialKey.Propagate);
+    var target = new BuildArgumentByParameterName(SpecialTag.Propagate);
 
     // --act
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.Name).Key(key))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.Name).Tag(tag))).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]
-  public void should_return_result_of_build_unit([Values(null, "key")] string key)
+  public void should_return_result_of_build_unit([Values(null, "tag")] string tag)
   {
     const string expected = "expected";
 
@@ -57,9 +57,9 @@ public class BuildArgumentByParameterNameTest
     // --arrange
     var actual = A.Fake<IBuildSession>();
     A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
-    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.Name).Key(key))).Returns(expected.ToBuildResult());
+    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.Name).Tag(tag))).Returns(expected.ToBuildResult());
 
-    var target = new BuildArgumentByParameterName(key);
+    var target = new BuildArgumentByParameterName(tag);
 
     // --act
     target.Process(actual);

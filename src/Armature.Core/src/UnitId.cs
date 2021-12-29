@@ -12,24 +12,24 @@ namespace Armature.Core;
 public readonly struct UnitId : ILogString
 {
   public readonly object? Kind;
-  public readonly object? Key;
+  public readonly object? Tag;
 
   [DebuggerStepThrough]
-  public UnitId(object? kind, object? key)
+  public UnitId(object? kind, object? tag)
   {
-    if(kind is null && key is null) throw new ArgumentNullException(nameof(kind), $"Either {nameof(kind)} or {nameof(key)} should be provided");
+    if(kind is null && tag is null) throw new ArgumentNullException(nameof(kind), $"Either {nameof(kind)} or {nameof(tag)} should be provided");
 
     Kind = kind;
-    Key  = key;
+    Tag  = tag;
   }
 
   public override string ToString()      => ToHoconString();
-  public          string ToHoconString() => $"{{ kind: {Kind.ToHoconString()}, key: {Key.ToHoconString()}}}";
+  public          string ToHoconString() => $"{{ kind: {Kind.ToHoconString()}, tag: {Tag.ToHoconString()}}}";
 
   #region Equality implementation
 
   [DebuggerStepThrough]
-  public bool Equals(UnitId other) => Equals(Kind, other.Kind) && Equals(Key, other.Key);
+  public bool Equals(UnitId other) => Equals(Kind, other.Kind) && Equals(Tag, other.Tag);
 
   [DebuggerStepThrough]
   public override bool Equals(object obj) => obj is UnitId other && Equals(other);
@@ -40,7 +40,7 @@ public readonly struct UnitId : ILogString
   {
     unchecked
     {
-      return ((Kind is not null ? Kind.GetHashCode() : 0) * 397) ^ (Key is not null ? Key.GetHashCode() : 0);
+      return ((Kind is not null ? Kind.GetHashCode() : 0) * 397) ^ (Tag is not null ? Tag.GetHashCode() : 0);
     }
   }
 

@@ -88,7 +88,7 @@ public class WeightOf
     /// Because the first one is a "personal" registration whereas the second one will be applied to all units building
     /// in the context of "MyType".
     ///
-    /// Note that provided sample is "synthetic" see <see cref="SpecialKey"/> and <see cref="SkipWhileUnit"/> for details.
+    /// Note that provided sample is "synthetic" see <see cref="SpecialTag"/> and <see cref="SkipWhileUnit"/> for details.
     /// </summary>
     public static short IfFirstUnit { get; protected set; } = (short) (Neutral + Step);
   }

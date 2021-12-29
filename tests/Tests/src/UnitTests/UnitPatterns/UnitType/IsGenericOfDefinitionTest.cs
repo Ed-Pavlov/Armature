@@ -10,44 +10,44 @@ namespace Tests.UnitTests.UnitPatterns.UnitType;
 public class IsGenericOfDefinitionTest
 {
   [Test]
-  public void should_match_open_generic_type([Values(null, "key")] object? key)
+  public void should_match_open_generic_type([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = new UnitId(typeof(List<>), key);
-    var target = new IsGenericOfDefinition(typeof(List<>), key);
+    var unitId = new UnitId(typeof(List<>), tag);
+    var target = new IsGenericOfDefinition(typeof(List<>), tag);
 
     // --assert
     target.Matches(unitId).Should().BeTrue();
   }
 
   [Test]
-  public void should_match_generic_type([Values(null, "key")] object? key)
+  public void should_match_generic_type([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = new UnitId(typeof(List<int>), key);
-    var target = new IsGenericOfDefinition(typeof(List<>), key);
+    var unitId = new UnitId(typeof(List<int>), tag);
+    var target = new IsGenericOfDefinition(typeof(List<>), tag);
 
     // --assert
     target.Matches(unitId).Should().BeTrue();
   }
 
   [Test]
-  public void should_match_not_equal_open_generic_type([Values(null, "key")] object? key)
+  public void should_match_not_equal_open_generic_type([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = new UnitId(typeof(IList<>), key);
-    var target = new IsGenericOfDefinition(typeof(List<>), key);
+    var unitId = new UnitId(typeof(IList<>), tag);
+    var target = new IsGenericOfDefinition(typeof(List<>), tag);
 
     // --assert
     target.Matches(unitId).Should().BeFalse();
   }
 
   [Test]
-  public void should_match_if_key_is_any([Values(null, "key")] object? key)
+  public void should_match_if_tag_is_any([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = new UnitId(typeof(List<int>), key);
-    var target = new IsGenericOfDefinition(typeof(List<>), SpecialKey.Any);
+    var unitId = new UnitId(typeof(List<int>), tag);
+    var target = new IsGenericOfDefinition(typeof(List<>), SpecialTag.Any);
 
     // --assert
     target.Matches(unitId).Should().BeTrue();
@@ -64,11 +64,11 @@ public class IsGenericOfDefinitionTest
   }
 
   [Test]
-  public void should_equal_if_arguments_equal([Values(null, "key")] object? key)
+  public void should_equal_if_arguments_equal([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var target1 = new IsGenericOfDefinition(typeof(List<>), key);
-    var target2 = new IsGenericOfDefinition(typeof(List<>), key);
+    var target1 = new IsGenericOfDefinition(typeof(List<>), tag);
+    var target2 = new IsGenericOfDefinition(typeof(List<>), tag);
 
     // --assert
     target1.Equals(target2).Should().BeTrue();
@@ -76,11 +76,11 @@ public class IsGenericOfDefinitionTest
   }
 
   [Test]
-  public void should_not_equal_if_type_differ([Values(null, "key")] object? key)
+  public void should_not_equal_if_type_differ([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var target1 = new IsGenericOfDefinition(typeof(IList<>), key);
-    var target2 = new IsGenericOfDefinition(typeof(List<>), key);
+    var target1 = new IsGenericOfDefinition(typeof(IList<>), tag);
+    var target2 = new IsGenericOfDefinition(typeof(List<>), tag);
 
     // --assert
     target1.Equals(target2).Should().BeFalse();
@@ -88,11 +88,11 @@ public class IsGenericOfDefinitionTest
   }
 
   [Test]
-  public void should_not_equal_if_key_differ([Values(null, "key")] object? key)
+  public void should_not_equal_if_tag_differ([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var target1 = new IsGenericOfDefinition(typeof(List<>), key);
-    var target2 = new IsGenericOfDefinition(typeof(List<>), "different key");
+    var target1 = new IsGenericOfDefinition(typeof(List<>), tag);
+    var target2 = new IsGenericOfDefinition(typeof(List<>), "different tag");
 
     // --assert
     target1.Equals(target2).Should().BeFalse();
@@ -100,10 +100,10 @@ public class IsGenericOfDefinitionTest
   }
 
   [Test]
-  public void should_check_argument([Values(null, "key")] object? key)
+  public void should_check_argument([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var actual = () => new IsGenericOfDefinition(typeof(List<int>), key);
+    var actual = () => new IsGenericOfDefinition(typeof(List<int>), tag);
 
     // --assert
     actual.Should().ThrowExactly<ArgumentException>().WithParameterName("genericTypeDefinition").WithMessage("Should be an open generic type*");

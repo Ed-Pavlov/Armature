@@ -24,7 +24,7 @@ namespace Tests.Extensibility.MaybePropagation
        .AsCreated<Reader>();
       builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>();
 
-      var actual = builder.Build<Maybe<IReader>>();
+      var actual = builder.Build<Maybe<IReader>>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -46,7 +46,7 @@ namespace Tests.Extensibility.MaybePropagation
 
       builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>();
 
-      var actual = builder.Build<Maybe<IReader>>();
+      var actual = builder.Build<Maybe<IReader>>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -72,21 +72,21 @@ namespace Tests.Extensibility.MaybePropagation
     }
 
     [Test]
-    public void should_build_maybe_use_key_for_dependency()
+    public void should_build_maybe_use_tag_for_dependency()
     {
       var builder = CreateTarget();
 
-      const string key = "key";
-      builder.Treat<Maybe<Section>>(key).AsInstance(new Section().ToMaybe());
+      const string tag = "tag";
+      builder.Treat<Maybe<Section>>(tag).AsInstance(new Section().ToMaybe());
 
       builder
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
        .AsCreated<Reader>();
 
-      builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>(key);
+      builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>(tag);
 
-      var actual = builder.Build<Maybe<IReader>>();
+      var actual = builder.Build<Maybe<IReader>>()!;
 
       // --assert
       actual.HasValue.Should().BeTrue();
@@ -94,26 +94,26 @@ namespace Tests.Extensibility.MaybePropagation
     }
 
     [Test]
-    public void should_build_maybe_use_inject_point_id_as_key_for_dependency()
+    public void should_build_maybe_use_inject_point_id_as_tag_for_dependency()
     {
       var builder = CreateTarget();
 
-      const string key = Reader1.InjectPointId;
-      builder.Treat<Maybe<Section>>(key).AsInstance(new Section().ToMaybe());
+      const string tag = Reader1.InjectPointId;
+      builder.Treat<Maybe<Section>>(tag).AsInstance(new Section().ToMaybe());
 
       builder
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
        .AsCreated<Reader1>()
-       .UsingArguments(ForParameter.OfType<Section>().UseInjectPointIdAsKey());
+       .UsingArguments(ForParameter.OfType<Section>().UseInjectPointIdAsTag());
 
       builder
        .Building<Reader1>()
-       .Treat<Section>(SpecialKey.Any)
+       .Treat<Section>(SpecialTag.Any)
        .AsMaybeValueOf()
-       .As<Maybe<Section>>(SpecialKey.Propagate);
+       .As<Maybe<Section>>(SpecialTag.Propagate);
 
-      var actual = builder.Build<Maybe<IReader>>();
+      var actual = builder.Build<Maybe<IReader>>()!;
 
       // --assert
       actual.HasValue.Should().BeTrue();

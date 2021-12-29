@@ -12,12 +12,11 @@ public abstract record InjectPointByTypePatternBase : IUnitPattern, ILogString
   private readonly IUnitPattern _typePattern;
 
   [DebuggerStepThrough]
-  protected InjectPointByTypePatternBase(IUnitPattern typePattern)
-    => _typePattern = typePattern ?? throw new ArgumentNullException(nameof(typePattern));
+  protected InjectPointByTypePatternBase(IUnitPattern typePattern) => _typePattern = typePattern ?? throw new ArgumentNullException(nameof(typePattern));
 
   public bool Matches(UnitId unitId)
   {
-    if(unitId.Key != SpecialKey.Argument) return false;
+    if(unitId.Tag != SpecialTag.Argument) return false;
 
     var type = GetInjectPointType(unitId);
     return type is not null && _typePattern.Matches(new UnitId(type, null));

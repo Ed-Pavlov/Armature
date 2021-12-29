@@ -40,7 +40,7 @@ public partial class BuildSession
     _mainBuildChainPatternTree = patternTree ?? throw new ArgumentNullException(nameof(patternTree));
     _auxPatternTree            = auxPatternTree;
     _parentBuilders            = parentBuilders;
-    _buildChainList                = new List<UnitId>(4);
+    _buildChainList            = new List<UnitId>(4);
   }
 
   /// <summary>
@@ -62,6 +62,7 @@ public partial class BuildSession
   private T Build<T>(UnitId unitId, Func<BuildChain, WeightedBuildActionBag?, T> build)
   {
     T result;
+
     using(Log.NamedBlock(LogLevel.Info, "Build"))
     {
       Log.WriteLine(LogLevel.Verbose, () => $"UnitId = {unitId.ToHoconString()}");
@@ -73,7 +74,7 @@ public partial class BuildSession
 
       using(Log.NamedBlock(LogLevel.Verbose, GatherBuildActions))
       {
-        Log.WriteLine(LogLevel.Verbose, () => $"Context = {_buildChainList.ToHoconString()}" );
+        Log.WriteLine(LogLevel.Verbose, () => $"Context = {_buildChainList.ToHoconString()}");
 
         _mainBuildChainPatternTree.GatherBuildActions(buildChain, out actions, 0);
         _auxPatternTree?.GatherBuildActions(buildChain, out auxActions, 0);
@@ -82,13 +83,16 @@ public partial class BuildSession
       var actionBag = actions.Merge(auxActions);
       LogGatheredActions(actionBag);
 
-      try {
-        result = build(buildChain , actionBag);
+      try
+      {
+        result = build(buildChain, actionBag);
       }
-      finally {
+      finally
+      {
         _buildChainList.RemoveAt(_buildChainList.Count - 1);
       }
     }
+
     Log.WriteLine(LogLevel.Info, "");
     return result;
   }
@@ -165,12 +169,15 @@ public partial class BuildSession
   private void BuildActionProcess(IBuildAction buildAction, Interface buildSession)
   {
     using(Log.NamedBlock(LogLevel.Verbose, () => LogConst.BuildAction_Process(buildAction)))
-      try {
+      try
+      {
         buildAction.Process(buildSession);
       }
-      catch(Exception exc) {
+      catch(Exception exc)
+      {
         using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_Process(buildAction)}.Exception: "))
           exc.WriteToLog();
+
         AddBuildSessionData(exc); // add build session data after logging the exception in order that data don't pollute the log, this data is already there
         throw;
       }
@@ -181,12 +188,16 @@ public partial class BuildSession
     using(Log.NamedBlock(LogLevel.Trace, () => LogConst.BuildAction_PostProcess(buildAction)))
     {
       Log.WriteLine(LogLevel.Trace, () => $"Build.Result = {buildSession.BuildResult.ToLogString()}");
-      try {
+
+      try
+      {
         buildAction.PostProcess(buildSession);
       }
-      catch(Exception exc) {
+      catch(Exception exc)
+      {
         using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_PostProcess(buildAction)}.Exception: "))
           exc.WriteToLog();
+
         AddBuildSessionData(exc); // add build session data after logging the exception in order that data don't pollute the log, this data is already there
         throw;
       }
@@ -203,6 +214,7 @@ public partial class BuildSession
       try
       {
         var parentBuilderNumber = i + 1;
+
         using(Log.NamedBlock(LogLevel.Info, () => $"{ParentBuilder} #{parentBuilderNumber}".Quote()))
         {
           var buildResult = _parentBuilders[i].BuildUnit(unitId, _auxPatternTree);
@@ -214,6 +226,7 @@ public partial class BuildSession
       catch(Exception exc)
       {
         exceptions.Add(exc); // it's already written to the log by the parent builder, so just collect it
+
         // continue
       }
 

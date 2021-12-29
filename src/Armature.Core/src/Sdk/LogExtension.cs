@@ -12,7 +12,7 @@ namespace Armature.Core.Sdk;
 public static class LogExtension
 {
   private static readonly HashSet<char> BadCharacters = new(
-    new[] { '$', '"', '{', '}', '[', ']', ':', '=', ',', '+', '#', '`', '^', '?', '!', '@', '*', '&', '/', '\\', ' ', '.' });
+    new[] {'$', '"', '{', '}', '[', ']', ':', '=', ',', '+', '#', '`', '^', '?', '!', '@', '*', '&', '/', '\\', ' ', '.'});
 
   public static string GetFullName(this Type type)
     => type.IsGenericType
@@ -83,6 +83,7 @@ public static class LogExtension
       () =>
       {
         Log.Write(LogLevel.Info, propertyName);
+
         if(actions is null)
           Log.WriteLine(logLevel, "null");
         else if(actions.Count == 1 && actions.Values.First().Count == 1) // a single action is found
@@ -101,7 +102,8 @@ public static class LogExtension
 
               foreach(var action in actionsList)
                 WriteAction(stage, action);
-            }}
+            }
+          }
       });
 
     void WriteAction(object stage, Weighted<IBuildAction> weightedAction)
@@ -129,6 +131,7 @@ public static class LogExtension
         WriteText(LogLevel.Info, "StackTrace", exception.StackTrace);
 
         var data = exception.Data.Cast<DictionaryEntry>().Where(entry => !ExceptionConst.Logged.Equals(entry.Key)).ToArray();
+
         if(data.Length > 0)
           using(Log.NamedBlock(LogLevel.Info, "Data: "))
             foreach(var entry in data)

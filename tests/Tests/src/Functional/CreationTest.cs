@@ -128,9 +128,9 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_creation_strategy_registered_with_key()
+    public void should_use_creation_strategy_registered_with_tag()
     {
-      const string key      = "key";
+      const string tag      = "tag";
       var          expected = new Subject();
 
       // --arrange
@@ -141,21 +141,21 @@ namespace Tests.Functional
        .AsIs();
 
       target
-       .Treat<Subject>(key)
+       .Treat<Subject>(tag)
        .AsCreatedWith(_ => expected);
 
 
       // --act
-      var actual = target.UsingKey(key).Build<Subject>();
+      var actual = target.UsingTag(tag).Build<Subject>();
 
       // --assert
       actual.Should().Be(expected);
     }
 
     [Test]
-    public void should_pass_key_to_creation_strategy()
+    public void should_pass_tag_to_creation_strategy()
     {
-      const string key              = "key";
+      const string tag              = "tag";
       var          createdByFactory = new Subject();
 
       // --arrange
@@ -163,10 +163,10 @@ namespace Tests.Functional
 
       target
        .Treat<ISubject1>()
-       .As<Subject>(key);
+       .As<Subject>(tag);
 
       target
-       .Treat<Subject>(key)
+       .Treat<Subject>(tag)
        .AsIs();
 
       target
@@ -200,21 +200,21 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_runtime_parameters_when_build_with_key()
+    public void should_use_runtime_parameters_when_build_with_tag()
     {
-      const string key      = "key";
+      const string tag      = "tag";
       const int    expected = 98347;
 
       // --arrange
       var target = CreateTarget();
 
       target
-       .Treat<Subject>(key)
+       .Treat<Subject>(tag)
        .AsIs()
        .InjectInto(Constructor.WithParameters<int>());
 
       // --act
-      var actual = target.UsingKey(key).Build<Subject>(expected)!;
+      var actual = target.UsingTag(tag).Build<Subject>(expected)!;
 
       // --assert
       actual.Value.Should().Be(expected);

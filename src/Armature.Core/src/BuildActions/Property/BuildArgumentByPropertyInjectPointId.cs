@@ -8,7 +8,7 @@ namespace Armature.Core;
 
 /// <summary>
 /// Builds an argument for the property marked with <see cref="InjectAttribute"/> using <see cref="InjectAttribute.InjectionPointId"/>
-/// as the <see cref="UnitId.Key"/>
+/// as the <see cref="UnitId.Tag"/>
 /// </summary>
 public record BuildArgumentByPropertyInjectPointId : IBuildAction
 {

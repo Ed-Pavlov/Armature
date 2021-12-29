@@ -37,8 +37,8 @@ public static class BuildChainPatternTreeExtension
 
     if(parentNode.Children.Contains(node))
       throw new ArmatureException(exceptionMessage ?? $"Node '{node}' is already in the tree.")
-       .AddData($"{nameof(parentNode)}", parentNode)
-       .AddData($"{nameof(node)}", node);
+           .AddData($"{nameof(parentNode)}", parentNode)
+           .AddData($"{nameof(node)}", node);
 
     parentNode.Children.Add(node);
     return node;

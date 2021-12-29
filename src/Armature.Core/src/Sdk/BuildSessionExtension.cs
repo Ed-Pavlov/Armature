@@ -10,19 +10,19 @@ public static class BuildSessionExtension
 {
   /// <summary>
   /// Builds a <see cref="ConstructorInfo" /> for a <see creaf="type" /> by building a unit represented
-  /// by <see cref="UnitId" />(<paramref name="type" />, <see cref="SpecialKey.Constructor" />) via current build session.
+  /// by <see cref="UnitId" />(<paramref name="type" />, <see cref="SpecialTag.Constructor" />) via current build session.
   /// </summary>
   public static ConstructorInfo GetConstructorOf(this IBuildSession buildSession, Type type)
   {
     if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
     if(type is null) throw new ArgumentNullException(nameof(type));
 
-    var result = buildSession.BuildUnit(new UnitId(type, SpecialKey.Constructor));
+    var result = buildSession.BuildUnit(new UnitId(type, SpecialTag.Constructor));
 
     if(!result.HasValue)
       throw new ArmatureException($"Constructor for type {type} is not found, check registrations for this type or default.");
 
-    return (ConstructorInfo)result.Value!;
+    return (ConstructorInfo) result.Value!;
   }
 
   public static object?[] BuildArgumentsForMethod(this IBuildSession buildSession, ParameterInfo[] parameters)
@@ -31,7 +31,7 @@ public static class BuildSessionExtension
     if(parameters is null) throw new ArgumentNullException(nameof(parameters));
     if(parameters.Length == 0) throw new ArgumentException("At least one parameter should be provided", nameof(parameters));
 
-    return (object?[])buildSession.BuildUnit(new UnitId(parameters, SpecialKey.Argument)).Value!;
+    return (object?[]) buildSession.BuildUnit(new UnitId(parameters, SpecialTag.Argument)).Value!;
   }
 
   /// <summary>
@@ -39,7 +39,7 @@ public static class BuildSessionExtension
   /// </summary>
   public static object? BuildPropertyArgument(this IBuildSession buildSession, PropertyInfo propertyInfo)
   {
-    var buildResult = buildSession.BuildUnit(new UnitId(propertyInfo, SpecialKey.Argument));
+    var buildResult = buildSession.BuildUnit(new UnitId(propertyInfo, SpecialTag.Argument));
 
     return buildResult.HasValue
              ? buildResult.Value

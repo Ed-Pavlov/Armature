@@ -16,7 +16,7 @@ namespace Tests.UnitTests.BuildActions;
 public class BuildListArgumentForMethodParameterTest
 {
   [Test]
-  public void should_build_arguments([Values(null, "key")] string key)
+  public void should_build_arguments([Values(null, "tag")] string tag)
   {
     var expected      = new List<int>{398, 68};
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.Name == "list");
@@ -25,10 +25,10 @@ public class BuildListArgumentForMethodParameterTest
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
 
-    var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(Unit.IsType<int>().Key(key)));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(Unit.IsType<int>().Tag(tag)));
     buildUnitCall.Returns(expected.Select(_ => _.ToBuildResult().WithWeight(_)).ToList());
 
-    var target = new BuildListArgumentForMethodParameter(key);
+    var target = new BuildListArgumentForMethodParameter(tag);
 
     // --act
     target.Process(buildSession);
@@ -40,19 +40,19 @@ public class BuildListArgumentForMethodParameterTest
   }
 
   [Test]
-  public void should_propagate_unit_key([Values(null, "key")] string key)
+  public void should_propagate_unit_tag([Values(null, "tag")] string tag)
   {
     var expected      = new List<int>{398, 68};
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.Name == "list");
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Unit.Is(parameterInfo).Key(key).ToBuildChain());
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.Is(parameterInfo).Tag(tag).ToBuildChain());
 
-    var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(Unit.IsType<int>().Key(key)));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(Unit.IsType<int>().Tag(tag)));
     buildUnitCall.Returns(expected.Select(_ => _.ToBuildResult().WithWeight(_)).ToList());
 
-    var target = new BuildListArgumentForMethodParameter(SpecialKey.Propagate);
+    var target = new BuildListArgumentForMethodParameter(SpecialTag.Propagate);
 
     // --act
     target.Process(buildSession);
@@ -66,15 +66,15 @@ public class BuildListArgumentForMethodParameterTest
   [Test]
   public void should_not_build_if_unit_is_not_collection(
       [ValueSource(nameof(not_collection_types))] ParameterInfo parameterInfo,
-      [Values(null, "key")]                       object?       key)
+      [Values(null, "tag")]                       object?       tag)
   {
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Unit.Is(parameterInfo).Key(key).ToBuildChain());
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.Is(parameterInfo).Tag(tag).ToBuildChain());
 
-    var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(Unit.IsType<int>().Key(key)));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(Unit.IsType<int>().Tag(tag)));
 
-    var target = new BuildListArgumentForMethodParameter(SpecialKey.Propagate);
+    var target = new BuildListArgumentForMethodParameter(SpecialTag.Propagate);
 
     // --act
     target.Process(buildSession);

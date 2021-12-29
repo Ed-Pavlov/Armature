@@ -17,6 +17,7 @@ public class IfFirstUnit : BuildChainPatternByUnitBase
   public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight)
   {
     actionBag = null;
+
     using(Log.NamedBlock(LogLevel.Verbose, nameof(IfFirstUnit)))
     {
       Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight}");

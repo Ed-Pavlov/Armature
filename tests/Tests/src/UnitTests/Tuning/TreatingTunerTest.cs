@@ -11,37 +11,37 @@ namespace Tests.UnitTests.Tuning;
 public class TreatingTunerTest
 {
   [Test]
-  public void As([Values(null, "key")] string key)
+  public void As([Values(null, "tag")] string tag)
   {
     // --arrange
     var actual = new Util.TestBuildChainPattern();
     var target = new TreatingTuner<IDisposable>(actual);
 
     // --act
-    target.As(typeof(Stream), key);
+    target.As(typeof(Stream), tag);
 
     // --assert
-    actual.BuildActions.Should().BeEquivalentTo(Util.CreateBag(BuildStage.Create, new RedirectType(typeof(Stream), key)));
+    actual.BuildActions.Should().BeEquivalentTo(Util.CreateBag(BuildStage.Create, new RedirectType(typeof(Stream), tag)));
   }
   [Test]
-  public void AsT([Values(null, "key")] string key)
+  public void AsT([Values(null, "tag")] string tag)
   {
     // --arrange
     var actual = new Util.TestBuildChainPattern();
     var target = new TreatingTuner<IDisposable>(actual);
 
     // --act
-    target.As<Stream>(key);
+    target.As<Stream>(tag);
 
     // --assert
-    actual.BuildActions.Should().BeEquivalentTo(Util.CreateBag(BuildStage.Create, new RedirectType(typeof(Stream), key)));
+    actual.BuildActions.Should().BeEquivalentTo(Util.CreateBag(BuildStage.Create, new RedirectType(typeof(Stream), tag)));
   }
 
   [Test]
-  public void AsCreated([Values(null, "key")] string key)
+  public void AsCreated([Values(null, "tag")] string tag)
   {
-    var expectedBuildActions = Util.CreateBag(BuildStage.Create, new RedirectType(typeof(MemoryStream), key));
-    var expectedChildNode = new IfFirstUnit(new UnitPattern(typeof(MemoryStream), key))
+    var expectedBuildActions = Util.CreateBag(BuildStage.Create, new RedirectType(typeof(MemoryStream), tag));
+    var expectedChildNode = new IfFirstUnit(new UnitPattern(typeof(MemoryStream), tag))
      .UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
 
     // --arrange
@@ -49,7 +49,7 @@ public class TreatingTunerTest
     var target = new TreatingTuner<IDisposable>(actual);
 
     // --act
-    target.AsCreated(typeof(MemoryStream), key);
+    target.AsCreated(typeof(MemoryStream), tag);
 
     // // --assert
     actual.BuildActions.Should().BeEquivalentTo(expectedBuildActions);
@@ -57,10 +57,10 @@ public class TreatingTunerTest
   }
 
   [Test]
-  public void AsCreatedT([Values(null, "key")] string key)
+  public void AsCreatedT([Values(null, "tag")] string tag)
   {
-    var expectedBuildActions = Util.CreateBag(BuildStage.Create, new RedirectType(typeof(MemoryStream), key));
-    var expectedChildNode = new IfFirstUnit(new UnitPattern(typeof(MemoryStream), key))
+    var expectedBuildActions = Util.CreateBag(BuildStage.Create, new RedirectType(typeof(MemoryStream), tag));
+    var expectedChildNode = new IfFirstUnit(new UnitPattern(typeof(MemoryStream), tag))
      .UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
 
     // --arrange
@@ -68,7 +68,7 @@ public class TreatingTunerTest
     var target = new TreatingTuner<IDisposable>(actual);
 
     // --act
-    target.AsCreated<MemoryStream>(key);
+    target.AsCreated<MemoryStream>(tag);
 
     // // --assert
     actual.BuildActions.Should().BeEquivalentTo(expectedBuildActions);
@@ -76,7 +76,7 @@ public class TreatingTunerTest
   }
 
   [Test]
-  public void AsInstance([Values(null, "key")] string key)
+  public void AsInstance([Values(null, "tag")] string tag)
   {
     var expectedInstance = new MemoryStream();
     var expectedBuildActions = Util.CreateBag(BuildStage.Cache, new Instance<IDisposable>(expectedInstance));
@@ -93,7 +93,7 @@ public class TreatingTunerTest
   }
 
   [Test]
-  public void AsIs([Values(null, "key")] string key)
+  public void AsIs([Values(null, "tag")] string tag)
   {
     var expectedBuildActions = Util.CreateBag(BuildStage.Create, Default.CreationBuildAction);
 
@@ -109,7 +109,7 @@ public class TreatingTunerTest
   }
 
   [Test]
-  public void AsCreatedWith([Values(null, "key")] string key)
+  public void AsCreatedWith([Values(null, "tag")] string tag)
   {
     // ReSharper disable once ConvertToLocalFunction
     Func<IBuildSession, IDisposable> factoryMethod = _ => new MemoryStream();

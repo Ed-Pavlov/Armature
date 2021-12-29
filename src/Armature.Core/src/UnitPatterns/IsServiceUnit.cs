@@ -5,7 +5,7 @@ namespace Armature.Core;
 
 public record IsServiceUnit : IUnitPattern
 {
-  public bool Matches(UnitId unitId) => unitId.Key is SpecialKey;
+  public bool Matches(UnitId unitId) => unitId.Tag is SpecialTag;
 
   [DebuggerStepThrough]
   public override string ToString() => nameof(IsServiceUnit);

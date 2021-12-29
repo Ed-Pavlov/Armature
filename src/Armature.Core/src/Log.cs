@@ -86,8 +86,7 @@ public static class Log
   public static void WriteLine<T1, T2>(LogLevel logLevel, string format, T1 p1, T2 p2) => WriteLine(logLevel, string.Format(format, p1, p2));
 
   [StringFormatMethod("format")]
-  public static void WriteLine<T1, T2, T3>(LogLevel logLevel, string format, T1 p1, T2 p2, T3 p3)
-    => WriteLine(logLevel, string.Format(format, p1, p2, p3));
+  public static void WriteLine<T1, T2, T3>(LogLevel logLevel, string format, T1 p1, T2 p2, T3 p3) => WriteLine(logLevel, string.Format(format, p1, p2, p3));
 
   [StringFormatMethod("format")]
   public static void WriteLine(LogLevel logLevel, string format, params object[] parameters) => WriteLine(logLevel, string.Format(format, parameters));
@@ -234,6 +233,5 @@ public static class Log
     }
   }
 }
-
 
 public enum LogLevel { None = 0, Info, Verbose, Trace }

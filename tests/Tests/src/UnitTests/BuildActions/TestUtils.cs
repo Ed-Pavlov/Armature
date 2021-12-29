@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Armature.Core;
 
 namespace Tests.UnitTests.BuildActions;
@@ -14,5 +13,5 @@ public static class Kind
 {
   public static UnitId Is<T>()               => new UnitId(typeof(T), null);
   public static UnitId Is(object?      kind) => new UnitId(kind, null);
-  public static UnitId Key(this UnitId unitId, object? key) => new UnitId(unitId.Kind, key);
+  public static UnitId Tag(this UnitId unitId, object? tag) => new UnitId(unitId.Kind, tag);
 }

@@ -12,7 +12,7 @@ namespace Armature.Core;
 /// </summary>
 public class Builder : BuildChainPatternTree, IBuilder
 {
-  private readonly object[]   _buildStages;
+  private readonly object[]    _buildStages;
   private readonly IBuilder[]? _parentBuilders;
 
   public Builder() => throw new ArgumentException("Provide stages");
@@ -36,7 +36,8 @@ public class Builder : BuildChainPatternTree, IBuilder
     if(buildStages.Length != buildStages.Distinct().Count()) throw new ArgumentException("Should not contain duplicate values", nameof(buildStages));
     if(parentBuilders?.Any(_ => _ is null) == true) throw new ArgumentException("Should not contain null values", nameof(parentBuilders));
 
-    _buildStages         = buildStages;
+    _buildStages = buildStages;
+
     // ReSharper disable once CoVariantArrayConversion
     _parentBuilders = parentBuilders is null || parentBuilders.Length == 0 ? null : parentBuilders;
   }
@@ -47,7 +48,6 @@ public class Builder : BuildChainPatternTree, IBuilder
   /// <param name="unitId">The id of the unit to build.</param>
   /// <param name="auxPatternTree">Additional build chain pattern tree containing build actions to build a unit or its dependencies.</param>
   /// <returns>Returns build result with <see cref="BuildResult.HasValue"/> set to false if unit is not built.</returns>
-
   public BuildResult BuildUnit(UnitId unitId, IBuildChainPattern? auxPatternTree = null)
     => new BuildSession(_buildStages, this, auxPatternTree, _parentBuilders).BuildUnit(unitId);
 

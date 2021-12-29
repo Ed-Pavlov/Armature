@@ -9,7 +9,7 @@ namespace Armature.Core;
 /// </summary>
 public record IsParameterInfo : IUnitPattern
 {
-  public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Argument && unitId.Kind is ParameterInfo;
+  public bool Matches(UnitId unitId) => unitId.Tag == SpecialTag.Argument && unitId.Kind is ParameterInfo;
 
   [DebuggerStepThrough]
   public override string ToString() => nameof(IsParameterInfo);

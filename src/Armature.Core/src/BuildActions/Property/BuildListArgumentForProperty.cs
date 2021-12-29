@@ -9,7 +9,7 @@ namespace Armature.Core;
 public record BuildListArgumentForProperty : BuildListArgumentBase
 {
   public BuildListArgumentForProperty() { }
-  public BuildListArgumentForProperty(object? key) : base(key) { }
+  public BuildListArgumentForProperty(object? tag) : base(tag) { }
 
   protected override Type GetArgumentType(UnitId unitId) => ((PropertyInfo) unitId.Kind!).PropertyType;
 }

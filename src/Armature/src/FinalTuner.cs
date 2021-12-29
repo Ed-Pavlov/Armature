@@ -9,7 +9,8 @@ namespace Armature;
 
 public class FinalTuner : TunerBase
 {
-  [PublicAPI] protected int Weight;
+  [PublicAPI]
+  protected int Weight;
 
   [DebuggerStepThrough]
   public FinalTuner(IBuildChainPattern parentNode) : base(parentNode) { }
@@ -20,11 +21,12 @@ public class FinalTuner : TunerBase
   public FinalTuner UsingArguments(params object[] arguments)
   {
     if(arguments is null || arguments.Length == 0) throw new ArgumentNullException(nameof(arguments));
+
     if(arguments.Any(arg => arg is null))
       throw new ArgumentNullException(
-          nameof(arguments),
-          $"Argument should be either {nameof(IArgumentTuner)} or a not null instance. "
-        + $"Use {nameof(ForParameter)} or custom {nameof(IArgumentTuner)} to provide null as an argument for a parameter.");
+        nameof(arguments),
+        $"Argument should be either {nameof(IArgumentTuner)} or a not null instance. "
+      + $"Use {nameof(ForParameter)} or custom {nameof(IArgumentTuner)} to provide null as an argument for a parameter.");
 
     foreach(var argument in arguments)
       if(argument is IArgumentTuner argumentTuner)
@@ -34,7 +36,10 @@ public class FinalTuner : TunerBase
       else
         ParentNode
          .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-         .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(argument.GetType()), WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability + Weight))
+         .GetOrAddNode(
+            new IfFirstUnit(
+              new IsAssignableFromType(argument.GetType()),
+              WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability + Weight))
          .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
 
     return this;
@@ -47,6 +52,7 @@ public class FinalTuner : TunerBase
 
     foreach(var injectPointTuner in propertyIds)
       injectPointTuner.Tune(ParentNode, Weight);
+
     return this;
   }
 

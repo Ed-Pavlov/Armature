@@ -14,10 +14,10 @@ public class CanBeInstantiatedTest
   public void should_be_true_for_normal_type(
     [Values(typeof(int), typeof(string), typeof(MemoryStream), typeof(List<List<int[]>>))]
     Type unitType,
-    [Values(null, "key")] object? key)
+    [Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = new UnitId(unitType, key);
+    var unitId = new UnitId(unitType, tag);
     var target = new CanBeInstantiated();
 
     // --assert
@@ -26,12 +26,12 @@ public class CanBeInstantiatedTest
 
   [Test]
   public void should_be_false_for_interface_abstract_open_generic_and_no_type(
-    [Values(typeof(List<>), typeof(IDisposable), typeof(Stream), "not a type", null)] object? unitType, [Values(null, "key")] object? key)
+    [Values(typeof(List<>), typeof(IDisposable), typeof(Stream), "not a type", null)] object? unitType, [Values(null, "tag")] object? tag)
   {
-    if(unitType is null && key is null) Assert.Ignore("Invalid combination of arguments");
+    if(unitType is null && tag is null) Assert.Ignore("Invalid combination of arguments");
 
     // --arrange
-    var unitId = new UnitId(unitType, key);
+    var unitId = new UnitId(unitType, tag);
     var target = new CanBeInstantiated();
 
     // --assert

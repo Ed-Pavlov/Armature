@@ -10,14 +10,14 @@ namespace Tests.UnitTests.Tuning;
 public class CreationTunerTest
 {
   [Test]
-  public void should_add_default_creation_strategy([Values(null, "key")] object? key)
+  public void should_add_default_creation_strategy([Values(null, "tag")] object? tag)
   {
     var expectedType = typeof(IDisposable);
-    var expected     = new IfFirstUnit(new UnitPattern(expectedType, key)).UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
+    var expected     = new IfFirstUnit(new UnitPattern(expectedType, tag)).UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
 
     // --arrange
     var actual = new BuildChainPatternTree();
-    var target = new CreationTuner(actual, expectedType, key);
+    var target = new CreationTuner(actual, expectedType, tag);
 
     // --act
     target.CreatedByDefault();
@@ -27,14 +27,14 @@ public class CreationTunerTest
   }
 
   [Test]
-  public void should_add_reflection_creation_strategy([Values(null, "key")] object? key)
+  public void should_add_reflection_creation_strategy([Values(null, "tag")] object? tag)
   {
     var expectedType = typeof(IDisposable);
-    var expected     = new IfFirstUnit(new UnitPattern(expectedType, key)).UseBuildAction(new CreateByReflection(), BuildStage.Create);
+    var expected     = new IfFirstUnit(new UnitPattern(expectedType, tag)).UseBuildAction(new CreateByReflection(), BuildStage.Create);
 
     // --arrange
     var actual = new BuildChainPatternTree();
-    var target = new CreationTuner(actual, expectedType, key);
+    var target = new CreationTuner(actual, expectedType, tag);
 
     // --act
     target.CreatedByReflection();

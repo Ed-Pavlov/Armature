@@ -18,7 +18,7 @@ public abstract record InjectPointWithNamePatternBase : IUnitPattern, ILogString
     _name = name;
   }
 
-  public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Argument && GetInjectPointName(unitId) == _name;
+  public bool Matches(UnitId unitId) => unitId.Tag == SpecialTag.Argument && GetInjectPointName(unitId) == _name;
 
   protected abstract string? GetInjectPointName(UnitId unitId);
 

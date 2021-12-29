@@ -13,11 +13,11 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     public static TreatingTuner<T> TreatMaybeValue<T>(this TreatingTuner<Maybe<T>> treatingTuner)
     {
       var treat     = treatingTuner.GetInternals();
-      var uniqueKey = Guid.NewGuid();
-      treat.Member1.UseBuildAction(new BuildMaybeAction<T>(uniqueKey), BuildStage.Create);
+      var uniqueTag = Guid.NewGuid();
+      treat.Member1.UseBuildAction(new BuildMaybeAction<T>(uniqueTag), BuildStage.Create);
 
       return new TreatingTuner<T>(
-        treat.Member1.GetOrAddNode(new SkipTillUnit(new UnitPattern(typeof(T), uniqueKey), 0)));
+        treat.Member1.GetOrAddNode(new SkipTillUnit(new UnitPattern(typeof(T), uniqueTag), 0)));
     }
 
     /// <summary>

@@ -13,20 +13,21 @@ public class MethodArgumentTuner<T> : ArgumentTunerBase<T>
   public MethodArgumentTuner(Func<IBuildChainPattern, int, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
 
   /// <summary>
-  /// For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <paramref name="key" />
+  /// For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <paramref name="tag" />
   /// </summary>
-  public IArgumentTuner UseKey(object key)
+  public IArgumentTuner UseTag(object tag)
   {
-    if(key is null) throw new ArgumentNullException(nameof(key));
+    if(tag is null) throw new ArgumentNullException(nameof(tag));
 
-    return new ArgumentTuner((node, weight) => AddBuildChainPatternsTo(node, weight).UseBuildAction(new BuildArgumentByParameterType(key), BuildStage.Create));
+    return new ArgumentTuner((node, weight) => AddBuildChainPatternsTo(node, weight).UseBuildAction(new BuildArgumentByParameterType(tag), BuildStage.Create));
   }
 
   /// <summary>
-  /// For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute.InjectionPointId" /> as key
+  /// For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute.InjectionPointId" /> as a tag
   /// </summary>
-  public IArgumentTuner UseInjectPointIdAsKey()
-    => new ArgumentTuner((node, weight) => AddBuildChainPatternsTo(node, weight).UseBuildAction(Static.Of<BuildArgumentByParameterInjectPointId>(), BuildStage.Create));
+  public IArgumentTuner UseInjectPointIdAsTag()
+    => new ArgumentTuner(
+      (node, weight) => AddBuildChainPatternsTo(node, weight).UseBuildAction(Static.Of<BuildArgumentByParameterInjectPointId>(), BuildStage.Create));
 }
 
 /// <inheritdoc cref="MethodArgumentTuner{T}"/>

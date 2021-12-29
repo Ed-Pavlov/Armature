@@ -13,7 +13,7 @@ public record GetConstructorByInjectPointId : IBuildAction, ILogString
 {
   private readonly object? _injectPointId;
 
-  public GetConstructorByInjectPointId() {}
+  public GetConstructorByInjectPointId() { }
   public GetConstructorByInjectPointId(object? injectPointId) => _injectPointId = injectPointId;
 
   public void Process(IBuildSession buildSession)
@@ -21,6 +21,7 @@ public record GetConstructorByInjectPointId : IBuildAction, ILogString
     Log.WriteLine(LogLevel.Verbose, () => $"PointId = {_injectPointId.ToHoconString()}");
 
     var unitType = buildSession.BuildChain.TargetUnit.GetUnitType();
+
     var constructors = unitType
                       .GetConstructors()
                       .Where(

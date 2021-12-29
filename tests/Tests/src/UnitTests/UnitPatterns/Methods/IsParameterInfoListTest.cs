@@ -9,12 +9,12 @@ namespace Tests.UnitTests.UnitPatterns.Methods;
 public class IsParameterInfoListTest
 {
   [Test]
-  public void should_match_parameter_info_with_argument_key()
+  public void should_match_parameter_info_with_argument_tag()
   {
     var parameterInfoList = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters();
 
     // --arrange
-    var unitId = new UnitId(parameterInfoList, SpecialKey.Argument);
+    var unitId = new UnitId(parameterInfoList, SpecialTag.Argument);
     var target = new IsParameterInfoList();
 
     // --act
@@ -26,7 +26,7 @@ public class IsParameterInfoListTest
   public void should_not_match_unit_kind_other_than_parameter_info()
   {
     // --arrange
-    var unitId = new UnitId("parameterInfoList", SpecialKey.Argument);
+    var unitId = new UnitId("parameterInfoList", SpecialTag.Argument);
     var target = new IsParameterInfoList();
 
     // --act
@@ -35,12 +35,12 @@ public class IsParameterInfoListTest
   }
 
   [Test]
-  public void should_not_match_parameter_info_with_not_argument_key([Values(null, "key")] object? key)
+  public void should_not_match_parameter_info_with_not_argument_tag([Values(null, "tag")] object? tag)
   {
     var parameterInfoList = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters();
 
     // --arrange
-    var unitId = new UnitId(parameterInfoList, key);
+    var unitId = new UnitId(parameterInfoList, tag);
     var target = new IsParameterInfoList();
 
     // --act

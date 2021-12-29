@@ -6,8 +6,10 @@ public static class LogConst
 {
   public const string Matched = "Matched: {0}";
 
-  public static string BuildAction_Process(IBuildAction buildAction) => $"{buildAction.GetType().GetShortName().QuoteIfNeeded()}.{nameof(IBuildAction.Process)}";
-  public static string BuildAction_PostProcess(IBuildAction buildAction) => $"{buildAction.GetType().GetShortName().QuoteIfNeeded()}.{nameof(IBuildAction.PostProcess)}";
+  public static string BuildAction_Process(IBuildAction buildAction)
+    => $"{buildAction.GetType().GetShortName().QuoteIfNeeded()}.{nameof(IBuildAction.Process)}";
+  public static string BuildAction_PostProcess(IBuildAction buildAction)
+    => $"{buildAction.GetType().GetShortName().QuoteIfNeeded()}.{nameof(IBuildAction.PostProcess)}";
 
   public static void Log_Constructors(ConstructorInfo[] constructors)
     => Log.Execute(

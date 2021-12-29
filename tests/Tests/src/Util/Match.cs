@@ -9,9 +9,9 @@ namespace Tests.Util
   public static class Match
   {
     /// <summary>
-    /// Creates a type matcher with <see cref="UnitId" />(typeof(<typeparamref name="T" />), <paramref name="key" />)
+    /// Creates a type matcher with <see cref="UnitId" />(typeof(<typeparamref name="T" />), <paramref name="tag" />)
     /// </summary>
     [DebuggerStepThrough]
-    public static IUnitPattern Type<T>(object? key) => new UnitPattern(typeof(T), key);
+    public static IUnitPattern Type<T>(object? tag) => new UnitPattern(typeof(T), tag);
   }
 }

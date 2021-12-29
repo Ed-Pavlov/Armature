@@ -8,7 +8,7 @@ namespace Armature.Core;
 /// </summary>
 public record IsConstructor : IUnitPattern
 {
-  public bool Matches(UnitId unitId) => unitId.Key == SpecialKey.Constructor;
+  public bool Matches(UnitId unitId) => unitId.Tag == SpecialTag.Constructor;
 
   [DebuggerStepThrough]
   public override string ToString() => nameof(IsConstructor);

@@ -41,6 +41,7 @@ public record TryInOrder : IBuildAction, IEnumerable, ILogString
     var exceptions = new List<Exception>();
 
     Log.WriteLine(LogLevel.Verbose, "");
+
     foreach(var buildAction in _buildActions)
       try
       {
@@ -57,6 +58,7 @@ public record TryInOrder : IBuildAction, IEnumerable, ILogString
       {
         using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_Process(buildAction)}.Exception: "))
           exc.WriteToLog();
+
         exceptions.Add(exc);
       }
 

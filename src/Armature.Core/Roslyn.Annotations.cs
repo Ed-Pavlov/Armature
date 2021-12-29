@@ -1,4 +1,5 @@
 // ReSharper disable once CheckNamespace
+
 namespace System.Diagnostics.CodeAnalysis;
 
 [AttributeUsage(AttributeTargets.Parameter, Inherited = false)]

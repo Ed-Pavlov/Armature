@@ -16,27 +16,27 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
 {
   private static readonly object[] ParamContainer     = new object[1];
   private static readonly Type[]   TypeParamContainer = new Type[1];
-  private static readonly Type[]   IntTypeParam       = { typeof(int) };
+  private static readonly Type[]   IntTypeParam       = {typeof(int)};
 
-  private readonly object? _key;
+  private readonly object? _tag;
 
   [WithoutTest]
   [DebuggerStepThrough]
   protected BuildListArgumentBase() { }
   [DebuggerStepThrough]
-  protected BuildListArgumentBase(object? key) => _key = key;
+  protected BuildListArgumentBase(object? tag) => _tag = tag;
 
   public void Process(IBuildSession buildSession)
   {
     var unitUnderConstruction = buildSession.BuildChain.TargetUnit;
-    var effectiveKey          = _key.GetEffectiveKey(unitUnderConstruction.Key);
+    var effectiveTag          = _tag.GetEffectiveTag(unitUnderConstruction.Tag);
 
     var injectionPointType = GetArgumentType(unitUnderConstruction);
 
     if(IsCollection(injectionPointType, out var listType))
     {
       var collectionItemType = injectionPointType.GenericTypeArguments[0];
-      var arguments          = buildSession.BuildAllUnits(new UnitId(collectionItemType, effectiveKey));
+      var arguments          = buildSession.BuildAllUnits(new UnitId(collectionItemType, effectiveTag));
 
       var listInstance = CreateListInstance(listType, arguments.Count);
       FillList(listInstance, listType, collectionItemType, arguments.Select(_ => _.Entity));
@@ -100,7 +100,7 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
   }
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(BuildListArgumentBase)} {{ Key: {_key.ToHoconString()} }} }}";
+  public string ToHoconString() => $"{{ {nameof(BuildListArgumentBase)} {{ Tag: {_tag.ToHoconString()} }} }}";
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
 }

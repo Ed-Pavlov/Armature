@@ -16,7 +16,7 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(int))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialKey.Argument);
+    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
     var target = new IsParameterMarkedWithAttribute();
 
     // --act
@@ -30,7 +30,7 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(string))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialKey.Argument);
+    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
     var target = new IsParameterMarkedWithAttribute(Subject.StringPointId);
 
     // --act
@@ -44,7 +44,7 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(bool))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialKey.Argument);
+    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
     var target = new IsParameterMarkedWithAttribute(pointId);
 
     // --act
@@ -53,12 +53,12 @@ public class IsParameterMarkedWithAttributeTest
   }
 
   [Test]
-  public void should_not_match_if_key_is_not_argument([Values(null, "key")] object? key)
+  public void should_not_match_if_tag_is_not_argument([Values(null, "tag")] object? tag)
   {
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(string))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, key);
+    var unitId = new UnitId(parameterInfo, tag);
     var target = new IsParameterMarkedWithAttribute(Subject.StringPointId);
 
     // --act

@@ -9,14 +9,14 @@ namespace Armature.Core;
 public record IsInheritorOf : TypePatternBase, IUnitPattern
 {
   private readonly bool _isInterface;
-  public IsInheritorOf(Type type, object? key) : base(type, key)
+  public IsInheritorOf(Type type, object? tag) : base(type, tag)
   {
     if(type.IsGenericTypeDefinition) throw new ArgumentException("Type should not be open generic", nameof(type));
     _isInterface = type.IsInterface;
   }
 
   public bool Matches(UnitId unitId)
-    => Key.Matches(unitId.Key)
+    => Tag.Matches(unitId.Tag)
     && unitId.GetUnitTypeSafe() is { } unitType
     && (_isInterface
           ? Type.IsAssignableFrom(unitType)

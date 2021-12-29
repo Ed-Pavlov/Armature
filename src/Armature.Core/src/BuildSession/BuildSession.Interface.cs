@@ -16,8 +16,8 @@ public partial class BuildSession
 
     public Interface(BuildSession buildSession, BuildChain buildChain)
     {
-      BuildChain = buildChain;
-      _buildSession = buildSession  ?? throw new ArgumentNullException(nameof(buildSession));
+      BuildChain    = buildChain;
+      _buildSession = buildSession ?? throw new ArgumentNullException(nameof(buildSession));
     }
 
     ///<inheritdoc />

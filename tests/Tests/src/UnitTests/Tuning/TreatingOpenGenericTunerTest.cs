@@ -10,17 +10,17 @@ namespace Tests.UnitTests.Tuning;
 public class TreatingOpenGenericTunerTest
 {
   [Test]
-  public void As([Values(null, "key")] object? key)
+  public void As([Values(null, "tag")] object? tag)
   {
     var expectedType = typeof(List<>);
-    var expected     = new RedirectOpenGenericType(expectedType, key);
+    var expected     = new RedirectOpenGenericType(expectedType, tag);
 
     // --arrange
     var actual = new Util.TestBuildChainPattern();
     var target = new TreatingOpenGenericTuner(actual);
 
     // --act
-    target.As(expectedType, key);
+    target.As(expectedType, tag);
 
     // --assert
     actual.BuildActions.Should()
@@ -33,11 +33,11 @@ public class TreatingOpenGenericTunerTest
   }
 
   [Test]
-  public void AsCreated([Values(null, "key")] object? key)
+  public void AsCreated([Values(null, "tag")] object? tag)
   {
     var expectedType   = typeof(List<>);
-    var expectedAction = new RedirectOpenGenericType(expectedType, key);
-    var expectedChild = new IfFirstUnit(new IsGenericOfDefinition(expectedType, key))
+    var expectedAction = new RedirectOpenGenericType(expectedType, tag);
+    var expectedChild = new IfFirstUnit(new IsGenericOfDefinition(expectedType, tag))
        .UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
 
     // --arrange
@@ -45,7 +45,7 @@ public class TreatingOpenGenericTunerTest
     var target = new TreatingOpenGenericTuner(actual);
 
     // --act
-    target.AsCreated(expectedType, key);
+    target.AsCreated(expectedType, tag);
 
     // --assert
     actual.BuildActions.Should()

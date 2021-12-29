@@ -21,7 +21,7 @@ public class IsMethodParameterWithTypeTest
     // --arrange
     var typePattern = A.Fake<IUnitPattern>();
     var target      = new IsMethodParameterWithType(typePattern);
-    var unitId      = new UnitId(parameterInfo, SpecialKey.Argument);
+    var unitId      = new UnitId(parameterInfo, SpecialTag.Argument);
 
     // --act
     target.Matches(unitId);
@@ -31,14 +31,14 @@ public class IsMethodParameterWithTypeTest
   }
 
   [Test]
-  public void should_match_only_argument_special_key([Values(null, "key")] object? key)
+  public void should_match_only_argument_special_tag([Values(null, "tag")] object? tag)
   {
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(int))!;
 
     // --arrange
     var typePattern = A.Fake<IUnitPattern>();
     var target      = new IsMethodParameterWithType(typePattern);
-    var unitId      = new UnitId(parameterInfo, key);
+    var unitId      = new UnitId(parameterInfo, tag);
 
     // --act
     target.Matches(unitId);

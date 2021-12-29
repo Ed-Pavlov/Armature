@@ -97,7 +97,7 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_use_inject_point_id_as_key()
+    public void should_use_inject_point_id_as_tag()
     {
       const string expectedText  = "expected 09765";
       const int    expectedValue = 93979;
@@ -121,13 +121,13 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_fail_if_there_is_no_value_wo_key_registered()
+    public void should_fail_if_there_is_no_value_wo_tag_registered()
     {
       // --arrange
       var target = CreateTarget();
 
       target
-       .Treat<string>("key")
+       .Treat<string>("tag")
        .AsInstance("09765");
 
       target

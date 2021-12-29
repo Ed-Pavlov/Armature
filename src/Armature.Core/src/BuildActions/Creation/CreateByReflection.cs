@@ -24,6 +24,7 @@ public record CreateByReflection : IBuildAction
         return;
 
       object instance;
+
       if(parameters.Length == 0)
         instance = constructor.Invoke(Empty<object>.Array);
       else
