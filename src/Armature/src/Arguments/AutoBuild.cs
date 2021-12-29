@@ -8,18 +8,22 @@ namespace Armature;
 /// </summary>
 public static class AutoBuild
 {
-  public static ByParam   ByParameter      => Static.Of<ByParam>();
-  public static ParamList MethodParameters => Static.Of<ParamList>();
+  private static ParamList? _methodArguments; // a little bit of optimization, don't create object if it's not needed
+  public static  ParamList  MethodArguments => _methodArguments ??= Static.Of<ParamList>();
 
   public class ParamList
   {
+    private ByParam? _byParam; // a little bit of optimization, don't create object if it's not needed
+    public  ByParam  ByParameter => _byParam ??= Static.Of<ByParam>();
+
     /// <summary>
     /// Adds the build action which builds arguments for a method in the order as parameters specified in the method signature.
     /// </summary>
     public IArgumentTuner InDirectOrder { get; } = new ArgumentTuner(
-      (node, weight) => node
-             .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoList>(), weight))
-             .UseBuildAction(Static.Of<BuildMethodArgumentsInDirectOrder>(), BuildStage.Create));
+      (node, weight) =>
+        node
+         .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoList>(), weight))
+         .UseBuildAction(Static.Of<BuildMethodArgumentsInDirectOrder>(), BuildStage.Create));
   }
 
   public class ByParam
@@ -31,20 +35,20 @@ public static class AutoBuild
     /// Adds the build action which builds an argument using method parameter type as a <see cref="UnitId.Kind"/>
     /// </summary>
     public IArgumentTuner Type { get; } = new ArgumentTuner(
-      (node, weight) => node
-             .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfo>(), weight + WeightOf.BuildContextPattern.IfFirstUnit + ByTypeWeight))
-             .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create));
+      (node, weight) =>
+        node
+         .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfo>(), weight + WeightOf.BuildContextPattern.IfFirstUnit + ByTypeWeight))
+         .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create));
 
     /// <summary>
     /// Adds the build action which builds an argument using method parameter name as a <see cref="UnitId.Kind"/>
     /// </summary>
     public IArgumentTuner Name { get; } = new ArgumentTuner(
-      (node, weight) => node
-             .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfo>(), weight + WeightOf.BuildContextPattern.IfFirstUnit + ByNameWeight))
-             .UseBuildAction(Static.Of<BuildArgumentByParameterName>(), BuildStage.Create));
+      (node, weight) =>
+        node
+         .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfo>(), weight + WeightOf.BuildContextPattern.IfFirstUnit + ByNameWeight))
+         .UseBuildAction(Static.Of<BuildArgumentByParameterName>(), BuildStage.Create));
   }
 
-  public class ByProperty
-  {
-  }
+  public class ByProperty { }
 }
