@@ -5,6 +5,7 @@ on:
     branches:
     - master
     - 'feature/**'
+    - 'release/**'
 #  pull_request:
 #    branches: [ master ]
 
