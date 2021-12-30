@@ -20,6 +20,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>dependency-injection dependencyinjection di ioc .NET</PackageTags>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
     <description>Armature dependency injection framework, provides fluent syntax and syntax sugar over Armature.Core framework</description>
   </PropertyGroup>
 

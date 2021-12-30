@@ -20,6 +20,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>dependency-injection dependencyinjection di ioc .NET</PackageTags>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
     <description>The core part of the Armature framework, can be used to build your own framework with syntax and features of your choice</description>
   </PropertyGroup>
 
