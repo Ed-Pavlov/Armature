@@ -1,55 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\build\armature.public.snk</AssemblyOriginatorKeyFile>
-    <PublicSign>true</PublicSign>
-    <LangVersion>preview</LangVersion>
-    <Nullable>enable</Nullable>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+  <Import Project="..\common.proj"/>
 
-  <PropertyGroup Label="nuspec">
-    <IsPackable>true</IsPackable>
-    <MinClientVersion>2.8</MinClientVersion>
-    <PackageVersion>0.0.0</PackageVersion>
-    <PackageProjectUrl>https://github.com/Ed-Pavlov/Armature</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Ed-Pavlov/Armature</RepositoryUrl>
-    <Authors>Ed Pavlov</Authors>
-    <copyright>Copyright © 2018 Ed Pavlov</copyright>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageTags>dependency-injection dependencyinjection di ioc .NET</PackageTags>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <description>The core part of the Armature framework, can be used to build your own framework with syntax and features of your choice</description>
+  <PropertyGroup>
+    <AssemblyName>Armature.Core</AssemblyName>
+    <RootNamespace>Armature.Core</RootNamespace>
+    <NoWarn>1591</NoWarn>
+    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <NoWarn>1591</NoWarn>
     <DocumentationFile>bin\Release\Armature.Core.xml</DocumentationFile>
-    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DocumentationFile>bin\Debug\Armature.Core.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <NoWarn>1591</NoWarn>
-    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Armature.Interface\Armature.Interface.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\GlobalAssemblyInfo.cs">
-      <Link>build\GlobalAssemblyInfo.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\build\icon.png" Pack="true" PackagePath="\icon.png" />
-    <None Include="..\..\build\nuget-readme.md" Pack="true" PackagePath="\readme.md" />
-  </ItemGroup>
+
+  <PropertyGroup Label="nuspec">
+    <description>The core part of the Armature framework, can be used to build your own framework with syntax and features of your choice</description>
+  </PropertyGroup>
+
 </Project>
