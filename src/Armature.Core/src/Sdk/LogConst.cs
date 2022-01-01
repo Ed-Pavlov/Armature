@@ -13,16 +13,16 @@ public static class LogConst
 
   public static void Log_Constructors(ConstructorInfo[] constructors)
     => Log.Execute(
-      LogLevel.Trace,
+      LogLevel.Verbose,
       () =>
       {
         if(constructors.Length < 2)
           Log.Execute(
-            LogLevel.Trace,
-            () => Log.WriteLine(LogLevel.Trace, $"Constructor: {(constructors.Length == 0 ? "null" : $"{constructors[0]}".Quote())}"));
+            LogLevel.Verbose,
+            () => Log.WriteLine(LogLevel.Verbose, $"Constructor: {(constructors.Length == 0 ? "null" : $"{constructors[0]}".Quote())}"));
         else
-          using(Log.IndentBlock(LogLevel.Trace, "Constructors: ", "[]"))
+          using(Log.IndentBlock(LogLevel.Verbose, "Constructors: ", "[]"))
             foreach(var constructor in constructors)
-              Log.WriteLine(LogLevel.Trace, $"{constructor}".Quote());
+              Log.WriteLine(LogLevel.Verbose, $"{constructor}".Quote());
       });
 }

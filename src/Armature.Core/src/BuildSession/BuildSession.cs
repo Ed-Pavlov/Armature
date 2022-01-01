@@ -65,7 +65,6 @@ public partial class BuildSession
 
     using(Log.NamedBlock(LogLevel.Info, "Build"))
     {
-      Log.WriteLine(LogLevel.Verbose, () => $"UnitId = {unitId.ToHoconString()}");
       _buildChainList.Add(unitId);
       var buildChain = new BuildChain(_buildChainList, 0);
 
@@ -74,7 +73,7 @@ public partial class BuildSession
 
       using(Log.NamedBlock(LogLevel.Verbose, GatherBuildActions))
       {
-        Log.WriteLine(LogLevel.Verbose, () => $"Context = {_buildChainList.ToHoconString()}");
+        Log.WriteLine(LogLevel.Info, () => $"Chain = {Enumerable.Reverse(_buildChainList).ToHoconString()}");
 
         _mainBuildChainPatternTree.GatherBuildActions(buildChain, out actions, 0);
         _auxPatternTree?.GatherBuildActions(buildChain, out auxActions, 0);
@@ -173,21 +172,22 @@ public partial class BuildSession
       {
         buildAction.Process(buildSession);
       }
-      catch(Exception exc)
+      catch(Exception exception)
       {
-        using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_Process(buildAction)}.Exception: "))
-          exc.WriteToLog();
+        if(!exception.Data.Contains(ExceptionConst.Logged))
+          using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_Process(buildAction)}.Exception: "))
+            exception.WriteToLog();
 
-        AddBuildSessionData(exc); // add build session data after logging the exception in order that data don't pollute the log, this data is already there
+        AddBuildSessionData(exception); // add build session data after logging the exception in order that data don't pollute the log, this data is already there
         throw;
       }
   }
 
   private void BuildActionPostProcess(IBuildAction buildAction, IBuildSession buildSession)
   {
-    using(Log.NamedBlock(LogLevel.Trace, () => LogConst.BuildAction_PostProcess(buildAction)))
+    using(Log.NamedBlock(LogLevel.Verbose, () => LogConst.BuildAction_PostProcess(buildAction)))
     {
-      Log.WriteLine(LogLevel.Trace, () => $"Build.Result = {buildSession.BuildResult.ToLogString()}");
+      Log.WriteLine(LogLevel.Verbose, () => $"Build.Result = {buildSession.BuildResult.ToLogString()}");
 
       try
       {

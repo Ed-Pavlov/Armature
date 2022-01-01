@@ -18,7 +18,7 @@ public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogSt
 
   public void Process(IBuildSession buildSession)
   {
-    Log.WriteLine(LogLevel.Trace, "");
+    Log.WriteLine(LogLevel.Verbose, "");
     var unitUnderConstruction = buildSession.BuildChain.TargetUnit;
 
     var effectiveTag = _tag == SpecialTag.Propagate ? unitUnderConstruction.Tag : _tag;

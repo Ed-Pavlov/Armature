@@ -44,7 +44,7 @@ public abstract class BuildChainPatternBase : BuildChainPatternWithChildrenBase
     else
     { // pass the rest of the chain to children and return their actions
       if(RawChildren is null)
-        Log.WriteLine(LogLevel.Trace, "Children: null");
+        Log.WriteLine(LogLevel.Verbose, "Children: null");
       else
         result = GetChildrenActions(buildChain.GetTail(1), inputWeight, out actionBag);
     }

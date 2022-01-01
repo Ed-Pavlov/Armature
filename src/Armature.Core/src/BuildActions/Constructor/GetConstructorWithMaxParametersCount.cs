@@ -18,7 +18,7 @@ public record GetConstructorWithMaxParametersCount : IBuildAction
     var unitType     = buildSession.BuildChain.TargetUnit.GetUnitType();
     var constructors = unitType.GetConstructors();
 
-    Log.WriteLine(LogLevel.Trace, "");
+    Log.WriteLine(LogLevel.Verbose, "");
 
     if(constructors.Length > 0)
     {
@@ -49,7 +49,7 @@ public record GetConstructorWithMaxParametersCount : IBuildAction
       }
     }
 
-    Log.Execute(LogLevel.Trace, () => LogConst.Log_Constructors(suitableConstructors.Select(pair => constructors[pair.Key]).ToArray()));
+    Log.Execute(LogLevel.Verbose, () => LogConst.Log_Constructors(suitableConstructors.Select(pair => constructors[pair.Key]).ToArray()));
 
     if(suitableConstructors.Count != 1)
     {

@@ -45,15 +45,15 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
 
     if(RawChildren is null)
     {
-      Log.WriteLine(LogLevel.Trace, "Children: null");
+      Log.WriteLine(LogLevel.Verbose, "Children: null");
       return false;
     }
 
     var matchingWeight = inputWeight + Weight;
 
-    using(Log.NamedBlock(LogLevel.Trace, "PassTailToChildren"))
+    using(Log.NamedBlock(LogLevel.Verbose, "PassTailToChildren"))
     {
-      Log.WriteLine(LogLevel.Trace, $"ActualWeight = {matchingWeight}, Tail = {buildChain.ToHoconString()}");
+      Log.WriteLine(LogLevel.Verbose, $"ActualWeight = {matchingWeight}, Tail = {buildChain.ToHoconString()}");
 
       foreach(var child in RawChildren)
       {
