@@ -32,13 +32,8 @@ jobs:
         dotnet-version:     6.0.x
         include-prerelease: true
 
-    # Restore build and test as one command in order to not copy/paste the same arguments
-    -
-      name: Restore, build, and run tests
-      run:  dotnet test -c ${{env.configuration}}
-
   build:
-    needs: test
+    needs:   test
     runs-on: ubuntu-latest
     steps:
     -
@@ -62,20 +57,24 @@ jobs:
       name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version:     6.0.x
         include-prerelease: true
 
     # Restore build and test as one command in order to not copy/paste the same arguments
-    # -
-    #   name: Restore, build, and run tests
-    #   run:  dotnet test -c ${{env.configuration}} -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }} -p:FileVersion=${{ steps.gitversion
-    # - .outputs.assemblySemFileVer }} -p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }}
+#    -
+#      name: Restore, build, and run tests
+#      run:  >
+#            dotnet test
+#            -c ${{env.configuration}}
+#            -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }}
+#            -p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }}
+#            -p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }}
 
     # Restore build and pack as one command in order to not copy/paste the same arguments
     # Place nuget packages into env.nugets-dir directory
     -
       name: Pack
-      run: >
+      run:  >
             dotnet pack
             -c ${{ env.configuration }}
             -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }}
