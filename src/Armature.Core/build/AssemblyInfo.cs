@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Armature.Core")]
-[assembly: AssemblyDescription("The core part of Armature, can be used to make another frameworks")]
+[assembly: AssemblyDescription("The core part of the Armature framework, can be used to build your own framework with syntax and features of your choice")]
 
 [assembly: InternalsVisibleTo("Tests, PublicKey=" + Public.Key)]
 

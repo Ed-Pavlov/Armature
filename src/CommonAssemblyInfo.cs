@@ -9,7 +9,3 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyProduct("Armature")]
 [assembly: AssemblyCopyright("Copyright © 2018 Ed Pavlov")]
-
-[assembly: AssemblyVersion("0.0.0")]
-[assembly: AssemblyInformationalVersion("0.0.0")]
-[assembly: AssemblyFileVersion("0.0.0")]
