@@ -12,7 +12,8 @@ public static class ExceptionExtension
     if(exception is null) throw new ArgumentNullException(nameof(exception));
     if(key is null) throw new ArgumentNullException(nameof(key));
 
-    exception.Data.Add(key, value);
+    var isValueSerializable = value?.GetType().IsSerializable == true;
+    exception.Data.Add(key, isValueSerializable ? value : value.ToHoconString());
 
     return exception;
   }
