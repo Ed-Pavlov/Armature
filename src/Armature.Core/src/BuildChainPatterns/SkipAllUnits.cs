@@ -25,7 +25,8 @@ public class SkipAllUnits : BuildChainPatternWithChildrenBase
       Log.WriteLine(LogLevel.Verbose, $"Weight = {Weight}");
       var targetUnit = buildChain.GetTail(buildChain.Length - 1);
 
-      return GetChildrenActions(targetUnit, inputWeight, out actionBag);
+      var decreaseWeight = (buildChain.Length - 1) * Weight;
+      return GetChildrenActions(targetUnit, inputWeight + decreaseWeight, out actionBag);
     }
   }
 }

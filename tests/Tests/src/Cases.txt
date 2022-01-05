@@ -1,8 +1,35 @@
 should_inject_parameter_value_from_narrower_context_not_from_longer_matching_path
 
-target.Treat<ISubject1>().AsCreated<LevelThree>().BuildingWhich(_ => _.TreatAll().UsingArguments(levelThree)); // longer path
-target.Treat<LevelTwo>().AsIs().BuildingWhich(_ => _.TreatAll().UsingArguments(expected));                     // narrower context
+// longer path
+target.Treat<ISubject1>().AsCreated<LevelThree>();
+target.Building<ISubject1>().Building<LevelThree>().TreatAll().UsingArguments("string3")); // longer path
+
+// narrower context
+target.Treat<LevelTwo>().AsIs();
+target.Building<LevelTwo>().TreatAll().UsingArguments("string2"));
+
 target.Treat<LevelOne>().AsIs();
+
+ISubject -> LevelThree -> LevelTwo -> LevelOne -> string
+// longer path
+ ++             ++            -          -          =
+// narrower context
+  0            0             ++          -          =
+// narrower context  2
+  +            +             ++          -          =
+- should be bigger then any amount of +s
+
+
+target.Treat<ISubject>().As<Subject>().UsingArguments("long");
+target.Treat<Subject>().AsIs.UsingArguments("short");
+
+ISubject -> Subject -> string
+// long
+  +           +          =
+// short
+  0           +          =
+
+
 
 ISubject1 -> LevelThree -> string3
 
