@@ -41,27 +41,36 @@ public static class LogExtension
   /// Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
   /// </summary>
   public static string ToHoconString(this object? value)
-    => value switch
-       {
-         null                     => "null",
-         string str               => str.QuoteIfNeeded(),
-         ILogString logable       => logable.ToHoconString(),
-         IEnumerable items        => $"[{string.Join(", ", items.Cast<object>().Select(_ => _.ToHoconString()))}]",
-         IBuildAction buildAction => buildAction.GetType().GetShortName().QuoteIfNeeded(),
-         Type type                => $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})".QuoteIfNeeded(),
-         bool b                   => b.ToString(CultureInfo.CurrentUICulture),
-         char c                   => c.ToString(CultureInfo.CurrentUICulture),
-         short s                  => s.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         ushort us                => us.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         int i                    => i.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         uint ui                  => ui.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         long l                   => l.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         ulong ul                 => ul.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         float f                  => f.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         double d                 => d.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         decimal dc               => dc.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         _                        => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
-       };
+  {
+    try
+    {
+      return value switch
+             {
+                 null => "null",
+                 string str => str.QuoteIfNeeded(),
+                 ILogString logable => logable.ToHoconString(),
+                 IEnumerable items => $"[{string.Join(", ", items.Cast<object>().Select(_ => _.ToHoconString()))}]",
+                 IBuildAction buildAction => buildAction.GetType().GetShortName().QuoteIfNeeded(),
+                 Type type => $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})".QuoteIfNeeded(),
+                 bool b => b.ToString(CultureInfo.CurrentUICulture),
+                 char c => c.ToString(CultureInfo.CurrentUICulture),
+                 short s => s.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 ushort us => us.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 int i => i.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 uint ui => ui.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 long l => l.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 ulong ul => ul.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 float f => f.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 double d => d.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 decimal dc => dc.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 _ => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
+             };
+    }
+    catch(Exception exception)
+    {
+      return $"{nameof(ToHoconString)} {{ ExceptionType: {exception.GetType().ToLogString().QuoteIfNeeded()} }}";
+    }
+  }
 
   public static string ToHoconString(this Type              type)  => type.ToLogString().QuoteIfNeeded();
   public static string ToHoconArray(this  IEnumerable<Type> items) => $"[{string.Join(", ", items.Select(type => type.ToHoconString()))}]";

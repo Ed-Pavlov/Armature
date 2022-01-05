@@ -13,12 +13,14 @@ namespace Armature.Core;
 /// This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
 /// new Builder(...)
 /// {
-///  new SkipToLastUnit
+///  new SkipAllUnits
 ///  {
-///    new IfFirstUnitMatches(new ConstructorPattern(), 0)
-///      .AddBuildAction(BuildStage.Create, new GetLongestConstructorBuildAction()),
-///    new IfFirstUnitMatches(new MethodArgumentPattern(), ParameterMatchingWeight.Lowest)
-///      .AddBuildAction(BuildStage.Create, new RedirectParameterInfoBuildAction())
+///    new IfFirstUnit(new IsConstructor())
+///      .UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
+///    new IfFirstUnit(new IsParameterInfoList())
+///      .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+///    new IfFirstUnit(new IsParameterInfo())
+///      .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
 ///  }
 /// };
 /// </remarks>
@@ -69,4 +71,6 @@ public class BuildChainPatternTree : IBuildChainPattern, IEnumerable, ILogPrinta
     [DebuggerStepThrough]
     public override bool Equals(IBuildChainPattern? other) => throw new NotSupportedException();
   }
+
+  public string ToHoconString() => GetType().GetShortName().QuoteIfNeeded();
 }

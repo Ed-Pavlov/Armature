@@ -88,12 +88,14 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
           Log.WriteLine(logLevel, $"Child: {child.ToHoconString()}");
   }
 
+  public string ToHoconString() => GetType().GetShortName().QuoteIfNeeded();
+
   public virtual bool Equals(IBuildChainPattern? other)
     => other is BuildChainPatternBase otherNode && Weight == otherNode.Weight && GetType() == otherNode.GetType();
 
-  public override bool Equals(object? obj) => Equals(obj as IBuildChainPattern);
+  public override bool   Equals(object? obj) => Equals(obj as IBuildChainPattern);
 
-  public override int GetHashCode() => Weight.GetHashCode();
+  public override int    GetHashCode()       => Weight.GetHashCode();
 
   #region Syntax sugar
 
