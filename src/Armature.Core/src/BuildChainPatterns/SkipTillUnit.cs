@@ -7,7 +7,7 @@ namespace Armature.Core;
 /// </summary>
 public class SkipTillUnit : BuildChainPatternByUnitBase
 {
-  public SkipTillUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildContextPattern.Neutral) { }
+  public SkipTillUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildChainPattern.SkipTillUnit) { }
   public SkipTillUnit(IUnitPattern pattern, int weight) : base(pattern, weight) { }
 
   /// <summary>

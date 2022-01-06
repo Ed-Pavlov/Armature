@@ -20,17 +20,72 @@ ISubject -> LevelThree -> LevelTwo -> LevelOne -> string
 - should be bigger then any amount of +s
 
 
+target.Building<ISubject>().TreatInheritorsOf<Base>().UsingArguments("base");
 target.Treat<ISubject>().As<Subject>().UsingArguments("long");
 target.Treat<Subject>().AsIs.UsingArguments("short");
 
+Build<ISubject>
+
 ISubject -> Subject -> string
 // long
-  +           +          =
+  ++           ++          =
 // short
-  0           +          =
+  0            ++          =
+//base
+  ++           +           =
 
+Reverse model
+ISubject m * 100 + 1  => Build<Subject>
 
+Subject  m * 100 + 1  => "subj"
+   ->    ISubject m   => "long"
 
+InheritorsOf  m * 100
+   ->    ISubject  m  => "base"
+
+---- 2022.01.06
+
+  // lowest is injection point, it should not change matching of different build chain pattern in any case
+  // target.TreatInheritorsOf<Base<int>>().UsingArguments(
+  //   ForParameter.WithInjectPoint("slkdjf").UseValue("hui"));
+  //
+  // target.Treat<Child<int>>().UsingArguments(
+  //   ForParameter.OfType<string>().UseValue("pizda"),
+  //   ForParameter.WithInjectPoint("slkdjf").UseValue("hui"));
+
+  // highest - build chain patterns, but not all - target is the highest, no context can change direct registration
+  //                                               SkipAllUnits is the highest negative, no context can change depth of SkipAllUnits
+  // target.Building<ISubject>().TreatInheritorsOf<Base>().UsingArguments("base");
+  // target.Treat<ISubject>().As<Subject>().UsingArguments("long");
+  // target.Treat<Subject>().AsIs.UsingArguments("short");
+  //
+  // Reverse model
+  // ISubject m * 100 + 1  => Build<Subject>
+  //
+  // Subject  m * 100 + 1  => "subj"
+  //    ->    ISubject m   => "long"
+  //
+  // InheritorsOf  m * 100
+  //    ->    ISubject  m  => "base"
+
+  // midrange - normal match (m) should be on tenfold bigger than lowest and on tenfold lower than highest
+
+  // where is UnitPattern aka, Type, OpenGeneric, Inheritors?
+  // there is no "normal match", matching adds a weight passed to it, it don't know the exact value
+  // so another one time
+
+  // midrange - UnitPattern should be on tenfold bigger than lowest and on tenfold lower than highest
+
+target .Treat<ISubject1>() .AsCreated<LevelOne>() .UsingArguments(asInterfaceParameterValue);
+target .Treat<LevelOne>() .AsIs() .UsingArguments(asIsParameterValue);
+
+Treat<ISubject> adds SkipTillUnit with WeightOf.TargetUnit, and it applies even in case a build chain is
+ISubject -> LevelOne -> Param
+  target      target
+
+Looks like it will work but very as a "longest of longshots", only reverse model will looks natural with the right weighting model
+
+---------------------------------------------------
 ISubject1 -> LevelThree -> string3
 
 LevelTwo -> string2

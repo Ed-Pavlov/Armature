@@ -7,7 +7,7 @@ namespace Armature.Core;
 /// </summary>
 public class SkipWhileUnit : BuildChainPatternByUnitBase
 {
-  public SkipWhileUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildContextPattern.Neutral) { }
+  public SkipWhileUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildChainPattern.SkipWhileUnit) { }
   public SkipWhileUnit(IUnitPattern unitPattern, int weight) : base(unitPattern, weight) { }
 
   public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight)

@@ -69,7 +69,7 @@ public class FinalTunerTest
     var tuner1 = A.Dummy<IArgumentTuner>();
     var tuner2 = A.Dummy<IArgumentTuner>();
 
-    var expectedWeight = WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability;
+    var expectedWeight = WeightOf.BuildChainPattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability;
 
     var expectedChildNode =
       new SkipWhileUnit(Static.Of<IsServiceUnit>())

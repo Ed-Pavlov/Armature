@@ -26,7 +26,7 @@ public class RootTuner : TunerBase
   {
     if(type is null) throw new ArgumentNullException(nameof(type));
 
-    var patternMatcher = new SkipTillUnit(new UnitPattern(type, tag), Weight);
+    var patternMatcher = new SkipTillUnit(new UnitPattern(type, tag), Weight + WeightOf.BuildChainPattern.SkipTillUnit);
     return new RootTuner(ParentNode.GetOrAddNode(patternMatcher));
   }
 
@@ -45,7 +45,7 @@ public class RootTuner : TunerBase
 
     var patternMatcher = new SkipTillUnit(
       new UnitPattern(type, tag),
-      Weight + WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.ExactTypePattern);
+      Weight + WeightOf.BuildChainPattern.TargetUnit + WeightOf.UnitPattern.ExactTypePattern);
 
     return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
   }
@@ -59,7 +59,7 @@ public class RootTuner : TunerBase
         new SkipTillUnit(
           new UnitPattern(typeof(T), tag),
           Weight
-        + WeightOf.BuildContextPattern.Neutral
+        + WeightOf.BuildChainPattern.TargetUnit
         + WeightOf.UnitPattern.ExactTypePattern)));
 
   /// <summary>
@@ -69,7 +69,7 @@ public class RootTuner : TunerBase
   {
     var patternMatcher = new SkipTillUnit(
       new IsGenericOfDefinition(openGenericType, tag),
-      Weight + WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.OpenGenericPattern);
+      Weight + WeightOf.BuildChainPattern.TargetUnit + WeightOf.UnitPattern.OpenGenericPattern);
 
     return new TreatingOpenGenericTuner(ParentNode.GetOrAddNode(patternMatcher));
   }
@@ -81,7 +81,7 @@ public class RootTuner : TunerBase
   {
     var patternMatcher = new SkipTillUnit(
       new IsInheritorOf(baseType, tag),
-      Weight + WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.SubtypePattern);
+      Weight + WeightOf.BuildChainPattern.TargetUnit + WeightOf.UnitPattern.SubtypePattern);
 
     return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
   }
@@ -94,7 +94,7 @@ public class RootTuner : TunerBase
     var patternMatcher = new SkipTillUnit(
       new IsInheritorOf(typeof(T), tag),
       Weight
-    + WeightOf.BuildContextPattern.Neutral
+    + WeightOf.BuildChainPattern.TargetUnit
     + WeightOf.UnitPattern.SubtypePattern);
 
     return new TreatingTuner<T>(ParentNode.GetOrAddNode(patternMatcher));
@@ -104,5 +104,5 @@ public class RootTuner : TunerBase
   /// Add build action applied to any building unit in subsequence calls. It's needed to setup common build actions like which constructor to call or
   /// inject dependencies into properties or not.
   /// </summary>
-  public FinalTuner TreatAll() => new(ParentNode.GetOrAddNode(new SkipAllUnits(Weight + WeightOf.BuildContextPattern.SkipAllUnits)));
+  public FinalTuner TreatAll() => new(ParentNode.GetOrAddNode(new SkipAllUnits(Weight + WeightOf.BuildChainPattern.SkipAllUnits)));
 }

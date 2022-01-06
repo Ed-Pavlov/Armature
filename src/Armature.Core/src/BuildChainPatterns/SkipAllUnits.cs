@@ -8,7 +8,7 @@ namespace Armature.Core;
 /// </summary>
 public class SkipAllUnits : BuildChainPatternWithChildrenBase
 {
-  public SkipAllUnits() : this(WeightOf.BuildContextPattern.SkipAllUnits) { }
+  public SkipAllUnits() : this(WeightOf.BuildChainPattern.SkipAllUnits) { }
   public SkipAllUnits(int weight) : base(weight) { }
 
   [WithoutTest]

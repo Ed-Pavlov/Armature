@@ -39,7 +39,7 @@ public class FinalTuner : TunerBase
          .GetOrAddNode(
             new IfFirstUnit(
               new IsAssignableFromType(argument.GetType()),
-              WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability + Weight))
+              WeightOf.BuildChainPattern.IfFirstUnit + WeightOf.InjectionPoint.ByTypeAssignability + Weight))
          .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
 
     return this;

@@ -7,7 +7,7 @@ namespace Armature.Core;
 /// </summary>
 public class IfFirstUnit : BuildChainPatternByUnitBase
 {
-  public IfFirstUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildContextPattern.IfFirstUnit) { }
+  public IfFirstUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildChainPattern.IfFirstUnit) { }
   public IfFirstUnit(IUnitPattern pattern, int weight) : base(pattern, weight) { }
 
   /// <summary>
