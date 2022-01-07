@@ -69,7 +69,7 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
   {
     using(Log.NamedBlock(logLevel, GetType().GetShortName()))
     {
-      Log.WriteLine(LogLevel.Info, $"Weight: {Weight:n0}");
+      Log.WriteLine(LogLevel.Info, $"Weight: {Weight.ToHoconString()}");
       PrintContentToLog(logLevel);
       PrintChildrenToLog(logLevel);
     }

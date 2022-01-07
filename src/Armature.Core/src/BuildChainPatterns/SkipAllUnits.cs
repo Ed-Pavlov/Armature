@@ -1,5 +1,6 @@
 ﻿using System;
 using Armature.Core.Annotations;
+using Armature.Core.Sdk;
 
 namespace Armature.Core;
 
@@ -22,7 +23,7 @@ public class SkipAllUnits : BuildChainPatternWithChildrenBase
   {
     using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipAllUnits)))
     {
-      Log.WriteLine(LogLevel.Verbose, $"Weight = {Weight}");
+      Log.WriteLine(LogLevel.Verbose, $"Weight = {Weight.ToHoconString()}");
       var targetUnit = buildChain.GetTail(buildChain.Length - 1);
 
       var decreaseWeight = (buildChain.Length - 1) * Weight;

@@ -20,7 +20,7 @@ public class IfFirstUnit : BuildChainPatternByUnitBase
 
     using(Log.NamedBlock(LogLevel.Verbose, nameof(IfFirstUnit)))
     {
-      Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight}");
+      Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
 
       var matches = UnitPattern.Matches(buildChain[0]);
       Log.WriteLine(LogLevel.Verbose, LogConst.Matched, matches);

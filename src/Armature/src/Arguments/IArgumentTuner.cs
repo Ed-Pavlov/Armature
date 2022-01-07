@@ -10,7 +10,7 @@ namespace Armature;
 /// </summary>
 public interface IArgumentTuner : ITuner { }
 
-public class ArgumentTuner : Tuner, IArgumentTuner
+public class ArgumentTuner : Tuner<ArgumentTuner>, IArgumentTuner
 {
   public ArgumentTuner(Action<IBuildChainPattern, int> tune) : base(tune) { }
 }

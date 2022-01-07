@@ -34,16 +34,19 @@ public static class Log
   }
 
   /// <summary>
-  /// Used to enable logging in a limited scope using "using" C# keyword
+  /// Used to enable logging, can be limited by disposing returned object
   /// </summary>
-  public static IDisposable Enable(LogLevel logLevel = LogLevel.Info)
+  public static Disposable Enable(LogLevel logLevel = LogLevel.Info)
   {
     var prevLevel = _logLevel;
     _logLevel = logLevel;
     return new Disposable(() => _logLevel = prevLevel);
   }
 
-  public static IDisposable Disable()
+  /// <summary>
+  /// Used to disable logging, can be limited by disposing returned object
+  /// </summary>
+  public static Disposable Disable()
   {
     var prevLevel = _logLevel;
     _logLevel = LogLevel.None;
@@ -52,58 +55,74 @@ public static class Log
 
   public static void Write(LogLevel logLevel, string text)
   {
-    if(logLevel > _logLevel) return;
-
-    DoWrite(text);
+    if(_logLevel >= logLevel)
+      DoWrite(text);
   }
 
   [StringFormatMethod("format")]
   public static void Write(LogLevel logLevel, string format, params object[] parameters)
   {
-    if(logLevel > _logLevel) return;
-
-    DoWrite(string.Format(format, parameters));
+    if(_logLevel >= logLevel)
+      DoWrite(string.Format(format, parameters));
   }
 
-  public static void Write(LogLevel logLevel, Func<string> getText)
+  public static void Write(LogLevel logLevel, [InstantHandle] Func<string> getText)
   {
-    if(logLevel > _logLevel) return;
+    if(_logLevel >= logLevel)
+      DoWrite(getText());
+  }
 
-    DoWrite(getText());
+  [StringFormatMethod("format")]
+  public static void WriteLine<T1>(LogLevel logLevel, string format, T1 p1)
+  {
+    if(_logLevel >= logLevel)
+      DoWriteLine(string.Format(format, p1));
+  }
+
+  [StringFormatMethod("format")]
+  public static void WriteLine<T1, T2>(LogLevel logLevel, string format, T1 p1, T2 p2)
+  {
+    if(_logLevel >= logLevel)
+      DoWriteLine(string.Format(format, p1, p2));
+  }
+
+  [StringFormatMethod("format")]
+  public static void WriteLine<T1, T2, T3>(LogLevel logLevel, string format, T1 p1, T2 p2, T3 p3)
+  {
+    if(_logLevel >= logLevel)
+      DoWriteLine(string.Format(format, p1, p2, p3));
+  }
+
+  [StringFormatMethod("format")]
+  public static void WriteLine(LogLevel logLevel, string format, params object[] parameters)
+  {
+    if(_logLevel >= logLevel)
+      DoWriteLine(string.Format(format, parameters));
   }
 
   public static void WriteLine(LogLevel logLevel, string line)
   {
-    if(logLevel > _logLevel) return;
-
-    DoWriteLine(line);
+    if(_logLevel >= logLevel)
+      DoWriteLine(line);
   }
-
-  [StringFormatMethod("format")]
-  public static void WriteLine<T1>(LogLevel logLevel, string format, T1 p1) => WriteLine(logLevel, string.Format(format, p1));
-
-  [StringFormatMethod("format")]
-  public static void WriteLine<T1, T2>(LogLevel logLevel, string format, T1 p1, T2 p2) => WriteLine(logLevel, string.Format(format, p1, p2));
-
-  [StringFormatMethod("format")]
-  public static void WriteLine<T1, T2, T3>(LogLevel logLevel, string format, T1 p1, T2 p2, T3 p3) => WriteLine(logLevel, string.Format(format, p1, p2, p3));
-
-  [StringFormatMethod("format")]
-  public static void WriteLine(LogLevel logLevel, string format, params object[] parameters) => WriteLine(logLevel, string.Format(format, parameters));
 
   /// <summary>
   /// This message calls <paramref name="createMessage"/> only if Logging is enabled for <paramref name="logLevel"/>,
-  /// use it calculating arguments for logging takes a time.
+  /// use if calculating arguments for logging takes a time.
   /// </summary>
   [StringFormatMethod("format")]
-  public static void WriteLine(LogLevel logLevel, [InstantHandle] Func<string> createMessage) => WriteLine(logLevel, createMessage());
+  public static void WriteLine(LogLevel logLevel, [InstantHandle] Func<string> createMessage)
+  {
+    if(_logLevel >= logLevel)
+      DoWriteLine(createMessage());
+  }
 
   /// <summary>
   /// Used to make an indented "block" in log data
   /// </summary>
-  public static IDisposable IndentBlock(LogLevel logLevel, string name, string brackets, int count = 1)
+  public static Indenter IndentBlock(LogLevel logLevel, string name, string brackets, int count = 1)
   {
-    if(_logLevel < logLevel) return DumbDisposable.Instance;
+    if(_logLevel < logLevel) return Indenter.Empty;
 
     DoWrite(name);
     return new Indenter(brackets, count);
@@ -112,27 +131,20 @@ public static class Log
   /// <summary>
   /// Used to make a named and indented "block" in log data
   /// </summary>
-  [StringFormatMethod("format")]
-  public static IDisposable NamedBlock(LogLevel logLevel, string name) => IndentBlock(logLevel, name, "{}");
+  public static Indenter NamedBlock(LogLevel logLevel, string name) => _logLevel >= logLevel ? IndentBlock(logLevel, name, "{}") : Indenter.Empty;
 
   /// <summary>
   /// Used to make a named and indented "block" in log data
   /// </summary>
   [StringFormatMethod("format")]
-  public static IDisposable NamedBlock(LogLevel logLevel, string format, params object[] parameters)
-  {
-    if(_logLevel < logLevel) return DumbDisposable.Instance;
-    return IndentBlock(logLevel, string.Format(format, parameters), "{}");
-  }
+  public static Indenter NamedBlock(LogLevel logLevel, string format, params object[] parameters)
+    => _logLevel >= logLevel ? IndentBlock(logLevel, string.Format(format, parameters), "{}") : Indenter.Empty;
 
   /// <summary>
   /// Used to make a named and indented "block" in log data
   /// </summary>
-  public static IDisposable NamedBlock(LogLevel logLevel, Func<string> getName)
-  {
-    if(_logLevel < logLevel) return DumbDisposable.Instance;
-    return IndentBlock(logLevel, getName(), "{}");
-  }
+  public static Indenter NamedBlock(LogLevel logLevel, [InstantHandle] Func<string> getName)
+    => _logLevel >= logLevel ? IndentBlock(logLevel, getName(), "{}") : Indenter.Empty;
 
   /// <summary>
   /// Executes action if <paramref name="logLevel"/> satisfies current Log level. See <see cref="Enable"/> for details
@@ -140,37 +152,35 @@ public static class Log
   /// <param name="logLevel"></param>
   /// <param name="action"></param>
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public static void Execute(LogLevel logLevel, Action action)
+  public static void Execute(LogLevel logLevel, [InstantHandle] Action action)
   {
-    if(logLevel > _logLevel) return;
-
-    action();
+    if(_logLevel >= logLevel)
+      action();
   }
 
-
-  public static IDisposable Deferred(LogLevel logLevel, Action<Action?> action)
+  public static Disposable Deferred(LogLevel logLevel, Action<Action?> action)
   {
-    if(_logLevel < logLevel) return DumbDisposable.Instance;
+    if(_logLevel < logLevel) return Disposable.Empty;
 
     DeferredContent.Push(new List<string>());
     var originalIndent = Trace.IndentLevel;
 
     return new Disposable(
-      () =>
-      {
-        var deferredContent = DeferredContent.Pop();
+        () =>
+        {
+          var deferredContent = DeferredContent.Pop();
 
-        action(
-          deferredContent.Count == 0
-            ? null
-            : () =>
-              {
-                var gap = new string(' ', Trace.IndentLevel - originalIndent);
+          action(
+              deferredContent.Count == 0
+                  ? null
+                  : () =>
+                    {
+                      var gap = new string(' ', Trace.IndentLevel - originalIndent);
 
-                foreach(var line in deferredContent)
-                  DoWriteLine(gap + line);
-              });
-      });
+                      foreach(var line in deferredContent)
+                        DoWriteLine(gap + line);
+                    });
+        });
   }
 
   private static void DoWriteLine(string line) => DoWrite(line, true);
@@ -188,9 +198,24 @@ public static class Log
     }
   }
 
-  private class Indenter : Disposable
+  public struct Indenter : IDisposable
   {
-    public Indenter(string brackets, int indent) : base(() => Close(brackets, indent)) => Open(brackets, indent);
+    public static Indenter Empty = new();
+
+    private readonly string _brackets;
+    private readonly int    _indent;
+    public Indenter(string brackets, int indent)
+    {
+      _brackets = brackets;
+      _indent   = indent;
+      Open(brackets, indent);
+    }
+
+    public void Dispose()
+    {
+      if(_brackets is not null)
+        Close(_brackets, _indent);
+    }
 
     private static void Open(string brackets, int indent)
     {
@@ -212,25 +237,15 @@ public static class Log
     }
   }
 
-  private class Disposable : IDisposable
+  public struct Disposable : IDisposable
   {
-    private readonly Action _action;
+    public static readonly Disposable Empty = new();
+
+    private readonly Action? _action;
 
     public Disposable(Action action) => _action = action;
 
-    public void Dispose() => _action();
-  }
-
-  private class DumbDisposable : IDisposable
-  {
-    public static readonly IDisposable Instance = new DumbDisposable();
-
-    private DumbDisposable() { }
-
-    public void Dispose()
-    {
-      // dumb
-    }
+    public void Dispose() => _action?.Invoke();
   }
 }
 

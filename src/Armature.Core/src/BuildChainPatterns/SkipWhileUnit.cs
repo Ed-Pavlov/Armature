@@ -16,7 +16,7 @@ public class SkipWhileUnit : BuildChainPatternByUnitBase
 
     using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipWhileUnit)))
     {
-      Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}");
+      Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
 
       for(; i < buildChain.Length - 1; i++)
       {

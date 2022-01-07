@@ -54,13 +54,13 @@ public static class LogExtension
                  Type type => $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})".QuoteIfNeeded(),
                  bool b => b.ToString(CultureInfo.CurrentUICulture),
                  char c => c.ToString(CultureInfo.CurrentUICulture),
-                 short s => s.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-                 ushort us => us.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-                 int i => i.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-                 uint ui => ui.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-                 long l => l.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-                 ulong ul => ul.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-                 float f => f.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 short s => s.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 ushort us => us.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 int i => i.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 uint ui => ui.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 long l => l.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 ulong ul => ul.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+                 float f => f.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
                  double d => d.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
                  decimal dc => dc.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
                  _ => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
@@ -118,10 +118,10 @@ public static class LogExtension
     void WriteAction(object stage, Weighted<IBuildAction> weightedAction)
       => Log.WriteLine(
         logLevel,
-        "{{ Action: {0}, Stage: {1}, Weight: {2:n0} }}",
+        "{{ Action: {0}, Stage: {1}, Weight: {2} }}",
         weightedAction.Entity.ToHoconString(),
         stage.ToHoconString(),
-        weightedAction.Weight);
+        weightedAction.Weight.ToHoconString());
   }
 
   public static void WriteToLog(this Exception exception)
