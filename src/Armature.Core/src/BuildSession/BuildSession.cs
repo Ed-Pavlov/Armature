@@ -47,14 +47,22 @@ public partial class BuildSession
   /// Builds a Unit represented by <paramref name="unitId" />
   /// </summary>
   /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildChainPattern" /> for details</param>
-  public BuildResult BuildUnit(UnitId unitId) => Build(unitId, BuildUnit);
+  public BuildResult BuildUnit(UnitId unitId)
+  {
+    using(Log.NamedBlock(LogLevel.Info, "Build"))
+      return Build(unitId, BuildUnit);
+  }
 
   /// <summary>
   /// Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
   /// This can be useful to build all implementers of an interface.
   /// </summary>
   /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildChainPattern" /> for details</param>
-  public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId) => Build(unitId, BuildAllUnits);
+  public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId)
+  {
+    using(Log.NamedBlock(LogLevel.Info, "BuildAll"))
+      return Build(unitId, BuildAllUnits);
+  }
 
   /// <summary>
   /// Common logic to build one or all units
@@ -63,42 +71,41 @@ public partial class BuildSession
   {
     T result;
 
-    using(Log.NamedBlock(LogLevel.Info, "Build"))
+    _buildChainList.Add(unitId);
+    var buildChain = new BuildChain(_buildChainList, 0);
+
+    Log.WriteLine(LogLevel.Info, () => $"Chain = {Enumerable.Reverse(_buildChainList).ToHoconString()}");
+
+    try
     {
-      _buildChainList.Add(unitId);
-      var buildChain = new BuildChain(_buildChainList, 0);
+      WeightedBuildActionBag? actions;
+      WeightedBuildActionBag? auxActions = null;
 
-      try
+      Log.WriteLine(LogLevel.Verbose, "");
+
+      using(Log.NamedBlock(LogLevel.Verbose, GatherBuildActions))
       {
-        WeightedBuildActionBag? actions;
-        WeightedBuildActionBag? auxActions = null;
-
-        using(Log.NamedBlock(LogLevel.Verbose, GatherBuildActions))
-        {
-          Log.WriteLine(LogLevel.Info, () => $"Chain = {Enumerable.Reverse(_buildChainList).ToHoconString()}");
-
-          _mainBuildChainPatternTree.GatherBuildActions(buildChain, out actions);
-          _auxPatternTree?.GatherBuildActions(buildChain, out auxActions);
-        }
-
-        var actionBag = actions.Merge(auxActions);
-        LogGatheredActions(actionBag);
-
-        result = build(buildChain, actionBag);
+        _mainBuildChainPatternTree.GatherBuildActions(buildChain, out actions);
+        _auxPatternTree?.GatherBuildActions(buildChain, out auxActions);
       }
-      catch(Exception exception)
-      {
-        if(!exception.Data.Contains(ExceptionConst.BuildChain))
-          exception.AddData(ExceptionConst.BuildChain, _buildChainList.ToHoconString());
-        throw;
-      }
-      finally
-      {
-        _buildChainList.RemoveAt(_buildChainList.Count - 1);
-      }
+
+      var actionBag = actions.Merge(auxActions);
+      Log_GatheredActions(actionBag);
+
+      result = build(buildChain, actionBag);
+    }
+    catch(Exception exception)
+    {
+      if(!exception.Data.Contains(ExceptionConst.BuildChain))
+        exception.AddData(ExceptionConst.BuildChain, Enumerable.Reverse(_buildChainList).ToHoconString());
+
+      throw;
+    }
+    finally
+    {
+      _buildChainList.RemoveAt(_buildChainList.Count - 1);
     }
 
-    Log.WriteLine(LogLevel.Info, "");
     return result;
   }
 
@@ -126,7 +133,7 @@ public partial class BuildSession
         break; // object is built, unwind called actions in reverse orders
     }
 
-    LogBuildResult(buildSession.BuildResult);
+    Log_BuildResult(buildSession.BuildResult);
 
     foreach(var buildAction in performedActions)
       BuildActionPostProcess(buildAction, buildSession);
@@ -160,20 +167,21 @@ public partial class BuildSession
 
       var buildAction = weightedBuildAction.Entity;
       BuildActionProcess(buildAction, buildSession);
+      Log_BuildActionResult(buildAction, buildSession.BuildResult);
       BuildActionPostProcess(buildAction, buildSession);
-
-      LogBuildResult(buildSession.BuildResult);
+      Log.WriteLine(LogLevel.Info, "");
 
       if(buildSession.BuildResult.HasValue)
         buildResultList.Add(buildSession.BuildResult.WithWeight(weightedBuildAction.Weight));
     }
 
+    Log_BuildAllResult(buildResultList);
     return buildResultList;
   }
 
   private static void BuildActionProcess(IBuildAction buildAction, IBuildSession buildSession)
   {
-    using(Log.NamedBlock(LogLevel.Verbose, () => LogConst.BuildAction_Process(buildAction)))
+    using(Log.NamedBlock(LogLevel.Info, () => LogConst.BuildAction_Process(buildAction)))
       try
       {
         buildAction.Process(buildSession);
@@ -189,7 +197,7 @@ public partial class BuildSession
 
   private static void BuildActionPostProcess(IBuildAction buildAction, IBuildSession buildSession)
   {
-    using(Log.NamedBlock(LogLevel.Verbose, () => LogConst.BuildAction_PostProcess(buildAction)))
+    using(Log.NamedBlock(LogLevel.Info, () => LogConst.BuildAction_PostProcess(buildAction)))
     {
       Log.WriteLine(LogLevel.Verbose, () => $"Build.Result = {buildSession.BuildResult.ToLogString()}");
 
@@ -242,14 +250,25 @@ public partial class BuildSession
              : default;
   }
 
-  private static void LogBuildResult(BuildResult buildResult)
+  private static void Log_BuildResult(BuildResult buildResult)
   {
     Log.WriteLine(LogLevel.Info, "");
     Log.WriteLine(LogLevel.Info, () => $"Build.Result = {buildResult.ToLogString()}");
     Log.WriteLine(LogLevel.Info, "");
   }
 
-  private static void LogGatheredActions(WeightedBuildActionBag? actionBag)
+  private static void Log_BuildAllResult(List<Weighted<BuildResult>> buildResultList)
+  {
+    Log.WriteLine(LogLevel.Info, () => $"BuildAll.Result = {buildResultList.ToHoconString()}");
+    Log.WriteLine(LogLevel.Info, "");
+  }
+
+  private static void Log_BuildActionResult(IBuildAction buildAction, BuildResult buildResult)
+    => Log.WriteLine(
+      buildResult.HasValue ? LogLevel.Info : LogLevel.Trace,
+      () => $"{LogConst.BuildAction_Name(buildAction)}.Result = {buildResult.ToLogString()}");
+
+  private static void Log_GatheredActions(WeightedBuildActionBag? actionBag)
   {
     Log.WriteLine(LogLevel.Info, "");
     actionBag.WriteToLog(LogLevel.Info, $"{GatherBuildActions}.Result: ");

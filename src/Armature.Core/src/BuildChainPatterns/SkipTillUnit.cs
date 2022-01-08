@@ -16,6 +16,9 @@ public class SkipTillUnit : BuildChainPatternByUnitBase
   /// </summary>
   public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight)
   {
+    var hasActions = false;
+    // ReSharper disable once AccessToModifiedClosure - yes, I need it to be captured
+    using(Log.ConditionalMode(LogLevel.Verbose, () => hasActions))
     using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipTillUnit)))
     {
       Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
@@ -25,15 +28,15 @@ public class SkipTillUnit : BuildChainPatternByUnitBase
         var unitInfo = buildChain[i];
 
         var isPatternMatches = UnitPattern.Matches(unitInfo);
-
         if(isPatternMatches)
         {
           Log.WriteLine(LogLevel.Verbose, LogConst.Matched, true);
-          return GetOwnOrChildrenBuildActions(buildChain.GetTail(i), inputWeight, out actionBag);
+          hasActions = GetOwnOrChildrenBuildActions(buildChain.GetTail(i), inputWeight, out actionBag);
+          return hasActions;
         }
       }
 
-      Log.WriteLine(LogLevel.Verbose, LogConst.Matched, false);
+      Log.WriteLine(LogLevel.Trace, LogConst.Matched, false);
     }
 
     actionBag = null;

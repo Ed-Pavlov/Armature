@@ -32,6 +32,7 @@ public record GetPropertyListByNames : IBuildAction, ILogString
                {
                  var property = unitType.GetProperty(name);
 
+                 //TODO:
                  if(property is null)
                    throw new ArmatureException(
                      string.Format("There is no property with name '{0}' in type '{1}'", name, unitType.ToLogString()));

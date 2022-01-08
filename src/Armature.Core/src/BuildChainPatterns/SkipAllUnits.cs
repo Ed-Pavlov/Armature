@@ -21,13 +21,18 @@ public class SkipAllUnits : BuildChainPatternWithChildrenBase
 
   public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight)
   {
+    var hasActions = false;
+
+    // ReSharper disable once AccessToModifiedClosure - yes, that's the point
+    using(Log.ConditionalMode(LogLevel.Verbose, () => hasActions))
     using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipAllUnits)))
     {
       Log.WriteLine(LogLevel.Verbose, $"Weight = {Weight.ToHoconString()}");
       var targetUnit = buildChain.GetTail(buildChain.Length - 1);
 
-      var decreaseWeight = (buildChain.Length - 1) * Weight;
-      return GetChildrenActions(targetUnit, inputWeight + decreaseWeight, out actionBag);
+      var  decreaseWeight = (buildChain.Length - 1) * Weight;
+      hasActions = GetChildrenActions(targetUnit, inputWeight + decreaseWeight, out actionBag);
+      return hasActions;
     }
   }
 }

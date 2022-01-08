@@ -20,11 +20,9 @@ public record BuildArgumentByPropertyInjectPointId : IBuildAction
                    .GetCustomAttributes<InjectAttribute>()
                    .SingleOrDefault();
 
-    if(attribute is null)
-    {
-      Log.WriteLine(LogLevel.Info, () => $"{this} => property is not marked with InjectAttribute");
-    }
-    else
+    Log.WriteLine(LogLevel.Trace, () => $"Attribute: {attribute.ToHoconString()}");
+
+    if(attribute is not null)
     {
       var unitInfo = new UnitId(propertyInfo.PropertyType, attribute.InjectionPointId);
       buildSession.BuildResult = buildSession.BuildUnit(unitInfo);

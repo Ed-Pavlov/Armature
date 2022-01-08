@@ -12,22 +12,21 @@ public class SkipWhileUnit : BuildChainPatternByUnitBase
 
   public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight)
   {
-    var i = 0;
+    var hasActions = false;
 
+    // ReSharper disable once AccessToModifiedClosure - yes, I need it to be captured
+    using(Log.ConditionalMode(LogLevel.Verbose, () => hasActions))
     using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipWhileUnit)))
     {
       Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
 
-      for(; i < buildChain.Length - 1; i++)
-      {
+      var i = 0;
+      for(; i < buildChain.Length - 1; i++) // target unit is not the subject of skipping
         if(!UnitPattern.Matches(buildChain[i]))
-        {
-          Log.WriteLine(LogLevel.Verbose, LogConst.Matched, false);
           break;
-        }
-      }
 
-      return GetChildrenActions(buildChain.GetTail(i), inputWeight, out actionBag);
+      hasActions = GetChildrenActions(buildChain.GetTail(i), inputWeight, out actionBag);
+      return hasActions;
     }
   }
 }

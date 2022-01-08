@@ -16,17 +16,17 @@ public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogSt
   protected BuildArgumentByInjectPointTypeBase() { }
   protected BuildArgumentByInjectPointTypeBase(object? tag) => _tag = tag;
 
+
   public void Process(IBuildSession buildSession)
   {
-    Log.WriteLine(LogLevel.Verbose, "");
-    var unitUnderConstruction = buildSession.BuildChain.TargetUnit;
+    Log.WriteLine(LogLevel.Trace, () => $"Tag: {_tag.ToHoconString()}");
 
-    var effectiveTag = _tag == SpecialTag.Propagate ? unitUnderConstruction.Tag : _tag;
+    var targetUnit   = buildSession.BuildChain.TargetUnit;
+    var effectiveTag = _tag == SpecialTag.Propagate ? targetUnit.Tag : _tag;
 
-    var valueType = GetInjectPointType(unitUnderConstruction);
+    var valueType = GetInjectPointType(targetUnit);
     buildSession.BuildResult = buildSession.BuildUnit(new UnitId(valueType, effectiveTag));
   }
-
   [WithoutTest]
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }

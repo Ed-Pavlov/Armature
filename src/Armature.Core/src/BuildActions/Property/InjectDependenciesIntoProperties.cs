@@ -21,12 +21,26 @@ public record InjectDependenciesIntoProperties : IBuildAction
     var type = buildSession.BuildChain.TargetUnit.GetUnitTypeSafe();
 
     var unitInfo = new UnitId(type, SpecialTag.PropertyList);
-    var unitList = buildSession.BuildAllUnits(unitInfo).OrderByDescending(_ => _.Weight).Select(_ => _.Entity);
 
-    foreach(var property in unitList.Select(result => result.Value!).SelectMany(list => (PropertyInfo[]) list))
+    var properties = buildSession.BuildAllUnits(unitInfo)
+                               .OrderByDescending(_ => _.Weight)
+                               .Select(_ => _.Entity)
+                               .Where(buildResult => buildResult.HasValue)
+                               .Select(buildResult => buildResult.Value!)
+                               .SelectMany(list => (PropertyInfo[]) list)
+                               .ToArray();
+
+    if(properties.Length == 0)
+      Log.WriteLine(LogLevel.Trace, "PropertyList: null");
+    else
     {
-      var argument = buildSession.BuildPropertyArgument(property);
-      property.SetValue(unit, argument);
+      Log.WriteLine(LogLevel.Verbose, () => $"PropertyList: {properties.ToHoconString()}");
+
+      foreach(var property in properties)
+      {
+        var argument = buildSession.BuildPropertyArgument(property);
+        property.SetValue(unit, argument);
+      }
     }
   }
 

@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using System.Runtime.CompilerServices;
 
 namespace Armature.Core.Sdk;
 
@@ -6,23 +6,15 @@ public static class LogConst
 {
   public const string Matched = "Matched: {0}";
 
-  public static string BuildAction_Process(IBuildAction buildAction)
-    => $"{buildAction.GetType().GetShortName().QuoteIfNeeded()}.{nameof(IBuildAction.Process)}";
-  public static string BuildAction_PostProcess(IBuildAction buildAction)
-    => $"{buildAction.GetType().GetShortName().QuoteIfNeeded()}.{nameof(IBuildAction.PostProcess)}";
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public static string BuildAction_Name(IBuildAction buildAction)
+    => $"{buildAction.GetType().GetShortName().QuoteIfNeeded()}";
 
-  public static void Log_Constructors(ConstructorInfo[] constructors)
-    => Log.Execute(
-      LogLevel.Verbose,
-      () =>
-      {
-        if(constructors.Length < 2)
-          Log.Execute(
-            LogLevel.Verbose,
-            () => Log.WriteLine(LogLevel.Verbose, $"Constructor: {(constructors.Length == 0 ? "null" : $"{constructors[0]}".Quote())}"));
-        else
-          using(Log.IndentBlock(LogLevel.Verbose, "Constructors: ", "[]"))
-            foreach(var constructor in constructors)
-              Log.WriteLine(LogLevel.Verbose, $"{constructor}".Quote());
-      });
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public static string BuildAction_Process(IBuildAction buildAction)
+    => $"{BuildAction_Name(buildAction)}.{nameof(IBuildAction.Process)}";
+
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public static string BuildAction_PostProcess(IBuildAction buildAction)
+    => $"{BuildAction_Name(buildAction)}.{nameof(IBuildAction.PostProcess)}";
 }

@@ -40,11 +40,10 @@ public record TryInOrder : IBuildAction, IEnumerable, ILogString
   {
     var exceptions = new List<Exception>();
 
-    Log.WriteLine(LogLevel.Verbose, "");
-
     foreach(var buildAction in _buildActions)
       try
       {
+        using(Log.ConditionalMode(LogLevel.Verbose, () => buildSession.BuildResult.HasValue))
         using(Log.NamedBlock(LogLevel.Verbose, () => LogConst.BuildAction_Process(buildAction)))
           buildAction.Process(buildSession);
 

@@ -10,5 +10,6 @@ public interface ILogString
 
 public interface ILogPrintable
 {
+  [WithoutTest]
   void PrintToLog(LogLevel logLevel = LogLevel.None);
 }

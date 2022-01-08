@@ -18,8 +18,6 @@ public record GetConstructorByInjectPointId : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession)
   {
-    Log.WriteLine(LogLevel.Verbose, () => $"PointId = {_injectPointId.ToHoconString()}");
-
     var unitType = buildSession.BuildChain.TargetUnit.GetUnitType();
 
     var constructors = unitType
@@ -31,8 +29,6 @@ public record GetConstructorByInjectPointId : IBuildAction, ILogString
                            return attribute is not null && Equals(_injectPointId, attribute.InjectionPointId);
                          })
                       .ToArray();
-
-    LogConst.Log_Constructors(constructors);
 
     if(constructors.Length > 1)
     {
@@ -46,7 +42,10 @@ public record GetConstructorByInjectPointId : IBuildAction, ILogString
       throw exception;
     }
 
-    if(constructors.Length > 0)
+    var ctor = constructors.Length > 0 ? constructors[0] : null;
+    ctor.WriteToLog(LogLevel.Trace);
+
+    if(ctor is not null)
       buildSession.BuildResult = new BuildResult(constructors[0]);
   }
 

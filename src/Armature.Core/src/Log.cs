@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace Armature.Core;
 
 /// <summary>
-/// Class is used to log Armature activities in human friendly form. Writes data into <see cref="System.Diagnostics.Trace" />, so
-/// add a listener to see the log.
+/// Class is used to log Armature activities in human friendly form. Writes data into <see cref="System.Diagnostics.Trace" />, so add a listener to see the log.
 /// </summary>
 [PublicAPI]
 public static class Log
 {
-  private static readonly Stack<List<string>> DeferredContent = new();
+  private static DeferredLogScope? _activeDeferredScope;
 
   private static LogLevel _logLevel = LogLevel.None;
 
@@ -56,54 +56,54 @@ public static class Log
   public static void Write(LogLevel logLevel, string text)
   {
     if(_logLevel >= logLevel)
-      DoWrite(text);
+      DoWrite(text, logLevel);
   }
 
   [StringFormatMethod("format")]
   public static void Write(LogLevel logLevel, string format, params object[] parameters)
   {
     if(_logLevel >= logLevel)
-      DoWrite(string.Format(format, parameters));
+      DoWrite(string.Format(format, parameters), logLevel);
   }
 
   public static void Write(LogLevel logLevel, [InstantHandle] Func<string> getText)
   {
     if(_logLevel >= logLevel)
-      DoWrite(getText());
+      DoWrite(getText(), logLevel);
   }
 
   [StringFormatMethod("format")]
   public static void WriteLine<T1>(LogLevel logLevel, string format, T1 p1)
   {
     if(_logLevel >= logLevel)
-      DoWriteLine(string.Format(format, p1));
+      DoWriteLine(string.Format(format, p1), logLevel);
   }
 
   [StringFormatMethod("format")]
   public static void WriteLine<T1, T2>(LogLevel logLevel, string format, T1 p1, T2 p2)
   {
     if(_logLevel >= logLevel)
-      DoWriteLine(string.Format(format, p1, p2));
+      DoWriteLine(string.Format(format, p1, p2), logLevel);
   }
 
   [StringFormatMethod("format")]
   public static void WriteLine<T1, T2, T3>(LogLevel logLevel, string format, T1 p1, T2 p2, T3 p3)
   {
     if(_logLevel >= logLevel)
-      DoWriteLine(string.Format(format, p1, p2, p3));
+      DoWriteLine(string.Format(format, p1, p2, p3), logLevel);
   }
 
   [StringFormatMethod("format")]
   public static void WriteLine(LogLevel logLevel, string format, params object[] parameters)
   {
     if(_logLevel >= logLevel)
-      DoWriteLine(string.Format(format, parameters));
+      DoWriteLine(string.Format(format, parameters), logLevel);
   }
 
   public static void WriteLine(LogLevel logLevel, string line)
   {
     if(_logLevel >= logLevel)
-      DoWriteLine(line);
+      DoWriteLine(line, logLevel);
   }
 
   /// <summary>
@@ -114,18 +114,16 @@ public static class Log
   public static void WriteLine(LogLevel logLevel, [InstantHandle] Func<string> createMessage)
   {
     if(_logLevel >= logLevel)
-      DoWriteLine(createMessage());
+      DoWriteLine(createMessage(), logLevel);
   }
 
   /// <summary>
   /// Used to make an indented "block" in log data
   /// </summary>
-  public static Indenter IndentBlock(LogLevel logLevel, string name, string brackets, int count = 1)
+  public static Indenter IndentBlock(LogLevel logLevel, string name, string brackets, int indentDelta = 1)
   {
-    if(_logLevel < logLevel) return Indenter.Empty;
-
-    DoWrite(name);
-    return new Indenter(brackets, count);
+    if(brackets is null) throw new ArgumentNullException(nameof(brackets));
+    return _logLevel < logLevel ? Indenter.Empty : new Indenter(name, logLevel, brackets, indentDelta);
   }
 
   /// <summary>
@@ -158,82 +156,97 @@ public static class Log
       action();
   }
 
-  public static Disposable Deferred(LogLevel logLevel, Action<Action?> action)
+  public static Disposable ConditionalMode(LogLevel conditionalLevel, Func<bool> predicate)
   {
-    if(_logLevel < logLevel) return Disposable.Empty;
+    if(_logLevel != conditionalLevel) return Disposable.Empty;
 
-    DeferredContent.Push(new List<string>());
-    var originalIndent = Trace.IndentLevel;
+    var deferredScope = new DeferredLogScope(predicate);
+
+    if(_activeDeferredScope is not null)
+      _activeDeferredScope.AddInnerScope(deferredScope);
+
+    // implement stack by closure
+    var prevActiveDeferredScope = _activeDeferredScope;
+    _activeDeferredScope = deferredScope;
 
     return new Disposable(
-        () =>
+      () =>
+      {
+        if(_activeDeferredScope != deferredScope)
         {
-          var deferredContent = DeferredContent.Pop();
+          WriteToTrace("LoggingSubsystemError: \"\"\"", true);
+          WriteToTrace($"Disposing of objects returned from {nameof(Log)}.{nameof(Log.ConditionalMode)} should not be overlapped, object returned "
+                     + "later should be disposed earlier." + Environment.NewLine
+                       + "Some log data is lost. Fix your code and run it again.", true);
+          WriteToTrace("\"\"\"", true);
+          _activeDeferredScope = null;// drop all data due to it can't be guaranteed to be consistent
+          return;
+        }
 
-          action(
-              deferredContent.Count == 0
-                  ? null
-                  : () =>
-                    {
-                      var gap = new string(' ', Trace.IndentLevel - originalIndent);
+        _activeDeferredScope = prevActiveDeferredScope;
 
-                      foreach(var line in deferredContent)
-                        DoWriteLine(gap + line);
-                    });
-        });
+        if(_activeDeferredScope is null) // all deferred scopes are finished, write them to the real log
+          deferredScope.WriteToTrace();
+      });
   }
 
-  private static void DoWriteLine(string line) => DoWrite(line, true);
-  private static void DoWrite(string text, bool newLine = false)
+  private static void DoWriteLine(string line, LogLevel logLevel) => DoWrite(line, logLevel, true);
+  private static void DoWrite(string text, LogLevel logLevel, bool newLine = false)
   {
-    // all "Write" methods should at the end call this method, so we check for deferred in one place only
-    if(DeferredContent.Count > 0)
-      DeferredContent.Peek().Add(text);
+    if(_activeDeferredScope is not null)
+      _activeDeferredScope.Add(text, newLine, logLevel);
     else
-    {
-      if(newLine)
-        Trace.WriteLine(text);
-      else
-        Trace.Write(text);
-    }
+      WriteToTrace(text, newLine);
+  }
+
+  private static void AmendIndentLevel(int indentDelta, LogLevel logLevel)
+  {
+    if(_activeDeferredScope is not null)
+      _activeDeferredScope.Add("", false, logLevel, indentDelta);
+    else
+      Trace.IndentLevel += indentDelta;
+  }
+
+  private static void WriteToTrace(string text, bool newLine)
+  {
+    if(newLine)
+      Trace.WriteLine(text);
+    else
+      Trace.Write(text);
   }
 
   public struct Indenter : IDisposable
   {
     public static Indenter Empty = new();
 
+    [SuppressMessage("ReSharper", "MemberHidesStaticFromOuterClass")]
+    private readonly LogLevel _logLevel;
     private readonly string _brackets;
-    private readonly int    _indent;
-    public Indenter(string brackets, int indent)
-    {
-      _brackets = brackets;
-      _indent   = indent;
-      Open(brackets, indent);
-    }
+    private readonly int    _indentDelta;
+    private          bool   _isDisposed = false;
 
-    public void Dispose()
-    {
-      if(_brackets is not null)
-        Close(_brackets, _indent);
-    }
-
-    private static void Open(string brackets, int indent)
+    public Indenter(string name, LogLevel logLevel, string brackets, int indentDelta)
     {
       if(brackets.Length is not (0 or 2))
         throw new ArgumentException("String should be empty or contain two simple symbols, at index 0 the opening bracket at index 1 the closing one");
 
-      if(brackets.Length > 0)
-        WriteLine(LogLevel.Info, " " + brackets[0] + " "); //TODO: is there is need to improve the performance of string concatenation?
+      _logLevel    = logLevel;
+      _brackets    = brackets;
+      _indentDelta = indentDelta;
 
-      Trace.IndentLevel += indent;
+      DoWriteLine(name + (_brackets.Length == 0 ? "" : " " + _brackets[0]), logLevel);
+      AmendIndentLevel(_indentDelta, _logLevel);
     }
 
-    private static void Close(string brackets, int indent)
+    public void Dispose()
     {
-      Trace.IndentLevel -= indent;
+      if(_isDisposed) throw new Exception("to log, or exception?"); //TODO:
+      _isDisposed = true;
 
-      if(brackets.Length > 0)
-        WriteLine(LogLevel.Info, brackets[1].ToString());
+      if(_brackets is null) return; // Indenter.Empty has _brackets null
+
+      AmendIndentLevel(-_indentDelta, _logLevel);
+      DoWriteLine(_brackets.Length == 0 ? "" : _brackets[1].ToString(), _logLevel);
     }
   }
 
@@ -246,6 +259,66 @@ public static class Log
     public Disposable(Action action) => _action = action;
 
     public void Dispose() => _action?.Invoke();
+  }
+
+  private class DeferredLogScope
+  {
+    private readonly List<Tuple<DeferredLogScope, int>> _innerScopes = new();
+    private readonly List<Entry>                        _entries     = new();
+    private readonly Func<bool>                         _predicate;
+
+    public DeferredLogScope(Func<bool> predicate) => _predicate = predicate;
+
+    public void Add(string text, bool isLine, LogLevel logLevel, int indent = 0) => _entries.Add(new Entry(text, isLine, logLevel, indent));
+
+    public void AddInnerScope(DeferredLogScope innerScope) => _innerScopes.Add(Tuple.Create(innerScope, _entries.Count));
+
+    public void WriteToTrace()
+    {
+      var shouldWrite = _predicate();
+      var startIndex  = 0;
+
+      foreach(var (innerScope, endIndex) in _innerScopes)
+      {
+        WriteEntries(startIndex, endIndex, shouldWrite);
+        innerScope.WriteToTrace();
+        startIndex = endIndex;
+      }
+
+      WriteEntries(startIndex, _entries.Count, shouldWrite);
+    }
+
+    private void WriteEntries(int start, int end, bool shouldWrite)
+    {
+      for(var i = start; i < end; i++)
+      {
+        var entry = _entries[i];
+
+        if(_logLevel > entry.LogLevel || (_logLevel == entry.LogLevel && shouldWrite))
+        {
+          if(entry.IndentDelta != 0)
+            Trace.IndentLevel += entry.IndentDelta; // entry with IndentDelta never contains data to write and vice versa
+          else
+            Log.WriteToTrace(entry.Text, entry.IsLine);
+        }
+      }
+    }
+
+    private struct Entry
+    {
+      public Entry(string text, bool isLine, LogLevel logLevel, int indentDelta)
+      {
+        Text        = text;
+        IndentDelta = indentDelta;
+        IsLine      = isLine;
+        LogLevel    = logLevel;
+      }
+
+      public readonly LogLevel LogLevel;
+      public readonly int      IndentDelta;
+      public readonly string   Text;
+      public readonly bool     IsLine;
+    }
   }
 }
 

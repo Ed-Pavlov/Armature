@@ -12,7 +12,11 @@ public record GetParameterDefaultValue : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
-    if(buildSession.BuildChain.TargetUnit.Kind is ParameterInfo {HasDefaultValue: true} parameterInfo)
+    if(buildSession.BuildChain.TargetUnit.Kind is not ParameterInfo parameterInfo)
+      Log.WriteLine(LogLevel.Trace, "ParameterInfo: null");
+    else if(!parameterInfo.HasDefaultValue)
+      Log.WriteLine(LogLevel.Trace, "HasDefaultValue: false");
+    else
       buildSession.BuildResult = new BuildResult(parameterInfo.DefaultValue);
   }
 

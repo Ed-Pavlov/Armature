@@ -21,11 +21,12 @@ public abstract record BuildArgumentByInjectPointNameBase : IBuildAction, ILogSt
 
   public void Process(IBuildSession buildSession)
   {
-    var unitUnderConstruction = buildSession.BuildChain.TargetUnit;
+    Log.WriteLine(LogLevel.Trace, () => $"Tag: {_tag.ToHoconString()}");
 
-    var effectiveTag = _tag == SpecialTag.Propagate ? unitUnderConstruction.Tag : _tag;
+    var targetUnit   = buildSession.BuildChain.TargetUnit;
+    var effectiveTag = _tag == SpecialTag.Propagate ? targetUnit.Tag : _tag;
 
-    var injectPointName = GetInjectPointName(unitUnderConstruction);
+    var injectPointName = GetInjectPointName(targetUnit);
     buildSession.BuildResult = buildSession.BuildUnit(new UnitId(injectPointName, effectiveTag));
   }
 

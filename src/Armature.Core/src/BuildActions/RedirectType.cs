@@ -27,8 +27,10 @@ public record RedirectType : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession)
   {
-    var unitUnderConstruction = buildSession.BuildChain.TargetUnit;
-    var effectiveTag          = Equals(_tag, SpecialTag.Propagate) ? unitUnderConstruction.Tag : _tag;
+    Log.WriteLine(LogLevel.Trace, () => $"Tag: {_tag.ToHoconString()}");
+
+    var targetUnit   = buildSession.BuildChain.TargetUnit;
+    var effectiveTag = Equals(_tag, SpecialTag.Propagate) ? targetUnit.Tag : _tag;
 
     var unitInfo = new UnitId(_redirectTo, effectiveTag);
     buildSession.BuildResult = buildSession.BuildUnit(unitInfo);

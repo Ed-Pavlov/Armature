@@ -25,6 +25,7 @@ public record GetConstructorByParameterTypes : IBuildAction, ILogString
     var unitType = buildSession.BuildChain.TargetUnit.GetUnitType();
     var ctor     = GetConstructor(unitType);
 
+    ctor.WriteToLog(LogLevel.Trace);
     if(ctor is not null)
       buildSession.BuildResult = new BuildResult(ctor);
   }

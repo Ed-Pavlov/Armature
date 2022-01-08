@@ -45,24 +45,28 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
 
     if(RawChildren is null)
     {
-      Log.WriteLine(LogLevel.Verbose, "Children: null");
+      Log.WriteLine(LogLevel.Trace, "Children: null");
       return false;
     }
 
     var matchingWeight = inputWeight + Weight;
 
+    var hasActions = false;
+    // ReSharper disable once AccessToModifiedClosure, yes that's the point
+    using(Log.ConditionalMode(LogLevel.Verbose, () => hasActions))
     using(Log.NamedBlock(LogLevel.Verbose, "PassTailToChildren"))
     {
-      Log.WriteLine(LogLevel.Verbose, $"ActualWeight = {matchingWeight}, Tail = {buildChain.ToHoconString()}");
+      Log.WriteLine(LogLevel.Verbose, () => $"ActualWeight = {matchingWeight.ToHoconString()}, Tail = {buildChain.ToHoconString()}");
 
       foreach(var child in RawChildren)
       {
         if(child.GatherBuildActions(buildChain, out var childBag, matchingWeight))
           actionBag = actionBag.Merge(childBag);
       }
-    }
 
-    return actionBag is not null;
+      hasActions = actionBag is not null;
+      return hasActions;
+    }
   }
 
   public void PrintToLog(LogLevel logLevel = LogLevel.None)
