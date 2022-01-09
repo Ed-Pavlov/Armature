@@ -71,7 +71,7 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
 
   public void PrintToLog(LogLevel logLevel = LogLevel.None)
   {
-    using(Log.NamedBlock(logLevel, GetType().GetShortName()))
+    using(Log.NamedBlock(logLevel, () => GetType().GetShortName().QuoteIfNeeded()))
     {
       Log.WriteLine(LogLevel.Info, $"Weight: {Weight.ToHoconString()}");
       PrintContentToLog(logLevel);

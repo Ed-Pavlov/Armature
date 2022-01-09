@@ -180,7 +180,7 @@ namespace Tests.Functional
       Action action = () => target.Build<bool>();
 
       // --assert
-      action.Should().Throw<ArmatureException>().And.Message.Should().StartWith($"Constructor for type {typeof(Boolean)} is not found, check registrations for this type or default.");
+      action.Should().Throw<ArmatureException>().And.Message.Should().StartWith($"Constructor for type {typeof(Boolean)} is not found, check registrations for this type or");
     }
 
     private static IEnumerable max_number_of_parameters()

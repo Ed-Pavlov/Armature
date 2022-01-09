@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using Armature.Core;
 using NUnit.Framework;
 
@@ -39,5 +41,14 @@ public class LogTest
       rootScope.Dispose();
       // innerScope.Dispose();
     }
+  }
+
+  [Test]
+  public void timestamp()
+  {
+    var t = DateTime.Now;
+
+    Console.WriteLine(t.ToString("yyyy-mm-dd HH:mm:ss.fff"));
+    Console.WriteLine(Environment.CurrentManagedThreadId.ToString());
   }
 }

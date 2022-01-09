@@ -118,7 +118,7 @@ public class CreateByReflectionTest
     actual.Should()
           .ThrowExactly<ArmatureException>()
           .Which.Message.Should()
-          .StartWith($"Constructor for type {unitType} is not found, check registrations for this type or default.");
+          .StartWith($"Constructor for type {unitType} is not found, check registrations for this type or");
   }
 
   [SuppressMessage("ReSharper", "UnusedMember.Local")]

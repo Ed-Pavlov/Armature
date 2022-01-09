@@ -93,7 +93,7 @@ public static class LogExtension
       logLevel,
       () =>
       {
-        Log.Write(LogLevel.Info, propertyName);
+        Log.Write(logLevel, propertyName);
 
         if(actions is null)
           Log.WriteLine(logLevel, "null");

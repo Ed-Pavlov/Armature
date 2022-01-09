@@ -8,7 +8,7 @@ namespace Armature.Core;
 /// <summary>
 /// Represents whole build session of the one Unit, all dependency of the built unit are built in context of one build session.
 /// </summary>
-/// <remarks>It could be for example IA -> A -> IB -> B -> int. This chain means that for now unit of type int is under construction
+/// <remarks>It could be for example IA -> A -> IB -> B -> int. This chain means that for now unit of type int is the target unit
 /// but it is built in the "context" of the whole build chain.</remarks>
 public partial class BuildSession
 {
@@ -49,7 +49,7 @@ public partial class BuildSession
   /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildChainPattern" /> for details</param>
   public BuildResult BuildUnit(UnitId unitId)
   {
-    using(Log.NamedBlock(LogLevel.Info, "Build"))
+    using(Log.NamedBlock(LogLevel.Info, "Build", true))
       return Build(unitId, BuildUnit);
   }
 
@@ -60,7 +60,7 @@ public partial class BuildSession
   /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildChainPattern" /> for details</param>
   public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId)
   {
-    using(Log.NamedBlock(LogLevel.Info, "BuildAll"))
+    using(Log.NamedBlock(LogLevel.Info, "BuildAll", true))
       return Build(unitId, BuildAllUnits);
   }
 
@@ -69,6 +69,9 @@ public partial class BuildSession
   /// </summary>
   private T Build<T>(UnitId unitId, Func<BuildChain, WeightedBuildActionBag?, T> build)
   {
+    Log.WriteLine(LogLevel.Info, () => $"Time: \"{DateTime.Now:yyyy-mm-dd HH:mm:ss.fff}\"");
+    Log.WriteLine(LogLevel.Info, () => $"Thread: {Environment.CurrentManagedThreadId.ToHoconString()} ");
+
     T result;
 
     _buildChainList.Add(unitId);

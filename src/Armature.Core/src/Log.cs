@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using Armature.Core.Sdk;
 using JetBrains.Annotations;
 
@@ -18,15 +19,17 @@ public static class Log
 
   private static LogLevel _logLevel = LogLevel.None;
 
+  private static object _crossThreadAccess = new();
+
+  static Log() => IndentSize = 2;
+
   /// <summary>
   /// Set should full type name be logged or only short name w/o namespace to simplify reading.
   /// </summary>
   public static bool LogFullTypeName = false;
 
-  static Log() => IndentSize = 2;
-
   /// <summary>
-  /// The count of spaces used to indent lines
+  /// The count of spaces used for indentation
   /// </summary>
   public static int IndentSize
   {
@@ -101,10 +104,10 @@ public static class Log
       DoWriteLine(string.Format(format, parameters), logLevel);
   }
 
-  public static void WriteLine(LogLevel logLevel, string line)
+  public static void WriteLine(LogLevel logLevel, string text)
   {
     if(_logLevel >= logLevel)
-      DoWriteLine(line, logLevel);
+      DoWriteLine(text, logLevel);
   }
 
   /// <summary>
@@ -121,23 +124,17 @@ public static class Log
   /// <summary>
   /// Used to make an indented "block" in log data
   /// </summary>
-  public static Indenter IndentBlock(LogLevel logLevel, string name, string brackets, int indentDelta = 1)
+  public static Indenter IndentBlock(LogLevel logLevel, string name, string brackets, int indentDelta = 1, bool threadRoot = false)
   {
     if(brackets is null) throw new ArgumentNullException(nameof(brackets));
-    return _logLevel < logLevel ? Indenter.Empty : new Indenter(name, logLevel, brackets, indentDelta);
+    return _logLevel < logLevel ? Indenter.Empty : new Indenter(name, logLevel, brackets, indentDelta, threadRoot);
   }
 
   /// <summary>
   /// Used to make a named and indented "block" in log data
   /// </summary>
-  public static Indenter NamedBlock(LogLevel logLevel, string name) => _logLevel >= logLevel ? IndentBlock(logLevel, name, "{}") : Indenter.Empty;
-
-  /// <summary>
-  /// Used to make a named and indented "block" in log data
-  /// </summary>
-  [StringFormatMethod("format")]
-  public static Indenter NamedBlock(LogLevel logLevel, string format, params object[] parameters)
-    => _logLevel >= logLevel ? IndentBlock(logLevel, string.Format(format, parameters), "{}") : Indenter.Empty;
+  public static Indenter NamedBlock(LogLevel logLevel, string name, bool threadRoot = false)
+    => _logLevel >= logLevel ? IndentBlock(logLevel, name, "{}", 1, threadRoot) : Indenter.Empty;
 
   /// <summary>
   /// Used to make a named and indented "block" in log data
@@ -146,10 +143,9 @@ public static class Log
     => _logLevel >= logLevel ? IndentBlock(logLevel, getName(), "{}") : Indenter.Empty;
 
   /// <summary>
-  /// Executes action if <paramref name="logLevel"/> satisfies current Log level. See <see cref="Enable"/> for details
+  /// Executes action if <paramref name="logLevel"/> satisfies current Log level. See <see cref="Enable"/> for details.
+  /// Use it if there are complex computations to prepare log data to avoid performing them if the <see cref="LogLevel"/> is less than needed.
   /// </summary>
-  /// <param name="logLevel"></param>
-  /// <param name="action"></param>
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static void Execute(LogLevel logLevel, [InstantHandle] Action action)
   {
@@ -157,6 +153,21 @@ public static class Log
       action();
   }
 
+  /// <summary>
+  /// Enter Log into conditional mode, all records to the log will be preserved till returned object is disposed, then which
+  /// records will be written to the log and which be discarded depends on passed parameters.
+  ///
+  /// If the current <see cref="LogLevel"/> is less then passed <paramref name="conditionalLevel"/>
+  /// Log doesn't enter into the conditional mode, because all records with <see cref="LogLevel"/> bigger then currently active will be ignored.
+  ///
+  /// If the current <see cref="LogLevel"/> is bigger then passed <paramref name="conditionalLevel"/>
+  /// Log doesn't enter into the conditional mode, because all records with <see cref="LogLevel"/> less then currently active will be written anyway.
+  /// </summary>
+  /// <param name="conditionalLevel"> The level of log records which will be a subject of condition by passed <paramref name="predicate"/>. </param>
+  /// <param name="predicate"> Log records with <see cref="LogLevel"/> equals to <paramref name="conditionalLevel"/>
+  /// will be written to the log if <paramref name="predicate"/> returns true on the moment of disposing returned object.
+  /// If <paramref name="predicate"/> returns false such records will be dropped.</param>
+  /// <returns></returns>
   public static Disposable ConditionalMode(LogLevel conditionalLevel, Func<bool> predicate)
   {
     if(_logLevel != conditionalLevel) return Disposable.Empty;
@@ -197,6 +208,7 @@ public static class Log
   }
 
   private static void DoWriteLine(string line, LogLevel logLevel) => DoWrite(line, logLevel, true);
+
   private static void DoWrite(string text, LogLevel logLevel, bool newLine = false)
   {
     if(_activeDeferredScope is not null)
@@ -221,6 +233,9 @@ public static class Log
       Trace.Write(text);
   }
 
+  /// <summary>
+  /// It's struct to avoid excessive allocations and public to avoid boxing
+  /// </summary>
   public struct Indenter : IDisposable
   {
     public static Indenter Empty = new();
@@ -231,10 +246,12 @@ public static class Log
     private readonly int    _indentDelta;
     private          bool   _isDisposed = false;
 
-    public Indenter(string name, LogLevel logLevel, string brackets, int indentDelta)
+    public Indenter(string name, LogLevel logLevel, string brackets, int indentDelta, bool threadRoot)
     {
       if(brackets.Length is not (0 or 2))
         throw new ArgumentException("String should be empty or contain two simple symbols, at index 0 the opening bracket at index 1 the closing one");
+
+      Monitor.Enter(_crossThreadAccess);
 
       _logLevel    = logLevel;
       _brackets    = brackets;
@@ -264,9 +281,14 @@ public static class Log
 
       AmendIndentLevel(-_indentDelta, _logLevel);
       DoWriteLine(_brackets.Length == 0 ? "" : _brackets[1].ToString(), _logLevel);
+
+      Monitor.Exit(_crossThreadAccess);
     }
   }
 
+  /// <summary>
+  /// It's struct to avoid excessive allocations and public to avoid boxing
+  /// </summary>
   public struct Disposable : IDisposable
   {
     public static readonly Disposable Empty = new();

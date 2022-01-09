@@ -3,7 +3,7 @@
 namespace Armature.Core;
 
 /// <summary>
-/// Skips units from the build chain while unit matches specified pattern till the last (under construction) unit.
+/// Skips units from the build chain while unit matches specified pattern till the target unit. The target unit is never skipped.
 /// </summary>
 public class SkipWhileUnit : BuildChainPatternByUnitBase
 {

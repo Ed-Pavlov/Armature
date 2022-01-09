@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Armature.Core;
 using Armature.Core.Sdk;
+using JetBrains.Annotations;
 
 namespace Armature;
 
@@ -62,7 +62,7 @@ public static class BuilderExtension
   /// <exception cref="ArmatureException">Throws if not unit was built by this or any parent containers</exception>
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+  [PublicAPI]
   public static IReadOnlyList<object?> BuildAll<T>(this Builder builder, params object[]? runtimeArguments) => builder.BuildAll<T>(null, runtimeArguments);
 
   /// <summary>
