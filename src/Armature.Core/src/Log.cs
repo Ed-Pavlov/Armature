@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using Armature.Core.Sdk;
 using JetBrains.Annotations;
 
 namespace Armature.Core;
@@ -174,12 +175,17 @@ public static class Log
       {
         if(_activeDeferredScope != deferredScope)
         {
-          WriteToTrace("LoggingSubsystemError: \"\"\"", true);
-          WriteToTrace($"Disposing of objects returned from {nameof(Log)}.{nameof(Log.ConditionalMode)} should not be overlapped, object returned "
-                     + "later should be disposed earlier." + Environment.NewLine
-                       + "Some log data is lost. Fix your code and run it again.", true);
+          WriteToTrace($"{LogConst.LoggingSubsystemError}: \"\"\"", true);
+
+          WriteToTrace(
+            $"Disposing of objects returned from {nameof(Log)}.{nameof(Log.ConditionalMode)} should not be overlapped, object returned "
+          + "later should be disposed earlier."
+          + Environment.NewLine
+          + "Some log data is lost. Fix your code and run it again.",
+            true);
+
           WriteToTrace("\"\"\"", true);
-          _activeDeferredScope = null;// drop all data due to it can't be guaranteed to be consistent
+          _activeDeferredScope = null; // drop all data due to it can't be guaranteed to be consistent
           return;
         }
 
@@ -240,10 +246,21 @@ public static class Log
 
     public void Dispose()
     {
-      if(_isDisposed) throw new Exception("to log, or exception?"); //TODO:
+      if(_isDisposed)
+      {
+        WriteToTrace($"{LogConst.LoggingSubsystemError}: \"\"\"", true);
+
+        WriteToTrace(
+          $"Object returned from {nameof(Log)}.{nameof(NamedBlock)} or {nameof(IndentBlock)} disposed more then once, it can indicate "
+        + "an error in your code and can lead wrong log output.",
+          true);
+
+        WriteToTrace("\"\"\"", true);
+      }
+
       _isDisposed = true;
 
-      if(_brackets is null) return; // Indenter.Empty has _brackets null
+      if(_brackets is null) return; // Indenter.Empty has _brackets == null
 
       AmendIndentLevel(-_indentDelta, _logLevel);
       DoWriteLine(_brackets.Length == 0 ? "" : _brackets[1].ToString(), _logLevel);

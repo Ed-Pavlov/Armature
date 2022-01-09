@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Armature.Core.Sdk;
 
@@ -17,4 +18,10 @@ public static class LogConst
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static string BuildAction_PostProcess(IBuildAction buildAction)
     => $"{BuildAction_Name(buildAction)}.{nameof(IBuildAction.PostProcess)}";
+
+  public static string ArmatureExceptionPostfix(string options = "") =>
+    Environment.NewLine
+  + $"See {nameof(Exception)}.{nameof(Exception.Data)}{options} for details or enable logging using {nameof(Log)}.{nameof(Log.Enable)} to investigate the error.";
+
+  public const string LoggingSubsystemError = "LoggingSubsystem_Error";
 }

@@ -191,6 +191,7 @@ public partial class BuildSession
         if(!exception.Data.Contains(ExceptionConst.Logged))
           using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_Process(buildAction)}.Exception: "))
             exception.WriteToLog();
+
         throw;
       }
   }
@@ -209,6 +210,7 @@ public partial class BuildSession
       {
         using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_PostProcess(buildAction)}.Exception: "))
           exc.WriteToLog();
+
         throw;
       }
     }
@@ -243,8 +245,7 @@ public partial class BuildSession
     return exceptions.Count > 0
              ? throw new AggregateException(
                    $"{exceptions.Count} exceptions occured during during building an unit via parent builders."
-                 + $"See {nameof(Exception)}.{nameof(Exception.Data)} and {nameof(AggregateException)}.{nameof(AggregateException.InnerExceptions)}"
-                 + $" for details or enable logging using {nameof(Log)}.{nameof(Log.Enable)} to investigate the error.",
+                 + LogConst.ArmatureExceptionPostfix(" and {nameof(AggregateException)}.{nameof(AggregateException.InnerExceptions)}"),
                    exceptions)
                 .AddData(ExceptionConst.Logged, true)
              : default;

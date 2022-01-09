@@ -20,7 +20,7 @@ public static class BuildSessionExtension
     var result = buildSession.BuildUnit(new UnitId(type, SpecialTag.Constructor));
 
     if(!result.HasValue)
-      throw new ArmatureException($"Constructor for type {type} is not found, check registrations for this type or default.");
+      throw new ArmatureException($"Constructor for type {type} is not found, check registrations for this type or 'default' registrations.");
 
     return (ConstructorInfo) result.Value!;
   }

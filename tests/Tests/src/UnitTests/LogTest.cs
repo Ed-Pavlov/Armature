@@ -28,7 +28,7 @@ public class LogTest
     }
   }
 
-  [Test]
+  // [Test]
   public void overlapped_conditional_mode()
   {
     using(Log.Enable(LogLevel.Verbose))
