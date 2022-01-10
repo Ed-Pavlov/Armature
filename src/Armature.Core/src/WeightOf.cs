@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Armature.Core.Sdk;
+using JetBrains.Annotations;
 
 namespace Armature.Core;
 
@@ -9,13 +10,12 @@ namespace Armature.Core;
 /// </summary>
 /// <remarks>For common usage of Armature it's not needed.</remarks>
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
 public class WeightOf
 {
+  [PublicAPI]
   public class InjectionPoint
   {
-    protected static byte Step { get; set; } = 10;
+    protected const byte Step = 10;
 
     /// <summary>
     /// Weight of argument matched by assignability to a parameter/property.
@@ -38,6 +38,15 @@ public class WeightOf
     public static byte ByName { get; protected set; } = (byte) (ByInjectPointId + Step);
   }
 
+  /// <summary>
+  /// Weights of <see cref="IUnitPattern"/> is about two orders of magnitude higher than weights of <see cref="InjectionPoint"/> in order in registrations like
+  ///
+  /// target.TreatInheritorsOf&lt;BaseType&gt;UsingArguments(ForParameter.Named("param").UseValue("baseArg"));
+  /// target.Treat&lt;ChildType&gt;().UsingArguments("childArg");
+  ///
+  /// ForParameter.Named never helps to TreatInheritorsOf "win" Treat.
+  /// </summary>
+  [PublicAPI]
   public class UnitPattern
   {
     protected static short Step { get; set; } = 10_000;
@@ -58,24 +67,12 @@ public class WeightOf
     public static short ExactTypePattern { get; protected set; } = (short) (SubtypePattern + Step);
   }
 
+  [PublicAPI]
   public class BuildChainPattern
   {
-    protected static byte Step { get; set; } = 10;
-
     public static int SkipWhileUnit { get; protected set; } = 0;
 
-    /// <summary>
-    /// Weight of the "normal" match during processing a build chain through build chain patterns tree
-    /// Each match increase final build action match weight by this value.
-    /// </summary>
     public static int SkipTillUnit { get; protected set; } = 0;
-
-    /// <summary>
-    /// <see cref="Core.SkipAllUnits"/> build chain pattern is used to set "default" rules for any building unit if it doesn't
-    /// have a specific registration.
-    /// That is why by default its weight is set very low, but not to the minimal possible value to leave a gap for user's needs.
-    /// </summary>
-    public static int SkipAllUnits { get; protected set; } = -1_000_000;
 
     /// <summary>
     /// By default the weight of <see cref="IfFirstUnit"/> build chain pattern's weight is increased in order to registrations
@@ -94,9 +91,19 @@ public class WeightOf
     ///
     /// Note that provided sample is "synthetic" see <see cref="SpecialTag"/> and <see cref="Core.SkipWhileUnit"/> for details.
     /// </summary>
-    public static int IfFirstUnit { get; protected set; } = SkipTillUnit + Step;
+    public static int IfFirstUnit { get; protected set; } = 10;
+
+    /// <summary>
+    /// <see cref="Core.SkipAllUnits"/> build chain pattern is used to set "default" rules for any building unit if it doesn't
+    /// have a specific registration.
+    /// That is why by default its weight is set very low, but not to the minimal possible value to leave a gap for user's needs.
+    ///
+    /// It's about two orders of magnitude higher than weights of <see cref="IUnitPattern"/> in order to registration of "any" length
+    /// does not compensate one <see cref="Armature.Core.SkipAllUnits"/> build chain pattern.
+    /// </summary>
+    public static int SkipAllUnits { get; protected set; } = -1_000_000;
 
 
-    public static int TargetUnit { get; protected set; } = 10_000_000;
+    public static int TargetUnit { get; protected set; } = 1_000_000;
   }
 }

@@ -7,18 +7,6 @@ namespace Tests.Functional.WeightTests;
 
 public class TypeRegistrationTest
 {
-  public void why()
-  {
-    var target = CreateTarget();
-
-    target.TreatInheritorsOf<Base<int>>().UsingArguments(
-      ForParameter.WithInjectPoint("slkdjf").UseValue("hui"));
-
-    target.Treat<Child<int>>().UsingArguments(
-      ForParameter.OfType<string>().UseValue("pizda"),
-      ForParameter.WithInjectPoint("slkdjf").UseValue("hui"));
-  }
-
   [Test]
   public void exact_type_should_take_over_inheritors()
   {

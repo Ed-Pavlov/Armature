@@ -12,12 +12,10 @@ target.Treat<LevelOne>().AsIs();
 
 ISubject -> LevelThree -> LevelTwo -> LevelOne -> string
 // longer path
- ++             ++            -          -          =
+  +             +            -           -          =
 // narrower context
   0            0             ++          -          =
-// narrower context  2
-  +            +             ++          -          =
-- should be bigger then any amount of +s
+- should be bigger than any amount of +s
 
 
 target.Building<ISubject>().TreatInheritorsOf<Base>().UsingArguments("base");
@@ -27,12 +25,13 @@ target.Treat<Subject>().AsIs.UsingArguments("short");
 Build<ISubject>
 
 ISubject -> Subject -> string
-// long
-  ++           ++          =
-// short
-  0            ++          =
 //base
-  ++           +           =
+  +           +           =
+// long
+  +           0           =
+// short
+  0            ++         =
+++ should be bigger than any number of +s
 
 Reverse model
 ISubject m * 100 + 1  => Build<Subject>
@@ -76,8 +75,8 @@ InheritorsOf  m * 100
 
   // midrange - UnitPattern should be on tenfold bigger than lowest and on tenfold lower than highest
 
-target .Treat<ISubject1>() .AsCreated<LevelOne>() .UsingArguments(asInterfaceParameterValue);
-target .Treat<LevelOne>() .AsIs() .UsingArguments(asIsParameterValue);
+target.Treat<ISubject1>().AsCreated<LevelOne>().UsingArguments(asInterfaceParameterValue);
+target.Treat<LevelOne>().AsIs().UsingArguments(asIsParameterValue);
 
 Treat<ISubject> adds SkipTillUnit with WeightOf.TargetUnit, and it applies even in case a build chain is
 ISubject -> LevelOne -> Param
@@ -86,42 +85,15 @@ ISubject -> LevelOne -> Param
 Looks like it will work but very as a "longest of longshots", only reverse model will looks natural with the right weighting model
 
 ---------------------------------------------------
-ISubject1 -> LevelThree -> string3
 
-LevelTwo -> string2
+2022.01.10
 
+What is the ratio between ++ and --?
 
-ISubject1 -> Subject -> stringLong
-Subject -> stringNarrow
+Building<I>().TreatAll().UsingArguments("I")
+Treat<C>().UsingArguments("C")
 
-
-ISubject -> LevelThree -> LevelTwo -> string
-
-How can string2 "recognize" that it's more suitable for LevelTwo then string3?
-1. It's placed deeper
-2. It's placed under LevelTwo
-
-How to express it in terms of Armature?
-
-target.Treat<ISubject1>().AsCreated<LevelThree>()
-
-SkipTill(ISubject1)[RedirectTo]                              = 0
- IfFirst(LevelThree)[CreateByReflection]                     = +5
-   SkipAll                                                   = -10
-     IfFirst(IsBaseTypeOf(string))[Instance(string3)]        = +5
-
-
-
-SkipTill(LevelTwo)(CreateByReflections)                      = 0
-   SkipAll                                                   = -10
-     IfFirst(IsBaseTypeOf(string))[Instance(string2)]        = +5
-
-There are:
-* Length of the building sequence (BSL)
-* Length of the pattern tree branch (PTL)
-
-BSL is handled by SkipAll PT node, it decreases the weight on each skipped unit in the BS
-Why it doesn't work in this case? Because it skipped one unit more and it's not enough to "win" more IfFirstUnit PT node
-
-
-PTL for now is not handled
+Q: Is it possible that ++ and -- be in the same pattern tree branch?
+A: If UsingArguments will use ++
+Q: Why it should to?
+A:

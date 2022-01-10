@@ -32,7 +32,7 @@ public class RootTuner : TunerBase
     var patternMatcher = new SkipTillUnit(
         new UnitPattern(type, tag),
         Weight
-      + WeightOf.BuildChainPattern.SkipTillUnit);
+      + WeightOf.UnitPattern.ExactTypePattern);
 
     return new RootTuner(ParentNode.GetOrAddNode(patternMatcher));
   }

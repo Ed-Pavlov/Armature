@@ -80,11 +80,20 @@ public static class LogExtension
   public static string Quote(this string str) => $"\"{str}\"";
   public static string QuoteIfNeeded(this string str)
   {
+    var containSlash = false;
     foreach(var symbol in str)
+    {
+      if(symbol == '\\')
+      {
+        containSlash = true;
+        break;
+      }
+
       if(BadCharacters.Contains(symbol))
         return Quote(str);
+    }
 
-    return str;
+    return containSlash ? Quote(str.Replace(@"\", @"\\")) : str;
   }
 
   public static void WriteToLog(this WeightedBuildActionBag? actions, LogLevel logLevel, string propertyName)
