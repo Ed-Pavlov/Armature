@@ -44,28 +44,25 @@ jobs:
         dotnet-version:     6.0.x
         include-prerelease: true
 
-    # Restore build and test as one command in order to not copy/paste the same arguments
-#    -
-#      name: Restore, build, and run tests
-#      run:  >
-#            dotnet test
-#            -c ${{env.configuration}}
-#            -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }}
-#            -p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }}
-#            -p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }}
-
-    # Restore build and pack as one command in order to not copy/paste the same arguments
-    # Place nuget packages into env.nugets-dir directory
+    # Build
     -
-      name: Pack
+      name: Build
       run:  >
-            dotnet pack
-            -c ${{ env.configuration }}
+            dotnet build
+            -c ${{env.configuration}}
             -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }}
             -p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }}
             -p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }}
-            -o:${{ env.nugets-dir }}
-            -p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }}
+
+    # Run tests
+    -
+      name: Test
+      run: dotnet test --no-build
+
+    # Create and place nuget packages into env.nugets-dir directory
+    -
+      name: Pack
+      run: dotnet pack --no-build -o:${{ env.nugets-dir }} -p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }}
 
     -
       name: Store Version
@@ -83,8 +80,8 @@ jobs:
     -
       name: Store PDB
       run: |
-            xcopy src\Armature\bin\Release\netstandard2.0\*.pdb ${{ env.pdb-dir }} /I /Y
             robocopy src\Armature\bin\Release\netstandard2.0\ ${{ env.pdb-dir }} *.pdb
+            if ($lastexitcode -lt 8) { $global:lastexitcode = 0 }
 
     -
       name: Upload Artifacts
