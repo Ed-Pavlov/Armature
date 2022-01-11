@@ -82,7 +82,8 @@ jobs:
 
     -
       name: Store Pdb
-      run: xcopy /s /i /y *.pdb ${{ env.pdb-dir }}
+      run: robocopy . ${{ env.pdb-dir }} *.pdb /S /XD ${{ artifacts-dir }}
+      #xcopy *.pdb ${{ env.pdb-dir }} /s /i /y /exclude ${{ artifacts-dir }}
 
     -
       name: Upload Artifacts
