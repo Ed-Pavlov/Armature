@@ -82,7 +82,7 @@ jobs:
 
     -
       name: Store PDB
-      run: xcopy src/Armature/bin/Release/netstandard2.0/*.pdb ${{ env.pdb-dir }}/ /s /i /y
+      run: xcopy src\Armature\bin\Release\netstandard2.0\*.pdb ${{ env.pdb-dir }} /s /i /y
 
     -
       name: Upload Artifacts
