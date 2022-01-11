@@ -14,6 +14,7 @@ env:
   configuration: Release
   artifacts-dir: artifacts
   nugets-dir:    artifacts/nupkgs
+  pdb-dir:       artifacts/pdb
 
 jobs:
   build:
@@ -78,6 +79,10 @@ jobs:
               "nuget-version": "${{ steps.gitversion.outputs.nuGetVersionV2 }}"
               }
         dir:  ${{ env.artifacts-dir }}
+
+    -
+      name: Store Pdb
+      run: xcopy /s /i /y *.pdb ${{ env.pdb-dir }}
 
     -
       name: Upload Artifacts
