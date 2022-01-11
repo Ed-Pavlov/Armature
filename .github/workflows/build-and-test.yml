@@ -81,9 +81,8 @@ jobs:
         dir:  ${{ env.artifacts-dir }}
 
     -
-      name: Store Pdb
-      run: robocopy . ${{ env.pdb-dir }} *.pdb /S /XD ${{ env.artifacts-dir }}
-      #xcopy *.pdb ${{ env.pdb-dir }} /s /i /y /exclude ${{ artifacts-dir }}
+      name: Store PDB
+      run: xcopy src\Armature\bin\Release\netstandard2.0\*.pdb ${{ env.pdb-dir }} /s /i /y
 
     -
       name: Upload Artifacts
@@ -92,3 +91,5 @@ jobs:
         name:           Artifacts
         path:           ${{ env.artifacts-dir }}/
         retention-days: 3
+src\Armature\bin\Release\netstandard2:
+  0\:
