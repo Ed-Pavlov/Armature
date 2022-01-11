@@ -15,7 +15,6 @@ env:
   artifacts-dir: artifacts
   nugets-dir:    artifacts/nupkgs
   pdb-dir:       artifacts/pdb
-  pdb-src:       src/Armature/bin/Release/netstandard2.0/*.pdb
 
 jobs:
   build:
@@ -83,7 +82,7 @@ jobs:
 
     -
       name: Store PDB
-      run: xcopy ${{ env.pdb-src }} ${{ env.pdb-dir }}/ /s /i /y
+      run: xcopy src/Armature/bin/Release/netstandard2.0/*.pdb ${{ env.pdb-dir }}/ /s /i /y
 
     -
       name: Upload Artifacts
@@ -92,5 +91,3 @@ jobs:
         name:           Artifacts
         path:           ${{ env.artifacts-dir }}/
         retention-days: 3
-src\Armature\bin\Release\netstandard2:
-  0\:
