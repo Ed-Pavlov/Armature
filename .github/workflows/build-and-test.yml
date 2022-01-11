@@ -82,7 +82,7 @@ jobs:
 
     -
       name: Store Pdb
-      run: robocopy . ${{ env.pdb-dir }} *.pdb /S /XD ${{ artifacts-dir }}
+      run: robocopy . ${{ env.pdb-dir }} *.pdb /S /XD ${{ env.artifacts-dir }}
       #xcopy *.pdb ${{ env.pdb-dir }} /s /i /y /exclude ${{ artifacts-dir }}
 
     -
