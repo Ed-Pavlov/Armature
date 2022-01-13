@@ -121,6 +121,29 @@ public class CreateByReflectionTest
           .StartWith($"Constructor for type {unitType} is not found, check registrations for this type or");
   }
 
+  [Test]
+  public void should_rethrow_user_exception_with_original_stack_trace()
+  {
+    var unitType   = typeof(UserExceptionSource);
+    var ctor = typeof(UserExceptionSource).GetConstructor(Array.Empty<Type>());
+
+    // --arrange
+    var buildSession = A.Fake<IBuildSession>();
+    A.CallTo(() => buildSession.BuildChain).Returns(Unit.IsType(unitType).ToBuildChain());
+    A.CallTo(() => buildSession.BuildUnit(Kind.Is(unitType).Tag(SpecialTag.Constructor))).Returns(new BuildResult(ctor));
+
+    var target = new CreateByReflection();
+
+    // --act
+    var actual = () => target.Process(buildSession);
+
+    // --assert
+    actual.Should()
+          .ThrowExactly<ApplicationException>()
+          .Which.StackTrace.Should()
+          .Contain($"{nameof(UserExceptionSource)}..ctor()");
+  }
+
   [SuppressMessage("ReSharper", "UnusedMember.Local")]
   private struct SubjectStruct
   {
@@ -130,12 +153,16 @@ public class CreateByReflectionTest
     public SubjectStruct(int actual) => Actual = actual;
   }
 
+  [SuppressMessage("ReSharper", "UnusedParameter.Local")]
   [SuppressMessage("ReSharper", "UnusedMember.Local")]
   private class SubjectClass
   {
-    public int Actual { get; }
+    public SubjectClass(){}
+    public SubjectClass(int actual){}
+  }
 
-    public SubjectClass() => Actual = int.MinValue;
-    public SubjectClass(int actual) => Actual = actual;
+  private class UserExceptionSource
+  {
+    public UserExceptionSource() => throw new ApplicationException();
   }
 }

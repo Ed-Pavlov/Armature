@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using Armature.Core;
 using NUnit.Framework;
 

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using Armature.Core.Annotations;
-using Armature.Core.Sdk;
 
 namespace Armature.Core;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -142,8 +143,8 @@ public partial class BuildSession
       BuildActionPostProcess(buildAction, buildSession);
 
     return buildSession.BuildResult.HasValue
-             ? buildSession.BuildResult
-             : BuildViaParentBuilder(buildChain.TargetUnit);
+               ? buildSession.BuildResult
+               : BuildViaParentBuilder(buildChain.TargetUnit);
   }
 
   private List<Weighted<BuildResult>> BuildAllUnits(BuildChain buildChain, WeightedBuildActionBag? buildActionBag)
@@ -238,20 +239,24 @@ public partial class BuildSession
             return buildResult;
         }
       }
-      catch(Exception exc)
+      catch(ArmatureException exc)
       {
         exceptions.Add(exc); // it's already written to the log by the parent builder, so just collect it
 
         // continue
       }
 
-    return exceptions.Count > 0
-             ? throw new AggregateException(
-                   $"{exceptions.Count} exceptions occured during during building an unit via parent builders."
-                 + LogConst.ArmatureExceptionPostfix(" and {nameof(AggregateException)}.{nameof(AggregateException.InnerExceptions)}"),
-                   exceptions)
-                .AddData(ExceptionConst.Logged, true)
-             : default;
+    if(exceptions.Count == 1)
+      ExceptionDispatchInfo.Capture(exceptions[0]).Throw();
+
+    if(exceptions.Count > 0)
+      throw new ArmatureException(
+              $"{exceptions.Count} exceptions occured during during building an unit via parent builders."
+            + LogConst.ArmatureExceptionPostfix($" and {nameof(ArmatureException)}.{nameof(ArmatureException.InnerExceptions)}"),
+              exceptions)
+         .AddData(ExceptionConst.Logged, true);
+
+    return default;
   }
 
   private static void Log_BuildResult(BuildResult buildResult)
@@ -269,8 +274,8 @@ public partial class BuildSession
 
   private static void Log_BuildActionResult(IBuildAction buildAction, BuildResult buildResult)
     => Log.WriteLine(
-      buildResult.HasValue ? LogLevel.Info : LogLevel.Trace,
-      () => $"{LogConst.BuildAction_Name(buildAction)}.Result = {buildResult.ToLogString()}");
+        buildResult.HasValue ? LogLevel.Info : LogLevel.Trace,
+        () => $"{LogConst.BuildAction_Name(buildAction)}.Result = {buildResult.ToLogString()}");
 
   private static void Log_GatheredActions(WeightedBuildActionBag? actionBag)
   {

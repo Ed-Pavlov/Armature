@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
@@ -160,17 +161,14 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_report_all_exceptions_from_parent_builders()
+    public void should_report_all_armature_exceptions_from_parent_builders()
     {
-      var argumentOutOfRangeException = new ArgumentOutOfRangeException();
-      var invalidProgramException     = new InvalidProgramException();
-
       // --arrange
       var parent1 = new Builder(BuildStage.Create)
-       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw argumentOutOfRangeException));
+       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArmatureException()));
 
       var parent2 = new Builder(BuildStage.Create)
-       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw invalidProgramException));
+       .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArmatureException()));
 
       var target = CreateTarget(parent1, parent2);
 
@@ -179,14 +177,12 @@ namespace Tests.Functional
 
       // --assert
       action.Should()
-            .Throw<AggregateException>()
-            .Which
-            .InnerExceptions.Should()
-            .Equal(argumentOutOfRangeException, invalidProgramException);
+          .ThrowExactly<ArmatureException>()
+          .Where(_ => _.InnerExceptions.Count == 2 && _.InnerExceptions.All(inner => inner is ArmatureException));
     }
 
     [Test]
-    public void should_not_throw_exception_if_one_parent_built_unit()
+    public void should_not_continue_trying_if_user_exception_is_thrown()
     {
       const string expected = "parent2string";
 
@@ -198,9 +194,9 @@ namespace Tests.Functional
 
       var target = CreateTarget(parent1, parent2);
 
-      var actual = target.Build<string>();
+      var actual = () => target.Build<string>();
 
-      actual.Should().Be(expected);
+      actual.Should().ThrowExactly<ArgumentOutOfRangeException>();
     }
 
     [Test]
@@ -224,21 +220,6 @@ namespace Tests.Functional
 
       // --assert
       actual.Should().Be(expected);
-    }
-
-    [Test]
-    public void should_catch_not_serializable_exception_when_building_via_parent()
-    {
-      var parent = CreateTarget();
-      parent.Treat<Subject>().AsCreatedWith(() => throw new NotSerializableException());
-
-      var target = CreateTarget(parent);
-
-      // --act
-      Action actual = () => target.Build<Subject>();
-
-      // --assert
-      actual.Should().ThrowExactly<AggregateException>().WithInnerExceptionExactly<NotSerializableException>();
     }
 
     private class DebugOnlyBuildAction : IBuildAction

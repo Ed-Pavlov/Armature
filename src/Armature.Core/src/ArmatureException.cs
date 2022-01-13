@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Armature.Core.Sdk;
@@ -10,13 +11,19 @@ namespace Armature.Core;
 /// Exception is used to distinguish internal unexpected situations and error produced by user code
 /// </summary>
 [Serializable]
-public class ArmatureException : ApplicationException
+public class ArmatureException : AggregateException
 {
+  [DebuggerStepThrough]
+  public ArmatureException() : base(LogConst.ArmatureExceptionPostfix()){}
+
   [DebuggerStepThrough]
   public ArmatureException(string message) : base(message + LogConst.ArmatureExceptionPostfix()) { }
 
   [DebuggerStepThrough]
   public ArmatureException(string message, Exception innerException) : base(message + LogConst.ArmatureExceptionPostfix(), innerException) { }
+
+  [DebuggerStepThrough]
+  public ArmatureException(string message, IEnumerable<Exception> innerExceptions) : base(message, innerExceptions) { }
 
   [DebuggerStepThrough]
   public override string ToString()

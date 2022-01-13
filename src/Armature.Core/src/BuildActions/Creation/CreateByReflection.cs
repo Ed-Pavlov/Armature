@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
@@ -19,20 +20,24 @@ public record CreateByReflection : IBuildAction
       var constructor = buildSession.GetConstructorOf(type);
       var parameters  = constructor.GetParameters();
 
-      if(parameters.Length == 0 && type.IsValueType) // do not create default value of value type, it can confuse logic
+      if(parameters.Length == 0 && type.IsValueType) // do not create default value of value type, it can confuse business logic
         return;
 
-      object instance;
-
-      if(parameters.Length == 0)
-        instance = constructor.Invoke(Empty<object>.Array);
-      else
+      var arguments = parameters.Length == 0 ? Empty<object>.Array : buildSession.BuildArgumentsForMethod(parameters);
+      try
       {
-        var arguments = buildSession.BuildArgumentsForMethod(parameters);
-        instance = constructor.Invoke(arguments);
+        var instance = constructor.Invoke(arguments);
+        buildSession.BuildResult = new BuildResult(instance);
       }
+      catch(TargetInvocationException exception)
+      {
+        if(exception.InnerException is null)
+          throw;
 
-      buildSession.BuildResult = new BuildResult(instance);
+        // throw "user" exception caused the TargetInvocationException w/o loosing the original stack trace
+        ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
+        throw; // this call is for compiler which doesn't understand that capture.Throw() never returns
+      }
     }
   }
 

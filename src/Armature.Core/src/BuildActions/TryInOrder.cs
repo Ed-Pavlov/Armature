@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
@@ -53,19 +54,28 @@ public record TryInOrder : IBuildAction, IEnumerable, ILogString
           break;
         }
       }
-      catch(Exception exc)
-      {
+      catch(ArmatureException exception)
+      { // ArmatureException is a valid way to indicate that build action can't build a unit, gather such exceptions to report them all
         using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_Process(buildAction)}.Exception: "))
-          exc.WriteToLog();
+          exception.WriteToLog();
 
-        exceptions.Add(exc);
+        exceptions.Add(exception);
+      }
+      catch(Exception exception)
+      { // User exception is another matter
+        using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_Process(buildAction)}.Exception: "))
+          exception.WriteToLog();
+
+        throw; // don't try to call other actions, they can return "wrong" unit, user exception is unexpected case
       }
 
     if(!buildSession.BuildResult.HasValue)
-      if(exceptions.Count > 0)
-        throw new AggregateException(
-            $"{exceptions.Count} exceptions occured during executing build actions. "
-          + $"See {nameof(Exception)}.{nameof(Exception.Data)} and {nameof(AggregateException)}.{nameof(AggregateException.InnerExceptions)}"
+      if(exceptions.Count == 1)
+        ExceptionDispatchInfo.Capture(exceptions[0]).Throw();
+      else if(exceptions.Count > 0)
+        throw new ArmatureException(
+            $"{exceptions.Count} exceptions from executed build actions. "
+          + $"See {nameof(Exception)}.{nameof(Exception.Data)} and {nameof(ArmatureException)}.{nameof(ArmatureException.InnerExceptions)}"
           + $" for details or enable logging using {nameof(Log)}.{nameof(Log.Enable)} to investigate the error.",
             exceptions)
          .AddData(ExceptionConst.Logged, true);
