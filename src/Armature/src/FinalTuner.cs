@@ -57,7 +57,19 @@ public class FinalTuner : TunerBase
   }
 
   /// <summary>
-  /// Register Unit as an singleton with a lifetime equal to parent <see cref="BuildChainPatternTree"/>. See <see cref="Singleton" /> for details
+  /// Register Unit as an singleton with a lifetime equal to parent <see cref="BuildChainPatternTree"/> using default implementation
+  /// set to <see cref="Default.CreateSingletonBuildAction"/>.
   /// </summary>
-  public void AsSingleton() => ParentNode.UseBuildAction(new Singleton(), BuildStage.Cache);
+  public void AsSingleton() => ParentNode.UseBuildAction(Default.CreateSingletonBuildAction(), BuildStage.Cache);
+
+  /// <summary>
+  /// Register Unit as an singleton with a lifetime equal to parent <see cref="BuildChainPatternTree"/>. See <see cref="Singleton" /> for details.
+  /// </summary>
+  public void AsSingletonSingleThread() => ParentNode.UseBuildAction(new Singleton(), BuildStage.Cache);
+
+  /// <summary>
+  /// Register Unit as an singleton with a lifetime equal to parent <see cref="BuildChainPatternTree"/> using thread safe version of the build action.
+  /// See <see cref="ThreadSafeSingleton" /> for details.
+  /// </summary>
+  public void AsSingletonThreadSafe() => ParentNode.UseBuildAction(new ThreadSafeSingleton(), BuildStage.Cache);
 }

@@ -209,7 +209,8 @@ public class TryIdOrderTest
   public void should_be_equal(TryInOrder target1, TryInOrder target2)
   {
     // --assert
-    target1.Equals(target2).Should().BeTrue();
+    var @equals = target1.Equals(target2);
+    @equals.Should().BeTrue();
     target2.Equals(target1).Should().BeTrue();
   }
 
