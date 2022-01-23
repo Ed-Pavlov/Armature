@@ -74,11 +74,8 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create)
-           }
          };
 
     private class SampleType1 : IDisposable

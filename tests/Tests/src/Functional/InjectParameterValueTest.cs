@@ -76,6 +76,8 @@ namespace Tests.Functional
        .AsIs()
        .UsingArguments(asIsParameterValue);
 
+      target.PrintToLog();
+
       var asInterface = target.Build<ISubject1>()!;
       var asIs        = target.Build<LevelOne>()!;
 
@@ -223,27 +225,6 @@ namespace Tests.Functional
 
       // --assert
       actual.Text.Should().Be(expected);
-    }
-
-    [Test]
-    public void should_fail_if_value_for_the_same_parameter_registered_more_than_once()
-    {
-      // --arrange
-      var target = CreateTarget();
-
-      var tuner = target
-                 .Treat<LevelOne>()
-                 .AsIs();
-
-      // --act
-      Action actual = () => tuner.UsingArguments(
-                        ForParameter.OfType<string>().UseTag("expected29083"),
-                        ForParameter.OfType<string>().UseValue("bad"));
-
-      // --assert
-      actual.Should()
-            .ThrowExactly<ArmatureException>()
-            .Where(_ => _.Message.StartsWith($"Building of an argument for the method parameter of type {typeof(string).ToLogString()} is already tuned"));
     }
 
     [Test]
@@ -404,8 +385,6 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(
@@ -421,7 +400,6 @@ namespace Tests.Functional
               .UseBuildAction(
                  new TryInOrder() { Static.Of<BuildArgumentByParameterType>(), Static.Of<GetParameterDefaultValue>() },
                  BuildStage.Create)
-           }
          };
 
     private interface ISubject1

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -9,6 +10,7 @@ public static class UnitTagExtension
   /// Checks if <paramref name="pattern"/> matches <paramref name="unitTag"/>, returns true if they are equal of the
   /// <paramref name="pattern"/> is <see cref="SpecialTag.Any"/>
   /// </summary>
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static bool Matches(this object? pattern, object? unitTag)
   {
     if(ReferenceEquals(unitTag, SpecialTag.Any))

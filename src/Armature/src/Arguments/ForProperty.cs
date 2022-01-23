@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Armature.Core;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 
 namespace Armature;
 
@@ -14,48 +14,51 @@ public static class ForProperty
   /// Tunes up how to build an argument to inject into a property of type <paramref name="type"/>.
   /// </summary>
   public static PropertyArgumentTuner OfType(Type type)
-    => new(
-      (parentNode, weight) =>
+    => new PropertyArgumentTuner(
+      (tuningContext, weight) =>
       {
-        Property.OfType(type).Tune(parentNode);
+        Property.OfType(type).Tune(tuningContext);
 
-        return parentNode.AddNode(
-          new IfFirstUnit(
-            new IsPropertyWithType(new UnitPattern(type)),
-            weight + WeightOf.BuildChainPattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
-          $"Building of an argument for the property with type {type.ToLogString()} is already tuned");
+        return tuningContext.TreeRoot
+                            .GetOrAddNode(
+                               new IfTargetUnit(
+                                 new IsPropertyWithType(new UnitPattern(type)),
+                                 weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
+                            .TryAddContext(tuningContext.GetContextNode);
       });
 
   /// <summary>
   /// Tunes up how to build an argument to inject into a property of type<typeparamref name="T" />
   /// </summary>
   public static PropertyArgumentTuner<T> OfType<T>()
-    => new(
-      (parentNode, weight) =>
+    => new PropertyArgumentTuner<T>(
+      (tuningContext, weight) =>
       {
-        Property.OfType<T>().Tune(parentNode);
+        Property.OfType<T>().Tune(tuningContext);
 
-        return parentNode.AddNode(
-          new IfFirstUnit(
-            new IsPropertyWithType(new UnitPattern(typeof(T))),
-            weight + WeightOf.BuildChainPattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
-          $"Building of an argument for the property with type {typeof(T).ToLogString()} is already tuned");
+        return tuningContext.TreeRoot
+                            .GetOrAddNode(
+                               new IfTargetUnit(
+                                 new IsPropertyWithType(new UnitPattern(typeof(T))),
+                                 weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
+                            .TryAddContext(tuningContext.GetContextNode);
       });
 
   /// <summary>
   /// Tunes up how to build an argument to inject into a property named <see cref="MemberInfo.Name" />
   /// </summary>
   public static PropertyArgumentTuner Named(string propertyName)
-    => new(
-      (parentNode, weight) =>
+    => new PropertyArgumentTuner(
+      (tuningContext, weight) =>
       {
-        Property.Named(propertyName).Tune(parentNode);
+        Property.Named(propertyName).Tune(tuningContext);
 
-        return parentNode.AddNode(
-          new IfFirstUnit(
-            new IsPropertyNamed(propertyName),
-            weight + WeightOf.BuildChainPattern.IfFirstUnit + WeightOf.InjectionPoint.ByName),
-          $"Building of an argument for the property with name {propertyName} is already tuned");
+        return tuningContext.TreeRoot
+                            .GetOrAddNode(
+                               new IfTargetUnit(
+                                 new IsPropertyNamed(propertyName),
+                                 weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
+                            .TryAddContext(tuningContext.GetContextNode);
       });
 
   /// <summary>
@@ -63,17 +66,16 @@ public static class ForProperty
   /// with the specified <paramref name="injectPointId"/>.
   /// </summary>
   public static PropertyArgumentTuner WithInjectPoint(object? injectPointId)
-    => new(
-      (parentNode, weight) =>
+    => new PropertyArgumentTuner(
+      (tuningContext, weight) =>
       {
-        Property.ByInjectPoint(injectPointId).Tune(parentNode);
+        Property.ByInjectPoint(injectPointId).Tune(tuningContext);
 
-        return parentNode
-         .AddNode(
-            new IfFirstUnit(
-              new IsPropertyMarkedWithAttribute(injectPointId),
-              weight + WeightOf.BuildChainPattern.IfFirstUnit + WeightOf.InjectionPoint.ByInjectPointId),
-            $"Building of an argument for the property marked with {nameof(InjectAttribute)}"
-          + $" with {nameof(InjectAttribute.InjectionPointId)} equal to {injectPointId.ToHoconString()} is already tuned");
+        return tuningContext.TreeRoot
+                            .GetOrAddNode(
+                               new IfTargetUnit(
+                                 new IsPropertyMarkedWithAttribute(injectPointId),
+                                 weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.TargetUnit))
+                            .TryAddContext(tuningContext.GetContextNode);
       });
 }

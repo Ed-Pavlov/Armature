@@ -17,7 +17,7 @@ public record GetPropertyByType(Type _type) : IBuildAction, ILogString
   public void Process(IBuildSession buildSession)
   {
     var unitType   = buildSession.BuildChain.TargetUnit.GetUnitType();
-    var properties = unitType.GetProperties().Where(_ => _.PropertyType == _type).ToArray();
+    var properties = unitType.GetProperties().Where(_ => _.PropertyType == _type).ToArray(); // TODO: should be one? several arguments of one type will be resolved in one instance
 
     if(properties.Length > 0)
       buildSession.BuildResult = new BuildResult(properties);

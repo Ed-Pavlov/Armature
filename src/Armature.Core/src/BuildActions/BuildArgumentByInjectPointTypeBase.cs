@@ -34,7 +34,7 @@ public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogSt
   protected abstract Type GetInjectPointType(UnitId unitId);
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(BuildArgumentByInjectPointTypeBase)} {{ Tag: {_tag.ToHoconString()} }} }}";
+  public string ToHoconString() => $"{{ {GetType().GetShortName().ToHoconString()} {{ Tag: {_tag.ToHoconString()} }} }}";
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
 }

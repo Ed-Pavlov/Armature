@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
 
 namespace Armature;
 
@@ -15,16 +16,28 @@ public static class Constructor
   /// </summary>
   public static IInjectPointTuner WithMaxParametersCount()
     => new InjectPointTuner(
-      (node, weight) => node.GetOrAddNode(new IfFirstUnit(Static.Of<IsConstructor>(), weight))
-                            .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create));
+      (tuningContext, weight)
+        => tuningContext.TreeRoot
+                        .GetOrAddNode(
+                           new IfTargetUnit(
+                             Static.Of<IsConstructor>(),
+                             weight + WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.TargetUnit))
+                        .TryAddContext(tuningContext.GetContextNode)
+                        .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create));
 
   /// <summary>
   /// Instantiate a Unit using a constructor marked with <see cref="InjectAttribute" />(<paramref name="injectionPointId" />).
   /// </summary>
   public static IInjectPointTuner MarkedWithInjectAttribute(object? injectionPointId)
     => new InjectPointTuner(
-      (node, weight) => node.GetOrAddNode(new IfFirstUnit(Static.Of<IsConstructor>(), weight))
-                            .UseBuildAction(new GetConstructorByInjectPointId(injectionPointId), BuildStage.Create));
+      (tuningContext, weight)
+        => tuningContext.TreeRoot
+                        .GetOrAddNode(
+                           new IfTargetUnit(
+                             Static.Of<IsConstructor>(),
+                             weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.TargetUnit))
+                        .TryAddContext(tuningContext.GetContextNode)
+                        .UseBuildAction(new GetConstructorByInjectPointId(injectionPointId), BuildStage.Create));
 
   /// <summary>
   /// Instantiate a Unit using constructor without parameters.
@@ -57,6 +70,12 @@ public static class Constructor
   [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
   public static IInjectPointTuner WithParameters(params Type[] parameterTypes)
     => new InjectPointTuner(
-      (node, weight) => node.GetOrAddNode(new IfFirstUnit(Static.Of<IsConstructor>(), weight))
-                            .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
+      (tuningContext, weight)
+        => tuningContext.TreeRoot
+                        .GetOrAddNode(
+                           new IfTargetUnit(
+                             Static.Of<IsConstructor>(),
+                             weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
+                        .TryAddContext(tuningContext.GetContextNode)
+                        .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
 }

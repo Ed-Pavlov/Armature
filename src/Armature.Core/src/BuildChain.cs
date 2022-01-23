@@ -23,14 +23,13 @@ public readonly struct BuildChain : IEnumerable<UnitId>
   public BuildChain(IReadOnlyList<UnitId> array, int startIndex)
   {
     if(array is null) throw new ArgumentNullException(nameof(array));
-    if(startIndex < 0 || startIndex >= array.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
+    if(startIndex < 0 || startIndex > array.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
 
     _array      = array;
     _startIndex = startIndex;
-    Length      = _array.Count - _startIndex;
   }
 
-  public int Length { get; }
+  public int Length => _array.Count - _startIndex;
 
   public UnitId this[int index]
   {
@@ -44,7 +43,7 @@ public readonly struct BuildChain : IEnumerable<UnitId>
   public UnitId TargetUnit
   {
     [DebuggerStepThrough] [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    get => _array[_array.Count - 1];
+    get => _array[0];
   }
 
   [DebuggerStepThrough]

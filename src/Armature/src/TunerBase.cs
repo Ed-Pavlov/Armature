@@ -4,11 +4,23 @@ using Armature.Extensibility;
 
 namespace Armature;
 
-public abstract class TunerBase : IInternal<IBuildChainPattern>
+public delegate IBuildChainPattern AddContextPatterns(IBuildChainPattern node);
+
+public abstract class TunerBase : IInternal<IBuildChainPattern, IBuildChainPattern, AddContextPatterns?>
 {
-  protected readonly IBuildChainPattern ParentNode;
+  protected readonly IBuildChainPattern TreeRoot;
+  protected readonly IBuildChainPattern TunedNode;
 
-  protected TunerBase(IBuildChainPattern parentNode) => ParentNode = parentNode ?? throw new ArgumentNullException(nameof(parentNode));
+  protected readonly AddContextPatterns? ContextFactory;
 
-  IBuildChainPattern IInternal<IBuildChainPattern>.Member1 => ParentNode;
+  protected TunerBase(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns? contextFactory)
+  {
+    TreeRoot       = treeRoot  ?? throw new ArgumentNullException(nameof(treeRoot));
+    TunedNode      = tunedNode ?? throw new ArgumentNullException(nameof(tunedNode));
+    ContextFactory = contextFactory;
+  }
+
+  IBuildChainPattern IInternal<IBuildChainPattern>.                                          Member1 => TunedNode;
+  IBuildChainPattern IInternal<IBuildChainPattern, IBuildChainPattern>.                      Member2 => TreeRoot;
+  AddContextPatterns? IInternal<IBuildChainPattern, IBuildChainPattern, AddContextPatterns?>.Member3 => ContextFactory;
 }

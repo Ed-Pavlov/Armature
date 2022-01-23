@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\common.proj"/>
+  <Import Project="..\common.proj" />
   <PropertyGroup>
     <AssemblyName>Armature</AssemblyName>
     <RootNamespace>Armature</RootNamespace>

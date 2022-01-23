@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
@@ -13,13 +14,13 @@ public class BuildChainTest
   {
     // --arrange
     const int arrayLength = 3;
-    const int startIndex  = 1;
+    const int tailStartIndex  = 1;
 
     var array     = new UnitId[arrayLength];
-    var arrayTail = array.ToBuildChain().GetTail(startIndex);
+    var arrayTail = array.ToBuildChain().GetTail(tailStartIndex);
 
     // --assert
-    arrayTail.Length.Should().Be(arrayLength - startIndex);
+    arrayTail.Length.Should().Be(arrayLength - tailStartIndex);
   }
 
   [Test]
@@ -45,22 +46,6 @@ public class BuildChainTest
       actualArray[i] = actual[i];
 
     actualArray.Should().Equal(expected);
-  }
-
-  [Test]
-  public void LastItem()
-  {
-    // --arrange
-    const int startIndex = 2;
-    var       lastItem   = new UnitId(23, null);
-
-    var array = new UnitId[] {new(0, null), new(1, null), new (2, 0), lastItem};
-
-    // --act
-    var actual = array.ToBuildChain().GetTail(startIndex);
-
-    // --assert
-    actual.TargetUnit.Should().Be(lastItem);
   }
 
   [Test]
@@ -99,7 +84,7 @@ public class BuildChainTest
     var array = new UnitId[] {new(0, null), new (2, 0)};
 
     // --arrange
-    startIndex = Math.Min(startIndex, array.Length);
+    startIndex = Math.Min(startIndex, array.Length + 1);
     var actual = () => new BuildChain(array, startIndex);
 
     // --assert

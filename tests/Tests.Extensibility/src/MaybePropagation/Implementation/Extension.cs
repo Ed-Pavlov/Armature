@@ -2,6 +2,7 @@
 using Armature;
 using Armature.Core;
 using Armature.Extensibility;
+using Armature.Sdk;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {
@@ -12,12 +13,24 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     /// </summary>
     public static TreatingTuner<T> TreatMaybeValue<T>(this TreatingTuner<Maybe<T>> treatingTuner)
     {
-      var treat     = treatingTuner.GetInternals();
-      var uniqueTag = Guid.NewGuid();
-      treat.Member1.UseBuildAction(new BuildMaybeAction<T>(uniqueTag), BuildStage.Create);
+      var tuner          = treatingTuner.GetInternals();
+      var treeRoot       = tuner.Member2;
+      var tunedNode       = tuner.Member1;
+      var contextFactory = tuner.Member3!;
 
-      return new TreatingTuner<T>(
-        treat.Member1.GetOrAddNode(new SkipTillUnit(new UnitPattern(typeof(T), uniqueTag), 0)));
+      var uniqueTag = Guid.NewGuid();
+
+      tunedNode       .UseBuildAction(new BuildMaybeAction<T>(uniqueTag), BuildStage.Create);
+
+      var unitPattern = new UnitPattern(typeof(T), uniqueTag);
+
+      var valueNode = treeRoot
+                     .GetOrAddNode(new IfTargetUnit(unitPattern, 0)) //TODO: weight
+                     .TryAddContext(contextFactory);
+
+      IBuildChainPattern AddContextTo(IBuildChainPattern node) => node.GetOrAddNode(new IfFirstUnit(unitPattern, 0)).TryAddContext(contextFactory);
+
+      return new TreatingTuner<T>(treeRoot, valueNode,AddContextTo);
     }
 
     /// <summary>
@@ -25,8 +38,12 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     /// </summary>
     public static TreatingTuner<Maybe<T>> AsMaybeValueOf<T>(this TreatingTuner<T> treatingTuner)
     {
-      var treat = treatingTuner.GetInternals();
-      return new TreatingTuner<Maybe<T>>(treat.Member1.UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize));
+      var tuner          = treatingTuner.GetInternals();
+      var tunedNode      = tuner.Member1;
+      var treeRoot       = tuner.Member2;
+      var contextFactory = tuner.Member3!;
+
+      return new TreatingTuner<Maybe<T>>(treeRoot, tuner.Member1.UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize), contextFactory);
     }
   }
 }

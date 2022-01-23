@@ -33,8 +33,6 @@ public class RuntimeArgumentsTest
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(
@@ -54,7 +52,6 @@ public class RuntimeArgumentsTest
                    Static.Of<BuildArgumentByParameterType>()
                  },
                  BuildStage.Create)
-           }
          };
 
     private class Subject

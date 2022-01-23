@@ -25,3 +25,125 @@ build chain length is > 3, which looks like true.
 
 
 Need to decide what to pass to the base FinalTuner, functor?
+
+
+-----------------------------------------------------------------------------------
+14.01.2022
+
+Reversed build chain
+
+Treat<I>()                 // IfTargetUnit<I>
+  .As                      //     -> Redirect<C>
+     Created<C>()          // IfTargetUnit<C>
+                           //   IfFirstUnit<I> -> CreateBuildAction, Singleton
+  .UsingArguments("str")   // IfTargetUnit<string>
+                           //   IfFirstUnit<C>
+                           //     IfFirstUnit<I> -> Instance("str")
+  .AsSingleton()           //
+
+TreatInheritorsOf<I>        // IfTargetUnit<I> -> Redirect<C>
+  .AsCreated<C>            // IfTargetUnit<C>
+                           //   IfFirstUnit<InheritorsOf<I>> -> CreateBuildAction
+  .UsingArguments("str1")  // IfTargetUnit<string>
+                           //   IfFirstUnit<C>
+                           //     IfFirstUnit<InheritorsOf<I>> -> Instance("str1")
+
+IfTargetUnit<string> will be merged into
+
+// IfTargetUnit<string>
+//   IfFirstUnit<C>
+//     IfFirstUnit<InheritorsOf<I>> -> Instance("str1")
+//     IfFirstUnit<I> -> Instance("str")
+
+Therefore, we need an access to the "root" of the tree on any level in order to add IfTargetUnit<?> pattern
+
+
+TreatInheritorsOf<B>()
+  .InjectInto(
+    Constructor.ByTypes<int, string>(),      // IfTargetUnit<IsConstructor> ->
+                                             //   IfFirstUnit<InheritorsOf<B>> -> GetConstructorByParameters
+    Property.OfType<Lifetime>)               // merged: IfTargetUnit<InheritorsOf<B>> -> InjectDependenciesIntoProperties
+                                             // IfTargetUnit<PropertiesList> ->
+                                             //   IfFirstUnit<InheritorsOf<B>> -> GetPropertyByType<Lifetime>
+    .AsSingleton()                           // merged: IfTargetUnit<InheritorsOf<B>> -> InjectDependenciesIntoProperties
+
+
+Building<I>()                                // IfTargetUnit<string>()
+  .TreatAll()                                //   SkipWhileUnit(ServiceUnit)
+  .UsingArguments("arg")                     //     SkipTillUnit<I> -> Instance("arg")
+
+Treat<I>()                                   // Target(I) -> Redirect
+  .AsCreated<C>()                            // Target(C)/First(I) -> Create...
+  .UsingArguments(                           // Target(string)
+    ForParameter                             //   First(C)
+      .OfType<string>()                      //     First(I) -> Instance
+      .UseValue("value"))
+
+=============== How to build context through tuners =========================
+
+Treat<C> : TreatingTuner    GetContext => IfFirst<C>
+  .UsingArguments           works fine
+
+Treat<I> : TreatingTuner    GetContext => IfFirst<I>
+ .AsCreated<C> : FinalTuner GetContext => IfFirst<C>/IfFirst<I>
+ .UsingArguments            works fine
+
+
+ ============== Property ===================
+ Treat<C>                                        // TargetUnit<C>
+   .InjectInto(Property.OfType<Lifetime>)        //     -> InjectDependenciesIntoProperties
+                                                 // TargetUnit<PropertyList>
+                                                 //   IfFirstUnit<C> -> GetPropertyByType<Lifetime>
+ input: TreeRoot, TunedNode, ContextNode
+
+
+ Treat<C>                                        // TargetUnit<C>
+   .UsingArguments(                              //      -> InjectDependenciesIntoProperties
+     ForProperty.OfType<string>()                // TargetUnit<PropertyList>
+      .UseValue("prop")                          //   IfFirstUnit<C> -> GetPropertyByType<string>
+                                                 // TargetUnit<IsProperty<string>>
+                                                 //    IfFirstUnit<C> -> Instance("prop")
+
+ input: TreeRoot, TunedNode, ContextNode
+
+ ============== Building =====================
+Building<A>().         // TargetUnit<C>
+Building<B>().         //   SkipTillUnit<B>
+Treat<C>()             //     SkipTillUnit<C>
+  .AsIs()              //          -> CreateBy...
+
+the very first context is null
+
+ =============== SkipAll =====================
+ Building<C>()                     // TargetUnit<Lifetime>
+   .TreatAll()                     //   SkipTillUnit<C>
+   .UsingArguments(lifetime)       //
+
+
+=========== Default Registrations ============
+TargetUnit<IsConstructor> -> TryInOrder
+TargetUnit<ParametersList> -> BuildInDirectOrder
+TargetUnit<Parameter>  -> TryInOrder
+
+============== Aux Parameters ================
+TargetUnit<IsAssignable<string>> -> "arg"
+TargetUnit<ParamWithName("param")> -> BuildWithTag("tag")
+
+============= Open Generics ==================
+A(IList<string>) -> UnitId(IList<string>)
+
+TreatOpenGeneric<IList<>>            // TargetUnit<IsGenericOfDefinition(IList<>)>
+  .As<List<>>                        //    -> Redirect(List<>) -> List<string>
+     Created                         // TargetUnit<IsGenericOfDefinition(List<>)>
+                                     //     -> CreateByDefault (List<String>)
+  .AsSingleton                       //      -> AsSingleton
+
+
+=========== SkipWhile ========================
+BuildChain:
+string -> ParameterInfo -> ParameterInfo[] -> Subject -> ISubject
+
+TargetUnit<String>            // GetTail(1)
+  SkipWhile<Special>          // GetTail(2) (i)
+    IfFirstUnit<Subject>      // Children is null -> basta else GetTail(1)
+      SkipTillUnit<ISubject>  // GetTail(1) i + 1

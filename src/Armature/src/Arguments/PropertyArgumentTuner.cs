@@ -10,7 +10,7 @@ namespace Armature;
 /// </summary>
 public class PropertyArgumentTuner<T> : ArgumentTunerBase<T, PropertyArgumentTuner<T>>
 {
-  public PropertyArgumentTuner(Func<IBuildChainPattern, int, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
+  public PropertyArgumentTuner(Func<TuningContext, int, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
 
   /// <summary>
   /// For building a value for the parameter use <see cref="PropertyInfo.PropertyType" /> and <paramref name="tag" />
@@ -33,5 +33,5 @@ public class PropertyArgumentTuner<T> : ArgumentTunerBase<T, PropertyArgumentTun
 /// <inheritdoc cref="PropertyArgumentTuner{T}"/>
 public class PropertyArgumentTuner : PropertyArgumentTuner<object?>
 {
-  public PropertyArgumentTuner(Func<IBuildChainPattern, int, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
+  public PropertyArgumentTuner(Func<TuningContext, int, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
 }

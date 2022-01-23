@@ -60,8 +60,6 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(
@@ -80,7 +78,6 @@ namespace Tests.Functional
                    Static.Of<BuildArgumentByParameterType>(), Static.Of<BuildListArgumentForMethodParameter>(), Static.Of<GetParameterDefaultValue>()
                  },
                  BuildStage.Create) // autowiring
-           }
          };
 
     [UsedImplicitly]

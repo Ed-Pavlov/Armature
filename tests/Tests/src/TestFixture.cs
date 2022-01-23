@@ -20,7 +20,7 @@ public class TestFixture
 #if NETCOREAPP3_1_OR_GREATER
     Trace.Listeners.Clear();
     Trace.Listeners.Add(new ConsoleTraceListener());
-    Log.Enable(LogLevel.Verbose);
+    Log.Enable(LogLevel.Trace);
 #endif
   }
 }

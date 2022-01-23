@@ -45,8 +45,6 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              new IfFirstUnit(new IsConstructor()) // inject into constructor
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
 
@@ -55,7 +53,6 @@ namespace Tests.Functional
 
              new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
-           }
          };
   }
 }

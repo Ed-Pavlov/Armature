@@ -134,6 +134,9 @@ namespace Tests.Functional
        .Treat<Subject>()
        .AsIs();
 
+      // target.PrintToLog();
+      // return;
+
       // --act
       Action actual = () => target.Build<Subject>();
 
@@ -144,8 +147,6 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(
@@ -165,7 +166,6 @@ namespace Tests.Functional
                    Static.Of<BuildArgumentByParameterType>()
                  },
                  BuildStage.Create)
-           }
          };
 
     private interface ISubject1

@@ -19,7 +19,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                       new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
                    };
 
       target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
@@ -41,7 +41,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Create)
                    {
-                     new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                       new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
                    };
 
       target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
@@ -64,7 +64,7 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                       new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
                    };
 
       target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
@@ -73,6 +73,8 @@ namespace Tests.Functional
       target.Treat<Subject1>()
             .AsIs()
             .UsingArguments(new object()); // set value to inject into ctor
+
+      target.PrintToLog();
 
       // --act
       var actual = target.Build<Subject1>();
@@ -86,8 +88,6 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipAllUnits
-                     {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
                            new GetConstructorByInjectPointId(),
@@ -95,7 +95,6 @@ namespace Tests.Functional
                            new GetConstructorByParameterTypes()
                          ),
                          BuildStage.Create),
-                     }
                    };
 
       target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
@@ -115,6 +114,8 @@ namespace Tests.Functional
          .AmendWeight(392)
          .InjectInto(Constructor.Parameterless());
 
+      target.PrintToLog();
+
       // --act
       var actual = target.Build<Subject3>();
 
@@ -127,8 +128,6 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipAllUnits
-                     {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
                            new GetConstructorByInjectPointId(),
@@ -136,7 +135,6 @@ namespace Tests.Functional
                            new GetConstructorByParameterTypes()
                          ),
                          BuildStage.Create),
-                     }
                    };
       target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
@@ -160,8 +158,6 @@ namespace Tests.Functional
     {
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipAllUnits
-                     {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
                            new GetConstructorByInjectPointId(),
@@ -169,7 +165,6 @@ namespace Tests.Functional
                            new GetConstructorByParameterTypes()
                          ),
                          BuildStage.Create),
-                     }
                    };
       target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 

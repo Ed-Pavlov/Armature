@@ -33,15 +33,15 @@ public abstract class BuildChainPatternBase : BuildChainPatternWithChildrenBase
 
   protected bool GetOwnOrChildrenBuildActions(BuildChain buildChain, int inputWeight, out WeightedBuildActionBag? actionBag)
   {
-    var result = false;
+    bool result;
     actionBag = null;
 
-    if(buildChain.Length > 1)
+    if(RawChildren is not null && buildChain.Length > 0)
     { // pass the rest of the chain to children and return their actions
-      result = GetChildrenActions(buildChain.GetTail(1), inputWeight, out actionBag);
+      result = GetChildrenActions(buildChain, inputWeight, out actionBag);
     }
     else
-    { // this patterns matches the target unit, return actions for it
+    { // "this" pattern matches and has no children, it means that TargetUnit and whole it's context matches the build chain
       result = GetOwnBuildActions(inputWeight, out actionBag);
       actionBag.WriteToLog(LogLevel.Verbose, "Actions: ");
     }

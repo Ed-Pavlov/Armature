@@ -1,42 +1,26 @@
 ﻿using System;
 using Armature.Core;
 using Armature.Core.Sdk;
-using Armature.Extensibility;
-using JetBrains.Annotations;
 
 namespace Armature;
 
-public class CreationTuner : TunerBase, IInternal<Type, object?>
+public class CreationTuner : TunerBase
 {
-  [PublicAPI]
-  protected readonly Type Type;
-  [PublicAPI]
-  protected readonly object? Tag;
-
-  public CreationTuner(IBuildChainPattern parentNode, Type type, object? tag) : base(parentNode)
-  {
-    Type = type ?? throw new ArgumentNullException(nameof(type));
-    Tag  = tag;
-  }
-
+  public CreationTuner(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns contextFactory)
+    : base(treeRoot, tunedNode, contextFactory) { }
   /// <summary>
   /// Specifies that unit should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
   /// </summary>
-  public FinalTuner CreatedByDefault()
-    => new(
-      ParentNode.GetOrAddNode(
-        new IfFirstUnit(new UnitPattern(Type, Tag))
-         .UseBuildAction(Default.CreationBuildAction, BuildStage.Create)));
+  public FinalTuner CreatedByDefault() => CreateBy(Default.CreationBuildAction);
 
   /// <summary>
   /// Specifies that unit should be created using reflection.
   /// </summary>
-  public FinalTuner CreatedByReflection()
-    => new(
-      ParentNode.GetOrAddNode(
-        new IfFirstUnit(new UnitPattern(Type, Tag))
-         .UseBuildAction(Static.Of<CreateByReflection>(), BuildStage.Create)));
+  public FinalTuner CreatedByReflection() => CreateBy(Static.Of<CreateByReflection>());
 
-  Type IInternal<Type>.            Member1 => Type;
-  object? IInternal<Type, object?>.Member2 => Tag;
+  private FinalTuner CreateBy(IBuildAction buildAction)
+  {
+    TunedNode.UseBuildAction(buildAction, BuildStage.Create);
+    return new FinalTuner(TreeRoot, TunedNode, ContextFactory!);
+  }
 }

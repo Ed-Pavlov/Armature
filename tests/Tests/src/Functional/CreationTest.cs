@@ -230,8 +230,6 @@ namespace Tests.Functional
         // return builder;
         new(BuildStage.Cache, BuildStage.Create)
                                              {
-                                                 new SkipAllUnits
-                                                 {
                                                      new SkipTillUnit(new IsInheritorOf(typeof(IDisposable), null))
                                                         .UseBuildAction(new CreateByReflection(), BuildStage.Cache),
 
@@ -242,7 +240,6 @@ namespace Tests.Functional
                                                         .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
                                                      new IfFirstUnit(new IsParameterInfo())
                                                         .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
-                                                 }
                                              };
 
     private interface ISubject1 { }

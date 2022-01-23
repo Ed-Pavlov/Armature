@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
+using Armature.Sdk;
 using JetBrains.Annotations;
 
 namespace Armature;
@@ -11,7 +12,10 @@ public class RootTuner : TunerBase
   protected int Weight;
 
   [DebuggerStepThrough]
-  public RootTuner(IBuildChainPattern parentNode) : base(parentNode) { }
+  public RootTuner(IBuildChainPattern treeRoot) : base(treeRoot, treeRoot, null) { }
+
+  [DebuggerStepThrough]
+  public RootTuner(IBuildChainPattern treeRoot, AddContextPatterns getContextNode) : base(treeRoot, treeRoot, getContextNode) { }
 
   /// <summary>
   /// Amend the weight of current registration
@@ -29,12 +33,12 @@ public class RootTuner : TunerBase
   {
     if(type is null) throw new ArgumentNullException(nameof(type));
 
-    var patternMatcher = new SkipTillUnit(
-        new UnitPattern(type, tag),
-        Weight
-      + WeightOf.UnitPattern.ExactTypePattern);
+    IBuildChainPattern AddContextTo(IBuildChainPattern node)
+      => node
+        .GetOrAddNode(new SkipTillUnit(new UnitPattern(type, tag), Weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.SkipTillUnit))
+        .TryAddContext(ContextFactory);
 
-    return new RootTuner(ParentNode.GetOrAddNode(patternMatcher));
+    return new RootTuner(TreeRoot, AddContextTo);
   }
 
   /// <summary>
@@ -50,39 +54,49 @@ public class RootTuner : TunerBase
     if(type is null) throw new ArgumentNullException(nameof(type));
     if(type.IsGenericTypeDefinition) throw new ArgumentException($"Use {nameof(TreatOpenGeneric)} to setup open generic types.");
 
-    var patternMatcher = new SkipTillUnit(
-        new UnitPattern(type, tag),
-        Weight
-      + WeightOf.BuildChainPattern.TargetUnit
-      + WeightOf.UnitPattern.ExactTypePattern);
+    var unitPattern = new UnitPattern(type, tag);
+    var baseWeight  = Weight + WeightOf.UnitPattern.ExactTypePattern;
 
-    return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
+    var targetUnitNode = TreeRoot.GetOrAddNode(new IfTargetUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit)).TryAddContext(ContextFactory);
+
+    IBuildChainPattern AddContextTo(IBuildChainPattern node)
+      => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
+
+    return new TreatingTuner(TreeRoot, targetUnitNode, AddContextTo);
   }
 
   /// <summary>
   /// Add build actions to build a unit representing by <typeparamref name="T"/> and <paramref name="tag"/> in subsequence calls.
   /// </summary>
   public TreatingTuner<T> Treat<T>(object? tag = null)
-    => new(
-        ParentNode.GetOrAddNode(
-            new SkipTillUnit(
-                new UnitPattern(typeof(T), tag),
-                Weight
-              + WeightOf.BuildChainPattern.TargetUnit
-              + WeightOf.UnitPattern.ExactTypePattern)));
+  {
+    var unitPattern = new UnitPattern(typeof(T), tag);
+    var baseWeight  = Weight + WeightOf.UnitPattern.ExactTypePattern;
+
+    var targetUnitNode = TreeRoot.GetOrAddNode(new IfTargetUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
+                                 .TryAddContext(ContextFactory);
+
+    IBuildChainPattern AddContextTo(IBuildChainPattern node)
+      => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
+
+    return new TreatingTuner<T>(TreeRoot, targetUnitNode, AddContextTo);
+  }
 
   /// <summary>
   /// Add build actions applied all generic types match the generic type definition specified by <paramref name="openGenericType"/> in subsequence calls.
   /// </summary>
   public TreatingOpenGenericTuner TreatOpenGeneric(Type openGenericType, object? tag = null)
   {
-    var patternMatcher = new SkipTillUnit(
-        new IsGenericOfDefinition(openGenericType, tag),
-        Weight
-      + WeightOf.BuildChainPattern.TargetUnit
-      + WeightOf.UnitPattern.OpenGenericPattern);
+    var unitPattern = new IsGenericOfDefinition(openGenericType, tag);
+    var baseWeight  = Weight + WeightOf.UnitPattern.OpenGenericPattern;
 
-    return new TreatingOpenGenericTuner(ParentNode.GetOrAddNode(patternMatcher));
+    var targetUnitNode = TreeRoot.GetOrAddNode(new IfTargetUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
+                                 .TryAddContext(ContextFactory);
+
+    IBuildChainPattern AddContextTo(IBuildChainPattern node)
+      => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
+
+    return new TreatingOpenGenericTuner(TreeRoot, targetUnitNode, AddContextTo);
   }
 
   /// <summary>
@@ -90,13 +104,16 @@ public class RootTuner : TunerBase
   /// </summary>
   public TreatingTuner TreatInheritorsOf(Type baseType, object? tag = null)
   {
-    var patternMatcher = new SkipTillUnit(
-        new IsInheritorOf(baseType, tag),
-        Weight
-      + WeightOf.BuildChainPattern.TargetUnit
-      + WeightOf.UnitPattern.SubtypePattern);
+    var unitPattern = new IsInheritorOf(baseType, tag);
+    var baseWeight  = Weight + WeightOf.UnitPattern.SubtypePattern;
 
-    return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
+    var targetUnitNode = TreeRoot.GetOrAddNode(new IfTargetUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
+                                 .TryAddContext(ContextFactory);
+
+    IBuildChainPattern AddContextTo(IBuildChainPattern node)
+      => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
+
+    return new TreatingTuner(TreeRoot, targetUnitNode, AddContextTo);
   }
 
   /// <summary>
@@ -104,18 +121,21 @@ public class RootTuner : TunerBase
   /// </summary>
   public TreatingTuner<T> TreatInheritorsOf<T>(object? tag = null)
   {
-    var patternMatcher = new SkipTillUnit(
-        new IsInheritorOf(typeof(T), tag),
-        Weight
-      + WeightOf.BuildChainPattern.TargetUnit
-      + WeightOf.UnitPattern.SubtypePattern);
+    var baseWeight  = Weight + WeightOf.UnitPattern.SubtypePattern;
+    var unitPattern = new IsInheritorOf(typeof(T), tag);
 
-    return new TreatingTuner<T>(ParentNode.GetOrAddNode(patternMatcher));
+    var targetUnitNode = TreeRoot.GetOrAddNode(new IfTargetUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
+                                 .TryAddContext(ContextFactory);
+
+    IBuildChainPattern AddContextTo(IBuildChainPattern node)
+      => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
+
+    return new TreatingTuner<T>(TreeRoot, targetUnitNode, AddContextTo);
   }
 
   /// <summary>
   /// Add build action applied to any building unit in subsequence calls. It's needed to setup common build actions like which constructor to call or
   /// inject dependencies into properties or not.
   /// </summary>
-  public FinalTuner TreatAll() => new(ParentNode.GetOrAddNode(new SkipAllUnits(Weight + WeightOf.BuildChainPattern.SkipAllUnits)));
+  public DependencyTuner TreatAll() => new DependencyTuner(TreeRoot, TunedNode, ContextFactory!);
 }

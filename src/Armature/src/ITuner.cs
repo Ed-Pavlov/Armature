@@ -1,4 +1,5 @@
-﻿using Armature.Core;
+﻿using System;
+using Armature.Core;
 
 namespace Armature;
 
@@ -9,7 +10,21 @@ namespace Armature;
 public interface ITuner
 {
   /// <summary>
-  /// Append pattern tree nodes to the passed <paramref name="buildChainPattern"/>
+  /// Append pattern tree nodes to the passed <paramref name="tuningContext"/>
   /// </summary>
-  void Tune(IBuildChainPattern buildChainPattern, int weight = 0);
+  void Tune(TuningContext tuningContext, int weight = 0);
+}
+
+public struct TuningContext
+{
+  public readonly IBuildChainPattern        TreeRoot;
+  public readonly IBuildChainPattern        TunedNode;
+  public readonly AddContextPatterns? GetContextNode;
+
+  public TuningContext(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns? getContextNode)
+  {
+    TreeRoot       = treeRoot;
+    TunedNode      = tunedNode;
+    GetContextNode = getContextNode;
+  }
 }

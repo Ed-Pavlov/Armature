@@ -72,12 +72,9 @@ public class TypeRegistrationTest
   private static Builder CreateTarget()
     => new(BuildStage.Cache, BuildStage.Create)
        {
-         new SkipAllUnits
-         {
            new IfFirstUnit(new IsConstructor()).UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
            new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
            new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
-         }
        };
 
   private record Base<T>(string Value);

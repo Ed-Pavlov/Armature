@@ -76,7 +76,7 @@ public partial class BuildSession
     T result;
 
     _buildChainList.Add(unitId);
-    var buildChain = new BuildChain(_buildChainList, 0);
+    var buildChain = new BuildChain(Enumerable.Reverse(_buildChainList).ToArray(), 0);
 
     Log.WriteLine(LogLevel.Info, () => $"Chain = {Enumerable.Reverse(_buildChainList).ToHoconString()}");
 

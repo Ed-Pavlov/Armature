@@ -2,6 +2,7 @@
 using System.Linq;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
 using JetBrains.Annotations;
 
 namespace Armature;
@@ -21,12 +22,14 @@ public static class Property
   /// </summary>
   public static IInjectPointTuner OfType(Type type)
     => new InjectPointTuner(
-      (node, weight) =>
+      (tuningContext, weight) =>
       {
-        node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        tuningContext.TunedNode.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-        node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
-            .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
+        tuningContext.TreeRoot
+                     .GetOrAddNode(new IfTargetUnit(Static.Of<IsPropertyList>(), weight))
+                     .TryAddContext(tuningContext.GetContextNode)
+                     .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
       });
 
   /// <summary>
@@ -39,12 +42,14 @@ public static class Property
     if(names.Any(string.IsNullOrEmpty)) throw new ArgumentNullException(nameof(names), "One or more items are null or empty string.");
 
     return new InjectPointTuner(
-      (node, weight) =>
+      (tuningContext, weight) =>
       {
-        node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        tuningContext.TunedNode.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-        node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
-            .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
+        tuningContext.TreeRoot
+                     .GetOrAddNode(new IfTargetUnit(Static.Of<IsPropertyList>(), weight))
+                     .TryAddContext(tuningContext.GetContextNode)
+                     .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
       });
   }
 
@@ -55,11 +60,13 @@ public static class Property
   [PublicAPI]
   public static IInjectPointTuner ByInjectPoint(params object?[] pointIds)
     => new InjectPointTuner(
-      (node, weight) =>
+      (tuningContext, weight) =>
       {
-        node.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        tuningContext.TunedNode.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-        node.GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
-            .UseBuildAction(new GetPropertyListByInjectPointId(pointIds), BuildStage.Create);
+        tuningContext.TreeRoot
+                     .GetOrAddNode(new IfTargetUnit(Static.Of<IsPropertyList>(), weight))
+                     .TryAddContext(tuningContext.GetContextNode)
+                     .UseBuildAction(new GetPropertyListByInjectPointId(pointIds), BuildStage.Create);
       });
 }

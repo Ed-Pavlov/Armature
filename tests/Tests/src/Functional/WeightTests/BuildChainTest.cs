@@ -30,6 +30,8 @@ namespace Tests.Functional.WeightTests
          .Treat<int>()
          .AsInstance(expected);
 
+      target.PrintToLog();
+
       // --act
       var actual = target.Build<ISubject>()!;
 
@@ -40,8 +42,6 @@ namespace Tests.Functional.WeightTests
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Create)
          {
-             new SkipAllUnits
-             {
                  // inject into constructor
                  new IfFirstUnit(new IsConstructor())
                     .UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
@@ -49,7 +49,6 @@ namespace Tests.Functional.WeightTests
                     .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
                  new IfFirstUnit(new IsParameterInfo())
                     .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
-             }
          };
 
     private interface ISubject
