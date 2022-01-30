@@ -1,13 +1,17 @@
-﻿using System;
-using Armature.Core;
+﻿using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
 
 namespace Armature;
 
 public class CreationTuner : TunerBase
 {
-  public CreationTuner(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns contextFactory)
-    : base(treeRoot, tunedNode, contextFactory) { }
+  private readonly UnitPattern _unitPattern;
+
+  public CreationTuner(UnitPattern unitPattern, IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns contextFactory)
+      : base(treeRoot, tunedNode, contextFactory)
+    => _unitPattern = unitPattern;
+
   /// <summary>
   /// Specifies that unit should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
   /// </summary>
@@ -20,7 +24,15 @@ public class CreationTuner : TunerBase
 
   private FinalTuner CreateBy(IBuildAction buildAction)
   {
-    TunedNode.UseBuildAction(buildAction, BuildStage.Create);
-    return new FinalTuner(TreeRoot, TunedNode, ContextFactory!);
+    var baseWeight = Weight + WeightOf.UnitPattern.ExactTypePattern; //TODO: need to return to CreationTuner, see should_build_maybe test
+
+    var targetUnitNode = TreeRoot.GetOrAddNode(new IfTargetUnit(_unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
+                                 .TryAddContext(ContextFactory)
+                                 .UseBuildAction(buildAction, BuildStage.Create);
+
+    IBuildChainPattern AddContextTo(IBuildChainPattern node)
+      => node.GetOrAddNode(new IfFirstUnit(_unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
+
+    return new FinalTuner(TreeRoot, targetUnitNode, AddContextTo);
   }
 }

@@ -19,7 +19,7 @@ public static class BuildActionBagExtension
     if(left is null) return right;
     if(right is null) return left;
 
-    var result = new WeightedBuildActionBag();
+    var result = new WeightedBuildActionBag(); //TODO: can we add to the existent bug?
 
     foreach(var pair in left)
     {

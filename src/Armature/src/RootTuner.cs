@@ -2,15 +2,11 @@
 using System.Diagnostics;
 using Armature.Core;
 using Armature.Sdk;
-using JetBrains.Annotations;
 
 namespace Armature;
 
 public class RootTuner : TunerBase
 {
-  [PublicAPI]
-  protected int Weight;
-
   [DebuggerStepThrough]
   public RootTuner(IBuildChainPattern treeRoot) : base(treeRoot, treeRoot, null) { }
 

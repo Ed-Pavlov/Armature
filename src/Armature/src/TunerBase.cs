@@ -13,6 +13,8 @@ public abstract class TunerBase : IInternal<IBuildChainPattern, IBuildChainPatte
 
   protected readonly AddContextPatterns? ContextFactory;
 
+  protected int Weight;
+
   protected TunerBase(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns? contextFactory)
   {
     TreeRoot       = treeRoot  ?? throw new ArgumentNullException(nameof(treeRoot));

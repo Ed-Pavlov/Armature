@@ -147,3 +147,30 @@ TargetUnit<String>            // GetTail(1)
   SkipWhile<Special>          // GetTail(2) (i)
     IfFirstUnit<Subject>      // Children is null -> basta else GetTail(1)
       SkipTillUnit<ISubject>  // GetTail(1) i + 1
+
+=============== Gather build actions ===========
+Building<A>
+  .Treat<Derived>()
+  .CreateByFactory("A")
+
+Building<B>
+  .Treat<Derived>()
+  .CreateByFactory("B")
+
+Building<A>
+  .Building<B>
+  .Treat<Derived>()
+  .CreateByFactory("AB")
+
+IfTargetUnit<Derived>
+  SkipTillUnit<A> -> "A"
+  SkipTillUnit<B> -> "B"
+    SkipTillUnit<A> -> "AB"
+
+I -> B -> Derived
+IfTargetUnit<Derived>     -> yes
+  SkipTillUnit<A>         -> nope B -> I
+  SkipTillUnit<B>         -> yes: children? yes   build chain? yes
+    SkipTillUnit<A>       -> nope I
+
+In the current implementation no actions will be gathered, but should be.

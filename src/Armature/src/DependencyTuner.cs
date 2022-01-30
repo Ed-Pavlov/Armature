@@ -4,15 +4,11 @@ using System.Linq;
 using Armature.Core;
 using Armature.Core.Sdk;
 using Armature.Sdk;
-using JetBrains.Annotations;
 
 namespace Armature;
 
 public class DependencyTuner : TunerBase
 {
-  [PublicAPI]
-  protected int Weight;
-
   [DebuggerStepThrough]
   public DependencyTuner(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns? contextFactory)
     : base(treeRoot, tunedNode, contextFactory)
