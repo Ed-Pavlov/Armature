@@ -1,5 +1,4 @@
-﻿using System;
-using Armature.Core.Sdk;
+﻿using Armature.Core.Sdk;
 
 namespace Armature.Core;
 
@@ -26,14 +25,10 @@ public class IfFirstUnit : BuildChainPatternByUnitBase
     {
       Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
 
-      if(buildChain.Length == 0)
-      {
-        Console.WriteLine("x");
-      }
       var isPatternMatches = UnitPattern.Matches(buildChain[0]);
       Log.WriteLine(LogLevel.Verbose, LogConst.Matched, isPatternMatches);
 
-      hasActions = isPatternMatches && GetOwnOrChildrenBuildActions(buildChain.GetTail(1), inputWeight, out actionBag);
+      hasActions = isPatternMatches && GetOwnAndChildrenBuildActions(buildChain.GetTail(1), inputWeight, out actionBag);
       return hasActions;
     }
   }

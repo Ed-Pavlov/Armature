@@ -23,8 +23,6 @@ namespace Tests.Extensibility.MaybePropagation
        .TreatMaybeValue()
        .AsCreated<Reader>();
 
-      builder.PrintToLog();
-
       builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>();
 
       var actual = builder.Build<Maybe<IReader>>()!;

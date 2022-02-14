@@ -25,18 +25,4 @@ public class IfTargetUnit : BuildChainPatternByUnitBase
       return hasActions;
     }
   }
-
-  private bool GetOwnAndChildrenBuildActions(BuildChain buildChain, int inputWeight, out WeightedBuildActionBag? actionBag)
-  {
-    var result = GetOwnBuildActions(inputWeight, out actionBag);
-    actionBag.WriteToLog(LogLevel.Verbose, "Actions: ");
-
-    if(RawChildren is not null && buildChain.Length > 0)
-    { // pass the rest of the chain to children and return their actions
-      result    |= GetChildrenActions(buildChain, inputWeight, out var childrenActionBag);
-      actionBag =  actionBag.Merge(childrenActionBag);
-    }
-
-    return result;
-  }
 }

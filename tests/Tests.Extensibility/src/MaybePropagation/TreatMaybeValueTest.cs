@@ -51,8 +51,6 @@ namespace Tests.Extensibility.MaybePropagation
        .TreatMaybeValue()
        .AsCreated<Reader>();
 
-      builder.PrintToLog();
-
       var actual = builder.Build<Maybe<IReader>>();
 
       // --assert

@@ -74,8 +74,6 @@ namespace Tests.Functional
             .AsIs()
             .UsingArguments(new object()); // set value to inject into ctor
 
-      target.PrintToLog();
-
       // --act
       var actual = target.Build<Subject1>();
 
@@ -113,8 +111,6 @@ namespace Tests.Functional
          .TreatInheritorsOf<IStream>()
          .AmendWeight(392)
          .InjectInto(Constructor.Parameterless());
-
-      target.PrintToLog();
 
       // --act
       var actual = target.Build<Subject3>();

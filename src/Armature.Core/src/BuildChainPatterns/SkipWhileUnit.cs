@@ -25,7 +25,7 @@ public class SkipWhileUnit : BuildChainPatternByUnitBase
         if(!UnitPattern.Matches(buildChain[i]))
           break;
 
-      hasActions = GetOwnOrChildrenBuildActions(buildChain.GetTail(i), inputWeight, out actionBag);
+      hasActions = GetOwnAndChildrenBuildActions(buildChain.GetTail(i), inputWeight, out actionBag);
       return hasActions;
     }
   }

@@ -24,8 +24,6 @@ namespace Tests.Functional
        .AsCreated<Subject<int>>()
        .InjectInto(Constructor.Parameterless());
 
-      target.PrintToLog();
-
       // --act
       var actual = target.Build<ISubject<int>>();
 

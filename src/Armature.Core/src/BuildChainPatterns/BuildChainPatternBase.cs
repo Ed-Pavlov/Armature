@@ -31,19 +31,15 @@ public abstract class BuildChainPatternBase : BuildChainPatternWithChildrenBase
     return true;
   }
 
-  protected bool GetOwnOrChildrenBuildActions(BuildChain buildChain, int inputWeight, out WeightedBuildActionBag? actionBag)
+  protected bool GetOwnAndChildrenBuildActions(BuildChain buildChain, int inputWeight, out WeightedBuildActionBag? actionBag)
   {
-    bool result;
-    actionBag = null;
+    var result = GetOwnBuildActions(inputWeight, out actionBag);
+    actionBag.WriteToLog(LogLevel.Verbose, "Actions: ");
 
     if(RawChildren is not null && buildChain.Length > 0)
     { // pass the rest of the chain to children and return their actions
-      result = GetChildrenActions(buildChain, inputWeight, out actionBag);
-    }
-    else
-    { // "this" pattern matches and has no children, it means that TargetUnit and whole it's context matches the build chain
-      result = GetOwnBuildActions(inputWeight, out actionBag);
-      actionBag.WriteToLog(LogLevel.Verbose, "Actions: ");
+      result    |= GetChildrenActions(buildChain, inputWeight, out var childrenActionBag);
+      actionBag =  actionBag.Merge(childrenActionBag);
     }
 
     return result;

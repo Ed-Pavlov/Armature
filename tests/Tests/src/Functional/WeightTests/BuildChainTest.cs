@@ -30,8 +30,6 @@ namespace Tests.Functional.WeightTests
          .Treat<int>()
          .AsInstance(expected);
 
-      target.PrintToLog();
-
       // --act
       var actual = target.Build<ISubject>()!;
 

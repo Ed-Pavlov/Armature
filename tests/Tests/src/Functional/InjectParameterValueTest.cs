@@ -76,8 +76,6 @@ namespace Tests.Functional
        .AsIs()
        .UsingArguments(asIsParameterValue);
 
-      target.PrintToLog();
-
       var asInterface = target.Build<ISubject1>()!;
       var asIs        = target.Build<LevelOne>()!;
 
