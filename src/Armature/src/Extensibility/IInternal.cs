@@ -6,6 +6,9 @@ public static class ExtensibilityExtension
 {
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static IInternal<T> GetInternals<T>(this IInternal<T> obj) => obj;
+
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public static IInternal<T1, T2> GetInternals2<T1, T2>(this IInternal<T1, T2> obj) => obj;
 }
 
 /// <summary>

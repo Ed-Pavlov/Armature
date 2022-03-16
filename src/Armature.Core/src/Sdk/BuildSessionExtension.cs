@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace Armature.Core.Sdk;
 
@@ -20,7 +17,7 @@ public static class BuildSessionExtension
     var result = buildSession.BuildUnit(new UnitId(type, SpecialTag.Constructor));
 
     if(!result.HasValue)
-      throw new ArmatureException($"Constructor for type {type} is not found, check registrations for this type or default.");
+      throw new ArmatureException($"Constructor for type {type} is not found, check registrations for this type or 'default' registrations.");
 
     return (ConstructorInfo) result.Value!;
   }

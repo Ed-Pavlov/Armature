@@ -1,5 +1,4 @@
-﻿using System;
-using Armature;
+﻿using Armature;
 using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
@@ -9,7 +8,7 @@ namespace Tests.Functional.WeightTests
   public class BuildChainTest
   {
     [Test]
-    public void should_throw_exception_on_ambiguous_registrations()
+    public void should_use_registration_from_longer_branch()
     {
       const int expected = 9345;
 
@@ -32,12 +31,10 @@ namespace Tests.Functional.WeightTests
          .AsInstance(expected);
 
       // --act
-      var actual = new Action(() => target.Build<ISubject>());
+      var actual = target.Build<ISubject>()!;
 
       // --assert
-      actual.Should()
-            .ThrowExactly<ArmatureException>()
-            .Where(_ => _.Message.StartsWith("Two or more building actions matched with the same weight"));
+      actual.Value.Should().Be(expected);
     }
 
     private static Builder CreateTarget()

@@ -64,7 +64,7 @@ public class ArgumentTunerBaseTest
                        });
   }
 
-  private class Impl<T> : ArgumentTunerBase<T>
+  private class Impl<T> : ArgumentTunerBase<T, Impl<T>>
   {
     public Impl() : base((node, _) => node) { }
   }

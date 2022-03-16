@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.ExceptionServices;
 using Armature.Core;
 using Armature.Core.Sdk;
 using FakeItEasy;
@@ -38,7 +40,7 @@ public class TryIdOrderTest
   }
 
   [Test]
-  public void should_continue_trying_if_action_throws_exception()
+  public void should_continue_trying_if_action_throws_armature_exception()
   {
     const string expected = "expected";
 
@@ -48,7 +50,7 @@ public class TryIdOrderTest
     var ba2          = A.Fake<IBuildAction>();
     var ba3          = A.Fake<IBuildAction>();
 
-    A.CallTo(() => ba1.Process(buildSession)).Throws<ApplicationException>();
+    A.CallTo(() => ba1.Process(buildSession)).Throws<ArmatureException>();
     A.CallTo(() => ba2.Process(buildSession)).Invokes(_ => buildSession.BuildResult = expected.ToBuildResult());
     var target = new TryInOrder(ba1, ba2, ba3);
 
@@ -63,6 +65,29 @@ public class TryIdOrderTest
     A.CallTo(() => ba3.Process(default!)).WithAnyArguments().MustNotHaveHappened();
   }
 
+  [Test]
+  public void should_not_continue_trying_if_action_throws_user_exception()
+  {
+    const string expected = "expected";
+
+    // --arrange
+    var buildSession = A.Fake<IBuildSession>();
+    var ba1          = A.Fake<IBuildAction>();
+    var ba2          = A.Fake<IBuildAction>();
+    var ba3          = A.Fake<IBuildAction>();
+
+    A.CallTo(() => ba1.Process(buildSession)).Throws<ApplicationException>();
+    A.CallTo(() => ba2.Process(buildSession)).Invokes(_ => buildSession.BuildResult = expected.ToBuildResult());
+    var target = new TryInOrder(ba1, ba2, ba3);
+
+    // --act
+    var actual = () => target.Process(buildSession);
+
+    // --assert
+    actual.Should().ThrowExactly<ApplicationException>();
+    A.CallTo(() => ba2.Process(buildSession)).MustNotHaveHappened();
+    A.CallTo(() => ba3.Process(default!)).WithAnyArguments().MustNotHaveHappened();
+  }
   [Test]
   public void should_not_throw_exception_if_no_result_and_no_exception()
   {
@@ -85,7 +110,7 @@ public class TryIdOrderTest
   }
 
   [Test]
-  public void should_throw_exception_if_no_result_and_exception()
+  public void should_throw_aggregate_exception_if_no_result_and_armature_exceptions()
   {
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
@@ -93,8 +118,8 @@ public class TryIdOrderTest
     var ba2          = A.Fake<IBuildAction>();
     var ba3          = A.Fake<IBuildAction>();
 
-    A.CallTo(() => ba1.Process(buildSession)).Throws<ApplicationException>();
-    A.CallTo(() => ba3.Process(buildSession)).Throws<InvalidOperationException>();
+    A.CallTo(() => ba1.Process(buildSession)).Throws<ArmatureException>();
+    A.CallTo(() => ba3.Process(buildSession)).Throws<ArmatureException>();
     var target = new TryInOrder(ba1, ba2, ba3);
 
     // --act
@@ -102,8 +127,8 @@ public class TryIdOrderTest
 
     // --assert
     actual.Should()
-          .ThrowExactly<AggregateException>()
-          .Where(_ => _.InnerExceptions.Select(exc => exc.GetType()).SequenceEqual(new[] {typeof(ApplicationException), typeof(InvalidOperationException)}));
+          .ThrowExactly<ArmatureException>()
+          .Where(_ => _.InnerExceptions.Count == 2 && _.InnerExceptions.All(inner => inner is ArmatureException));
   }
 
   [Test]
@@ -184,7 +209,8 @@ public class TryIdOrderTest
   public void should_be_equal(TryInOrder target1, TryInOrder target2)
   {
     // --assert
-    target1.Equals(target2).Should().BeTrue();
+    var @equals = target1.Equals(target2);
+    @equals.Should().BeTrue();
     target2.Equals(target1).Should().BeTrue();
   }
 

@@ -28,10 +28,12 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession)
   {
-    var unitUnderConstruction = buildSession.BuildChain.TargetUnit;
-    var effectiveTag          = _tag.GetEffectiveTag(unitUnderConstruction.Tag);
+    Log.WriteLine(LogLevel.Trace, () => $"Tag: {_tag.ToHoconString()}");
 
-    var injectionPointType = GetArgumentType(unitUnderConstruction);
+    var targetUnit   = buildSession.BuildChain.TargetUnit;
+    var effectiveTag = _tag.GetEffectiveTag(targetUnit.Tag);
+
+    var injectionPointType = GetArgumentType(targetUnit);
 
     if(IsCollection(injectionPointType, out var listType))
     {
@@ -100,7 +102,7 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
   }
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(BuildListArgumentBase)} {{ Tag: {_tag.ToHoconString()} }} }}";
+  public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ Tag: {_tag.ToHoconString()} }} }}";
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
 }

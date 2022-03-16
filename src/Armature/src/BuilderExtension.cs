@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Armature.Core;
 using Armature.Core.Sdk;
+using JetBrains.Annotations;
 
 namespace Armature;
 
@@ -33,7 +33,7 @@ public static class BuilderExtension
   /// <param name="builder"></param>
   /// <param name="runtimeArguments">Additional temporary arguments which could be passed into the build session, they are not stored
   /// anywhere and used only for this build session. Normally, registrations take over these arguments because the weight
-  /// of runtime arguments is <see cref="WeightOf.BuildContextPattern.SkipAllUnits"/> + 10.</param>
+  /// of runtime arguments is <see cref="WeightOf.BuildChainPattern.SkipAllUnits"/> + 10.</param>
   /// <returns>Returns an instance or null if null is registered as a unit.</returns>
   /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
   [DebuggerStepThrough]
@@ -57,12 +57,12 @@ public static class BuilderExtension
   /// <param name="builder"></param>
   /// <param name="runtimeArguments">Additional temporary arguments which could be passed into the build session, they are not stored
   /// anywhere and used only for this build session. Normally, registrations take over these arguments because the weight
-  /// of runtime arguments is <see cref="WeightOf.BuildContextPattern.SkipAllUnits"/> + 10.</param>
+  /// of runtime arguments is <see cref="WeightOf.BuildChainPattern.SkipAllUnits"/> + 10.</param>
   /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
   /// <exception cref="ArmatureException">Throws if not unit was built by this or any parent containers</exception>
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+  [PublicAPI]
   public static IReadOnlyList<object?> BuildAll<T>(this Builder builder, params object[]? runtimeArguments) => builder.BuildAll<T>(null, runtimeArguments);
 
   /// <summary>
@@ -104,7 +104,7 @@ public static class BuilderExtension
 
     // the logic is patternTree.TreatAll().UsingArguments(arguments), but with increased weight of arguments
     var patternTree = new BuildChainPatternTree();
-    var treatAll    = new SkipAllUnits(WeightOf.BuildContextPattern.SkipAllUnits + 10);
+    var treatAll    = new SkipAllUnits(WeightOf.BuildChainPattern.SkipAllUnits + 10);
     patternTree.Children.Add(treatAll);
 
     new FinalTuner(treatAll).UsingArguments(arguments);

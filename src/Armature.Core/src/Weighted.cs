@@ -25,7 +25,7 @@ public readonly struct Weighted<T> : IComparable<Weighted<T>>
   public int CompareTo(Weighted<T> other) => Weight.CompareTo(other.Weight);
 
   [DebuggerStepThrough]
-  public override string ToString() => string.Format("{0}, Weight={1:n0}", Entity.ToHoconString(), Weight);
+  public override string ToString() => string.Format("{0}, Weight={1}", Entity.ToHoconString(), Weight.ToHoconString());
 }
 
 public static class WeightedExtension

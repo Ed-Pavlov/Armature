@@ -22,7 +22,7 @@ public static class ForProperty
         return parentNode.AddNode(
           new IfFirstUnit(
             new IsPropertyWithType(new UnitPattern(type)),
-            weight + WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
+            weight + WeightOf.BuildChainPattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
           $"Building of an argument for the property with type {type.ToLogString()} is already tuned");
       });
 
@@ -38,7 +38,7 @@ public static class ForProperty
         return parentNode.AddNode(
           new IfFirstUnit(
             new IsPropertyWithType(new UnitPattern(typeof(T))),
-            weight + WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
+            weight + WeightOf.BuildChainPattern.IfFirstUnit + WeightOf.InjectionPoint.ByExactType),
           $"Building of an argument for the property with type {typeof(T).ToLogString()} is already tuned");
       });
 
@@ -54,7 +54,7 @@ public static class ForProperty
         return parentNode.AddNode(
           new IfFirstUnit(
             new IsPropertyNamed(propertyName),
-            weight + WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByName),
+            weight + WeightOf.BuildChainPattern.IfFirstUnit + WeightOf.InjectionPoint.ByName),
           $"Building of an argument for the property with name {propertyName} is already tuned");
       });
 
@@ -72,7 +72,7 @@ public static class ForProperty
          .AddNode(
             new IfFirstUnit(
               new IsPropertyMarkedWithAttribute(injectPointId),
-              weight + WeightOf.BuildContextPattern.IfFirstUnit + WeightOf.InjectionPoint.ByInjectPointId),
+              weight + WeightOf.BuildChainPattern.IfFirstUnit + WeightOf.InjectionPoint.ByInjectPointId),
             $"Building of an argument for the property marked with {nameof(InjectAttribute)}"
           + $" with {nameof(InjectAttribute.InjectionPointId)} equal to {injectPointId.ToHoconString()} is already tuned");
       });

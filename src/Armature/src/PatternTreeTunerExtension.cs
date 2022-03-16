@@ -32,7 +32,7 @@ public static class PatternTreeTunerExtension
     if(pattern is null) throw new ArgumentNullException(nameof(pattern));
     if(type is null) throw new ArgumentNullException(nameof(type));
 
-    var newPatternMatcher = new SkipTillUnit(new UnitPattern(type, tag), WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.ExactTypePattern);
+    var newPatternMatcher = new SkipTillUnit(new UnitPattern(type, tag), WeightOf.BuildChainPattern.TargetUnit + WeightOf.UnitPattern.ExactTypePattern);
     var oldPatternMatcher = pattern.Children.Single(_ => _.Equals(newPatternMatcher));
 
     pattern.Children.Remove(oldPatternMatcher);
@@ -46,7 +46,7 @@ public static class PatternTreeTunerExtension
   {
     if(pattern is null) throw new ArgumentNullException(nameof(pattern));
 
-    var newPatternMatcher = new SkipTillUnit(new UnitPattern(typeof(T), tag), WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.ExactTypePattern);
+    var newPatternMatcher = new SkipTillUnit(new UnitPattern(typeof(T), tag), WeightOf.BuildChainPattern.TargetUnit + WeightOf.UnitPattern.ExactTypePattern);
     var oldPatternMatcher = pattern.Children.Single(_ => _.Equals(newPatternMatcher));
 
     pattern.Children.Remove(oldPatternMatcher);

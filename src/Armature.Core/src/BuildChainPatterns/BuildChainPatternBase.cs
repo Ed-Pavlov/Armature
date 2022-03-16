@@ -36,17 +36,14 @@ public abstract class BuildChainPatternBase : BuildChainPatternWithChildrenBase
     var result = false;
     actionBag = null;
 
-    if(buildChain.Length == 1)
-    {
-      result = GetOwnBuildActions(inputWeight, out actionBag);
-      actionBag.WriteToLog(LogLevel.Verbose, "Actions: ");
+    if(buildChain.Length > 1)
+    { // pass the rest of the chain to children and return their actions
+      result = GetChildrenActions(buildChain.GetTail(1), inputWeight, out actionBag);
     }
     else
-    { // pass the rest of the chain to children and return their actions
-      if(RawChildren is null)
-        Log.WriteLine(LogLevel.Trace, "Children: null");
-      else
-        result = GetChildrenActions(buildChain.GetTail(1), inputWeight, out actionBag);
+    { // this patterns matches the target unit, return actions for it
+      result = GetOwnBuildActions(inputWeight, out actionBag);
+      actionBag.WriteToLog(LogLevel.Verbose, "Actions: ");
     }
 
     return result;

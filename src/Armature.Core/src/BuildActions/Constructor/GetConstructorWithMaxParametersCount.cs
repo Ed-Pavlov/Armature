@@ -18,11 +18,10 @@ public record GetConstructorWithMaxParametersCount : IBuildAction
     var unitType     = buildSession.BuildChain.TargetUnit.GetUnitType();
     var constructors = unitType.GetConstructors();
 
-    Log.WriteLine(LogLevel.Trace, "");
-
     if(constructors.Length > 0)
     {
       var ctor = GetConstructor(constructors, unitType);
+      ctor.WriteToLog(LogLevel.Trace);
       buildSession.BuildResult = new BuildResult(ctor);
     }
   }
@@ -31,11 +30,10 @@ public record GetConstructorWithMaxParametersCount : IBuildAction
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 
-  private static ConstructorInfo GetConstructor(ConstructorInfo[] constructors, Type unitType)
+  private static ConstructorInfo GetConstructor(IReadOnlyList<ConstructorInfo> constructors, Type unitType)
   {
     var suitableConstructors = new Dictionary<int, int> {{0, constructors[0].GetParameters().Length}};
-
-    for(var i = 1; i < constructors.Length; i++)
+    for(var i = 1; i < constructors.Count; i++)
     {
       var parametersCount    = constructors[i].GetParameters().Length;
       var maxParametersCount = suitableConstructors.First().Value;
@@ -49,9 +47,7 @@ public record GetConstructorWithMaxParametersCount : IBuildAction
       }
     }
 
-    Log.Execute(LogLevel.Trace, () => LogConst.Log_Constructors(suitableConstructors.Select(pair => constructors[pair.Key]).ToArray()));
-
-    if(suitableConstructors.Count != 1)
+    if(suitableConstructors.Count > 1)
     {
       var exception = new ArmatureException($"More than one constructor with max parameters count for type '{unitType.ToLogString()}' found");
 

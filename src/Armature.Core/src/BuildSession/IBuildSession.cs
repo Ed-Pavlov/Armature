@@ -14,7 +14,7 @@ public interface IBuildSession
   BuildResult BuildResult { get; set; }
 
   /// <summary>
-  /// The chain of units representing a build session, the last one is the unit under construction,
+  /// The chain of units representing a build session, the last one is the target unit,
   /// the previous are the context of the build session. Each next unit info is the dependency of the previous one.
   /// </summary>
   BuildChain BuildChain { get; }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Armature.Core.Sdk;
 
 namespace Armature.Core;
 
 /// <summary>
 /// A pattern used to match a unit or their combination in the build chain.
 /// </summary>
-public interface IBuildChainPattern : IEquatable<IBuildChainPattern>
+public interface IBuildChainPattern : IEquatable<IBuildChainPattern>, ILogString
 {
   /// <summary>
   /// The collection of all children nodes used to find existing one, add new, or replace one with another.

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Armature.Core.Sdk;
 
@@ -6,23 +7,21 @@ public static class LogConst
 {
   public const string Matched = "Matched: {0}";
 
-  public static string BuildAction_Process(IBuildAction buildAction)
-    => $"{buildAction.GetType().GetShortName().QuoteIfNeeded()}.{nameof(IBuildAction.Process)}";
-  public static string BuildAction_PostProcess(IBuildAction buildAction)
-    => $"{buildAction.GetType().GetShortName().QuoteIfNeeded()}.{nameof(IBuildAction.PostProcess)}";
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public static string BuildAction_Name(IBuildAction buildAction)
+    => $"{buildAction.GetType().GetShortName().QuoteIfNeeded()}";
 
-  public static void Log_Constructors(ConstructorInfo[] constructors)
-    => Log.Execute(
-      LogLevel.Trace,
-      () =>
-      {
-        if(constructors.Length < 2)
-          Log.Execute(
-            LogLevel.Trace,
-            () => Log.WriteLine(LogLevel.Trace, $"Constructor: {(constructors.Length == 0 ? "null" : $"{constructors[0]}".Quote())}"));
-        else
-          using(Log.IndentBlock(LogLevel.Trace, "Constructors: ", "[]"))
-            foreach(var constructor in constructors)
-              Log.WriteLine(LogLevel.Trace, $"{constructor}".Quote());
-      });
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public static string BuildAction_Process(IBuildAction buildAction)
+    => $"{BuildAction_Name(buildAction)}.{nameof(IBuildAction.Process)}";
+
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public static string BuildAction_PostProcess(IBuildAction buildAction)
+    => $"{BuildAction_Name(buildAction)}.{nameof(IBuildAction.PostProcess)}";
+
+  public static string ArmatureExceptionPostfix(string options = "") =>
+    Environment.NewLine
+  + $"See {nameof(Exception)}.{nameof(Exception.Data)}{options} for details or enable logging using {nameof(Log)}.{nameof(Log.Enable)} to investigate the error.";
+
+  public const string LoggingSubsystemError = "LoggingSubsystem_Error";
 }

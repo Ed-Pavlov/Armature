@@ -13,7 +13,10 @@ public class RootTuner : TunerBase
   [DebuggerStepThrough]
   public RootTuner(IBuildChainPattern parentNode) : base(parentNode) { }
 
-  public RootTuner AmendWeight(short weight)
+  /// <summary>
+  /// Amend the weight of current registration
+  /// </summary>
+  public RootTuner AmendWeight(int weight)
   {
     Weight += weight;
     return this;
@@ -26,7 +29,11 @@ public class RootTuner : TunerBase
   {
     if(type is null) throw new ArgumentNullException(nameof(type));
 
-    var patternMatcher = new SkipTillUnit(new UnitPattern(type, tag), Weight);
+    var patternMatcher = new SkipTillUnit(
+        new UnitPattern(type, tag),
+        Weight
+      + WeightOf.UnitPattern.ExactTypePattern);
+
     return new RootTuner(ParentNode.GetOrAddNode(patternMatcher));
   }
 
@@ -44,8 +51,10 @@ public class RootTuner : TunerBase
     if(type.IsGenericTypeDefinition) throw new ArgumentException($"Use {nameof(TreatOpenGeneric)} to setup open generic types.");
 
     var patternMatcher = new SkipTillUnit(
-      new UnitPattern(type, tag),
-      Weight + WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.ExactTypePattern);
+        new UnitPattern(type, tag),
+        Weight
+      + WeightOf.BuildChainPattern.TargetUnit
+      + WeightOf.UnitPattern.ExactTypePattern);
 
     return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
   }
@@ -55,12 +64,12 @@ public class RootTuner : TunerBase
   /// </summary>
   public TreatingTuner<T> Treat<T>(object? tag = null)
     => new(
-      ParentNode.GetOrAddNode(
-        new SkipTillUnit(
-          new UnitPattern(typeof(T), tag),
-          Weight
-        + WeightOf.BuildContextPattern.Neutral
-        + WeightOf.UnitPattern.ExactTypePattern)));
+        ParentNode.GetOrAddNode(
+            new SkipTillUnit(
+                new UnitPattern(typeof(T), tag),
+                Weight
+              + WeightOf.BuildChainPattern.TargetUnit
+              + WeightOf.UnitPattern.ExactTypePattern)));
 
   /// <summary>
   /// Add build actions applied all generic types match the generic type definition specified by <paramref name="openGenericType"/> in subsequence calls.
@@ -68,8 +77,10 @@ public class RootTuner : TunerBase
   public TreatingOpenGenericTuner TreatOpenGeneric(Type openGenericType, object? tag = null)
   {
     var patternMatcher = new SkipTillUnit(
-      new IsGenericOfDefinition(openGenericType, tag),
-      Weight + WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.OpenGenericPattern);
+        new IsGenericOfDefinition(openGenericType, tag),
+        Weight
+      + WeightOf.BuildChainPattern.TargetUnit
+      + WeightOf.UnitPattern.OpenGenericPattern);
 
     return new TreatingOpenGenericTuner(ParentNode.GetOrAddNode(patternMatcher));
   }
@@ -80,8 +91,10 @@ public class RootTuner : TunerBase
   public TreatingTuner TreatInheritorsOf(Type baseType, object? tag = null)
   {
     var patternMatcher = new SkipTillUnit(
-      new IsInheritorOf(baseType, tag),
-      Weight + WeightOf.BuildContextPattern.Neutral + WeightOf.UnitPattern.SubtypePattern);
+        new IsInheritorOf(baseType, tag),
+        Weight
+      + WeightOf.BuildChainPattern.TargetUnit
+      + WeightOf.UnitPattern.SubtypePattern);
 
     return new TreatingTuner(ParentNode.GetOrAddNode(patternMatcher));
   }
@@ -92,10 +105,10 @@ public class RootTuner : TunerBase
   public TreatingTuner<T> TreatInheritorsOf<T>(object? tag = null)
   {
     var patternMatcher = new SkipTillUnit(
-      new IsInheritorOf(typeof(T), tag),
-      Weight
-    + WeightOf.BuildContextPattern.Neutral
-    + WeightOf.UnitPattern.SubtypePattern);
+        new IsInheritorOf(typeof(T), tag),
+        Weight
+      + WeightOf.BuildChainPattern.TargetUnit
+      + WeightOf.UnitPattern.SubtypePattern);
 
     return new TreatingTuner<T>(ParentNode.GetOrAddNode(patternMatcher));
   }
@@ -104,5 +117,5 @@ public class RootTuner : TunerBase
   /// Add build action applied to any building unit in subsequence calls. It's needed to setup common build actions like which constructor to call or
   /// inject dependencies into properties or not.
   /// </summary>
-  public FinalTuner TreatAll() => new(ParentNode.GetOrAddNode(new SkipAllUnits(Weight + WeightOf.BuildContextPattern.SkipAllUnits)));
+  public FinalTuner TreatAll() => new(ParentNode.GetOrAddNode(new SkipAllUnits(Weight + WeightOf.BuildChainPattern.SkipAllUnits)));
 }

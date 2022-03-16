@@ -26,7 +26,7 @@ public abstract record CreateWithFactoryMethodBuildAction : IBuildAction, ILogSt
   protected abstract object?    Execute(object?[] arguments);
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ Method: {GetMethod().ToHoconString().QuoteIfNeeded()} }} }}";
+  public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ Method: {GetMethod().ToHoconString()} }} }}";
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
 }

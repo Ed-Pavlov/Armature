@@ -15,11 +15,12 @@ public record BuildArgumentByParameterInjectPointId : IBuildAction
   public void Process(IBuildSession buildSession)
   {
     var parameterInfo = (ParameterInfo) buildSession.BuildChain.TargetUnit.Kind!;
-    Log.WriteLine(LogLevel.Verbose, () => $"Parameter: {parameterInfo.ToHoconString()}");
 
     var attribute = parameterInfo
                    .GetCustomAttributes<InjectAttribute>()
                    .SingleOrDefault();
+
+    Log.WriteLine(LogLevel.Trace, () => $"Attribute: {attribute.ToHoconString()}");
 
     if(attribute is not null)
     {

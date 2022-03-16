@@ -51,25 +51,29 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
 
     var matchingWeight = inputWeight + Weight;
 
-    using(Log.NamedBlock(LogLevel.Trace, "PassTailToChildren"))
+    var hasActions = false;
+    // ReSharper disable once AccessToModifiedClosure, yes that's the point
+    using(Log.ConditionalMode(LogLevel.Verbose, () => hasActions))
+    using(Log.NamedBlock(LogLevel.Verbose, "PassTailToChildren"))
     {
-      Log.WriteLine(LogLevel.Trace, $"ActualWeight = {matchingWeight}, Tail = {buildChain.ToHoconString()}");
+      Log.WriteLine(LogLevel.Verbose, () => $"ActualWeight = {matchingWeight.ToHoconString()}, Tail = {buildChain.ToHoconString()}");
 
       foreach(var child in RawChildren)
       {
         if(child.GatherBuildActions(buildChain, out var childBag, matchingWeight))
           actionBag = actionBag.Merge(childBag);
       }
-    }
 
-    return actionBag is not null;
+      hasActions = actionBag is not null;
+      return hasActions;
+    }
   }
 
   public void PrintToLog(LogLevel logLevel = LogLevel.None)
   {
-    using(Log.NamedBlock(logLevel, GetType().GetShortName()))
+    using(Log.NamedBlock(logLevel, () => GetType().GetShortName().QuoteIfNeeded()))
     {
-      Log.WriteLine(LogLevel.Info, $"Weight: {Weight:n0}");
+      Log.WriteLine(LogLevel.Info, $"Weight: {Weight.ToHoconString()}");
       PrintContentToLog(logLevel);
       PrintChildrenToLog(logLevel);
     }
@@ -88,12 +92,14 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
           Log.WriteLine(logLevel, $"Child: {child.ToHoconString()}");
   }
 
+  public string ToHoconString() => GetType().GetShortName().QuoteIfNeeded();
+
   public virtual bool Equals(IBuildChainPattern? other)
     => other is BuildChainPatternBase otherNode && Weight == otherNode.Weight && GetType() == otherNode.GetType();
 
-  public override bool Equals(object? obj) => Equals(obj as IBuildChainPattern);
+  public override bool   Equals(object? obj) => Equals(obj as IBuildChainPattern);
 
-  public override int GetHashCode() => Weight.GetHashCode();
+  public override int    GetHashCode()       => Weight.GetHashCode();
 
   #region Syntax sugar
 

@@ -1,52 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\common.proj"/>
   <PropertyGroup>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\build\armature.public.snk</AssemblyOriginatorKeyFile>
-    <PublicSign>true</PublicSign>
-    <LangVersion>preview</LangVersion>
-    <Nullable>enable</Nullable>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Label="nuspec">
-    <IsPackable>true</IsPackable>
-    <MinClientVersion>2.8</MinClientVersion>
-    <PackageVersion>0.0.0</PackageVersion>
-    <PackageProjectUrl>https://github.com/Ed-Pavlov/Armature</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Ed-Pavlov/Armature</RepositoryUrl>
-    <Authors>Ed Pavlov</Authors>
-    <copyright>Copyright © 2018 Ed Pavlov</copyright>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageTags>dependency-injection dependencyinjection di ioc .NET</PackageTags>
-    <description>Armature dependency injection framework, provides fluent syntax and syntax sugar over Armature.Core framework</description>
+    <AssemblyName>Armature</AssemblyName>
+    <RootNamespace>Armature</RootNamespace>
+    <NoWarn>1591,0419</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <NoWarn>1591,0419</NoWarn>
     <DocumentationFile>bin\Release\Armature.xml</DocumentationFile>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DocumentationFile>bin\Debug\Armature.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <NoWarn>1591,0419</NoWarn>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Armature.Core\Armature.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\GlobalAssemblyInfo.cs">
-      <Link>build\GlobalAssemblyInfo.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\build\icon.png" Pack="true" PackagePath="\icon.png"/>
-    <None Include="..\..\build\nuget-readme.md" Pack="true" PackagePath="\readme.md" />
-  </ItemGroup>
+
+  <PropertyGroup Label="nuspec">
+    <description>Armature dependency injection framework, provides fluent syntax and syntax sugar over Armature.Core framework</description>
+  </PropertyGroup>
+
 </Project>

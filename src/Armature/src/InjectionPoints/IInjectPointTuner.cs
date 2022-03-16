@@ -9,7 +9,7 @@ namespace Armature;
 /// </summary>
 public interface IInjectPointTuner : ITuner { }
 
-public class InjectPointTuner : Tuner, IInjectPointTuner
+public class InjectPointTuner : Tuner<InjectPointTuner>, IInjectPointTuner
 {
   public InjectPointTuner(Action<IBuildChainPattern, int> tune) : base(tune) { }
 }

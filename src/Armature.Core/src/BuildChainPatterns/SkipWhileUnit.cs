@@ -3,31 +3,30 @@
 namespace Armature.Core;
 
 /// <summary>
-/// Skips units from the build chain while unit matches specified pattern till the last (under construction) unit.
+/// Skips units from the build chain while unit matches specified pattern till the target unit. The target unit is never skipped.
 /// </summary>
 public class SkipWhileUnit : BuildChainPatternByUnitBase
 {
-  public SkipWhileUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildContextPattern.Neutral) { }
+  public SkipWhileUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildChainPattern.SkipWhileUnit) { }
   public SkipWhileUnit(IUnitPattern unitPattern, int weight) : base(unitPattern, weight) { }
 
   public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight)
   {
-    var i = 0;
+    var hasActions = false;
 
+    // ReSharper disable once AccessToModifiedClosure - yes, I need it to be captured
+    using(Log.ConditionalMode(LogLevel.Verbose, () => hasActions))
     using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipWhileUnit)))
     {
-      Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}");
+      Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
 
-      for(; i < buildChain.Length - 1; i++)
-      {
+      var i = 0;
+      for(; i < buildChain.Length - 1; i++) // target unit is not the subject of skipping
         if(!UnitPattern.Matches(buildChain[i]))
-        {
-          Log.WriteLine(LogLevel.Verbose, LogConst.Matched, false);
           break;
-        }
-      }
 
-      return GetChildrenActions(buildChain.GetTail(i), inputWeight, out actionBag);
+      hasActions = GetChildrenActions(buildChain.GetTail(i), inputWeight, out actionBag);
+      return hasActions;
     }
   }
 }

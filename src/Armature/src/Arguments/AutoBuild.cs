@@ -37,7 +37,7 @@ public static class AutoBuild
     public IArgumentTuner Type { get; } = new ArgumentTuner(
       (node, weight) =>
         node
-         .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfo>(), weight + WeightOf.BuildContextPattern.IfFirstUnit + ByTypeWeight))
+         .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfo>(), weight + WeightOf.BuildChainPattern.IfFirstUnit + ByTypeWeight))
          .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create));
 
     /// <summary>
@@ -46,7 +46,7 @@ public static class AutoBuild
     public IArgumentTuner Name { get; } = new ArgumentTuner(
       (node, weight) =>
         node
-         .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfo>(), weight + WeightOf.BuildContextPattern.IfFirstUnit + ByNameWeight))
+         .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfo>(), weight + WeightOf.BuildChainPattern.IfFirstUnit + ByNameWeight))
          .UseBuildAction(Static.Of<BuildArgumentByParameterName>(), BuildStage.Create));
   }
 

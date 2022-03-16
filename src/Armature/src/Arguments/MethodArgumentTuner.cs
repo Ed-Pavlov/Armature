@@ -8,7 +8,7 @@ namespace Armature;
 /// <summary>
 /// Adds build actions to build arguments for injection points defined by <see cref="ForParameter"/> tuner.
 /// </summary>
-public class MethodArgumentTuner<T> : ArgumentTunerBase<T>
+public class MethodArgumentTuner<T> : ArgumentTunerBase<T, MethodArgumentTuner<T>>
 {
   public MethodArgumentTuner(Func<IBuildChainPattern, int, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
 

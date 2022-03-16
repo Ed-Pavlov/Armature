@@ -29,18 +29,20 @@ public record RedirectOpenGenericType : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession)
   {
-    var unitUnderConstruction = buildSession.BuildChain.TargetUnit;
-    var unitType              = unitUnderConstruction.GetUnitType();
+    Log.WriteLine(LogLevel.Trace, () => $"Tag: {_tag.ToHoconString()}");
+
+    var targetUnit = buildSession.BuildChain.TargetUnit;
+    var unitType   = targetUnit.GetUnitType();
 
     if(!unitType.IsGenericType)
       if(_throwOnMismatch)
-        throw new ArmatureException($"Building unit {unitUnderConstruction} is not a generic type and can't be redirected.");
+        throw new ArmatureException($"Building unit {targetUnit} is not a generic type and can't be redirected.");
       else
         return;
 
     if(unitType.IsGenericTypeDefinition)
       if(_throwOnMismatch)
-        throw new ArmatureException($"Building unit {unitUnderConstruction} is an open generic type and can't be redirected.");
+        throw new ArmatureException($"Building unit {targetUnit} is an open generic type and can't be redirected.");
       else
         return;
 
@@ -49,11 +51,11 @@ public record RedirectOpenGenericType : IBuildAction, ILogString
     if(_redirectTo.GetTypeInfo().GenericTypeParameters.Length != genericArguments.Length)
       if(_throwOnMismatch)
         throw new ArmatureException(
-          $"Generic arguments count of building unit {unitUnderConstruction} and the type to redirect {_redirectTo} should be equal.");
+          $"Generic arguments count of building unit {targetUnit} and the type to redirect {_redirectTo} should be equal.");
       else
         return;
 
-    var effectiveTag = Equals(_tag, SpecialTag.Propagate) ? unitUnderConstruction.Tag : _tag;
+    var effectiveTag = Equals(_tag, SpecialTag.Propagate) ? targetUnit.Tag : _tag;
     var genericType  = _redirectTo.MakeGenericType(genericArguments);
 
     buildSession.BuildResult = buildSession.BuildUnit(new UnitId(genericType, effectiveTag));

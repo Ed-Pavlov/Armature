@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using JetBrains.Annotations;
 
 namespace Armature.Core.Sdk;
@@ -41,27 +42,37 @@ public static class LogExtension
   /// Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
   /// </summary>
   public static string ToHoconString(this object? value)
-    => value switch
-       {
-         null                     => "null",
-         string str               => str.QuoteIfNeeded(),
-         ILogString logable       => logable.ToHoconString(),
-         IEnumerable items        => $"[{string.Join(", ", items.Cast<object>().Select(_ => _.ToHoconString()))}]",
-         IBuildAction buildAction => buildAction.GetType().GetShortName().QuoteIfNeeded(),
-         Type type                => $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})".QuoteIfNeeded(),
-         bool b                   => b.ToString(CultureInfo.CurrentUICulture),
-         char c                   => c.ToString(CultureInfo.CurrentUICulture),
-         short s                  => s.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         ushort us                => us.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         int i                    => i.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         uint ui                  => ui.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         long l                   => l.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         ulong ul                 => ul.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         float f                  => f.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         double d                 => d.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         decimal dc               => dc.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-         _                        => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
-       };
+  {
+    try
+    {
+      return value switch
+             {
+               null => "null",
+               string str => str.QuoteIfNeeded(),
+               ILogString logable => logable.ToHoconString(),
+               IBuildAction buildAction => buildAction.GetType().GetShortName().QuoteIfNeeded(),
+               IEnumerable items => $"[{string.Join(", ", items.Cast<object>().Select(_ => _.ToHoconString()))}]",
+               MethodBase methodInfo => methodInfo.ToString().QuoteIfNeeded(),
+               Type type => $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})".QuoteIfNeeded(),
+               bool b => b.ToString(CultureInfo.CurrentUICulture),
+               char c => c.ToString(CultureInfo.CurrentUICulture),
+               short s => s.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               ushort us => us.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               int i => i.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               uint ui => ui.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               long l => l.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               ulong ul => ul.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               float f => f.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               double d => d.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               decimal dc => dc.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               _ => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
+             };
+    }
+    catch(Exception exception)
+    {
+      return $"{nameof(ToHoconString)} {{ ExceptionType: {exception.GetType().ToLogString().QuoteIfNeeded()} }}";
+    }
+  }
 
   public static string ToHoconString(this Type              type)  => type.ToLogString().QuoteIfNeeded();
   public static string ToHoconArray(this  IEnumerable<Type> items) => $"[{string.Join(", ", items.Select(type => type.ToHoconString()))}]";
@@ -69,11 +80,20 @@ public static class LogExtension
   public static string Quote(this string str) => $"\"{str}\"";
   public static string QuoteIfNeeded(this string str)
   {
+    var containSlash = false;
     foreach(var symbol in str)
+    {
+      if(symbol == '\\')
+      {
+        containSlash = true;
+        break;
+      }
+
       if(BadCharacters.Contains(symbol))
         return Quote(str);
+    }
 
-    return str;
+    return containSlash ? Quote(str.Replace(@"\", @"\\")) : str;
   }
 
   public static void WriteToLog(this WeightedBuildActionBag? actions, LogLevel logLevel, string propertyName)
@@ -82,7 +102,7 @@ public static class LogExtension
       logLevel,
       () =>
       {
-        Log.Write(LogLevel.Info, propertyName);
+        Log.Write(logLevel, propertyName);
 
         if(actions is null)
           Log.WriteLine(logLevel, "null");
@@ -109,11 +129,14 @@ public static class LogExtension
     void WriteAction(object stage, Weighted<IBuildAction> weightedAction)
       => Log.WriteLine(
         logLevel,
-        "{{ Action: {0}, Stage: {1}, Weight: {2:n0} }}",
+        "{{ Action: {0}, Stage: {1}, Weight: {2} }}",
         weightedAction.Entity.ToHoconString(),
         stage.ToHoconString(),
-        weightedAction.Weight);
+        weightedAction.Weight.ToHoconString());
   }
+
+  public static void WriteToLog(this ConstructorInfo? constructor, LogLevel logLevel)
+    => Log.WriteLine(logLevel, () => $"Constructor: {constructor.ToHoconString()}");
 
   public static void WriteToLog(this Exception exception)
   {
@@ -124,18 +147,18 @@ public static class LogExtension
       () =>
       {
         exception.Data.Add(ExceptionConst.Logged, true);
-        Log.WriteLine(LogLevel.Info, $"Type: {exception.GetType().ToHoconString()}");
+        Log.WriteLine(LogLevel.Info, "Type: {0}", exception.GetType().ToHoconString());
 
-        WriteText(LogLevel.Info, "Message", exception.Message);
+        WriteHoconProperty(LogLevel.Info, "Message", exception.Message);
 
-        WriteText(LogLevel.Info, "StackTrace", exception.StackTrace);
+        WriteHoconProperty(LogLevel.Info, "StackTrace", exception.StackTrace);
 
         var data = exception.Data.Cast<DictionaryEntry>().Where(entry => !ExceptionConst.Logged.Equals(entry.Key)).ToArray();
 
         if(data.Length > 0)
           using(Log.NamedBlock(LogLevel.Info, "Data: "))
             foreach(var entry in data)
-              Log.WriteLine(LogLevel.Info, $"{entry.Key.ToHoconString()}: {entry.Value.ToHoconString()}");
+              Log.WriteLine(LogLevel.Info, "{0}: {1}", entry.Key.ToHoconString(), entry.Value.ToHoconString());
 
         if(exception is AggregateException aggregateException)
         {
@@ -151,14 +174,14 @@ public static class LogExtension
       });
   }
 
-  private static void WriteText(LogLevel logLevel, string propertyName, string text)
+  private static void WriteHoconProperty(LogLevel logLevel, string propertyName, string text)
   {
     if(string.IsNullOrEmpty(text))
-      Log.WriteLine(logLevel, $"{propertyName}: \"\"");
+      Log.WriteLine(logLevel, "{0}: \"\"\"", propertyName);
     else
     {
       using var stringReader = new StringReader(text);
-      Log.WriteLine(logLevel, $"{propertyName}: \"\"\"");
+      Log.WriteLine(logLevel, "{0}: \"\"\"", propertyName);
       var line = stringReader.ReadLine();
 
       while(line is not null)
