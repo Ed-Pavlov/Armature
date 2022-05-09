@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Armature.Extensibility;
+namespace Armature.Core.Sdk;
 
 public static class ExtensibilityExtension
 {

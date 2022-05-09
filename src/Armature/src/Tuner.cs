@@ -1,5 +1,5 @@
 using System;
-using Armature.Extensibility;
+using Armature.Core.Sdk;
 using JetBrains.Annotations;
 
 namespace Armature;

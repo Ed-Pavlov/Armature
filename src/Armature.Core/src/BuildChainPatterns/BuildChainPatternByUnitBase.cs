@@ -6,7 +6,7 @@ namespace Armature.Core;
 /// <summary>
 /// Some base logic to reuse in build chain patterns based on <see cref="IUnitPattern"/>
 /// </summary>
-public abstract class BuildChainPatternByUnitBase : BuildChainPatternBase
+public abstract class BuildChainPatternByUnitBase : BuildChainPatternBase, IInternal<IUnitPattern>
 {
   protected readonly IUnitPattern UnitPattern;
 
@@ -41,4 +41,6 @@ public abstract class BuildChainPatternByUnitBase : BuildChainPatternBase
       return (UnitPattern.GetHashCode() * 397) ^ Weight;
     }
   }
+
+  IUnitPattern IInternal<IUnitPattern>.Member1 => UnitPattern;
 }

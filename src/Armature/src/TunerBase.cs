@@ -1,6 +1,6 @@
 using System;
 using Armature.Core;
-using Armature.Extensibility;
+using Armature.Core.Sdk;
 
 namespace Armature;
 
