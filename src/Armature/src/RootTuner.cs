@@ -8,10 +8,14 @@ namespace Armature;
 public class RootTuner : TunerBase
 {
   [DebuggerStepThrough]
-  public RootTuner(IBuildChainPattern treeRoot) : base(treeRoot, treeRoot, null) { }
+  public RootTuner(IBuildChainPattern treeRoot) : base(treeRoot, treeRoot, null, null) { }
 
   [DebuggerStepThrough]
-  public RootTuner(IBuildChainPattern treeRoot, AddContextPatterns getContextNode) : base(treeRoot, treeRoot, getContextNode) { }
+  public RootTuner(IBuildChainPattern treeRoot, AddContextPatterns getContextNode, IUnitPattern unitPattern) : base(
+      treeRoot,
+      treeRoot,
+      getContextNode,
+      unitPattern) { }
 
   /// <summary>
   /// Amend the weight of current registration
@@ -29,12 +33,14 @@ public class RootTuner : TunerBase
   {
     if(type is null) throw new ArgumentNullException(nameof(type));
 
+    var unitPattern = new UnitPattern(type, tag);
+
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node
-        .GetOrAddNode(new SkipTillUnit(new UnitPattern(type, tag), Weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.SkipTillUnit))
+        .GetOrAddNode(new SkipTillUnit(unitPattern, Weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.SkipTillUnit))
         .TryAddContext(ContextFactory);
 
-    return new RootTuner(TreeRoot, AddContextTo);
+    return new RootTuner(TreeRoot, AddContextTo, unitPattern);
   }
 
   /// <summary>
@@ -58,7 +64,7 @@ public class RootTuner : TunerBase
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
 
-    return new TreatingTuner(TreeRoot, targetUnitNode, AddContextTo);
+    return new TreatingTuner(TreeRoot, targetUnitNode, AddContextTo, unitPattern);
   }
 
   /// <summary>
@@ -75,7 +81,7 @@ public class RootTuner : TunerBase
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
 
-    return new TreatingTuner<T>(TreeRoot, targetUnitNode, AddContextTo);
+    return new TreatingTuner<T>(TreeRoot, targetUnitNode, AddContextTo, unitPattern);
   }
 
   /// <summary>
@@ -92,7 +98,7 @@ public class RootTuner : TunerBase
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
 
-    return new TreatingOpenGenericTuner(TreeRoot, targetUnitNode, AddContextTo);
+    return new TreatingOpenGenericTuner(TreeRoot, targetUnitNode, AddContextTo, unitPattern);
   }
 
   /// <summary>
@@ -109,7 +115,7 @@ public class RootTuner : TunerBase
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
 
-    return new TreatingTuner(TreeRoot, targetUnitNode, AddContextTo);
+    return new TreatingTuner(TreeRoot, targetUnitNode, AddContextTo, unitPattern);
   }
 
   /// <summary>
@@ -126,12 +132,12 @@ public class RootTuner : TunerBase
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
 
-    return new TreatingTuner<T>(TreeRoot, targetUnitNode, AddContextTo);
+    return new TreatingTuner<T>(TreeRoot, targetUnitNode, AddContextTo, unitPattern);
   }
 
   /// <summary>
   /// Add build action applied to any building unit in subsequence calls. It's needed to setup common build actions like which constructor to call or
   /// inject dependencies into properties or not.
   /// </summary>
-  public DependencyTuner TreatAll() => new DependencyTuner(TreeRoot, TunedNode, ContextFactory!);
+  public DependencyTuner TreatAll() => new DependencyTuner(TreeRoot, TunedNode, ContextFactory!, UnitPattern);
 }

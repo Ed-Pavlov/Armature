@@ -6,10 +6,10 @@ namespace Armature;
 
 public class CreationTuner : TunerBase
 {
-  private readonly UnitPattern _unitPattern;
+  private readonly IUnitPattern _unitPattern;
 
-  public CreationTuner(UnitPattern unitPattern, IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns contextFactory)
-      : base(treeRoot, tunedNode, contextFactory)
+  public CreationTuner(IUnitPattern unitPattern, IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns contextFactory)
+      : base(treeRoot, tunedNode, contextFactory, unitPattern)
     => _unitPattern = unitPattern;
 
   /// <summary>
@@ -33,6 +33,6 @@ public class CreationTuner : TunerBase
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new IfFirstUnit(_unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
 
-    return new FinalTuner(TreeRoot, targetUnitNode, AddContextTo);
+    return new FinalTuner(TreeRoot, targetUnitNode, AddContextTo, UnitPattern);
   }
 }

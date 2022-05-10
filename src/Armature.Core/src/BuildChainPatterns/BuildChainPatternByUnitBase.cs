@@ -42,5 +42,7 @@ public abstract class BuildChainPatternByUnitBase : BuildChainPatternBase, IInte
     }
   }
 
+  public override string ToString() => $"{GetType().GetShortName()} {{ Pattern={UnitPattern.ToHoconString()} }}";
+
   IUnitPattern IInternal<IUnitPattern>.Member1 => UnitPattern;
 }

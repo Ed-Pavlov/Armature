@@ -30,7 +30,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
 
       IBuildChainPattern AddContextTo(IBuildChainPattern node) => node.GetOrAddNode(new IfFirstUnit(unitPattern, 0)).TryAddContext(contextFactory);
 
-      return new TreatingTuner<T>(treeRoot, valueNode,AddContextTo);
+      return new TreatingTuner<T>(treeRoot, valueNode,AddContextTo, unitPattern);
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
       var treeRoot       = tuner.Member2;
       var contextFactory = tuner.Member3!;
 
-      return new TreatingTuner<Maybe<T>>(treeRoot, tuner.Member1.UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize), contextFactory);
+      return new TreatingTuner<Maybe<T>>(treeRoot, tuner.Member1.UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize), contextFactory, null!);
     }
   }
 }
