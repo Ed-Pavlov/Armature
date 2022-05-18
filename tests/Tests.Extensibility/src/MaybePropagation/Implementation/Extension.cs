@@ -25,7 +25,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
       var unitPattern = new UnitPattern(typeof(T), uniqueTag);
 
       var valueNode = treeRoot
-                     .GetOrAddNode(new IfTargetUnit(unitPattern, 0)) //TODO: weight
+                     .GetOrAddNode(new IfFirstUnit(unitPattern, 0)) //TODO: weight
                      .TryAddContext(contextFactory);
 
       IBuildChainPattern AddContextTo(IBuildChainPattern node) => node.GetOrAddNode(new IfFirstUnit(unitPattern, 0)).TryAddContext(contextFactory);

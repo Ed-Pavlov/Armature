@@ -21,7 +21,7 @@ public static class ForProperty
 
         return tuningContext.TreeRoot
                             .GetOrAddNode(
-                               new IfTargetUnit(
+                               new IfFirstUnit(
                                  new IsPropertyWithType(new UnitPattern(type)),
                                  weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
                             .TryAddContext(tuningContext.GetContextNode);
@@ -38,7 +38,7 @@ public static class ForProperty
 
         return tuningContext.TreeRoot
                             .GetOrAddNode(
-                               new IfTargetUnit(
+                               new IfFirstUnit(
                                  new IsPropertyWithType(new UnitPattern(typeof(T))),
                                  weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
                             .TryAddContext(tuningContext.GetContextNode);
@@ -55,7 +55,7 @@ public static class ForProperty
 
         return tuningContext.TreeRoot
                             .GetOrAddNode(
-                               new IfTargetUnit(
+                               new IfFirstUnit(
                                  new IsPropertyNamed(propertyName),
                                  weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
                             .TryAddContext(tuningContext.GetContextNode);
@@ -73,7 +73,7 @@ public static class ForProperty
 
         return tuningContext.TreeRoot
                             .GetOrAddNode(
-                               new IfTargetUnit(
+                               new IfFirstUnit(
                                  new IsPropertyMarkedWithAttribute(injectPointId),
                                  weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.TargetUnit))
                             .TryAddContext(tuningContext.GetContextNode);

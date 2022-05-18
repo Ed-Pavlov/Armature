@@ -19,7 +19,7 @@ public static class Constructor
       (tuningContext, weight)
         => tuningContext.TreeRoot
                         .GetOrAddNode(
-                           new IfTargetUnit(
+                           new IfFirstUnit(
                              Static.Of<IsConstructor>(),
                              weight + WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.TargetUnit))
                         .TryAddContext(tuningContext.GetContextNode)
@@ -33,7 +33,7 @@ public static class Constructor
       (tuningContext, weight)
         => tuningContext.TreeRoot
                         .GetOrAddNode(
-                           new IfTargetUnit(
+                           new IfFirstUnit(
                              Static.Of<IsConstructor>(),
                              weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.TargetUnit))
                         .TryAddContext(tuningContext.GetContextNode)
@@ -73,7 +73,7 @@ public static class Constructor
       (tuningContext, weight)
         => tuningContext.TreeRoot
                         .GetOrAddNode(
-                           new IfTargetUnit(
+                           new IfFirstUnit(
                              Static.Of<IsConstructor>(),
                              weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
                         .TryAddContext(tuningContext.GetContextNode)

@@ -17,7 +17,7 @@ public static class ForParameter
     => new MethodArgumentTuner(
       (tuningContext, weight)
         => tuningContext.TreeRoot.GetOrAddNode(
-                      new IfTargetUnit(
+                      new IfFirstUnit(
                         new IsMethodParameterWithType(new UnitPattern(type)),
                         weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
                    .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
@@ -33,7 +33,7 @@ public static class ForParameter
       (tuningContext, weight)
         => tuningContext.TreeRoot
           .GetOrAddNode(
-             new IfTargetUnit(
+             new IfFirstUnit(
                new IsMethodParameterWithType(new UnitPattern(typeof(T))),
                weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
           .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
@@ -47,7 +47,7 @@ public static class ForParameter
       (tuningContext, weight)
         => tuningContext.TreeRoot
           .GetOrAddNode(
-             new IfTargetUnit(
+             new IfFirstUnit(
                new IsMethodParameterNamed(parameterName),
                weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
           .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
@@ -62,7 +62,7 @@ public static class ForParameter
       (tuningContext, weight)
         => tuningContext.TreeRoot
           .GetOrAddNode(
-             new IfTargetUnit(
+             new IfFirstUnit(
                new IsParameterMarkedWithAttribute(injectPointId),
                weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.TargetUnit))
           .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))

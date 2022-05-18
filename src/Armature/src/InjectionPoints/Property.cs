@@ -27,7 +27,7 @@ public static class Property
         tuningContext.TunedNode.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         tuningContext.TreeRoot
-                     .GetOrAddNode(new IfTargetUnit(Static.Of<IsPropertyList>(), weight))
+                     .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
                      .TryAddContext(tuningContext.GetContextNode)
                      .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
       });
@@ -47,7 +47,7 @@ public static class Property
         tuningContext.TunedNode.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         tuningContext.TreeRoot
-                     .GetOrAddNode(new IfTargetUnit(Static.Of<IsPropertyList>(), weight))
+                     .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
                      .TryAddContext(tuningContext.GetContextNode)
                      .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
       });
@@ -65,7 +65,7 @@ public static class Property
         tuningContext.TunedNode.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         tuningContext.TreeRoot
-                     .GetOrAddNode(new IfTargetUnit(Static.Of<IsPropertyList>(), weight))
+                     .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
                      .TryAddContext(tuningContext.GetContextNode)
                      .UseBuildAction(new GetPropertyListByInjectPointId(pointIds), BuildStage.Create);
       });

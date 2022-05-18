@@ -24,7 +24,7 @@ public static class AutoBuild
       = new ArgumentTuner(
         (tuningContext, weight) =>
           tuningContext.TreeRoot
-                       .GetOrAddNode(new IfTargetUnit(Static.Of<IsParameterInfoList>(), weight))
+                       .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoList>(), weight))
                        .TryAddContext(tuningContext.GetContextNode)
                        .UseBuildAction(Static.Of<BuildMethodArgumentsInDirectOrder>(), BuildStage.Create));
   }
@@ -38,7 +38,7 @@ public static class AutoBuild
       (tuningContext, weight) =>
         tuningContext.TreeRoot
                      .GetOrAddNode(
-                        new IfTargetUnit(
+                        new IfFirstUnit(
                           Static.Of<IsParameterInfo>(),
                           weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
                      .TryAddContext(tuningContext.GetContextNode)
@@ -51,7 +51,7 @@ public static class AutoBuild
       (tuningContext, weight) =>
         tuningContext.TreeRoot
                      .GetOrAddNode(
-                        new IfTargetUnit(
+                        new IfFirstUnit(
                           Static.Of<IsParameterInfo>(),
                           weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
                      .TryAddContext(tuningContext.GetContextNode)

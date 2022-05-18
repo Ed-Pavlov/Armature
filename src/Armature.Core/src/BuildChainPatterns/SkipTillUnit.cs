@@ -31,7 +31,7 @@ public class SkipTillUnit : BuildChainPatternByUnitBase
         if(isPatternMatches)
         {
           Log.WriteLine(LogLevel.Verbose, LogConst.Matched, true);
-          hasActions = GetOwnAndChildrenBuildActions(buildChain.GetTail(i + 1), inputWeight, out actionBag);
+          hasActions = GetOwnAndChildrenBuildActions(buildChain.GetTail(i + 1), inputWeight - i, out actionBag);
           return hasActions;
         }
       }

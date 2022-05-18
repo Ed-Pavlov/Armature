@@ -35,7 +35,7 @@ public class DependencyTuner : TunerBase
       else
       {
         TreeRoot.GetOrAddNode(
-                   new IfTargetUnit(
+                   new IfFirstUnit(
                      new IsAssignableFromType(argument.GetType()),
                      Weight
                    + WeightOf.InjectionPoint.ByTypeAssignability

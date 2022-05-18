@@ -59,7 +59,7 @@ public class RootTuner : TunerBase
     var unitPattern = new UnitPattern(type, tag);
     var baseWeight  = Weight + WeightOf.UnitPattern.ExactTypePattern;
 
-    var targetUnitNode = TreeRoot.GetOrAddNode(new IfTargetUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit)).TryAddContext(ContextFactory);
+    var targetUnitNode = TreeRoot.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit)).TryAddContext(ContextFactory);
 
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
@@ -75,7 +75,7 @@ public class RootTuner : TunerBase
     var unitPattern = new UnitPattern(typeof(T), tag);
     var baseWeight  = Weight + WeightOf.UnitPattern.ExactTypePattern;
 
-    var targetUnitNode = TreeRoot.GetOrAddNode(new IfTargetUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
+    var targetUnitNode = TreeRoot.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
                                  .TryAddContext(ContextFactory);
 
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
@@ -92,7 +92,7 @@ public class RootTuner : TunerBase
     var unitPattern = new IsGenericOfDefinition(openGenericType, tag);
     var baseWeight  = Weight + WeightOf.UnitPattern.OpenGenericPattern;
 
-    var targetUnitNode = TreeRoot.GetOrAddNode(new IfTargetUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
+    var targetUnitNode = TreeRoot.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
                                  .TryAddContext(ContextFactory);
 
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
@@ -109,7 +109,7 @@ public class RootTuner : TunerBase
     var unitPattern = new IsInheritorOf(baseType, tag);
     var baseWeight  = Weight + WeightOf.UnitPattern.SubtypePattern;
 
-    var targetUnitNode = TreeRoot.GetOrAddNode(new IfTargetUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
+    var targetUnitNode = TreeRoot.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
                                  .TryAddContext(ContextFactory);
 
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
@@ -126,7 +126,7 @@ public class RootTuner : TunerBase
     var baseWeight  = Weight + WeightOf.UnitPattern.SubtypePattern;
     var unitPattern = new IsInheritorOf(typeof(T), tag);
 
-    var targetUnitNode = TreeRoot.GetOrAddNode(new IfTargetUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
+    var targetUnitNode = TreeRoot.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
                                  .TryAddContext(ContextFactory);
 
     IBuildChainPattern AddContextTo(IBuildChainPattern node)

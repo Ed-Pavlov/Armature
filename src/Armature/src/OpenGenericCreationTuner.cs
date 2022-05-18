@@ -26,7 +26,7 @@ public class OpenGenericCreationTuner : TunerBase
   {
     var baseWeight = Weight + WeightOf.UnitPattern.OpenGenericPattern;
 
-    var targetUnitNode = TreeRoot.GetOrAddNode(new IfTargetUnit(_unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
+    var targetUnitNode = TreeRoot.GetOrAddNode(new IfFirstUnit(_unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
                                  .TryAddContext(ContextFactory)
                                  .UseBuildAction(buildAction, BuildStage.Create);
 

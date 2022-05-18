@@ -26,7 +26,7 @@ public class CreationTuner : TunerBase
   {
     var baseWeight = Weight + WeightOf.UnitPattern.ExactTypePattern; //TODO: need to return to CreationTuner, see should_build_maybe test
 
-    var targetUnitNode = TreeRoot.GetOrAddNode(new IfTargetUnit(_unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
+    var targetUnitNode = TreeRoot.GetOrAddNode(new IfFirstUnit(_unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit))
                                  .TryAddContext(ContextFactory)
                                  .UseBuildAction(buildAction, BuildStage.Create);
 
