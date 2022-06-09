@@ -8,14 +8,13 @@ namespace Armature;
 public class RootTuner : TunerBase
 {
   [DebuggerStepThrough]
-  public RootTuner(IBuildChainPattern treeRoot) : base(treeRoot, treeRoot, null, null) { }
+  public RootTuner(IBuildChainPattern treeRoot) : base(treeRoot, treeRoot)
+  { }
 
   [DebuggerStepThrough]
-  public RootTuner(IBuildChainPattern treeRoot, AddContextPatterns getContextNode, IUnitPattern unitPattern) : base(
-      treeRoot,
-      treeRoot,
-      getContextNode,
-      unitPattern) { }
+  public RootTuner(IBuildChainPattern treeRoot, AddContextPatterns getContextNode, IUnitPattern unitPattern)
+      : base(treeRoot, getContextNode, unitPattern, treeRoot)
+  { }
 
   /// <summary>
   /// Amend the weight of current registration
@@ -64,7 +63,7 @@ public class RootTuner : TunerBase
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
 
-    return new TreatingTuner(TreeRoot, targetUnitNode, AddContextTo, unitPattern);
+    return new TreatingTuner(TreeRoot, AddContextTo, unitPattern, targetUnitNode);
   }
 
   /// <summary>
@@ -81,7 +80,7 @@ public class RootTuner : TunerBase
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
 
-    return new TreatingTuner<T>(TreeRoot, targetUnitNode, AddContextTo, unitPattern);
+    return new TreatingTuner<T>(TreeRoot, AddContextTo, unitPattern, targetUnitNode);
   }
 
   /// <summary>
@@ -115,7 +114,7 @@ public class RootTuner : TunerBase
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
 
-    return new TreatingTuner(TreeRoot, targetUnitNode, AddContextTo, unitPattern);
+    return new TreatingTuner(TreeRoot, AddContextTo, unitPattern, targetUnitNode);
   }
 
   /// <summary>
@@ -132,12 +131,12 @@ public class RootTuner : TunerBase
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
 
-    return new TreatingTuner<T>(TreeRoot, targetUnitNode, AddContextTo, unitPattern);
+    return new TreatingTuner<T>(TreeRoot, AddContextTo, unitPattern, targetUnitNode);
   }
 
   /// <summary>
   /// Add build action applied to any building unit in subsequence calls. It's needed to setup common build actions like which constructor to call or
   /// inject dependencies into properties or not.
   /// </summary>
-  public DependencyTuner TreatAll() => new DependencyTuner(TreeRoot, TunedNode, ContextFactory!, UnitPattern);
+  public DependencyTuner TreatAll() => new DependencyTuner(TreeRoot, ContextFactory, UnitPattern, TunedNode);
 }

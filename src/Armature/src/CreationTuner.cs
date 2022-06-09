@@ -8,8 +8,8 @@ public class CreationTuner : TunerBase
 {
   private readonly IUnitPattern _unitPattern;
 
-  public CreationTuner(IUnitPattern unitPattern, IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns contextFactory)
-      : base(treeRoot, tunedNode, contextFactory, unitPattern)
+  public CreationTuner(IBuildChainPattern treeRoot, AddContextPatterns contextFactory, IUnitPattern unitPattern, IBuildChainPattern tunedNode)
+      : base(treeRoot, contextFactory, unitPattern, tunedNode)
     => _unitPattern = unitPattern;
 
   /// <summary>
@@ -33,6 +33,6 @@ public class CreationTuner : TunerBase
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new IfFirstUnit(_unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
 
-    return new FinalTuner(TreeRoot, targetUnitNode, AddContextTo, UnitPattern);
+    return new FinalTuner(TreeRoot, AddContextTo, UnitPattern, targetUnitNode);
   }
 }

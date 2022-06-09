@@ -5,28 +5,28 @@ namespace Armature;
 
 public static class PatternTreeTunerExtension
 {
-  public static TreatingTuner Treat(this IBuildChainPattern pattern, Type type, object? tag = null) => new RootTuner(pattern).Treat(type, tag);
+  public static TreatingTuner Treat(this Builder pattern, Type type, object? tag = null) => new RootTuner(pattern).Treat(type, tag);
 
-  public static TreatingTuner<T> Treat<T>(this IBuildChainPattern pattern, object? tag = null) => new RootTuner(pattern).Treat<T>(tag);
+  public static TreatingTuner<T> Treat<T>(this Builder pattern, object? tag = null) => new RootTuner(pattern).Treat<T>(tag);
 
-  public static TreatingOpenGenericTuner TreatOpenGeneric(this IBuildChainPattern pattern, Type openGenericType, object? tag = null)
+  public static TreatingOpenGenericTuner TreatOpenGeneric(this Builder pattern, Type openGenericType, object? tag = null)
     => new RootTuner(pattern).TreatOpenGeneric(openGenericType, tag);
 
-  public static TreatingTuner TreatInheritorsOf(this IBuildChainPattern pattern, Type baseType, object? tag = null)
+  public static TreatingTuner TreatInheritorsOf(this Builder pattern, Type baseType, object? tag = null)
     => new RootTuner(pattern).TreatInheritorsOf(baseType, tag);
 
-  public static TreatingTuner<T> TreatInheritorsOf<T>(this IBuildChainPattern pattern, object? tag = null) => new RootTuner(pattern).TreatInheritorsOf<T>(tag);
+  public static TreatingTuner<T> TreatInheritorsOf<T>(this Builder pattern, object? tag = null) => new RootTuner(pattern).TreatInheritorsOf<T>(tag);
 
-  public static DependencyTuner TreatAll(this IBuildChainPattern pattern) => new RootTuner(pattern).TreatAll();
+  public static DependencyTuner TreatAll(this Builder pattern) => new RootTuner(pattern).TreatAll();
 
-  public static RootTuner Building(this IBuildChainPattern pattern, Type type, object? tag = null) => new RootTuner(pattern).Building(type, tag);
+  public static RootTuner Building(this Builder pattern, Type type, object? tag = null) => new RootTuner(pattern).Building(type, tag);
 
-  public static RootTuner Building<T>(this IBuildChainPattern pattern, object? tag = null) => new RootTuner(pattern).Building<T>(tag);
+  public static RootTuner Building<T>(this Builder pattern, object? tag = null) => new RootTuner(pattern).Building<T>(tag);
 
   // /// <summary>
   // /// Overrides a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems.
   // /// </summary>
-  // public static TreatingTuner TreatOverride(this IBuildChainPattern pattern, Type type, object? tag = null)
+  // public static TreatingTuner TreatOverride(this Builder pattern, Type type, object? tag = null)
   // {
   //   if(pattern is null) throw new ArgumentNullException(nameof(pattern));
   //   if(type is null) throw new ArgumentNullException(nameof(type));
@@ -41,7 +41,7 @@ public static class PatternTreeTunerExtension
   // /// <summary>
   // /// Overrides a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems.
   // /// </summary>
-  // public static TreatingTuner<T> TreatOverride<T>(this IBuildChainPattern pattern, object? tag = null)
+  // public static TreatingTuner<T> TreatOverride<T>(this Builder pattern, object? tag = null)
   // {
   //   if(pattern is null) throw new ArgumentNullException(nameof(pattern));
   //

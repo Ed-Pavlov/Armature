@@ -12,7 +12,7 @@ namespace Tests.Functional
   public class InjectDependenciesToPropertyTest
   {
     [TestCaseSource(nameof(test_case_source))]
-    public void value_should_be_injected_into_property_by_name(Func<BuildChainPatternTree, FinalTuner> tune)
+    public void value_should_be_injected_into_property_by_name(Func<Builder, FinalTuner> tune)
     {
       const string expected = "expectedString";
 
@@ -249,10 +249,10 @@ namespace Tests.Functional
 
     private static IEnumerable test_case_source()
     {
-      yield return new TestCaseData(new Func<BuildChainPatternTree, FinalTuner>(tree => tree.Treat<ISubject>().AsCreated<Subject>())).SetName("Subject");
+      yield return new TestCaseData(new Func<Builder, FinalTuner>(tree => tree.Treat<ISubject>().AsCreated<Subject>())).SetName("Subject");
 
       yield return new TestCaseData(
-        new Func<BuildChainPatternTree, FinalTuner>(
+        new Func<Builder, FinalTuner>(
           tree =>
           {
             tree.Treat<ISubject>().AsCreated<Subject>();

@@ -201,3 +201,85 @@ TreatAll
     .TreatAll           SkipTillUnit(Foo) -> Singleton
     .UsingArguments
     .AsSingleton
+
+
+// 05.06.2022
+Tuners chain
+
+1. w/o TreatAll (BuildingWhich, UseArguments)
+
+Treat<I>.AsCreated<C>.AsSingleton.BuildingWhich.UseArguments.InjectInto
+Treat<C>.AsIs.BuildingWhich.UseArguments.InjectInto
+Building<C>.UseArguments.InjectInto
+BuildingInheritorsOf<B>.UseArguments.InjectInto
+
+Treat<C>.UsingArguments - in this case it will be using but not use
+
+RootTuner
+  BuildingXxx : BuildingTuner
+  Treat : TreatTuner
+
+BuildingTuner : AuxTuner
+  BuildingXxx : BuildingTuner
+
+AuxTuner
+  UseArguments : AuxTuner
+  InjectInto : AuxTuner
+
+TreatTuner
+  As : CreationTuner
+
+CreationTuner
+  Is, Reflection, Default : ImplTuner
+
+ImplTuner
+  AsSingleton : TransitTuner
+  BuildingWhich : AuxTuner
+
+TransitTuner
+  BuildingWhich : AuxTuner
+
+
+2. TreatAll
+
+Building<C>.TreatAll.UsingArguments.UsingInjectPoints
+BuildingInheritorsOf<B>.TreatAll.UsingArguments.UsingInjectPoints
+
+Treat<I>.AsCreated<C>.AsSingleton.BuildingWhich.TreatAll.UsingArguments
+
+
+3. Arguments for an unit and its dependencies
+
+Treat<I>.AsCreated<C>.UseArguments.InTheContext.UseArguments
+
+Treat<I>.AsCreated<C>.CreatingWhich.UseArguments.BuildingWhich.UseArguments
+
+
+Conclusion
+We need both TreatAll and BuildingIt
+Building<I>.Building<J>.TreatAll
+Building<I>.Building<J>.Treat<C>   both are needed and TreatAll explicitly specifies what we mean
+
+Treat<C>.UsingArguments.BuildingIt.TreatAll/Treat<Hz>.UsingArguments - the way to specify arguments for an unit and its dependencies
+
+Treat<C>   IfFirst<C>
+AsIs          -> CreateBA
+Using(4)   Parameter(int)
+             IfFirst<C> -> Instance(4)
+BuildingIt AddContext(SkipTill<C>)
+TreatAll   none
+Using(0)   Parameter(int)
+             SkipTill<C> -> Instance(0)
+
+BuildingIt
+Treat<Hz>     IfFirst<Hz>
+AsSingleton     SkipTill<C> -> Singleton
+
+
+Building<I>
+Building<J>
+TreatAll
+Using(0)     Parameter(int)
+               SkipTill<J>
+                 SkipTill<I>
+

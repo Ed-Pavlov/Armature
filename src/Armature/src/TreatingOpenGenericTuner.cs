@@ -8,7 +8,7 @@ public class TreatingOpenGenericTuner : TunerBase
 {
   [DebuggerStepThrough]
   public TreatingOpenGenericTuner(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns contextFactory, IUnitPattern unitPattern)
-    : base(treeRoot, tunedNode, contextFactory, unitPattern) { }
+    : base(treeRoot, contextFactory, unitPattern, tunedNode) { }
 
   /// <summary>
   /// Build an object of the specified <paramref name="openGenericType"/> instead. Also use default creation strategy for that type.
@@ -24,7 +24,7 @@ public class TreatingOpenGenericTuner : TunerBase
     TunedNode.UseBuildAction(new RedirectOpenGenericType(openGenericType, tag), BuildStage.Create);
 
     var unitPattern = new IsGenericOfDefinition(openGenericType, tag);
-    return new OpenGenericCreationTuner(unitPattern, TreeRoot, TunedNode, ContextFactory!);
+    return new OpenGenericCreationTuner(TreeRoot, ContextFactory!, unitPattern, TunedNode);
   }
 
   /// <summary>
@@ -33,6 +33,6 @@ public class TreatingOpenGenericTuner : TunerBase
   public FinalTuner AsIs()
   {
     TunedNode.UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
-    return new FinalTuner(TreeRoot, TunedNode, ContextFactory!, UnitPattern);
+    return new FinalTuner(TreeRoot, ContextFactory!, UnitPattern, TunedNode);
   }
 }

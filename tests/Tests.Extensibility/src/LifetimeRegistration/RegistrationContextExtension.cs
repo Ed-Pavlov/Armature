@@ -4,7 +4,6 @@ using System.Threading;
 using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
-using Armature.Sdk;
 using JetBrains.Lifetimes;
 
 namespace Tests.Extensibility.LifetimeRegistration;
@@ -17,9 +16,9 @@ public static class RegistrationContextExtension
 
     tuner.AsSingleton(); // register as singleton
 
-    var buildChainPattern = tuner.GetInternals().Member1;
-    var treeRoot          = tuner.GetInternals().Member2;
-    var unitPattern       = tuner.GetInternals().Member4!;
+    var buildChainPattern = tuner.GetInternals().Member4;
+    var treeRoot          = tuner.GetInternals().Member1;
+    var unitPattern       = tuner.GetInternals().Member3!;
 
     // register one lifetime for singleton itself, it is needed because 'this' singleton could be built as a dependency for another singleton
     // which registered its lifetime for all its dependencies. but 'this' lifetime should be used for 'this' singleton, not 'parent' one
@@ -31,40 +30,8 @@ public static class RegistrationContextExtension
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new SkipTillUnit(unitPattern, WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.SkipTillUnit));
 
-    new DependencyTuner(treeRoot, treeRoot, AddContextTo, unitPattern)
+    new DependencyTuner(treeRoot, AddContextTo, unitPattern, treeRoot)
        .UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Of: {buildChainPattern}")));
-
-    return tuner;
-  }
-
-  /// <summary>
-  /// The alternative implementation of <see cref="AsSingleton"/>. It is thread-safe and reserves singleton's sub-lifetime at registration time (instead of instantiation one).
-  /// </summary>
-  /// <remarks>
-  /// Notes about termination order:<br/>
-  /// * all non-singleton dependencies of registered singleton will be terminated AFTER this singleton termination;<br/>
-  /// * all singleton dependencies of registered singleton will be terminated IN REVERSE ORDER OF ITS REGISTRATION.<br/>
-  /// <br/>
-  /// See `ArmatureAsSingleton2Test` for termination order examples.<br/>
-  /// <br/>
-  /// For issues related to original implementation <see cref="AsSingleton"/> see `ArmatureSingletonLifetimeDemo` test fixture.<br/>
-  /// <br/>
-  /// IMPORTANT! This is experimental non-well tested stuff, use it only if you absolutely sure what you do.
-  /// </remarks>
-  public static FinalTuner AsSingleton2([NotNull] this FinalTuner tuner, Lifetime lifetime)
-  {
-    if(tuner == null) throw new ArgumentNullException(nameof(tuner));
-
-    tuner.AsSingleton2();
-
-    var matcher           = tuner.GetInternals().Member1;
-    var singletonLifetime = lifetime.CreateSubLifetime($"Singleton${matcher}");
-
-    tuner.UsingArguments(ForParameter.OfType<Lifetime>().UseValue(singletonLifetime));
-
-    matcher
-       .TreatAll()
-       .UsingArguments(ForParameter.OfType<Lifetime>().UseValue(singletonLifetime));
 
     return tuner;
   }

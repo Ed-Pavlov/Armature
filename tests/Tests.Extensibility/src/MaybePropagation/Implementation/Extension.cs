@@ -14,13 +14,13 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     public static TreatingTuner<T> TreatMaybeValue<T>(this TreatingTuner<Maybe<T>> treatingTuner)
     {
       var tuner          = treatingTuner.GetInternals();
-      var treeRoot       = tuner.Member2;
-      var tunedNode       = tuner.Member1;
-      var contextFactory = tuner.Member3!;
+      var treeRoot       = tuner.Member1;
+      var contextFactory = tuner.Member2!;
+      var tunedNode      = tuner.Member4;
 
       var uniqueTag = Guid.NewGuid();
 
-      tunedNode       .UseBuildAction(new BuildMaybeAction<T>(uniqueTag), BuildStage.Create);
+      tunedNode.UseBuildAction(new BuildMaybeAction<T>(uniqueTag), BuildStage.Create);
 
       var unitPattern = new UnitPattern(typeof(T), uniqueTag);
 
@@ -30,7 +30,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
 
       IBuildChainPattern AddContextTo(IBuildChainPattern node) => node.GetOrAddNode(new IfFirstUnit(unitPattern, 0)).TryAddContext(contextFactory);
 
-      return new TreatingTuner<T>(treeRoot, valueNode,AddContextTo, unitPattern);
+      return new TreatingTuner<T>(treeRoot, AddContextTo, unitPattern, valueNode);
     }
 
     /// <summary>
@@ -38,12 +38,16 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     /// </summary>
     public static TreatingTuner<Maybe<T>> AsMaybeValueOf<T>(this TreatingTuner<T> treatingTuner)
     {
-      var tuner          = treatingTuner.GetInternals();
-      var tunedNode      = tuner.Member1;
-      var treeRoot       = tuner.Member2;
-      var contextFactory = tuner.Member3!;
+      var tuner             = treatingTuner.GetInternals();
+      var treeRoot          = tuner.Member1;
+      var contextFactory    = tuner.Member2!;
+      var buildChainPattern = tuner.Member4;
 
-      return new TreatingTuner<Maybe<T>>(treeRoot, tuner.Member1.UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize), contextFactory, null!);
+      return new TreatingTuner<Maybe<T>>(
+          treeRoot,
+          contextFactory,
+          null!,
+          buildChainPattern.UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize));
     }
   }
 }

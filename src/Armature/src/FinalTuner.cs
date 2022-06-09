@@ -7,8 +7,8 @@ namespace Armature;
 public class FinalTuner : DependencyTuner
 {
   [DebuggerStepThrough]
-  public FinalTuner(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns? contextFactory, IUnitPattern? unitPattern)
-    : base(treeRoot, tunedNode, contextFactory, unitPattern) { }
+  public FinalTuner(IBuildChainPattern treeRoot, AddContextPatterns? contextFactory, IUnitPattern? unitPattern, IBuildChainPattern tunedNode)
+    : base(treeRoot, contextFactory, unitPattern, tunedNode) { }
 
   /// <summary>
   /// Register Unit as an singleton with a lifetime equal to parent <see cref="BuildChainPatternTree"/>. See <see cref="Singleton" /> for details
