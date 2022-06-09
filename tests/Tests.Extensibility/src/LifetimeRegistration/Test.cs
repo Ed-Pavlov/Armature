@@ -19,13 +19,16 @@ public class Test
        .AsCreatedWith<Lifetime>(lt => new Impl(lt));
 
     builder
-       .Treat<Subject>() // IfFirstUnit
+       .Treat<Subject>()
        .AsIs()
        .AsSingleton(lifetime);
 
+
+
     builder.PrintToLog();
 
-    var actual = builder.Build<Subject>();
+
+    // var actual = builder.Build<Subject>();
   }
 
   private static Builder CreateTarget()

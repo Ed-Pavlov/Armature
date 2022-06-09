@@ -9,7 +9,7 @@ public class OpenGenericCreationTuner : TunerBase
   private readonly IUnitPattern _unitPattern;
 
   public OpenGenericCreationTuner(IUnitPattern unitPattern, IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns contextFactory)
-      : base(treeRoot, tunedNode, contextFactory, unitPattern)
+      : base(treeRoot, tunedNode, contextFactory)
     => _unitPattern = unitPattern;
 
   /// <summary>
@@ -33,6 +33,6 @@ public class OpenGenericCreationTuner : TunerBase
     IBuildChainPattern AddContextTo(IBuildChainPattern node)
       => node.GetOrAddNode(new IfFirstUnit(_unitPattern, baseWeight + WeightOf.BuildChainPattern.IfFirstUnit)).TryAddContext(ContextFactory);
 
-    return new FinalTuner(TreeRoot, targetUnitNode, AddContextTo, UnitPattern);
+    return new FinalTuner(TreeRoot, targetUnitNode, AddContextTo);
   }
 }

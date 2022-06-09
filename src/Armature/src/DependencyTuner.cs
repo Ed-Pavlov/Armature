@@ -10,8 +10,8 @@ namespace Armature;
 public class DependencyTuner : TunerBase
 {
   [DebuggerStepThrough]
-  public DependencyTuner(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns? contextFactory, IUnitPattern? unitPattern)
-    : base(treeRoot, tunedNode, contextFactory, unitPattern)
+  public DependencyTuner(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns? contextFactory)
+    : base(treeRoot, tunedNode, contextFactory)
     => Weight = 0; //TODO: why not AmendWeight
 
   /// <summary>
@@ -45,7 +45,7 @@ public class DependencyTuner : TunerBase
                 .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
       }
 
-    return new FinalTuner(TreeRoot, TunedNode, ContextFactory!, UnitPattern);
+    return new FinalTuner(TreeRoot, TunedNode, ContextFactory!);
   }
 
   public FinalTuner InjectInto(params IInjectPointTuner[] propertyIds)
@@ -56,7 +56,7 @@ public class DependencyTuner : TunerBase
     foreach(var injectPointTuner in propertyIds)
       injectPointTuner.Tune(new TuningContext(TreeRoot, TunedNode, ContextFactory), Weight);
 
-    return new FinalTuner(TreeRoot, TunedNode, ContextFactory!, UnitPattern);
+    return new FinalTuner(TreeRoot, TunedNode, ContextFactory!);
   }
 
   public DependencyTuner AmendWeight(int weight)

@@ -5,14 +5,14 @@ namespace Armature;
 
 public class TreatingTuner : TreatingTuner<object?>
 {
-  public TreatingTuner(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns contextFactory, IUnitPattern unitPattern)
-      : base(treeRoot, tunedNode, contextFactory, unitPattern) { }
+  public TreatingTuner(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns contextFactory)
+      : base(treeRoot, tunedNode, contextFactory) { }
 }
 
 public class TreatingTuner<T> : FinalTuner
 {
-  public TreatingTuner(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns contextFactory, IUnitPattern unitPattern):
-      base(treeRoot, tunedNode, contextFactory, unitPattern) { }
+  public TreatingTuner(IBuildChainPattern treeRoot, IBuildChainPattern tunedNode, AddContextPatterns contextFactory) :
+      base(treeRoot, tunedNode, contextFactory) { }
 
   public TreatingTuner<T> AmendWeight(short weight)
   {
@@ -64,52 +64,52 @@ public class TreatingTuner<T> : FinalTuner
   /// Use specified <paramref name="factoryMethod"/> to build a unit.
   /// </summary>
   public FinalTuner AsCreatedWith(Func<T> factoryMethod)
-    => new FinalTuner(TreeRoot, TunedNode.UseBuildAction(new CreateWithFactoryMethod<T>(_ => factoryMethod()), BuildStage.Create), ContextFactory, UnitPattern!);
+    => new FinalTuner(TreeRoot, TunedNode.UseBuildAction(new CreateWithFactoryMethod<T>(_ => factoryMethod()), BuildStage.Create), ContextFactory!);
 
   /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
   public FinalTuner AsCreatedWith<T1>(Func<T1?, T?> factoryMethod)
-    => new FinalTuner(TreeRoot, TunedNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod), BuildStage.Create), ContextFactory, UnitPattern!);
+    => new FinalTuner(TreeRoot, TunedNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod), BuildStage.Create), ContextFactory!);
 
   /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
   public FinalTuner AsCreatedWith<T1, T2>(Func<T1?, T2?, T?> factoryMethod)
-    => new FinalTuner(TreeRoot, TunedNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod), BuildStage.Create), ContextFactory, UnitPattern!);
+    => new FinalTuner(TreeRoot, TunedNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod), BuildStage.Create), ContextFactory!);
 
   /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
   public FinalTuner AsCreatedWith<T1, T2, T3>(Func<T1?, T2?, T3?, T?> factoryMethod)
     => new FinalTuner(
         TreeRoot,
         TunedNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod), BuildStage.Create),
-        ContextFactory, UnitPattern!);
+        ContextFactory!);
 
   /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
   public FinalTuner AsCreatedWith<T1, T2, T3, T4>(Func<T1?, T2?, T3?, T4?, T?> factoryMethod)
     => new FinalTuner(
         TreeRoot,
         TunedNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T>(factoryMethod), BuildStage.Create),
-        ContextFactory, UnitPattern!);
+        ContextFactory!);
 
   /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
   public FinalTuner AsCreatedWith<T1, T2, T3, T4, T5>(Func<T1?, T2?, T3?, T4?, T5?, T?> factoryMethod)
     => new FinalTuner(
         TreeRoot,
         TunedNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T>(factoryMethod), BuildStage.Create),
-        ContextFactory, UnitPattern!);
+        ContextFactory!);
 
   /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
   public FinalTuner AsCreatedWith<T1, T2, T3, T4, T5, T6>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T?> factoryMethod)
     => new FinalTuner(
         TreeRoot,
         TunedNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T>(factoryMethod), BuildStage.Create),
-        ContextFactory, UnitPattern!);
+        ContextFactory!);
 
   /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
   public FinalTuner AsCreatedWith<T1, T2, T3, T4, T5, T6, T7>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T7?, T?> factoryMethod)
     => new FinalTuner(
         TreeRoot,
         TunedNode.UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, T>(factoryMethod), BuildStage.Create),
-        ContextFactory, UnitPattern!);
+        ContextFactory!);
 
   /// <inheritdoc cref="AsCreatedWith(System.Func{T})" />
   public FinalTuner AsCreatedWith(Func<IBuildSession, T> factoryMethod)
-    => new FinalTuner(TreeRoot, TunedNode.UseBuildAction(new CreateWithFactoryMethod<T>(factoryMethod), BuildStage.Create), ContextFactory, UnitPattern!);
+    => new FinalTuner(TreeRoot, TunedNode.UseBuildAction(new CreateWithFactoryMethod<T>(factoryMethod), BuildStage.Create), ContextFactory!);
 }

@@ -34,7 +34,7 @@ Reversed build chain
 
 Treat<I>()                 // IfTargetUnit<I>
   .As                      //     -> Redirect<C>
-  .Created<C>()            // IfTargetUnit<C>
+     Created<C>()          // IfTargetUnit<C>
                            //   IfFirstUnit<I> -> CreateBuildAction, Singleton
   .UsingArguments("str")   // IfTargetUnit<string>
                            //   IfFirstUnit<C>
@@ -174,30 +174,3 @@ IfTargetUnit<Derived>     -> yes
     SkipTillUnit<A>       -> nope I
 
 In the current implementation no actions will be gathered, but should be.
-
-
-// 09.05.2022
-
-Which registrations create a context?
-
-Building -> SkipTillUnit
-Treat(Type, Inheritors, OpenGeneric, etc) -> IfFirstUnit
-    Treat<I>
-
-AsCreated/CreatedBy -> IfFirstUnit
-    AsCreated<C> -> Redirect(I -> C) + IfFirstUnit(C):CreateBy...
-
-TreatAll
-
-   Building<Foo>                          IfFirstUnit(Lifetime)
-    .TreatAll()                             IfFirstUnit(any)
-    .UsingParameters( lifetime )              SkipTillUnit(Foo) -> build action
-
-   Building<Foo>
-     .UseParameters( lifetime )
-
-
-   Building<Foo>      IfFirstUnit(any)
-    .TreatAll           SkipTillUnit(Foo) -> Singleton
-    .UsingArguments
-    .AsSingleton

@@ -19,20 +19,29 @@ public static class RegistrationContextExtension
 
     var buildChainPattern = tuner.GetInternals().Member1;
     var treeRoot          = tuner.GetInternals().Member2;
-    var unitPattern       = tuner.GetInternals().Member4!;
+    var addContextPatterns           = tuner.GetInternals().Member3;
 
+    // register one lifetime for all dependencies which is built in context of this 'singleton'
     // register one lifetime for singleton itself, it is needed because 'this' singleton could be built as a dependency for another singleton
     // which registered its lifetime for all its dependencies. but 'this' lifetime should be used for 'this' singleton, not 'parent' one
     // this build plan will have greater weight
-    tuner.UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Of: {buildChainPattern}")));
+    // tuner.UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Of: {buildChainPattern}")));
 
-    // register lifetime for all dependencies which is built in context of this 'singleton'
-    // Building(unitPattern).TreatAll().UsingArguments(...)
-    IBuildChainPattern AddContextTo(IBuildChainPattern node)
-      => node.GetOrAddNode(new SkipTillUnit(unitPattern, WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.SkipTillUnit));
+    // buildChainPattern.UseBuildAction(
+    //     new CreateWithFactoryMethod<Lifetime>(_ => lifetime.CreateSubLifetime($"Lifetime.Of: {buildChainPattern}")),
+    //     BuildStage.Create);
 
-    new DependencyTuner(treeRoot, treeRoot, AddContextTo, unitPattern)
+    treeRoot
+       .GetOrAddNode(new IfTargetUnit(new IsMethodParameterWithType(new UnitPattern(typeof(Lifetime), null)), WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
+       .TryAddContext(addContextPatterns)
+       .TreatAll()
        .UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Of: {buildChainPattern}")));
+
+    tuner.UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Building: {buildChainPattern}")));
+
+    // new RootTuner(treeRoot, context)
+    //     .TreatAll()
+    //     .UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Building: {buildChainPattern}")));
 
     return tuner;
   }
