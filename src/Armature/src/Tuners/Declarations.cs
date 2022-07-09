@@ -117,7 +117,7 @@ public interface IDependencyTuner<out T>
 {
   T AmendWeight(short                         delta);
   T UsingArguments(params object[]            arguments);
-  T InjectInto(params     IInjectPointTuner[] propertyIds);
+  T InjectInto(params     IInjectPointSideTuner[] propertyIds);
 }
 
 public interface ITreatAllTuner : IDependencyTuner<ITreatAllTuner> { }

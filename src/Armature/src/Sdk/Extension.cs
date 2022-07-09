@@ -4,7 +4,7 @@ namespace Armature.Sdk;
 
 public static class Extension
 {
-  public static IBuildChainPattern TryAddContext(this IBuildChainPattern node, ITunerInternal leafTuner) //TODO: nullable or not in the new scheme?
+  public static IBuildChainPattern TryAddContext(this IBuildChainPattern node, ITunerInternal leafTuner)
   {
     var tuner = leafTuner;
 

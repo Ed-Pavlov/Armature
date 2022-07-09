@@ -15,13 +15,13 @@ public static class Property
   /// <summary>
   /// Sets up the property of type <typeparamref name="T"/> as required a dependency to be injected into it.
   /// </summary>
-  public static IInjectPointTuner OfType<T>() => OfType(typeof(T));
+  public static IInjectPointSideTuner OfType<T>() => OfType(typeof(T));
 
   /// <summary>
   /// Sets up the property of type <paramref name="type"/>> as required a dependency to be injected into it.
   /// </summary>
-  public static IInjectPointTuner OfType(Type type)
-    => new InjectPointTuner(
+  public static IInjectPointSideTuner OfType(Type type)
+    => new InjectPointSideTuner(
       tuner =>
       {
         tuner.BuildBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
@@ -36,12 +36,12 @@ public static class Property
   /// Sets up the properties with names as in the passed <paramref name="names"/> list as required a dependency to be injected into it.
   /// </summary>
   [PublicAPI]
-  public static IInjectPointTuner Named(params string[] names)
+  public static IInjectPointSideTuner Named(params string[] names)
   {
     if(names is null || names.Length == 0) throw new ArgumentNullException(nameof(names));
     if(names.Any(string.IsNullOrEmpty)) throw new ArgumentNullException(nameof(names), "One or more items are null or empty string.");
 
-    return new InjectPointTuner(
+    return new InjectPointSideTuner(
       tuner =>
       {
         tuner.BuildBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
@@ -58,8 +58,8 @@ public static class Property
   /// as required a dependency to be injected into it.
   /// </summary>
   [PublicAPI]
-  public static IInjectPointTuner ByInjectPoint(params object?[] pointIds)
-    => new InjectPointTuner(
+  public static IInjectPointSideTuner ByInjectPoint(params object?[] pointIds)
+    => new InjectPointSideTuner(
       tuner =>
       {
         tuner.BuildBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);

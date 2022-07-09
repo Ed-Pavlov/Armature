@@ -90,7 +90,7 @@ public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITunerInter
     return this;
   }
 
-  public ITreatAllTuner InjectInto(params IInjectPointTuner[] propertyIds)
+  public ITreatAllTuner InjectInto(params IInjectPointSideTuner[] propertyIds)
   {
     DependencyTuner.InjectInto(this, propertyIds);
     return this;

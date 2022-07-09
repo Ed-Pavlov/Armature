@@ -22,7 +22,7 @@ public class TreatAllTuner : ITunerInternal, ITreatAllTuner
   }
 
   public ITreatAllTuner UsingArguments(params object[] arguments) => DependencyTuner.UsingArguments(this, arguments);
-  public ITreatAllTuner InjectInto(params IInjectPointTuner[] propertyIds) => DependencyTuner.InjectInto(this, propertyIds);
+  public ITreatAllTuner InjectInto(params IInjectPointSideTuner[] propertyIds) => DependencyTuner.InjectInto(this, propertyIds);
 
   public ITunerInternal?    Parent                                  => null;
   public IBuildChainPattern TreeRoot                                { get; }

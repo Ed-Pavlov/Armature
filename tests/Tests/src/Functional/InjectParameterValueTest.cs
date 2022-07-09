@@ -85,7 +85,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(ForParameterSource))]
-    public void should_pass_null_as_parameter_value(MethodArgumentTuner forParameter)
+    public void should_pass_null_as_parameter_value(MethodArgumentTuner<object?> forParameter)
     {
       // --arrange
       var target = CreateTarget();
@@ -107,7 +107,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(ForParameterSource))]
-    public void should_use_value_for_parameter(MethodArgumentTuner forParameter)
+    public void should_use_value_for_parameter(MethodArgumentTuner<object?> forParameter)
     {
       const string expected = "expected";
 
@@ -129,7 +129,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(ForParameterSource))]
-    public void should_build_value_for_parameter_using_parameter_type_and_tag(MethodArgumentTuner forParameter)
+    public void should_build_value_for_parameter_using_parameter_type_and_tag(MethodArgumentTuner<object?> forParameter)
     {
       const string tag      = "tag398";
       const string expected = "expected 398752";
@@ -162,7 +162,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(ForParameterSource))]
-    public void should_fail_if_there_is_no_value_w_tag_registered(MethodArgumentTuner forParameter)
+    public void should_fail_if_there_is_no_value_w_tag_registered(MethodArgumentTuner<object?> forParameter)
     {
       // --arrange
       var target = CreateTarget();
@@ -184,7 +184,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(ForParameterSource))]
-    public void should_use_factory_method(MethodArgumentTuner forParameter)
+    public void should_use_factory_method(MethodArgumentTuner<object?> forParameter)
     {
       const int expectedInt = 392;
 

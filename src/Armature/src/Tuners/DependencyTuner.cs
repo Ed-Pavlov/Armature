@@ -15,14 +15,14 @@ public static class DependencyTuner
     if(arguments.Any(arg => arg is null))
       throw new ArgumentNullException(
         nameof(arguments),
-        $"Argument should be either {nameof(IArgumentTuner)} or a not null instance. "
-      + $"Use {nameof(ForParameter)} or custom {nameof(IArgumentTuner)} to provide null as an argument for a parameter.");
+        $"Argument should be either {nameof(IArgumentSideTuner)} or a not null instance. "
+      + $"Use {nameof(ForParameter)} or custom {nameof(IArgumentSideTuner)} to provide null as an argument for a parameter.");
 
     foreach(var argument in arguments)
-      if(argument is IArgumentTuner argumentTuner)
+      if(argument is IArgumentSideTuner argumentTuner)
         argumentTuner.Tune(tuner);
-      else if(argument is ITuner)
-        throw new ArgumentException($"{nameof(IArgumentTuner)} or instance expected");
+      else if(argument is ISideTuner)
+        throw new ArgumentException($"{nameof(IArgumentSideTuner)} or instance expected");
       else
       {
         tuner.TreeRoot
@@ -40,7 +40,7 @@ public static class DependencyTuner
     return tuner;
   }
 
-  public static T InjectInto<T>(T tuner, params IInjectPointTuner[] propertyIds) where T : ITunerInternal
+  public static T InjectInto<T>(T tuner, params IInjectPointSideTuner[] propertyIds) where T : ITunerInternal
   {
     if(propertyIds is null) throw new ArgumentNullException(nameof(propertyIds));
     if(propertyIds.Length == 0) throw new ArgumentNullException(nameof(propertyIds), "Specify one or more inject point tuners");

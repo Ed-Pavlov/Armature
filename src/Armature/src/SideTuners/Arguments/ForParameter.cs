@@ -13,8 +13,8 @@ public static class ForParameter
   /// <summary>
   /// Tunes up how to build an argument to inject into method parameter of type <paramref name="type"/>.
   /// </summary>
-  public static MethodArgumentTuner OfType(Type type)
-    => new MethodArgumentTuner(
+  public static MethodArgumentTuner<object?> OfType(Type type)
+    => new MethodArgumentTuner<object?>(
       (tuner, weight)
         => tuner.TreeRoot.GetOrAddNode(
                    new IfFirstUnit(
@@ -42,8 +42,8 @@ public static class ForParameter
   /// <summary>
   /// Tunes up how to build an argument to inject into method parameter named <paramref name="parameterName"/>.
   /// </summary>
-  public static MethodArgumentTuner Named(string parameterName)
-    => new MethodArgumentTuner(
+  public static MethodArgumentTuner<object?> Named(string parameterName)
+    => new MethodArgumentTuner<object?>(
       (tuner, weight)
         => tuner.TreeRoot
           .GetOrAddNode(
@@ -57,8 +57,8 @@ public static class ForParameter
   /// Tunes up how to build and argument to inject into a method parameter marked with <see cref="InjectAttribute"/>
   /// with the specified <paramref name="injectPointId"/>.
   /// </summary>
-  public static MethodArgumentTuner WithInjectPoint(object? injectPointId)
-    => new MethodArgumentTuner(
+  public static MethodArgumentTuner<object?> WithInjectPoint(object? injectPointId)
+    => new MethodArgumentTuner<object?>(
       (tuner, weight)
         => tuner.TreeRoot
           .GetOrAddNode(

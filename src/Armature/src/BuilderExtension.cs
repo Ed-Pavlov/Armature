@@ -28,7 +28,7 @@ public static class BuilderExtension
 
   /// <summary>
   /// Builds a Unit registered as type <typeparamref name="T" /> passing additional <paramref name="runtimeArguments" /> they can be values or
-  /// implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> and <see cref="ForProperty"/> for details.
+  /// implementation of <see cref="ISideTuner" />. See <see cref="ForParameter" /> and <see cref="ForProperty"/> for details.
   /// </summary>
   /// <param name="builder"></param>
   /// <param name="runtimeArguments">Additional temporary arguments which could be passed into the build session, they are not stored
@@ -133,7 +133,7 @@ public static class BuilderExtension
     /// <summary>
     /// Builds a Unit registered as type <typeparamref name="T" /> with an additional tag passed into <see cref="BuilderExtension.UsingTag"/> method
     /// passing additional <paramref name="arguments" /> they can be values or
-    /// implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> for details.
+    /// implementation of <see cref="ISideTuner" />. See <see cref="ForParameter" /> for details.
     /// </summary>
     [DebuggerStepThrough]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -155,7 +155,7 @@ public static class BuilderExtension
     /// <summary>
     /// Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight with an additional
     /// tag passed into <see cref="BuilderExtension.UsingTag"/> method passing additional <paramref name="arguments" /> they can be values or
-    /// implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> for details.
+    /// implementation of <see cref="ISideTuner" />. See <see cref="ForParameter" /> for details.
     /// This can be useful to build all implementers of an interface.
     /// </summary>
     /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
