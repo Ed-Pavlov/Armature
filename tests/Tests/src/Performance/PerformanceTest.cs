@@ -120,7 +120,7 @@
 //       UnitPatternWrapper.GetHashCodeCallsCount.Should().BeLessThan(250_000);
 //     }
 //
-//     private static TreatingTuner Treat(IBuildChainPattern pattern, UnitId unitId)
+//     private static BuildingTuner Treat(IBuildChainPattern pattern, UnitId unitId)
 //     {
 //       if(pattern is null) throw new ArgumentNullException(nameof(pattern));
 //
@@ -128,7 +128,7 @@
 //
 //       var query = new SkipTillUnit(unitMatcher);
 //
-//       return new TreatingTuner(pattern, pattern.GetOrAddNode(query), () => null!);
+//       return new BuildingTuner(pattern, pattern.GetOrAddNode(query), () => null!);
 //     }
 //
 //     private class UnitPatternWrapper : IUnitPattern

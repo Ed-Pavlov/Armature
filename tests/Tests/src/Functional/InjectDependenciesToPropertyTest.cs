@@ -12,7 +12,7 @@ namespace Tests.Functional
   public class InjectDependenciesToPropertyTest
   {
     [TestCaseSource(nameof(test_case_source))]
-    public void value_should_be_injected_into_property_by_name(Func<BuildChainPatternTree, FinalTuner> tune)
+    public void value_should_be_injected_into_property_by_name(Func<BuildChainPatternTree, IFinalTuner> tune)
     {
       const string expected = "expectedString";
 
@@ -34,7 +34,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(test_case_source))]
-    public void should_use_argument_for_property_by_name(Func<BuildChainPatternTree, FinalTuner> tune)
+    public void should_use_argument_for_property_by_name(Func<BuildChainPatternTree, IFinalTuner> tune)
     {
       const string expected = "expectedString";
       const string bad      = expected + "bad";
@@ -70,7 +70,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(test_case_source))]
-    public void should_use_argument_for_property_by_type(Func<BuildChainPatternTree, FinalTuner> tune)
+    public void should_use_argument_for_property_by_type(Func<BuildChainPatternTree, IFinalTuner> tune)
     {
       const int expected = 3254;
 
@@ -249,10 +249,10 @@ namespace Tests.Functional
 
     private static IEnumerable test_case_source()
     {
-      yield return new TestCaseData(new Func<BuildChainPatternTree, FinalTuner>(tree => tree.Treat<ISubject>().AsCreated<Subject>())).SetName("Subject");
+      yield return new TestCaseData(new Func<BuildChainPatternTree, IFinalTuner>(tree => tree.Treat<ISubject>().AsCreated<Subject>())).SetName("Subject");
 
       yield return new TestCaseData(
-        new Func<BuildChainPatternTree, FinalTuner>(
+        new Func<BuildChainPatternTree, IFinalTuner>(
           tree =>
           {
             tree.Treat<ISubject>().AsCreated<Subject>();

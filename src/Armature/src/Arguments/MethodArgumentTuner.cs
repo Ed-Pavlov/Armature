@@ -2,6 +2,7 @@
 using System.Reflection;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
 
 namespace Armature;
 
@@ -10,7 +11,7 @@ namespace Armature;
 /// </summary>
 public class MethodArgumentTuner<T> : ArgumentTunerBase<T, MethodArgumentTuner<T>>
 {
-  public MethodArgumentTuner(Func<TuningContext, int, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
+  public MethodArgumentTuner(Func<ITunerInternal, short, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
 
   /// <summary>
   /// For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <paramref name="tag" />
@@ -20,7 +21,7 @@ public class MethodArgumentTuner<T> : ArgumentTunerBase<T, MethodArgumentTuner<T
     if(tag is null) throw new ArgumentNullException(nameof(tag));
 
     return new ArgumentTuner(
-      (tuningContext, weight) => AddBuildChainPatternsTo(tuningContext, weight).UseBuildAction(new BuildArgumentByParameterType(tag), BuildStage.Create));
+      tuner => AddBuildChainPatternsTo(tuner, Weight).UseBuildAction(new BuildArgumentByParameterType(tag), BuildStage.Create));
   }
 
   /// <summary>
@@ -28,12 +29,12 @@ public class MethodArgumentTuner<T> : ArgumentTunerBase<T, MethodArgumentTuner<T
   /// </summary>
   public IArgumentTuner UseInjectPointIdAsTag()
     => new ArgumentTuner(
-      (tuningContext, weight) => AddBuildChainPatternsTo(tuningContext, weight)
+      tuner => AddBuildChainPatternsTo(tuner, Weight)
        .UseBuildAction(Static.Of<BuildArgumentByParameterInjectPointId>(), BuildStage.Create));
 }
 
 /// <inheritdoc cref="MethodArgumentTuner{T}"/>
 public class MethodArgumentTuner : MethodArgumentTuner<object?>
 {
-  public MethodArgumentTuner(Func<TuningContext, int, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
+  public MethodArgumentTuner(Func<ITunerInternal, short, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
 }

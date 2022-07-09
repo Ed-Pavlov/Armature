@@ -109,7 +109,7 @@ namespace Tests.Functional
 
       target
          .TreatInheritorsOf<IStream>()
-         .AmendWeight(392)
+         .AmendWeight(39)
          .InjectInto(Constructor.Parameterless());
 
       // --act

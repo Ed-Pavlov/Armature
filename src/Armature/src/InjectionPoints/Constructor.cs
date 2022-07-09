@@ -16,13 +16,13 @@ public static class Constructor
   /// </summary>
   public static IInjectPointTuner WithMaxParametersCount()
     => new InjectPointTuner(
-      (tuningContext, weight)
-        => tuningContext.TreeRoot
+      tuner
+        => tuner.TreeRoot
                         .GetOrAddNode(
                            new IfFirstUnit(
                              Static.Of<IsConstructor>(),
-                             weight + WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.TargetUnit))
-                        .TryAddContext(tuningContext.GetContextNode)
+                             WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.TargetUnit))
+                        .TryAddContext(tuner)
                         .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create));
 
   /// <summary>
@@ -30,13 +30,13 @@ public static class Constructor
   /// </summary>
   public static IInjectPointTuner MarkedWithInjectAttribute(object? injectionPointId)
     => new InjectPointTuner(
-      (tuningContext, weight)
-        => tuningContext.TreeRoot
+      tuner
+        => tuner.TreeRoot
                         .GetOrAddNode(
                            new IfFirstUnit(
                              Static.Of<IsConstructor>(),
-                             weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.TargetUnit))
-                        .TryAddContext(tuningContext.GetContextNode)
+                             WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.TargetUnit))
+                        .TryAddContext(tuner)
                         .UseBuildAction(new GetConstructorByInjectPointId(injectionPointId), BuildStage.Create));
 
   /// <summary>
@@ -70,12 +70,12 @@ public static class Constructor
   [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
   public static IInjectPointTuner WithParameters(params Type[] parameterTypes)
     => new InjectPointTuner(
-      (tuningContext, weight)
-        => tuningContext.TreeRoot
+      tuner
+        => tuner.TreeRoot
                         .GetOrAddNode(
                            new IfFirstUnit(
                              Static.Of<IsConstructor>(),
-                             weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
-                        .TryAddContext(tuningContext.GetContextNode)
+                             WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
+                        .TryAddContext(tuner)
                         .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
 }

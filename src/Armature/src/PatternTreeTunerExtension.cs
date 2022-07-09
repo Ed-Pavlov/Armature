@@ -5,28 +5,30 @@ namespace Armature;
 
 public static class PatternTreeTunerExtension
 {
-  public static TreatingTuner Treat(this IBuildChainPattern pattern, Type type, object? tag = null) => new RootTuner(pattern).Treat(type, tag);
+  public static IBuildingTuner<object?> Treat(this BuildChainPatternTree tree, Type type, object? tag = null)
+    => BuildingTuner.Treat(new RootTuner(tree), type, tag);
 
-  public static TreatingTuner<T> Treat<T>(this IBuildChainPattern pattern, object? tag = null) => new RootTuner(pattern).Treat<T>(tag);
+  public static IBuildingTuner<T> Treat<T>(this BuildChainPatternTree tree, object? tag = null) => BuildingTuner.Treat<T>(new RootTuner(tree), tag);
 
-  public static TreatingOpenGenericTuner TreatOpenGeneric(this IBuildChainPattern pattern, Type openGenericType, object? tag = null)
-    => new RootTuner(pattern).TreatOpenGeneric(openGenericType, tag);
+  public static IBuildingTuner<object?> TreatOpenGeneric(this BuildChainPatternTree tree, Type openGenericType, object? tag = null)
+    => BuildingTuner.TreatOpenGeneric(new RootTuner(tree), openGenericType, tag);
 
-  public static TreatingTuner TreatInheritorsOf(this IBuildChainPattern pattern, Type baseType, object? tag = null)
-    => new RootTuner(pattern).TreatInheritorsOf(baseType, tag);
+  public static IBuildingTuner<object?> TreatInheritorsOf(this BuildChainPatternTree tree, Type baseType, object? tag = null)
+    => BuildingTuner.TreatInheritorsOf(new RootTuner(tree), baseType, tag);
 
-  public static TreatingTuner<T> TreatInheritorsOf<T>(this IBuildChainPattern pattern, object? tag = null) => new RootTuner(pattern).TreatInheritorsOf<T>(tag);
+  public static IBuildingTuner<T> TreatInheritorsOf<T>(this BuildChainPatternTree tree, object? tag = null)
+    => BuildingTuner.TreatInheritorsOf<T>(new RootTuner(tree), tag);
 
-  public static DependencyTuner TreatAll(this IBuildChainPattern pattern) => new RootTuner(pattern).TreatAll();
+  public static IBuildingTuner Building(this BuildChainPatternTree tree, Type type, object? tag = null) => BuildingTuner.Building(new RootTuner(tree), type, tag);
 
-  public static RootTuner Building(this IBuildChainPattern pattern, Type type, object? tag = null) => new RootTuner(pattern).Building(type, tag);
+  public static IBuildingTuner Building<T>(this BuildChainPatternTree tree, object? tag = null) => BuildingTuner.Building(new RootTuner(tree), typeof(T), tag);
 
-  public static RootTuner Building<T>(this IBuildChainPattern pattern, object? tag = null) => new RootTuner(pattern).Building<T>(tag);
+  public static ITreatAllTuner TreatAll(this BuildChainPatternTree tree) => new TreatAllTuner(tree, 0);
 
   // /// <summary>
   // /// Overrides a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems.
   // /// </summary>
-  // public static TreatingTuner TreatOverride(this IBuildChainPattern pattern, Type type, object? tag = null)
+  // public static BuildingTuner TreatOverride(this BuildChainPatternTree tree, Type type, object? tag = null)
   // {
   //   if(pattern is null) throw new ArgumentNullException(nameof(pattern));
   //   if(type is null) throw new ArgumentNullException(nameof(type));
@@ -35,13 +37,13 @@ public static class PatternTreeTunerExtension
   //   var oldPatternMatcher = pattern.Children.Single(_ => _.Equals(newPatternMatcher));
   //
   //   pattern.Children.Remove(oldPatternMatcher);
-  //   return new TreatingTuner(pattern.AddNode(newPatternMatcher));
+  //   return new BuildingTuner(pattern.AddNode(newPatternMatcher));
   // }
   //
   // /// <summary>
   // /// Overrides a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems.
   // /// </summary>
-  // public static TreatingTuner<T> TreatOverride<T>(this IBuildChainPattern pattern, object? tag = null)
+  // public static BuildingTuner<T> TreatOverride<T>(this BuildChainPatternTree tree, object? tag = null)
   // {
   //   if(pattern is null) throw new ArgumentNullException(nameof(pattern));
   //
@@ -49,6 +51,6 @@ public static class PatternTreeTunerExtension
   //   var oldPatternMatcher = pattern.Children.Single(_ => _.Equals(newPatternMatcher));
   //
   //   pattern.Children.Remove(oldPatternMatcher);
-  //   return new TreatingTuner<T>(pattern.AddNode(newPatternMatcher));
+  //   return new BuildingTuner<T>(pattern.AddNode(newPatternMatcher));
   // }
 }

@@ -104,8 +104,11 @@ public static class BuilderExtension
 
     // the logic is patternTree.TreatAll().UsingArguments(arguments), but with increased weight of arguments
     var patternTree = new BuildChainPatternTree();
-    // patternTree.TreatAll().AmendWeight(10).UsingArguments(arguments);
-    new DependencyTuner(patternTree, patternTree, null).AmendWeight(WeightOf.BuildChainPattern.SkipAllUnits + 10).UsingArguments(arguments);
+    patternTree.TreatAll().AmendWeight(10).UsingArguments(arguments);
+    // new DependencyTuner(patternTree, patternTree, null).AmendWeight(WeightOf.BuildChainPattern.SkipAllUnits + 10).UsingArguments(arguments);
+
+    // DependencyTuner.UsingArguments();
+
     return patternTree;
   }
 

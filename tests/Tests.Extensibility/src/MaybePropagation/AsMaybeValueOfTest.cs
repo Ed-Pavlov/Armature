@@ -19,11 +19,15 @@ namespace Tests.Extensibility.MaybePropagation
       builder.Treat<Maybe<Section>>().AsInstance(new Section().ToMaybe());
 
       builder
-       .Treat<Maybe<IReader>>()
-       .TreatMaybeValue()
-       .AsCreated<Reader>();
+       .Treat<Maybe<IReader>>()       // IfFirst<Maybe<IReader>> -> BuildAction build IReader.ToMaybe
+       .TreatMaybeValue()             //   IfFirst<IReader>
+       .AsCreated<Reader>();          //                     -> BuildAction new Reader
 
-      builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>();
+      builder
+       .Building<Reader>()           // IfFirst<Section>
+       .Treat<Section>()             //   SkipTill<Reader>   -> Redirect<Maybe<Section>>
+       .AsMaybeValueOf<Section>()   //                       -> BuildResult.Value as Maybe .Value | throw
+       .As<Maybe<Section>>();
 
       var actual = builder.Build<Maybe<IReader>>()!;
 

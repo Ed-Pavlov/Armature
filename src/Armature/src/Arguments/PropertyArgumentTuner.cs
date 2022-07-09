@@ -2,6 +2,7 @@
 using System.Reflection;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
 
 namespace Armature;
 
@@ -10,7 +11,7 @@ namespace Armature;
 /// </summary>
 public class PropertyArgumentTuner<T> : ArgumentTunerBase<T, PropertyArgumentTuner<T>>
 {
-  public PropertyArgumentTuner(Func<TuningContext, int, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
+  public PropertyArgumentTuner(Func<ITunerInternal, short, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
 
   /// <summary>
   /// For building a value for the parameter use <see cref="PropertyInfo.PropertyType" /> and <paramref name="tag" />
@@ -19,7 +20,7 @@ public class PropertyArgumentTuner<T> : ArgumentTunerBase<T, PropertyArgumentTun
   {
     if(tag is null) throw new ArgumentNullException(nameof(tag));
 
-    return new ArgumentTuner((node, weight) => AddBuildChainPatternsTo(node, weight).UseBuildAction(new BuildArgumentByPropertyType(tag), BuildStage.Create));
+    return new ArgumentTuner(tuner => AddBuildChainPatternsTo(tuner, Weight).UseBuildAction(new BuildArgumentByPropertyType(tag), BuildStage.Create));
   }
 
   /// <summary>
@@ -27,11 +28,11 @@ public class PropertyArgumentTuner<T> : ArgumentTunerBase<T, PropertyArgumentTun
   /// </summary>
   public IArgumentTuner UseInjectPointIdAsTag()
     => new ArgumentTuner(
-      (node, weight) => AddBuildChainPatternsTo(node, weight).UseBuildAction(Static.Of<BuildArgumentByPropertyInjectPointId>(), BuildStage.Create));
+      node => AddBuildChainPatternsTo(node, Weight).UseBuildAction(Static.Of<BuildArgumentByPropertyInjectPointId>(), BuildStage.Create));
 }
 
 /// <inheritdoc cref="PropertyArgumentTuner{T}"/>
 public class PropertyArgumentTuner : PropertyArgumentTuner<object?>
 {
-  public PropertyArgumentTuner(Func<TuningContext, int, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
+  public PropertyArgumentTuner(Func<ITunerInternal, short, IBuildChainPattern> addBuildChainPatterns) : base(addBuildChainPatterns) { }
 }

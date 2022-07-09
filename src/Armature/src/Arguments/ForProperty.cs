@@ -15,16 +15,16 @@ public static class ForProperty
   /// </summary>
   public static PropertyArgumentTuner OfType(Type type)
     => new PropertyArgumentTuner(
-      (tuningContext, weight) =>
+      (tuner, weight) =>
       {
-        Property.OfType(type).Tune(tuningContext);
+        Property.OfType(type).Tune(tuner);
 
-        return tuningContext.TreeRoot
+        return tuner.TreeRoot
                             .GetOrAddNode(
                                new IfFirstUnit(
                                  new IsPropertyWithType(new UnitPattern(type)),
                                  weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
-                            .TryAddContext(tuningContext.GetContextNode);
+                            .TryAddContext(tuner);
       });
 
   /// <summary>
@@ -32,16 +32,16 @@ public static class ForProperty
   /// </summary>
   public static PropertyArgumentTuner<T> OfType<T>()
     => new PropertyArgumentTuner<T>(
-      (tuningContext, weight) =>
+      (tuner, weight) =>
       {
-        Property.OfType<T>().Tune(tuningContext);
+        Property.OfType<T>().Tune(tuner);
 
-        return tuningContext.TreeRoot
+        return tuner.TreeRoot
                             .GetOrAddNode(
                                new IfFirstUnit(
                                  new IsPropertyWithType(new UnitPattern(typeof(T))),
                                  weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
-                            .TryAddContext(tuningContext.GetContextNode);
+                            .TryAddContext(tuner);
       });
 
   /// <summary>
@@ -49,16 +49,16 @@ public static class ForProperty
   /// </summary>
   public static PropertyArgumentTuner Named(string propertyName)
     => new PropertyArgumentTuner(
-      (tuningContext, weight) =>
+      (tuner, weight) =>
       {
-        Property.Named(propertyName).Tune(tuningContext);
+        Property.Named(propertyName).Tune(tuner);
 
-        return tuningContext.TreeRoot
+        return tuner.TreeRoot
                             .GetOrAddNode(
                                new IfFirstUnit(
                                  new IsPropertyNamed(propertyName),
                                  weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
-                            .TryAddContext(tuningContext.GetContextNode);
+                            .TryAddContext(tuner);
       });
 
   /// <summary>
@@ -67,15 +67,15 @@ public static class ForProperty
   /// </summary>
   public static PropertyArgumentTuner WithInjectPoint(object? injectPointId)
     => new PropertyArgumentTuner(
-      (tuningContext, weight) =>
+      (tuner, weight) =>
       {
-        Property.ByInjectPoint(injectPointId).Tune(tuningContext);
+        Property.ByInjectPoint(injectPointId).Tune(tuner);
 
-        return tuningContext.TreeRoot
+        return tuner.TreeRoot
                             .GetOrAddNode(
                                new IfFirstUnit(
                                  new IsPropertyMarkedWithAttribute(injectPointId),
                                  weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.TargetUnit))
-                            .TryAddContext(tuningContext.GetContextNode);
+                            .TryAddContext(tuner);
       });
 }

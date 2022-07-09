@@ -22,13 +22,13 @@ public static class Property
   /// </summary>
   public static IInjectPointTuner OfType(Type type)
     => new InjectPointTuner(
-      (tuningContext, weight) =>
+      tuner =>
       {
-        tuningContext.TunedNode.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        tuner.BuildBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-        tuningContext.TreeRoot
-                     .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
-                     .TryAddContext(tuningContext.GetContextNode)
+        tuner.TreeRoot
+                     .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>()))
+                     .TryAddContext(tuner)
                      .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
       });
 
@@ -42,13 +42,13 @@ public static class Property
     if(names.Any(string.IsNullOrEmpty)) throw new ArgumentNullException(nameof(names), "One or more items are null or empty string.");
 
     return new InjectPointTuner(
-      (tuningContext, weight) =>
+      tuner =>
       {
-        tuningContext.TunedNode.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        tuner.BuildBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-        tuningContext.TreeRoot
-                     .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
-                     .TryAddContext(tuningContext.GetContextNode)
+        tuner.TreeRoot
+                     .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>()))
+                     .TryAddContext(tuner)
                      .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
       });
   }
@@ -60,13 +60,13 @@ public static class Property
   [PublicAPI]
   public static IInjectPointTuner ByInjectPoint(params object?[] pointIds)
     => new InjectPointTuner(
-      (tuningContext, weight) =>
+      tuner =>
       {
-        tuningContext.TunedNode.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        tuner.BuildBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-        tuningContext.TreeRoot
-                     .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>(), weight))
-                     .TryAddContext(tuningContext.GetContextNode)
+        tuner.TreeRoot
+                     .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>()))
+                     .TryAddContext(tuner)
                      .UseBuildAction(new GetPropertyListByInjectPointId(pointIds), BuildStage.Create);
       });
 }

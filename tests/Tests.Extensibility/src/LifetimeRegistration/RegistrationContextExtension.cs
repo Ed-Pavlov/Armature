@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using Armature;
@@ -11,37 +11,34 @@ namespace Tests.Extensibility.LifetimeRegistration;
 
 public static class RegistrationContextExtension
 {
-  public static FinalTuner AsSingleton([NotNull] this FinalTuner tuner, Lifetime lifetime)
+  public static IFinalAndContextTuner AsSingleton([NotNull] this IFinalAndContextTuner tuner, Lifetime lifetime)
   {
     if(tuner == null) throw new ArgumentNullException(nameof(tuner));
 
     tuner.AsSingleton(); // register as singleton
 
-    var buildChainPattern = tuner.GetInternals().Member1;
-    var treeRoot          = tuner.GetInternals().Member2;
-    var addContextPatterns           = tuner.GetInternals().Member3;
-
     // register one lifetime for all dependencies which is built in context of this 'singleton'
     // register one lifetime for singleton itself, it is needed because 'this' singleton could be built as a dependency for another singleton
     // which registered its lifetime for all its dependencies. but 'this' lifetime should be used for 'this' singleton, not 'parent' one
     // this build plan will have greater weight
-    // tuner.UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Of: {buildChainPattern}")));
+    tuner.UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Of: {tuner}")));
 
     // buildChainPattern.UseBuildAction(
     //     new CreateWithFactoryMethod<Lifetime>(_ => lifetime.CreateSubLifetime($"Lifetime.Of: {buildChainPattern}")),
     //     BuildStage.Create);
 
-    treeRoot
-       .GetOrAddNode(new IfTargetUnit(new IsMethodParameterWithType(new UnitPattern(typeof(Lifetime), null)), WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
-       .TryAddContext(addContextPatterns)
-       .TreatAll()
-       .UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Of: {buildChainPattern}")));
+    // treeRoot
+    //    .GetOrAddNode(new IfFirstUnit(new IsMethodParameterWithType(new UnitPattern(typeof(Lifetime), null)), WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
+    //    .TryAddContext(addContextPatterns)
+    //    .TreatAll()
+    //    .UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Of: {buildChainPattern}")));
+    //
+    // tuner.UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Building: {buildChainPattern}")));
 
-    tuner.UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Building: {buildChainPattern}")));
-
-    // new RootTuner(treeRoot, context)
-    //     .TreatAll()
-    //     .UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Building: {buildChainPattern}")));
+    tuner
+     .BuildingIt()
+     .TreatAll()
+     .UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Building: {tuner}")));
 
     return tuner;
   }
@@ -60,34 +57,33 @@ public static class RegistrationContextExtension
   /// <br/>
   /// IMPORTANT! This is experimental non-well tested stuff, use it only if you absolutely sure what you do.
   /// </remarks>
-  public static FinalTuner AsSingleton2([NotNull] this FinalTuner tuner, Lifetime lifetime)
+  public static IFinalAndContextTuner AsSingleton2([NotNull] this IFinalAndContextTuner finalTuner, Lifetime lifetime)
   {
-    if(tuner == null) throw new ArgumentNullException(nameof(tuner));
+    if(finalTuner == null) throw new ArgumentNullException(nameof(finalTuner));
 
-    tuner.AsSingleton2();
+    var singletonLifetime = lifetime.CreateSubLifetime($"Singleton${finalTuner}");
+    finalTuner
+     .UsingArguments(ForParameter.OfType<Lifetime>().UseValue(singletonLifetime))
+     .AsSingleton2();
 
-    var matcher           = tuner.GetInternals().Member1;
-    var singletonLifetime = lifetime.CreateSubLifetime($"Singleton${matcher}");
+    finalTuner
+     .BuildingIt()
+     .TreatAll()
+     .UsingArguments(ForParameter.OfType<Lifetime>().UseValue(singletonLifetime));
 
-    tuner.UsingArguments(ForParameter.OfType<Lifetime>().UseValue(singletonLifetime));
-
-    matcher
-       .TreatAll()
-       .UsingArguments(ForParameter.OfType<Lifetime>().UseValue(singletonLifetime));
-
-    return tuner;
+    return finalTuner;
   }
 
   /// <summary>
-  /// The alternative implementation of <see cref="FinalTuner.AsSingleton"/> which is thread-safe (i.e. supports concurrent creation requests).
+  /// The alternative implementation of <see cref="IFinalAndContextTuner.AsSingleton"/> which is thread-safe (i.e. supports concurrent creation requests).
   /// </summary>
-  public static FinalTuner AsSingleton2([NotNull] this FinalTuner tuner)
+  public static IFinalAndContextTuner AsSingleton2([NotNull] this IFinalAndContextTuner finalTuner)
   {
-    if(tuner == null) throw new ArgumentNullException(nameof(tuner));
+    if(finalTuner == null) throw new ArgumentNullException(nameof(finalTuner));
 
-    var matcher = tuner.GetInternals().Member1;
-    matcher.UseBuildAction(new ThreadSafeSingletonBuildAction(), BuildStage.Cache);
-    return tuner;
+    var tuner = (ITunerInternal) finalTuner;
+    tuner.BuildBranch().UseBuildAction(new ThreadSafeSingletonBuildAction(), BuildStage.Cache);
+    return finalTuner;
   }
 
   private sealed class ThreadSafeSingletonBuildAction : IBuildAction
