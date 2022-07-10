@@ -18,6 +18,24 @@
     <ProjectReference Include="..\Armature.Core\Armature.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="src\Tuners\ICreationTuner.cs">
+      <DependentUpon>BuildingTuner`1.cs</DependentUpon>
+    </Compile>
+    <Compile Update="src\Tuners\BuildingTuner.Static.cs">
+      <DependentUpon>BuildingTuner.cs</DependentUpon>
+    </Compile>
+    <Compile Update="src\Tuners\BuildingTuner.CreationTuner.cs">
+      <DependentUpon>BuildingTuner`1.cs</DependentUpon>
+    </Compile>
+    <Compile Update="src\Tuners\BuildingTuner.FinalAndContextTuner.cs">
+      <DependentUpon>BuildingTuner`1.cs</DependentUpon>
+    </Compile>
+    <Compile Update="src\Tuners\BuildingTuner.DependencyTuner.cs">
+      <DependentUpon>BuildingTuner`1.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
   <PropertyGroup Label="nuspec">
     <description>Armature dependency injection framework, provides fluent syntax and syntax sugar over Armature.Core framework</description>
   </PropertyGroup>
