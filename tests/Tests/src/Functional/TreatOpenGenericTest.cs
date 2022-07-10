@@ -22,7 +22,7 @@ namespace Tests.Functional
       target
        .Treat<ISubject<int>>()
        .AsCreated<Subject<int>>()
-       .InjectInto(Constructor.Parameterless());
+       .UsingInjectionPoints(Constructor.Parameterless());
 
       // --act
       var actual = target.Build<ISubject<int>>();

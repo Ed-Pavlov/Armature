@@ -4,7 +4,7 @@ namespace Armature.Sdk;
 
 public static class Extension
 {
-  public static IBuildChainPattern TryAddContext(this IBuildChainPattern node, ITunerInternal leafTuner)
+  public static IBuildChainPattern TryAddContext(this IBuildChainPattern node, ITuner leafTuner)
   {
     var tuner = leafTuner;
 
@@ -17,7 +17,7 @@ public static class Extension
     return node;
   }
 
-  public static IBuildChainPattern BuildBranch(this ITunerInternal self)
+  public static IBuildChainPattern BuildBranch(this ITuner self)
   {
     var tuner = self;
     var node  = tuner.TreeRoot;

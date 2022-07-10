@@ -47,7 +47,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .InjectInto(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor))
+       .UsingInjectionPoints(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor))
        .UsingArguments(expectedInt, expectedString);
 
       // --act
@@ -342,7 +342,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .InjectInto(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor))
+       .UsingInjectionPoints(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor))
        .UsingArguments(expectedInt);
 
       // --act
@@ -362,7 +362,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .InjectInto(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor));
+       .UsingInjectionPoints(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor));
 
       // --act
       var actual = target.Build<LevelOne>()!;

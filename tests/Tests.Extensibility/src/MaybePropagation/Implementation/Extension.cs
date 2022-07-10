@@ -12,7 +12,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     /// </summary>
     public static IBuildingTuner<T> TreatMaybeValue<T>(this IBuildingTuner<Maybe<T>> buildingTuner)
     {
-      var tuner = (ITunerInternal) buildingTuner;
+      var tuner = (ITuner) buildingTuner;
 
       var uniqueTag = Guid.NewGuid();
       tuner.BuildBranch().UseBuildAction(new BuildMaybeAction<T>(uniqueTag), BuildStage.Create);
@@ -29,7 +29,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     /// </summary>
     public static IBuildingTuner<T> AsMaybeValueOf<T>(this IBuildingTuner<T> buildingTuner)
     {
-      var tuner = (ITunerInternal) buildingTuner;
+      var tuner = (ITuner) buildingTuner;
       tuner.BuildBranch().UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize);
       return buildingTuner;
     }

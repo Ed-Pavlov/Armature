@@ -2,9 +2,9 @@
 
 namespace Armature.Sdk;
 
-public interface ITunerInternal
+public interface ITuner
 {
-  ITunerInternal?    Parent   { get; }
+  ITuner?    Parent   { get; }
   IBuildChainPattern TreeRoot { get; }
   IBuildChainPattern GetOrAddNodeTo(IBuildChainPattern node);
   int                Weight { get; }

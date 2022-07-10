@@ -100,17 +100,17 @@ namespace Tests.Functional
       // --arrange
       target.Treat<Subject3>()
             .AsIs()
-            .InjectInto(Constructor.WithParameters<int, string>())
+            .UsingInjectionPoints(Constructor.WithParameters<int, string>())
             .UsingArguments(4, "string"); // set value to inject into ctor
 
       target
          .TreatInheritorsOf<object>()
-         .InjectInto(Constructor.WithMaxParametersCount());
+         .UsingInjectionPoints(Constructor.WithMaxParametersCount());
 
       target
          .TreatInheritorsOf<IStream>()
          .AmendWeight(39)
-         .InjectInto(Constructor.Parameterless());
+         .UsingInjectionPoints(Constructor.Parameterless());
 
       // --act
       var actual = target.Build<Subject3>();
@@ -137,8 +137,8 @@ namespace Tests.Functional
       // --arrange
       target.Treat<object>().AsInstance(new object());
 
-      target.Treat<Subject1>().AsIs().InjectInto(Constructor.WithParameters<Subject3, Subject2>());
-      target.Treat<Subject2>().AsIs().InjectInto(Constructor.Parameterless());
+      target.Treat<Subject1>().AsIs().UsingInjectionPoints(Constructor.WithParameters<Subject3, Subject2>());
+      target.Treat<Subject2>().AsIs().UsingInjectionPoints(Constructor.Parameterless());
       target.Treat<Subject3>().AsIs(); // use default rules, in this case the constructor with max parameters count
 
       // --act

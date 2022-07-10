@@ -7,7 +7,7 @@ namespace Armature;
 /// <summary>
 /// Tuner is used to tune arguments and injection points for all units w/o any context
 /// </summary>
-public class TreatAllTuner : ITunerInternal, ITreatAllTuner
+public class TreatAllTuner : ITuner, ITreatAllTuner
 {
   public TreatAllTuner(IBuildChainPattern treeRoot, int weight)
   {
@@ -21,10 +21,11 @@ public class TreatAllTuner : ITunerInternal, ITreatAllTuner
     return this;
   }
 
-  public ITreatAllTuner UsingArguments(params object[] arguments) => DependencyTuner.UsingArguments(this, arguments);
-  public ITreatAllTuner InjectInto(params IInjectPointSideTuner[] propertyIds) => DependencyTuner.InjectInto(this, propertyIds);
+  public ITreatAllTuner UsingArguments(params       object[]                   arguments)       => DependencyTuner.UsingArguments(this, arguments);
+  public ITreatAllTuner UsingInjectionPoints(params IInjectionPointSideTuner[] injectionPoints) => DependencyTuner.UsingInjectionPoints(this, injectionPoints);
+  public ITreatAllTuner Using(params                ISideTuner[]               sideTuners)      => DependencyTuner.Using(this, sideTuners);
 
-  public ITunerInternal?    Parent                                  => null;
+  public ITuner?    Parent                                  => null;
   public IBuildChainPattern TreeRoot                                { get; }
   public int                Weight                                  { get; private set; }
   public IBuildChainPattern GetOrAddNodeTo(IBuildChainPattern node) => node;

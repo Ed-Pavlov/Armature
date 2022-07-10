@@ -8,7 +8,7 @@ public delegate IBuildChainPattern CreateNode();
 public interface IBuildingTuner
 {
   /// <summary>
-  /// Amend the weight of current registration
+  /// Amend the weight of the current registration
   /// </summary>
   IBuildingTuner AmendWeight(short delta);
   /// <summary>
@@ -95,11 +95,17 @@ public interface IBuildingTuner<in T> : IFinalTuner
   /// <inheritdoc cref="BuildingTuner{T}.AsCreatedWith(System.Func{T})" />
   IFinalAndContextTuner AsCreatedWith(Func<IBuildSession, T> factoryMethod);
 
+  /// <summary>
+  /// Amend the weight of the current registration
+  /// </summary>
   new IBuildingTuner<T> AmendWeight(short delta);
 }
 
 public interface ICreationTuner
 {
+  /// <summary>
+  /// Amend the weight of the current registration
+  /// </summary>
   ICreationTuner AmendWeight(short delta);
 
   /// <summary>
@@ -115,9 +121,29 @@ public interface ICreationTuner
 
 public interface IDependencyTuner<out T>
 {
-  T AmendWeight(short                         delta);
-  T UsingArguments(params object[]            arguments);
-  T InjectInto(params     IInjectPointSideTuner[] propertyIds);
+  /// <summary>
+  /// Amend the weight of the current registration
+  /// </summary>
+  T AmendWeight(short delta);
+
+  /// <summary>
+  /// Tunes how dependencies of the unit should be built
+  /// </summary>
+  /// <param name="arguments">Arguments should be object instances or implementation of <see cref="IArgumentSideTuner"/></param>
+  T UsingArguments(params object[] arguments);
+
+  /// <summary>
+  /// Tunes which members should be used as injection points of the unit
+  /// </summary>
+  /// <param name="injectionPoints">See <see cref="Constructor"/> and <see cref="Property"/> for details</param>
+  T UsingInjectionPoints(params IInjectionPointSideTuner[] injectionPoints);
+
+  /// <summary>
+  /// Applies passed rules to the unit
+  /// </summary>
+  /// <param name="sideTuners">See <see cref="ForParameter"/>, <see cref="ForProperty"/>, <see cref="Constructor"/>, and <see cref="Property"/>
+  /// for details. Also custom tuners could be implemented.</param>
+  T Using(params ISideTuner[] sideTuners);
 }
 
 public interface ITreatAllTuner : IDependencyTuner<ITreatAllTuner> { }

@@ -22,7 +22,7 @@ namespace Tests.Functional
       target.Treat<string>().AsInstance(expected);
 
       tune(target)
-       .InjectInto(Property.Named(nameof(Subject.StringProperty)));
+       .UsingInjectionPoints(Property.Named(nameof(Subject.StringProperty)));
 
       // --act
       var actual = target.Build<ISubject>()!;
@@ -61,7 +61,7 @@ namespace Tests.Functional
     {
       // --arrange
       var target = CreateTarget();
-      target.TreatAll().InjectInto(Property.ByInjectPoint()); //TODO: is it possible to make it working
+      target.TreatAll().UsingInjectionPoints(Property.ByInjectPoint()); //TODO: is it possible to make it working
       target.Treat<Subject>().AsIs();
 
       // --act
@@ -101,7 +101,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectInto(injectPointId is null ? Property.ByInjectPoint() : Property.ByInjectPoint(new[] { injectPointId }));
+       .UsingInjectionPoints(injectPointId is null ? Property.ByInjectPoint() : Property.ByInjectPoint(new[] { injectPointId }));
 
       // --act
       var actual = target.Build<Subject>()!;
@@ -124,7 +124,7 @@ namespace Tests.Functional
       target.Treat<string>().AsInstance(expected);
 
       target.Treat<ISubject>().AsCreated<Subject>();
-      target.Treat<ISubject>().InjectInto(injectPointId is null ? Property.ByInjectPoint() : Property.ByInjectPoint(new[] { injectPointId }));
+      target.Treat<ISubject>().UsingInjectionPoints(injectPointId is null ? Property.ByInjectPoint() : Property.ByInjectPoint(new[] { injectPointId }));
 
       // --act
       var actual = target.Build<ISubject>()!;

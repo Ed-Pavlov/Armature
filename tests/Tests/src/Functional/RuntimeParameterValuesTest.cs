@@ -22,7 +22,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.StringCtor));
+       .UsingInjectionPoints(Constructor.MarkedWithInjectAttribute(Subject.StringCtor));
 
       // --act
       var actual = target.Build<Subject>(expected)!;
@@ -42,7 +42,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.DisposableCtor));
+       .UsingInjectionPoints(Constructor.MarkedWithInjectAttribute(Subject.DisposableCtor));
 
       // --act
       var actual = target.Build<Subject>(expected)!;
@@ -84,7 +84,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.StringCtor));
+       .UsingInjectionPoints(Constructor.MarkedWithInjectAttribute(Subject.StringCtor));
 
       var actual = target.Build<Subject>(ForParameter.OfType<string?>().UseValue(null))!;
 

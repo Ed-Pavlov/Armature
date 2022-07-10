@@ -14,8 +14,8 @@ public static class Constructor
   /// <summary>
   /// Instantiate a Unit using a constructor with the biggest number of parameters.
   /// </summary>
-  public static IInjectPointSideTuner WithMaxParametersCount()
-    => new InjectPointSideTuner(
+  public static IInjectionPointSideTuner WithMaxParametersCount()
+    => new InjectionPointSideTuner(
       tuner
         => tuner.TreeRoot
                         .GetOrAddNode(
@@ -28,8 +28,8 @@ public static class Constructor
   /// <summary>
   /// Instantiate a Unit using a constructor marked with <see cref="InjectAttribute" />(<paramref name="injectionPointId" />).
   /// </summary>
-  public static IInjectPointSideTuner MarkedWithInjectAttribute(object? injectionPointId)
-    => new InjectPointSideTuner(
+  public static IInjectionPointSideTuner MarkedWithInjectAttribute(object? injectionPointId)
+    => new InjectionPointSideTuner(
       tuner
         => tuner.TreeRoot
                         .GetOrAddNode(
@@ -42,34 +42,34 @@ public static class Constructor
   /// <summary>
   /// Instantiate a Unit using constructor without parameters.
   /// </summary>
-  public static IInjectPointSideTuner Parameterless() => WithParameters();
+  public static IInjectionPointSideTuner Parameterless() => WithParameters();
 
   /// <summary>
   /// Instantiate a Unit using constructor with exact set of parameters provided as generic arguments.
   /// </summary>
-  public static IInjectPointSideTuner WithParameters<T1>() => WithParameters(typeof(T1));
+  public static IInjectionPointSideTuner WithParameters<T1>() => WithParameters(typeof(T1));
 
   /// <summary>
   /// Instantiate a Unit using constructor with exact set of parameters provided as generic arguments.
   /// </summary>
-  public static IInjectPointSideTuner WithParameters<T1, T2>() => WithParameters(typeof(T1), typeof(T2));
+  public static IInjectionPointSideTuner WithParameters<T1, T2>() => WithParameters(typeof(T1), typeof(T2));
 
   /// <summary>
   /// Instantiate a Unit using constructor with exact set of parameters provided as generic arguments.
   /// </summary>
-  public static IInjectPointSideTuner WithParameters<T1, T2, T3>() => WithParameters(typeof(T1), typeof(T2), typeof(T3));
+  public static IInjectionPointSideTuner WithParameters<T1, T2, T3>() => WithParameters(typeof(T1), typeof(T2), typeof(T3));
 
   /// <summary>
   /// Instantiate a Unit using constructor with exact set of parameters provided as generic arguments.
   /// </summary>
-  public static IInjectPointSideTuner WithParameters<T1, T2, T3, T4>() => WithParameters(typeof(T1), typeof(T2), typeof(T3), typeof(T4));
+  public static IInjectionPointSideTuner WithParameters<T1, T2, T3, T4>() => WithParameters(typeof(T1), typeof(T2), typeof(T3), typeof(T4));
 
   /// <summary>
   /// Instantiate a Unit using constructor with exact set of parameters specified in <paramref name="parameterTypes" />.
   /// </summary>
   [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-  public static IInjectPointSideTuner WithParameters(params Type[] parameterTypes)
-    => new InjectPointSideTuner(
+  public static IInjectionPointSideTuner WithParameters(params Type[] parameterTypes)
+    => new InjectionPointSideTuner(
       tuner
         => tuner.TreeRoot
                         .GetOrAddNode(

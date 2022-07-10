@@ -8,7 +8,7 @@ namespace Armature;
 public class BuildingOpenGenericTuner : BuildingTuner<object?>
 {
   [DebuggerStepThrough]
-  public BuildingOpenGenericTuner(ITunerInternal parent, CreateNode createNode, IUnitPattern unitPattern, short weight = 0)
+  public BuildingOpenGenericTuner(ITuner parent, CreateNode createNode, IUnitPattern unitPattern, short weight = 0)
     : base(parent, createNode, unitPattern, weight) { }
 
   /// <summary>

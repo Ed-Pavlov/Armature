@@ -27,7 +27,7 @@ namespace Tests.Functional
             .AsSingleton()
             .BuildingIt()
             .TreatAll()
-            .InjectInto()
+            .UsingInjectionPoints()
             .UsingArguments();
 
     }

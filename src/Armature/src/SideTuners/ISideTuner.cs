@@ -11,6 +11,6 @@ public interface ISideTuner
   /// <summary>
   /// Append pattern tree nodes to the passed <paramref name="tuner"/>
   /// </summary>
-  void Tune(ITunerInternal tuner);
+  void Tune(ITuner tuner);
 }
 

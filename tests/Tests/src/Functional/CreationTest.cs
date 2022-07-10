@@ -211,7 +211,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>(tag)
        .AsIs()
-       .InjectInto(Constructor.WithParameters<int>());
+       .UsingInjectionPoints(Constructor.WithParameters<int>());
 
       // --act
       var actual = target.UsingTag(tag).Build<Subject>(expected)!;

@@ -5,9 +5,9 @@ using Armature.Sdk;
 
 namespace Armature;
 
-public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITunerInternal
+public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITuner
 {
-  protected readonly ITunerInternal?    Parent;
+  protected readonly ITuner?    Parent;
   protected readonly IBuildChainPattern TreeRoot;
   private readonly   CreateNode         _createNode;
 
@@ -15,7 +15,7 @@ public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITunerInter
   protected short Weight;
 
   [DebuggerStepThrough]
-  public BuildingTuner(ITunerInternal parent, CreateNode createNode, short weight = 0)
+  public BuildingTuner(ITuner parent, CreateNode createNode, short weight = 0)
   {
     Parent      = parent;
     TreeRoot    = parent.TreeRoot;
@@ -28,34 +28,16 @@ public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITunerInter
     return inheritor;
   }
 
-  /// <summary>
-  /// Amend the weight of current registration
-  /// </summary>
   public IBuildingTuner AmendWeight(short delta) => AmendWeight(delta, this);
 
-  /// <summary>
-  /// Add build actions for units building in the context of unit representing by <paramref name="type"/> and <paramref name="tag"/> in subsequence calls.
-  /// </summary>
   public IBuildingTuner Building(Type type, object? tag = null) => Building(this, type, tag, Weight);
 
-  /// <summary>
-  /// Add build actions for units building in the context of unit representing by <typeparamref name="T"/> and <paramref name="tag"/> in subsequence calls.
-  /// </summary>
   public IBuildingTuner Building<T>(object? tag = null) => Building(typeof(T), tag);
 
-  /// <summary>
-  /// Add build actions to build a unit representing by <paramref name="type"/> and <paramref name="tag"/> in subsequence calls.
-  /// </summary>
   public IBuildingTuner<object?> Treat(Type type, object? tag = null) => Treat(this, type, tag, Weight);
 
-  /// <summary>
-  /// Add build actions to build a unit representing by <typeparamref name="T"/> and <paramref name="tag"/> in subsequence calls.
-  /// </summary>
   public IBuildingTuner<T> Treat<T>(object? tag = null) => Treat<T>(this, tag, Weight);
 
-  /// <summary>
-  /// Add build actions applied all generic types match the generic type definition specified by <paramref name="openGenericType"/> in subsequence calls.
-  /// </summary>
   public IBuildingTuner<object?> TreatOpenGeneric(Type openGenericType, object? tag = null)
   {
     var unitPattern = new IsGenericOfDefinition(openGenericType, tag);
@@ -66,20 +48,10 @@ public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITunerInter
     return new BuildingOpenGenericTuner(this, CreateNode, unitPattern);
   }
 
-  /// <summary>
-  /// Add build actions applied to all inheritors of <paramref name="baseType"/> in subsequence calls.
-  /// </summary>
   public IBuildingTuner<object?> TreatInheritorsOf(Type baseType, object? tag = null) => TreatInheritorsOf(this, baseType, tag, Weight);
 
-  /// <summary>
-  /// Add build actions applied to all inheritors of <typeparamref name="T"/> in subsequence calls.
-  /// </summary>
   public IBuildingTuner<T> TreatInheritorsOf<T>(object? tag = null) => TreatInheritorsOf<T>(this, tag, Weight);
 
-  /// <summary>
-  /// Add build action applied to any building unit in subsequence calls. It's needed to setup common build actions like which constructor to call or
-  /// inject dependencies into properties or not.
-  /// </summary>
   public ITreatAllTuner TreatAll() => this;
 
   ITreatAllTuner IDependencyTuner<ITreatAllTuner>.AmendWeight(short delta) => AmendWeight<ITreatAllTuner>(delta, this);
@@ -90,15 +62,17 @@ public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITunerInter
     return this;
   }
 
-  public ITreatAllTuner InjectInto(params IInjectPointSideTuner[] propertyIds)
+  public ITreatAllTuner UsingInjectionPoints(params IInjectionPointSideTuner[] injectionPoints)
   {
-    DependencyTuner.InjectInto(this, propertyIds);
+    DependencyTuner.UsingInjectionPoints(this, injectionPoints);
     return this;
   }
 
-  ITunerInternal? ITunerInternal.Parent => Parent;
+  public ITreatAllTuner Using(params ISideTuner[] sideTuners) => DependencyTuner.Using(this, sideTuners);
 
-  IBuildChainPattern ITunerInternal.TreeRoot                                => TreeRoot;
-  IBuildChainPattern ITunerInternal.GetOrAddNodeTo(IBuildChainPattern node) => node.GetOrAddNode(_createNode());
-  int ITunerInternal.               Weight                                  => Weight;
+  ITuner? ITuner.Parent => Parent;
+
+  IBuildChainPattern ITuner.TreeRoot                                => TreeRoot;
+  IBuildChainPattern ITuner.GetOrAddNodeTo(IBuildChainPattern node) => node.GetOrAddNode(_createNode());
+  int ITuner.               Weight                                  => Weight;
 }
