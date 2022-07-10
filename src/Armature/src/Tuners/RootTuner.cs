@@ -11,8 +11,9 @@ public class RootTuner : ITuner
 {
   public RootTuner(IBuildChainPattern treeRoot) => TreeRoot = treeRoot ?? throw new ArgumentNullException(nameof(treeRoot));
 
-  public ITuner?            Parent                                  => null;
-  public IBuildChainPattern TreeRoot                                { get; }
+  public ITuner?            Parent   => null;
+  public IBuildChainPattern TreeRoot { get; }
+  public int                Weight   => 0;
+
   public IBuildChainPattern GetOrAddNodeTo(IBuildChainPattern node) => node;
-  public int                Weight                                  => 0;
 }

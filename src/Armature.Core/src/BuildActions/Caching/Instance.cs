@@ -10,10 +10,10 @@ namespace Armature.Core;
 /// </summary>
 public record Instance<T> : IBuildAction, ILogString
 {
-  private readonly T? _value;
+  private readonly T _value;
 
   [DebuggerStepThrough]
-  public Instance(T? value) => _value = value;
+  public Instance(T value) => _value = value;
 
   public void Process(IBuildSession buildSession) => buildSession.BuildResult = new BuildResult(_value);
 

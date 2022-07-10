@@ -25,8 +25,9 @@ public class TreatAllTuner : ITuner, ITreatAllTuner
   public ITreatAllTuner UsingInjectionPoints(params IInjectionPointSideTuner[] injectionPoints) => DependencyTuner.UsingInjectionPoints(this, injectionPoints);
   public ITreatAllTuner Using(params                ISideTuner[]               sideTuners)      => DependencyTuner.Using(this, sideTuners);
 
-  public ITuner?    Parent                                  => null;
-  public IBuildChainPattern TreeRoot                                { get; }
-  public int                Weight                                  { get; private set; }
+  public ITuner?            Parent   => null;
+  public IBuildChainPattern TreeRoot { get; }
+  public int                Weight   { get; private set; }
+
   public IBuildChainPattern GetOrAddNodeTo(IBuildChainPattern node) => node;
 }

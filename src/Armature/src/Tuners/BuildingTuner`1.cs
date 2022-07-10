@@ -45,43 +45,43 @@ public partial class BuildingTuner<T> : BuildingTuner, IBuildingTuner<T>, IFinal
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1>(Func<T1?, T?> factoryMethod)
+  public IFinalAndContextTuner AsCreatedWith<T1>(Func<T1, T> factoryMethod)
   {
     this.CreateContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1, T2>(Func<T1?, T2?, T?> factoryMethod)
+  public IFinalAndContextTuner AsCreatedWith<T1, T2>(Func<T1, T2, T> factoryMethod)
   {
     this.CreateContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3>(Func<T1?, T2?, T3?, T?> factoryMethod)
+  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3>(Func<T1, T2, T3, T> factoryMethod)
   {
     this.CreateContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4>(Func<T1?, T2?, T3?, T4?, T?> factoryMethod)
+  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4>(Func<T1, T2, T3, T4, T> factoryMethod)
   {
     this.CreateContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5>(Func<T1?, T2?, T3?, T4?, T5?, T?> factoryMethod)
+  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, T> factoryMethod)
   {
     this.CreateContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5, T6>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T?> factoryMethod)
+  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, T> factoryMethod)
   {
     this.CreateContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5, T6, T7>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T7?, T?> factoryMethod)
+  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, T> factoryMethod)
   {
     this.CreateContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, T>(factoryMethod), BuildStage.Create);
     return this;

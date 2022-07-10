@@ -40,19 +40,19 @@ public interface IBuildingTuner<in T> : IFinalTuner
   /// </summary>
   IFinalAndContextTuner AsCreatedWith(Func<T> factoryMethod);
   /// <inheritdoc cref="BuildingTuner{T}.AsCreatedWith(System.Func{T})" />
-  IFinalAndContextTuner AsCreatedWith<T1>(Func<T1?, T?> factoryMethod);
+  IFinalAndContextTuner AsCreatedWith<T1>(Func<T1, T> factoryMethod);
   /// <inheritdoc cref="BuildingTuner{T}.AsCreatedWith(System.Func{T})" />
-  IFinalAndContextTuner AsCreatedWith<T1, T2>(Func<T1?, T2?, T?> factoryMethod);
+  IFinalAndContextTuner AsCreatedWith<T1, T2>(Func<T1, T2, T> factoryMethod);
   /// <inheritdoc cref="BuildingTuner{T}.AsCreatedWith(System.Func{T})" />
-  IFinalAndContextTuner AsCreatedWith<T1, T2, T3>(Func<T1?, T2?, T3?, T?> factoryMethod);
+  IFinalAndContextTuner AsCreatedWith<T1, T2, T3>(Func<T1, T2, T3, T> factoryMethod);
   /// <inheritdoc cref="BuildingTuner{T}.AsCreatedWith(System.Func{T})" />
-  IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4>(Func<T1?, T2?, T3?, T4?, T?> factoryMethod);
+  IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4>(Func<T1, T2, T3, T4, T> factoryMethod);
   /// <inheritdoc cref="BuildingTuner{T}.AsCreatedWith(System.Func{T})" />
-  IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5>(Func<T1?, T2?, T3?, T4?, T5?, T?> factoryMethod);
+  IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, T> factoryMethod);
   /// <inheritdoc cref="BuildingTuner{T}.AsCreatedWith(System.Func{T})" />
-  IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5, T6>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T?> factoryMethod);
+  IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, T> factoryMethod);
   /// <inheritdoc cref="BuildingTuner{T}.AsCreatedWith(System.Func{T})" />
-  IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5, T6, T7>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T7?, T?> factoryMethod);
+  IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, T> factoryMethod);
   /// <inheritdoc cref="BuildingTuner{T}.AsCreatedWith(System.Func{T})" />
   IFinalAndContextTuner AsCreatedWith(Func<IBuildSession, T> factoryMethod);
 }
