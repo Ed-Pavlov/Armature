@@ -7,28 +7,15 @@ namespace Armature;
 
 public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITuner
 {
-  protected readonly ITuner?    Parent;
-  protected readonly IBuildChainPattern TreeRoot;
-  private readonly   CreateNode         _createNode;
-
-  //TODO: short or int?
-  protected short Weight;
+  private readonly CreateNode _createNode;
 
   [DebuggerStepThrough]
-  public BuildingTuner(ITuner parent, CreateNode createNode, short weight = 0)
+  public BuildingTuner(ITuner parent, CreateNode createNode)
   {
     Parent      = parent;
     TreeRoot    = parent.TreeRoot;
     _createNode = createNode ?? throw new ArgumentNullException(nameof(createNode));
   }
-
-  protected T AmendWeight<T>(short delta, T inheritor)
-  {
-    Weight += delta;
-    return inheritor;
-  }
-
-  public IBuildingTuner AmendWeight(short delta) => AmendWeight(delta, this);
 
   public IBuildingTuner Building(Type type, object? tag = null) => Building(this, type, tag, Weight);
 
@@ -38,15 +25,7 @@ public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITuner
 
   public IBuildingTuner<T> Treat<T>(object? tag = null) => Treat<T>(this, tag, Weight);
 
-  public IBuildingTuner<object?> TreatOpenGeneric(Type openGenericType, object? tag = null)
-  {
-    var unitPattern = new IsGenericOfDefinition(openGenericType, tag);
-    var baseWeight  = Weight + WeightOf.UnitPattern.OpenGenericPattern;
-
-    IBuildChainPattern CreateNode() => new IfFirstUnit(unitPattern, baseWeight + WeightOf.BuildChainPattern.TargetUnit);
-
-    return new BuildingOpenGenericTuner(this, CreateNode, unitPattern);
-  }
+  public IBuildingTuner<object?> TreatOpenGeneric(Type openGenericType, object? tag = null) => TreatOpenGeneric(this, openGenericType, tag, Weight);
 
   public IBuildingTuner<object?> TreatInheritorsOf(Type baseType, object? tag = null) => TreatInheritorsOf(this, baseType, tag, Weight);
 
@@ -54,25 +33,24 @@ public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITuner
 
   public ITreatAllTuner TreatAll() => this;
 
-  ITreatAllTuner IDependencyTuner<ITreatAllTuner>.AmendWeight(short delta) => AmendWeight<ITreatAllTuner>(delta, this);
+  public ITreatAllTuner UsingArguments(params object[] arguments) => DependencyTuner.UsingArguments(this, arguments);
 
-  public ITreatAllTuner UsingArguments(params object[] arguments)
-  {
-    DependencyTuner.UsingArguments(this, arguments);
-    return this;
-  }
-
-  public ITreatAllTuner UsingInjectionPoints(params IInjectionPointSideTuner[] injectionPoints)
-  {
-    DependencyTuner.UsingInjectionPoints(this, injectionPoints);
-    return this;
-  }
+  public ITreatAllTuner UsingInjectionPoints(params IInjectionPointSideTuner[] injectionPoints) => DependencyTuner.UsingInjectionPoints(this, injectionPoints);
 
   public ITreatAllTuner Using(params ISideTuner[] sideTuners) => DependencyTuner.Using(this, sideTuners);
 
-  ITuner? ITuner.Parent => Parent;
+  IBuildingTuner IBuildingTuner.                  AmendWeight(short delta) => AmendWeight(delta, this);
+  ITreatAllTuner IDependencyTuner<ITreatAllTuner>.AmendWeight(short delta) => AmendWeight<ITreatAllTuner>(delta, this);
 
-  IBuildChainPattern ITuner.TreeRoot                                => TreeRoot;
-  IBuildChainPattern ITuner.GetOrAddNodeTo(IBuildChainPattern node) => node.GetOrAddNode(_createNode());
-  int ITuner.               Weight                                  => Weight;
+  protected T AmendWeight<T>(short delta, T inheritor)
+  {
+    Weight += delta;
+    return inheritor;
+  }
+
+  public ITuner?            Parent   { get; }
+  public IBuildChainPattern TreeRoot { get; }
+  public int                Weight   { get; protected set; }
+
+  public IBuildChainPattern GetOrAddNodeTo(IBuildChainPattern node) => node.GetOrAddNode(_createNode());
 }

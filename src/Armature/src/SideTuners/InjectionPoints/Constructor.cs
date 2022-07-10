@@ -22,7 +22,7 @@ public static class Constructor
                            new IfFirstUnit(
                              Static.Of<IsConstructor>(),
                              WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.TargetUnit))
-                        .TryAddContext(tuner)
+                        .AppendContextBranch(tuner)
                         .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create));
 
   /// <summary>
@@ -36,7 +36,7 @@ public static class Constructor
                            new IfFirstUnit(
                              Static.Of<IsConstructor>(),
                              WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.TargetUnit))
-                        .TryAddContext(tuner)
+                        .AppendContextBranch(tuner)
                         .UseBuildAction(new GetConstructorByInjectPointId(injectionPointId), BuildStage.Create));
 
   /// <summary>
@@ -76,6 +76,6 @@ public static class Constructor
                            new IfFirstUnit(
                              Static.Of<IsConstructor>(),
                              WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
-                        .TryAddContext(tuner)
+                        .AppendContextBranch(tuner)
                         .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
 }

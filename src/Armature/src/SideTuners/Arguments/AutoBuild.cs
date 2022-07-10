@@ -25,7 +25,7 @@ public static class AutoBuild
         tuner =>
           tuner.TreeRoot
                        .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoList>()))
-                       .TryAddContext(tuner)
+                       .AppendContextBranch(tuner)
                        .UseBuildAction(Static.Of<BuildMethodArgumentsInDirectOrder>(), BuildStage.Create));
   }
 
@@ -41,7 +41,7 @@ public static class AutoBuild
                         new IfFirstUnit(
                           Static.Of<IsParameterInfo>(),
                           WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
-                     .TryAddContext(tuner)
+                     .AppendContextBranch(tuner)
                      .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create));
 
     /// <summary>
@@ -54,7 +54,7 @@ public static class AutoBuild
                         new IfFirstUnit(
                           Static.Of<IsParameterInfo>(),
                           WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
-                     .TryAddContext(tuner)
+                     .AppendContextBranch(tuner)
                      .UseBuildAction(Static.Of<BuildArgumentByParameterName>(), BuildStage.Create));
   }
 

@@ -6,6 +6,10 @@ namespace Armature;
 public interface IBuildingTuner<in T> : IFinalTuner
 {
   /// <summary>
+  /// Amend the weight of the current registration
+  /// </summary>
+  new IBuildingTuner<T> AmendWeight(short delta);
+  /// <summary>
   /// Use specified <paramref name="instance"/> as a unit.
   /// </summary>
   void AsInstance(T instance);
@@ -51,9 +55,4 @@ public interface IBuildingTuner<in T> : IFinalTuner
   IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5, T6, T7>(Func<T1?, T2?, T3?, T4?, T5?, T6?, T7?, T?> factoryMethod);
   /// <inheritdoc cref="BuildingTuner{T}.AsCreatedWith(System.Func{T})" />
   IFinalAndContextTuner AsCreatedWith(Func<IBuildSession, T> factoryMethod);
-
-  /// <summary>
-  /// Amend the weight of the current registration
-  /// </summary>
-  new IBuildingTuner<T> AmendWeight(short delta);
 }

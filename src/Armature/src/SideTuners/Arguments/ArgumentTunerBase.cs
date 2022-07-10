@@ -14,7 +14,7 @@ public abstract class ArgumentTunerBase<T> : IInternal<TuneArgumentRecipient, in
   protected readonly TuneArgumentRecipient TuneArgumentRecipientsTo;
 
   [PublicAPI]
-  protected short Weight;
+  protected int Weight;
 
   [DebuggerStepThrough]
   protected ArgumentTunerBase(TuneArgumentRecipient tuneArgumentRecipient)

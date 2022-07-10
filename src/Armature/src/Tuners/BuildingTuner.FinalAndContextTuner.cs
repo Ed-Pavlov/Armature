@@ -11,7 +11,7 @@ public partial class BuildingTuner<T>
   /// </summary>
   IContextTuner IFinalTuner.AsSingleton()
   {
-    this.BuildBranch().UseBuildAction(new Singleton(), BuildStage.Cache);
+    this.CreateContextBranch().UseBuildAction(new Singleton(), BuildStage.Cache);
     return this;
   }
 

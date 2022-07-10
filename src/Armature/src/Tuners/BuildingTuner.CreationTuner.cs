@@ -16,15 +16,11 @@ public partial class BuildingTuner<T>
   /// </summary>
   IFinalAndContextTuner ICreationTuner.CreatedByReflection() => CreateBy(Static.Of<CreateByReflection>());
 
-  ICreationTuner ICreationTuner.AmendWeight(short delta)
+  private IFinalAndContextTuner CreateBy(IBuildAction buildAction)
   {
-    Weight += delta;
+    this.CreateContextBranch().UseBuildAction(buildAction, BuildStage.Create);
     return this;
   }
 
-  private IFinalAndContextTuner CreateBy(IBuildAction buildAction)
-  {
-    this.BuildBranch().UseBuildAction(buildAction, BuildStage.Create);
-    return this;
-  }
+  ICreationTuner ICreationTuner.AmendWeight(short delta) => AmendWeight<ICreationTuner>(delta, this);
 }

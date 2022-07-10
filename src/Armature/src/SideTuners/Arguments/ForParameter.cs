@@ -21,7 +21,7 @@ public static class ForParameter
                      new IsMethodParameterWithType(new UnitPattern(type)),
                      weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
                 .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-                .TryAddContext(tuner));
+                .AppendContextBranch(tuner));
 
                             // $"Building of an argument for the method parameter of type {type.ToLogString()} is already tuned");
 
@@ -37,7 +37,7 @@ public static class ForParameter
                new IsMethodParameterWithType(new UnitPattern(typeof(T))),
                weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
           .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-          .TryAddContext(tuner));
+          .AppendContextBranch(tuner));
 
   /// <summary>
   /// Tunes up how to build an argument to inject into method parameter named <paramref name="parameterName"/>.
@@ -51,7 +51,7 @@ public static class ForParameter
                new IsMethodParameterNamed(parameterName),
                weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
           .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-          .TryAddContext(tuner));
+          .AppendContextBranch(tuner));
 
   /// <summary>
   /// Tunes up how to build and argument to inject into a method parameter marked with <see cref="InjectAttribute"/>
@@ -66,5 +66,5 @@ public static class ForParameter
                new IsParameterMarkedWithAttribute(injectPointId),
                weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.TargetUnit))
           .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-          .TryAddContext(tuner));
+          .AppendContextBranch(tuner));
 }

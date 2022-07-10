@@ -6,6 +6,9 @@ using Armature.Sdk;
 
 namespace Armature;
 
+/// <summary>
+/// Real implementation of <see cref="IDependencyTuner{T}"/> interface which can be reused by different implementations
+/// </summary>
 public static class DependencyTuner
 {
   /// <summary>
@@ -17,6 +20,7 @@ public static class DependencyTuner
   {
     if(tuner is null) throw new ArgumentNullException(nameof(tuner));
     if(arguments.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(arguments));
+
     if(arguments.Any(arg => arg is null))
       throw new ArgumentNullException(
         nameof(arguments),
@@ -32,15 +36,13 @@ public static class DependencyTuner
       else
       {
         tuner.TreeRoot
-        .GetOrAddNode(
-                   new IfFirstUnit(
-                     new IsAssignableFromType(argument.GetType()),
-                     tuner.Weight //TODO: should the weight be added?
-                   + WeightOf.InjectionPoint.ByTypeAssignability
-                   + WeightOf.BuildChainPattern.TargetUnit))
-                .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-                .TryAddContext(tuner)
-                .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
+             .GetOrAddNode(
+                new IfFirstUnit(
+                  new IsAssignableFromType(argument.GetType()),
+                  WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.TargetUnit))
+             .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
+             .AppendContextBranch(tuner)
+             .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
       }
 
     return tuner;

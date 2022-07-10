@@ -82,7 +82,7 @@ public static class RegistrationContextExtension
     if(finalTuner == null) throw new ArgumentNullException(nameof(finalTuner));
 
     var tuner = (ITuner) finalTuner;
-    tuner.BuildBranch().UseBuildAction(new ThreadSafeSingletonBuildAction(), BuildStage.Cache);
+    tuner.CreateContextBranch().UseBuildAction(new ThreadSafeSingletonBuildAction(), BuildStage.Cache);
     return finalTuner;
   }
 
