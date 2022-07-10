@@ -13,13 +13,13 @@ public static class Util
   public static BuildActionBag CreateBag(BuildStage buildStage, params IBuildAction[] buildActions) => new() {{buildStage, buildActions.ToList()}};
 
   [DebuggerStepThrough]
-  public static BuildChain MakeArrayTail(params UnitId[] array) => new BuildChain(array, 0);
+  public static BuildChain CreateBuildChain(params UnitId[] array) => new BuildChain(array, 0);
 
   [DebuggerStepThrough]
-  public static BuildChain ToArrayTail(this UnitId[] array) => new(array, 0);
+  public static BuildChain ToBuildChain(this UnitId[] array) => new(array, 0);
 
   [DebuggerStepThrough]
-  public static BuildChain ToArrayTail(this UnitId item) => new(new []{item}, 0);
+  public static BuildChain ToBuildChain(this UnitId item) => new(new []{item}, 0);
 
   public class TestBuildChainPattern : BuildChainPatternBase
   {

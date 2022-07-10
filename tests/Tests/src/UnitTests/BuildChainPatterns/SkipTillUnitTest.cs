@@ -28,7 +28,7 @@ namespace Tests.UnitTests.BuildChainPatterns
       target.AddNode(child2);
 
       // --act
-      var                     chain = new[] {new UnitId(1, null), new UnitId(2, null), new UnitId(kind, null), expected1, expected2}.ToArrayTail();
+      var                     chain = Util.CreateBuildChain(new UnitId(1, null), new UnitId(2, null), new UnitId(kind, null), expected1, expected2);
       WeightedBuildActionBag? actionBag;
       target.GatherBuildActions(chain, out actionBag, 0);
 
@@ -37,7 +37,7 @@ namespace Tests.UnitTests.BuildChainPatterns
 
       A.CallTo(
             () => child1.GatherBuildActions(
-                An<BuildChain>.That.IsEqualTo(Util.MakeArrayTail(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
+                An<BuildChain>.That.IsEqualTo(Util.CreateBuildChain(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
                 out weightedBuildActionBag,
                 An<int>._))
        .MustHaveHappenedOnceAndOnly();
@@ -46,7 +46,7 @@ namespace Tests.UnitTests.BuildChainPatterns
 
       A.CallTo(
             () => child2.GatherBuildActions(
-                An<BuildChain>.That.IsEqualTo(Util.MakeArrayTail(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
+                An<BuildChain>.That.IsEqualTo(Util.CreateBuildChain(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
                 out actionBag1,
                 An<int>._))
        .MustHaveHappenedOnceAndOnly();
@@ -66,7 +66,7 @@ namespace Tests.UnitTests.BuildChainPatterns
       target.AddNode(child2);
 
       // --act
-      var                     chain = new[] {new UnitId(1, null), new UnitId(2, null), expected1, expected2}.ToArrayTail();
+      var                     chain = Util.CreateBuildChain(new UnitId(1, null), new UnitId(2, null), expected1, expected2);
       WeightedBuildActionBag? actionBag;
       target.GatherBuildActions(chain, out actionBag, 0);
 
@@ -92,7 +92,7 @@ namespace Tests.UnitTests.BuildChainPatterns
       target.AddNode(child2);
 
       // --act
-      var                     chain = new[] {new UnitId(kind, null), new UnitId(kind, null)}.ToArrayTail();
+      var                     chain = Util.CreateBuildChain(new UnitId(kind, null), new UnitId(kind, null));
       WeightedBuildActionBag? actionBag;
       target.GatherBuildActions(chain, out actionBag, inputWeight);
 

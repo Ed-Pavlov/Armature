@@ -76,9 +76,10 @@ public partial class BuildSession
     T result;
 
     _buildChainList.Add(unitId);
-    var buildChain = new BuildChain(Enumerable.Reverse(_buildChainList).ToArray(), 0);
+    var reversedBuildChain = Enumerable.Reverse(_buildChainList).ToArray();
+    var buildChain         = new BuildChain(reversedBuildChain, 0);
 
-    Log.WriteLine(LogLevel.Info, () => $"Chain = {Enumerable.Reverse(_buildChainList).ToHoconString()}");
+    Log.WriteLine(LogLevel.Info, () => $"Chain = {reversedBuildChain.ToHoconString()}");
 
     try
     {
@@ -101,7 +102,7 @@ public partial class BuildSession
     catch(Exception exception)
     {
       if(!exception.Data.Contains(ExceptionConst.BuildChain))
-        exception.AddData(ExceptionConst.BuildChain, Enumerable.Reverse(_buildChainList).ToHoconString());
+        exception.AddData(ExceptionConst.BuildChain, reversedBuildChain.ToHoconString());
 
       throw;
     }
