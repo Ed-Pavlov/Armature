@@ -29,5 +29,6 @@ public class TreatAllTuner : ITuner, ITreatAllTuner
   public IBuildChainPattern TreeRoot { get; }
   public int                Weight   { get; private set; }
 
-  public IBuildChainPattern GetOrAddNodeTo(IBuildChainPattern node) => node;
+  public IBuildChainPattern GetOrAddNodeTo(IBuildChainPattern node)
+    => ReferenceEquals(node, TreeRoot) ? TreeRoot.GetOrAddNode(new IfFirstUnit(new AnyUnit())) : node;
 }

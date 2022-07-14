@@ -20,7 +20,7 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-       .Treat<string>() //TODO: may be Treat should generate IfLastUnit? why should we perform know to be false matching? Building<> should generate SkipTillUnit
+       .Treat<string>()
        .AsInstance(expected + "bad");
 
       target
@@ -295,6 +295,8 @@ namespace Tests.Functional
        .Building<LevelThree>()
        .TreatAll()
        .UsingArguments(expected);
+
+      target.PrintToLog();
 
       // --act
       var actual = target.Build<LevelThree>()!;

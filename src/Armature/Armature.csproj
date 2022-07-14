@@ -4,6 +4,7 @@
     <AssemblyName>Armature</AssemblyName>
     <RootNamespace>Armature</RootNamespace>
     <NoWarn>1591,0419</NoWarn>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

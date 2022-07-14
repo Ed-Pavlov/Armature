@@ -2,6 +2,7 @@
   <PropertyGroup>
     <AssemblyName>Armature.Interface</AssemblyName>
     <RootNamespace>Armature</RootNamespace>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Label="nuspec">
@@ -15,5 +16,5 @@
     <DocumentationFile>bin\Debug\Armature.Interface.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="..\common.proj"/>
+  <Import Project="..\common.proj" />
 </Project>

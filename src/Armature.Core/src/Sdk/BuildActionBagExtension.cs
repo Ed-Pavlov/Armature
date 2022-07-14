@@ -19,8 +19,7 @@ public static class BuildActionBagExtension
     if(left is null) return right;
     if(right is null) return left;
 
-    var result = new WeightedBuildActionBag(); //TODO: can we add to the existent bug?
-
+    var result = new WeightedBuildActionBag(); //TODO: performance improvement point? can we add to the existent bag?
     foreach(var pair in left)
     {
       List<Weighted<IBuildAction>> resultValue;

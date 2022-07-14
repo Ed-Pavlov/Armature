@@ -18,7 +18,7 @@ public partial class BuildingTuner<T>
 
   private IFinalAndContextTuner CreateBy(IBuildAction buildAction)
   {
-    this.CreateContextBranch().UseBuildAction(buildAction, BuildStage.Create);
+    GetContextBranch().UseBuildAction(buildAction, BuildStage.Create);
     return this;
   }
 
