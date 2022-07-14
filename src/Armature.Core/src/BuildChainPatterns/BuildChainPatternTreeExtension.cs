@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Armature.Core.Internal;
 using Armature.Core.Sdk;
 
@@ -19,8 +18,8 @@ public static class BuildChainPatternTreeExtension
     if(parentNode is null) throw new ArgumentNullException(nameof(parentNode));
     if(node is null) throw new ArgumentNullException(nameof(node));
 
-    if(parentNode.Children.Contains(node))
-      return (T) parentNode.Children.First(_ => _.Equals(node));
+    if(parentNode.Children.TryGetValue(node, out var actualNode))
+      return (T) actualNode;
 
     parentNode.Children.Add(node);
     return node;

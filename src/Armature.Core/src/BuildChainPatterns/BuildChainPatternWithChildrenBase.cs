@@ -29,7 +29,7 @@ public abstract class BuildChainPatternWithChildrenBase : IBuildChainPattern, IE
   public abstract bool           GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight);
   public abstract BuildActionBag BuildActions { get; }
 
-  public ICollection<IBuildChainPattern> Children => LazyChildren;
+  public HashSet<IBuildChainPattern> Children => LazyChildren;
 
   protected int Weight { [DebuggerStepThrough] get; }
 

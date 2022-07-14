@@ -13,22 +13,19 @@ namespace Armature.Core;
 /// This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
 /// new Builder(...)
 /// {
-///  new SkipAllUnits
-///  {
 ///    new IfFirstUnit(new IsConstructor())
 ///      .UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
 ///    new IfFirstUnit(new IsParameterInfoList())
 ///      .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
 ///    new IfFirstUnit(new IsParameterInfo())
 ///      .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
-///  }
 /// };
 /// </remarks>
 public class BuildChainPatternTree : IBuildChainPattern, IEnumerable, ILogPrintable
 {
   private readonly Root _root = new();
 
-  public ICollection<IBuildChainPattern> Children => _root.Children;
+  public HashSet<IBuildChainPattern> Children => _root.Children;
 
   public bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight = 0)
     => _root.GatherBuildActions(buildChain, out actionBag, 0);

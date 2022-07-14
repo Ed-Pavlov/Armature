@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 
@@ -17,10 +18,17 @@ public record GetPropertyByType(Type _type) : IBuildAction, ILogString
   public void Process(IBuildSession buildSession)
   {
     var unitType   = buildSession.BuildChain.TargetUnit.GetUnitType();
-    var properties = unitType.GetProperties().Where(_ => _.PropertyType == _type).ToArray(); // TODO: should be one? several arguments of one type will be resolved in one instance
+    var properties = unitType.GetProperties().Where(_ => _.PropertyType == _type).ToArray();
 
-    if(properties.Length > 0)
-      buildSession.BuildResult = new BuildResult(properties);
+    switch(properties.Length)
+    {
+      case > 1:
+        throw new ArmatureException($"More than one property with type {_type.GetFullName()} are found. It's ambiguous which one to inject dependency into.")
+         .AddData("PropertyType", _type.GetFullName());
+
+      case > 0: buildSession.BuildResult = new BuildResult(properties);
+        break;
+    }
   }
 
   [WithoutTest]

@@ -12,10 +12,19 @@ namespace Tests.Performance
   [Ignore("Run manually only")]
   public class CreationStrategiesPerformanceTest
   {
-    private const    int             Count                 = 100000;
+    private const    int             Count                 = 1_000_000;
+    private const    int             SingleCount           = 10_000;
     private readonly ConstructorInfo _constructorInfo      = typeof(Subject).GetConstructors().Single(_ => _.GetParameters().Length > 0);
     private readonly ConstructorInfo _emptyConstructorInfo = typeof(Subject).GetConstructors().Single(_ => _.GetParameters().Length == 0);
     private readonly object[]        _values               = {"1", "2", "3", "4", "5", "6", "7"};
+
+    [TearDown]
+    public void AfterTest()
+    {
+      GC.Collect();
+      GC.WaitForFullGCComplete();
+      GC.Collect();
+    }
 
     [Test]
     public void CreateByEmptyConstructorInfo()
@@ -34,7 +43,7 @@ namespace Tests.Performance
     }
 
     [Test]
-    public void CreateByEmtpyActivator()
+    public void CreateByEmptyActivator()
     {
       var sw = new Stopwatch();
       sw.Start();
@@ -108,6 +117,40 @@ namespace Tests.Performance
       for(var i = 0; i < Count; i++)
       {
         var value = factory(Empty<object>.Array);
+        GC.KeepAlive(value);
+      }
+
+      sw.Stop();
+      Console.WriteLine(sw.Elapsed);
+    }
+
+    [Test]
+    public void SingleConstructorInfo()
+    {
+      var sw = new Stopwatch();
+      sw.Start();
+
+      for(var i = 0; i < Count; i++)
+      {
+        var ctor = typeof(Subject).GetConstructors().Single(_ => _.GetParameters().Length > 0);
+        var value = ctor.Invoke(_values);
+        GC.KeepAlive(value);
+      }
+
+      sw.Stop();
+      Console.WriteLine(sw.Elapsed);
+    }
+    [Test]
+    public void SingleCompiledExpression()
+    {
+      var sw = new Stopwatch();
+      sw.Start();
+
+      for(var i = 0; i < SingleCount; i++)
+      {
+        var ctor = typeof(Subject).GetConstructors().Single(_ => _.GetParameters().Length > 0);
+        var factory = BuildFactoryExpression(ctor);
+        var value   = factory(_values);
         GC.KeepAlive(value);
       }
 

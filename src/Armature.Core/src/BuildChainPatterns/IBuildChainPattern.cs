@@ -13,7 +13,7 @@ public interface IBuildChainPattern : IEquatable<IBuildChainPattern>, ILogString
   /// The collection of all children nodes used to find existing one, add new, or replace one with another.
   /// All nodes with their children are a pattern tree.
   /// </summary>
-  ICollection<IBuildChainPattern> Children { get; }
+  HashSet<IBuildChainPattern> Children { get; }
 
   BuildActionBag BuildActions { get; }
 
