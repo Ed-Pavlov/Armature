@@ -19,7 +19,7 @@ public static class ForParameter
         => tuner.TreeRoot.GetOrAddNode(
                    new IfFirstUnit(
                      new IsMethodParameterWithType(new UnitPattern(type)),
-                     weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
+                     weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
                 .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
                 .AppendContextBranch(tuner));
 
@@ -35,7 +35,7 @@ public static class ForParameter
           .GetOrAddNode(
              new IfFirstUnit(
                new IsMethodParameterWithType(new UnitPattern(typeof(T))),
-               weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
+               weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
           .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
           .AppendContextBranch(tuner));
 
@@ -49,7 +49,7 @@ public static class ForParameter
           .GetOrAddNode(
              new IfFirstUnit(
                new IsMethodParameterNamed(parameterName),
-               weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
+               weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.IfFirstUnit))
           .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
           .AppendContextBranch(tuner));
 
@@ -64,7 +64,7 @@ public static class ForParameter
           .GetOrAddNode(
              new IfFirstUnit(
                new IsParameterMarkedWithAttribute(injectPointId),
-               weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.TargetUnit))
+               weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.IfFirstUnit))
           .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
           .AppendContextBranch(tuner));
 }

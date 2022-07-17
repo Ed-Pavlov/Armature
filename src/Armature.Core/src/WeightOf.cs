@@ -70,13 +70,13 @@ public class WeightOf
   [PublicAPI]
   public class BuildChainPattern
   {
-    public static int SkipAllUnits  { get; }
     public static int SkipWhileUnit { get; protected set; } = 0;
 
     public static int SkipTillUnit { get; protected set; } = 0;
 
     /// <summary>
-    /// By default the weight of <see cref="IfFirstUnit"/> build chain pattern's weight is increased in order to registrations
+    /// By default the weight of <see cref="Core.IfFirstUnit"/> build chain pattern's weight value set thus that registration
+    ///
     /// like
     /// builder.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(MyType))))
     ///      .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(typeof(string))))
@@ -87,13 +87,13 @@ public class WeightOf
     ///      .GetOrAddNode(new SkipTillUnit(new IsAssignableFromType(typeof(string))))
     /// // ....
     ///
+    /// in any case, no matter how many units will be skipped by <see cref="SkipTillUnit"/> patter. See its implementation for details.
+    ///
     /// Because the first one is a "personal" registration whereas the second one will be applied to all units building
     /// in the context of "MyType".
     ///
     /// Note that provided sample is "synthetic" see <see cref="SpecialTag"/> and <see cref="Core.SkipWhileUnit"/> for details.
     /// </summary>
-    public static int IfFirstUnit { get; protected set; } = 10;
-
-    public static int TargetUnit { get; protected set; } = 1_000_000; //TODO: if all roots have the same "base" TargetUnit weight, may be we don't need it
+    public static int IfFirstUnit { get; protected set; } = 1_000_000;
   }
 }

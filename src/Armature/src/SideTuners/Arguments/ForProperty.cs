@@ -23,7 +23,7 @@ public static class ForProperty
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyWithType(new UnitPattern(type)),
-                         weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
+                         weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
                     .AppendContextBranch(tuner);
       });
 
@@ -40,7 +40,7 @@ public static class ForProperty
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyWithType(new UnitPattern(typeof(T))),
-                         weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
+                         weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
                     .AppendContextBranch(tuner);
       });
 
@@ -57,7 +57,7 @@ public static class ForProperty
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyNamed(propertyName),
-                         weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
+                         weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.IfFirstUnit))
                     .AppendContextBranch(tuner);
       });
 
@@ -75,7 +75,7 @@ public static class ForProperty
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyMarkedWithAttribute(injectPointId),
-                         weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.TargetUnit))
+                         weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.IfFirstUnit))
                     .AppendContextBranch(tuner);
       });
 }

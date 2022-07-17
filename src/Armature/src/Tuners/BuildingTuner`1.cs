@@ -23,7 +23,7 @@ public partial class BuildingTuner<T> : BuildingTuner, IBuildingTuner<T>, IFinal
     var unitPattern = new UnitPattern(type, tag);
 
     IBuildChainPattern CreateTargetNode()
-      => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.TargetUnit);
+      => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.IfFirstUnit);
 
     return new BuildingTuner<object>(this, CreateTargetNode, unitPattern);
   }

@@ -21,7 +21,7 @@ public static class Constructor
                         .GetOrAddNode(
                            new IfFirstUnit(
                              Static.Of<IsConstructor>(),
-                             WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.TargetUnit))
+                             WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.IfFirstUnit))
                         .AppendContextBranch(tuner)
                         .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create));
 
@@ -35,7 +35,7 @@ public static class Constructor
                         .GetOrAddNode(
                            new IfFirstUnit(
                              Static.Of<IsConstructor>(),
-                             WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.TargetUnit))
+                             WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.IfFirstUnit))
                         .AppendContextBranch(tuner)
                         .UseBuildAction(new GetConstructorByInjectPointId(injectionPointId), BuildStage.Create));
 
@@ -75,7 +75,7 @@ public static class Constructor
                         .GetOrAddNode(
                            new IfFirstUnit(
                              Static.Of<IsConstructor>(),
-                             WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
+                             WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.IfFirstUnit))
                         .AppendContextBranch(tuner)
                         .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
 }

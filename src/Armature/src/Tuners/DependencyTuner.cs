@@ -39,7 +39,7 @@ public static class DependencyTuner
              .GetOrAddNode(
                 new IfFirstUnit(
                   new IsAssignableFromType(argument.GetType()),
-                  WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.TargetUnit))
+                  WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.IfFirstUnit))
              .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
              .AppendContextBranch(tuner)
              .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);

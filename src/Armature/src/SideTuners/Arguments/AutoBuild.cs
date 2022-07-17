@@ -40,7 +40,7 @@ public static class AutoBuild
                      .GetOrAddNode(
                         new IfFirstUnit(
                           Static.Of<IsParameterInfo>(),
-                          WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
+                          WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
                      .AppendContextBranch(tuner)
                      .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create));
 
@@ -53,7 +53,7 @@ public static class AutoBuild
                      .GetOrAddNode(
                         new IfFirstUnit(
                           Static.Of<IsParameterInfo>(),
-                          WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.TargetUnit))
+                          WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.IfFirstUnit))
                      .AppendContextBranch(tuner)
                      .UseBuildAction(Static.Of<BuildArgumentByParameterName>(), BuildStage.Create));
   }

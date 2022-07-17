@@ -24,7 +24,7 @@ public partial class BuildingTuner
 
     var unitPattern = new UnitPattern(type, tag);
 
-    IBuildChainPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.TargetUnit);
+    IBuildChainPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.IfFirstUnit);
 
     return new BuildingTuner<object?>(parentTuner, CreateNode, unitPattern);
   }
@@ -33,7 +33,7 @@ public partial class BuildingTuner
   {
     var unitPattern = new UnitPattern(typeof(T), tag);
 
-    IBuildChainPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.TargetUnit);
+    IBuildChainPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.IfFirstUnit);
     return new BuildingTuner<T>(parentTuner, CreateNode, unitPattern);
   }
 
@@ -44,7 +44,7 @@ public partial class BuildingTuner
 
     var unitPattern = new IsGenericOfDefinition(openGenericType, tag);
 
-    IBuildChainPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.OpenGenericPattern + WeightOf.BuildChainPattern.TargetUnit);
+    IBuildChainPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.OpenGenericPattern + WeightOf.BuildChainPattern.IfFirstUnit);
     return new BuildingOpenGenericTuner(parentTuner, CreateNode, unitPattern);
   }
 
@@ -54,7 +54,7 @@ public partial class BuildingTuner
     if(baseType is null) throw new ArgumentNullException(nameof(baseType));
 
     var unitPattern = new IsInheritorOf(baseType, tag);
-    IBuildChainPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.SubtypePattern + WeightOf.BuildChainPattern.TargetUnit);
+    IBuildChainPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.SubtypePattern + WeightOf.BuildChainPattern.IfFirstUnit);
     return new BuildingTuner<object?>(parentTuner, CreateNode, unitPattern);
   }
 
@@ -63,7 +63,7 @@ public partial class BuildingTuner
     if(parentTuner is null) throw new ArgumentNullException(nameof(parentTuner));
 
     var unitPattern = new IsInheritorOf(typeof(T), tag);
-    IBuildChainPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.SubtypePattern + WeightOf.BuildChainPattern.TargetUnit);
+    IBuildChainPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.SubtypePattern + WeightOf.BuildChainPattern.IfFirstUnit);
     return new BuildingTuner<T>(parentTuner, CreateNode, unitPattern);
   }
 }
