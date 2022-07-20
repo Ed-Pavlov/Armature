@@ -69,7 +69,7 @@ public static class ForProperty
     => new PropertyArgumentTuner<object?>(
       (tuner, weight) =>
       {
-        Property.ByInjectPoint(injectPointId).Tune(tuner);
+        Property.ByInjectPointId(injectPointId).Tune(tuner);
 
         return tuner.TreeRoot
                     .GetOrAddNode(

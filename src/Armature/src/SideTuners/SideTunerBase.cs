@@ -7,11 +7,11 @@ namespace Armature;
 /// <summary>
 /// Implementation of <see cref="ISideTuner.Tune"/> based on calling passed lambda action
 /// </summary>
-public abstract class SideTunerBase : ISideTuner, IInternal<Action<ITuner>>
+public class SideTuner : ISideTuner, IInternal<Action<ITuner>>
 {
   private readonly Action<ITuner> _tune;
 
-  protected SideTunerBase(Action<ITuner> tune) => _tune = tune ?? throw new ArgumentNullException(nameof(tune));
+  public SideTuner(Action<ITuner> tune) => _tune = tune ?? throw new ArgumentNullException(nameof(tune));
 
   public void Tune(ITuner tuner)
   {
@@ -19,5 +19,5 @@ public abstract class SideTunerBase : ISideTuner, IInternal<Action<ITuner>>
     _tune(tuner);
   }
 
-  Action<ITuner> IInternal<Action<ITuner>>.Member1                                => _tune;
+  Action<ITuner> IInternal<Action<ITuner>>.Member1 => _tune;
 }

@@ -12,3 +12,8 @@ public interface IUnitPattern
   /// <summary> Checks if passed <paramref name="unitId"/> matches the pattern </summary>
   bool Matches(UnitId unitId);
 }
+
+public interface IStaticUnitPattern
+{
+
+}

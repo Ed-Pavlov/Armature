@@ -21,7 +21,7 @@ public class SkipWhileUnit : BuildChainPatternByUnitBase
       Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
 
       var i = 0;
-      for(; i < buildChain.Length - 1; i++) // target unit is not the subject of skipping
+      for(; i < buildChain.Length; i++)
         if(!UnitPattern.Matches(buildChain[i]))
           break;
 

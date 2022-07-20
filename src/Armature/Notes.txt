@@ -333,3 +333,16 @@ UsingArguments(0)
 BuildingIt
 TreatAll
 UsingArguments
+
+20.07.2022
+builder                         IfFirst(IsAssignable(a.GetType())
+  TreatAll()                      SkipWhile(IsService)
+  UsingArguments(a, b, c)           IfFirstUnit(AnyUnit) -> Singleton(a)
+
+builder                                IfFirstUnit(!IsService && CanBeInstantiated)
+  TreatAll                               IfFirstUnit(AnyUnit) -> InjectDependenciesIntoProperties, Initialize
+  Using(Property.ByInjectPointId())
+
+builder                                IfFirstUnit<C> -> InjectDependenciesIntoProperties, Initialize
+  Treat<C>().AsIs()
+  Using(Property.ByInjectPointId())

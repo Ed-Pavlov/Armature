@@ -22,7 +22,9 @@ namespace Tests.Functional
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
                    };
 
-      target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
+      target.TreatAll().Using(
+        AutoBuild.MethodArguments.InDirectOrder,
+        AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<Subject2>()
@@ -44,7 +46,7 @@ namespace Tests.Functional
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
                    };
 
-      target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
+      target.TreatAll().Using(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target
@@ -67,7 +69,7 @@ namespace Tests.Functional
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
                    };
 
-      target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
+      target.TreatAll().Using(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<Subject1>()
@@ -95,7 +97,7 @@ namespace Tests.Functional
                          BuildStage.Create),
                    };
 
-      target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
+      target.TreatAll().Using(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<Subject3>()
@@ -132,7 +134,7 @@ namespace Tests.Functional
                          ),
                          BuildStage.Create),
                    };
-      target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
+      target.TreatAll().Using(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<object>().AsInstance(new object());
@@ -162,7 +164,7 @@ namespace Tests.Functional
                          ),
                          BuildStage.Create),
                    };
-      target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
+      target.TreatAll().Using(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<bool>().AsIs();

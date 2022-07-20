@@ -3,7 +3,7 @@ using Armature.Sdk;
 
 namespace Armature;
 
-public class ArgumentSideTuner : SideTunerBase, IArgumentSideTuner
+public class ArgumentSideTuner : SideTuner, IArgumentSideTuner
 {
   public ArgumentSideTuner(Action<ITuner> tune) : base(tune) { }
 }

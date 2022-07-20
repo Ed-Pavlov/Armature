@@ -18,6 +18,6 @@ public static class UnitTagExtension
         nameof(unitTag),
         $"Building unit's tag can't be '{nameof(SpecialTag)}.{nameof(SpecialTag.Any)}' special tag. Check arguments order in the call of this method");
 
-    return Equals(pattern, unitTag) || ReferenceEquals(pattern, SpecialTag.Any);
+    return ReferenceEquals(pattern, SpecialTag.Any) || Equals(pattern, unitTag);
   }
 }

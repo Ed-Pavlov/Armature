@@ -19,6 +19,7 @@ public readonly struct BuildChain : IEnumerable<UnitId>
 
   [DebuggerStepThrough]
   public BuildChain() => throw new ArgumentException("Use constructor with parameters");
+
   [DebuggerStepThrough]
   public BuildChain(IReadOnlyList<UnitId> array, int startIndex)
   {

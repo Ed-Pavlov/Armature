@@ -20,8 +20,8 @@ public static class AutoBuild
     /// <summary>
     /// Adds the build action which builds arguments for a method in the order as parameters specified in the method signature.
     /// </summary>
-    public IArgumentSideTuner InDirectOrder { get; }
-      = new ArgumentSideTuner(
+    public ISideTuner InDirectOrder { get; }
+      = new SideTuner(
         tuner =>
           tuner.TreeRoot
                        .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoList>()))
@@ -34,7 +34,7 @@ public static class AutoBuild
     /// <summary>
     /// Adds the build action which builds an argument using method parameter type as a <see cref="UnitId.Kind"/>
     /// </summary>
-    public IArgumentSideTuner Type { get; } = new ArgumentSideTuner(
+    public ISideTuner Type { get; } = new SideTuner(
       tuner =>
         tuner.TreeRoot
                      .GetOrAddNode(
@@ -47,7 +47,7 @@ public static class AutoBuild
     /// <summary>
     /// Adds the build action which builds an argument using method parameter name as a <see cref="UnitId.Kind"/>
     /// </summary>
-    public IArgumentSideTuner Name { get; } = new ArgumentSideTuner(
+    public ISideTuner Name { get; } = new SideTuner(
       tuner =>
         tuner.TreeRoot
                      .GetOrAddNode(

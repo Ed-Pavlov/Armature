@@ -58,7 +58,7 @@ public static class Property
   /// as required a dependency to be injected into it.
   /// </summary>
   [PublicAPI]
-  public static IInjectionPointSideTuner ByInjectPoint(params object?[] pointIds)
+  public static IInjectionPointSideTuner ByInjectPointId(params object?[] pointIds)
     => new InjectionPointSideTuner(
       tuner =>
       {

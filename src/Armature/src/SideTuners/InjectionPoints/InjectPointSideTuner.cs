@@ -3,7 +3,7 @@ using Armature.Sdk;
 
 namespace Armature;
 
-public class InjectionPointSideTuner : SideTunerBase, IInjectionPointSideTuner
+public class InjectionPointSideTuner : SideTuner, IInjectionPointSideTuner
 {
   public InjectionPointSideTuner(Action<ITuner> tune) : base(tune) { }
 }
