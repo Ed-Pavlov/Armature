@@ -7,13 +7,13 @@ namespace Armature.Core;
 /// Base class for patterns check if a unit is an inject point marked with with <see cref="InjectAttribute" />
 /// with an optional <see cref="InjectAttribute.InjectionPointId" />
 /// </summary>
-public abstract record InjectPointAttributePatternBase : IUnitPattern, ILogString
+public abstract record InjectPointAttributedBase : IUnitPattern, ILogString
 {
   private readonly object? _injectPointId;
 
   /// <param name="injectPointId">An optional id of the inject point. <see cref="InjectAttribute"/> for details.</param>
   [DebuggerStepThrough]
-  protected InjectPointAttributePatternBase(object? injectPointId = null) => _injectPointId = injectPointId;
+  protected InjectPointAttributedBase(object? injectPointId = null) => _injectPointId = injectPointId;
 
   public bool Matches(UnitId unitId)
   {

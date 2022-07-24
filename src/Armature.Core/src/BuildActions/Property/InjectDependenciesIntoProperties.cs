@@ -32,7 +32,7 @@ public record InjectDependenciesIntoProperties : IBuildAction
 
     var type = buildSession.BuildChain.TargetUnit.GetUnitTypeSafe() ?? unit.GetType();
 
-    var unitInfo = new UnitId(type, SpecialTag.PropertyList);
+    var unitInfo = new UnitId(type, SpecialTag.PropertyCollection);
 
     var properties = buildSession.BuildAllUnits(unitInfo)
                                .OrderByDescending(_ => _.Weight)

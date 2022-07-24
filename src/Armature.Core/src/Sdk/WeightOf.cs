@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Armature.Core.Sdk;
 using JetBrains.Annotations;
 
-namespace Armature.Core;
+namespace Armature.Core.Sdk;
 
 /// <summary>
 /// Inherit this class to extend enum pattern with custom weights if you extend Armature with your own build chain, unit or injection point

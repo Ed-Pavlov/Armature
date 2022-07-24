@@ -236,7 +236,7 @@ namespace Tests.Functional
                                                      new IfFirstUnit(new IsConstructor())
                                                         .UseBuildAction(new GetConstructorByParameterTypes(), BuildStage.Create), // use empty ctor by default in this test
 
-                                                     new IfFirstUnit(new IsParameterInfoList())
+                                                     new IfFirstUnit(new IsParameterInfoArray())
                                                         .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
                                                      new IfFirstUnit(new IsParameterInfo())
                                                         .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)

@@ -34,10 +34,10 @@ public static class Util
 
   public static IEnumerable<SpecialTag> all_special_tags()
   {
-    yield return SpecialTag.Any;
+    yield return Tag.Any;
     yield return SpecialTag.Argument;
     yield return SpecialTag.Constructor;
     yield return SpecialTag.Propagate;
-    yield return SpecialTag.PropertyList;
+    yield return SpecialTag.PropertyCollection;
   }
 }

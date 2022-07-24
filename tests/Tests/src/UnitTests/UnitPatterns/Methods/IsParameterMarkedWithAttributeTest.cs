@@ -17,7 +17,7 @@ public class IsParameterMarkedWithAttributeTest
 
     // --arrange
     var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
-    var target = new IsParameterMarkedWithAttribute();
+    var target = new IsParameterAttributed();
 
     // --act
     // --assert
@@ -31,7 +31,7 @@ public class IsParameterMarkedWithAttributeTest
 
     // --arrange
     var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
-    var target = new IsParameterMarkedWithAttribute(Subject.StringPointId);
+    var target = new IsParameterAttributed(Subject.StringPointId);
 
     // --act
     // --assert
@@ -45,7 +45,7 @@ public class IsParameterMarkedWithAttributeTest
 
     // --arrange
     var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
-    var target = new IsParameterMarkedWithAttribute(pointId);
+    var target = new IsParameterAttributed(pointId);
 
     // --act
     // --assert
@@ -59,7 +59,7 @@ public class IsParameterMarkedWithAttributeTest
 
     // --arrange
     var unitId = new UnitId(parameterInfo, tag);
-    var target = new IsParameterMarkedWithAttribute(Subject.StringPointId);
+    var target = new IsParameterAttributed(Subject.StringPointId);
 
     // --act
     // --assert
@@ -70,8 +70,8 @@ public class IsParameterMarkedWithAttributeTest
   public void should_be_equal_if_point_id_equals([Values(null, "pointId")] object? pointId)
   {
     // --arrange
-    var target1 = new IsParameterMarkedWithAttribute(pointId);
-    var target2 = new IsParameterMarkedWithAttribute(pointId);
+    var target1 = new IsParameterAttributed(pointId);
+    var target2 = new IsParameterAttributed(pointId);
 
     //--assert
     target1.Equals(target2).Should().BeTrue();
@@ -82,8 +82,8 @@ public class IsParameterMarkedWithAttributeTest
   public void should_not_be_equal_if_point_id_differs([Values(null, "pointId")] object? pointId)
   {
     // --arrange
-    var target1 = new IsParameterMarkedWithAttribute(pointId);
-    var target2 = new IsParameterMarkedWithAttribute("different point id");
+    var target1 = new IsParameterAttributed(pointId);
+    var target2 = new IsParameterAttributed("different point id");
 
     //--assert
     target1.Equals(target2).Should().BeFalse();

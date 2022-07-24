@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core.Annotations;
-using Armature.Core.Sdk;
 
-namespace Armature.Core;
+namespace Armature.Core.Sdk;
 
 /// <summary>
 /// Couples an entity with a weight

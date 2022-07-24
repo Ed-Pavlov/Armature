@@ -21,10 +21,10 @@ namespace Tests.Performance
       var patterns = new List<IUnitPattern>
                      {
                        new IsConstructor(),
-                       new IsParameterInfoList(),
+                       new IsParameterInfoArray(),
                        new IsParameterInfo(),
-                       new IsParameterMarkedWithAttribute(),
-                       new IsPropertyList(),
+                       new IsParameterAttributed(),
+                       new IsPropertyInfoCollection(),
                        new IsPropertyInfo(),
                        new IsPropertyOfType(new UnitPattern(typeof(string)))
                      };
@@ -48,13 +48,13 @@ namespace Tests.Performance
         patterns.Add(new IsPropertyNamed("prop"));
 
       for(var i = 0; i < 100; i++)
-        patterns.Add(new  IsMethodParameterNamed("param"));
+        patterns.Add(new  IsParameterNamed("param"));
 
       for(var i = 0; i < 100; i++)
-        patterns.Add(new IsParameterMarkedWithAttribute());
+        patterns.Add(new IsParameterAttributed());
 
       for(var i = 0; i < 100; i++)
-        patterns.Add(new IsPropertyMarkedWithAttribute());
+        patterns.Add(new IsPropertyAttributed());
 
       GC.Collect();
       GC.WaitForPendingFinalizers();
@@ -152,7 +152,7 @@ namespace Tests.Performance
                  Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has less priority
                },
                BuildStage.Create),
-           new IfFirstUnit(new IsParameterInfoList())
+           new IfFirstUnit(new IsParameterInfoArray())
             .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
            new IfFirstUnit(new IsParameterInfo())
             .UseBuildAction(

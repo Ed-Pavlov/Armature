@@ -124,7 +124,7 @@ namespace Tests.Functional
                    Static.Of<BuildArgumentByParameterInjectPointId>(),
                    Static.Of<BuildArgumentByParameterType>()
                  }, BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfFirstUnit(new IsPropertyInfo())
               .UseBuildAction(

@@ -15,7 +15,7 @@ public class IsParameterInfoListTest
 
     // --arrange
     var unitId = new UnitId(parameterInfoList, SpecialTag.Argument);
-    var target = new IsParameterInfoList();
+    var target = new IsParameterInfoArray();
 
     // --act
     // --assert
@@ -27,7 +27,7 @@ public class IsParameterInfoListTest
   {
     // --arrange
     var unitId = new UnitId("parameterInfoList", SpecialTag.Argument);
-    var target = new IsParameterInfoList();
+    var target = new IsParameterInfoArray();
 
     // --act
     // --assert
@@ -41,7 +41,7 @@ public class IsParameterInfoListTest
 
     // --arrange
     var unitId = new UnitId(parameterInfoList, tag);
-    var target = new IsParameterInfoList();
+    var target = new IsParameterInfoArray();
 
     // --act
     // --assert
@@ -52,8 +52,8 @@ public class IsParameterInfoListTest
   public void all_instances_should_be_equal()
   {
     // --arrange
-    var target1 = new IsParameterInfoList();
-    var target2 = new IsParameterInfoList();
+    var target1 = new IsParameterInfoArray();
+    var target2 = new IsParameterInfoArray();
 
     // --assert
     target1.Equals(target2).Should().BeTrue();
@@ -65,7 +65,7 @@ public class IsParameterInfoListTest
   public void should_not_be_equal_to_other_unit_patterns()
   {
     // --arrange
-    var target1 = new IsParameterInfoList();
+    var target1 = new IsParameterInfoArray();
     var target2 = new Util.OtherUnitPattern();
 
     // --assert

@@ -87,7 +87,7 @@ namespace Tests.Functional
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
 
-             new IfFirstUnit(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
 
              new IfFirstUnit(new IsParameterInfo())

@@ -58,7 +58,7 @@ public class IsAssignableFromTypeTest
   {
     // --arrange
     var unitId = new UnitId(typeof(Stream), tag);
-    var target = new IsAssignableFromType(typeof(Stream), SpecialTag.Any);
+    var target = new IsAssignableFromType(typeof(Stream), Tag.Any);
 
     // --assert
     target.Matches(unitId).Should().BeTrue();

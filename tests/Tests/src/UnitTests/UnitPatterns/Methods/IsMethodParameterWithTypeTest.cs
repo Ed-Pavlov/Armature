@@ -20,7 +20,7 @@ public class IsMethodParameterWithTypeTest
 
     // --arrange
     var typePattern = A.Fake<IUnitPattern>();
-    var target      = new IsMethodParameterOfType(typePattern);
+    var target      = new IsParameterOfType(typePattern);
     var unitId      = new UnitId(parameterInfo, SpecialTag.Argument);
 
     // --act
@@ -37,7 +37,7 @@ public class IsMethodParameterWithTypeTest
 
     // --arrange
     var typePattern = A.Fake<IUnitPattern>();
-    var target      = new IsMethodParameterOfType(typePattern);
+    var target      = new IsParameterOfType(typePattern);
     var unitId      = new UnitId(parameterInfo, tag);
 
     // --act
@@ -51,7 +51,7 @@ public class IsMethodParameterWithTypeTest
   public void should_check_argument_for_null()
   {
     // --arrange
-    var target = () => new IsMethodParameterOfType(null!);
+    var target = () => new IsParameterOfType(null!);
 
     // --act
     // --assert
@@ -62,8 +62,8 @@ public class IsMethodParameterWithTypeTest
   public void should_be_equal_if_pattern_equal()
   {
     // --arrange
-    var target1 = new IsMethodParameterOfType(new UnitPattern("1"));
-    var target2 = new IsMethodParameterOfType(new UnitPattern("1"));
+    var target1 = new IsParameterOfType(new UnitPattern("1"));
+    var target2 = new IsParameterOfType(new UnitPattern("1"));
 
     // --assert
     target1.Equals(target2).Should().BeTrue();
@@ -74,8 +74,8 @@ public class IsMethodParameterWithTypeTest
   public void should_not_be_equal_if_pattern_differs()
   {
     // --arrange
-    var target1 = new IsMethodParameterOfType(new UnitPattern("1"));
-    var target2 = new IsMethodParameterOfType(new UnitPattern("2"));
+    var target1 = new IsParameterOfType(new UnitPattern("1"));
+    var target2 = new IsParameterOfType(new UnitPattern("2"));
 
     // --assert
     target1.Equals(target2).Should().BeFalse();

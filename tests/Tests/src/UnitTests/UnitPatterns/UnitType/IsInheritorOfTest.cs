@@ -51,7 +51,7 @@ namespace Tests.UnitTests.UnitPatterns.UnitType
     public void should_match_any_tag_if_specified([Values(null, "tag")] object tag)
     {
       var unitId = new UnitId(typeof(MemoryStream), tag);
-      var target = new IsInheritorOf(typeof(Stream), SpecialTag.Any);
+      var target = new IsInheritorOf(typeof(Stream), Tag.Any);
 
       target.Matches(unitId).Should().BeTrue();
     }

@@ -17,7 +17,7 @@ namespace Tests.Extensibility.MaybePropagation
       var builder = CreateTarget();
 
       builder.AddNode(
-        new IfFirstUnit(new IsGenericOfDefinition(typeof(Maybe<>), SpecialTag.Any), WeightOf.BuildChainPattern.IfFirstUnit)
+        new IfFirstUnit(new IsGenericOfDefinition(typeof(Maybe<>), Tag.Any), WeightOf.BuildChainPattern.IfFirstUnit)
          .UseBuildAction(new BuildMaybe(null), BuildStage.Create));
 
       builder.Treat<Section>().AsInstance(new Section());
@@ -79,7 +79,7 @@ namespace Tests.Extensibility.MaybePropagation
          {
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)

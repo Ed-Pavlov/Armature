@@ -8,7 +8,7 @@ namespace Armature.Core;
 
 /// <summary>
 /// The builder of units. It is the convenient way to couple a build chain pattern tree, (<see cref="BuildChainPatternTree" />),
-/// build stages, and parent builders together to pass into a <see cref="BuildSession" />, which could be used independently.
+/// build stages, and parent builders together to pass into a <see cref="BuildSession" />, which may be used independently.
 /// </summary>
 public class Builder : BuildChainPatternTree, IBuilder
 {
@@ -20,7 +20,6 @@ public class Builder : BuildChainPatternTree, IBuilder
   /// <param name="buildStages">The ordered collection of build stages all of which are performed to build a unit.</param>
   public Builder(params object[] buildStages) : this(buildStages, Empty<Builder>.Array)
   {
-    if(buildStages.Length == 0) throw new ArgumentNullException(nameof(buildStages));
   }
 
   /// <param name="buildStages">The ordered collection of build stages all of which are performed to build a unit.</param>
@@ -30,13 +29,12 @@ public class Builder : BuildChainPatternTree, IBuilder
   /// </param>
   public Builder(object[] buildStages, params Builder[]? parentBuilders)
   {
+    _buildStages = buildStages ?? throw new ArgumentNullException(nameof(buildStages));
     if(buildStages is null) throw new ArgumentNullException(nameof(buildStages));
     if(buildStages.Length == 0) throw new ArgumentException("Should contain at least one build stage", nameof(buildStages));
     if(buildStages.Any(stage => stage is null)) throw new ArgumentException("Should not contain null values", nameof(buildStages));
     if(buildStages.Length != buildStages.Distinct().Count()) throw new ArgumentException("Should not contain duplicate values", nameof(buildStages));
     if(parentBuilders?.Any(_ => _ is null) == true) throw new ArgumentException("Should not contain null values", nameof(parentBuilders));
-
-    _buildStages = buildStages;
 
     // ReSharper disable once CoVariantArrayConversion
     _parentBuilders = parentBuilders is null || parentBuilders.Length == 0 ? null : parentBuilders;

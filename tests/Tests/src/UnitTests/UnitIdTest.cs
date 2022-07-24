@@ -53,7 +53,7 @@ public class UnitIdTest
 
     // --arrange
     var unit1 = new UnitId(kind, tag);
-    var unit2 = new UnitId(kind, SpecialTag.Any);
+    var unit2 = new UnitId(kind, Tag.Any);
 
     // --assert
     unit1.Equals(unit2).Should().BeFalse();

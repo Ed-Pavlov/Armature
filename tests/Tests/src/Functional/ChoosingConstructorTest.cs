@@ -20,7 +20,7 @@ namespace Tests.Functional
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
-                       new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
                        new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
 
@@ -42,7 +42,7 @@ namespace Tests.Functional
       var target = new Builder(BuildStage.Create)
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
-                       new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
                        new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
 
@@ -65,7 +65,7 @@ namespace Tests.Functional
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
-                       new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
                        new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
 
@@ -93,7 +93,7 @@ namespace Tests.Functional
                            new GetConstructorByParameterTypes()
                          ),
                          BuildStage.Create),
-                       new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
                        new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
 
@@ -131,7 +131,7 @@ namespace Tests.Functional
                            new GetConstructorByParameterTypes()
                          ),
                          BuildStage.Create),
-                       new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
                        new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
 
@@ -162,7 +162,7 @@ namespace Tests.Functional
                            new GetConstructorByParameterTypes()
                          ),
                          BuildStage.Create),
-                       new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
                        new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
 

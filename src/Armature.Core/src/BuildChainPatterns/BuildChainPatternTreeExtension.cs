@@ -34,12 +34,11 @@ public static class BuildChainPatternTreeExtension
     if(parentNode is null) throw new ArgumentNullException(nameof(parentNode));
     if(node is null) throw new ArgumentNullException(nameof(node));
 
-    if(parentNode.Children.Contains(node))
+    if(!parentNode.Children.Add(node))
       throw new ArmatureException(exceptionMessage ?? $"Node '{node}' is already in the tree.")
            .AddData($"{nameof(parentNode)}", parentNode)
            .AddData($"{nameof(node)}", node);
 
-    parentNode.Children.Add(node);
     return node;
   }
 

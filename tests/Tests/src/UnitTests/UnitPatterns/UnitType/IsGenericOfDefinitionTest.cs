@@ -47,7 +47,7 @@ public class IsGenericOfDefinitionTest
   {
     // --arrange
     var unitId = new UnitId(typeof(List<int>), tag);
-    var target = new IsGenericOfDefinition(typeof(List<>), SpecialTag.Any);
+    var target = new IsGenericOfDefinition(typeof(List<>), Tag.Any);
 
     // --assert
     target.Matches(unitId).Should().BeTrue();

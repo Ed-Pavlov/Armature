@@ -25,7 +25,7 @@ namespace Tests.UnitTests.UnitPatterns
     public void should_match_if_tag_any_provided([Values(null, "tag")] object tag)
     {
       var unitInfo = new UnitId("kind", tag);
-      var target  = new UnitPattern("kind", SpecialTag.Any);
+      var target  = new UnitPattern("kind", Tag.Any);
 
       // --assert
       target.Matches(unitInfo).Should().BeTrue();
@@ -70,7 +70,7 @@ namespace Tests.UnitTests.UnitPatterns
       if(kind is null && tag is null) Assert.Ignore("Impossible arguments combination");
 
       var target1 = new UnitPattern(kind, tag);
-      var target2 = new UnitPattern(kind, SpecialTag.Any); // fix tag value
+      var target2 = new UnitPattern(kind, Tag.Any); // fix tag value
 
       // --assert
       target1.Equals(target2).Should().BeFalse();
@@ -103,7 +103,7 @@ namespace Tests.UnitTests.UnitPatterns
       yield return null;
       yield return "tag"; // object
       yield return 4; // value type
-      yield return SpecialTag.Any; // special
+      yield return Tag.Any; // special
     }
   }
 }

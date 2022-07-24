@@ -24,7 +24,7 @@ public static class AutoBuild
       = new SideTuner(
         tuner =>
           tuner.TreeRoot
-                       .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoList>()))
+                       .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoArray>()))
                        .AppendContextBranch(tuner)
                        .UseBuildAction(Static.Of<BuildMethodArgumentsInDirectOrder>(), BuildStage.Create));
   }

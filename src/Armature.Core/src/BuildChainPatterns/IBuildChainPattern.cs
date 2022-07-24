@@ -15,6 +15,9 @@ public interface IBuildChainPattern : IEquatable<IBuildChainPattern>, ILogString
   /// </summary>
   HashSet<IBuildChainPattern> Children { get; }
 
+  /// <summary>
+  /// The collection of build actions which should be performed to build a unit
+  /// </summary>
   BuildActionBag BuildActions { get; }
 
   /// <summary>

@@ -43,7 +43,7 @@ namespace Tests.Functional.WeightTests
                  // inject into constructor
                  new IfFirstUnit(new IsConstructor())
                     .UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
-                 new IfFirstUnit(new IsParameterInfoList())
+                 new IfFirstUnit(new IsParameterInfoArray())
                     .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
                  new IfFirstUnit(new IsParameterInfo())
                     .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)

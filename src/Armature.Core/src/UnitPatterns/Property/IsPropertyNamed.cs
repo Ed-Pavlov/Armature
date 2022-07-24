@@ -5,7 +5,7 @@ namespace Armature.Core;
 /// <summary>
 /// Checks if a unit is an argument to inject into the property with a specified name
 /// </summary>
-public record IsPropertyNamed : InjectPointWithNamePatternBase
+public record IsPropertyNamed : InjectPointNamedBase
 {
   public IsPropertyNamed(string propertyName) : base(propertyName) { }
 

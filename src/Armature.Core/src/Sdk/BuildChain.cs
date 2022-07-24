@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using Armature.Core.Annotations;
 
-namespace Armature.Core;
+namespace Armature.Core.Sdk;
 
 /// <summary>
 /// Data structure used to take a tail of the collection w/o memory allocations
@@ -39,7 +39,7 @@ public readonly struct BuildChain : IEnumerable<UnitId>
   }
 
   /// <summary>
-  /// The unit to be built, the last unit in the chain
+  /// The unit to be built is the first unit in the chain
   /// </summary>
   public UnitId TargetUnit
   {

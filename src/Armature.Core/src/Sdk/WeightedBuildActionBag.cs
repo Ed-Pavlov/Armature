@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 
-namespace Armature.Core;
+namespace Armature.Core.Sdk;
 
 /// <summary>
 /// Collection of matched build actions with matching weight grouped by the build stage

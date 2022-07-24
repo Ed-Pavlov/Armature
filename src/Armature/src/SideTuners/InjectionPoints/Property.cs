@@ -27,7 +27,7 @@ public static class Property
         tuner.CreateContextBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         tuner.TreeRoot
-             .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>()))
+             .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
              .AppendContextBranch(tuner)
              .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
       });
@@ -47,7 +47,7 @@ public static class Property
         tuner.CreateContextBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         tuner.TreeRoot
-             .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>()))
+             .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
              .AppendContextBranch(tuner)
              .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
       });
@@ -65,7 +65,7 @@ public static class Property
         tuner.CreateContextBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         tuner.TreeRoot
-             .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyList>()))
+             .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
              .AppendContextBranch(tuner)
              .UseBuildAction(new GetPropertyListByInjectPointId(pointIds), BuildStage.Create);
       });

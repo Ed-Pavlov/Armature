@@ -30,7 +30,7 @@ public class IsConstructorTest
     Type unitType)
   {
     // --arrange
-    var unitId = new UnitId(unitType, SpecialTag.Any);
+    var unitId = new UnitId(unitType, Tag.Any);
     var target = new IsConstructor();
 
     // --assert

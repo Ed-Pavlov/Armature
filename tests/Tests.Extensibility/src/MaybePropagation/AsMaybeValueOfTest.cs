@@ -114,7 +114,7 @@ namespace Tests.Extensibility.MaybePropagation
 
       builder
        .Building<Reader1>()
-       .Treat<Section>(SpecialTag.Any)
+       .Treat<Section>(Tag.Any)
        .AsMaybeValueOf()
        .As<Maybe<Section>>(SpecialTag.Propagate);
 
@@ -131,7 +131,7 @@ namespace Tests.Extensibility.MaybePropagation
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)

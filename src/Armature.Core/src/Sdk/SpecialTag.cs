@@ -27,19 +27,14 @@ public class SpecialTag : ILogString
   public static readonly SpecialTag Constructor = new SpecialTag(nameof(Constructor));
 
   /// <summary>
-  /// Is used to build a list of properties of a type
+  /// Is used to build a collection of properties of a type
   /// </summary>
-  public static readonly SpecialTag PropertyList = new SpecialTag(nameof(PropertyList));
+  public static readonly SpecialTag PropertyCollection = new SpecialTag(nameof(PropertyCollection));
 
   /// <summary>
   /// Is used to build an argument for the inject point
   /// </summary>
   public static readonly SpecialTag Argument = new SpecialTag(nameof(Argument));
-
-  /// <summary>
-  /// Means "any tag", it is used in patterns to match a unit regardless a tag
-  /// </summary>
-  public static readonly SpecialTag Any = new(nameof(Any));
 
   /// <summary>
   /// Is used to propagate a tag to building dependencies

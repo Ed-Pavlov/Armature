@@ -7,12 +7,12 @@ namespace Armature.Core;
 /// <summary>
 /// Base class for patterns check if a unit is an argument for an "inject point" with the specified name.
 /// </summary>
-public abstract record InjectPointWithNamePatternBase : IUnitPattern, ILogString
+public abstract record InjectPointNamedBase : IUnitPattern, ILogString
 {
   private readonly string _name;
 
   [DebuggerStepThrough]
-  protected InjectPointWithNamePatternBase(string name)
+  protected InjectPointNamedBase(string name)
   {
     if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
     _name = name;

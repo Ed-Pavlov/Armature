@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Armature.Core;
+using Armature.Core.Sdk;
 using Armature.Sdk;
 
 namespace Armature;
@@ -74,7 +75,7 @@ public static class ForProperty
         return tuner.TreeRoot
                     .GetOrAddNode(
                        new IfFirstUnit(
-                         new IsPropertyMarkedWithAttribute(injectPointId),
+                         new IsPropertyAttributed(injectPointId),
                          weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.IfFirstUnit))
                     .AppendContextBranch(tuner);
       });
