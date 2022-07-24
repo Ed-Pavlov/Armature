@@ -23,8 +23,6 @@ public static class PatternTreeTunerExtension
 
   public static IBuildingTuner Building<T>(this BuildChainPatternTree tree, object? tag = null) => BuildingTuner.Building(new RootTuner(tree), typeof(T), tag);
 
-  public static ITreatAllTuner TreatAll(this BuildChainPatternTree tree) => new TreatAllTuner(tree, 0);
-
   // /// <summary>
   // /// Overrides a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems.
   // /// </summary>

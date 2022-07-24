@@ -103,7 +103,10 @@ public static class BuilderExtension
     if(arguments is not {Length: > 0}) return null;
 
     var patternTree = new BuildChainPatternTree();
-    patternTree.TreatAll().AmendWeight(-10).UsingArguments(arguments);
+
+    var rootTuner = new RootTuner(patternTree);
+    DependencyTuner.UsingArguments(rootTuner, -10, arguments);
+
     return patternTree;
   }
 

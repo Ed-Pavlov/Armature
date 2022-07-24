@@ -26,7 +26,7 @@ namespace Tests.Performance
                        new IsParameterMarkedWithAttribute(),
                        new IsPropertyList(),
                        new IsPropertyInfo(),
-                       new IsPropertyWithType(new UnitPattern(typeof(string)))
+                       new IsPropertyOfType(new UnitPattern(typeof(string)))
                      };
 
       for(var i = 0; i < 10_000; i++)

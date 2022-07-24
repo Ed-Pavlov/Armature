@@ -18,7 +18,7 @@ public static class ForParameter
       (tuner, weight)
         => tuner.TreeRoot.GetOrAddNode(
                    new IfFirstUnit(
-                     new IsMethodParameterWithType(new UnitPattern(type)),
+                     new IsMethodParameterOfType(new UnitPattern(type)),
                      weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
                 .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
                 .AppendContextBranch(tuner));
@@ -34,7 +34,7 @@ public static class ForParameter
         => tuner.TreeRoot
           .GetOrAddNode(
              new IfFirstUnit(
-               new IsMethodParameterWithType(new UnitPattern(typeof(T))),
+               new IsMethodParameterOfType(new UnitPattern(typeof(T))),
                weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
           .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
           .AppendContextBranch(tuner));

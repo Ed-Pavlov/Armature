@@ -12,7 +12,7 @@ public class InstanceTest
   {
     // --arrange
     var buildSession = new BuildSessionMock();
-    var target       = new Instance<string>(expected);
+    var target       = new Instance<string?>(expected);
 
     // --act
     target.Process(buildSession);

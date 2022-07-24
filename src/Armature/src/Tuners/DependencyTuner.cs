@@ -15,8 +15,9 @@ public static class DependencyTuner
   /// Tunes how dependencies of an unit represented by <paramref name="tuner"/> should be built
   /// </summary>
   /// <param name="tuner">Tuner of an unit building rules</param>
+  /// <param name="weight">The weight of registration</param>
   /// <param name="arguments">Arguments should be object instances or implementation of <see cref="IArgumentSideTuner"/></param>
-  public static T UsingArguments<T>(T tuner, params object[] arguments) where T : ITuner
+  public static T UsingArguments<T>(T tuner, int weight, params object[] arguments) where T : ITuner
   {
     if(tuner is null) throw new ArgumentNullException(nameof(tuner));
     if(arguments.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(arguments));
@@ -39,7 +40,7 @@ public static class DependencyTuner
              .GetOrAddNode(
                 new IfFirstUnit(
                   new IsAssignableFromType(argument.GetType()),
-                  WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.IfFirstUnit))
+                  weight + WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.IfFirstUnit))
              .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
              .AppendContextBranch(tuner)
              .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);

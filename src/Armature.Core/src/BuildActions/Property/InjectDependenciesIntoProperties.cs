@@ -17,8 +17,20 @@ public record InjectDependenciesIntoProperties : IBuildAction
 
   public void PostProcess(IBuildSession buildSession)
   {
+    if(!buildSession.BuildResult.HasValue)
+    {
+      Log.WriteLine(LogLevel.Info, "Warning: unit is not built");
+      return;
+    }
+
     var unit = buildSession.BuildResult.Value;
-    var type = buildSession.BuildChain.TargetUnit.GetUnitTypeSafe();
+    if(unit is null)
+    {
+      Log.WriteLine(LogLevel.Info, "Warning: built unit is null, can't inject into properties");
+      return;
+    }
+
+    var type = buildSession.BuildChain.TargetUnit.GetUnitTypeSafe() ?? unit.GetType();
 
     var unitInfo = new UnitId(type, SpecialTag.PropertyList);
 

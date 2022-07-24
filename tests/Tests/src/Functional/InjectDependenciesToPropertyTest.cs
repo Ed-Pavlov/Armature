@@ -56,19 +56,6 @@ namespace Tests.Functional
       actual.InjectProperty.Should().BeNull();
     }
 
-    // [Test]
-    public void should()
-    {
-      // --arrange
-      var target = CreateTarget();
-      target.TreatAll().UsingInjectionPoints(Property.ByInjectPointId()); //TODO: is it possible to make it working
-      target.Treat<Subject>().AsIs();
-
-      // --act
-      target.Build<Subject>();
-
-    }
-
     [TestCaseSource(nameof(test_case_source))]
     public void should_use_argument_for_property_by_type(Func<BuildChainPatternTree, IFinalTuner> tune)
     {

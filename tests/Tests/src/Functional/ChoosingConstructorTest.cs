@@ -20,11 +20,9 @@ namespace Tests.Functional
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
-
-      target.TreatAll().Using(
-        AutoBuild.MethodArguments.InDirectOrder,
-        AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<Subject2>()
@@ -44,9 +42,9 @@ namespace Tests.Functional
       var target = new Builder(BuildStage.Create)
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
-
-      target.TreatAll().Using(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target
@@ -67,9 +65,9 @@ namespace Tests.Functional
       var target = new Builder(BuildStage.Cache, BuildStage.Create)
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
-
-      target.TreatAll().Using(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<Subject1>()
@@ -95,9 +93,9 @@ namespace Tests.Functional
                            new GetConstructorByParameterTypes()
                          ),
                          BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
-
-      target.TreatAll().Using(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<Subject3>()
@@ -133,8 +131,9 @@ namespace Tests.Functional
                            new GetConstructorByParameterTypes()
                          ),
                          BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
-      target.TreatAll().Using(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<object>().AsInstance(new object());
@@ -163,8 +162,9 @@ namespace Tests.Functional
                            new GetConstructorByParameterTypes()
                          ),
                          BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoList()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
-      target.TreatAll().Using(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<bool>().AsIs();

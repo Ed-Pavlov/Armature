@@ -7,12 +7,12 @@ namespace Armature.Core;
 /// <summary>
 /// Base class for patterns check if a unit is an argument for an "inject point" requires argument of the specified type.
 /// </summary>
-public abstract record InjectPointByTypePatternBase : IUnitPattern, ILogString
+public abstract record InjectPointOfTypePatternBase : IUnitPattern, ILogString
 {
   private readonly IUnitPattern _typePattern;
 
   [DebuggerStepThrough]
-  protected InjectPointByTypePatternBase(IUnitPattern typePattern) => _typePattern = typePattern ?? throw new ArgumentNullException(nameof(typePattern));
+  protected InjectPointOfTypePatternBase(IUnitPattern typePattern) => _typePattern = typePattern ?? throw new ArgumentNullException(nameof(typePattern));
 
   public bool Matches(UnitId unitId)
   {

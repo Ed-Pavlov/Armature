@@ -24,7 +24,7 @@ public abstract class ArgumentTunerBase<T> : IInternal<TuneArgumentRecipient, in
   /// Use the <paramref name="value" /> as an argument for the injection point.
   /// </summary>
   public IArgumentSideTuner UseValue(T value)
-    => new ArgumentSideTuner(tuner => TuneArgumentRecipientsTo(tuner, Weight).UseBuildAction(new Instance<T>(value), BuildStage.Create));
+    => new ArgumentSideTuner(tuner => TuneArgumentRecipientsTo(tuner, Weight).UseBuildAction(new Instance<T>(value), BuildStage.Cache));
 
   /// <summary>
   /// Build an argument for the injection point using <paramref name="factoryMethod" /> factory method.

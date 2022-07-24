@@ -22,7 +22,7 @@ public static class ForProperty
         return tuner.TreeRoot
                     .GetOrAddNode(
                        new IfFirstUnit(
-                         new IsPropertyWithType(new UnitPattern(type)),
+                         new IsPropertyOfType(new UnitPattern(type)),
                          weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
                     .AppendContextBranch(tuner);
       });
@@ -39,7 +39,7 @@ public static class ForProperty
         return tuner.TreeRoot
                     .GetOrAddNode(
                        new IfFirstUnit(
-                         new IsPropertyWithType(new UnitPattern(typeof(T))),
+                         new IsPropertyOfType(new UnitPattern(typeof(T))),
                          weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
                     .AppendContextBranch(tuner);
       });

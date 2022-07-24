@@ -15,7 +15,7 @@ public class ContextTest
     // --arrange
     var target = CreateTarget();
 
-    var i = target.Build<I>();
+    var i = target.Build<I>()!;
     i.Subject.Value.Should().Be("B");
   }
 
@@ -25,7 +25,7 @@ public class ContextTest
     // --arrange
     var target = CreateTarget();
 
-    var a = target.Build<A>();
+    var a = target.Build<A>()!;
     a.B.Subject.Value.Should().Be("AB");
   }
 
