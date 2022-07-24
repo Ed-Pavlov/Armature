@@ -19,26 +19,16 @@ public abstract class BuildChainPatternByUnitBase : BuildChainPatternBase, IInte
     base.PrintContentToLog(logLevel);
   }
 
-  private bool Equals(BuildChainPatternByUnitBase? other)
-  {
-    if(ReferenceEquals(null, other)) return false;
-    if(ReferenceEquals(this, other)) return true;
-
-    return Weight == other.Weight && GetType() == other.GetType() && Equals(UnitPattern, other.UnitPattern);
-  }
+  private bool Equals(BuildChainPatternByUnitBase? other) => base.Equals(other) && Equals(UnitPattern, other.UnitPattern);
 
   public override bool Equals(IBuildChainPattern? other) => Equals(other as BuildChainPatternByUnitBase);
-  public override bool Equals(object? obj)
-  {
-    var result = Equals(obj as BuildChainPatternByUnitBase);
-    return result;
-  }
+  public override bool Equals(object?             obj)   => Equals(obj as BuildChainPatternByUnitBase);
 
   public override int GetHashCode()
   {
     unchecked
     {
-      return (UnitPattern.GetHashCode() * 397) ^ Weight;
+      return (UnitPattern.GetHashCode() * 397) ^ base.GetHashCode();
     }
   }
 

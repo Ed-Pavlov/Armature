@@ -43,7 +43,7 @@ public class BuildChainPatternTree : IBuildChainPattern, IEnumerable, ILogPrinta
   #endregion
 
   /// <summary>
-  /// Reuse implementation of <see cref="BuildChainPatternWithChildrenBase" /> to implement <see cref="BuildChainPatternTree" /> public interface
+  /// Reuse implementation of <see cref="BuildChainPatternBase" /> to implement <see cref="BuildChainPatternTree" /> public interface
   /// </summary>
   private class Root : BuildChainPatternBase
   {
