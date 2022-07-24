@@ -14,7 +14,7 @@ public class SkipTillUnit : BuildChainPatternByUnitBase
   /// Moves along the build chain skipping units until it finds the matching unit.
   /// If it is the target unit, returns build actions for it, if no, pass the rest of the chain to each child and returns merged actions.
   /// </summary>
-  public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight)
+  public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, long inputWeight)
   {
     var hasActions = false;
     // ReSharper disable once AccessToModifiedClosure - yes, I need it to be captured

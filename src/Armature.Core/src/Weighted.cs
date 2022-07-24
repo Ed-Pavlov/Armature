@@ -10,11 +10,11 @@ namespace Armature.Core;
 /// </summary>
 public readonly struct Weighted<T> : IComparable<Weighted<T>>
 {
-  public readonly T   Entity;
-  public readonly int Weight;
+  public readonly T    Entity;
+  public readonly long Weight;
 
   [DebuggerStepThrough]
-  public Weighted(T entity, int weight)
+  public Weighted(T entity, long weight)
   {
     Entity = entity;
     Weight = weight;
@@ -31,5 +31,5 @@ public readonly struct Weighted<T> : IComparable<Weighted<T>>
 public static class WeightedExtension
 {
   [DebuggerStepThrough]
-  public static Weighted<T> WithWeight<T>(this T entity, int weight) => new(entity, weight);
+  public static Weighted<T> WithWeight<T>(this T entity, long weight) => new(entity, weight);
 }

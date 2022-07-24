@@ -23,11 +23,13 @@ namespace Armature.Core;
 /// </remarks>
 public class BuildChainPatternTree : IBuildChainPattern, IEnumerable, ILogPrintable
 {
-  private readonly Root _root = new();
+  private readonly Root _root;
+
+  public BuildChainPatternTree(int weight = 0) => _root = new Root(weight);
 
   public HashSet<IBuildChainPattern> Children => _root.Children;
 
-  public bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight = 0)
+  public bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, long inputWeight = 0L)
     => _root.GatherBuildActions(buildChain, out actionBag, 0);
 
   public void PrintToLog(LogLevel logLevel = LogLevel.None) => _root.PrintToLog(logLevel);
@@ -48,10 +50,10 @@ public class BuildChainPatternTree : IBuildChainPattern, IEnumerable, ILogPrinta
   private class Root : BuildChainPatternBase
   {
     [DebuggerStepThrough]
-    public Root() : base(0) { }
+    public Root(int weight) : base(weight) { }
 
     [DebuggerStepThrough]
-    public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight)
+    public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, long inputWeight)
     {
       actionBag = null;
       if(RawChildren is null) return false;

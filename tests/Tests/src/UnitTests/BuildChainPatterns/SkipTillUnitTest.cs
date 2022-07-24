@@ -39,7 +39,7 @@ namespace Tests.UnitTests.BuildChainPatterns
             () => child1.GatherBuildActions(
                 An<BuildChain>.That.IsEqualTo(Util.CreateBuildChain(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
                 out weightedBuildActionBag,
-                An<int>._))
+                An<long>._))
        .MustHaveHappenedOnceAndOnly();
 
       WeightedBuildActionBag? actionBag1;
@@ -48,7 +48,7 @@ namespace Tests.UnitTests.BuildChainPatterns
             () => child2.GatherBuildActions(
                 An<BuildChain>.That.IsEqualTo(Util.CreateBuildChain(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
                 out actionBag1,
-                An<int>._))
+                An<long>._))
        .MustHaveHappenedOnceAndOnly();
     }
 
@@ -72,9 +72,9 @@ namespace Tests.UnitTests.BuildChainPatterns
 
       // --assert
       WeightedBuildActionBag? weightedBuildActionBag;
-      A.CallTo(() => child1.GatherBuildActions(An<BuildChain>._, out weightedBuildActionBag, An<int>._)).WithAnyArguments().MustNotHaveHappened();
+      A.CallTo(() => child1.GatherBuildActions(An<BuildChain>._, out weightedBuildActionBag, An<long>._)).WithAnyArguments().MustNotHaveHappened();
       WeightedBuildActionBag? actionBag1;
-      A.CallTo(() => child2.GatherBuildActions(An<BuildChain>._, out actionBag1, An<int>._)).WithAnyArguments().MustNotHaveHappened();
+      A.CallTo(() => child2.GatherBuildActions(An<BuildChain>._, out actionBag1, An<long>._)).WithAnyArguments().MustNotHaveHappened();
     }
 
     [Test]

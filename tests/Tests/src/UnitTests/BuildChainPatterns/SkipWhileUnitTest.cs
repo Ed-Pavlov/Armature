@@ -33,14 +33,14 @@ public class SkipWhileUnitTest
             () => child1.GatherBuildActions(
                 An<BuildChain>.That.IsEqualTo(Util.CreateBuildChain(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
                 out actionBag,
-                An<int>._))
+                An<long>._))
        .MustHaveHappenedOnceAndOnly();
 
       A.CallTo(
             () => child2.GatherBuildActions(
                 An<BuildChain>.That.IsEqualTo(Util.CreateBuildChain(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
                 out actionBag,
-                An<int>._))
+                An<long>._))
        .MustHaveHappenedOnceAndOnly();
     }
 
@@ -67,14 +67,14 @@ public class SkipWhileUnitTest
             () => child1.GatherBuildActions(
                 An<BuildChain>.That.IsEqualTo(expected.ToBuildChain(), Comparer.OfArrayTail<UnitId>()),
                 out actionBag,
-                An<int>._))
+                An<long>._))
        .MustHaveHappenedOnceAndOnly();
 
       A.CallTo(
             () => child2.GatherBuildActions(
                 An<BuildChain>.That.IsEqualTo(expected.ToBuildChain(), Comparer.OfArrayTail<UnitId>()),
                 out actionBag,
-                An<int>._))
+                An<long>._))
        .MustHaveHappenedOnceAndOnly();
     }
 

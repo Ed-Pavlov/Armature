@@ -21,10 +21,10 @@ public abstract class BuildChainPatternBase : IBuildChainPattern, IEnumerable, I
   public    BuildActionBag              BuildActions => LazyBuildAction;
   private   HashSet<IBuildChainPattern> LazyChildren => RawChildren ??= new HashSet<IBuildChainPattern>();
   public    HashSet<IBuildChainPattern> Children     => LazyChildren;
-  protected int                         Weight       { [DebuggerStepThrough] get; }
+  protected long                        Weight       { [DebuggerStepThrough] get; }
 
   [PublicAPI]
-  protected bool GetOwnBuildActions(int inputWeight, out WeightedBuildActionBag? actionBag)
+  protected bool GetOwnBuildActions(long inputWeight, out WeightedBuildActionBag? actionBag)
   {
     actionBag = null;
     if(_buildActions is null) return false;
@@ -38,7 +38,7 @@ public abstract class BuildChainPatternBase : IBuildChainPattern, IEnumerable, I
     return true;
   }
 
-  protected bool GetOwnAndChildrenBuildActions(BuildChain buildChain, int inputWeight, out WeightedBuildActionBag? actionBag)
+  protected bool GetOwnAndChildrenBuildActions(BuildChain buildChain, long inputWeight, out WeightedBuildActionBag? actionBag)
   {
     var result = GetOwnBuildActions(inputWeight, out actionBag);
     actionBag.WriteToLog(LogLevel.Verbose, "Actions: ");
@@ -52,7 +52,7 @@ public abstract class BuildChainPatternBase : IBuildChainPattern, IEnumerable, I
     return result;
   }
 
-  public abstract bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight);
+  public abstract bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, long inputWeight);
 
   /// <summary>
   /// Gathers and merges build actions from all children nodes.
@@ -61,7 +61,7 @@ public abstract class BuildChainPatternBase : IBuildChainPattern, IEnumerable, I
   /// <param name="inputWeight">The weight of matching which passed to children to calculate a final weight of matching.</param>
   /// <param name="actionBag"></param>
   [PublicAPI]
-  protected bool GetChildrenActions(BuildChain buildChain, int inputWeight, out WeightedBuildActionBag? actionBag)
+  protected bool GetChildrenActions(BuildChain buildChain, long inputWeight, out WeightedBuildActionBag? actionBag)
   {
     actionBag = null;
 

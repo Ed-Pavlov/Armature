@@ -33,7 +33,7 @@ public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITuner
 
   public ITreatAllTuner TreatAll() => this;
 
-  public ITreatAllTuner UsingArguments(params object[] arguments) => DependencyTuner.UsingArguments(this, 0, arguments);
+  public ITreatAllTuner UsingArguments(params object[] arguments) => DependencyTuner.UsingArguments(this, arguments);
 
   public ITreatAllTuner UsingInjectionPoints(params IInjectionPointSideTuner[] injectionPoints) => DependencyTuner.UsingInjectionPoints(this, injectionPoints);
 

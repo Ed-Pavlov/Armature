@@ -102,10 +102,9 @@ public static class BuilderExtension
   {
     if(arguments is not {Length: > 0}) return null;
 
-    var patternTree = new BuildChainPatternTree();
-
+    var patternTree = new BuildChainPatternTree(-10);
     var rootTuner = new RootTuner(patternTree);
-    DependencyTuner.UsingArguments(rootTuner, -10, arguments);
+    DependencyTuner.UsingArguments(rootTuner, arguments);
 
     return patternTree;
   }

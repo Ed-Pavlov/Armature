@@ -24,7 +24,7 @@ public static class Util
   public class TestBuildChainPattern : BuildChainPatternBase
   {
     public TestBuildChainPattern(int                   weight = 0) : base(weight) { }
-    public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, int inputWeight) => throw new NotSupportedException();
+    public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, long inputWeight) => throw new NotSupportedException();
   }
 
   public record OtherUnitPattern : IUnitPattern

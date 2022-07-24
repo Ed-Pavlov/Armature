@@ -94,6 +94,6 @@ public class WeightOf
     ///
     /// Note that provided sample is "synthetic" see <see cref="SpecialTag"/> and <see cref="Core.SkipWhileUnit"/> for details.
     /// </summary>
-    public static int IfFirstUnit { get; protected set; } = 1_000_000;
+    public static int IfFirstUnit { get; protected set; } = 1_000_000_000;
   }
 }
