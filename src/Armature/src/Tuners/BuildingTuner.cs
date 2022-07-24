@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Armature.Core;
 using Armature.Sdk;
+using JetBrains.Annotations;
 
 namespace Armature;
 
@@ -10,6 +11,7 @@ public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITuner
   private readonly CreateNode _createNode;
 
   [DebuggerStepThrough]
+  [PublicAPI]
   public BuildingTuner(ITuner parent, CreateNode createNode)
   {
     Parent      = parent;
@@ -50,7 +52,7 @@ public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITuner
 
   public ITuner?            Parent   { get; }
   public IBuildChainPattern TreeRoot { get; }
-  public int                Weight   { get; protected set; }
+  public int                Weight   { get; private set; }
 
   public IBuildChainPattern GetOrAddNodeTo(IBuildChainPattern node) => node.GetOrAddNode(_createNode());
 }

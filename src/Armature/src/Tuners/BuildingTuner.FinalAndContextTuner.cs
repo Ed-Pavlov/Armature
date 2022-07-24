@@ -4,7 +4,6 @@ using Armature.Sdk;
 
 namespace Armature;
 
-
 public partial class BuildingTuner<T>
 {
   /// <summary>
@@ -18,7 +17,7 @@ public partial class BuildingTuner<T>
 
   IBuildingTuner IContextTuner.BuildingIt()
   {
-    // (Parent as IRootTuner).Building(_unitPattern:{typeof(T), tag})
+    // Parent.Building<T>(tag)
     IBuildChainPattern CreateNode() => new SkipTillUnit(_unitPattern, Weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.SkipTillUnit);
 
     return new BuildingTuner(Parent!, CreateNode);

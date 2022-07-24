@@ -102,7 +102,7 @@ public static class BuilderExtension
   {
     if(arguments is not {Length: > 0}) return null;
 
-    var patternTree = new BuildChainPatternTree(-10);
+    var patternTree = new BuildChainPatternTree(-10); // decrease weight of the "runtime" arguments by default
     var rootTuner = new RootTuner(patternTree);
     DependencyTuner.UsingArguments(rootTuner, arguments);
 
@@ -111,13 +111,13 @@ public static class BuilderExtension
 
   public readonly struct WithTag
   {
-    private readonly object  _tag;
     private readonly Builder _builder;
+    private readonly object  _tag;
 
     public WithTag(Builder builder, object tag)
     {
-      _tag     = tag     ?? throw new ArgumentNullException(nameof(tag));
       _builder = builder ?? throw new ArgumentNullException(nameof(builder));
+      _tag     = tag     ?? throw new ArgumentNullException(nameof(tag));
     }
 
     /// <summary>
