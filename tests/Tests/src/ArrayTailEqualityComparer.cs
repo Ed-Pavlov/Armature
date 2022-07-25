@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Armature.Core;
 using Armature.Core.Sdk;
 
 namespace Tests;
@@ -24,10 +22,13 @@ public class ArrayTailEqualityComparer<T> : IEqualityComparer<BuildChain>
   }
   public int GetHashCode(BuildChain array)
   {
-    var hash = HashCode.Combine(array.GetHashCode());
-    foreach(var item in array)
-      hash = HashCode.Combine(hash, item.GetHashCode());
+    unchecked
+    {
+      var hash = array.GetHashCode();
+      foreach(var item in array)
+        hash ^= 397 * item.GetHashCode();
 
-    return hash;
+      return hash;
+    }
   }
 }

@@ -37,11 +37,12 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
 
     if(IsCollection(injectionPointType, out var listType))
     {
+
       var collectionItemType = injectionPointType.GenericTypeArguments[0];
       var arguments          = buildSession.BuildAllUnits(new UnitId(collectionItemType, effectiveTag));
 
-      var listInstance = CreateListInstance(listType, arguments.Count);
-      FillList(listInstance, listType, collectionItemType, arguments.Select(_ => _.Entity));
+      var listInstance = CreateListInstance(listType!, arguments.Count);
+      FillList(listInstance, listType!, collectionItemType, arguments.Select(_ => _.Entity));
 
       buildSession.BuildResult = new BuildResult(listInstance);
     }
@@ -89,7 +90,10 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
   }
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  private static bool IsCollection(Type type, [NotNullWhen(true)] out Type? listType)
+  private static bool IsCollection(
+    Type type,
+    // [NotNullWhen(true)]
+    out Type? listType)
   {
     listType = null;
 

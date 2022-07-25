@@ -11,7 +11,7 @@ namespace Tests.Extensibility.LifetimeRegistration;
 
 public static class RegistrationContextExtension
 {
-  public static IFinalAndContextTuner AsSingleton([NotNull] this IFinalAndContextTuner tuner, Lifetime lifetime)
+  public static IFinalAndContextTuner AsSingleton(this IFinalAndContextTuner tuner, Lifetime lifetime)
   {
     if(tuner == null) throw new ArgumentNullException(nameof(tuner));
 
@@ -57,7 +57,7 @@ public static class RegistrationContextExtension
   /// <br/>
   /// IMPORTANT! This is experimental non-well tested stuff, use it only if you absolutely sure what you do.
   /// </remarks>
-  public static IFinalAndContextTuner AsSingleton2([NotNull] this IFinalAndContextTuner finalTuner, Lifetime lifetime)
+  public static IFinalAndContextTuner AsSingleton2(this IFinalAndContextTuner finalTuner, Lifetime lifetime)
   {
     if(finalTuner == null) throw new ArgumentNullException(nameof(finalTuner));
 
@@ -77,7 +77,7 @@ public static class RegistrationContextExtension
   /// <summary>
   /// The alternative implementation of <see cref="IFinalAndContextTuner.AsSingleton"/> which is thread-safe (i.e. supports concurrent creation requests).
   /// </summary>
-  public static IFinalAndContextTuner AsSingleton2([NotNull] this IFinalAndContextTuner finalTuner)
+  public static IFinalAndContextTuner AsSingleton2(this IFinalAndContextTuner finalTuner)
   {
     if(finalTuner == null) throw new ArgumentNullException(nameof(finalTuner));
 
