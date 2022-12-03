@@ -2,20 +2,20 @@ using System;
 
 namespace Armature;
 
-public interface IBuildingTuner : ITunerBase
+public interface ISubjectTuner : ITunerBase
 {
   /// <summary>
   /// Amend the weight of the current registration
   /// </summary>
-  IBuildingTuner AmendWeight(short delta);
+  ISubjectTuner AmendWeight(short delta);
   /// <summary>
   /// Add build actions for units building in the context of unit representing by <paramref name="type"/> and <paramref name="tag"/> in subsequence calls.
   /// </summary>
-  IBuildingTuner Building(Type type, object? tag = null);
+  ISubjectTuner Building(Type type, object? tag = null);
   /// <summary>
   /// Add build actions for units building in the context of unit representing by <typeparamref name="T"/> and <paramref name="tag"/> in subsequence calls.
   /// </summary>
-  IBuildingTuner Building<T>(object? tag = null);
+  ISubjectTuner Building<T>(object? tag = null);
   /// <summary>
   /// Add build actions to build a unit representing by <paramref name="type"/> and <paramref name="tag"/> in subsequence calls.
   /// </summary>
@@ -40,5 +40,5 @@ public interface IBuildingTuner : ITunerBase
   /// Add build action applied to any building unit in subsequence calls. It's needed to setup common build actions like which constructor to call or
   /// inject dependencies into properties or not.
   /// </summary>
-  ITreatAllTuner TreatAll();
+  IAllTuner TreatAll();
 }

@@ -1,18 +1,21 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
+using Armature.Core.Sdk;
 
 namespace Armature.Core;
 
 /// <summary>
 /// Checks if a unit is an argument for a method parameter marked with <see cref="InjectAttribute"/> attribute
-/// with an optional <see cref="InjectAttribute.InjectionPointId" />
+/// with an optional <see cref="InjectAttribute.Tag" />
 /// </summary>
-public record IsParameterAttributed : InjectPointAttributedBase
+public record IsParameterAttributed : IsInjectPointBase
 {
   /// <inheritdoc />
   [DebuggerStepThrough]
-  public IsParameterAttributed(object? injectPointId = null) : base(injectPointId) { }
+  public IsParameterAttributed(object? injectPointTag = null) : base(injectPointTag) { }
 
-  protected override InjectAttribute? GetAttribute(UnitId unitId)
-    => unitId.Kind is ParameterInfo parameterInfo ? parameterInfo.GetCustomAttribute<InjectAttribute>() : default;
+  protected override IEnumerable<InjectAttribute> GetAttributes(UnitId unitId)
+    => unitId.Kind is ParameterInfo parameterInfo ? parameterInfo.GetCustomAttributes<InjectAttribute>() : Enumerable.Empty<InjectAttribute>();
 }

@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="src\Tuners\BuildingTuner.Static.cs">
+    <Compile Update="src\Tuners\SubjectTuner.Static.cs">
       <DependentUpon>BuildingTuner.cs</DependentUpon>
     </Compile>
     <Compile Update="src\Tuners\BuildingTuner.CreationTuner.cs">
@@ -31,6 +31,8 @@
     <Compile Update="src\Tuners\BuildingTuner.DependencyTuner.cs">
       <DependentUpon>BuildingTuner`1.cs</DependentUpon>
     </Compile>
+    <Compile Remove="src\Tuners\IFinalAndContextTuner.cs" />
+    <Compile Remove="src\Tuners\IFinalTuner.cs" />
   </ItemGroup>
 
   <PropertyGroup Label="nuspec">

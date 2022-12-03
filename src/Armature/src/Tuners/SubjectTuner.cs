@@ -6,22 +6,22 @@ using JetBrains.Annotations;
 
 namespace Armature;
 
-public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITuner
+public partial class SubjectTuner : ISubjectTuner, IAllTuner, ITuner
 {
   private readonly CreateNode _createNode;
 
   [DebuggerStepThrough]
   [PublicAPI]
-  public BuildingTuner(ITuner parent, CreateNode createNode)
+  public SubjectTuner(ITuner parent, CreateNode createNode)
   {
     Parent      = parent;
     TreeRoot    = parent.TreeRoot;
     _createNode = createNode ?? throw new ArgumentNullException(nameof(createNode));
   }
 
-  public IBuildingTuner Building(Type type, object? tag = null) => Building(this, type, tag, Weight);
+  public ISubjectTuner Building(Type type, object? tag = null) => Building(this, type, tag, Weight);
 
-  public IBuildingTuner Building<T>(object? tag = null) => Building(typeof(T), tag);
+  public ISubjectTuner Building<T>(object? tag = null) => Building(typeof(T), tag);
 
   public IBuildingTuner<object?> Treat(Type type, object? tag = null) => Treat(this, type, tag, Weight);
 
@@ -33,16 +33,16 @@ public partial class BuildingTuner : IBuildingTuner, ITreatAllTuner, ITuner
 
   public IBuildingTuner<T> TreatInheritorsOf<T>(object? tag = null) => TreatInheritorsOf<T>(this, tag, Weight);
 
-  public ITreatAllTuner TreatAll() => this;
+  public IAllTuner TreatAll() => this;
 
-  public ITreatAllTuner UsingArguments(params object[] arguments) => DependencyTuner.UsingArguments(this, arguments);
+  public IAllTuner UsingArguments(params object[] arguments) => DependencyTuner.UsingArguments(this, arguments);
 
-  public ITreatAllTuner UsingInjectionPoints(params IInjectionPointSideTuner[] injectionPoints) => DependencyTuner.UsingInjectionPoints(this, injectionPoints);
+  public IAllTuner UsingInjectionPoints(params IInjectionPointSideTuner[] injectionPoints) => DependencyTuner.UsingInjectionPoints(this, injectionPoints);
 
-  public ITreatAllTuner Using(params ISideTuner[] sideTuners) => DependencyTuner.Using(this, sideTuners);
+  public IAllTuner Using(params ISideTuner[] sideTuners) => DependencyTuner.Using(this, sideTuners);
 
-  IBuildingTuner IBuildingTuner.                  AmendWeight(short delta) => AmendWeight(delta, this);
-  ITreatAllTuner IDependencyTuner<ITreatAllTuner>.AmendWeight(short delta) => AmendWeight<ITreatAllTuner>(delta, this);
+  ISubjectTuner ISubjectTuner.                  AmendWeight(short delta) => AmendWeight(delta, this);
+  IAllTuner IDependencyTuner<IAllTuner>.AmendWeight(short delta) => AmendWeight<IAllTuner>(delta, this);
 
   protected T AmendWeight<T>(short delta, T inheritor)
   {

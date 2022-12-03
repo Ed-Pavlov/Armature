@@ -1,5 +1,8 @@
 namespace Armature;
 
+/// <summary>
+/// Tunes (override defaults) target unit's dependencies and how they should be injected
+/// </summary>
 public interface IDependencyTuner<out T> : ITunerBase
 {
   /// <summary>

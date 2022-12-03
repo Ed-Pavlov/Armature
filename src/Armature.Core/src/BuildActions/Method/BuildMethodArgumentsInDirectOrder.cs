@@ -16,19 +16,7 @@ public record BuildMethodArgumentsInDirectOrder : IBuildAction
     var arguments  = new object?[parameters.Length];
 
     for(var i = 0; i < parameters.Length; i++)
-    {
-      var buildResult = buildSession.BuildUnit(new UnitId(parameters[i], SpecialTag.Argument));
-
-      if(!buildResult.HasValue)
-      {
-        var method = parameters[i].Member;
-
-        throw new ArmatureException($"Argument for parameter '{parameters[i]}' of {method.DeclaringType?.ToLogString()}.{method} is not built")
-         .AddData("Method", method);
-      }
-
-      arguments[i] = buildResult.Value;
-    }
+      arguments[i] = buildSession.BuildArgumentForMethod(parameters[i]);
 
     buildSession.BuildResult = new BuildResult(arguments);
   }

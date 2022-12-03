@@ -6,22 +6,22 @@ namespace Armature;
 public static class PatternTreeTunerExtension
 {
   public static IBuildingTuner<object?> Treat(this BuildChainPatternTree tree, Type type, object? tag = null)
-    => BuildingTuner.Treat(new RootTuner(tree), type, tag);
+    => SubjectTuner.Treat(new RootTuner(tree), type, tag);
 
-  public static IBuildingTuner<T> Treat<T>(this BuildChainPatternTree tree, object? tag = null) => BuildingTuner.Treat<T>(new RootTuner(tree), tag);
+  public static IBuildingTuner<T> Treat<T>(this BuildChainPatternTree tree, object? tag = null) => SubjectTuner.Treat<T>(new RootTuner(tree), tag);
 
   public static IBuildingTuner<object?> TreatOpenGeneric(this BuildChainPatternTree tree, Type openGenericType, object? tag = null)
-    => BuildingTuner.TreatOpenGeneric(new RootTuner(tree), openGenericType, tag);
+    => SubjectTuner.TreatOpenGeneric(new RootTuner(tree), openGenericType, tag);
 
   public static IBuildingTuner<object?> TreatInheritorsOf(this BuildChainPatternTree tree, Type baseType, object? tag = null)
-    => BuildingTuner.TreatInheritorsOf(new RootTuner(tree), baseType, tag);
+    => SubjectTuner.TreatInheritorsOf(new RootTuner(tree), baseType, tag);
 
   public static IBuildingTuner<T> TreatInheritorsOf<T>(this BuildChainPatternTree tree, object? tag = null)
-    => BuildingTuner.TreatInheritorsOf<T>(new RootTuner(tree), tag);
+    => SubjectTuner.TreatInheritorsOf<T>(new RootTuner(tree), tag);
 
-  public static IBuildingTuner Building(this BuildChainPatternTree tree, Type type, object? tag = null) => BuildingTuner.Building(new RootTuner(tree), type, tag);
+  public static ISubjectTuner Building(this BuildChainPatternTree tree, Type type, object? tag = null) => SubjectTuner.Building(new RootTuner(tree), type, tag);
 
-  public static IBuildingTuner Building<T>(this BuildChainPatternTree tree, object? tag = null) => BuildingTuner.Building(new RootTuner(tree), typeof(T), tag);
+  public static ISubjectTuner Building<T>(this BuildChainPatternTree tree, object? tag = null) => SubjectTuner.Building(new RootTuner(tree), typeof(T), tag);
 
   // /// <summary>
   // /// Overrides a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems.

@@ -17,10 +17,8 @@ public class TestFixture
             .ComparingByMembers<IBuildChainPattern>() // compare pattern tree nodes with build actions which are not included into Equals implementation
              );
 
-#if NETCOREAPP3_1_OR_GREATER
     Trace.Listeners.Clear();
     Trace.Listeners.Add(new ConsoleTraceListener());
     Log.Enable(LogLevel.Trace);
-#endif
   }
 }

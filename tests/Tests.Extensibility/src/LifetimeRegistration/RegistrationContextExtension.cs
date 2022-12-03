@@ -11,7 +11,7 @@ namespace Tests.Extensibility.LifetimeRegistration;
 
 public static class RegistrationContextExtension
 {
-  public static IFinalAndContextTuner AsSingleton(this IFinalAndContextTuner tuner, Lifetime lifetime)
+  public static ISettingTuner AsSingleton(this ISettingTuner tuner, Lifetime lifetime)
   {
     if(tuner == null) throw new ArgumentNullException(nameof(tuner));
 
@@ -57,33 +57,33 @@ public static class RegistrationContextExtension
   /// <br/>
   /// IMPORTANT! This is experimental non-well tested stuff, use it only if you absolutely sure what you do.
   /// </remarks>
-  public static IFinalAndContextTuner AsSingleton2(this IFinalAndContextTuner finalTuner, Lifetime lifetime)
+  public static ISettingTuner AsSingleton2(this ISettingTuner settingTuner, Lifetime lifetime)
   {
-    if(finalTuner == null) throw new ArgumentNullException(nameof(finalTuner));
+    if(settingTuner == null) throw new ArgumentNullException(nameof(settingTuner));
 
-    var singletonLifetime = lifetime.CreateSubLifetime($"Singleton${finalTuner}");
-    finalTuner
+    var singletonLifetime = lifetime.CreateSubLifetime($"Singleton${settingTuner}");
+    settingTuner
      .UsingArguments(ForParameter.OfType<Lifetime>().UseValue(singletonLifetime))
      .AsSingleton2();
 
-    finalTuner
+    settingTuner
      .BuildingIt()
      .TreatAll()
      .UsingArguments(ForParameter.OfType<Lifetime>().UseValue(singletonLifetime));
 
-    return finalTuner;
+    return settingTuner;
   }
 
   /// <summary>
-  /// The alternative implementation of <see cref="IFinalAndContextTuner.AsSingleton"/> which is thread-safe (i.e. supports concurrent creation requests).
+  /// The alternative implementation of <see cref="ISettingTuner.AsSingleton"/> which is thread-safe (i.e. supports concurrent creation requests).
   /// </summary>
-  public static IFinalAndContextTuner AsSingleton2(this IFinalAndContextTuner finalTuner)
+  public static ISettingTuner AsSingleton2(this ISettingTuner settingTuner)
   {
-    if(finalTuner == null) throw new ArgumentNullException(nameof(finalTuner));
+    if(settingTuner == null) throw new ArgumentNullException(nameof(settingTuner));
 
-    var tuner = (ITuner) finalTuner;
-    tuner.CreateContextBranch().UseBuildAction(new ThreadSafeSingletonBuildAction(), BuildStage.Cache);
-    return finalTuner;
+    var tuner = (ITuner) settingTuner;
+    tuner.GetOrAddBuildChainPatternNode().UseBuildAction(new ThreadSafeSingletonBuildAction(), BuildStage.Cache);
+    return settingTuner;
   }
 
   private sealed class ThreadSafeSingletonBuildAction : IBuildAction

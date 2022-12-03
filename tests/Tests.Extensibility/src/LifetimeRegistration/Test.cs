@@ -40,7 +40,7 @@ public class Test
               .UseBuildAction(
                    new TryInOrder
                    {
-                       new GetConstructorByInjectPointId(),       // constructor marked with [Inject] attribute has more priority
+                       new GetConstructorByInjectPoint(),       // constructor marked with [Inject] attribute has more priority
                        new GetConstructorWithMaxParametersCount() // constructor with largest number of parameters has less priority
                    },
                    BuildStage.Create),
@@ -48,7 +48,7 @@ public class Test
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
            new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(
-                   new TryInOrder {Static.Of<BuildArgumentByParameterInjectPointId>(), Static.Of<BuildArgumentByParameterType>()},
+                   new TryInOrder {Static.Of<BuildArgumentByParameterTypeAndTag>(), Static.Of<BuildArgumentByParameterType>()},
                    BuildStage.Create)
        };
 

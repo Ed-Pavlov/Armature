@@ -9,7 +9,7 @@ namespace Armature.Core;
 
 /// <summary>
 /// "Builds" a property Unit of the currently building Unit of specified type
-/// specified <see cref="InjectAttribute.InjectionPointId" />
+/// specified <see cref="InjectAttribute.Tag" />
 /// </summary>
 public record GetPropertyByType(Type _type) : IBuildAction, ILogString
 {

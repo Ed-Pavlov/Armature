@@ -15,7 +15,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
       var tuner = (ITuner) buildingTuner;
 
       var uniqueTag = Guid.NewGuid();
-      tuner.CreateContextBranch().UseBuildAction(new BuildMaybeAction<T>(uniqueTag), BuildStage.Create);
+      tuner.GetOrAddBuildChainPatternNode().UseBuildAction(new BuildMaybeAction<T>(uniqueTag), BuildStage.Create);
 
       var unitPattern = new UnitPattern(typeof(T), uniqueTag);
 
@@ -30,7 +30,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     public static IBuildingTuner<T> AsMaybeValueOf<T>(this IBuildingTuner<T> buildingTuner)
     {
       var tuner = (ITuner) buildingTuner;
-      tuner.CreateContextBranch().UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize);
+      tuner.GetOrAddBuildChainPatternNode().UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize);
       return buildingTuner;
     }
   }

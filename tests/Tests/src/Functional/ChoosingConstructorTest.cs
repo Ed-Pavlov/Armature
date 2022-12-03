@@ -88,7 +88,7 @@ namespace Tests.Functional
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
-                           new GetConstructorByInjectPointId(),
+                           new GetConstructorByInjectPoint(),
                            new GetConstructorWithMaxParametersCount(),
                            new GetConstructorByParameterTypes()
                          ),
@@ -126,7 +126,7 @@ namespace Tests.Functional
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
-                           new GetConstructorByInjectPointId(),
+                           new GetConstructorByInjectPoint(),
                            new GetConstructorWithMaxParametersCount(),
                            new GetConstructorByParameterTypes()
                          ),
@@ -157,7 +157,7 @@ namespace Tests.Functional
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
-                           new GetConstructorByInjectPointId(),
+                           new GetConstructorByInjectPoint(),
                            new GetConstructorWithMaxParametersCount(),
                            new GetConstructorByParameterTypes()
                          ),
@@ -181,7 +181,7 @@ namespace Tests.Functional
       yield return new TestCaseData(new GetConstructorWithMaxParametersCount()).SetName("WithMaxParametersCount");
 
       yield return new TestCaseData(
-        new TryInOrder {new GetConstructorByInjectPointId(), new GetConstructorWithMaxParametersCount(), new GetConstructorByParameterTypes(),}
+        new TryInOrder {new GetConstructorByInjectPoint(), new GetConstructorWithMaxParametersCount(), new GetConstructorByParameterTypes(),}
       ).SetName("ByInjectPointId -> WithMaxParametersCount -> Parameterless");
     }
 
@@ -190,7 +190,7 @@ namespace Tests.Functional
       yield return new TestCaseData(new GetConstructorByParameterTypes()).SetName("Parameterless");
 
       yield return new TestCaseData(
-        new TryInOrder {new GetConstructorByInjectPointId(), new GetConstructorByParameterTypes(), new GetConstructorWithMaxParametersCount(),}
+        new TryInOrder {new GetConstructorByInjectPoint(), new GetConstructorByParameterTypes(), new GetConstructorWithMaxParametersCount(),}
       ).SetName("ByInjectPointId -> Parameterless -> WithMaxParametersCount");
     }
 
@@ -198,14 +198,14 @@ namespace Tests.Functional
     {
       yield return new TestCaseData(
         null,
-        new TryInOrder {new GetConstructorByInjectPointId(), new GetConstructorByParameterTypes(), new GetConstructorWithMaxParametersCount(),}
+        new TryInOrder {new GetConstructorByInjectPoint(), new GetConstructorByParameterTypes(), new GetConstructorWithMaxParametersCount(),}
       ).SetName("PointId = null");
 
       const string pointId = Subject1.InjectPointId;
 
       yield return new TestCaseData(
         pointId,
-        new TryInOrder {new GetConstructorByInjectPointId(pointId), new GetConstructorByParameterTypes(), new GetConstructorWithMaxParametersCount(),}
+        new TryInOrder {new GetConstructorByInjectPoint(pointId), new GetConstructorByParameterTypes(), new GetConstructorWithMaxParametersCount(),}
       ).SetName($"PointId = {pointId}");
     }
 

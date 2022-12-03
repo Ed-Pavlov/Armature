@@ -5,7 +5,7 @@ namespace Armature.Core.Sdk;
 public static class ExtensibilityExtension
 {
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public static IInternal<T> GetInternals<T>(this object obj) => (IInternal<T>)obj;
+  public static IInternal<T> GetInternals<T>(this IInternal<T> obj) => obj;
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static IInternal<T1, T2> GetInternals<T1, T2>(this IInternal<T1, T2> obj) => obj;

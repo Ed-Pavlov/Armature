@@ -23,11 +23,11 @@ public class PropertyArgumentTuner<T> : ArgumentTunerBase<T>
   }
 
   /// <summary>
-  /// For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute.InjectionPointId" /> as a tag
+  /// For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute.Tag" /> as a tag
   /// </summary>
   public IArgumentSideTuner UseInjectPointIdAsTag()
     => new ArgumentSideTuner(
-      node => TuneArgumentRecipientsTo(node, Weight).UseBuildAction(Static.Of<BuildArgumentByPropertyInjectPointId>(), BuildStage.Create));
+      node => TuneArgumentRecipientsTo(node, Weight).UseBuildAction(Static.Of<BuildArgumentByPropertyTypeAndTag>(), BuildStage.Create));
 
   /// <summary>
   /// Amend the weight of current registration

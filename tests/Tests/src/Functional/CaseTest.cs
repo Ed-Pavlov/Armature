@@ -113,7 +113,7 @@ namespace Tests.Functional
               .UseBuildAction(
                  new TryInOrder
                  {
-                   new GetConstructorByInjectPointId(),              // constructor marked with [Inject] attribute has more priority
+                   new GetConstructorByInjectPoint(),              // constructor marked with [Inject] attribute has more priority
                    Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
@@ -121,7 +121,7 @@ namespace Tests.Functional
               .UseBuildAction(
                  new TryInOrder
                  {
-                   Static.Of<BuildArgumentByParameterInjectPointId>(),
+                   Static.Of<BuildArgumentByParameterTypeAndTag>(),
                    Static.Of<BuildArgumentByParameterType>()
                  }, BuildStage.Create),
              new IfFirstUnit(new IsParameterInfoArray())

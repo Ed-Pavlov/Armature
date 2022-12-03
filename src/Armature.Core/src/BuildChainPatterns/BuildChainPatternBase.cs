@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Armature.Core.Sdk;
 using JetBrains.Annotations;
 
@@ -93,7 +94,7 @@ public abstract class BuildChainPatternBase : IBuildChainPattern, IEnumerable, I
   }
   public void PrintToLog(LogLevel logLevel = LogLevel.None)
   {
-    using(Log.NamedBlock(logLevel, () => GetType().GetShortName().QuoteIfNeeded()))
+    using(Log.NamedBlock(logLevel, ToHoconString))
     {
       Log.WriteLine(LogLevel.Info, $"Weight: {Weight.ToHoconString()}");
       PrintContentToLog(logLevel);
@@ -120,6 +121,8 @@ public abstract class BuildChainPatternBase : IBuildChainPattern, IEnumerable, I
         else
           Log.WriteLine(logLevel, $"Child: {child.ToHoconString()}");
   }
+
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public string ToHoconString() => GetType().GetShortName().QuoteIfNeeded();
 
   public virtual bool Equals(IBuildChainPattern? other)

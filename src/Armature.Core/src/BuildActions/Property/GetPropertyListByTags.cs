@@ -8,13 +8,13 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Gets a list of  properties marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute.InjectionPointId" />
+/// Gets a list of  properties marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute.Tag" />
 /// </summary>
-public record GetPropertyListByInjectPointId : IBuildAction, ILogString
+public record GetPropertyListByTags : IBuildAction, ILogString
 {
-  private readonly object?[] _pointIds;
+  private readonly object?[] _tags;
 
-  public GetPropertyListByInjectPointId(params object?[] pointIds) => _pointIds = pointIds ?? throw new ArgumentNullException(nameof(pointIds));
+  public GetPropertyListByTags(params object?[] tags) => _tags = tags ?? throw new ArgumentNullException(nameof(tags));
 
   public void Process(IBuildSession buildSession)
   {
@@ -25,16 +25,16 @@ public record GetPropertyListByInjectPointId : IBuildAction, ILogString
           .Select(
              property =>
              {
-               var attribute = property.GetCustomAttribute<InjectAttribute>();
-               return Tuple.Create(attribute, property);
+               var attributes = property.GetCustomAttributes<InjectAttribute>();
+               return Tuple.Create(attributes, property);
              })
-          .Where(_ => _.Item1 is not null)
+          .Where(_ => _.Item1.Any())
           .ToArray();
 
     var properties =
-      (_pointIds.Length == 0
+      (_tags.Length == 0
          ? propertiesWithAttributes.Select(_ => _.Item2)
-         : _pointIds.SelectMany(pointId => propertiesWithAttributes.Where(_ => Equals(pointId, _.Item1.InjectionPointId)).Select(_ => _.Item2))
+         : _tags.SelectMany(tag => propertiesWithAttributes.Where(_ => _.Item1.Any(item => Equals(tag, item.Tag))).Select(_ => _.Item2))
                     .Distinct())
      .ToArray();
 
@@ -49,5 +49,5 @@ public record GetPropertyListByInjectPointId : IBuildAction, ILogString
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(GetPropertyListByInjectPointId)} {{ Points: {_pointIds.ToHoconString()} }} }}";
+  public string ToHoconString() => $"{{ {nameof(GetPropertyListByTags)} {{ Points: {_tags.ToHoconString()} }} }}";
 }

@@ -5,7 +5,7 @@ using Armature.Sdk;
 
 namespace Armature;
 
-public partial class BuildingTuner<T> : BuildingTuner, IBuildingTuner<T>, IFinalAndContextTuner, ICreationTuner, IInternal<IUnitPattern>
+public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreationTuner, IInternal<IUnitPattern>
 {
   private          IBuildChainPattern? _contextBranch;
   private readonly IUnitPattern        _unitPattern;
@@ -33,65 +33,65 @@ public partial class BuildingTuner<T> : BuildingTuner, IBuildingTuner<T>, IFinal
 
   public ICreationTuner As<TRedirect>(object? tag = null) => As(typeof(TRedirect), tag);
 
-  public IFinalAndContextTuner AsIs()
+  public ISettingTuner AsIs()
   {
     GetContextBranch().UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreated(Type type, object? tag = null) => As(type, tag).CreatedByDefault();
+  public ISettingTuner AsCreated(Type type, object? tag = null) => As(type, tag).CreatedByDefault();
 
-  public IFinalAndContextTuner AsCreated<TRedirect>(object? tag = null) => AsCreated(typeof(TRedirect), tag);
+  public ISettingTuner AsCreated<TRedirect>(object? tag = null) => AsCreated(typeof(TRedirect), tag);
 
-  public IFinalAndContextTuner AsCreatedWith(Func<T> factoryMethod)
+  public ISettingTuner AsCreatedWith(Func<T> factoryMethod)
   {
     GetContextBranch().UseBuildAction(new CreateWithFactoryMethod<T>(_ => factoryMethod()), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1>(Func<T1, T> factoryMethod)
+  public ISettingTuner AsCreatedWith<T1>(Func<T1, T> factoryMethod)
   {
     GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1, T2>(Func<T1, T2, T> factoryMethod)
+  public ISettingTuner AsCreatedWith<T1, T2>(Func<T1, T2, T> factoryMethod)
   {
     GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3>(Func<T1, T2, T3, T> factoryMethod)
+  public ISettingTuner AsCreatedWith<T1, T2, T3>(Func<T1, T2, T3, T> factoryMethod)
   {
     GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4>(Func<T1, T2, T3, T4, T> factoryMethod)
+  public ISettingTuner AsCreatedWith<T1, T2, T3, T4>(Func<T1, T2, T3, T4, T> factoryMethod)
   {
     GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, T> factoryMethod)
+  public ISettingTuner AsCreatedWith<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, T> factoryMethod)
   {
     GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, T> factoryMethod)
+  public ISettingTuner AsCreatedWith<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, T> factoryMethod)
   {
     GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, T> factoryMethod)
+  public ISettingTuner AsCreatedWith<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, T> factoryMethod)
   {
     GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
-  public IFinalAndContextTuner AsCreatedWith(Func<IBuildSession, T> factoryMethod)
+  public ISettingTuner AsCreatedWith(Func<IBuildSession, T> factoryMethod)
   {
     GetContextBranch().UseBuildAction(new CreateWithFactoryMethod<T>(factoryMethod), BuildStage.Create);
     return this;
@@ -99,7 +99,7 @@ public partial class BuildingTuner<T> : BuildingTuner, IBuildingTuner<T>, IFinal
 
   IBuildingTuner<T> IBuildingTuner<T>.AmendWeight(short delta) => AmendWeight(delta, this);
 
-  protected IBuildChainPattern GetContextBranch() => _contextBranch ??= this.CreateContextBranch();
+  protected IBuildChainPattern GetContextBranch() => _contextBranch ??= this.GetOrAddBuildChainPatternNode();
 
   IUnitPattern IInternal<IUnitPattern>.Member1 => _unitPattern;
 }

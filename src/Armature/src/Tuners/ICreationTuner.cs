@@ -9,9 +9,9 @@ public interface ICreationTuner : ITunerBase
   /// <summary>
   /// Specifies that unit should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
   /// </summary>
-  IFinalAndContextTuner CreatedByDefault();
+  ISettingTuner CreatedByDefault();
   /// <summary>
   /// Specifies that unit should be created using reflection.
   /// </summary>
-  IFinalAndContextTuner CreatedByReflection();
+  ISettingTuner CreatedByReflection();
 }

@@ -16,7 +16,7 @@ public class GetConstructorByInjectPointIdTest
   public void should_find_constructor_with_point_id_among_others()
   {
     // --arrange
-    var target = new GetConstructorByInjectPointId(Subject.IntId);
+    var target = new GetConstructorByInjectPoint(Subject.IntId);
 
     // --act
     var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildChain());
@@ -30,7 +30,7 @@ public class GetConstructorByInjectPointIdTest
   public void should_find_marked_constructor_without_point_id_among_others()
   {
     // --arrange
-    var target = new GetConstructorByInjectPointId();
+    var target = new GetConstructorByInjectPoint();
 
     // --act
     var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildChain());
@@ -44,7 +44,7 @@ public class GetConstructorByInjectPointIdTest
   public void should_return_no_constructor()
   {
     // --arrange
-    var target = new GetConstructorByInjectPointId("bad-id");
+    var target = new GetConstructorByInjectPoint("bad-id");
 
     // --act
     var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildChain());
@@ -58,7 +58,7 @@ public class GetConstructorByInjectPointIdTest
   public void should_fail_if_more_than_one_constructor_matched()
   {
     // --arrange
-    var target = new GetConstructorByInjectPointId(Subject.AmbiguousId);
+    var target = new GetConstructorByInjectPoint(Subject.AmbiguousId);
 
     // --act
     Action actual = () => target.Process(new BuildSessionMock(Unit.IsType<Subject>().ToBuildChain()));

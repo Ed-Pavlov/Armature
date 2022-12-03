@@ -7,14 +7,14 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Gets a constructor of type marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute.InjectionPointId" />.
+/// Gets a constructor of type marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute.Tag" />.
 /// </summary>
-public record GetConstructorByInjectPointId : IBuildAction, ILogString
+public record GetConstructorByInjectPoint : IBuildAction, ILogString
 {
-  private readonly object? _injectPointId;
+  private readonly object? _injectPointTag;
 
-  public GetConstructorByInjectPointId() { }
-  public GetConstructorByInjectPointId(object? injectPointId) => _injectPointId = injectPointId;
+  public GetConstructorByInjectPoint() { }
+  public GetConstructorByInjectPoint(object? injectPointTag) => _injectPointTag = injectPointTag;
 
   public void Process(IBuildSession buildSession)
   {
@@ -25,8 +25,8 @@ public record GetConstructorByInjectPointId : IBuildAction, ILogString
                       .Where(
                          ctor =>
                          {
-                           var attribute = ctor.GetCustomAttribute<InjectAttribute>();
-                           return attribute is not null && Equals(_injectPointId, attribute.InjectionPointId);
+                           var attributes = ctor.GetCustomAttributes<InjectAttribute>();
+                           return attributes.Any(attribute => Equals(_injectPointTag, attribute.Tag));
                          })
                       .ToArray();
 
@@ -34,7 +34,7 @@ public record GetConstructorByInjectPointId : IBuildAction, ILogString
     {
       var exception = new ArmatureException(
         $"More than one constructors of the type {unitType.ToLogString()} are marked with attribute "
-      + $"{nameof(InjectAttribute)} with {nameof(InjectAttribute.InjectionPointId)}={_injectPointId.ToHoconString()}");
+      + $"{nameof(InjectAttribute)} with {nameof(InjectAttribute.Tag)}={_injectPointTag.ToHoconString()}");
 
       for(var i = 0; i < constructors.Length; i++)
         exception.AddData($"Constructor #{i}", constructors[i]);
@@ -54,7 +54,7 @@ public record GetConstructorByInjectPointId : IBuildAction, ILogString
   public void PostProcess(IBuildSession buildSession) { }
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(GetConstructorByInjectPointId)} {{ InjectPointId: {_injectPointId.ToHoconString()} }} }}";
+  public string ToHoconString() => $"{{ {nameof(GetConstructorByInjectPoint)} {{ InjectPointId: {_injectPointTag.ToHoconString()} }} }}";
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
 }

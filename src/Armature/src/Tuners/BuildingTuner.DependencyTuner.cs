@@ -2,12 +2,12 @@
 
 public partial class BuildingTuner<T>
 {
-  IFinalAndContextTuner IDependencyTuner<IFinalAndContextTuner>.Using(params ISideTuner[] sideTuners) => DependencyTuner.Using(this, sideTuners);
+  ISettingTuner IDependencyTuner<ISettingTuner>.Using(params ISideTuner[] sideTuners) => DependencyTuner.Using(this, sideTuners);
 
-  IFinalAndContextTuner IDependencyTuner<IFinalAndContextTuner>.UsingArguments(params object[] arguments) => DependencyTuner.UsingArguments(this, arguments);
+  ISettingTuner IDependencyTuner<ISettingTuner>.UsingArguments(params object[] arguments) => DependencyTuner.UsingArguments(this, arguments);
 
-  IFinalAndContextTuner IDependencyTuner<IFinalAndContextTuner>.UsingInjectionPoints(params IInjectionPointSideTuner[] injectionPoints)
+  ISettingTuner IDependencyTuner<ISettingTuner>.UsingInjectionPoints(params IInjectionPointSideTuner[] injectionPoints)
     => DependencyTuner.UsingInjectionPoints(this, injectionPoints);
 
-  IFinalAndContextTuner IDependencyTuner<IFinalAndContextTuner>.AmendWeight(short delta) => AmendWeight<IFinalAndContextTuner>(delta, this);
+  ISettingTuner IDependencyTuner<ISettingTuner>.AmendWeight(short delta) => AmendWeight<ISettingTuner>(delta, this);
 }

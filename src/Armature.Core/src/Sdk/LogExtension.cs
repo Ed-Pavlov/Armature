@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace Armature.Core.Sdk;
@@ -15,6 +16,7 @@ public static class LogExtension
   private static readonly HashSet<char> BadCharacters = new(
     new[] {'$', '"', '{', '}', '[', ']', ':', '=', ',', '+', '#', '`', '^', '?', '!', '@', '*', '&', '/', '\\', ' ', '.'});
 
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static string GetFullName(this Type type)
     => type.IsGenericType
          ? string.Format(
@@ -23,6 +25,7 @@ public static class LogExtension
            string.Join(", ", type.GenericTypeArguments.Select(GetFullName).ToArray()))
          : type.FullName!;
 
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static string GetShortName(this Type type)
     => type.IsGenericType
          ? string.Format(
@@ -34,8 +37,10 @@ public static class LogExtension
   /// <summary>
   /// Returns the name of <paramref name="type" /> respecting <see cref="Log.LogFullTypeName" /> property
   /// </summary>
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static string ToLogString(this Type type) => Log.LogFullTypeName ? type.GetFullName() : type.GetShortName();
 
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static string ToLogString(this BuildResult buildResult) => buildResult.HasValue ? buildResult.Value.ToHoconString() : "nothing";
 
   /// <summary>
@@ -77,7 +82,9 @@ public static class LogExtension
   public static string ToHoconString(this Type              type)  => type.ToLogString().QuoteIfNeeded();
   public static string ToHoconArray(this  IEnumerable<Type> items) => $"[{string.Join(", ", items.Select(type => type.ToHoconString()))}]";
 
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static string Quote(this string str) => $"\"{str}\"";
+
   public static string QuoteIfNeeded(this string str)
   {
     var containSlash = false;

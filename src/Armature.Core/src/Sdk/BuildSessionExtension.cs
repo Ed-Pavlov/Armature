@@ -28,7 +28,63 @@ public static class BuildSessionExtension
     if(parameters is null) throw new ArgumentNullException(nameof(parameters));
     if(parameters.Length == 0) throw new ArgumentException("At least one parameter should be provided", nameof(parameters));
 
-    return (object?[]) buildSession.BuildUnit(new UnitId(parameters, SpecialTag.Argument)).Value!;
+    var        buildResult = buildSession.BuildUnit(new UnitId(parameters, SpecialTag.Argument));
+    object?[]? arguments   = null;
+
+    if(buildResult.HasValue)
+      arguments = (object?[]?) buildResult.Value;
+
+    #region Error handling
+
+    if(!buildResult.HasValue || arguments is null || arguments.Length != parameters.Length)
+    {
+      ArmatureException? exception = null;
+
+      var message = "Arguments for method are not built";
+
+      if(arguments is null)
+        message += ": build result is 'null'";
+      else if(arguments.Length != parameters.Length)
+      {
+        message   += ": built arguments count doesn't match parameters count";
+        exception =  new ArmatureException(message).AddData("ArgumentsCount", arguments.Length);
+      }
+
+      exception ??= new ArmatureException(message);
+
+      for(var i = 0; i < parameters.Length; i++)
+      {
+        var method = parameters[i].Member;
+
+        exception.AddData($"Type#{i:00}", method.DeclaringType?.ToLogString())
+                 .AddData($"Method#{i:00}", method)
+                 .AddData($"Parameter#{i:00}", parameters[i]);
+      }
+
+      throw exception;
+    }
+
+    #endregion
+
+    return arguments;
+  }
+
+  public static object? BuildArgumentForMethod(this IBuildSession buildSession, ParameterInfo parameter)
+  {
+    if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
+    if(parameter is null) throw new ArgumentNullException(nameof(parameter));
+
+    var buildResult = buildSession.BuildUnit(new UnitId(parameter, SpecialTag.Argument));
+
+    if(!buildResult.HasValue)
+    {
+      var method = parameter.Member;
+
+      throw new ArmatureException($"Argument for parameter '{parameter}' of {method.DeclaringType?.ToLogString()}.{method} is not built")
+       .AddData("Method", method);
+    }
+
+    return buildResult.Value;
   }
 
   /// <summary>

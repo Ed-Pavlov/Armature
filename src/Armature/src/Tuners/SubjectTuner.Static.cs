@@ -5,16 +5,16 @@ using Armature.Sdk;
 
 namespace Armature;
 
-public partial class BuildingTuner
+public partial class SubjectTuner
 {
-  public static IBuildingTuner Building(ITuner parentTuner, Type type, object? tag, int weight = 0)
+  public static ISubjectTuner Building(ITuner parentTuner, Type type, object? tag, int weight = 0)
   {
     if(parentTuner is null) throw new ArgumentNullException(nameof(parentTuner));
     if(type is null) throw new ArgumentNullException(nameof(type));
 
     var unitPattern = new UnitPattern(type, tag);
     IBuildChainPattern CreateNode() => new SkipTillUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.SkipTillUnit);
-    return new BuildingTuner(parentTuner, CreateNode);
+    return new SubjectTuner(parentTuner, CreateNode);
   }
 
   public static IBuildingTuner<object?> Treat(ITuner parentTuner, Type type, object? tag, int weight = 0)

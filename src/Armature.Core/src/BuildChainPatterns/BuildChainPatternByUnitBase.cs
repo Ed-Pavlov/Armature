@@ -33,4 +33,6 @@ public abstract class BuildChainPatternByUnitBase : BuildChainPatternBase, IInte
   }
 
   IUnitPattern IInternal<IUnitPattern>.Member1 => UnitPattern;
+
+  public override string ToString() => $"{ToHoconString()}{{ Pattern: {UnitPattern} }}";
 }
