@@ -16,14 +16,16 @@ public static class ForParameter
   public static MethodArgumentTuner<object?> OfType(Type type)
     => new MethodArgumentTuner<object?>(
       (tuner, weight)
-        => tuner.TreeRoot.GetOrAddNode(
+        => tuner.GetInternals()
+                .TreeRoot
+                .GetOrAddNode(
                    new IfFirstUnit(
                      new IsParameterOfType(new UnitPattern(type)),
                      weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
                 .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
                 .AppendContextBranch(tuner));
 
-                            // $"Building of an argument for the method parameter of type {type.ToLogString()} is already tuned");
+  // $"Building of an argument for the method parameter of type {type.ToLogString()} is already tuned");
 
   /// <summary>
   /// Tunes up how to build an argument to inject into method parameter of type <typeparamref name="T" />.
@@ -31,13 +33,14 @@ public static class ForParameter
   public static MethodArgumentTuner<T> OfType<T>()
     => new MethodArgumentTuner<T>(
       (tuner, weight)
-        => tuner.TreeRoot
-          .GetOrAddNode(
-             new IfFirstUnit(
-               new IsParameterOfType(new UnitPattern(typeof(T))),
-               weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
-          .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-          .AppendContextBranch(tuner));
+        => tuner.GetInternals()
+                .TreeRoot
+                .GetOrAddNode(
+                   new IfFirstUnit(
+                     new IsParameterOfType(new UnitPattern(typeof(T))),
+                     weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
+                .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
+                .AppendContextBranch(tuner));
 
   /// <summary>
   /// Tunes up how to build an argument to inject into method parameter named <paramref name="parameterName"/>.
@@ -45,13 +48,14 @@ public static class ForParameter
   public static MethodArgumentTuner<object?> Named(string parameterName)
     => new MethodArgumentTuner<object?>(
       (tuner, weight)
-        => tuner.TreeRoot
-          .GetOrAddNode(
-             new IfFirstUnit(
-               new IsParameterNamed(parameterName),
-               weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.IfFirstUnit))
-          .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-          .AppendContextBranch(tuner));
+        => tuner.GetInternals()
+                .TreeRoot
+                .GetOrAddNode(
+                   new IfFirstUnit(
+                     new IsParameterNamed(parameterName),
+                     weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.IfFirstUnit))
+                .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
+                .AppendContextBranch(tuner));
 
   /// <summary>
   /// Tunes up how to build and argument to inject into a method parameter marked with <see cref="InjectAttribute"/>
@@ -60,11 +64,12 @@ public static class ForParameter
   public static MethodArgumentTuner<object?> WithInjectPoint(object? injectPointId)
     => new MethodArgumentTuner<object?>(
       (tuner, weight)
-        => tuner.TreeRoot
-          .GetOrAddNode(
-             new IfFirstUnit(
-               new IsParameterAttributed(injectPointId),
-               weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.IfFirstUnit))
-          .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-          .AppendContextBranch(tuner));
+        => tuner.GetInternals()
+                .TreeRoot
+                .GetOrAddNode(
+                   new IfFirstUnit(
+                     new IsParameterAttributed(injectPointId),
+                     weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.IfFirstUnit))
+                .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
+                .AppendContextBranch(tuner));
 }

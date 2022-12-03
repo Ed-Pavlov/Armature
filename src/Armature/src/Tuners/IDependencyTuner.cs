@@ -1,6 +1,6 @@
 namespace Armature;
 
-public interface IDependencyTuner<out T>
+public interface IDependencyTuner<out T> : ITunerBase
 {
   /// <summary>
   /// Amend the weight of the current registration

@@ -16,7 +16,7 @@ public static class DependencyTuner
   /// </summary>
   /// <param name="tuner">Tuner of an unit building rules</param>
   /// <param name="arguments">Arguments should be object instances or implementation of <see cref="IArgumentSideTuner"/></param>
-  public static T UsingArguments<T>(T tuner, params object[] arguments) where T : ITuner
+  public static T UsingArguments<T>(T tuner, params object[] arguments) where T : ITunerBase
   {
     if(tuner is null) throw new ArgumentNullException(nameof(tuner));
     if(arguments.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(arguments));
@@ -35,7 +35,8 @@ public static class DependencyTuner
         throw new ArgumentException($"{nameof(IArgumentSideTuner)} or argument instance is expected");
       else
       {
-        tuner.TreeRoot
+        tuner.GetInternals()
+             .TreeRoot
              .GetOrAddNode(
                 new IfFirstUnit(
                   new IsAssignableFromType(argument.GetType()),
@@ -53,7 +54,7 @@ public static class DependencyTuner
   /// </summary>
   /// <param name="tuner">Tuner of an unit building rules</param>
   /// <param name="injectionPoints">See inheritors of <see cref="IInjectionPointSideTuner"/> and usages in tests for details</param>
-  public static T UsingInjectionPoints<T>(T tuner, params IInjectionPointSideTuner[] injectionPoints) where T : ITuner
+  public static T UsingInjectionPoints<T>(T tuner, params IInjectionPointSideTuner[] injectionPoints) where T : ITunerBase
   {
     if(tuner is null) throw new ArgumentNullException(nameof(tuner));
     if(injectionPoints is null) throw new ArgumentNullException(nameof(injectionPoints));
@@ -70,7 +71,7 @@ public static class DependencyTuner
   /// </summary>
   /// <param name="tuner">Tuner of an unit building rules</param>
   /// <param name="sideTuners">See implementations of <see cref="ISideTuner"/> and their usages for details.</param>
-  public static T Using<T>(T tuner, params ISideTuner[] sideTuners) where T : ITuner
+  public static T Using<T>(T tuner, params ISideTuner[] sideTuners) where T : ITunerBase
   {
     if(tuner is null) throw new ArgumentNullException(nameof(tuner));
     if(sideTuners is null) throw new ArgumentNullException(nameof(sideTuners));

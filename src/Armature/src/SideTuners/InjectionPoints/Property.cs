@@ -24,12 +24,13 @@ public static class Property
     => new InjectionPointSideTuner(
       tuner =>
       {
-        tuner.CreateContextBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        var internals = tuner.GetInternals();
+        internals.CreateContextBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-        tuner.TreeRoot
-             .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
-             .AppendContextBranch(tuner)
-             .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
+        internals.TreeRoot
+                 .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
+                 .AppendContextBranch(tuner)
+                 .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
       });
 
   /// <summary>
@@ -44,12 +45,13 @@ public static class Property
     return new InjectionPointSideTuner(
       tuner =>
       {
-        tuner.CreateContextBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        var internals = tuner.GetInternals();
+        internals.CreateContextBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-        tuner.TreeRoot
-             .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
-             .AppendContextBranch(tuner)
-             .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
+        internals.TreeRoot
+                 .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
+                 .AppendContextBranch(tuner)
+                 .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
       });
   }
 
@@ -62,11 +64,12 @@ public static class Property
     => new InjectionPointSideTuner(
       tuner =>
       {
-        tuner.CreateContextBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        var internals = tuner.GetInternals();
+        internals.CreateContextBranch().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
-        tuner.TreeRoot
-             .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
-             .AppendContextBranch(tuner)
-             .UseBuildAction(new GetPropertyListByInjectPointId(pointIds), BuildStage.Create);
+        internals.TreeRoot
+                 .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
+                 .AppendContextBranch(tuner)
+                 .UseBuildAction(new GetPropertyListByInjectPointId(pointIds), BuildStage.Create);
       });
 }

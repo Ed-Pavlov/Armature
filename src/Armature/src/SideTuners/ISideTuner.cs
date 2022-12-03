@@ -1,6 +1,4 @@
-﻿using Armature.Sdk;
-
-namespace Armature;
+﻿namespace Armature;
 
 /// <summary>
 /// Tunes the build chain pattern at any time, in opposite to static "tuners" like
@@ -11,6 +9,6 @@ public interface ISideTuner
   /// <summary>
   /// Append pattern tree nodes to the passed <paramref name="tuner"/>
   /// </summary>
-  void Tune(ITuner tuner);
+  void Tune(ITunerBase tuner);
 }
 

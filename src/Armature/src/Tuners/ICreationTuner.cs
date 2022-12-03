@@ -1,6 +1,6 @@
 namespace Armature;
 
-public interface ICreationTuner
+public interface ICreationTuner : ITunerBase
 {
   /// <summary>
   /// Amend the weight of the current registration

@@ -1,6 +1,6 @@
 namespace Armature;
 
-public interface IContextTuner
+public interface IContextTuner : ITunerBase
 {
   IBuildingTuner BuildingIt();
 }

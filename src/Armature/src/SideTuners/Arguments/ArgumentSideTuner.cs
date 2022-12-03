@@ -1,5 +1,4 @@
 ﻿using System;
-using Armature.Sdk;
 
 namespace Armature;
 
@@ -12,5 +11,5 @@ public interface IArgumentSideTuner : ISideTuner { }
 
 public class ArgumentSideTuner : SideTuner, IArgumentSideTuner
 {
-  public ArgumentSideTuner(Action<ITuner> tune) : base(tune) { }
+  public ArgumentSideTuner(Action<ITunerBase> tune) : base(tune) { }
 }

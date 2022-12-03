@@ -17,13 +17,14 @@ public static class Constructor
   public static IInjectionPointSideTuner WithMaxParametersCount()
     => new InjectionPointSideTuner(
       tuner
-        => tuner.TreeRoot
-                        .GetOrAddNode(
-                           new IfFirstUnit(
-                             Static.Of<IsConstructor>(),
-                             WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.IfFirstUnit))
-                        .AppendContextBranch(tuner)
-                        .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create));
+        => tuner.GetInternals()
+                .TreeRoot
+                .GetOrAddNode(
+                   new IfFirstUnit(
+                     Static.Of<IsConstructor>(),
+                     WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.IfFirstUnit))
+                .AppendContextBranch(tuner)
+                .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create));
 
   /// <summary>
   /// Instantiate a Unit using a constructor marked with <see cref="InjectAttribute" />(<paramref name="injectionPointId" />).
@@ -31,13 +32,14 @@ public static class Constructor
   public static IInjectionPointSideTuner MarkedWithInjectAttribute(object? injectionPointId)
     => new InjectionPointSideTuner(
       tuner
-        => tuner.TreeRoot
-                        .GetOrAddNode(
-                           new IfFirstUnit(
-                             Static.Of<IsConstructor>(),
-                             WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.IfFirstUnit))
-                        .AppendContextBranch(tuner)
-                        .UseBuildAction(new GetConstructorByInjectPointId(injectionPointId), BuildStage.Create));
+        => tuner.GetInternals()
+                .TreeRoot
+                .GetOrAddNode(
+                   new IfFirstUnit(
+                     Static.Of<IsConstructor>(),
+                     WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.IfFirstUnit))
+                .AppendContextBranch(tuner)
+                .UseBuildAction(new GetConstructorByInjectPointId(injectionPointId), BuildStage.Create));
 
   /// <summary>
   /// Instantiate a Unit using constructor without parameters.
@@ -71,11 +73,12 @@ public static class Constructor
   public static IInjectionPointSideTuner WithParameters(params Type[] parameterTypes)
     => new InjectionPointSideTuner(
       tuner
-        => tuner.TreeRoot
-                        .GetOrAddNode(
-                           new IfFirstUnit(
-                             Static.Of<IsConstructor>(),
-                             WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.IfFirstUnit))
-                        .AppendContextBranch(tuner)
-                        .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
+        => tuner.GetInternals()
+                .TreeRoot
+                .GetOrAddNode(
+                   new IfFirstUnit(
+                     Static.Of<IsConstructor>(),
+                     WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.IfFirstUnit))
+                .AppendContextBranch(tuner)
+                .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
 }

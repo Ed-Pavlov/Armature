@@ -1,5 +1,4 @@
 ﻿using System;
-using Armature.Sdk;
 
 namespace Armature;
 
@@ -11,5 +10,5 @@ public interface IInjectionPointSideTuner : ISideTuner { }
 
 public class InjectionPointSideTuner : SideTuner, IInjectionPointSideTuner
 {
-  public InjectionPointSideTuner(Action<ITuner> tune) : base(tune) { }
+  public InjectionPointSideTuner(Action<ITunerBase> tune) : base(tune) { }
 }

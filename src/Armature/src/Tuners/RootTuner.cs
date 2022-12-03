@@ -7,7 +7,7 @@ namespace Armature;
 /// <summary>
 /// Tuner is used as a not null parent tuner but does not perform any tuning. <see cref="GetOrAddNodeTo"/> returns passed node w/o any changes
 /// </summary>
-public class RootTuner : ITuner
+public class RootTuner : ITuner, ITunerBase
 {
   public RootTuner(IBuildChainPattern treeRoot) => TreeRoot = treeRoot ?? throw new ArgumentNullException(nameof(treeRoot));
 

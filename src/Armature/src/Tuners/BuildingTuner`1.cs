@@ -7,8 +7,8 @@ namespace Armature;
 
 public partial class BuildingTuner<T> : BuildingTuner, IBuildingTuner<T>, IFinalAndContextTuner, ICreationTuner, IInternal<IUnitPattern>
 {
-  private IBuildChainPattern? _contextBranch;
-  private readonly IUnitPattern _unitPattern;
+  private          IBuildChainPattern? _contextBranch;
+  private readonly IUnitPattern        _unitPattern;
 
   public BuildingTuner(ITuner parent, CreateNode createNode, IUnitPattern unitPattern)
     : base(parent, createNode)
@@ -18,7 +18,10 @@ public partial class BuildingTuner<T> : BuildingTuner, IBuildingTuner<T>, IFinal
 
   public virtual ICreationTuner As(Type type, object? tag = null)
   {
-    GetContextBranch().UseBuildAction(new RedirectType(type, tag), BuildStage.Create);
+    if(type.IsGenericTypeDefinition)
+      throw new ArgumentException($"Type should not be open generic, use {nameof(RedirectOpenGenericType)} for open generics", nameof(type));
+
+    GetContextBranch().UseBuildAction(new Redirect(new UnitId(type, tag)), BuildStage.Create);
 
     var unitPattern = new UnitPattern(type, tag);
 

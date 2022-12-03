@@ -23,10 +23,11 @@ public static class AutoBuild
     public ISideTuner InDirectOrder { get; }
       = new SideTuner(
         tuner =>
-          tuner.TreeRoot
-                       .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoArray>()))
-                       .AppendContextBranch(tuner)
-                       .UseBuildAction(Static.Of<BuildMethodArgumentsInDirectOrder>(), BuildStage.Create));
+          tuner.GetInternals()
+               .TreeRoot
+               .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoArray>()))
+               .AppendContextBranch(tuner)
+               .UseBuildAction(Static.Of<BuildMethodArgumentsInDirectOrder>(), BuildStage.Create));
   }
 
   public class ByParam
@@ -36,26 +37,28 @@ public static class AutoBuild
     /// </summary>
     public ISideTuner Type { get; } = new SideTuner(
       tuner =>
-        tuner.TreeRoot
-                     .GetOrAddNode(
-                        new IfFirstUnit(
-                          Static.Of<IsParameterInfo>(),
-                          WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
-                     .AppendContextBranch(tuner)
-                     .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create));
+        tuner.GetInternals()
+             .TreeRoot
+             .GetOrAddNode(
+                new IfFirstUnit(
+                  Static.Of<IsParameterInfo>(),
+                  WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
+             .AppendContextBranch(tuner)
+             .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create));
 
     /// <summary>
     /// Adds the build action which builds an argument using method parameter name as a <see cref="UnitId.Kind"/>
     /// </summary>
     public ISideTuner Name { get; } = new SideTuner(
       tuner =>
-        tuner.TreeRoot
-                     .GetOrAddNode(
-                        new IfFirstUnit(
-                          Static.Of<IsParameterInfo>(),
-                          WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.IfFirstUnit))
-                     .AppendContextBranch(tuner)
-                     .UseBuildAction(Static.Of<BuildArgumentByParameterName>(), BuildStage.Create));
+        tuner.GetInternals()
+             .TreeRoot
+             .GetOrAddNode(
+                new IfFirstUnit(
+                  Static.Of<IsParameterInfo>(),
+                  WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.IfFirstUnit))
+             .AppendContextBranch(tuner)
+             .UseBuildAction(Static.Of<BuildArgumentByParameterName>(), BuildStage.Create));
   }
 
   public class ByProperty { }

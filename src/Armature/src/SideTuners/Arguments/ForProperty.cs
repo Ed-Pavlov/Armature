@@ -20,7 +20,8 @@ public static class ForProperty
       {
         Property.OfType(type).Tune(tuner);
 
-        return tuner.TreeRoot
+        return tuner.GetInternals()
+                    .TreeRoot
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyOfType(new UnitPattern(type)),
@@ -37,7 +38,8 @@ public static class ForProperty
       {
         Property.OfType<T>().Tune(tuner);
 
-        return tuner.TreeRoot
+        return tuner.GetInternals()
+                    .TreeRoot
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyOfType(new UnitPattern(typeof(T))),
@@ -54,7 +56,8 @@ public static class ForProperty
       {
         Property.Named(propertyName).Tune(tuner);
 
-        return tuner.TreeRoot
+        return tuner.GetInternals()
+                    .TreeRoot
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyNamed(propertyName),
@@ -72,7 +75,8 @@ public static class ForProperty
       {
         Property.ByInjectPointId(injectPointId).Tune(tuner);
 
-        return tuner.TreeRoot
+        return tuner.GetInternals()
+                    .TreeRoot
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyAttributed(injectPointId),

@@ -2,7 +2,7 @@ using System;
 
 namespace Armature;
 
-public interface IBuildingTuner
+public interface IBuildingTuner : ITunerBase
 {
   /// <summary>
   /// Amend the weight of the current registration

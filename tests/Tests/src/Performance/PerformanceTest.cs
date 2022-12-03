@@ -11,11 +11,11 @@ using NUnit.Framework;
 
 namespace Tests.Performance
 {
+  // [Ignore("Run manually only")]
   public sealed class PerformanceTest
   {
     [Test]
-    [Ignore("Run manually only")]
-    public void Measure()
+    public void UnitPatternMatchesTest()
     {
       // 12.07.2022 00:00:06.2620682
       var patterns = new List<IUnitPattern>
@@ -48,7 +48,7 @@ namespace Tests.Performance
         patterns.Add(new IsPropertyNamed("prop"));
 
       for(var i = 0; i < 100; i++)
-        patterns.Add(new  IsParameterNamed("param"));
+        patterns.Add(new IsParameterNamed("param"));
 
       for(var i = 0; i < 100; i++)
         patterns.Add(new IsParameterAttributed());
@@ -62,12 +62,15 @@ namespace Tests.Performance
 
       var sw = new Stopwatch();
       sw.Start();
+
       for(var i = 0; i < 100_000; i++)
       {
         var unitId = new UnitId(i, "tag");
+
         foreach(var unitPattern in patterns)
           unitPattern.Matches(unitId);
       }
+
       sw.Stop();
 
       Console.WriteLine(sw.Elapsed);
@@ -77,7 +80,7 @@ namespace Tests.Performance
     // There were 71994021 class of Equals on count == 3 000. Count of GetHashCode was exactly the count of IPatternTreeNode added into children collection
     // After the fix it becomes 42 of Equals and 23999 of GetHashCode
     [Test]
-    public void AddOrGetUnitTestMatcherTest()
+    public void AddOrGetNodeTest()
     {
       const int count = 25_000;
 
@@ -102,6 +105,62 @@ namespace Tests.Performance
 
       UnitPatternWrapper.EqualsCallsCount.Should().BeLessThan(1_000);
       UnitPatternWrapper.GetHashCodeCallsCount.Should().BeLessThan(250_000);
+    }
+
+    [Test]
+    public void BuildUnitTest()
+    {
+      var builder = new Builder(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create);
+
+      // Treat<I>().AsCreated<C>().AsSingleton();
+      var registrationsCount = 3_000;
+      var argsRegistrationCount = 100;
+
+      for(var i = 1; i < registrationsCount; i++)
+      {
+        var i1         = i;
+        var created    = (i1 * 1000).ToString();
+
+        var @interface = () => new IfFirstUnit(new UnitPattern(i1));
+        builder.AddNode(@interface()).UseBuildAction(new Redirect(new UnitId(created, null)), BuildStage.Create);
+
+        builder.AddNode(new IfFirstUnit(new UnitPattern(created)))
+               .AddNode(@interface())
+               .UseBuildAction(new CreateWithFactoryMethod<string>(_ => created.ToString()), BuildStage.Create)
+               .UseBuildAction(new Singleton(), BuildStage.Cache);
+      }
+
+      // Treat<I>().AsCreated<C>().UsingArguments(1, 2, 3)
+      for(int k = 1; k < 4; k++)
+      {
+        var node = builder.AddNode(new IfFirstUnit(new UnitPattern("arg" + k)));
+
+        for(int i = 1; i < argsRegistrationCount; i++)
+        {
+          var created = (i * 1000).ToString();
+          node
+           .AddNode(new IfFirstUnit(new UnitPattern(created)))
+           .AddNode(new IfFirstUnit(new UnitPattern(i)))
+           .UseBuildAction(new Instance<string>("arg" + k), BuildStage.Cache);
+        }
+      }
+
+      Console.WriteLine("Registration finished");
+
+      Log.Enable(LogLevel.None);
+
+      var sw = new Stopwatch();
+      sw.Start();
+
+      for(var i = 1; i < registrationsCount; i++)
+      {
+        var value = builder.BuildUnit(new UnitId(i, null));
+
+        // value.Value.Should().Be((i * 1000).ToString());
+      }
+
+      sw.Stop();
+      Console.WriteLine(sw.Elapsed);
     }
 
     private static BuildingTuner<object?> Treat(IBuildChainPattern pattern, UnitId unitId)

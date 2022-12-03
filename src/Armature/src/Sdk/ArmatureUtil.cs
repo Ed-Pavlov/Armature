@@ -3,18 +3,20 @@ using Armature.Core;
 
 namespace Armature.Sdk;
 
-public static class Extension
+public static class ArmatureUtil
 {
+  public static ITuner GetInternals(this ITunerBase tuner) => (ITuner) tuner;
+
   /// <summary>
   /// Appends a branch of <see cref="IBuildChainPattern"/> nodes from the <paramref name="tuner"/> to passed <paramref name="node"/>
   /// and return the deepest node to add build actions
   /// </summary>
-  public static IBuildChainPattern AppendContextBranch(this IBuildChainPattern node, ITuner tuner)
+  public static IBuildChainPattern AppendContextBranch(this IBuildChainPattern node, ITunerBase tuner)
   {
     if(node is null) throw new ArgumentNullException(nameof(node));
     if(tuner is null) throw new ArgumentNullException(nameof(tuner));
 
-    var parent = tuner;
+    var parent = (ITuner)tuner;
 
     do
     {
@@ -42,5 +44,16 @@ public static class Extension
     } while(tuner != null);
 
     return node;
+  }
+
+  public static IBuildChainPattern? CreatePatternTreeOnArguments(object[]? arguments)
+  {
+    if(arguments is not {Length: > 0}) return null;
+
+    var patternTree = new BuildChainPatternTree(-10); // decrease weight of the "runtime" arguments by default
+    var rootTuner   = new RootTuner(patternTree);
+    DependencyTuner.UsingArguments(rootTuner, arguments);
+
+    return patternTree;
   }
 }
