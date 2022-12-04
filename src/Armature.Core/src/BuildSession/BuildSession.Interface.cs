@@ -14,9 +14,9 @@ public partial class BuildSession
   {
     private readonly BuildSession _buildSession;
 
-    public Interface(BuildSession buildSession, BuildChain buildChain)
+    public Interface(BuildSession buildSession, Stack stack)
     {
-      BuildChain    = buildChain;
+      Stack    = stack;
       _buildSession = buildSession ?? throw new ArgumentNullException(nameof(buildSession));
     }
 
@@ -24,7 +24,7 @@ public partial class BuildSession
     public BuildResult BuildResult { get; set; }
 
     ///<inheritdoc />
-    public BuildChain BuildChain { get; }
+    public Stack Stack { get; }
 
     ///<inheritdoc />
     public BuildResult BuildUnit(UnitId unitId) => _buildSession.BuildUnit(unitId);

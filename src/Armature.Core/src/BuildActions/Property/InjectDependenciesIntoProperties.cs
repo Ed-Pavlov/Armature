@@ -30,7 +30,7 @@ public record InjectDependenciesIntoProperties : IBuildAction
       return;
     }
 
-    var type = buildSession.BuildChain.TargetUnit.GetUnitTypeSafe() ?? unit.GetType();
+    var type = buildSession.Stack.TargetUnit.GetUnitTypeSafe() ?? unit.GetType();
 
     var unitInfo = new UnitId(type, SpecialTag.PropertyCollection);
 

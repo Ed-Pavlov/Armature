@@ -15,10 +15,10 @@ public interface IBuildSession
   BuildResult BuildResult { get; set; }
 
   /// <summary>
-  /// The chain of units representing a build session, the last one is the target unit,
+  /// The stack of units representing a build session, the last one is the target unit,
   /// the previous are the context of the build session. Each next unit info is the dependency of the previous one.
   /// </summary>
-  BuildChain BuildChain { get; }
+  BuildSession.Stack Stack { get; }
 
   /// <summary>
   /// Builds a unit represented by <see cref="UnitId" /> in the context of the current build session

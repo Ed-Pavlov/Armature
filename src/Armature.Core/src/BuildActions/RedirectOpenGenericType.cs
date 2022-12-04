@@ -31,7 +31,7 @@ public record RedirectOpenGenericType : IBuildAction, ILogString
   {
     Log.WriteLine(LogLevel.Trace, () => $"Tag: {_tag.ToHoconString()}");
 
-    var targetUnit = buildSession.BuildChain.TargetUnit;
+    var targetUnit = buildSession.Stack.TargetUnit;
     var unitType   = targetUnit.GetUnitType();
 
     if(!unitType.IsGenericType)

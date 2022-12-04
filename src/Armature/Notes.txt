@@ -1,6 +1,6 @@
 Possible performance optimization
 
-If we introduce IfTargetUnit and IfDirectContextUnit build chain patterns they could be used in the following registrations
+If we introduce IfTargetUnit and IfDirectContextUnit build stack patterns they could be used in the following registrations
 
 Treat<string>().AsInstance("str")       // IfTargetUnit<string> -> InstanceBuildAction
 This case will have significant boost.
@@ -12,11 +12,11 @@ Treat<I>()            // IfTargetUnit<I> -> Redirect<C>
   .AsSingleton()      //     SingletonBuildActions
 
 Because IfTargetUnit and IfDirectContext uses only one "if" per BuildUnit call, it could be performance boost.
-For now, as SkipTillUnit is used, it performs N "if"s, where N is the length of the Build Chain.
-But in the suggested approach will be two build chain patterns instead of one, and therefore performance will be increased if the average
-build chain length is > 3, which looks like true.
+For now, as SkipTillUnit is used, it performs N "if"s, where N is the length of the Build Stack.
+But in the suggested approach will be two build stack patterns instead of one, and therefore performance will be increased if the average
+build stack length is > 3, which looks like true.
 
- BuildChain length | SkipTillUnit | IfTargetUnit + IfDirectContext |
+ BuildStack length | SkipTillUnit | IfTargetUnit + IfDirectContext |
 --------------------------------------------------------------------
         1          |       1      |               2                |
         2          |       2      |               2                |
@@ -30,7 +30,7 @@ Need to decide what to pass to the base IFinalTuner, functor?
 -----------------------------------------------------------------------------------
 14.01.2022
 
-Reversed build chain
+Reversed build stack
 
 Treat<I>()                 // IfTargetUnit<I>
   .As                      //     -> Redirect<C>
@@ -140,7 +140,7 @@ TreatOpenGeneric<IList<>>            // TargetUnit<IsGenericOfDefinition(IList<>
 
 
 =========== SkipWhile ========================
-BuildChain:
+BuildStack:
 string -> ParameterInfo -> ParameterInfo[] -> Subject -> ISubject
 
 TargetUnit<String>            // GetTail(1)
@@ -170,7 +170,7 @@ IfTargetUnit<Derived>
 I -> B -> Derived
 IfTargetUnit<Derived>     -> yes
   SkipTillUnit<A>         -> nope B -> I
-  SkipTillUnit<B>         -> yes: children? yes   build chain? yes
+  SkipTillUnit<B>         -> yes: children? yes   build stack? yes
     SkipTillUnit<A>       -> nope I
 
 In the current implementation no actions will be gathered, but should be.
@@ -204,7 +204,7 @@ TreatAll
 
 
 // 05.06.2022
-Tuners chain
+Tuners stack
 
 1. w/o TreatAll (BuildingWhich, UseArguments)
 

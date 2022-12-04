@@ -160,7 +160,7 @@ namespace Tests.Performance
       Console.WriteLine(sw.Elapsed);
     }
 
-    private static BuildingTuner<object?> Treat(IBuildChainPattern pattern, UnitId unitId)
+    private static BuildingTuner<object?> Treat(IBuildStackPattern pattern, UnitId unitId)
     {
       if(pattern is null) throw new ArgumentNullException(nameof(pattern));
 

@@ -14,7 +14,7 @@ public class TestFixture
     AssertionOptions.AssertEquivalencyUsing(
       _ => _.ComparingByValue<IBuildAction>() // don't know why FluentAssertions doesn't compare using polymorphic Equals implementation, but so it goes
             .ComparingByValue<IUnitPattern>() // don't know why FluentAssertions doesn't compare using polymorphic Equals implementation, but so it goes
-            .ComparingByMembers<IBuildChainPattern>() // compare pattern tree nodes with build actions which are not included into Equals implementation
+            .ComparingByMembers<IBuildStackPattern>() // compare pattern tree nodes with build actions which are not included into Equals implementation
              );
 
     Trace.Listeners.Clear();

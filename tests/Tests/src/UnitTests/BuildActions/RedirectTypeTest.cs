@@ -18,7 +18,7 @@ public class RedirectTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Kind.Is<IDisposable>().ToBuildChain());
+    A.CallTo(() => buildSession.Stack).Returns(Kind.Is<IDisposable>().ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Kind.Is<MemoryStream>().Tag(tag)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -39,7 +39,7 @@ public class RedirectTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Kind.Is<IDisposable>().Tag(tag).ToBuildChain());
+    A.CallTo(() => buildSession.Stack).Returns(Kind.Is<IDisposable>().Tag(tag).ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Kind.Is<MemoryStream>().Tag(tag)));
     buildUnitCall.Returns(expected.ToBuildResult());
 

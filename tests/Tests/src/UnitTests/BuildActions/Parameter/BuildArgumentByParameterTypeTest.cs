@@ -20,7 +20,7 @@ public class BuildArgumentByParameterTypeTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Kind.Is(parameterInfo).ToBuildChain());
+    A.CallTo(() => actual.Stack).Returns(Kind.Is(parameterInfo).ToBuildStack());
     A.CallTo(() => actual.BuildUnit(Kind.Is((object?) parameterInfo.ParameterType).Tag(tag))).Returns(expected.ToBuildResult());
 
     var target = new BuildArgumentByParameterType(tag);
@@ -40,7 +40,7 @@ public class BuildArgumentByParameterTypeTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Kind.Is(parameterInfo).Tag(tag).ToBuildChain());
+    A.CallTo(() => actual.Stack).Returns(Kind.Is(parameterInfo).Tag(tag).ToBuildStack());
 
     var target = new BuildArgumentByParameterType(SpecialTag.Propagate);
 

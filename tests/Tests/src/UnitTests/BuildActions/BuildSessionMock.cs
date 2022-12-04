@@ -7,14 +7,14 @@ namespace Tests.UnitTests.BuildActions;
 
 public class BuildSessionMock : IBuildSession
 {
-  private readonly BuildChain? _buildChain;
+  private readonly BuildSession.Stack? _buildStack;
 
   public BuildSessionMock() { }
   public BuildSessionMock(BuildResult buildResult) => BuildResult = buildResult;
-  public BuildSessionMock(BuildChain buildChain) => _buildChain = buildChain;
+  public BuildSessionMock(BuildSession.Stack stack) => _buildStack = stack;
 
   public BuildResult       BuildResult { get; set; }
-  public BuildChain BuildChain  => _buildChain ?? throw new InvalidOperationException("Build chain is not initialized");
+  public BuildSession.Stack Stack  => _buildStack ?? throw new InvalidOperationException("Build stack is not initialized");
 
   public BuildResult                 BuildUnit(UnitId     unitId) => throw new NotSupportedException();
   public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId) => throw new NotSupportedException();

@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace Armature.Core.Sdk;
 
 /// <summary>
-/// Inherit this class to extend enum pattern with custom weights if you extend Armature with your own build chain, unit or injection point
+/// Inherit this class to extend enum pattern with custom weights if you extend Armature with your own build stack, unit or injection point
 /// patterns which require to re-balance the weighting system.
 /// </summary>
 /// <remarks>For common usage of Armature it's not needed.</remarks>
@@ -67,14 +67,14 @@ public class WeightOf
   }
 
   [PublicAPI]
-  public class BuildChainPattern
+  public class BuildStackPattern
   {
     public static int SkipWhileUnit { get; protected set; } = 0;
 
     public static int SkipTillUnit { get; protected set; } = 0;
 
     /// <summary>
-    /// By default the weight of <see cref="Core.IfFirstUnit"/> build chain pattern's weight value set thus that registration
+    /// By default the weight of <see cref="Core.IfFirstUnit"/> build stack pattern's weight value set thus that registration
     ///
     /// like
     /// builder.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(MyType))))

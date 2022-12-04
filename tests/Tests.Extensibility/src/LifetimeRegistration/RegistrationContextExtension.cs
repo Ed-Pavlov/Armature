@@ -23,17 +23,17 @@ public static class RegistrationContextExtension
     // this build plan will have greater weight
     tuner.UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Of: {tuner}")));
 
-    // buildChainPattern.UseBuildAction(
-    //     new CreateWithFactoryMethod<Lifetime>(_ => lifetime.CreateSubLifetime($"Lifetime.Of: {buildChainPattern}")),
+    // buildStackPattern.UseBuildAction(
+    //     new CreateWithFactoryMethod<Lifetime>(_ => lifetime.CreateSubLifetime($"Lifetime.Of: {buildStackPattern}")),
     //     BuildStage.Create);
 
     // treeRoot
-    //    .GetOrAddNode(new IfFirstUnit(new IsMethodParameterWithType(new UnitPattern(typeof(Lifetime), null)), WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.TargetUnit))
+    //    .GetOrAddNode(new IfFirstUnit(new IsMethodParameterWithType(new UnitPattern(typeof(Lifetime), null)), WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.TargetUnit))
     //    .TryAddContext(addContextPatterns)
     //    .TreatAll()
-    //    .UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Of: {buildChainPattern}")));
+    //    .UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Of: {buildStackPattern}")));
     //
-    // tuner.UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Building: {buildChainPattern}")));
+    // tuner.UsingArguments(ForParameter.OfType<Lifetime>().UseFactoryMethod(() => lifetime.CreateSubLifetime($"Lifetime.Building: {buildStackPattern}")));
 
     tuner
      .BuildingIt()
@@ -82,7 +82,7 @@ public static class RegistrationContextExtension
     if(settingTuner == null) throw new ArgumentNullException(nameof(settingTuner));
 
     var tuner = (ITuner) settingTuner;
-    tuner.GetOrAddBuildChainPatternNode().UseBuildAction(new ThreadSafeSingletonBuildAction(), BuildStage.Cache);
+    tuner.GetOrAddBuildStackPatternNode().UseBuildAction(new ThreadSafeSingletonBuildAction(), BuildStage.Cache);
     return settingTuner;
   }
 

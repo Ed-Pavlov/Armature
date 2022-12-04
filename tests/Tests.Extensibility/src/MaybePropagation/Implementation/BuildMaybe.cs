@@ -13,7 +13,7 @@ public class BuildMaybe : IBuildAction
 
   public void Process(IBuildSession buildSession)
   {
-    var maybeType = buildSession.BuildChain.TargetUnit.GetUnitType();
+    var maybeType = buildSession.Stack.TargetUnit.GetUnitType();
     var valueType = maybeType.GenericTypeArguments[0];
 
     var buildResult = buildSession.BuildUnit(new UnitId(valueType, _tag));

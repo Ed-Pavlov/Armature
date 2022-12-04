@@ -2,4 +2,4 @@ using Armature.Core;
 
 namespace Armature;
 
-public delegate IBuildChainPattern CreateNode();
+public delegate IBuildStackPattern CreateNode();

@@ -12,7 +12,7 @@ public record BuildMethodArgumentsInDirectOrder : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
-    var parameters = (ParameterInfo[]) buildSession.BuildChain.TargetUnit.Kind!;
+    var parameters = (ParameterInfo[]) buildSession.Stack.TargetUnit.Kind!;
     var arguments  = new object?[parameters.Length];
 
     for(var i = 0; i < parameters.Length; i++)

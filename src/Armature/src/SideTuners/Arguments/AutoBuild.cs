@@ -26,7 +26,7 @@ public static class AutoBuild
           tuner.GetInternals()
                .TreeRoot
                .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoArray>()))
-               .AppendChildBuildChainPatternNodes(tuner)
+               .AppendChildBuildStackPatternNodes(tuner)
                .UseBuildAction(Static.Of<BuildMethodArgumentsInDirectOrder>(), BuildStage.Create));
   }
 
@@ -42,8 +42,8 @@ public static class AutoBuild
              .GetOrAddNode(
                 new IfFirstUnit(
                   Static.Of<IsParameterInfo>(),
-                  WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
-             .AppendChildBuildChainPatternNodes(tuner)
+                  WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
+             .AppendChildBuildStackPatternNodes(tuner)
              .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create));
 
     /// <summary>
@@ -56,8 +56,8 @@ public static class AutoBuild
              .GetOrAddNode(
                 new IfFirstUnit(
                   Static.Of<IsParameterInfo>(),
-                  WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.IfFirstUnit))
-             .AppendChildBuildChainPatternNodes(tuner)
+                  WeightOf.InjectionPoint.ByName + WeightOf.BuildStackPattern.IfFirstUnit))
+             .AppendChildBuildStackPatternNodes(tuner)
              .UseBuildAction(Static.Of<BuildArgumentByParameterName>(), BuildStage.Create));
   }
 

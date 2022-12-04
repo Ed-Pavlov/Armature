@@ -15,15 +15,15 @@ public interface ITuner
   ITuner?            Parent   { get; }
 
   /// <summary>
-  /// The root of the tree containing patterns to match a build chain
+  /// The root of the tree containing patterns to match a build stack
   /// </summary>
-  IBuildChainPattern TreeRoot { get; }
+  IBuildStackPattern TreeRoot { get; }
 
   /// <summary>
-  /// Adds a build chain pattern produced by this tuner as a child of <paramref name="node"/> or gets already added one.
+  /// Adds a build stack pattern produced by this tuner as a child of <paramref name="node"/> or gets already added one.
   /// </summary>
-  /// <returns>Returns the actual build chain pattern node, newly added or obtained from the <paramref name="node"/> </returns>
-  IBuildChainPattern GetOrAddNodeTo(IBuildChainPattern node);
+  /// <returns>Returns the actual build stack pattern node, newly added or obtained from the <paramref name="node"/> </returns>
+  IBuildStackPattern GetOrAddNodeTo(IBuildStackPattern node);
 
   int                Weight { get; }
 }

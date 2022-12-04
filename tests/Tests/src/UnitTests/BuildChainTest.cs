@@ -8,7 +8,7 @@ using Tests.Util;
 
 namespace Tests.UnitTests;
 
-public class BuildChainTest
+public class BuildStackTest
 {
   [Test]
   public void target_unit_should_not_depend_on_tail()
@@ -18,10 +18,10 @@ public class BuildChainTest
     var firstOfTail = Kind.Is("ParamInfo");
 
     var array      = new[] {Kind.Is("Interface"), Kind.Is("Class"), firstOfTail, expected};
-    var buildChain = new BuildChain(array).GetTail(1);
+    var stack = new BuildSession.Stack(array).GetTail(1);
 
     // act, assert
-    buildChain.TargetUnit.Should().Be(expected);
+    stack.TargetUnit.Should().Be(expected);
   }
 
   [Test]
@@ -30,10 +30,10 @@ public class BuildChainTest
     var expected = new[] {Kind.Is(0), Kind.Is(1), Kind.Is(2), Kind.Is(3)};
 
     // arrange
-    var buildChain = new BuildChain(expected.Reverse().ToArray());
+    var stack = new BuildSession.Stack(expected.Reverse().ToArray());
 
     // act, assert
-    buildChain.Should().BeEquivalentTo(expected);
+    stack.Should().BeEquivalentTo(expected);
   }
 
   [Test]
@@ -41,10 +41,10 @@ public class BuildChainTest
   {
     // arrange
     var array      = new[] {Kind.Is("Interface"), Kind.Is("Class"), Kind.Is("ParamInfo"), Kind.Is("Argument")};
-    var buildChain = new BuildChain(array);
+    var stack = new BuildSession.Stack(array);
 
     // act
-    var tail = buildChain.GetTail(1);
+    var tail = stack.GetTail(1);
 
     // assert
     tail.Should().BeEquivalentTo(array.Reverse().Skip(1));
@@ -58,7 +58,7 @@ public class BuildChainTest
     const int tailStartIndex = 1;
 
     var array     = new UnitId[arrayLength];
-    var arrayTail = new BuildChain(array).GetTail(tailStartIndex);
+    var arrayTail = new BuildSession.Stack(array).GetTail(tailStartIndex);
 
     // --assert
     arrayTail.Length.Should().Be(arrayLength - tailStartIndex);
@@ -68,17 +68,17 @@ public class BuildChainTest
   public void should_allow_default()
   {
     // --arrange
-    var actual = default(BuildChain);
+    var actual = default(BuildSession.Stack);
 
     // --assert
-    actual.Should().BeOfType<BuildChain>();
+    actual.Should().BeOfType<BuildSession.Stack>();
   }
 
   [Test]
   public void should_not_allow_default_ctor()
   {
     // --arrange
-    var actual = () => new BuildChain();
+    var actual = () => new BuildSession.Stack();
 
     // --assert
     actual.Should().ThrowExactly<ArgumentException>();
@@ -88,7 +88,7 @@ public class BuildChainTest
   public void should_check_array_argument()
   {
     // --arrange
-    var actual = () => new BuildChain(null!);
+    var actual = () => new BuildSession.Stack(null!);
 
     // --assert
     actual.Should().ThrowExactly<ArgumentNullException>().WithParameterName("array");
@@ -101,7 +101,7 @@ public class BuildChainTest
 
     // --arrange
     startIndex = Math.Min(startIndex, array.Length + 1);
-    var actual = () => new BuildChain(array).GetTail(startIndex);
+    var actual = () => new BuildSession.Stack(array).GetTail(startIndex);
 
     // --assert
     actual.Should().ThrowExactly<ArgumentOutOfRangeException>().WithParameterName("startIndex");

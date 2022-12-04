@@ -9,10 +9,10 @@ namespace Tests.Util;
 public static class TestUtil
 {
   [DebuggerStepThrough]
-  public static BuildChain CreateBuildChain(params UnitId[] array) => new BuildChain(array);
+  public static BuildSession.Stack CreateBuildStack(params UnitId[] array) => new BuildSession.Stack(array);
 
   [DebuggerStepThrough]
-  public static BuildChain ToBuildChain(this UnitId item) => new(new []{item});
+  public static BuildSession.Stack ToBuildStack(this UnitId item) => new(new []{item});
 
   [DebuggerStepThrough]
   public static BuildResult ToArguments<T>(this T? value) => new BuildResult(value?.GetType().IsArray == true ? value : new object?[] {value});

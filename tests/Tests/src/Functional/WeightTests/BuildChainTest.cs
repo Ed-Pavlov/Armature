@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Tests.Functional.WeightTests
 {
-  public class BuildChainTest
+  public class BuildStackTest
   {
     [Test]
     public void should_use_registration_from_longer_branch()

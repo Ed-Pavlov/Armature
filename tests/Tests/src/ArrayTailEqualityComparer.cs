@@ -1,16 +1,17 @@
 using System.Collections.Generic;
+using Armature.Core;
 using Armature.Core.Sdk;
 
 namespace Tests;
 
 public static class Comparer
 {
-  public static IEqualityComparer<BuildChain> OfArrayTail<T>() => new ArrayTailEqualityComparer<T>();
+  public static IEqualityComparer<BuildSession.Stack> OfArrayTail<T>() => new ArrayTailEqualityComparer<T>();
 }
 
-public class ArrayTailEqualityComparer<T> : IEqualityComparer<BuildChain>
+public class ArrayTailEqualityComparer<T> : IEqualityComparer<BuildSession.Stack>
 {
-  public bool Equals(BuildChain x, BuildChain y)
+  public bool Equals(BuildSession.Stack x, BuildSession.Stack y)
   {
     if(x.Length != y.Length) return false;
 
@@ -20,7 +21,7 @@ public class ArrayTailEqualityComparer<T> : IEqualityComparer<BuildChain>
 
     return true;
   }
-  public int GetHashCode(BuildChain array)
+  public int GetHashCode(BuildSession.Stack array)
   {
     unchecked
     {

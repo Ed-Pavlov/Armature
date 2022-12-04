@@ -22,8 +22,8 @@ public static class Constructor
                 .GetOrAddNode(
                    new IfFirstUnit(
                      Static.Of<IsConstructor>(),
-                     WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildChainPattern.IfFirstUnit))
-                .AppendChildBuildChainPatternNodes(tuner)
+                     WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildStackPattern.IfFirstUnit))
+                .AppendChildBuildStackPatternNodes(tuner)
                 .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create));
 
   /// <summary>
@@ -37,8 +37,8 @@ public static class Constructor
                 .GetOrAddNode(
                    new IfFirstUnit(
                      Static.Of<IsConstructor>(),
-                     WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.IfFirstUnit))
-                .AppendChildBuildChainPatternNodes(tuner)
+                     WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildStackPattern.IfFirstUnit))
+                .AppendChildBuildStackPatternNodes(tuner)
                 .UseBuildAction(new GetConstructorByInjectPoint(injectionPointId), BuildStage.Create));
 
   /// <summary>
@@ -78,7 +78,7 @@ public static class Constructor
                 .GetOrAddNode(
                    new IfFirstUnit(
                      Static.Of<IsConstructor>(),
-                     WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.IfFirstUnit))
-                .AppendChildBuildChainPatternNodes(tuner)
+                     WeightOf.InjectionPoint.ByName + WeightOf.BuildStackPattern.IfFirstUnit))
+                .AppendChildBuildStackPatternNodes(tuner)
                 .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
 }

@@ -19,7 +19,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Kind.Is<IEnumerable<int>>().ToBuildChain());
+    A.CallTo(() => buildSession.Stack).Returns(Kind.Is<IEnumerable<int>>().ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Kind.Is<List<int>>().Tag(tag)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -40,7 +40,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Kind.Is<IEnumerable<int>>().Tag(tag).ToBuildChain());
+    A.CallTo(() => buildSession.Stack).Returns(Kind.Is<IEnumerable<int>>().Tag(tag).ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Kind.Is<List<int>>().Tag(tag)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -61,7 +61,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Kind.Is<string>().ToBuildChain());
+    A.CallTo(() => buildSession.Stack).Returns(Kind.Is<string>().ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Kind.Is<List<int>>()));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -82,7 +82,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Kind.Is<string>().ToBuildChain());
+    A.CallTo(() => buildSession.Stack).Returns(Kind.Is<string>().ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Kind.Is<List<int>>()));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -104,7 +104,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Kind.Is(typeof(IEnumerable<>)).ToBuildChain());
+    A.CallTo(() => buildSession.Stack).Returns(Kind.Is(typeof(IEnumerable<>)).ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Kind.Is<List<int>>()));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -125,7 +125,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Kind.Is(typeof(IEnumerable<>)).ToBuildChain());
+    A.CallTo(() => buildSession.Stack).Returns(Kind.Is(typeof(IEnumerable<>)).ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Kind.Is<List<int>>()));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -147,7 +147,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Kind.Is<Dictionary<int, int>>().ToBuildChain());
+    A.CallTo(() => buildSession.Stack).Returns(Kind.Is<Dictionary<int, int>>().ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Kind.Is<List<int>>()));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -168,7 +168,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Kind.Is<Dictionary<int, int>>().ToBuildChain());
+    A.CallTo(() => buildSession.Stack).Returns(Kind.Is<Dictionary<int, int>>().ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Kind.Is<List<int>>()));
     buildUnitCall.Returns(expected.ToBuildResult());
 

@@ -13,7 +13,7 @@ public record BuildArgumentByParameterTypeAndTag : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
-    var parameterInfo = (ParameterInfo) buildSession.BuildChain.TargetUnit.Kind!;
+    var parameterInfo = (ParameterInfo) buildSession.Stack.TargetUnit.Kind!;
 
     foreach(var attribute in parameterInfo.GetCustomAttributes<InjectAttribute>())
     {

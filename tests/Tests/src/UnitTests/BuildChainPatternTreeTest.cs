@@ -8,7 +8,7 @@ using Tests.Util;
 
 namespace Tests.UnitTests
 {
-  public class BuildChainPatternTreeTest
+  public class BuildStackPatternTreeTest
   {
     [Test]
     public void should_return_all_merged_actions()
@@ -20,12 +20,12 @@ namespace Tests.UnitTests
       var matchString   = new IfFirstUnit(unitIdMatcher).UseBuildAction(new CreateByReflection(), BuildStage.Cache);
       var matchAny      = new SkipTillUnit(unitIdMatcher).UseBuildAction(singletonAction, BuildStage.Cache);
 
-      var target = new BuildChainPatternTree();
+      var target = new BuildStackPatternTree();
       target.Children.Add(matchString);
       target.Children.Add(matchAny);
 
       // --act
-      var actual = target.GatherBuildActions(Kind.Is<string>().ToBuildChain(), out var actionBag);
+      var actual = target.GatherBuildActions(Kind.Is<string>().ToBuildStack(), out var actionBag);
 
       // --assert
       actual.Should().BeTrue();

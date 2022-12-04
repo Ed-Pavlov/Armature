@@ -6,7 +6,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using Tests.Util;
 
-namespace Tests.UnitTests.BuildChainPatterns;
+namespace Tests.UnitTests.BuildStackPatterns;
 
 public class IfFirstUnitTest
 {
@@ -19,20 +19,20 @@ public class IfFirstUnitTest
 
     // --arrange
     var target   = new IfFirstUnit(new UnitPattern(kind));
-    var child1 = A.Fake<IBuildChainPattern>();
-    var child2 = A.Fake<IBuildChainPattern>();
+    var child1 = A.Fake<IBuildStackPattern>();
+    var child2 = A.Fake<IBuildStackPattern>();
     target.AddNode(child1);
     target.AddNode(child2);
 
     // --act
-    var chain = TestUtil.CreateBuildChain(expected, new UnitId(kind, null));
-    target.GatherBuildActions(chain, out var actionBag, 0);
+    var stack = TestUtil.CreateBuildStack(expected, new UnitId(kind, null));
+    target.GatherBuildActions(stack, out var actionBag, 0);
 
     // --assert
-    A.CallTo(() => child1.GatherBuildActions(An<BuildChain>.That.IsEqualTo(expected.ToBuildChain(), Comparer.OfArrayTail<UnitId>()), out actionBag, An<long>._))
+    A.CallTo(() => child1.GatherBuildActions(An<BuildSession.Stack>.That.IsEqualTo(expected.ToBuildStack(), Comparer.OfArrayTail<UnitId>()), out actionBag, An<long>._))
      .MustHaveHappenedOnceAndOnly();
 
-    A.CallTo(() => child2.GatherBuildActions(An<BuildChain>.That.IsEqualTo(expected.ToBuildChain(), Comparer.OfArrayTail<UnitId>()), out actionBag, An<long>._))
+    A.CallTo(() => child2.GatherBuildActions(An<BuildSession.Stack>.That.IsEqualTo(expected.ToBuildStack(), Comparer.OfArrayTail<UnitId>()), out actionBag, An<long>._))
      .MustHaveHappenedOnceAndOnly();
   }
 
@@ -45,14 +45,14 @@ public class IfFirstUnitTest
 
     // --arrange
     var target   = new IfFirstUnit(new UnitPattern(kind));
-    var child1 = A.Fake<IBuildChainPattern>();
-    var child2 = A.Fake<IBuildChainPattern>();
+    var child1 = A.Fake<IBuildStackPattern>();
+    var child2 = A.Fake<IBuildStackPattern>();
     target.AddNode(child1);
     target.AddNode(child2);
 
     // --act
-    var chain = TestUtil.CreateBuildChain(new UnitId("bad", null), new UnitId(kind, null), expected);
-    target.GatherBuildActions(chain, out var actionBag, 0);
+    var stack = TestUtil.CreateBuildStack(new UnitId("bad", null), new UnitId(kind, null), expected);
+    target.GatherBuildActions(stack, out var actionBag, 0);
 
     // --assert
     A.CallTo(() => child1.GatherBuildActions(default, out actionBag, default)).WithAnyArguments().MustNotHaveHappened();
@@ -68,18 +68,18 @@ public class IfFirstUnitTest
 
     // --arrange
     var target   = new IfFirstUnit(new UnitPattern(kind), patternWeight);
-    var child1 = A.Fake<IBuildChainPattern>();
-    var child2 = A.Fake<IBuildChainPattern>();
+    var child1 = A.Fake<IBuildStackPattern>();
+    var child2 = A.Fake<IBuildStackPattern>();
     target.AddNode(child1);
     target.AddNode(child2);
 
     // --act
-    var chain = TestUtil.CreateBuildChain(new UnitId(kind, null), new UnitId(kind, null));
-    target.GatherBuildActions(chain, out var actionBag, inputWeight);
+    var stack = TestUtil.CreateBuildStack(new UnitId(kind, null), new UnitId(kind, null));
+    target.GatherBuildActions(stack, out var actionBag, inputWeight);
 
     // --assert
-    A.CallTo(() => child1.GatherBuildActions(An<BuildChain>._, out actionBag, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
-    A.CallTo(() => child2.GatherBuildActions(An<BuildChain>._, out actionBag, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => child1.GatherBuildActions(An<BuildSession.Stack>._, out actionBag, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => child2.GatherBuildActions(An<BuildSession.Stack>._, out actionBag, inputWeight + patternWeight)).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]

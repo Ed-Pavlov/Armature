@@ -18,7 +18,7 @@ public record GetConstructorByInjectPoint : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession)
   {
-    var unitType = buildSession.BuildChain.TargetUnit.GetUnitType();
+    var unitType = buildSession.Stack.TargetUnit.GetUnitType();
 
     var constructors = unitType
                       .GetConstructors()

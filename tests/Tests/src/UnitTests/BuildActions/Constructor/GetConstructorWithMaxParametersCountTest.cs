@@ -16,7 +16,7 @@ public class GetConstructorWithMaxParametersCountTest
   {
     // --arrange
     var target = new GetConstructorWithMaxParametersCount();
-    var actual = new BuildSessionMock(Kind.Is<Good>().ToBuildChain());
+    var actual = new BuildSessionMock(Kind.Is<Good>().ToBuildStack());
 
     // --act
     target.Process(actual);
@@ -32,7 +32,7 @@ public class GetConstructorWithMaxParametersCountTest
     var target = new GetConstructorWithMaxParametersCount();
 
     // --act
-    Action actual = () => target.Process(new BuildSessionMock(Kind.Is<Bad>().ToBuildChain()));
+    Action actual = () => target.Process(new BuildSessionMock(Kind.Is<Bad>().ToBuildStack()));
 
     // --assert
     actual.Should().ThrowExactly<ArmatureException>().Which.Message.Should().StartWith("More than one constructor with max parameters count for type");
@@ -43,7 +43,7 @@ public class GetConstructorWithMaxParametersCountTest
   {
     // --arrange
     var target = new GetConstructorWithMaxParametersCount();
-    var actual = new BuildSessionMock(Kind.Is<NoCtor>().ToBuildChain());
+    var actual = new BuildSessionMock(Kind.Is<NoCtor>().ToBuildStack());
 
     // --act
     target.Process(actual);

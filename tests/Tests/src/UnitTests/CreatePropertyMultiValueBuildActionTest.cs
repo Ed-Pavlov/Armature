@@ -22,7 +22,7 @@ namespace Tests.UnitTests
       // --arrange
       var target       = new BuildListArgumentForProperty(tag);
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildChain).Returns(new UnitId(propertyInfo, tag).ToBuildChain());
+      A.CallTo(() => buildSession.Stack).Returns(new UnitId(propertyInfo, tag).ToBuildStack());
 
       A.CallTo(() => buildSession.BuildAllUnits(new UnitId(propertyInfo, tag)))
        .Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());

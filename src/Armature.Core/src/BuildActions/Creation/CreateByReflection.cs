@@ -13,7 +13,7 @@ public record CreateByReflection : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
-    var type = buildSession.BuildChain.TargetUnit.GetUnitType();
+    var type = buildSession.Stack.TargetUnit.GetUnitType();
 
     if(!type.IsInterface && !type.IsAbstract)
     {

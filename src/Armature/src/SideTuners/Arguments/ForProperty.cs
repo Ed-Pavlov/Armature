@@ -25,8 +25,8 @@ public static class ForProperty
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyOfType(new UnitPattern(type)),
-                         weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
-                    .AppendChildBuildChainPatternNodes(tuner);
+                         weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
+                    .AppendChildBuildStackPatternNodes(tuner);
       });
 
   /// <summary>
@@ -43,8 +43,8 @@ public static class ForProperty
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyOfType(new UnitPattern(typeof(T))),
-                         weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildChainPattern.IfFirstUnit))
-                    .AppendChildBuildChainPatternNodes(tuner);
+                         weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
+                    .AppendChildBuildStackPatternNodes(tuner);
       });
 
   /// <summary>
@@ -61,8 +61,8 @@ public static class ForProperty
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyNamed(propertyName),
-                         weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildChainPattern.IfFirstUnit))
-                    .AppendChildBuildChainPatternNodes(tuner);
+                         weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildStackPattern.IfFirstUnit))
+                    .AppendChildBuildStackPatternNodes(tuner);
       });
 
   /// <summary>
@@ -80,7 +80,7 @@ public static class ForProperty
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyAttributed(injectPointId),
-                         weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildChainPattern.IfFirstUnit))
-                    .AppendChildBuildChainPatternNodes(tuner);
+                         weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildStackPattern.IfFirstUnit))
+                    .AppendChildBuildStackPatternNodes(tuner);
       });
 }

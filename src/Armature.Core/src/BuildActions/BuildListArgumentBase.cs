@@ -30,7 +30,7 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
   {
     Log.WriteLine(LogLevel.Trace, () => $"Tag: {_tag.ToHoconString()}");
 
-    var targetUnit   = buildSession.BuildChain.TargetUnit;
+    var targetUnit   = buildSession.Stack.TargetUnit;
     var effectiveTag = _tag.GetEffectiveTag(targetUnit.Tag);
 
     var injectionPointType = GetArgumentType(targetUnit);

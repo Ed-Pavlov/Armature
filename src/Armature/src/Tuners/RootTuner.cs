@@ -9,11 +9,11 @@ namespace Armature;
 /// </summary>
 public class RootTuner : ITuner, ITunerBase
 {
-  public RootTuner(IBuildChainPattern treeRoot) => TreeRoot = treeRoot ?? throw new ArgumentNullException(nameof(treeRoot));
+  public RootTuner(IBuildStackPattern treeRoot) => TreeRoot = treeRoot ?? throw new ArgumentNullException(nameof(treeRoot));
 
   public ITuner?            Parent   => null;
-  public IBuildChainPattern TreeRoot { get; }
+  public IBuildStackPattern TreeRoot { get; }
   public int                Weight   => 0;
 
-  public IBuildChainPattern GetOrAddNodeTo(IBuildChainPattern node) => node;
+  public IBuildStackPattern GetOrAddNodeTo(IBuildStackPattern node) => node;
 }

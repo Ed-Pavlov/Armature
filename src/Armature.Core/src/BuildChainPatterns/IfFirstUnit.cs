@@ -4,18 +4,18 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Checks if the first unit in the build chain matches the specified pattern.
+/// Checks if the first unit in the build stack matches the specified pattern.
 /// </summary>
-public class IfFirstUnit : BuildChainPatternByUnitBase
+public class IfFirstUnit : BuildStackPatternByUnitBase
 {
-  public IfFirstUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildChainPattern.IfFirstUnit) { }
+  public IfFirstUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildStackPattern.IfFirstUnit) { }
   public IfFirstUnit(IUnitPattern pattern, int weight) : base(pattern, weight) { }
 
   /// <summary>
-  /// Checks if the first unit in the build chain matches the specified patter.
-  /// If it is the target unit, returns build actions for it, if no, pass the rest of the build chain to each child and returns all actions from children merged
+  /// Checks if the first unit in the build stack matches the specified patter.
+  /// If it is the target unit, returns build actions for it, if no, pass the rest of the build stack to each child and returns all actions from children merged
   /// </summary>
-  public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, long inputWeight)
+  public override bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
   {
     actionBag = null;
 
@@ -26,10 +26,10 @@ public class IfFirstUnit : BuildChainPatternByUnitBase
     {
       Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
 
-      var isPatternMatches = UnitPattern.Matches(buildChain[0]);
+      var isPatternMatches = UnitPattern.Matches(stack[0]);
       Log.WriteLine(LogLevel.Verbose, LogConst.Matched, isPatternMatches);
 
-      hasActions = isPatternMatches && GetOwnAndChildrenBuildActions(buildChain.GetTail(1), inputWeight, out actionBag);
+      hasActions = isPatternMatches && GetOwnAndChildrenBuildActions(stack.GetTail(1), inputWeight, out actionBag);
       return hasActions;
     }
   }

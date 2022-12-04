@@ -6,25 +6,27 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using Armature.Core.Annotations;
 
-namespace Armature.Core.Sdk;
+namespace Armature.Core;
 
+public partial class BuildSession
+{
 /// <summary>
 /// Data structure used to take a tail of the collection w/o memory allocations
 /// </summary>
 /// <remarks>It implements <see cref="IEnumerable{T}"/> for rare and mostly debugging cases, use it wisely</remarks>
-public readonly struct BuildChain : IEnumerable<UnitId>
+public readonly struct Stack : IEnumerable<UnitId>
 {
   private readonly IReadOnlyList<UnitId> _array;
   private readonly int                   _startIndex;
 
   [DebuggerStepThrough]
-  public BuildChain() => throw new ArgumentException("Use constructor with parameters");
+  public Stack() => throw new ArgumentException("Use constructor with parameters");
 
   [DebuggerStepThrough]
-  public BuildChain(IReadOnlyList<UnitId> array) : this(array, 0, GetTargetUnit(array)) { }
+  public Stack(IReadOnlyList<UnitId> array) : this(array, 0, GetTargetUnit(array)) { }
 
   [DebuggerStepThrough]
-  private BuildChain(IReadOnlyList<UnitId> array, int startIndex, UnitId targetUnit)
+  private Stack(IReadOnlyList<UnitId> array, int startIndex, UnitId targetUnit)
   {
     if(startIndex < 0 || startIndex > array.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
 
@@ -56,7 +58,7 @@ public readonly struct BuildChain : IEnumerable<UnitId>
 
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public BuildChain GetTail(int startIndex) => new(_array, _startIndex + startIndex, TargetUnit);
+  public Stack GetTail(int startIndex) => new(_array, _startIndex + startIndex, TargetUnit);
 
   public override string ToString()
   {
@@ -84,15 +86,15 @@ public readonly struct BuildChain : IEnumerable<UnitId>
 
   private struct Enumerator : IEnumerator<UnitId>
   {
-    private readonly BuildChain _buildChain;
+    private readonly Stack _buildStack;
 
     private bool   _disposed;
     private int    _iterator;
     private UnitId _current;
 
-    public Enumerator(BuildChain buildChain)
+    public Enumerator(Stack stack)
     {
-      _buildChain = buildChain;
+      _buildStack = stack;
       Reset();
     }
 
@@ -100,13 +102,13 @@ public readonly struct BuildChain : IEnumerable<UnitId>
     {
       if(_disposed) throw new ObjectDisposedException(nameof(Enumerator));
 
-      if(_iterator >= _buildChain.Length)
+      if(_iterator >= _buildStack.Length)
       {
         _current = default;
         return false;
       }
 
-      _current = _buildChain[_iterator++];
+      _current = _buildStack[_iterator++];
       return true;
     }
 
@@ -133,4 +135,5 @@ public readonly struct BuildChain : IEnumerable<UnitId>
   }
 
   IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+}
 }

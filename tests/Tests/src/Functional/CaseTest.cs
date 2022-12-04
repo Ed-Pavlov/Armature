@@ -20,7 +20,7 @@ namespace Tests.Functional
 
       target
        .Treat<string>()
-       .AsCreatedWith(buildSession => buildSession.BuildChain.Last().Kind!.ToString()!);
+       .AsCreatedWith(buildSession => buildSession.Stack.Last().Kind!.ToString()!);
 
       target
        .Treat<DisposableAndStringCtorClass>()

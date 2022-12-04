@@ -4,13 +4,13 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Some base logic to reuse in build chain patterns based on <see cref="IUnitPattern"/>
+/// Some base logic to reuse in build stack patterns based on <see cref="IUnitPattern"/>
 /// </summary>
-public abstract class BuildChainPatternByUnitBase : BuildChainPatternBase, IInternal<IUnitPattern>
+public abstract class BuildStackPatternByUnitBase : BuildStackPatternBase, IInternal<IUnitPattern>
 {
   protected readonly IUnitPattern UnitPattern;
 
-  protected BuildChainPatternByUnitBase(IUnitPattern unitPattern, int weight) : base(weight)
+  protected BuildStackPatternByUnitBase(IUnitPattern unitPattern, int weight) : base(weight)
     => UnitPattern = unitPattern ?? throw new ArgumentNullException(nameof(unitPattern));
 
   protected override void PrintContentToLog(LogLevel logLevel)
@@ -19,10 +19,10 @@ public abstract class BuildChainPatternByUnitBase : BuildChainPatternBase, IInte
     base.PrintContentToLog(logLevel);
   }
 
-  private bool Equals(BuildChainPatternByUnitBase? other) => base.Equals(other) && Equals(UnitPattern, other.UnitPattern);
+  private bool Equals(BuildStackPatternByUnitBase? other) => base.Equals(other) && Equals(UnitPattern, other.UnitPattern);
 
-  public override bool Equals(IBuildChainPattern? other) => Equals(other as BuildChainPatternByUnitBase);
-  public override bool Equals(object?             obj)   => Equals(obj as BuildChainPatternByUnitBase);
+  public override bool Equals(IBuildStackPattern? other) => Equals(other as BuildStackPatternByUnitBase);
+  public override bool Equals(object?             obj)   => Equals(obj as BuildStackPatternByUnitBase);
 
   public override int GetHashCode()
   {

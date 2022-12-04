@@ -2,4 +2,4 @@
 
 namespace Armature;
 
-public delegate IBuildChainPattern TuneArgumentRecipient(ITunerBase tuner, int weight);
+public delegate IBuildStackPattern TuneArgumentRecipient(ITunerBase tuner, int weight);

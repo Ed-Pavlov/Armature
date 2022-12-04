@@ -16,7 +16,7 @@
 // public class ForParameterTest
 // {
 //   private static readonly ParameterInfo[] ParameterList   = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters();
-//   private static readonly UnitId[]        BuildChain   = {new UnitId(ParameterList, SpecialTag.Argument)};
+//   private static readonly UnitId[]        BuildStack   = {new UnitId(ParameterList, SpecialTag.Argument)};
 //   private static readonly UnitId          NamedParameter  = new(ParameterList.Single(_ => _.Name          == Subject.ParamName), SpecialTag.Argument);
 //   private static readonly UnitId          TypedParameter  = new(ParameterList.Single(_ => _.ParameterType == typeof(int)), SpecialTag.Argument);
 //   private static readonly UnitId          IdNullParameter = new(ParameterList.Single(_ => _.ParameterType == typeof(string)), SpecialTag.Argument);
@@ -25,17 +25,17 @@
 //   private static readonly List<IForParameter> ForParameterWithInjectAttributeCases =
 //       new()
 //       {
-//           new ArrangeForParameterWithInjectAttribute($"{nameof(ForParameter)}.{nameof(ForParameter.WithInjectPoint)}(null)", () => ForParameter.WithInjectPoint(null), BuildChain.Concat(new[] {IdNullParameter}).ToArray().ToArrayTail()),
-//           new ArrangeForParameterWithInjectAttribute($"{nameof(ForParameter)}.{nameof(ForParameter.WithInjectPoint)}({Subject.Id})", () => ForParameter.WithInjectPoint(Subject.Id), BuildChain.Concat(new[] {IdParameter}).ToArray().ToArrayTail()),
+//           new ArrangeForParameterWithInjectAttribute($"{nameof(ForParameter)}.{nameof(ForParameter.WithInjectPoint)}(null)", () => ForParameter.WithInjectPoint(null), BuildStack.Concat(new[] {IdNullParameter}).ToArray().ToArrayTail()),
+//           new ArrangeForParameterWithInjectAttribute($"{nameof(ForParameter)}.{nameof(ForParameter.WithInjectPoint)}({Subject.Id})", () => ForParameter.WithInjectPoint(Subject.Id), BuildStack.Concat(new[] {IdParameter}).ToArray().ToArrayTail()),
 //       };
 //   private static readonly List<IForParameter> ForParameterCases =
 //       new()
 //       {
 //
-//           new ArrangeForParameter<object?>($"{nameof(ForParameter)}.{nameof(ForParameter.Named)}({Subject.ParamName})", () => ForParameter.Named(Subject.ParamName), BuildChain.Concat(new[] {NamedParameter}).ToArray().ToArrayTail()),
+//           new ArrangeForParameter<object?>($"{nameof(ForParameter)}.{nameof(ForParameter.Named)}({Subject.ParamName})", () => ForParameter.Named(Subject.ParamName), BuildStack.Concat(new[] {NamedParameter}).ToArray().ToArrayTail()),
 //           // ReSharper disable once ConvertClosureToMethodGroup
-//           new ArrangeForParameter<int>($"{nameof(ForParameter)}.{nameof(ForParameter.OfType)}<int>()", () => ForParameter.OfType<int>(), BuildChain.Concat(new[] {TypedParameter}).ToArray().ToArrayTail()),
-//           new ArrangeForParameter<object?>($"{nameof(ForParameter)}.{nameof(ForParameter.OfType)}(typeof(int))", () => ForParameter.OfType(typeof(int)), BuildChain.Concat(new[] {TypedParameter}).ToArray().ToArrayTail()),
+//           new ArrangeForParameter<int>($"{nameof(ForParameter)}.{nameof(ForParameter.OfType)}<int>()", () => ForParameter.OfType<int>(), BuildStack.Concat(new[] {TypedParameter}).ToArray().ToArrayTail()),
+//           new ArrangeForParameter<object?>($"{nameof(ForParameter)}.{nameof(ForParameter.OfType)}(typeof(int))", () => ForParameter.OfType(typeof(int)), BuildStack.Concat(new[] {TypedParameter}).ToArray().ToArrayTail()),
 //       };
 //
 //   private static IEnumerable<ActAssert> CombineCommonCases<T>(ArrangeForParameter<T> arrange)
@@ -48,11 +48,11 @@
 //
 //           // --arrange
 //           var argumentTuner = arrange.ForParameter().UseTag(tag);
-//           var patternTree   = new BuildChainPatternTree();
+//           var patternTree   = new BuildStackPatternTree();
 //           argumentTuner.Tune(patternTree);
 //
 //           // --act
-//           patternTree.GatherBuildActions(arrange.Chain, out var actionBag);
+//           patternTree.GatherBuildActions(arrange.Stack, out var actionBag);
 //
 //           // --assert
 //           actionBag!.Keys.Should().HaveCount(1).And.Contain(BuildStage.Create);
@@ -67,11 +67,11 @@
 //
 //           // --arrange
 //           var argumentTuner = arrange.ForParameter().UseValue(value);
-//           var patternTree   = new BuildChainPatternTree();
+//           var patternTree   = new BuildStackPatternTree();
 //           argumentTuner.Tune(patternTree);
 //
 //           // --act
-//           var result = patternTree.GatherBuildActions(arrange.Chain, out var actionBag);
+//           var result = patternTree.GatherBuildActions(arrange.Stack, out var actionBag);
 //
 //           // --assert
 //           result.Should().BeTrue();
@@ -85,11 +85,11 @@
 //         {
 //           // --arrange
 //           var argumentTuner = arrange.ForParameter().UseValue(default);
-//           var patternTree   = new BuildChainPatternTree();
+//           var patternTree   = new BuildStackPatternTree();
 //           argumentTuner.Tune(patternTree);
 //
 //           // --act
-//           var result = patternTree.GatherBuildActions(arrange.Chain, out var actionBag);
+//           var result = patternTree.GatherBuildActions(arrange.Stack, out var actionBag);
 //
 //           // --assert
 //           result.Should().BeTrue();
@@ -103,11 +103,11 @@
 //         {
 //           // --arrange
 //           var argumentTuner = arrange.ForParameter().UseFactoryMethod(() => default);
-//           var patternTree   = new BuildChainPatternTree();
+//           var patternTree   = new BuildStackPatternTree();
 //           argumentTuner.Tune(patternTree);
 //
 //           // --act
-//           var result = patternTree.GatherBuildActions(arrange.Chain, out var actionBag);
+//           var result = patternTree.GatherBuildActions(arrange.Stack, out var actionBag);
 //
 //           // --assert
 //           result.Should().BeTrue();
@@ -124,11 +124,11 @@
 //         {
 //           // --arrange
 //           var argumentTuner = arrange.ForParameter().UseInjectPointIdAsTag();
-//           var patternTree   = new BuildChainPatternTree();
+//           var patternTree   = new BuildStackPatternTree();
 //           argumentTuner.Tune(patternTree);
 //
 //           // --act
-//           var result = patternTree.GatherBuildActions(arrange.Chain, out var actionBag);
+//           var result = patternTree.GatherBuildActions(arrange.Stack, out var actionBag);
 //
 //           // --assert
 //           result.Should().BeTrue();
@@ -155,13 +155,13 @@
 //     IEnumerable CreateCases();
 //   }
 //
-//   private record ArrangeForParameter<T>(string Name, Func<MethodArgumentTuner<T>> ForParameter, BuildChain Chain) : IForParameter
+//   private record ArrangeForParameter<T>(string Name, Func<MethodArgumentTuner<T>> ForParameter, BuildStack Stack) : IForParameter
 //   {
 //     public virtual IEnumerable CreateCases() => CombineCommonCases(this);
 //   }
 //
-//   private record ArrangeForParameterWithInjectAttribute(string Name, Func<MethodArgumentTuner<object?>> ForParameter, BuildChain Chain)
-//       : ArrangeForParameter<object?>(Name, ForParameter, Chain)
+//   private record ArrangeForParameterWithInjectAttribute(string Name, Func<MethodArgumentTuner<object?>> ForParameter, BuildStack Stack)
+//       : ArrangeForParameter<object?>(Name, ForParameter, Stack)
 //   {
 //     public override IEnumerable CreateCases() => CombineCommonCases(this).Concat(CombineInjectAttributeCases(this));
 //   }

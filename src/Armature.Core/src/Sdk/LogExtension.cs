@@ -55,7 +55,7 @@ public static class LogExtension
              {
                null                     => "null",
                string str               => str.QuoteIfNeeded(),
-               BuildChain buildChain    => buildChain.ToHoconString(),
+               BuildSession.Stack stack    => stack.ToHoconString(),
                ILogString logable       => logable.ToHoconString(),
                IBuildAction buildAction => buildAction.GetType().GetShortName().QuoteIfNeeded(),
                MethodBase methodInfo    => methodInfo.ToString().QuoteIfNeeded(),
@@ -84,19 +84,19 @@ public static class LogExtension
   public static string ToHoconString(this Type              type)  => type.ToLogString().QuoteIfNeeded();
   public static string ToHoconArray(this  IEnumerable<Type> items) => $"[{string.Join(", ", items.Select(type => type.ToHoconString()))}]";
 
-  public static string ToHoconString(this BuildChain buildChain)
+  public static string ToHoconString(this BuildSession.Stack stack)
   {
     var sb = new StringBuilder("[{");
 
-    var tillIndex = buildChain.Length - 1;
+    var tillIndex = stack.Length - 1;
 
     for(var i = 0; i < tillIndex; i++)
     {
-      sb.Append(buildChain[i]);
+      sb.Append(stack[i]);
       sb.Append(", ");
     }
 
-    sb.Append(buildChain[tillIndex]);
+    sb.Append(stack[tillIndex]);
     sb.Append("}]");
     return sb.ToString();
   }

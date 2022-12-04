@@ -51,8 +51,8 @@ public partial class SubjectTuner : ISubjectTuner, IAllTuner, ITuner
   }
 
   public ITuner?            Parent   { get; }
-  public IBuildChainPattern TreeRoot { get; }
+  public IBuildStackPattern TreeRoot { get; }
   public int                Weight   { get; private set; }
 
-  public IBuildChainPattern GetOrAddNodeTo(IBuildChainPattern node) => node.GetOrAddNode(_createNode());
+  public IBuildStackPattern GetOrAddNodeTo(IBuildStackPattern node) => node.GetOrAddNode(_createNode());
 }

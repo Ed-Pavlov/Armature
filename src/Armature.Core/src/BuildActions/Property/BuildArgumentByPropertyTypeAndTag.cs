@@ -14,7 +14,7 @@ public record BuildArgumentByPropertyTypeAndTag : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
-    var propertyInfo = (PropertyInfo) buildSession.BuildChain.TargetUnit.Kind!;
+    var propertyInfo = (PropertyInfo) buildSession.Stack.TargetUnit.Kind!;
 
     foreach(var attribute in propertyInfo.GetCustomAttributes<InjectAttribute>())
     {

@@ -44,7 +44,7 @@ InheritorsOf  m * 100
 
 ---- 2022.01.06
 
-  // lowest is injection point, it should not change matching of different build chain pattern in any case
+  // lowest is injection point, it should not change matching of different build stack pattern in any case
   // target.TreatInheritorsOf<Base<int>>().UsingArguments(
   //   ForParameter.WithInjectPoint("slkdjf").UseValue("hui"));
   //
@@ -52,7 +52,7 @@ InheritorsOf  m * 100
   //   ForParameter.OfType<string>().UseValue("pizda"),
   //   ForParameter.WithInjectPoint("slkdjf").UseValue("hui"));
 
-  // highest - build chain patterns, but not all - target is the highest, no context can change direct registration
+  // highest - build stack patterns, but not all - target is the highest, no context can change direct registration
   //                                               SkipAllUnits is the highest negative, no context can change depth of SkipAllUnits
   // target.Building<ISubject>().TreatInheritorsOf<Base>().UsingArguments("base");
   // target.Treat<ISubject>().As<Subject>().UsingArguments("long");
@@ -78,7 +78,7 @@ InheritorsOf  m * 100
 target.Treat<ISubject1>().AsCreated<LevelOne>().UsingArguments(asInterfaceParameterValue);
 target.Treat<LevelOne>().AsIs().UsingArguments(asIsParameterValue);
 
-Treat<ISubject> adds SkipTillUnit with WeightOf.TargetUnit, and it applies even in case a build chain is
+Treat<ISubject> adds SkipTillUnit with WeightOf.TargetUnit, and it applies even in case a build stack is
 ISubject -> LevelOne -> Param
   target      target
 

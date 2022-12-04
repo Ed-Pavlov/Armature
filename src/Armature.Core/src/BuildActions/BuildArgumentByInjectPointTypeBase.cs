@@ -21,7 +21,7 @@ public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogSt
   {
     Log.WriteLine(LogLevel.Trace, () => $"Tag: {_tag.ToHoconString()}");
 
-    var targetUnit   = buildSession.BuildChain.TargetUnit;
+    var targetUnit   = buildSession.Stack.TargetUnit;
     var effectiveTag = _tag == SpecialTag.Propagate ? targetUnit.Tag : _tag;
 
     var valueType = GetInjectPointType(targetUnit);

@@ -18,7 +18,7 @@ public record GetPropertyListByTags : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession)
   {
-    var type = buildSession.BuildChain.TargetUnit.GetUnitType();
+    var type = buildSession.Stack.TargetUnit.GetUnitType();
 
     var propertiesWithAttributes =
       type.GetProperties()

@@ -25,11 +25,11 @@ public static class Property
       tuner =>
       {
         var internals = tuner.GetInternals();
-        internals.GetOrAddBuildChainPatternNode().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        internals.GetOrAddBuildStackPatternNode().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
                  .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
-                 .AppendChildBuildChainPatternNodes(tuner)
+                 .AppendChildBuildStackPatternNodes(tuner)
                  .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
       });
 
@@ -46,11 +46,11 @@ public static class Property
       tuner =>
       {
         var internals = tuner.GetInternals();
-        internals.GetOrAddBuildChainPatternNode().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        internals.GetOrAddBuildStackPatternNode().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
                  .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
-                 .AppendChildBuildChainPatternNodes(tuner)
+                 .AppendChildBuildStackPatternNodes(tuner)
                  .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
       });
   }
@@ -65,11 +65,11 @@ public static class Property
       tuner =>
       {
         var internals = tuner.GetInternals();
-        internals.GetOrAddBuildChainPatternNode().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        internals.GetOrAddBuildStackPatternNode().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
                  .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
-                 .AppendChildBuildChainPatternNodes(tuner)
+                 .AppendChildBuildStackPatternNodes(tuner)
                  .UseBuildAction(new GetPropertyListByTags(pointIds), BuildStage.Create);
       });
 }

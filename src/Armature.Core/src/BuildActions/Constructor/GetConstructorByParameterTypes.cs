@@ -22,7 +22,7 @@ public record GetConstructorByParameterTypes : IBuildAction, ILogString
 
   public void Process(IBuildSession buildSession)
   {
-    var unitType = buildSession.BuildChain.TargetUnit.GetUnitType();
+    var unitType = buildSession.Stack.TargetUnit.GetUnitType();
     var ctor     = GetConstructor(unitType);
 
     ctor.WriteToLog(LogLevel.Trace);

@@ -17,7 +17,7 @@ namespace Tests.Extensibility.MaybePropagation
       var builder = CreateTarget();
 
       builder.AddNode(
-        new IfFirstUnit(new IsGenericOfDefinition(typeof(Maybe<>), Tag.Any), WeightOf.BuildChainPattern.IfFirstUnit)
+        new IfFirstUnit(new IsGenericOfDefinition(typeof(Maybe<>), Tag.Any), WeightOf.BuildStackPattern.IfFirstUnit)
          .UseBuildAction(new BuildMaybe(null), BuildStage.Create));
 
       builder.Treat<Section>().AsInstance(new Section());

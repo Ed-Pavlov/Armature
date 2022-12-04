@@ -7,7 +7,7 @@ namespace Armature;
 
 public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreationTuner, IInternal<IUnitPattern>
 {
-  private          IBuildChainPattern? _contextBranch;
+  private          IBuildStackPattern? _contextBranch;
   private readonly IUnitPattern        _unitPattern;
 
   public BuildingTuner(ITuner parent, CreateNode createNode, IUnitPattern unitPattern)
@@ -25,8 +25,8 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
 
     var unitPattern = new UnitPattern(type, tag);
 
-    IBuildChainPattern CreateTargetNode()
-      => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildChainPattern.IfFirstUnit);
+    IBuildStackPattern CreateTargetNode()
+      => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildStackPattern.IfFirstUnit);
 
     return new BuildingTuner<object>(this, CreateTargetNode, unitPattern);
   }
@@ -99,7 +99,7 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
 
   IBuildingTuner<T> IBuildingTuner<T>.AmendWeight(short delta) => AmendWeight(delta, this);
 
-  protected IBuildChainPattern GetContextBranch() => _contextBranch ??= this.GetOrAddBuildChainPatternNode();
+  protected IBuildStackPattern GetContextBranch() => _contextBranch ??= this.GetOrAddBuildStackPatternNode();
 
   IUnitPattern IInternal<IUnitPattern>.Member1 => _unitPattern;
 }

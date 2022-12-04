@@ -8,6 +8,6 @@ public static class ExceptionConst
   public const string ArmaturePrefix = "Armature_";
 
   public const string MessageKey = ArmaturePrefix + "Message";
-  public const string BuildChain = ArmaturePrefix + "BuildChain";
+  public const string BuildStack = ArmaturePrefix + "BuildStack";
   public const string Logged  = ArmaturePrefix + "IsLogged";
 }

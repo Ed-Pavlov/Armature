@@ -3,18 +3,18 @@
 namespace Armature.Core;
 
 /// <summary>
-/// Moves along the build chain skipping units until it encounters a matching unit. Behaves like string search with wildcard.
+/// Moves along the build stack skipping units until it encounters a matching unit. Behaves like string search with wildcard.
 /// </summary>
-public class SkipTillUnit : BuildChainPatternByUnitBase
+public class SkipTillUnit : BuildStackPatternByUnitBase
 {
-  public SkipTillUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildChainPattern.SkipTillUnit) { }
+  public SkipTillUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildStackPattern.SkipTillUnit) { }
   public SkipTillUnit(IUnitPattern pattern, int weight) : base(pattern, weight) { }
 
   /// <summary>
-  /// Moves along the build chain skipping units until it finds the matching unit.
-  /// If it is the target unit, returns build actions for it, if no, pass the rest of the chain to each child and returns merged actions.
+  /// Moves along the build stack skipping units until it finds the matching unit.
+  /// If it is the target unit, returns build actions for it, if no, pass the rest of the stack to each child and returns merged actions.
   /// </summary>
-  public override bool GatherBuildActions(BuildChain buildChain, out WeightedBuildActionBag? actionBag, long inputWeight)
+  public override bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
   {
     var hasActions = false;
     // ReSharper disable once AccessToModifiedClosure - yes, I need it to be captured
@@ -23,15 +23,15 @@ public class SkipTillUnit : BuildChainPatternByUnitBase
     {
       Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
 
-      for(var i = 0; i < buildChain.Length; i++)
+      for(var i = 0; i < stack.Length; i++)
       {
-        var unitInfo = buildChain[i];
+        var unitInfo = stack[i];
 
         var isPatternMatches = UnitPattern.Matches(unitInfo);
         if(isPatternMatches)
         {
           Log.WriteLine(LogLevel.Verbose, LogConst.Matched, true);
-          hasActions = GetOwnAndChildrenBuildActions(buildChain.GetTail(i + 1), inputWeight - i * 3, out actionBag);
+          hasActions = GetOwnAndChildrenBuildActions(stack.GetTail(i + 1), inputWeight - i * 3, out actionBag);
           return hasActions;
         }
       }
