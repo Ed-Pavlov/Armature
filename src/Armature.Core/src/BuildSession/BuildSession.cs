@@ -67,7 +67,7 @@ public partial class BuildSession
   /// <summary>
   /// Common logic to build one or all units
   /// </summary>
-  private T Build<T>(UnitId unitId, Func<BuildSession.Stack, WeightedBuildActionBag?, T> build)
+  private T Build<T>(UnitId unitId, Func<Stack, WeightedBuildActionBag?, T> build)
   {
     Log.WriteLine(LogLevel.Info, () => $"Time: \"{DateTime.Now:yyyy-mm-dd HH:mm:ss.fff}\"");
     Log.WriteLine(LogLevel.Info, () => $"Thread: {Environment.CurrentManagedThreadId.ToHoconString()} ");
@@ -75,7 +75,7 @@ public partial class BuildSession
     T result;
 
     _buildStackList.Add(unitId);
-    var stack = new BuildSession.Stack(_buildStackList);
+    var stack = new Stack(_buildStackList);
 
     Log.WriteLine(LogLevel.Info, () => $"BuildStack = {stack.ToHoconString()}");
 
@@ -112,7 +112,7 @@ public partial class BuildSession
     return result;
   }
 
-  private BuildResult BuildUnit(BuildSession.Stack stack, WeightedBuildActionBag? buildActionBag)
+  private BuildResult BuildUnit(Stack stack, WeightedBuildActionBag? buildActionBag)
   {
     if(buildActionBag is null)
       return BuildViaParentBuilder(stack.TargetUnit);
@@ -146,7 +146,7 @@ public partial class BuildSession
                : BuildViaParentBuilder(stack.TargetUnit);
   }
 
-  private List<Weighted<BuildResult>> BuildAllUnits(BuildSession.Stack stack, WeightedBuildActionBag? buildActionBag)
+  private List<Weighted<BuildResult>> BuildAllUnits(Stack stack, WeightedBuildActionBag? buildActionBag)
   {
     if(buildActionBag is null) return Empty<Weighted<BuildResult>>.List;
 

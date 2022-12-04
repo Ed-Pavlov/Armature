@@ -10,130 +10,130 @@ namespace Armature.Core;
 
 public partial class BuildSession
 {
-/// <summary>
-/// Data structure used to take a tail of the collection w/o memory allocations
-/// </summary>
-/// <remarks>It implements <see cref="IEnumerable{T}"/> for rare and mostly debugging cases, use it wisely</remarks>
-public readonly struct Stack : IEnumerable<UnitId>
-{
-  private readonly IReadOnlyList<UnitId> _array;
-  private readonly int                   _startIndex;
-
-  [DebuggerStepThrough]
-  public Stack() => throw new ArgumentException("Use constructor with parameters");
-
-  [DebuggerStepThrough]
-  public Stack(IReadOnlyList<UnitId> array) : this(array, 0, GetTargetUnit(array)) { }
-
-  [DebuggerStepThrough]
-  private Stack(IReadOnlyList<UnitId> array, int startIndex, UnitId targetUnit)
-  {
-    if(startIndex < 0 || startIndex > array.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
-
-    _array      = array;
-    TargetUnit  = targetUnit;
-    _startIndex = startIndex;
-  }
-
-  public int Length => _array.Count - _startIndex;
-
-  public UnitId this[int index]
-  {
-    [DebuggerStepThrough] [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    get
-    {
-      var reverseIndex = _array.Count - 1 - (_startIndex + index);
-      return _array[reverseIndex];
-    }
-  }
-
   /// <summary>
-  /// The unit to be built
+  /// Data structure used to take a tail of the collection w/o memory allocations
   /// </summary>
-  public UnitId TargetUnit
+  /// <remarks>It implements <see cref="IEnumerable{T}"/> for rare and mostly debugging cases, use it wisely</remarks>
+  public readonly struct Stack : IEnumerable<UnitId>
   {
-    [DebuggerStepThrough] [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    get;
-  }
+    private readonly IReadOnlyList<UnitId> _array;
+    private readonly int                   _startIndex;
 
-  [DebuggerStepThrough]
-  [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public Stack GetTail(int startIndex) => new(_array, _startIndex + startIndex, TargetUnit);
+    [DebuggerStepThrough]
+    public Stack() => throw new ArgumentException("Use constructor with parameters");
 
-  public override string ToString()
-  {
-    var sb = new StringBuilder();
+    [DebuggerStepThrough]
+    public Stack(IReadOnlyList<UnitId> array) : this(array, 0, GetTargetUnit(array)) { }
 
-    var i = 0;
-
-    for(; i < Length - 1; i++)
+    [DebuggerStepThrough]
+    private Stack(IReadOnlyList<UnitId> array, int startIndex, UnitId targetUnit)
     {
-      sb.Append(this[i].ToHoconString());
-      sb.Append(", ");
+      if(startIndex < 0 || startIndex > array.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
+
+      _array      = array;
+      TargetUnit  = targetUnit;
+      _startIndex = startIndex;
     }
 
-    sb.Append(this[i].ToHoconString());
-    return sb.ToString();
-  }
+    public int Length => _array.Count - _startIndex;
 
-  private static UnitId GetTargetUnit(IReadOnlyList<UnitId> array)
-  {
-    if(array is null) throw new ArgumentNullException(nameof(array));
-    return array[array.Count - 1];
-  }
-
-  public IEnumerator<UnitId> GetEnumerator() => new Enumerator(this);
-
-  private struct Enumerator : IEnumerator<UnitId>
-  {
-    private readonly Stack _buildStack;
-
-    private bool   _disposed;
-    private int    _iterator;
-    private UnitId _current;
-
-    public Enumerator(Stack stack)
+    public UnitId this[int index]
     {
-      _buildStack = stack;
-      Reset();
-    }
-
-    public bool MoveNext()
-    {
-      if(_disposed) throw new ObjectDisposedException(nameof(Enumerator));
-
-      if(_iterator >= _buildStack.Length)
-      {
-        _current = default;
-        return false;
-      }
-
-      _current = _buildStack[_iterator++];
-      return true;
-    }
-
-    public UnitId Current
-    {
+      [DebuggerStepThrough] [MethodImpl(MethodImplOptions.AggressiveInlining)]
       get
       {
-        if(_disposed) throw new ObjectDisposedException(nameof(Enumerator));
-        return _current;
+        var reverseIndex = _array.Count - 1 - (_startIndex + index);
+        return _array[reverseIndex];
       }
     }
 
-    [WithoutTest]
-    public void Reset()
+    /// <summary>
+    /// The unit to be built
+    /// </summary>
+    public UnitId TargetUnit
     {
-      _current  = default;
-      _iterator = 0;
+      [DebuggerStepThrough] [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      get;
     }
 
-    [WithoutTest]
-    public void Dispose() => _disposed = true;
+    [DebuggerStepThrough]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Stack GetTail(int startIndex) => new(_array, _startIndex + startIndex, TargetUnit);
 
-    object IEnumerator.Current => Current;
+    public override string ToString()
+    {
+      var sb = new StringBuilder();
+
+      var i = 0;
+
+      for(; i < Length - 1; i++)
+      {
+        sb.Append(this[i].ToHoconString());
+        sb.Append(", ");
+      }
+
+      sb.Append(this[i].ToHoconString());
+      return sb.ToString();
+    }
+
+    private static UnitId GetTargetUnit(IReadOnlyList<UnitId> array)
+    {
+      if(array is null) throw new ArgumentNullException(nameof(array));
+      return array[array.Count - 1];
+    }
+
+    public IEnumerator<UnitId> GetEnumerator() => new Enumerator(this);
+
+    private struct Enumerator : IEnumerator<UnitId>
+    {
+      private readonly Stack _buildStack;
+
+      private bool   _disposed;
+      private int    _iterator;
+      private UnitId _current;
+
+      public Enumerator(Stack stack)
+      {
+        _buildStack = stack;
+        Reset();
+      }
+
+      public bool MoveNext()
+      {
+        if(_disposed) throw new ObjectDisposedException(nameof(Enumerator));
+
+        if(_iterator >= _buildStack.Length)
+        {
+          _current = default;
+          return false;
+        }
+
+        _current = _buildStack[_iterator++];
+        return true;
+      }
+
+      public UnitId Current
+      {
+        get
+        {
+          if(_disposed) throw new ObjectDisposedException(nameof(Enumerator));
+          return _current;
+        }
+      }
+
+      [WithoutTest]
+      public void Reset()
+      {
+        _current  = default;
+        _iterator = 0;
+      }
+
+      [WithoutTest]
+      public void Dispose() => _disposed = true;
+
+      object IEnumerator.Current => Current;
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
   }
-
-  IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-}
 }
