@@ -20,7 +20,7 @@ public partial class BuildSession
   private readonly IBuildChainPattern  _mainBuildChainPatternTree;
   private readonly IBuildChainPattern? _auxPatternTree;
   private readonly IBuilder[]?         _parentBuilders;
-  private readonly List<UnitId>        _buildChainList;
+  private readonly List<UnitId>        _buildChainList = new List<UnitId>(4);
 
   /// <param name="buildStages">The sequence of build stages. See <see cref="Builder" /> for details.</param>
   /// <param name="patternTree">Build chain patterns tree used to find build actions to build a unit.</param>
@@ -41,7 +41,6 @@ public partial class BuildSession
     _mainBuildChainPatternTree = patternTree ?? throw new ArgumentNullException(nameof(patternTree));
     _auxPatternTree            = auxPatternTree;
     _parentBuilders            = parentBuilders;
-    _buildChainList            = new List<UnitId>(4);
   }
 
   /// <summary>
@@ -76,10 +75,9 @@ public partial class BuildSession
     T result;
 
     _buildChainList.Add(unitId);
-    var reversedBuildChain = Enumerable.Reverse(_buildChainList).ToArray();
-    var buildChain         = new BuildChain(reversedBuildChain, 0);
+    var buildChain = new BuildChain(_buildChainList);
 
-    Log.WriteLine(LogLevel.Info, () => $"Chain = {reversedBuildChain.ToHoconString()}");
+    Log.WriteLine(LogLevel.Info, () => $"BuildChain = {buildChain.ToHoconString()}");
 
     try
     {
@@ -102,7 +100,7 @@ public partial class BuildSession
     catch(Exception exception)
     {
       if(!exception.Data.Contains(ExceptionConst.BuildChain))
-        exception.AddData(ExceptionConst.BuildChain, reversedBuildChain.ToHoconString());
+        exception.AddData(ExceptionConst.BuildChain, buildChain.ToHoconString());
 
       throw;
     }

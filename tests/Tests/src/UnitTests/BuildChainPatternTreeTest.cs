@@ -16,7 +16,7 @@ namespace Tests.UnitTests
       var singletonAction = new Singleton();
 
       // --arrange
-      var unitIdMatcher = Match.Type<string>(null);
+      var unitIdMatcher = new UnitPattern(typeof(string));
       var matchString   = new IfFirstUnit(unitIdMatcher).UseBuildAction(new CreateByReflection(), BuildStage.Cache);
       var matchAny      = new SkipTillUnit(unitIdMatcher).UseBuildAction(singletonAction, BuildStage.Cache);
 
@@ -25,7 +25,7 @@ namespace Tests.UnitTests
       target.Children.Add(matchAny);
 
       // --act
-      var actual = target.GatherBuildActions(Unit.IsType<string>().ToBuildChain(), out var actionBag);
+      var actual = target.GatherBuildActions(Kind.Is<string>().ToBuildChain(), out var actionBag);
 
       // --assert
       actual.Should().BeTrue();

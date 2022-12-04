@@ -6,12 +6,11 @@ using Armature.Core;
 using Armature.Core.Sdk;
 using Armature.Sdk;
 using FluentAssertions;
-using JetBrains.dotMemoryUnit;
 using NUnit.Framework;
 
 namespace Tests.Performance
 {
-  // [Ignore("Run manually only")]
+  [Ignore("Run manually only")]
   public sealed class PerformanceTest
   {
     [Test]

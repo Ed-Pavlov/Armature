@@ -11,42 +11,57 @@ namespace Tests.UnitTests;
 public class BuildChainTest
 {
   [Test]
-  public void Length()
+  public void target_unit_should_not_depend_on_tail()
   {
-    // --arrange
-    const int arrayLength = 3;
-    const int tailStartIndex  = 1;
+    // arrange
+    var expected    = Kind.Is("Argument");
+    var firstOfTail = Kind.Is("ParamInfo");
 
-    var array     = new UnitId[arrayLength];
-    var arrayTail = array.ToBuildChain().GetTail(tailStartIndex);
+    var array      = new[] {Kind.Is("Interface"), Kind.Is("Class"), firstOfTail, expected};
+    var buildChain = new BuildChain(array).GetTail(1);
 
-    // --assert
-    arrayTail.Length.Should().Be(arrayLength - tailStartIndex);
+    // act, assert
+    buildChain.TargetUnit.Should().Be(expected);
   }
 
   [Test]
-  public void Content()
+  public void items_order()
   {
-    const int startIndex = 2;
+    var expected = new[] {Kind.Is(0), Kind.Is(1), Kind.Is(2), Kind.Is(3)};
 
+    // arrange
+    var buildChain = new BuildChain(expected.Reverse().ToArray());
+
+    // act, assert
+    buildChain.Should().BeEquivalentTo(expected);
+  }
+
+  [Test]
+  public void get_tail()
+  {
+    // arrange
+    var array      = new[] {Kind.Is("Interface"), Kind.Is("Class"), Kind.Is("ParamInfo"), Kind.Is("Argument")};
+    var buildChain = new BuildChain(array);
+
+    // act
+    var tail = buildChain.GetTail(1);
+
+    // assert
+    tail.Should().BeEquivalentTo(array.Reverse().Skip(1));
+  }
+
+  [Test]
+  public void length_of_tail()
+  {
     // --arrange
-    var array = new UnitId[] {new(0, null), new(1, null), new (2, 0), new(3, 0)};
+    const int arrayLength    = 3;
+    const int tailStartIndex = 1;
 
-    var expected = new UnitId[array.Length - startIndex];
-
-    for(var i = startIndex; i < array.Length; i++)
-      expected[i - startIndex] = array[i];
-
-    // --act
-    var actual = array.ToBuildChain().GetTail(startIndex);
+    var array     = new UnitId[arrayLength];
+    var arrayTail = new BuildChain(array).GetTail(tailStartIndex);
 
     // --assert
-    var actualArray = new UnitId[actual.Length];
-
-    for(var i = 0; i < actual.Length; i++)
-      actualArray[i] = actual[i];
-
-    actualArray.Should().Equal(expected);
+    arrayTail.Length.Should().Be(arrayLength - tailStartIndex);
   }
 
   [Test]
@@ -73,7 +88,7 @@ public class BuildChainTest
   public void should_check_array_argument()
   {
     // --arrange
-    var actual = () => new BuildChain(null!, 4);
+    var actual = () => new BuildChain(null!);
 
     // --assert
     actual.Should().ThrowExactly<ArgumentNullException>().WithParameterName("array");
@@ -86,7 +101,7 @@ public class BuildChainTest
 
     // --arrange
     startIndex = Math.Min(startIndex, array.Length + 1);
-    var actual = () => new BuildChain(array, startIndex);
+    var actual = () => new BuildChain(array).GetTail(startIndex);
 
     // --assert
     actual.Should().ThrowExactly<ArgumentOutOfRangeException>().WithParameterName("startIndex");

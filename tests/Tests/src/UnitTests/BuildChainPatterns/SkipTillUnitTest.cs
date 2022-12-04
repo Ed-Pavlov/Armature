@@ -28,7 +28,7 @@ namespace Tests.UnitTests.BuildChainPatterns
       target.AddNode(child2);
 
       // --act
-      var                     chain = Util.CreateBuildChain(new UnitId(1, null), new UnitId(2, null), new UnitId(kind, null), expected1, expected2);
+      var                     chain = TestUtil.CreateBuildChain(expected2, expected1, new UnitId(kind, null), new UnitId(2, null), new UnitId(1, null));
       WeightedBuildActionBag? actionBag;
       target.GatherBuildActions(chain, out actionBag, 0);
 
@@ -37,7 +37,7 @@ namespace Tests.UnitTests.BuildChainPatterns
 
       A.CallTo(
             () => child1.GatherBuildActions(
-                An<BuildChain>.That.IsEqualTo(Util.CreateBuildChain(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
+                An<BuildChain>.That.IsEqualTo(TestUtil.CreateBuildChain(expected2, expected1), Comparer.OfArrayTail<UnitId>()),
                 out weightedBuildActionBag,
                 An<long>._))
        .MustHaveHappenedOnceAndOnly();
@@ -46,7 +46,7 @@ namespace Tests.UnitTests.BuildChainPatterns
 
       A.CallTo(
             () => child2.GatherBuildActions(
-                An<BuildChain>.That.IsEqualTo(Util.CreateBuildChain(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
+                An<BuildChain>.That.IsEqualTo(TestUtil.CreateBuildChain(expected2, expected1), Comparer.OfArrayTail<UnitId>()),
                 out actionBag1,
                 An<long>._))
        .MustHaveHappenedOnceAndOnly();
@@ -66,7 +66,7 @@ namespace Tests.UnitTests.BuildChainPatterns
       target.AddNode(child2);
 
       // --act
-      var                     chain = Util.CreateBuildChain(new UnitId(1, null), new UnitId(2, null), expected1, expected2);
+      var                     chain = TestUtil.CreateBuildChain(new UnitId(1, null), new UnitId(2, null), expected1, expected2);
       WeightedBuildActionBag? actionBag;
       target.GatherBuildActions(chain, out actionBag, 0);
 
@@ -92,7 +92,7 @@ namespace Tests.UnitTests.BuildChainPatterns
       target.AddNode(child2);
 
       // --act
-      var                     chain = Util.CreateBuildChain(new UnitId(kind, null), new UnitId(kind, null));
+      var                     chain = TestUtil.CreateBuildChain(new UnitId(kind, null), new UnitId(kind, null));
       WeightedBuildActionBag? actionBag;
       target.GatherBuildActions(chain, out actionBag, inputWeight);
 
@@ -117,20 +117,20 @@ namespace Tests.UnitTests.BuildChainPatterns
     public void should_return_children_merged_actions()
     {
       // --arrange
-      var unitIdMatcher = Match.Type<int>(null);
-      var buildStep1    = new IfFirstUnit(unitIdMatcher);
+      var unitPattern = new UnitPattern(typeof(int));
+      var buildStep1  = new IfFirstUnit(unitPattern);
       buildStep1.UseBuildAction(Static.Of<CreateByReflection>(), BuildStage.Cache);
 
       var singletonAction = new Singleton();
-      var buildStep2      = new SkipTillUnit(unitIdMatcher);
+      var buildStep2      = new SkipTillUnit(unitPattern);
       buildStep2.UseBuildAction(singletonAction, BuildStage.Cache);
 
-      var target = new SkipTillUnit(Match.Type<string>(null));
+      var target = new SkipTillUnit(new UnitPattern(typeof(string)));
       target.GetOrAddNode(buildStep1);
       target.GetOrAddNode(buildStep2);
 
       // --act
-      var actual = target.GatherBuildActions(new[] {Unit.IsType<string>(), Unit.IsType<int>()}.ToBuildChain(), out var actionBag, 0);
+      var actual = target.GatherBuildActions(TestUtil.CreateBuildChain(Kind.Is<int>(), Kind.Is<string>()), out var actionBag, 0);
 
       // --assert
       actual.Should().BeTrue();

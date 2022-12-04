@@ -5,6 +5,7 @@ using System.IO;
 using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.Util;
 
 namespace Tests.UnitTests.UnitPatterns.UnitType;
 
@@ -56,7 +57,7 @@ public class CanBeInstantiatedTest
   {
     // --arrange
     var target1 = new CanBeInstantiated();
-    var target2 = new Util.OtherUnitPattern();
+    var target2 = new TestUtil.OtherUnitPattern();
 
     // --assert
     target1.Equals(target2).Should().BeFalse();

@@ -19,7 +19,7 @@ public class BuildMethodArgumentsInDirectOrderTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Unit.Is(parametersList).Tag(SpecialTag.Argument).ToBuildChain());
+    A.CallTo(() => buildSession.BuildChain).Returns(Kind.Is(parametersList).Tag(SpecialTag.Argument).ToBuildChain());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(default)).WithAnyArguments();
 
     buildUnitCall.ReturnsLazily(
@@ -37,10 +37,10 @@ public class BuildMethodArgumentsInDirectOrderTest
     // --assert
     buildSession.BuildResult.Value.As<object?[]>().Should().Equal(parametersList.Select(_ => (object?) _.Name).ToArray());
 
-    A.CallTo(() => buildSession.BuildUnit(Unit.Is(parametersList[0]).Tag(SpecialTag.Argument))).MustHaveHappenedOnceExactly()
-     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.Is(parametersList[1]).Tag(SpecialTag.Argument))).MustHaveHappenedOnceExactly())
-     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.Is(parametersList[2]).Tag(SpecialTag.Argument))).MustHaveHappenedOnceExactly())
-     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.Is(parametersList[3]).Tag(SpecialTag.Argument))).MustHaveHappenedOnceExactly());
+    A.CallTo(() => buildSession.BuildUnit(Kind.Is(parametersList[0]).Tag(SpecialTag.Argument))).MustHaveHappenedOnceExactly()
+     .Then(A.CallTo(() => buildSession.BuildUnit(Kind.Is(parametersList[1]).Tag(SpecialTag.Argument))).MustHaveHappenedOnceExactly())
+     .Then(A.CallTo(() => buildSession.BuildUnit(Kind.Is(parametersList[2]).Tag(SpecialTag.Argument))).MustHaveHappenedOnceExactly())
+     .Then(A.CallTo(() => buildSession.BuildUnit(Kind.Is(parametersList[3]).Tag(SpecialTag.Argument))).MustHaveHappenedOnceExactly());
 
     buildUnitCall.MustHaveHappened(parametersList.Length, Times.Exactly);
   }
@@ -52,7 +52,7 @@ public class BuildMethodArgumentsInDirectOrderTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Unit.Is(parametersList).Tag(SpecialTag.Argument).ToBuildChain());
+    A.CallTo(() => buildSession.BuildChain).Returns(Kind.Is(parametersList).Tag(SpecialTag.Argument).ToBuildChain());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(default)).WithAnyArguments();
 
     var target = new BuildMethodArgumentsInDirectOrder();

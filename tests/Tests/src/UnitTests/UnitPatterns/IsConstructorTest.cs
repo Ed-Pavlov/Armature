@@ -6,6 +6,7 @@ using Armature.Core;
 using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.Util;
 
 namespace Tests.UnitTests.UnitPatterns;
 
@@ -55,7 +56,7 @@ public class IsConstructorTest
   {
     // --arrange
     var target1 = new IsConstructor();
-    var target2 = new Util.OtherUnitPattern();
+    var target2 = new TestUtil.OtherUnitPattern();
 
     // --assert
     target1.Equals(target2).Should().BeFalse();

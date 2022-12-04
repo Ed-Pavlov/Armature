@@ -7,6 +7,7 @@ using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.UnitTests.BuildActions;
+using Tests.Util;
 
 // ReSharper disable UnusedParameter.Local
 

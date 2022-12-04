@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 using JetBrains.Annotations;
 
 namespace Armature.Core.Sdk;
@@ -52,25 +53,26 @@ public static class LogExtension
     {
       return value switch
              {
-               null => "null",
-               string str => str.QuoteIfNeeded(),
-               ILogString logable => logable.ToHoconString(),
+               null                     => "null",
+               string str               => str.QuoteIfNeeded(),
+               BuildChain buildChain    => buildChain.ToHoconString(),
+               ILogString logable       => logable.ToHoconString(),
                IBuildAction buildAction => buildAction.GetType().GetShortName().QuoteIfNeeded(),
-               IEnumerable items => $"[{string.Join(", ", items.Cast<object>().Select(_ => _.ToHoconString()))}]",
-               MethodBase methodInfo => methodInfo.ToString().QuoteIfNeeded(),
-               Type type => $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})".QuoteIfNeeded(),
-               bool b => b.ToString(CultureInfo.CurrentUICulture),
-               char c => c.ToString(CultureInfo.CurrentUICulture),
-               short s => s.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               ushort us => us.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               int i => i.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               uint ui => ui.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               long l => l.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               ulong ul => ul.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               float f => f.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               double d => d.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               decimal dc => dc.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               _ => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
+               MethodBase methodInfo    => methodInfo.ToString().QuoteIfNeeded(),
+               Type type                => $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})".QuoteIfNeeded(),
+               IEnumerable items        => $"[{string.Join(", ", items.Cast<object>().Select(_ => _.ToHoconString()))}]",
+               bool b                   => b.ToString(CultureInfo.CurrentUICulture),
+               char c                   => c.ToString(CultureInfo.CurrentUICulture),
+               short s                  => s.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               ushort us                => us.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               int i                    => i.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               uint ui                  => ui.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               long l                   => l.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               ulong ul                 => ul.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               float f                  => f.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               double d                 => d.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               decimal dc               => dc.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               _                        => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
              };
     }
     catch(Exception exception)
@@ -81,6 +83,23 @@ public static class LogExtension
 
   public static string ToHoconString(this Type              type)  => type.ToLogString().QuoteIfNeeded();
   public static string ToHoconArray(this  IEnumerable<Type> items) => $"[{string.Join(", ", items.Select(type => type.ToHoconString()))}]";
+
+  public static string ToHoconString(this BuildChain buildChain)
+  {
+    var sb = new StringBuilder("[{");
+
+    var tillIndex = buildChain.Length - 1;
+
+    for(var i = 0; i < tillIndex; i++)
+    {
+      sb.Append(buildChain[i]);
+      sb.Append(", ");
+    }
+
+    sb.Append(buildChain[tillIndex]);
+    sb.Append("}]");
+    return sb.ToString();
+  }
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static string Quote(this string str) => $"\"{str}\"";

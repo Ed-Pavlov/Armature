@@ -25,7 +25,7 @@ public class IfFirstUnitTest
     target.AddNode(child2);
 
     // --act
-    var chain = Util.CreateBuildChain(new UnitId(kind, null), expected);
+    var chain = TestUtil.CreateBuildChain(expected, new UnitId(kind, null));
     target.GatherBuildActions(chain, out var actionBag, 0);
 
     // --assert
@@ -51,7 +51,7 @@ public class IfFirstUnitTest
     target.AddNode(child2);
 
     // --act
-    var chain = Util.CreateBuildChain(new UnitId("bad", null), new UnitId(kind, null), expected);
+    var chain = TestUtil.CreateBuildChain(new UnitId("bad", null), new UnitId(kind, null), expected);
     target.GatherBuildActions(chain, out var actionBag, 0);
 
     // --assert
@@ -74,7 +74,7 @@ public class IfFirstUnitTest
     target.AddNode(child2);
 
     // --act
-    var chain = Util.CreateBuildChain(new UnitId(kind, null), new UnitId(kind, null));
+    var chain = TestUtil.CreateBuildChain(new UnitId(kind, null), new UnitId(kind, null));
     target.GatherBuildActions(chain, out var actionBag, inputWeight);
 
     // --assert

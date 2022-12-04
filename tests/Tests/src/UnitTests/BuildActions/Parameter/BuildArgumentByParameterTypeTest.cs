@@ -20,8 +20,8 @@ public class BuildArgumentByParameterTypeTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
-    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.ParameterType).Tag(tag))).Returns(expected.ToBuildResult());
+    A.CallTo(() => actual.BuildChain).Returns(Kind.Is(parameterInfo).ToBuildChain());
+    A.CallTo(() => actual.BuildUnit(Kind.Is((object?) parameterInfo.ParameterType).Tag(tag))).Returns(expected.ToBuildResult());
 
     var target = new BuildArgumentByParameterType(tag);
 
@@ -29,7 +29,7 @@ public class BuildArgumentByParameterTypeTest
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.ParameterType).Tag(tag))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Kind.Is((object?) parameterInfo.ParameterType).Tag(tag))).MustHaveHappenedOnceAndOnly();
     actual.BuildResult.Value.Should().Be(expected);
   }
 
@@ -40,7 +40,7 @@ public class BuildArgumentByParameterTypeTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).Tag(tag).ToBuildChain());
+    A.CallTo(() => actual.BuildChain).Returns(Kind.Is(parameterInfo).Tag(tag).ToBuildChain());
 
     var target = new BuildArgumentByParameterType(SpecialTag.Propagate);
 
@@ -48,7 +48,7 @@ public class BuildArgumentByParameterTypeTest
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.ParameterType).Tag(tag))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Kind.Is((object?) parameterInfo.ParameterType).Tag(tag))).MustHaveHappenedOnceAndOnly();
   }
 
   [SuppressMessage("ReSharper", "UnusedParameter.Local")]

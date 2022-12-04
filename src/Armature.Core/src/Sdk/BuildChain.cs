@@ -21,12 +21,15 @@ public readonly struct BuildChain : IEnumerable<UnitId>
   public BuildChain() => throw new ArgumentException("Use constructor with parameters");
 
   [DebuggerStepThrough]
-  public BuildChain(IReadOnlyList<UnitId> array, int startIndex)
+  public BuildChain(IReadOnlyList<UnitId> array) : this(array, 0, GetTargetUnit(array)) { }
+
+  [DebuggerStepThrough]
+  private BuildChain(IReadOnlyList<UnitId> array, int startIndex, UnitId targetUnit)
   {
-    if(array is null) throw new ArgumentNullException(nameof(array));
     if(startIndex < 0 || startIndex > array.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
 
     _array      = array;
+    TargetUnit  = targetUnit;
     _startIndex = startIndex;
   }
 
@@ -35,21 +38,25 @@ public readonly struct BuildChain : IEnumerable<UnitId>
   public UnitId this[int index]
   {
     [DebuggerStepThrough] [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    get => _array[_startIndex + index];
+    get
+    {
+      var reverseIndex = _array.Count - 1 - (_startIndex + index);
+      return _array[reverseIndex];
+    }
   }
 
   /// <summary>
-  /// The unit to be built is the first unit in the chain
+  /// The unit to be built
   /// </summary>
   public UnitId TargetUnit
   {
     [DebuggerStepThrough] [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    get => _array[0];
+    get;
   }
 
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public BuildChain GetTail(int startIndex) => new(_array, _startIndex + startIndex);
+  public BuildChain GetTail(int startIndex) => new(_array, _startIndex + startIndex, TargetUnit);
 
   public override string ToString()
   {
@@ -67,30 +74,60 @@ public readonly struct BuildChain : IEnumerable<UnitId>
     return sb.ToString();
   }
 
-  public IEnumerator<UnitId> GetEnumerator() => new Enumerator(_array, _startIndex);
+  private static UnitId GetTargetUnit(IReadOnlyList<UnitId> array)
+  {
+    if(array is null) throw new ArgumentNullException(nameof(array));
+    return array[array.Count - 1];
+  }
+
+  public IEnumerator<UnitId> GetEnumerator() => new Enumerator(this);
 
   private struct Enumerator : IEnumerator<UnitId>
   {
-    private readonly IReadOnlyList<UnitId> _array;
-    private readonly int                   _startIndex;
-    private          int                   _iterator;
+    private readonly BuildChain _buildChain;
 
-    public Enumerator(IReadOnlyList<UnitId> array, int startIndex) : this()
+    private bool   _disposed;
+    private int    _iterator;
+    private UnitId _current;
+
+    public Enumerator(BuildChain buildChain)
     {
-      _array      = array;
-      _startIndex = startIndex;
+      _buildChain = buildChain;
       Reset();
     }
 
-    public bool MoveNext() => ++_iterator < _array.Count;
+    public bool MoveNext()
+    {
+      if(_disposed) throw new ObjectDisposedException(nameof(Enumerator));
 
-    public UnitId Current => _iterator < _array.Count ? _array[_iterator] : throw new InvalidOperationException("All items were enumerated");
+      if(_iterator >= _buildChain.Length)
+      {
+        _current = default;
+        return false;
+      }
+
+      _current = _buildChain[_iterator++];
+      return true;
+    }
+
+    public UnitId Current
+    {
+      get
+      {
+        if(_disposed) throw new ObjectDisposedException(nameof(Enumerator));
+        return _current;
+      }
+    }
 
     [WithoutTest]
-    public void Reset() => _iterator = _startIndex - 1;
+    public void Reset()
+    {
+      _current  = default;
+      _iterator = 0;
+    }
 
     [WithoutTest]
-    public void Dispose() { }
+    public void Dispose() => _disposed = true;
 
     object IEnumerator.Current => Current;
   }

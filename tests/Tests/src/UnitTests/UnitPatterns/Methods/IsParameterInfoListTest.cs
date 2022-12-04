@@ -3,6 +3,7 @@ using Armature.Core;
 using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.Util;
 
 namespace Tests.UnitTests.UnitPatterns.Methods;
 
@@ -66,7 +67,7 @@ public class IsParameterInfoListTest
   {
     // --arrange
     var target1 = new IsParameterInfoArray();
-    var target2 = new Util.OtherUnitPattern();
+    var target2 = new TestUtil.OtherUnitPattern();
 
     // --assert
     target1.Equals(target2).Should().BeFalse();

@@ -19,7 +19,7 @@ public class GetConstructorByParameterTypesTest
     var target = new GetConstructorByParameterTypes();
 
     // --act
-    var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildChain());
+    var actual = new BuildSessionMock(Kind.Is<Subject>().ToBuildChain());
     target.Process(actual);
 
     // --assert
@@ -35,7 +35,7 @@ public class GetConstructorByParameterTypesTest
     var target = new GetConstructorByParameterTypes(expectedTypes);
 
     // --act
-    var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildChain());
+    var actual = new BuildSessionMock(Kind.Is<Subject>().ToBuildChain());
     target.Process(actual);
 
     // --assert
@@ -49,7 +49,7 @@ public class GetConstructorByParameterTypesTest
     var target = new GetConstructorByParameterTypes(typeof(short));
 
     // --act
-    var actual = new BuildSessionMock(Unit.IsType<Subject>().ToBuildChain());
+    var actual = new BuildSessionMock(Kind.Is<Subject>().ToBuildChain());
     target.Process(actual);
 
     // --assert

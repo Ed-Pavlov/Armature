@@ -26,20 +26,20 @@ public class SkipWhileUnitTest
       target.AddNode(child2);
 
       // --act
-      var chain = Util.CreateBuildChain(new UnitId(kind, null), new UnitId(kind, null), new UnitId(kind, null), expected1, expected2);
+      var chain = TestUtil.CreateBuildChain(expected2, expected1, new UnitId(kind, null), new UnitId(kind, null), new UnitId(kind, null));
       target.GatherBuildActions(chain, out var actionBag, 0);
 
       // --assert
       A.CallTo(
             () => child1.GatherBuildActions(
-                An<BuildChain>.That.IsEqualTo(Util.CreateBuildChain(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
+                An<BuildChain>.That.IsEqualTo(TestUtil.CreateBuildChain(expected2, expected1), Comparer.OfArrayTail<UnitId>()),
                 out actionBag,
                 An<long>._))
        .MustHaveHappenedOnceAndOnly();
 
       A.CallTo(
             () => child2.GatherBuildActions(
-                An<BuildChain>.That.IsEqualTo(Util.CreateBuildChain(expected1, expected2), Comparer.OfArrayTail<UnitId>()),
+                An<BuildChain>.That.IsEqualTo(TestUtil.CreateBuildChain(expected2, expected1), Comparer.OfArrayTail<UnitId>()),
                 out actionBag,
                 An<long>._))
        .MustHaveHappenedOnceAndOnly();
@@ -60,7 +60,7 @@ public class SkipWhileUnitTest
       target.AddNode(child2);
 
       // --act
-      var chain = Util.CreateBuildChain(new UnitId(kind, null), new UnitId(kind, null), new UnitId(kind, null), expected);
+      var chain = TestUtil.CreateBuildChain(expected, new UnitId(kind, null), new UnitId(kind, null), new UnitId(kind, null));
       target.GatherBuildActions(chain, out var actionBag, 0);
 
       // --assert
@@ -94,7 +94,7 @@ public class SkipWhileUnitTest
       target.AddNode(child2);
 
       // --act
-      var chain = Util.CreateBuildChain(new UnitId(kind, null), new UnitId(kind, null), new UnitId("not" + kind, null));
+      var chain = TestUtil.CreateBuildChain(new UnitId("not" + kind, null), new UnitId(kind, null), new UnitId(kind, null));
       target.GatherBuildActions(chain, out var actionBag, inputWeight);
 
       // --assert
