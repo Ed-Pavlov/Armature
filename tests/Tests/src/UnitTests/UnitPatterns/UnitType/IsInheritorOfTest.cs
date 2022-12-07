@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Armature.Core;
-using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 

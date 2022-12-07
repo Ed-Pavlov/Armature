@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using Armature.Core;
-using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Armature.Core.Sdk;
+﻿using Armature.Core.Sdk;
 
 namespace Armature.Core;
 

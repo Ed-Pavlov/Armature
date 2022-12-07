@@ -7,7 +7,6 @@ using FakeItEasy;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using Tests.UnitTests.BuildActions;
 using Tests.Util;
 
 namespace Tests.UnitTests

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using JetBrains.Annotations;
 using JetBrains.Lifetimes;
 
 namespace Tests.Extensibility.LifetimeRegistration
