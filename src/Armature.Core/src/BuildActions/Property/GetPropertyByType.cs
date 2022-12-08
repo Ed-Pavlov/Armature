@@ -7,8 +7,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// "Builds" a property Unit of the currently building Unit of specified type
-/// specified <see cref="InjectAttribute.Tag" />
+/// Gets a property by specified type.
 /// </summary>
 public record GetPropertyByType(Type _type) : IBuildAction, ILogString
 {

@@ -10,12 +10,12 @@ namespace Armature.Sdk;
 public interface ITuner
 {
   /// <summary>
-  /// The "parent" tuner or null if this is a root of a tuning sequence
+  /// The "parent" tuner or null if this is a root of a tuning sequence.
   /// </summary>
-  ITuner?            Parent   { get; }
+  ITuner? Parent { get; }
 
   /// <summary>
-  /// The root of the tree containing patterns to match a build stack
+  /// The root of the tree containing patterns to match a build stack.
   /// </summary>
   IBuildStackPattern TreeRoot { get; }
 
@@ -25,5 +25,8 @@ public interface ITuner
   /// <returns>Returns the actual build stack pattern node, newly added or obtained from the <paramref name="node"/> </returns>
   IBuildStackPattern GetOrAddNodeTo(IBuildStackPattern node);
 
-  int                Weight { get; }
+  /// <summary>
+  /// The weight used to amend the weight of build stack patterns added by the tuner.
+  /// </summary>
+  int Weight { get; }
 }

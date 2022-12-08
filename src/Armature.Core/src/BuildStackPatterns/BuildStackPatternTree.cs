@@ -7,11 +7,11 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// The reusable implementation of <see cref="IBuildStackPattern" /> which is used as a root node of the tree.
+/// The root node of the tree of <see cref="IBuildStackPattern"/> nodes.
 /// </summary>
 /// <remarks>
 /// This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method in order to make possible compact and readable initialization like
-/// new Builder(...)
+/// new BuildStackPatternTree(...)
 /// {
 ///    new IfFirstUnit(new IsConstructor())
 ///      .UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
@@ -29,13 +29,17 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrinta
 
   public HashSet<IBuildStackPattern> Children => _root.Children;
 
+  ///<inheritdoc />
   public bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight = 0L)
     => _root.GatherBuildActions(stack, out actionBag, 0);
 
+  ///<inheritdoc />
   public void PrintToLog(LogLevel logLevel = LogLevel.None) => _root.PrintToLog(logLevel);
 
-  public BuildActionBag BuildActions                     => throw new NotSupportedException();
-  public bool           Equals(IBuildStackPattern other) => throw new NotSupportedException();
+  ///<inheritdoc />
+  public BuildActionBag BuildActions => throw new NotSupportedException();
+
+  public bool Equals(IBuildStackPattern other) => throw new NotSupportedException();
 
   #region Syntax sugar
 
@@ -45,7 +49,7 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrinta
   #endregion
 
   /// <summary>
-  /// Reuse implementation of <see cref="BuildStackPatternBase" /> to implement <see cref="BuildStackPatternTree" /> public interface
+  /// Reuse implementation of <see cref="BuildStackPatternBase" /> to implement <see cref="BuildStackPatternTree" /> public interface.
   /// </summary>
   private class Root : BuildStackPatternBase
   {

@@ -5,7 +5,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Base class for matchers matching unit with a <see cref="System.Type"/> pattern
+/// Base class for unit patterns matching unit with a <see cref="System.Type"/>.
 /// </summary>
 public abstract record TypePatternBase : ILogString
 {

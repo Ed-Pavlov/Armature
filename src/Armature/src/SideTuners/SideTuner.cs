@@ -4,7 +4,7 @@ using Armature.Core.Sdk;
 namespace Armature;
 
 /// <summary>
-/// Implementation of <see cref="ISideTuner.Tune"/> based on calling passed lambda action
+/// Implementation of <see cref="ISideTuner.ApplyTo"/> based on calling passed lambda action.
 /// </summary>
 public class SideTuner : ISideTuner, IInternal<Action<ITunerBase>>
 {
@@ -12,7 +12,7 @@ public class SideTuner : ISideTuner, IInternal<Action<ITunerBase>>
 
   public SideTuner(Action<ITunerBase> tune) => _tune = tune ?? throw new ArgumentNullException(nameof(tune));
 
-  public void Tune(ITunerBase tuner)
+  public void ApplyTo(ITunerBase tuner)
   {
     if(tuner is null) throw new ArgumentNullException(nameof(tuner));
     _tune(tuner);

@@ -2,12 +2,14 @@
 using System.Reflection;
 using Armature.Core;
 using Armature.Core.Sdk;
+using JetBrains.Annotations;
 
 namespace Armature;
 
 /// <summary>
 /// Adds build actions to build arguments for injection points defined by <see cref="ForParameter"/> tuner.
 /// </summary>
+[PublicAPI]
 public class MethodArgumentTuner<T> : ArgumentTunerBase<T>
 {
   public MethodArgumentTuner(TuneArgumentRecipient tuneArgumentRecipient) : base(tuneArgumentRecipient) { }
@@ -25,7 +27,7 @@ public class MethodArgumentTuner<T> : ArgumentTunerBase<T>
   /// <summary>
   /// For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute.Tag" /> as a tag
   /// </summary>
-  public IArgumentSideTuner UseInjectPointIdAsTag()
+  public IArgumentSideTuner UseInjectPointTag()
     => new ArgumentSideTuner(
       tuner => TuneArgumentRecipientsTo(tuner, Weight)
        .UseBuildAction(Static.Of<BuildArgumentByParameterTypeAndTag>(), BuildStage.Create));

@@ -9,7 +9,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Gets a constructor of type with biggest number of parameters.
+/// Gets the constructor of the type with the largest number of parameters.
 /// </summary>
 public record GetConstructorWithMaxParametersCount : IBuildAction
 {

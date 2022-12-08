@@ -88,7 +88,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingInjectionPoints(injectPointId is null ? Property.ByInjectPointId() : Property.ByInjectPointId(new[] { injectPointId }));
+       .UsingInjectionPoints(injectPointId is null ? Property.ByInjectPointTag() : Property.ByInjectPointTag(new[] { injectPointId }));
 
       // --act
       var actual = target.Build<Subject>()!;
@@ -111,7 +111,7 @@ namespace Tests.Functional
       target.Treat<string>().AsInstance(expected);
 
       target.Treat<ISubject>().AsCreated<Subject>();
-      target.Treat<ISubject>().UsingInjectionPoints(injectPointId is null ? Property.ByInjectPointId() : Property.ByInjectPointId(injectPointId));
+      target.Treat<ISubject>().UsingInjectionPoints(injectPointId is null ? Property.ByInjectPointTag() : Property.ByInjectPointTag(injectPointId));
 
       // --act
       var actual = target.Build<ISubject>()!;
@@ -189,7 +189,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsTag());
+       .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointTag());
 
       // --act
       var actual = target.Build<Subject>()!;
@@ -212,7 +212,7 @@ namespace Tests.Functional
       target.Treat<string>().AsInstance(bad);
       target.Treat<string>(Subject.InterfaceInjectPointId).AsInstance(expected);
 
-      target.Treat<ISubject>().UsingArguments(ForProperty.WithInjectPoint(Subject.InterfaceInjectPointId).UseInjectPointIdAsTag());
+      target.Treat<ISubject>().UsingArguments(ForProperty.WithInjectPoint(Subject.InterfaceInjectPointId).UseInjectPointTag());
       target.Treat<ISubject>().AsCreated<Subject>();
 
       // --act

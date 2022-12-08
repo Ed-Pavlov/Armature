@@ -6,7 +6,7 @@ using Armature.Core.Annotations;
 namespace Armature.Core;
 
 /// <summary>
-/// Builds a list of arguments by using <see cref="IBuildSession.BuildAllUnits"/> method for a method parameter.
+/// Builds a list of arguments by using <see cref="IBuildSession.BuildAllUnits"/> method for a constructor/method parameters.
 /// </summary>
 public record BuildListArgumentForMethodParameter : BuildListArgumentBase
 {

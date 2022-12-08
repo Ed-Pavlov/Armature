@@ -6,7 +6,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Builds arguments for method parameters by building a unit {<see cref="ParameterInfo"/>, <see cref="SpecialTag.Argument"/> one by one.
+/// Builds arguments for constructor/method parameters one by one in the direct order.
 /// </summary>
 public record BuildMethodArgumentsInDirectOrder : IBuildAction
 {

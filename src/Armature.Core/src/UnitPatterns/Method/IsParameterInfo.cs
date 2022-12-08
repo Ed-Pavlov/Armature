@@ -5,7 +5,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Checks if a unit is an argument for a method parameter.
+/// Checks if a unit is an argument for a constructor/method parameter.
 /// </summary>
 public record IsParameterInfo : IUnitPattern
 {

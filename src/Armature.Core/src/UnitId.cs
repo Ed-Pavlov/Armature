@@ -6,7 +6,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Describes a unit to be built.
+/// An Id of the unit to be built.
 /// </summary>
 [Serializable]
 public readonly struct UnitId : ILogString

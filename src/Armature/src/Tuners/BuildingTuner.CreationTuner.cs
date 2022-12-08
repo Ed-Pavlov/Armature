@@ -19,7 +19,7 @@ public partial class BuildingTuner<T>
 
   private ISettingTuner CreateBy(IBuildAction buildAction)
   {
-    GetContextBranch().UseBuildAction(buildAction, BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(buildAction, BuildStage.Create);
     return this;
   }
 

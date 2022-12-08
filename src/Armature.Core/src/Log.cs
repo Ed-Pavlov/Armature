@@ -10,7 +10,8 @@ using JetBrains.Annotations;
 namespace Armature.Core;
 
 /// <summary>
-/// Class is used to log Armature activities in human friendly form. Writes data into <see cref="System.Diagnostics.Trace" />, so add a listener to see the log.
+/// Class is used to log Armature activities in human friendly form. Writes data into <see cref="System.Diagnostics.Trace" />,
+/// so add a listener to see the log.
 /// </summary>
 [PublicAPI]
 public static class Log
@@ -38,7 +39,7 @@ public static class Log
   }
 
   /// <summary>
-  /// Used to enable logging, can be limited by disposing returned object
+  /// Enables logging, can be limited by disposing returned object.
   /// </summary>
   public static Disposable Enable(LogLevel logLevel = LogLevel.Info)
   {
@@ -48,7 +49,7 @@ public static class Log
   }
 
   /// <summary>
-  /// Used to disable logging, can be limited by disposing returned object
+  /// Disables logging, can be limited by disposing returned object.
   /// </summary>
   public static Disposable Disable()
   {
@@ -111,7 +112,7 @@ public static class Log
   }
 
   /// <summary>
-  /// This message calls <paramref name="createMessage"/> only if Logging is enabled for <paramref name="logLevel"/>,
+  /// This method calls <paramref name="createMessage"/> only if Logging is enabled for <paramref name="logLevel"/>,
   /// use if calculating arguments for logging takes a time.
   /// </summary>
   [StringFormatMethod("format")]
@@ -122,7 +123,7 @@ public static class Log
   }
 
   /// <summary>
-  /// Used to make an indented "block" in log data
+  /// Makes indented "block" of log data.
   /// </summary>
   public static Indenter IndentBlock(LogLevel logLevel, string name, string brackets, int indentDelta = 1, bool threadRoot = false)
   {
@@ -131,13 +132,13 @@ public static class Log
   }
 
   /// <summary>
-  /// Used to make a named and indented "block" in log data
+  /// Makes named and indented "block" of log data
   /// </summary>
   public static Indenter NamedBlock(LogLevel logLevel, string name, bool threadRoot = false)
     => _logLevel >= logLevel ? IndentBlock(logLevel, name, "{}", 1, threadRoot) : Indenter.Empty;
 
   /// <summary>
-  /// Used to make a named and indented "block" in log data
+  /// Makes a named and indented "block" of log data
   /// </summary>
   public static Indenter NamedBlock(LogLevel logLevel, [InstantHandle] Func<string> getName)
     => _logLevel >= logLevel ? IndentBlock(logLevel, getName(), "{}") : Indenter.Empty;
@@ -154,7 +155,7 @@ public static class Log
   }
 
   /// <summary>
-  /// Enter Log into conditional mode, all records to the log will be preserved till returned object is disposed, then which
+  /// Enters Log into conditional mode, all records to the log will be preserved till returned object is disposed, then which
   /// records will be written to the log and which be discarded depends on passed parameters.
   ///
   /// If the current <see cref="LogLevel"/> is less then passed <paramref name="conditionalLevel"/>
@@ -233,9 +234,6 @@ public static class Log
       Trace.Write(text);
   }
 
-  /// <summary>
-  /// It's struct to avoid excessive allocations and public to avoid boxing
-  /// </summary>
   public struct Indenter : IDisposable
   {
     public static Indenter Empty = new();
@@ -286,9 +284,6 @@ public static class Log
     }
   }
 
-  /// <summary>
-  /// It's struct to avoid excessive allocations and public to avoid boxing
-  /// </summary>
   public struct Disposable : IDisposable
   {
     public static readonly Disposable Empty = new();

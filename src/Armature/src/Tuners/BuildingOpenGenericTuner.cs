@@ -17,7 +17,7 @@ public class BuildingOpenGenericTuner : BuildingTuner<object?>
   /// </summary>
   public override ICreationTuner As(Type openGenericType, object? tag = null)
   {
-    GetContextBranch().UseBuildAction(new RedirectOpenGenericType(openGenericType, tag), BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(new RedirectOpenGenericType(openGenericType, tag), BuildStage.Create);
 
     var unitPattern = new IsGenericOfDefinition(openGenericType, tag);
     IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.OpenGenericPattern + WeightOf.BuildStackPattern.IfFirstUnit);

@@ -8,11 +8,11 @@ namespace Armature.Core;
 public static class BuildStackPatternTreeExtension
 {
   /// <summary>
-  /// Adds a <paramref name="node" /> to the <see cref="IBuildStackPattern.Children"/> collection of <paramref name="parentNode"/>
-  /// if the node does not already exist. Returns the new node, or the existing node if the node already exists.
+  /// Adds a <paramref name="node" /> as a child to <paramref name="parentNode"/> if the node is not already added.
+  /// Returns the new node, or the existing node if the node already added.
   /// </summary>
   /// <remarks>Call it first and then fill returned <see cref="IBuildStackPattern" /> with build actions or perform other needed actions due to
-  /// it can return other instance of <see cref="IBuildStackPattern"/> then <paramref name="node"/>.</remarks>
+  /// it can return other instance of <see cref="IBuildStackPattern"/> then passed <paramref name="node"/>.</remarks>
   public static T GetOrAddNode<T>(this IBuildStackPattern parentNode, T node) where T : IBuildStackPattern
   {
     if(parentNode is null) throw new ArgumentNullException(nameof(parentNode));
@@ -26,9 +26,9 @@ public static class BuildStackPatternTreeExtension
   }
 
   /// <summary>
-  /// Adds the <paramref name="node" /> into <paramref name="parentNode" />.
+  /// Adds the <paramref name="node" /> as a child to <paramref name="parentNode" />.
   /// </summary>
-  /// <exception cref="ArmatureException">A node is already in the tree</exception>
+  /// <exception cref="ArmatureException">A node is already in the tree.</exception>
   public static T AddNode<T>(this IBuildStackPattern parentNode, T node, string? exceptionMessage = null) where T : IBuildStackPattern
   {
     if(parentNode is null) throw new ArgumentNullException(nameof(parentNode));
@@ -43,8 +43,8 @@ public static class BuildStackPatternTreeExtension
   }
 
   /// <summary>
-  /// Adds a <see cref="IBuildAction" /> for a "to be built" unit which is matched by the branch of the pattern tree represented by this node
-  /// with its parents.
+  /// Adds a <see cref="IBuildAction" /> which will be called to build a Target Unit matched by the branch of the build stack pattern tree represented
+  /// by this node with its parents.
   /// </summary>
   /// <param name="node"></param>
   /// <param name="buildAction">A build action.</param>

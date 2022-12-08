@@ -6,7 +6,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Base class for build actions build arguments to inject.
+/// Base class for build actions building arguments to inject into inject points marked with <see cref="InjectAttribute"/>.
 /// </summary>
 public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogString
 {
@@ -15,7 +15,6 @@ public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogSt
   [WithoutTest]
   protected BuildArgumentByInjectPointTypeBase() { }
   protected BuildArgumentByInjectPointTypeBase(object? tag) => _tag = tag;
-
 
   public void Process(IBuildSession buildSession)
   {

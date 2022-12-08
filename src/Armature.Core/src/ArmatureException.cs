@@ -33,11 +33,9 @@ public class ArmatureException : AggregateException
     if(Data.Count == 0)
       return baseValue;
 
-    var sb = new StringBuilder(baseValue)
-     .AppendLine("Exception data:");
+    var sb = new StringBuilder(baseValue).AppendLine("Exception data:");
 
     var i = 0;
-
     foreach(DictionaryEntry pair in Data)
       sb.AppendFormat("\tRecord {0}:", i++)
         .AppendFormat("Key: {0}, Value={1}", pair.Key, pair.Value)

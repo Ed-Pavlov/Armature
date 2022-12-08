@@ -7,7 +7,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Gets a constructor of type marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute.Tag" />.
+/// Gets the constructor of the type which is marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute.Tag" />.
 /// </summary>
 public record GetConstructorByInjectPoint : IBuildAction, ILogString
 {

@@ -10,6 +10,7 @@ namespace Armature;
 /// <summary>
 /// Tunes up in which properties of the object inject dependencies.
 /// </summary>
+[PublicAPI]
 public static class Property
 {
   /// <summary>
@@ -25,16 +26,16 @@ public static class Property
       tuner =>
       {
         var internals = tuner.GetInternals();
-        internals.GetOrAddBuildStackPatternNode().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        internals.Apply().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
                  .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
-                 .AppendChildBuildStackPatternNodes(tuner)
+                 .ApplyTuner(tuner)
                  .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
       });
 
   /// <summary>
-  /// Sets up the properties with names as in the passed <paramref name="names"/> list as required a dependency to be injected into it.
+  /// Sets up the properties with names passed with <paramref name="names"/> list as required a dependency to be injected into it.
   /// </summary>
   [PublicAPI]
   public static IInjectionPointSideTuner Named(params string[] names)
@@ -46,30 +47,29 @@ public static class Property
       tuner =>
       {
         var internals = tuner.GetInternals();
-        internals.GetOrAddBuildStackPatternNode().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        internals.Apply().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
                  .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
-                 .AppendChildBuildStackPatternNodes(tuner)
+                 .ApplyTuner(tuner)
                  .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
       });
   }
 
   /// <summary>
-  /// Sets up the properties marked with <see cref="InjectAttribute" /> with corresponding <paramref name="pointIds" />
+  /// Sets up the properties marked with <see cref="InjectAttribute" /> with corresponding <paramref name="tags" />
   /// as required a dependency to be injected into it.
   /// </summary>
-  [PublicAPI]
-  public static IInjectionPointSideTuner ByInjectPointId(params object?[] pointIds)
+  public static IInjectionPointSideTuner ByInjectPointTag(params object?[] tags)
     => new InjectionPointSideTuner(
       tuner =>
       {
         var internals = tuner.GetInternals();
-        internals.GetOrAddBuildStackPatternNode().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        internals.Apply().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
                  .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
-                 .AppendChildBuildStackPatternNodes(tuner)
-                 .UseBuildAction(new GetPropertyListByTags(pointIds), BuildStage.Create);
+                 .ApplyTuner(tuner)
+                 .UseBuildAction(new GetPropertyListByTags(tags), BuildStage.Create);
       });
 }

@@ -6,8 +6,8 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Builds an argument for the method parameter marked with <see cref="InjectAttribute"/> using <see cref="InjectAttribute.Tag"/> as
-/// the <see cref="UnitId.Tag"/>
+/// Builds an argument for the constructor/method parameter which is marked with <see cref="InjectAttribute"/> using <see cref="ParameterInfo.Name"/> and
+/// <see cref="InjectAttribute.Tag"/> as /// as <see cref="UnitId"/>.
 /// </summary>
 public record BuildArgumentByParameterTypeAndTag : IBuildAction
 {

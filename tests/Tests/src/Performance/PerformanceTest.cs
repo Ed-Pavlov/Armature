@@ -215,7 +215,7 @@ namespace Tests.Performance
                new TryInOrder {Static.Of<BuildArgumentByParameterTypeAndTag>(), Static.Of<BuildArgumentByParameterType>()},
                BuildStage.Create),
            new IfFirstUnit(new IsPropertyInfo())
-            .UseBuildAction(new TryInOrder {new BuildArgumentByPropertyType(), new BuildArgumentByPropertyTypeAndTag()}, BuildStage.Create)
+            .UseBuildAction(new TryInOrder {new BuildArgumentByPropertyType(), new BuildArgumentByPropertyInjectPoint()}, BuildStage.Create)
          };
   }
 }

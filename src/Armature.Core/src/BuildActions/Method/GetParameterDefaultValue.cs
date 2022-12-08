@@ -5,7 +5,7 @@ using Armature.Core.Annotations;
 namespace Armature.Core;
 
 /// <summary>
-/// Gets a default parameter value of the method parameter.
+/// Gets a default parameter value of the constructor/method parameter.
 /// </summary>
 public record GetParameterDefaultValue : IBuildAction
 {

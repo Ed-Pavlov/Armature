@@ -6,7 +6,7 @@ namespace Armature.Core.Sdk;
 public static class BuildSessionExtension
 {
   /// <summary>
-  /// Builds a <see cref="ConstructorInfo" /> for a <see creaf="type" /> by building a unit represented
+  /// Builds a <see cref="ConstructorInfo" /> for a <paramref name="type"/> by building a unit represented
   /// by <see cref="UnitId" />(<paramref name="type" />, <see cref="SpecialTag.Constructor" />) via current build session.
   /// </summary>
   public static ConstructorInfo GetConstructorOf(this IBuildSession buildSession, Type type)

@@ -36,7 +36,6 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
 
     if(IsCollection(injectionPointType, out var listType))
     {
-
       var collectionItemType = injectionPointType.GenericTypeArguments[0];
       var arguments          = buildSession.BuildAllUnits(new UnitId(collectionItemType, effectiveTag));
 

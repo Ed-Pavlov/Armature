@@ -10,7 +10,7 @@ public partial class BuildingTuner<T>
   /// </summary>
   IContextTuner ISettingTuner.AsSingleton()
   {
-    GetContextBranch().UseBuildAction(new Singleton(), BuildStage.Cache);
+    BuildStackPatternSubtree().UseBuildAction(new Singleton(), BuildStage.Cache);
     return this;
   }
 

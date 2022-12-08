@@ -7,7 +7,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Represents whole build session of one Unit, all dependency of the being built unit are built in the context of one build session.
+/// Represents whole build session of one Unit, all dependency of the being built Unit are built in the context of one build session.
 /// </summary>
 /// <remarks>It could be for example IA -> A -> IB -> B -> int. This stack means that for now Unit of type int is the target unit
 /// but it is built in the "context" of the whole build stack.</remarks>
@@ -57,7 +57,7 @@ public partial class BuildSession
   /// Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
   /// This can be useful to build all implementers of an interface.
   /// </summary>
-  /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildStackPattern" /> for details</param>
+  /// <param name="unitId">"Id" of the unit to build.</param>
   public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId)
   {
     using(Log.NamedBlock(LogLevel.Info, "BuildAll", true))

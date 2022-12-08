@@ -7,7 +7,6 @@ namespace Armature.Core.Sdk;
 /// Inherit this class to extend enum pattern with custom weights if you extend Armature with your own build stack, unit or injection point
 /// patterns which require to re-balance the weighting system.
 /// </summary>
-/// <remarks>For common usage of Armature it's not needed.</remarks>
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class WeightOf
 {

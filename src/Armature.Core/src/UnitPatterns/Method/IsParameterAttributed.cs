@@ -6,7 +6,7 @@ using System.Reflection;
 namespace Armature.Core;
 
 /// <summary>
-/// Checks if a unit is an argument for a method parameter marked with <see cref="InjectAttribute"/> attribute
+/// Checks if a unit is an argument for a constructor/method parameter marked with <see cref="InjectAttribute"/> attribute
 /// with an optional <see cref="InjectAttribute.Tag" />
 /// </summary>
 public record IsParameterAttributed : IsInjectPointBase

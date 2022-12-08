@@ -6,7 +6,6 @@ namespace Armature.Core;
 
 /// <summary>
 /// Caches passed object and set it as <see cref="BuildResult" /> in <see cref="Process" />.
-/// Simplest eternal singleton.
 /// </summary>
 public record Instance<T> : IBuildAction, ILogString
 {

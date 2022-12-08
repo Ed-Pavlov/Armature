@@ -5,7 +5,8 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Redirects building of a unit of one type to the unit of another type. E.g. redirecting interface to the implementation.
+/// Redirects building of a unit with one <see cref="UnitId"/> to the unit with another <see cref="UnitId"/>.
+/// E.g. redirecting interface to the implementation.
 /// </summary>
 public record Redirect : IBuildAction, ILogString
 {

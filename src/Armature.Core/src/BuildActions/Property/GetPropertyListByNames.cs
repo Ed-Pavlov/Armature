@@ -8,7 +8,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// "Builds" a list of properties of the Target Unit with give names
+/// Gets a list of properties with specified names.
 /// </summary>
 public record GetPropertyListByNames : IBuildAction, ILogString
 {

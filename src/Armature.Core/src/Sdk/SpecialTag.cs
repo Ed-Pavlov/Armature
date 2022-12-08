@@ -12,7 +12,7 @@ namespace Armature.Core.Sdk;
 /// If you need to extend the set of special tags with your own, make a derived class and create tags using protected constructor.
 /// </summary>
 /// <remarks>
-/// No equality member are needed for this class, <see cref="_name" /> is used only for debug purpose, tags should be equal by the reference.
+/// No equality member are needed for this class, <see cref="_name" /> is used only for debug purpose, these tags should be equal by the reference.
 /// </remarks>
 public class SpecialTag : ILogString
 {

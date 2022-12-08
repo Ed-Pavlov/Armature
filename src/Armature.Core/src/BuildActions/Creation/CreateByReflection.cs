@@ -7,7 +7,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Instantiates an object using reflection <see cref="ConstructorInfo.Invoke(object[])"/> method.
+/// Instantiates an object using reflection. See <see cref="ConstructorInfo.Invoke(object[])"/> method.
 /// </summary>
 public record CreateByReflection : IBuildAction
 {
@@ -15,7 +15,7 @@ public record CreateByReflection : IBuildAction
   {
     var type = buildSession.Stack.TargetUnit.GetUnitType();
 
-    if(!type.IsInterface && !type.IsAbstract)
+    if(type is {IsInterface: false, IsAbstract: false})
     {
       var constructor = buildSession.GetConstructorOf(type);
       var parameters  = constructor.GetParameters();

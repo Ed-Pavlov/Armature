@@ -11,7 +11,9 @@ namespace Armature.Core;
 public partial class BuildSession
 {
   /// <summary>
-  /// Data structure used to take a tail of the collection w/o memory allocations
+  /// Represents the "building stack".
+  /// It could be for example IA -> A -> IB -> B -> int. This stack means that for now Unit of type 'int' is the target unit
+  /// but it is built in the "context" of the whole build stack.
   /// </summary>
   /// <remarks>It implements <see cref="IEnumerable{T}"/> for rare and mostly debugging cases, use it wisely</remarks>
   public readonly struct Stack : IEnumerable<UnitId>
@@ -56,6 +58,10 @@ public partial class BuildSession
       get;
     }
 
+    /// <summary>
+    /// Gets the tails of the stack. <see cref="TargetUnit"/> remains the same, in opposite to items accessed by <see cref="this[int]"/>
+    /// </summary>
+    /// <param name="startIndex">The index of the item which should became the very first item of the tail.</param>
     [DebuggerStepThrough]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Stack GetTail(int startIndex) => new(_array, _startIndex + startIndex, TargetUnit);

@@ -6,7 +6,7 @@ using Armature.Core.Internal;
 namespace Armature.Core.Sdk;
 
 /// <summary>
-/// These methods are implemented as extensions instead of class members in order to be able to operation with 'null' BuildActionBag
+/// These methods are implemented as extensions instead of class members in order to be able to operation with 'null' BuildActionBag.
 /// </summary>
 public static class BuildActionBagExtension
 {
@@ -45,9 +45,9 @@ public static class BuildActionBagExtension
   }
 
   /// <summary>
-  /// Returns the build action with biggest matching weight for the build stage
+  /// Returns the build action with biggest matching weight for the build stage.
   /// </summary>
-  /// <exception cref="ArmatureException">Throws if there are more than one action with equal matching weight</exception>
+  /// <exception cref="ArmatureException">Throws if there are more than one action with equal matching weight.</exception>
   public static IBuildAction? GetTopmostAction(this WeightedBuildActionBag? buildActionBag, object stage)
   {
     if(stage is null) throw new ArgumentNullException(nameof(stage));

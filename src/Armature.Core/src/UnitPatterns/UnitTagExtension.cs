@@ -7,17 +7,17 @@ namespace Armature.Core;
 public static class UnitTagExtension
 {
   /// <summary>
-  /// Checks if <paramref name="pattern"/> matches <paramref name="unitTag"/>, returns true if they are equal of the
-  /// <paramref name="pattern"/> is <see cref="Tag.Any"/>
+  /// Checks if a <paramref name="patternTag"/> tag matches <paramref name="unitTag"/>, returns true if they are equal or the
+  /// <paramref name="patternTag"/> is <see cref="Tag.Any"/>.
   /// </summary>
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public static bool Matches(this object? pattern, object? unitTag)
+  public static bool Matches(this object? patternTag, object? unitTag)
   {
     if(ReferenceEquals(unitTag, Tag.Any))
       throw new ArgumentOutOfRangeException(
         nameof(unitTag),
-        $"Building unit's tag can't be '{nameof(SpecialTag)}.{nameof(Tag.Any)}' special tag. Check arguments order in the call of this method");
+        $"Building unit's tag can't be '{nameof(Tag)}.{nameof(Tag.Any)}' tag. Check arguments order in the call of this method");
 
-    return ReferenceEquals(pattern, Tag.Any) || Equals(pattern, unitTag);
+    return ReferenceEquals(patternTag, Tag.Any) || Equals(patternTag, unitTag);
   }
 }

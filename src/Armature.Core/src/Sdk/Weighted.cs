@@ -5,7 +5,7 @@ using Armature.Core.Annotations;
 namespace Armature.Core.Sdk;
 
 /// <summary>
-/// Couples an entity with a weight
+/// Couples an entity with a weight.
 /// </summary>
 public readonly struct Weighted<T> : IComparable<Weighted<T>>
 {

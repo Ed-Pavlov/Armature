@@ -4,7 +4,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Some base logic to reuse in build stack patterns based on <see cref="IUnitPattern"/>
+/// Base class for build stack patterns using <see cref="IUnitPattern"/> to match the passed <see cref="UnitId"/>.
 /// </summary>
 public abstract class BuildStackPatternByUnitBase : BuildStackPatternBase, IInternal<IUnitPattern>
 {

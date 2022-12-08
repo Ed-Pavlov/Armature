@@ -30,7 +30,7 @@ public static class DependencyTuner
 
     foreach(var argument in arguments)
       if(argument is IArgumentSideTuner argumentTuner)
-        argumentTuner.Tune(tuner);
+        argumentTuner.ApplyTo(tuner);
       else if(argument is ISideTuner)
         throw new ArgumentException($"{nameof(IArgumentSideTuner)} or argument instance is expected");
       else
@@ -42,7 +42,7 @@ public static class DependencyTuner
                   new IsAssignableFromType(argument.GetType()),
                   WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildStackPattern.IfFirstUnit))
              .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-             .AppendChildBuildStackPatternNodes(tuner)
+             .ApplyTuner(tuner)
              .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
       }
 
@@ -61,7 +61,7 @@ public static class DependencyTuner
     if(injectionPoints.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(injectionPoints));
 
     foreach(var injectPointTuner in injectionPoints)
-      injectPointTuner.Tune(tuner);
+      injectPointTuner.ApplyTo(tuner);
 
     return tuner;
   }
@@ -78,7 +78,7 @@ public static class DependencyTuner
     if(sideTuners.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(sideTuners));
 
     foreach(var sideTuner in sideTuners)
-      sideTuner.Tune(tuner);
+      sideTuner.ApplyTo(tuner);
 
     return tuner;
   }

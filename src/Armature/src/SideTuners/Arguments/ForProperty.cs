@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using Armature.Core;
 using Armature.Core.Sdk;
 using Armature.Sdk;
@@ -18,7 +17,7 @@ public static class ForProperty
     => new PropertyArgumentTuner<object?>(
       (tuner, weight) =>
       {
-        Property.OfType(type).Tune(tuner);
+        Property.OfType(type).ApplyTo(tuner);
 
         return tuner.GetInternals()
                     .TreeRoot
@@ -26,7 +25,7 @@ public static class ForProperty
                        new IfFirstUnit(
                          new IsPropertyOfType(new UnitPattern(type)),
                          weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
-                    .AppendChildBuildStackPatternNodes(tuner);
+                    .ApplyTuner(tuner);
       });
 
   /// <summary>
@@ -36,7 +35,7 @@ public static class ForProperty
     => new PropertyArgumentTuner<T>(
       (tuner, weight) =>
       {
-        Property.OfType<T>().Tune(tuner);
+        Property.OfType<T>().ApplyTo(tuner);
 
         return tuner.GetInternals()
                     .TreeRoot
@@ -44,17 +43,17 @@ public static class ForProperty
                        new IfFirstUnit(
                          new IsPropertyOfType(new UnitPattern(typeof(T))),
                          weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
-                    .AppendChildBuildStackPatternNodes(tuner);
+                    .ApplyTuner(tuner);
       });
 
   /// <summary>
-  /// Tunes up how to build an argument to inject into a property named <see cref="MemberInfo.Name" />
+  /// Tunes up how to build an argument to inject into a property named <paramref name="propertyName"/>.
   /// </summary>
   public static PropertyArgumentTuner<object?> Named(string propertyName)
     => new PropertyArgumentTuner<object?>(
       (tuner, weight) =>
       {
-        Property.Named(propertyName).Tune(tuner);
+        Property.Named(propertyName).ApplyTo(tuner);
 
         return tuner.GetInternals()
                     .TreeRoot
@@ -62,25 +61,25 @@ public static class ForProperty
                        new IfFirstUnit(
                          new IsPropertyNamed(propertyName),
                          weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildStackPattern.IfFirstUnit))
-                    .AppendChildBuildStackPatternNodes(tuner);
+                    .ApplyTuner(tuner);
       });
 
   /// <summary>
   /// Tunes up how to build and argument to inject into a property marked with <see cref="InjectAttribute"/>
-  /// with the specified <paramref name="injectPointId"/>.
+  /// with the optional <paramref name="injectPointTag"/>.
   /// </summary>
-  public static PropertyArgumentTuner<object?> WithInjectPoint(object? injectPointId)
+  public static PropertyArgumentTuner<object?> WithInjectPoint(object? injectPointTag)
     => new PropertyArgumentTuner<object?>(
       (tuner, weight) =>
       {
-        Property.ByInjectPointId(injectPointId).Tune(tuner);
+        Property.ByInjectPointTag(injectPointTag).ApplyTo(tuner);
 
         return tuner.GetInternals()
                     .TreeRoot
                     .GetOrAddNode(
                        new IfFirstUnit(
-                         new IsPropertyAttributed(injectPointId),
+                         new IsPropertyAttributed(injectPointTag),
                          weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildStackPattern.IfFirstUnit))
-                    .AppendChildBuildStackPatternNodes(tuner);
+                    .ApplyTuner(tuner);
       });
 }

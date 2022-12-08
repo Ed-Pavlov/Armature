@@ -6,10 +6,10 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Builds an argument for the property marked with <see cref="InjectAttribute"/> using <see cref="InjectAttribute.Tag"/>
-/// as the <see cref="UnitId.Tag"/>
+/// Builds an argument for the property which is marked with <see cref="InjectAttribute"/> using <see cref="MemberInfo.Name"/> and
+/// <see cref="InjectAttribute.Tag"/> as <see cref="UnitId"/>.
 /// </summary>
-public record BuildArgumentByPropertyTypeAndTag : IBuildAction
+public record BuildArgumentByPropertyInjectPoint : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
@@ -35,5 +35,5 @@ public record BuildArgumentByPropertyTypeAndTag : IBuildAction
   public void PostProcess(IBuildSession buildSession) { }
 
   [DebuggerStepThrough]
-  public override string ToString() => nameof(BuildArgumentByPropertyTypeAndTag);
+  public override string ToString() => nameof(BuildArgumentByPropertyInjectPoint);
 }

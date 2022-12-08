@@ -1,17 +1,21 @@
 using System;
 using Armature.Core;
+using JetBrains.Annotations;
 
 namespace Armature.Sdk;
 
 public static class ArmatureUtil
 {
+  /// <summary>
+  /// Provides an access to internal members of tuners. See inheritors of <see cref="ITunerBase"/> for details.
+  /// </summary>
   public static ITuner GetInternals(this ITunerBase tuner) => (ITuner) tuner;
 
   /// <summary>
-  /// Appends a branch of <see cref="IBuildStackPattern"/> nodes from the <paramref name="tuner"/> to passed <paramref name="node"/>
-  /// and return the deepest node to add build actions
+  /// Appends a branch of <see cref="IBuildStackPattern"/> nodes from the <paramref name="tuner"/> to <paramref name="node"/>
+  /// and return the deepest of appended nodes.
   /// </summary>
-  public static IBuildStackPattern AppendChildBuildStackPatternNodes(this IBuildStackPattern node, ITunerBase tuner)
+  public static IBuildStackPattern ApplyTuner(this IBuildStackPattern node, ITunerBase tuner)
   {
     if(node is null) throw new ArgumentNullException(nameof(node));
     if(tuner is null) throw new ArgumentNullException(nameof(tuner));
@@ -28,9 +32,9 @@ public static class ArmatureUtil
   }
 
   /// <summary>
-  /// Adds a branch of <see cref="IBuildStackPattern"/> nodes to the Tree Root and returns the deepest node to add build actions
+  /// Adds a branch of <see cref="IBuildStackPattern"/> nodes to the Tree Root and returns the deepest of added nodes.
   /// </summary>
-  public static IBuildStackPattern GetOrAddBuildStackPatternNode(this ITuner self)
+  public static IBuildStackPattern Apply(this ITuner self)
   {
     if(self is null) throw new ArgumentNullException(nameof(self));
 
@@ -47,15 +51,16 @@ public static class ArmatureUtil
   }
 
   /// <summary>
-  /// Create an instance of <see cref="BuildStackPatternTree"/> and register passed <paramref name="arguments"/>.
+  /// Creates an instance of <see cref="BuildStackPatternTree"/> and register passed <paramref name="arguments"/>.
   /// Then the tree can be passed to <see cref="Builder.BuildUnit"/> as additional, runtime registrations.
   /// </summary>
   /// <returns>Returns null if no arguments provided</returns>
+  [PublicAPI]
   public static BuildStackPatternTree? TryCreatePatternTreeOnArguments(object[]? arguments, short weight = -10)
     => arguments is not {Length: > 0} ? null : CreatePatternTreeOnArguments(arguments, weight);
 
   /// <summary>
-  /// Create an instance of <see cref="BuildStackPatternTree"/> and register passed <paramref name="arguments"/> if any.
+  /// Creates an instance of <see cref="BuildStackPatternTree"/> and register passed <paramref name="arguments"/> if any.
   /// Then the tree can be passed to <see cref="Builder.BuildUnit"/> as additional, runtime registrations.
   /// </summary>
   public static BuildStackPatternTree CreatePatternTreeOnArguments(object[]? arguments, short weight = -10)

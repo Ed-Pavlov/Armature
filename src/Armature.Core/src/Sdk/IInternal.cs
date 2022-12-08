@@ -15,22 +15,21 @@ public static class ExtensibilityExtension
 }
 
 /// <summary>
-/// I would like to make all the "internal" details of framework parts accessible for sake of extensibility. If anyone wants to extends this framework
-/// they should be able to do it. The most simple way is to make fields and methods public but this will lead that IDE intellisense will be
-/// "polluted" with all these internal members.
-///
-/// This interface provide access to the internal fields in the generic form, see implementation for details.
+/// This interface provide access to the internal fields in the generic form for the sake of possible extensibility by the end user.
+/// See implementation for details.
 /// </summary>
 public interface IInternal<out T1>
 {
   T1 Member1 { get; }
 }
 
+///<inheritdoc />
 public interface IInternal<out T1, out T2> : IInternal<T1>
 {
   T2 Member2 { get; }
 }
 
+///<inheritdoc />
 public interface IInternal<out T1, out T2, out T3> : IInternal<T1, T2>
 {
   T3 Member3 { get; }

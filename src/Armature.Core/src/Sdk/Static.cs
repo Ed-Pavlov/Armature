@@ -2,6 +2,9 @@
 
 namespace Armature.Core.Sdk;
 
+/// <summary>
+/// Generic approach of creating singleton instances of a type when needed.
+/// </summary>
 public static class Static
 {
   [MethodImpl(MethodImplOptions.AggressiveInlining)]

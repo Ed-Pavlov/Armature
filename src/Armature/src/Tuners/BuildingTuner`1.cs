@@ -7,21 +7,21 @@ namespace Armature;
 
 public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreationTuner, IInternal<IUnitPattern>
 {
-  private          IBuildStackPattern? _contextBranch;
   private readonly IUnitPattern        _unitPattern;
+  private          IBuildStackPattern? _buildStackPatternSubtree;
 
   public BuildingTuner(ITuner parent, CreateNode createNode, IUnitPattern unitPattern)
     : base(parent, createNode)
     => _unitPattern = unitPattern;
 
-  public void AsInstance(T instance) => GetContextBranch().UseBuildAction(new Instance<T>(instance), BuildStage.Cache);
+  public void AsInstance(T instance) => BuildStackPatternSubtree().UseBuildAction(new Instance<T>(instance), BuildStage.Cache);
 
   public virtual ICreationTuner As(Type type, object? tag = null)
   {
     if(type.IsGenericTypeDefinition)
       throw new ArgumentException($"Type should not be open generic, use {nameof(RedirectOpenGenericType)} for open generics", nameof(type));
 
-    GetContextBranch().UseBuildAction(new Redirect(new UnitId(type, tag)), BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(new Redirect(new UnitId(type, tag)), BuildStage.Create);
 
     var unitPattern = new UnitPattern(type, tag);
 
@@ -35,7 +35,7 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
 
   public ISettingTuner AsIs()
   {
-    GetContextBranch().UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(Default.CreationBuildAction, BuildStage.Create);
     return this;
   }
 
@@ -45,61 +45,61 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
 
   public ISettingTuner AsCreatedWith(Func<T> factoryMethod)
   {
-    GetContextBranch().UseBuildAction(new CreateWithFactoryMethod<T>(_ => factoryMethod()), BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(new CreateWithFactoryMethod<T>(_ => factoryMethod()), BuildStage.Create);
     return this;
   }
 
   public ISettingTuner AsCreatedWith<T1>(Func<T1, T> factoryMethod)
   {
-    GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod), BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
   public ISettingTuner AsCreatedWith<T1, T2>(Func<T1, T2, T> factoryMethod)
   {
-    GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod), BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
   public ISettingTuner AsCreatedWith<T1, T2, T3>(Func<T1, T2, T3, T> factoryMethod)
   {
-    GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod), BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
   public ISettingTuner AsCreatedWith<T1, T2, T3, T4>(Func<T1, T2, T3, T4, T> factoryMethod)
   {
-    GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T>(factoryMethod), BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
   public ISettingTuner AsCreatedWith<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, T> factoryMethod)
   {
-    GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T>(factoryMethod), BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
   public ISettingTuner AsCreatedWith<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, T> factoryMethod)
   {
-    GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T>(factoryMethod), BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
   public ISettingTuner AsCreatedWith<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, T> factoryMethod)
   {
-    GetContextBranch().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, T>(factoryMethod), BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(new CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
   public ISettingTuner AsCreatedWith(Func<IBuildSession, T> factoryMethod)
   {
-    GetContextBranch().UseBuildAction(new CreateWithFactoryMethod<T>(factoryMethod), BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(new CreateWithFactoryMethod<T>(factoryMethod), BuildStage.Create);
     return this;
   }
 
   IBuildingTuner<T> IBuildingTuner<T>.AmendWeight(short delta) => AmendWeight(delta, this);
 
-  protected IBuildStackPattern GetContextBranch() => _contextBranch ??= this.GetOrAddBuildStackPatternNode();
+  protected IBuildStackPattern BuildStackPatternSubtree() => _buildStackPatternSubtree ??= this.Apply();
 
   IUnitPattern IInternal<IUnitPattern>.Member1 => _unitPattern;
 }

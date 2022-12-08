@@ -6,7 +6,7 @@ using Armature.Sdk;
 namespace Armature;
 
 /// <summary>
-/// This class provides methods to tune up how to build arguments for method parameters.
+/// Provides methods to tune up how to build arguments for method parameters.
 /// </summary>
 public static class ForParameter
 {
@@ -23,8 +23,9 @@ public static class ForParameter
                      new IsParameterOfType(new UnitPattern(type)),
                      weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
                 .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-                .AppendChildBuildStackPatternNodes(tuner));
+                .ApplyTuner(tuner));
 
+  //TODO:
   // $"Building of an argument for the method parameter of type {type.ToLogString()} is already tuned");
 
   /// <summary>
@@ -40,7 +41,7 @@ public static class ForParameter
                      new IsParameterOfType(new UnitPattern(typeof(T))),
                      weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
                 .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-                .AppendChildBuildStackPatternNodes(tuner));
+                .ApplyTuner(tuner));
 
   /// <summary>
   /// Tunes up how to build an argument to inject into method parameter named <paramref name="parameterName"/>.
@@ -55,7 +56,7 @@ public static class ForParameter
                      new IsParameterNamed(parameterName),
                      weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildStackPattern.IfFirstUnit))
                 .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-                .AppendChildBuildStackPatternNodes(tuner));
+                .ApplyTuner(tuner));
 
   /// <summary>
   /// Tunes up how to build and argument to inject into a method parameter marked with <see cref="InjectAttribute"/>
@@ -71,5 +72,5 @@ public static class ForParameter
                      new IsParameterAttributed(injectPointId),
                      weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildStackPattern.IfFirstUnit))
                 .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
-                .AppendChildBuildStackPatternNodes(tuner));
+                .ApplyTuner(tuner));
 }

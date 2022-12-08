@@ -110,7 +110,7 @@ namespace Tests.Extensibility.MaybePropagation
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
        .AsCreated<Reader1>()
-       .UsingArguments(ForParameter.OfType<Section>().UseInjectPointIdAsTag());
+       .UsingArguments(ForParameter.OfType<Section>().UseInjectPointTag());
 
       builder
        .Building<Reader1>()

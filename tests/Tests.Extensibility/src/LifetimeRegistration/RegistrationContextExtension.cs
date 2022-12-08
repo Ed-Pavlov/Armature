@@ -80,7 +80,7 @@ public static class RegistrationContextExtension
     if(settingTuner == null) throw new ArgumentNullException(nameof(settingTuner));
 
     var tuner = (ITuner) settingTuner;
-    tuner.GetOrAddBuildStackPatternNode().UseBuildAction(new ThreadSafeSingletonBuildAction(), BuildStage.Cache);
+    tuner.Apply().UseBuildAction(new ThreadSafeSingletonBuildAction(), BuildStage.Cache);
     return settingTuner;
   }
 

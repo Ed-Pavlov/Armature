@@ -4,7 +4,7 @@ using System.Reflection;
 namespace Armature.Core;
 
 /// <summary>
-/// Checks if a unit is an argument for a parameter of the method or the constructor requires argument of the specified type.
+/// Checks if a unit is an argument for a constructor/method parameter of the specified type.
 /// </summary>
 public record IsParameterOfType : InjectPointOfTypeBase
 {

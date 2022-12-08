@@ -9,20 +9,21 @@ using JetBrains.Annotations;
 namespace Armature.Core;
 
 /// <summary>
-/// Base class implementing the logic of adding build actions
+/// Base class implementing <see cref="IBuildStackPattern.BuildActions"/>
 /// </summary>
 public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, ILogPrintable
 {
-  private   BuildActionBag?              _buildActions;
-  protected HashSet<IBuildStackPattern>? RawChildren;
-  private   BuildActionBag               LazyBuildAction => _buildActions ??= new BuildActionBag();
+  private BuildActionBag?             _buildActions;
+  private HashSet<IBuildStackPattern> LazyChildren    => RawChildren ??= new HashSet<IBuildStackPattern>();
+  private BuildActionBag              LazyBuildAction => _buildActions ??= new BuildActionBag();
 
   protected BuildStackPatternBase(int weight) => Weight = weight;
 
-  public    BuildActionBag              BuildActions => LazyBuildAction;
-  private   HashSet<IBuildStackPattern> LazyChildren => RawChildren ??= new HashSet<IBuildStackPattern>();
-  public    HashSet<IBuildStackPattern> Children     => LazyChildren;
-  protected long                        Weight       { [DebuggerStepThrough] get; }
+  public    BuildActionBag               BuildActions => LazyBuildAction;
+  public    HashSet<IBuildStackPattern>  Children     => LazyChildren;
+
+  protected long                         Weight       { [DebuggerStepThrough] get; }
+  protected HashSet<IBuildStackPattern>? RawChildren;
 
   [PublicAPI]
   protected bool GetOwnBuildActions(long inputWeight, out WeightedBuildActionBag? actionBag)
@@ -92,6 +93,7 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
       return hasActions;
     }
   }
+
   public void PrintToLog(LogLevel logLevel = LogLevel.None)
   {
     using(Log.NamedBlock(logLevel, ToHoconString))
