@@ -14,7 +14,7 @@ public class IfFirstUnitTest
   {
     const string kind = "kind";
 
-    var expected = new UnitId("expected", "expected");
+    var expected = Unit.Of("expected", "expected");
 
     // --arrange
     var target   = new IfFirstUnit(new UnitPattern(kind));
@@ -24,7 +24,7 @@ public class IfFirstUnitTest
     target.AddNode(child2);
 
     // --act
-    var stack = TestUtil.CreateBuildStack(expected, new UnitId(kind, null));
+    var stack = TestUtil.CreateBuildStack(expected, Unit.Of(kind));
     target.GatherBuildActions(stack, out var actionBag, 0);
 
     // --assert
@@ -40,7 +40,7 @@ public class IfFirstUnitTest
   {
     const string kind = "kind";
 
-    var expected = new UnitId("expected", "expected");
+    var expected = Unit.Of("expected", "expected");
 
     // --arrange
     var target   = new IfFirstUnit(new UnitPattern(kind));
@@ -50,7 +50,7 @@ public class IfFirstUnitTest
     target.AddNode(child2);
 
     // --act
-    var stack = TestUtil.CreateBuildStack(new UnitId("bad", null), new UnitId(kind, null), expected);
+    var stack = TestUtil.CreateBuildStack(Unit.Of("bad"), Unit.Of(kind), expected);
     target.GatherBuildActions(stack, out var actionBag, 0);
 
     // --assert
@@ -73,7 +73,7 @@ public class IfFirstUnitTest
     target.AddNode(child2);
 
     // --act
-    var stack = TestUtil.CreateBuildStack(new UnitId(kind, null), new UnitId(kind, null));
+    var stack = TestUtil.CreateBuildStack(Unit.Of(kind), Unit.Of(kind));
     target.GatherBuildActions(stack, out var actionBag, inputWeight);
 
     // --assert

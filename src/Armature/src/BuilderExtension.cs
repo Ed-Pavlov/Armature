@@ -71,7 +71,7 @@ public static class BuilderExtension
   /// </summary>
   private static IReadOnlyList<object?> BuildAll<T>(this Builder builder, object? tag, params object[]? arguments)
   {
-    var unitId         = new UnitId(typeof(T), tag);
+    var unitId         = Unit.Of(typeof(T), tag);
     var auxPatternTree = ArmatureUtil.CreatePatternTreeOnArguments(arguments);
 
     var unitList = builder.BuildAllUnits(unitId, auxPatternTree);
@@ -89,7 +89,7 @@ public static class BuilderExtension
   {
     if(builder is null) throw new ArgumentNullException(nameof(builder));
 
-    var unitId      = new UnitId(typeof(T), tag);
+    var unitId      = Unit.Of(typeof(T), tag);
     var patternTree = ArmatureUtil.CreatePatternTreeOnArguments(arguments);
 
     var buildResult = builder.BuildUnit(unitId, patternTree);

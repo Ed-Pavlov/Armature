@@ -18,7 +18,7 @@ public class BuildArgumentByParameterNameTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.Stack).Returns(Kind.Is(parameterInfo).ToBuildStack());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
 
     var target = new BuildArgumentByParameterName(tag);
 
@@ -26,7 +26,7 @@ public class BuildArgumentByParameterNameTest
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Kind.Is(parameterInfo.Name).Tag(tag))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.Name, tag))).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]
@@ -36,7 +36,7 @@ public class BuildArgumentByParameterNameTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.Stack).Returns(Kind.Is(parameterInfo).Tag(tag).ToBuildStack());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo, tag).ToBuildStack());
 
     var target = new BuildArgumentByParameterName(SpecialTag.Propagate);
 
@@ -44,7 +44,7 @@ public class BuildArgumentByParameterNameTest
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Kind.Is(parameterInfo.Name).Tag(tag))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.Name, tag))).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]
@@ -56,8 +56,8 @@ public class BuildArgumentByParameterNameTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.Stack).Returns(Kind.Is(parameterInfo).ToBuildStack());
-    A.CallTo(() => actual.BuildUnit(Kind.Is(parameterInfo.Name).Tag(tag))).Returns(expected.ToBuildResult());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
+    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.Name, tag))).Returns(expected.ToBuildResult());
 
     var target = new BuildArgumentByParameterName(tag);
 

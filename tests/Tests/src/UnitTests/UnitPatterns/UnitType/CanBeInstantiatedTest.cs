@@ -18,7 +18,7 @@ public class CanBeInstantiatedTest
     [Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = new UnitId(unitType, tag);
+    var unitId = Unit.Of(unitType, tag);
     var target = new CanBeInstantiated();
 
     // --assert
@@ -32,7 +32,7 @@ public class CanBeInstantiatedTest
     if(unitType is null && tag is null) Assert.Ignore("Invalid combination of arguments");
 
     // --arrange
-    var unitId = new UnitId(unitType, tag);
+    var unitId = Unit.Of(unitType, tag);
     var target = new CanBeInstantiated();
 
     // --assert

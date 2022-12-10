@@ -16,7 +16,7 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(int))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
+    var unitId = Unit.Of(parameterInfo, SpecialTag.Argument);
     var target = new IsParameterAttributed();
 
     // --act
@@ -30,7 +30,7 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(string))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
+    var unitId = Unit.Of(parameterInfo, SpecialTag.Argument);
     var target = new IsParameterAttributed(Subject.StringPointId);
 
     // --act
@@ -44,7 +44,7 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(bool))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
+    var unitId = Unit.Of(parameterInfo, SpecialTag.Argument);
     var target = new IsParameterAttributed(pointId);
 
     // --act
@@ -58,7 +58,7 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(string))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, tag);
+    var unitId = Unit.Of(parameterInfo, tag);
     var target = new IsParameterAttributed(Subject.StringPointId);
 
     // --act

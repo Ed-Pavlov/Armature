@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Armature.Core;
 using Armature.Core.Sdk;
 
@@ -36,19 +37,18 @@ public static class TestUtil
 }
 
 /// <summary>
-/// An attempt to increase readability of tests
+/// Increase readability of tests
 /// </summary>
-public static class Kind
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+public static class TUnit
 {
-  public static UnitId Is<T>()                              => new UnitId(typeof(T), null);
-  public static UnitId Is(Type         type)                => new UnitId(type, null);
-  public static UnitId Is(object?      kind)                => new UnitId(kind, null);
-  public static UnitId Tag(this UnitId unitId, object? tag) => new UnitId(unitId.Kind, tag);
+  public static UnitId OfType<T>()            => OfType<T>(null);
+  public static UnitId OfType<T>(object? tag) => Unit.Of(typeof(T), tag);
 }
 
 /// <summary>
 /// "No Type" type
 /// </summary>
-internal class Unit
+internal class Void
 {
 }

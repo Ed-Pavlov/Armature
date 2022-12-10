@@ -19,7 +19,7 @@ public record BuildArgumentByParameterTypeAndTag : IBuildAction
     {
       Log.WriteLine(LogLevel.Trace, () => $"Attribute: {attribute.ToHoconString()}");
 
-      var unitInfo    = new UnitId(parameterInfo.ParameterType, attribute.Tag);
+      var unitInfo    = Unit.Of(parameterInfo.ParameterType, attribute.Tag);
       var buildResult = buildSession.BuildUnit(unitInfo);
 
       if(buildResult.HasValue)

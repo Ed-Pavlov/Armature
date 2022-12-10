@@ -16,7 +16,7 @@ public class IsMethodParameterNamedTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.Name == "i")!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
+    var unitId = Unit.Of(parameterInfo, SpecialTag.Argument);
     var target = new IsParameterNamed(parameterInfo.Name!);
 
     // --act
@@ -30,7 +30,7 @@ public class IsMethodParameterNamedTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.Name == "i")!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
+    var unitId = Unit.Of(parameterInfo, SpecialTag.Argument);
     var target = new IsParameterNamed("another parameter name");
 
     // --act
@@ -44,7 +44,7 @@ public class IsMethodParameterNamedTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.Name == "i")!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, tag);
+    var unitId = Unit.Of(parameterInfo, tag);
     var target = new IsParameterNamed(parameterInfo.Name!);
 
     // --act

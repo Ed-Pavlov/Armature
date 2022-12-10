@@ -18,7 +18,7 @@ public class IsConstructorTest
     object? kind)
   {
     // --arrange
-    var unitId = new UnitId(kind, SpecialTag.Constructor);
+    var unitId = Unit.Of(kind, SpecialTag.Constructor);
     var target = new IsConstructor();
 
     // --assert
@@ -31,7 +31,7 @@ public class IsConstructorTest
     Type unitType)
   {
     // --arrange
-    var unitId = new UnitId(unitType, Tag.Any);
+    var unitId = Unit.Of(unitType, Tag.Any);
     var target = new IsConstructor();
 
     // --assert

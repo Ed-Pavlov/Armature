@@ -21,9 +21,9 @@ namespace Tests.UnitTests
       // --arrange
       var target       = new BuildListArgumentForProperty(tag);
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.Stack).Returns(new UnitId(propertyInfo, tag).ToBuildStack());
+      A.CallTo(() => buildSession.Stack).Returns(Unit.Of(propertyInfo, tag).ToBuildStack());
 
-      A.CallTo(() => buildSession.BuildAllUnits(new UnitId(propertyInfo, tag)))
+      A.CallTo(() => buildSession.BuildAllUnits(Unit.Of(propertyInfo, tag)))
        .Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());
 
       // --act

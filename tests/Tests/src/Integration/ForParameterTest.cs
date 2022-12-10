@@ -16,7 +16,7 @@
 // public class ForParameterTest
 // {
 //   private static readonly ParameterInfo[] ParameterList   = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters();
-//   private static readonly UnitId[]        BuildStack   = {new UnitId(ParameterList, SpecialTag.Argument)};
+//   private static readonly UnitId[]        BuildStack   = {Unit.Of(ParameterList, SpecialTag.Argument)};
 //   private static readonly UnitId          NamedParameter  = new(ParameterList.Single(_ => _.Name          == Subject.ParamName), SpecialTag.Argument);
 //   private static readonly UnitId          TypedParameter  = new(ParameterList.Single(_ => _.ParameterType == typeof(int)), SpecialTag.Argument);
 //   private static readonly UnitId          IdNullParameter = new(ParameterList.Single(_ => _.ParameterType == typeof(string)), SpecialTag.Argument);

@@ -12,7 +12,7 @@ public class IsAssignableFromTypeTest
   public void should_match_if_types_are_same([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = new UnitId(typeof(Stream), tag);
+    var unitId = Unit.Of(typeof(Stream), tag);
     var target = new IsAssignableFromType(typeof(Stream), tag);
 
     // --assert
@@ -23,7 +23,7 @@ public class IsAssignableFromTypeTest
   public void should_match_if_specified_type_can_be_assigned_to_the_type_of_unit([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = new UnitId(typeof(IDisposable), tag);
+    var unitId = Unit.Of(typeof(IDisposable), tag);
     var target = new IsAssignableFromType(typeof(Stream), tag);
 
     // --assert
@@ -34,7 +34,7 @@ public class IsAssignableFromTypeTest
   public void should_not_match_if_specified_type_cant_be_assigned_to_the_type_of_unit([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = new UnitId(typeof(Stream), tag);
+    var unitId = Unit.Of(typeof(Stream), tag);
     var target = new IsAssignableFromType(typeof(IDisposable), tag);
 
     // --assert
@@ -45,7 +45,7 @@ public class IsAssignableFromTypeTest
   public void should_match_for_nullable_struct([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = new UnitId(typeof(bool?), tag);
+    var unitId = Unit.Of(typeof(bool?), tag);
     var target = new IsAssignableFromType(typeof(bool), tag);
 
     // --assert
@@ -56,7 +56,7 @@ public class IsAssignableFromTypeTest
   public void should_match_if_tag_is_any([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = new UnitId(typeof(Stream), tag);
+    var unitId = Unit.Of(typeof(Stream), tag);
     var target = new IsAssignableFromType(typeof(Stream), Tag.Any);
 
     // --assert
@@ -67,7 +67,7 @@ public class IsAssignableFromTypeTest
   public void should_not_match_if_tag_differs([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = new UnitId(typeof(Stream), tag);
+    var unitId = Unit.Of(typeof(Stream), tag);
     var target = new IsAssignableFromType(typeof(Stream), "different tag");
 
     // --assert

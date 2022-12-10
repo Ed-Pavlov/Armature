@@ -24,7 +24,7 @@ public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogSt
     var effectiveTag = _tag == SpecialTag.Propagate ? targetUnit.Tag : _tag;
 
     var valueType = GetInjectPointType(targetUnit);
-    buildSession.BuildResult = buildSession.BuildUnit(new UnitId(valueType, effectiveTag));
+    buildSession.BuildResult = buildSession.BuildUnit(Unit.Of(valueType, effectiveTag));
   }
   [WithoutTest]
   [DebuggerStepThrough]

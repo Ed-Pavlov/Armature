@@ -64,7 +64,7 @@ namespace Tests.Performance
 
       for(var i = 0; i < 100_000; i++)
       {
-        var unitId = new UnitId(i, "tag");
+        var unitId = Unit.Of(i, "tag");
 
         foreach(var unitPattern in patterns)
           unitPattern.Matches(unitId);
@@ -87,11 +87,11 @@ namespace Tests.Performance
 
       for(var i = 0; i < count; i++)
       {
-        var u1  = new UnitId(i, null);
-        var u2  = new UnitId(i, i);
+        var u1  = Unit.Of(i);
+        var u2  = Unit.Of(i, i);
         var str = i.ToString();
-        var u3  = new UnitId(str, null);
-        var u4  = new UnitId(str, str);
+        var u3  = Unit.Of(str);
+        var u4  = Unit.Of(str, str);
 
         Treat(builder, u1).AsCreatedWith(() => null);
         Treat(builder, u2).AsInstance(null);
@@ -121,7 +121,7 @@ namespace Tests.Performance
         var created    = (i1 * 1000).ToString();
 
         var @interface = () => new IfFirstUnit(new UnitPattern(i1));
-        builder.AddNode(@interface()).UseBuildAction(new Redirect(new UnitId(created, null)), BuildStage.Create);
+        builder.AddNode(@interface()).UseBuildAction(new Redirect(Unit.Of(created)), BuildStage.Create);
 
         builder.AddNode(new IfFirstUnit(new UnitPattern(created)))
                .AddNode(@interface())
@@ -151,7 +151,7 @@ namespace Tests.Performance
 
       for(var i = 1; i < registrationsCount; i++)
       {
-        var value = builder.BuildUnit(new UnitId(i, null));
+        var value = builder.BuildUnit(Unit.Of(i));
 
         // value.Value.Should().Be((i * 1000).ToString());
       }

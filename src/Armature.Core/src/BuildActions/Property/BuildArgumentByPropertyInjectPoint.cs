@@ -19,7 +19,7 @@ public record BuildArgumentByPropertyInjectPoint : IBuildAction
     {
       Log.WriteLine(LogLevel.Trace, () => $"Attribute: {attribute.ToHoconString()}");
 
-      var unitInfo    = new UnitId(propertyInfo.PropertyType, attribute.Tag);
+      var unitInfo    = Unit.Of(propertyInfo.PropertyType, attribute.Tag);
       var buildResult = buildSession.BuildUnit(unitInfo);
 
       if(buildResult.HasValue)

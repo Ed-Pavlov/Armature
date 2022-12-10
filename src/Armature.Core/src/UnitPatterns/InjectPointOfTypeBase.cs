@@ -19,7 +19,7 @@ public abstract record InjectPointOfTypeBase : IUnitPattern, ILogString
     if(unitId.Tag != SpecialTag.Argument) return false;
 
     var type = GetInjectPointType(unitId);
-    return type is not null && _typePattern.Matches(new UnitId(type, null));
+    return type is not null && _typePattern.Matches(Unit.Of(type));
   }
 
   protected abstract Type? GetInjectPointType(UnitId unitId);

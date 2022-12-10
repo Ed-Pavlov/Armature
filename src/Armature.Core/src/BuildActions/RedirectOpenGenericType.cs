@@ -58,7 +58,7 @@ public record RedirectOpenGenericType : IBuildAction, ILogString
     var effectiveTag = Equals(_tag, SpecialTag.Propagate) ? targetUnit.Tag : _tag;
     var genericType  = _redirectTo.MakeGenericType(genericArguments);
 
-    buildSession.BuildResult = buildSession.BuildUnit(new UnitId(genericType, effectiveTag));
+    buildSession.BuildResult = buildSession.BuildUnit(Unit.Of(genericType, effectiveTag));
   }
 
   [WithoutTest]

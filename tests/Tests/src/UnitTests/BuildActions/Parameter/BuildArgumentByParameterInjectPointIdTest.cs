@@ -18,7 +18,7 @@ public class BuildArgumentByParameterInjectPointIdTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.Stack).Returns(Kind.Is(parameterInfo).ToBuildStack());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
 
     var target = new BuildArgumentByParameterTypeAndTag();
 
@@ -26,7 +26,7 @@ public class BuildArgumentByParameterInjectPointIdTest
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Kind.Is<int>().Tag(Subject.IntId))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(TUnit.OfType<int>(Subject.IntId))).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]
@@ -36,7 +36,7 @@ public class BuildArgumentByParameterInjectPointIdTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.Stack).Returns(Kind.Is(parameterInfo).ToBuildStack());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
 
     var target = new BuildArgumentByParameterTypeAndTag();
 
@@ -44,7 +44,7 @@ public class BuildArgumentByParameterInjectPointIdTest
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Kind.Is<string>())).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(TUnit.OfType<string>())).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]
@@ -54,7 +54,7 @@ public class BuildArgumentByParameterInjectPointIdTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.Stack).Returns(Kind.Is(parameterInfo).ToBuildStack());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
 
     var target = new BuildArgumentByParameterTypeAndTag();
 
@@ -75,8 +75,8 @@ public class BuildArgumentByParameterInjectPointIdTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.Stack).Returns(Kind.Is(parameterInfo).ToBuildStack());
-    A.CallTo(() => actual.BuildUnit(Kind.Is<int>().Tag(Subject.IntId))).Returns(expected.ToBuildResult());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
+    A.CallTo(() => actual.BuildUnit(TUnit.OfType<int>(Subject.IntId))).Returns(expected.ToBuildResult());
 
     var target = new BuildArgumentByParameterTypeAndTag();
 

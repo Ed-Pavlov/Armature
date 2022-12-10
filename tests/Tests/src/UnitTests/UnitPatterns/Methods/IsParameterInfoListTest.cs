@@ -15,7 +15,7 @@ public class IsParameterInfoListTest
     var parameterInfoList = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters();
 
     // --arrange
-    var unitId = new UnitId(parameterInfoList, SpecialTag.Argument);
+    var unitId = Unit.Of(parameterInfoList, SpecialTag.Argument);
     var target = new IsParameterInfoArray();
 
     // --act
@@ -27,7 +27,7 @@ public class IsParameterInfoListTest
   public void should_not_match_unit_kind_other_than_parameter_info()
   {
     // --arrange
-    var unitId = new UnitId("parameterInfoList", SpecialTag.Argument);
+    var unitId = Unit.Of("parameterInfoList", SpecialTag.Argument);
     var target = new IsParameterInfoArray();
 
     // --act
@@ -41,7 +41,7 @@ public class IsParameterInfoListTest
     var parameterInfoList = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters();
 
     // --arrange
-    var unitId = new UnitId(parameterInfoList, tag);
+    var unitId = Unit.Of(parameterInfoList, tag);
     var target = new IsParameterInfoArray();
 
     // --act

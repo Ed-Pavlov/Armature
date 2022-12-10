@@ -1,4 +1,8 @@
-﻿using Armature;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
 using Armature.Sdk;
@@ -10,11 +14,32 @@ namespace Tests.Functional
 {
   public class BaseTypeTest
   {
+    private int megaValue;
     public void test()
     {
-      var target = CreateTarget();
-      // target.app
-      //  target.Treat()
+      var builder = CreateTarget();
+
+      builder
+       .Treat<IStream>()
+       .As<MemoryStream>()
+       .CreatedByReflection()
+       .UsingArguments(
+          3,
+          ForParameter.OfType<string>().UseTag("myStream"),
+          ForParameter.WithInjectPoint(Tag.MegaDependency).UseValue(megaValue),
+          ForProperty.Named("Prop").UseFactoryMethod(() => "value"))
+       .UsingInjectionPoints(
+          Constructor.WithMaxParametersCount())
+       .AsSingleton()
+       .BuildingIt()
+       .Treat<IDisposable[]>()
+       .AsCreatedWith(bs => (IDisposable[]) bs.BuildAllUnits(Unit.Of(typeof(IDisposable))).Select(_ => _.Entity.Value).ToArray())
+       .UsingArguments("arg1", "arg2");
+    }
+
+    class Tag
+    {
+      public const int MegaDependency = 0;
     }
 
     [Test]

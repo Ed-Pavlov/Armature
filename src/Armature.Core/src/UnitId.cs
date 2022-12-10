@@ -55,3 +55,11 @@ public readonly struct UnitId : ILogString
 
   #endregion
 }
+
+/// <summary>
+/// Syntax sugar for increasing code readability. 'Unit.Of(' looks cleaner than 'new UnitId('
+/// </summary>
+public static class Unit
+{
+  public static UnitId Of(object? kind, object? tag = null) => new(kind, tag);
+}

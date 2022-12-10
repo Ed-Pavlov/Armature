@@ -7,7 +7,7 @@ namespace Armature.Core;
 
 /// <summary>
 /// Base class for patterns check if a unit is an inject point marked with with <see cref="InjectAttribute" />
-/// with an optional <see cref="InjectAttribute.Tag" />
+/// with an optional <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" />
 /// </summary>
 public abstract record IsInjectPointBase : IUnitPattern, ILogString
 {

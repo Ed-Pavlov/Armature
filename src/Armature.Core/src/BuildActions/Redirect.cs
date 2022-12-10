@@ -18,7 +18,7 @@ public record Redirect : IBuildAction, ILogString
   public void Process(IBuildSession buildSession)
   {
     var targetUnit   = buildSession.Stack.TargetUnit;
-    var unitId = Equals(_unitId.Tag, SpecialTag.Propagate) ? new UnitId(_unitId.Kind, targetUnit.Tag) : _unitId;
+    var unitId = Equals(_unitId.Tag, SpecialTag.Propagate) ? Unit.Of(_unitId.Kind, targetUnit.Tag) : _unitId;
 
     buildSession.BuildResult = buildSession.BuildUnit(unitId);
   }

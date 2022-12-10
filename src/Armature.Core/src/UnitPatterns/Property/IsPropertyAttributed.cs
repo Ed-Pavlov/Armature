@@ -7,7 +7,7 @@ namespace Armature.Core;
 
 /// <summary>
 /// Checks if a unit is an argument for an object property marked with <see cref="InjectAttribute"/> attribute
-/// with an optional <see cref="InjectAttribute.Tag" />
+/// with an optional <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" />
 /// </summary>
 public record IsPropertyAttributed : IsInjectPointBase
 {

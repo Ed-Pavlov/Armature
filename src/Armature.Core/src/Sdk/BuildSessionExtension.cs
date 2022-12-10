@@ -14,7 +14,7 @@ public static class BuildSessionExtension
     if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
     if(type is null) throw new ArgumentNullException(nameof(type));
 
-    var result = buildSession.BuildUnit(new UnitId(type, SpecialTag.Constructor));
+    var result = buildSession.BuildUnit(Unit.Of(type, SpecialTag.Constructor));
 
     if(!result.HasValue)
       throw new ArmatureException($"Constructor for type {type} is not found, check registrations for this type or 'default' registrations.");
@@ -28,7 +28,7 @@ public static class BuildSessionExtension
     if(parameters is null) throw new ArgumentNullException(nameof(parameters));
     if(parameters.Length == 0) throw new ArgumentException("At least one parameter should be provided", nameof(parameters));
 
-    var        buildResult = buildSession.BuildUnit(new UnitId(parameters, SpecialTag.Argument));
+    var        buildResult = buildSession.BuildUnit(Unit.Of(parameters, SpecialTag.Argument));
     object?[]? arguments   = null;
 
     if(buildResult.HasValue)
@@ -74,7 +74,7 @@ public static class BuildSessionExtension
     if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
     if(parameter is null) throw new ArgumentNullException(nameof(parameter));
 
-    var buildResult = buildSession.BuildUnit(new UnitId(parameter, SpecialTag.Argument));
+    var buildResult = buildSession.BuildUnit(Unit.Of(parameter, SpecialTag.Argument));
 
     if(!buildResult.HasValue)
     {
@@ -92,7 +92,7 @@ public static class BuildSessionExtension
   /// </summary>
   public static object? BuildPropertyArgument(this IBuildSession buildSession, PropertyInfo propertyInfo)
   {
-    var buildResult = buildSession.BuildUnit(new UnitId(propertyInfo, SpecialTag.Argument));
+    var buildResult = buildSession.BuildUnit(Unit.Of(propertyInfo, SpecialTag.Argument));
 
     return buildResult.HasValue
              ? buildResult.Value

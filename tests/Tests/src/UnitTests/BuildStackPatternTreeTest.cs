@@ -25,7 +25,7 @@ namespace Tests.UnitTests
       target.Children.Add(matchAny);
 
       // --act
-      var actual = target.GatherBuildActions(Kind.Is<string>().ToBuildStack(), out var actionBag);
+      var actual = target.GatherBuildActions(TUnit.OfType<string>().ToBuildStack(), out var actionBag);
 
       // --assert
       actual.Should().BeTrue();

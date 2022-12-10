@@ -25,7 +25,8 @@ public class PropertyArgumentTuner<T> : ArgumentTunerBase<T>
   }
 
   /// <summary>
-  /// For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute.Tag" /> as a tag
+  /// For building a value for the parameter use <see cref="ParameterInfo" />.<see cref="ParameterInfo.ParameterType" />
+  /// and <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" /> as a tag
   /// </summary>
   public IArgumentSideTuner UseInjectPointTag()
     => new ArgumentSideTuner(

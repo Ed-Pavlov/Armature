@@ -13,7 +13,7 @@ namespace Tests.UnitTests.UnitPatterns.UnitType
     [Test]
     public void should_not_match_exact_type([Values(null, "tag")] object tag)
     {
-      var unitId = new UnitId(typeof(Stream), tag);
+      var unitId = Unit.Of(typeof(Stream), tag);
       var target = new IsInheritorOf(typeof(Stream), tag);
 
       target.Matches(unitId).Should().BeFalse();
@@ -22,7 +22,7 @@ namespace Tests.UnitTests.UnitPatterns.UnitType
     [Test]
     public void should_match_base_type([Values(null, "tag")] object tag)
     {
-      var unitId = new UnitId(typeof(MemoryStream), tag);
+      var unitId = Unit.Of(typeof(MemoryStream), tag);
       var target = new IsInheritorOf(typeof(Stream), tag);
 
       target.Matches(unitId).Should().BeTrue();
@@ -31,7 +31,7 @@ namespace Tests.UnitTests.UnitPatterns.UnitType
     [Test]
     public void should_match_interface([Values(null, "tag")] object tag)
     {
-      var unitId = new UnitId(typeof(MemoryStream), tag);
+      var unitId = Unit.Of(typeof(MemoryStream), tag);
       var target = new IsInheritorOf(typeof(IDisposable), tag);
 
       target.Matches(unitId).Should().BeTrue();
@@ -40,7 +40,7 @@ namespace Tests.UnitTests.UnitPatterns.UnitType
     [Test]
     public void should_match_value_type_as_inheritor_of_object([Values(null, "tag")] object tag)
     {
-      var unitId = new UnitId(typeof(int), tag);
+      var unitId = Unit.Of(typeof(int), tag);
       var target = new IsInheritorOf(typeof(object), tag);
 
       target.Matches(unitId).Should().BeTrue();
@@ -49,7 +49,7 @@ namespace Tests.UnitTests.UnitPatterns.UnitType
     [Test]
     public void should_match_any_tag_if_specified([Values(null, "tag")] object tag)
     {
-      var unitId = new UnitId(typeof(MemoryStream), tag);
+      var unitId = Unit.Of(typeof(MemoryStream), tag);
       var target = new IsInheritorOf(typeof(Stream), Tag.Any);
 
       target.Matches(unitId).Should().BeTrue();
@@ -58,7 +58,7 @@ namespace Tests.UnitTests.UnitPatterns.UnitType
     [Test]
     public void should_not_match_not_inheritor([Values(null, "tag")] object tag)
     {
-      var unitId = new UnitId(typeof(MemoryStream), tag);
+      var unitId = Unit.Of(typeof(MemoryStream), tag);
       var target = new IsInheritorOf(typeof(IEnumerable), tag);
 
       target.Matches(unitId).Should().BeFalse();
@@ -69,7 +69,7 @@ namespace Tests.UnitTests.UnitPatterns.UnitType
     {
       if(Equals(unitTag, patternTag)) Assert.Ignore("Not the case");
 
-      var unitId = new UnitId(typeof(MemoryStream), unitTag);
+      var unitId = Unit.Of(typeof(MemoryStream), unitTag);
       var target = new IsInheritorOf(typeof(Stream), patternTag);
 
       target.Matches(unitId).Should().BeFalse();

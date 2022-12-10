@@ -4,6 +4,7 @@ using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Util;
+using Void = Tests.Util.Void;
 
 namespace Tests.UnitTests.BuildActions.Creation;
 
@@ -17,7 +18,7 @@ public class CreateWithFactoryMethod_NTest
 
     // --arrange
     var buildSession   = A.Fake<IBuildSession>();
-    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default)).WhenBuildArgumentsOfType<int, Unit, Unit, Unit, Unit, Unit, Unit>();
+    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default)).WhenBuildArgumentsOfType<int, Void, Void, Void, Void, Void, Void>();
     buildArguments.Returns(expectedArgument.ToArguments());
 
     var target = new CreateWithFactoryMethodBuildAction<int, string>(arg => arg == expectedArgument ? expectedResult : throw new Exception());

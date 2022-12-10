@@ -8,7 +8,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// Gets a list of  properties marked with <see cref="InjectAttribute" /> with specified tags <see cref="InjectAttribute.Tag" />.
+/// Gets a list of  properties marked with <see cref="InjectAttribute" /> with specified tags <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" />.
 /// </summary>
 public record GetPropertyListByTags : IBuildAction, ILogString
 {

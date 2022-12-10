@@ -15,7 +15,7 @@ public class IsServiceUnitTest
     [ValueSource(typeof(TestUtil), nameof(TestUtil.all_special_tags))] SpecialTag tag)
   {
     // --arrange
-    var unitId = new UnitId(kind, tag);
+    var unitId = Unit.Of(kind, tag);
     var target = new IsServiceUnit();
 
     // --assert
@@ -30,7 +30,7 @@ public class IsServiceUnitTest
     if(kind is null && tag is null) Assert.Ignore("Impossible argument combination");
 
     // --arrange
-    var unitId = new UnitId(kind, tag);
+    var unitId = Unit.Of(kind, tag);
     var target = new IsServiceUnit();
 
     // --assert

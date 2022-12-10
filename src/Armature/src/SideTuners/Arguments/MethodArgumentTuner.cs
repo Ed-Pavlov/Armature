@@ -15,7 +15,7 @@ public class MethodArgumentTuner<T> : ArgumentTunerBase<T>
   public MethodArgumentTuner(TuneArgumentRecipient tuneArgumentRecipient) : base(tuneArgumentRecipient) { }
 
   /// <summary>
-  /// For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <paramref name="tag" />
+  /// For building a value for the parameter use <see cref="ParameterInfo" />.<see cref="ParameterInfo.ParameterType" /> and <paramref name="tag" />
   /// </summary>
   public IArgumentSideTuner UseTag(object tag)
   {
@@ -25,7 +25,7 @@ public class MethodArgumentTuner<T> : ArgumentTunerBase<T>
   }
 
   /// <summary>
-  /// For building a value for the parameter use <see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute.Tag" /> as a tag
+  /// For building a value for the parameter use <see cref="ParameterInfo" />.<see cref="ParameterInfo.ParameterType" /> and <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" /> as a tag
   /// </summary>
   public IArgumentSideTuner UseInjectPointTag()
     => new ArgumentSideTuner(

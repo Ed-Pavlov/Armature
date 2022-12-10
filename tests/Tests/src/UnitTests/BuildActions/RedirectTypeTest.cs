@@ -18,11 +18,11 @@ public class RedirectTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.Stack).Returns(Kind.Is<IDisposable>().ToBuildStack());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Kind.Is<MemoryStream>().Tag(tag)));
+    A.CallTo(() => buildSession.Stack).Returns(TUnit.OfType<IDisposable>().ToBuildStack());
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<MemoryStream>(tag)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
-    var target = new Redirect(new UnitId(typeof(MemoryStream), tag));
+    var target = new Redirect(Unit.Of(typeof(MemoryStream), tag));
 
     // --act
     target.Process(buildSession);
@@ -39,11 +39,11 @@ public class RedirectTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.Stack).Returns(Kind.Is<IDisposable>().Tag(tag).ToBuildStack());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(Kind.Is<MemoryStream>().Tag(tag)));
+    A.CallTo(() => buildSession.Stack).Returns(TUnit.OfType<IDisposable>(tag).ToBuildStack());
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<MemoryStream>(tag)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
-    var target = new Redirect(new UnitId(typeof(MemoryStream), SpecialTag.Propagate));
+    var target = new Redirect(Unit.Of(typeof(MemoryStream), SpecialTag.Propagate));
 
     // --act
     target.Process(buildSession);
