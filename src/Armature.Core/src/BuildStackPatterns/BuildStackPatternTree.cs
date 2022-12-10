@@ -27,23 +27,23 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrinta
 
   public BuildStackPatternTree(int weight = 0) => _root = new Root(weight);
 
-  public HashSet<IBuildStackPattern> Children => _root.Children;
+  HashSet<IBuildStackPattern> IBuildStackPattern.Children => _root.Children;
 
   ///<inheritdoc />
-  public bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight = 0L)
+  bool IBuildStackPattern.GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
     => _root.GatherBuildActions(stack, out actionBag, 0);
 
   ///<inheritdoc />
   public void PrintToLog(LogLevel logLevel = LogLevel.None) => _root.PrintToLog(logLevel);
 
   ///<inheritdoc />
-  public BuildActionBag BuildActions => throw new NotSupportedException();
+  BuildActionBag IBuildStackPattern.BuildActions => throw new NotSupportedException();
 
-  public bool Equals(IBuildStackPattern other) => throw new NotSupportedException();
+  bool IEquatable<IBuildStackPattern>.Equals(IBuildStackPattern other) => throw new NotSupportedException();
 
   #region Syntax sugar
 
-  public void             Add(IBuildStackPattern buildStackPattern) => Children.Add(buildStackPattern);
+  public void             Add(IBuildStackPattern buildStackPattern) => ((IBuildStackPattern) this).Children.Add(buildStackPattern);
   IEnumerator IEnumerable.GetEnumerator()                           => throw new NotSupportedException();
 
   #endregion
@@ -75,5 +75,5 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrinta
     public override bool Equals(IBuildStackPattern? other) => throw new NotSupportedException();
   }
 
-  public string ToHoconString() => GetType().GetShortName().QuoteIfNeeded();
+  string ILogString.ToHoconString() => GetType().GetShortName().QuoteIfNeeded();
 }

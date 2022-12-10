@@ -10,6 +10,13 @@ namespace Tests.Functional
 {
   public class BaseTypeTest
   {
+    public void test()
+    {
+      var target = CreateTarget();
+      // target.app
+      //  target.Treat()
+    }
+
     [Test]
     public void should_inject_dependency_into_all_inheritors_of_class()
     {

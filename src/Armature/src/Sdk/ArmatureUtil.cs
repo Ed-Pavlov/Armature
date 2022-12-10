@@ -11,17 +11,17 @@ public static class ArmatureUtil
   /// </summary>
   public static ITuner GetInternals(this ITunerBase tuner) => (ITuner) tuner;
 
-  //TODO: should not be shown by intellisense on "builder."
   /// <summary>
-  /// Appends a branch of <see cref="IBuildStackPattern"/> nodes from the <paramref name="tuner"/> to <paramref name="node"/>
+  /// Appends a branch of <see cref="IBuildStackPattern"/> nodes from the <paramref name="tuner"/> to <paramref name="impl"/>
   /// and return the deepest of appended nodes.
   /// </summary>
-  public static IBuildStackPattern ApplyTuner(this IBuildStackPattern node, ITunerBase tuner)
+  public static IBuildStackPattern ApplyTuner(this BuildStackPatternBase impl, ITunerBase tuner)
   {
-    if(node is null) throw new ArgumentNullException(nameof(node));
+    if(impl is null) throw new ArgumentNullException(nameof(impl));
     if(tuner is null) throw new ArgumentNullException(nameof(tuner));
 
-    var parent = (ITuner)tuner;
+    var parent = tuner.GetInternals();
+    var node   = (IBuildStackPattern) impl;
 
     do
     {

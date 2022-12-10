@@ -1,6 +1,7 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
+using Armature.Core.Sdk;
 using Armature.Sdk;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
@@ -19,7 +20,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
 
       var unitPattern = new UnitPattern(typeof(T), uniqueTag);
 
-      IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, 0); //TODO: weight
+      IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildStackPattern.IfFirstUnit);
 
       return new BuildingTuner<T>(tuner, CreateNode, unitPattern);
     }

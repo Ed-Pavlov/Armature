@@ -20,7 +20,7 @@ namespace Tests.UnitTests
       var matchString   = new IfFirstUnit(unitIdMatcher).UseBuildAction(new CreateByReflection(), BuildStage.Cache);
       var matchAny      = new SkipTillUnit(unitIdMatcher).UseBuildAction(singletonAction, BuildStage.Cache);
 
-      var target = new BuildStackPatternTree();
+      IBuildStackPattern target = new BuildStackPatternTree();
       target.Children.Add(matchString);
       target.Children.Add(matchAny);
 
