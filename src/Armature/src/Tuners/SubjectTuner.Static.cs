@@ -14,7 +14,7 @@ public partial class SubjectTuner
     if(type is null) throw new ArgumentNullException(nameof(type));
 
     var unitPattern = new UnitPattern(type, tag);
-    IBuildStackPattern CreateNode() => new SkipTillUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildStackPattern.SkipTillUnit);
+    IBuildStackPattern CreateNode() => new SkipTillUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern);
     return new SubjectTuner(parentTuner, CreateNode);
   }
 

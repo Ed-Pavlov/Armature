@@ -287,10 +287,11 @@ namespace Tests.Functional
       target
        .Treat<LevelThree>()
        .AsIs()
-       .UsingArguments(expectedOnLevelThree);
+       .UsingArguments(expectedOnLevelThree)
+       .BuildingIt()
 
-      target
-       .Building<LevelThree>()
+      // target
+      //  .Building<LevelThree>()
        .TreatAll()
        .UsingArguments(expected);
 

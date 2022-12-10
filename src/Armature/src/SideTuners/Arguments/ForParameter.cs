@@ -22,7 +22,7 @@ public static class ForParameter
                    new IfFirstUnit(
                      new IsParameterOfType(new UnitPattern(type)),
                      weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
-                .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
+                .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>()))
                 .ApplyTuner(tuner));
 
   /// <summary>
@@ -37,7 +37,7 @@ public static class ForParameter
                    new IfFirstUnit(
                      new IsParameterOfType(new UnitPattern(typeof(T))),
                      weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
-                .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
+                .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>()))
                 .ApplyTuner(tuner));
 
   /// <summary>
@@ -52,7 +52,7 @@ public static class ForParameter
                    new IfFirstUnit(
                      new IsParameterNamed(parameterName),
                      weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildStackPattern.IfFirstUnit))
-                .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
+                .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>()))
                 .ApplyTuner(tuner));
 
   /// <summary>
@@ -68,6 +68,6 @@ public static class ForParameter
                    new IfFirstUnit(
                      new IsParameterAttributed(injectPointId),
                      weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildStackPattern.IfFirstUnit))
-                .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>(), 0))
+                .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>()))
                 .ApplyTuner(tuner));
 }

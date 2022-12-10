@@ -7,8 +7,7 @@ namespace Armature.Core;
 /// </summary>
 public class SkipWhileUnit : BuildStackPatternByUnitBase
 {
-  public SkipWhileUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildStackPattern.SkipWhileUnit) { }
-  public SkipWhileUnit(IUnitPattern unitPattern, int weight) : base(unitPattern, weight) { }
+  public SkipWhileUnit(IUnitPattern unitPattern, int weight = 0) : base(unitPattern, weight) { }
 
   public override bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
   {
@@ -25,7 +24,8 @@ public class SkipWhileUnit : BuildStackPatternByUnitBase
         if(!UnitPattern.Matches(stack[i]))
           break;
 
-      hasActions = GetOwnAndChildrenBuildActions(stack.GetTail(i), inputWeight, out actionBag);
+      var weight = inputWeight + i * WeightOf.BuildStackPattern.SkipWhileUnit;
+      hasActions = GetOwnAndChildrenBuildActions(stack.GetTail(i), weight, out actionBag);
       return hasActions;
     }
   }

@@ -7,8 +7,7 @@ namespace Armature.Core;
 /// </summary>
 public class SkipTillUnit : BuildStackPatternByUnitBase
 {
-  public SkipTillUnit(IUnitPattern pattern) : base(pattern, WeightOf.BuildStackPattern.SkipTillUnit) { }
-  public SkipTillUnit(IUnitPattern pattern, int weight) : base(pattern, weight) { }
+  public SkipTillUnit(IUnitPattern pattern, int weight = 0) : base(pattern, weight) { }
 
   /// <summary>
   /// Moves along the build stack skipping units until it finds the matching unit.
@@ -31,7 +30,8 @@ public class SkipTillUnit : BuildStackPatternByUnitBase
         if(isPatternMatches)
         {
           Log.WriteLine(LogLevel.Verbose, LogConst.Matched, true);
-          hasActions = GetOwnAndChildrenBuildActions(stack.GetTail(i + 1), inputWeight - i * 3, out actionBag);
+          var weight = inputWeight + i * WeightOf.BuildStackPattern.SkipTillUnit;
+          hasActions = GetOwnAndChildrenBuildActions(stack.GetTail(i + 1), weight, out actionBag);
           return hasActions;
         }
       }

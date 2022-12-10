@@ -37,12 +37,17 @@ public class WeightOf
   }
 
   /// <summary>
-  /// Weights of <see cref="IUnitPattern"/> is about two orders of magnitude higher than weights of <see cref="InjectionPoint"/> in order in registrations like
+  /// Weights of <see cref="IUnitPattern"/> is about two orders of magnitude higher than weights of <see cref="InjectionPoint"/> in order to registrations like
   ///
-  /// target.TreatInheritorsOf&lt;BaseType&gt;UsingArguments(ForParameter.Named("param").UseValue("baseArg"));
-  /// target.Treat&lt;ChildType&gt;().UsingArguments("childArg");
+  /// builder.GetOrAddNode(new IfFirstUnit(Unit.Of(typeof(string)), WeightOf.InjectionPoint.ByName))
+  ///        .GetOrAddNode(new IfFirstUnit(new IsInheritorOf(typeof(BaseType)), WeightOf.UnitPattern.SubtypePattern))
   ///
-  /// ForParameter.Named never helps to TreatInheritorsOf "win" Treat.
+  /// never "wins"
+  ///
+  /// builder.GetOrAddNode(new IfFirstUnit(Unit.Of(typeof(string)), WeightOf.InjectionPoint.ByType))
+  ///        .GetOrAddNode(new IfFirstUnit(new Unit.Of(typeof(ChildType)), WeightOf.UnitPattern.ExactTypePattern))
+  ///
+  /// because the second one is narrower case than the first one
   /// </summary>
   [PublicAPI]
   public class UnitPattern
@@ -65,33 +70,32 @@ public class WeightOf
     public static short ExactTypePattern { get; protected set; } = (short) (SubtypePattern + Step);
   }
 
+  /// <summary>
+  /// Note that <see cref="SkipTillUnit"/> and <see cref="SkipWhileUnit"/> are multipliers, see the implementation of method
+  /// <see cref="IBuildStackPattern"/>.<see cref="IBuildStackPattern.GatherBuildActions"/> in classes <see cref="Armature.Core.SkipTillUnit"/> and
+  /// <see cref="Armature.Core.SkipWhileUnit"/>, whereas <see cref="IfFirstUnit"/> is an absolute value.
+  ///
+  /// Make sure that <see cref="SkipTillUnit"/> and <see cref="SkipWhileUnit"/> will never "win" <see cref="IfFirstUnit"/> when change their values.
+  /// </summary>
   [PublicAPI]
   public class BuildStackPattern
   {
     public static int SkipWhileUnit { get; protected set; } = 0;
 
-    public static int SkipTillUnit { get; protected set; } = 0;
+    public static int SkipTillUnit { get; protected set; } = -10;
 
-    /// <summary>
-    /// By default the weight of <see cref="Core.IfFirstUnit"/> build stack pattern's weight value set thus that registration
+    /// Weights of <see cref="IfFirstUnit"/> is about two orders of magnitude higher than weights of <see cref="UnitPattern"/> in order to registrations like
     ///
-    /// like
-    /// builder.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(MyType))))
-    ///      .GetOrAddNode(new IfFirstUnit(new IsAssignableFromType(typeof(string))))
-    /// // ....
-    /// "win" registrations like
+    /// builder.GetOrAddNode(new IfFirstUnit(Unit.Of(typeof(string)), WeightOf.InjectionPoint.ByType))
+    ///        .GetOrAddNode(new SkipTillUnit(new Unit.Of(typeof(ChildType)), WeightOf.UnitPattern.ExactTypePattern))
     ///
-    /// builder.GetOrAddNode(new SkipTillUnit(new Pattern(typeof(MyType))))
-    ///      .GetOrAddNode(new SkipTillUnit(new IsAssignableFromType(typeof(string))))
-    /// // ....
+    /// never "wins"
     ///
-    /// in any case, no matter how many units will be skipped by <see cref="SkipTillUnit"/> patter. See its implementation for details.
+    /// builder.GetOrAddNode(new IfFirstUnit(Unit.Of(typeof(string)), WeightOf.InjectionPoint.ByName))
+    ///        .GetOrAddNode(new IfFirstUnit(new IsInheritorOf(typeof(BaseType)), WeightOf.UnitPattern.SubtypePattern))
     ///
-    /// Because the first one is a "personal" registration whereas the second one will be applied to all units building
-    /// in the context of "MyType".
-    ///
-    /// Note that provided sample is "synthetic" see <see cref="SpecialTag"/> and <see cref="Core.SkipWhileUnit"/> for details.
-    /// </summary>
-    public static int IfFirstUnit { get; protected set; } = 1_000_000_000;
+    /// because the first one is registration for building "in context" of ChildType whereas the second one is "personal" registration of
+    /// all inheritors of BaseType
+    public static int IfFirstUnit { get; protected set; } = 1_000_000;
   }
 }
