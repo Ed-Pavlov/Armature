@@ -31,9 +31,7 @@ public class PropertyArgumentTuner<T> : ArgumentTunerBase<T>
     => new ArgumentSideTuner(
       node => TuneArgumentRecipientsTo(node, Weight).UseBuildAction(Static.Of<BuildArgumentByPropertyInjectPoint>(), BuildStage.Create));
 
-  /// <summary>
-  /// Amend the weight of current registration
-  /// </summary>
+  /// <inheritdoc cref="ISubjectTuner.AmendWeight"/>
   public PropertyArgumentTuner<T> AmendWeight(short weight)
   {
     Weight += weight;

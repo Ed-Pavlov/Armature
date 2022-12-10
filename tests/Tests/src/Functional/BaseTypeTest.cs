@@ -1,6 +1,7 @@
 ﻿using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;
@@ -89,12 +90,12 @@ namespace Tests.Functional
     private static Builder CreateTarget()
       => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-             // inject into constructor
-             new IfFirstUnit(new IsConstructor())
-              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
+           // inject into constructor
+           new IfFirstUnit(new IsConstructor())
+            .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
 
-             new IfFirstUnit(new IsPropertyInfo())
-              .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)
+           new IfFirstUnit(new IsPropertyInfo())
+            .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)
          };
 
     private interface ISubject

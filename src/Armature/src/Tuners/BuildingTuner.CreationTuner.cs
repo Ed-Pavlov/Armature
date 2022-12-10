@@ -5,14 +5,10 @@ namespace Armature;
 
 public partial class BuildingTuner<T>
 {
-  /// <summary>
-  /// Specifies that unit should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
-  /// </summary>
+  /// <inheritdoc cref="ICreationTuner.CreatedByDefault"/>
   ISettingTuner ICreationTuner.CreatedByDefault() => CreateBy(Default.CreationBuildAction);
 
-  /// <summary>
-  /// Specifies that unit should be created using reflection.
-  /// </summary>
+  /// <inheritdoc cref="ICreationTuner.CreatedByReflection"/>
   ISettingTuner ICreationTuner.CreatedByReflection() => CreateBy(Static.Of<CreateByReflection>());
 
   ICreationTuner ICreationTuner.AmendWeight(short delta) => AmendWeight<ICreationTuner>(delta, this);

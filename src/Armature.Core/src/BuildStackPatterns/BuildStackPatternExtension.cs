@@ -5,7 +5,7 @@ using Armature.Core.Sdk;
 
 namespace Armature.Core;
 
-public static class BuildStackPatternTreeExtension
+public static class BuildStackPatternExtension
 {
   /// <summary>
   /// Adds a <paramref name="node" /> as a child to <paramref name="parentNode"/> if the node is not already added.

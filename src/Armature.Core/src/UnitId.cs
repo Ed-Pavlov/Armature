@@ -6,12 +6,21 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// An Id of the unit to be built.
+/// An Id of the Unit to be built.
 /// </summary>
 [Serializable]
 public readonly struct UnitId : ILogString
 {
+  /// <summary>
+  /// The part of an <see cref="UnitId"/>. It could be any object e.g. a <see cref="Type"/>, a <see cref="IsParameterInfo"/> of a string constant.
+  /// Whatever you find suitable to identify a Unit during tuning up the build process. See <see cref="IUnitPattern"/> and its implementations for details.
+  /// </summary>
   public readonly object? Kind;
+
+  /// <summary>
+  /// The part of an <see cref="UnitId"/>. Two Units of the same <see cref="Kind"/> but with different <see cref="Tag"/> are different Units and could be
+  /// built in different ways. It allows distinguishing e.g. two implementations of the same interface, etc.
+  /// </summary>
   public readonly object? Tag;
 
   [DebuggerStepThrough]

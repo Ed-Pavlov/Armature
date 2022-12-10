@@ -7,6 +7,7 @@ namespace Armature;
 
 public partial class SubjectTuner
 {
+  /// <inheritdoc cref="ISubjectTuner.Building"/>
   public static ISubjectTuner Building(ITuner parentTuner, Type type, object? tag, int weight = 0)
   {
     if(parentTuner is null) throw new ArgumentNullException(nameof(parentTuner));
@@ -17,6 +18,7 @@ public partial class SubjectTuner
     return new SubjectTuner(parentTuner, CreateNode);
   }
 
+  /// <inheritdoc cref="ISubjectTuner.Treat"/>
   public static IBuildingTuner<object?> Treat(ITuner parentTuner, Type type, object? tag, int weight = 0)
   {
     if(parentTuner is null) throw new ArgumentNullException(nameof(parentTuner));
@@ -30,6 +32,7 @@ public partial class SubjectTuner
     return new BuildingTuner<object?>(parentTuner, CreateNode, unitPattern);
   }
 
+  /// <inheritdoc cref="ISubjectTuner.Treat{T}"/>
   public static IBuildingTuner<T> Treat<T>(ITuner parentTuner, object? tag, int weight = 0)
   {
     var unitPattern = new UnitPattern(typeof(T), tag);
@@ -38,6 +41,7 @@ public partial class SubjectTuner
     return new BuildingTuner<T>(parentTuner, CreateNode, unitPattern);
   }
 
+  /// <inheritdoc cref="ISubjectTuner.TreatOpenGeneric"/>
   public static IBuildingTuner<object?> TreatOpenGeneric(ITuner parentTuner, Type openGenericType, object? tag, int weight = 0)
   {
     if(parentTuner is null) throw new ArgumentNullException(nameof(parentTuner));
@@ -49,6 +53,7 @@ public partial class SubjectTuner
     return new BuildingOpenGenericTuner(parentTuner, CreateNode, unitPattern);
   }
 
+  /// <inheritdoc cref="ISubjectTuner.TreatInheritorsOf"/>
   public static IBuildingTuner<object?> TreatInheritorsOf(ITuner parentTuner, Type baseType, object? tag, int weight = 0)
   {
     if(parentTuner is null) throw new ArgumentNullException(nameof(parentTuner));
@@ -59,6 +64,7 @@ public partial class SubjectTuner
     return new BuildingTuner<object?>(parentTuner, CreateNode, unitPattern);
   }
 
+  /// <inheritdoc cref="ISubjectTuner.TreatInheritorsOf{T}"/>
   public static IBuildingTuner<T> TreatInheritorsOf<T>(ITuner parentTuner, object? tag, int weight = 0)
   {
     if(parentTuner is null) throw new ArgumentNullException(nameof(parentTuner));

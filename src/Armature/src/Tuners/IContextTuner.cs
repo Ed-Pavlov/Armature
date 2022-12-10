@@ -5,5 +5,8 @@ namespace Armature;
 /// </summary>
 public interface IContextTuner : ITunerBase
 {
+  /// <summary>
+  /// Tune up how to treat types building in the context defined by previous calls.
+  /// </summary>
   ISubjectTuner BuildingIt();
 }

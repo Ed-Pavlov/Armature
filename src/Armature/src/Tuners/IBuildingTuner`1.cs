@@ -5,36 +5,41 @@ namespace Armature;
 
 public interface IBuildingTuner<in T> : ISettingTuner
 {
-  /// <summary>
-  /// Amend the weight of the current registration
-  /// </summary>
+  /// <inheritdoc cref="ISubjectTuner.AmendWeight"/>
   new IBuildingTuner<T> AmendWeight(short delta);
+
   /// <summary>
-  /// Use specified <paramref name="instance"/> as a unit.
+  /// Use the <paramref name="instance"/> as the Unit.
   /// </summary>
   void AsInstance(T instance);
+
   /// <summary>
   /// Set that object of the specified <paramref name="type"/> should be build.
   /// </summary>
   ICreationTuner As(Type type, object? tag = null);
+
   /// <summary>
-  /// Set that object of the specified <typeparamref name="TRedirect"/> should be build.
+  /// Set that object of the type <typeparamref name="TRedirect"/> should be build.
   /// </summary>
   ICreationTuner As<TRedirect>(object? tag = null);
+
   /// <summary>
-  /// Set that the <see cref="Default.CreationBuildAction"/> build action should be used to build a unit.
+  /// Set that the <see cref="Default"/>.<see cref="Default.CreationBuildAction"/> build action should be used to build the Unit.
   /// </summary>
   ISettingTuner AsIs();
+
   /// <summary>
   /// Set that object of the specified <paramref name="type"/> should be build and
-  /// the <see cref="Default.CreationBuildAction"/> build action should be used to build a unit.
+  /// the <see cref="Default"/>.<see cref="Default.CreationBuildAction"/> build action should be used to build a unit.
   /// </summary>
   ISettingTuner AsCreated(Type type, object? tag = null);
+
   /// <summary>
-  /// Set that object of the specified <typeparamref name="TRedirect"/> should be build and
-  /// the <see cref="Default.CreationBuildAction"/> build action should be used to build a unit.
+  /// Set that object of the type <typeparamref name="TRedirect"/> should be build and
+  /// the <see cref="Default"/>.<see cref="Default.CreationBuildAction"/> build action should be used to build a unit.
   /// </summary>
   ISettingTuner AsCreated<TRedirect>(object? tag = null);
+
   /// <summary>
   /// Use specified <paramref name="factoryMethod"/> to build a unit.
   /// </summary>

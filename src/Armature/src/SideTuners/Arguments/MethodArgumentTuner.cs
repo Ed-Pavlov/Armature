@@ -32,9 +32,7 @@ public class MethodArgumentTuner<T> : ArgumentTunerBase<T>
       tuner => TuneArgumentRecipientsTo(tuner, Weight)
        .UseBuildAction(Static.Of<BuildArgumentByParameterTypeAndTag>(), BuildStage.Create));
 
-  /// <summary>
-  /// Amend the weight of current registration
-  /// </summary>
+  /// <inheritdoc cref="ISubjectTuner.AmendWeight"/>
   public MethodArgumentTuner<T> AmendWeight(short weight)
   {
     Weight += weight;

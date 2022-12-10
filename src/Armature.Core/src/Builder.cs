@@ -23,7 +23,7 @@ public class Builder : BuildStackPatternTree, IBuilder
   }
 
   /// <param name="buildStages">The ordered collection of build stages all of which are performed to build a unit.
-  /// See <see cref="BuildStackPatternTreeExtension.UseBuildAction"/> for details.</param>
+  /// See <see cref="BuildStackPatternExtension.UseBuildAction"/> for details.</param>
   /// <param name="parentBuilders">
   /// If unit is not built and <paramref name="parentBuilders" /> are provided, tries to build an unit using
   /// parent builders one by one in the order they passed into the constructor.
@@ -40,22 +40,11 @@ public class Builder : BuildStackPatternTree, IBuilder
     _parentBuilders = parentBuilders is {Length: > 0} ? parentBuilders : null;
   }
 
-  /// <summary>
-  /// Builds an unit represented by <see cref="UnitId" />
-  /// </summary>
-  /// <param name="unitId">The id of the unit to build.</param>
-  /// <param name="auxBuildStackPatternTree">Additional build stack pattern tree containing build actions to build a unit or its dependencies.</param>
-  /// <returns>Returns build result with <see cref="BuildResult.HasValue"/> set to false if unit is not built.</returns>
+  /// <inheritdoc />
   public BuildResult BuildUnit(UnitId unitId, IBuildStackPattern? auxBuildStackPatternTree = null)
     => new BuildSession(_buildStages, this, auxBuildStackPatternTree, _parentBuilders).BuildUnit(unitId);
 
-  /// <summary>
-  /// Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
-  /// This can be useful to build all implementers of an interface.
-  /// </summary>
-  /// <param name="unitId">The id of the unit to build.</param>
-  /// <param name="auxBuildStackPatternTree">Additional build stack pattern tree containing build actions to build a unit or its dependencies.</param>
-  /// <returns>Returns <see cref="Empty{BuildResult}.List"/> if no units were built. </returns>
+  /// <inheritdoc />
   public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId, IBuildStackPattern? auxBuildStackPatternTree = null)
     => new BuildSession(_buildStages, this, auxBuildStackPatternTree, _parentBuilders).BuildAllUnits(unitId);
 }

@@ -1,10 +1,11 @@
 namespace Armature;
 
-/// <summary>
-/// Tunes (overrides defaults) the settings (or environment) in which the target unit will be built and "live" runtime.
-/// It includes tuning of target unit's dependencies, dependencies of dependencies and their life time.
-/// </summary>
+/// <inheritdoc cref="IDependencyTuner{T}"/>
+/// <inheritdoc cref="IContextTuner"/>
 public interface ISettingTuner : IDependencyTuner<ISettingTuner>, IContextTuner
 {
+  /// <summary>
+  /// Only one instance of Unit should be build and used for all subsequent requests.
+  /// </summary>
   IContextTuner AsSingleton();
 }

@@ -11,6 +11,7 @@ public static class ArmatureUtil
   /// </summary>
   public static ITuner GetInternals(this ITunerBase tuner) => (ITuner) tuner;
 
+  //TODO: should not be shown by intellisense on "builder."
   /// <summary>
   /// Appends a branch of <see cref="IBuildStackPattern"/> nodes from the <paramref name="tuner"/> to <paramref name="node"/>
   /// and return the deepest of appended nodes.

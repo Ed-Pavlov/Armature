@@ -1,17 +1,19 @@
+using Armature.Core;
+
 namespace Armature;
 
 public interface ICreationTuner : ITunerBase
 {
-  /// <summary>
-  /// Amend the weight of the current registration
-  /// </summary>
+  /// <inheritdoc cref="ISubjectTuner.AmendWeight"/>
   ICreationTuner AmendWeight(short delta);
+
   /// <summary>
-  /// Specifies that unit should be created using default creation strategy specified in <see cref="Default.CreationBuildAction" />
+  /// Set that the <see cref="Default"/>.<see cref="Default.CreationBuildAction"/> build action should be used to build the Unit.
   /// </summary>
   ISettingTuner CreatedByDefault();
+
   /// <summary>
-  /// Specifies that unit should be created using reflection.
+  /// Set that the <see cref="CreateByReflection"/> build action should be used to build the Unit.
   /// </summary>
   ISettingTuner CreatedByReflection();
 }
