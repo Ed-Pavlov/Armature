@@ -44,9 +44,12 @@ public record TryInOrder : IBuildAction, IEnumerable, ILogString
     foreach(var buildAction in _buildActions)
       try
       {
-        using(Log.ConditionalMode(LogLevel.Verbose, () => buildSession.BuildResult.HasValue))
+        using(var condition = Log.UnderCondition(LogLevel.Verbose))
         using(Log.NamedBlock(LogLevel.Verbose, () => LogConst.BuildAction_Process(buildAction)))
+        {
           buildAction.Process(buildSession);
+          condition.IsMet = buildSession.BuildResult.HasValue;
+        }
 
         if(buildSession.BuildResult.HasValue)
         {

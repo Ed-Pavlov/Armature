@@ -86,7 +86,7 @@ public static class LogExtension
 
   public static string ToHoconString(this BuildSession.Stack stack)
   {
-    var sb = new StringBuilder("[{");
+    var sb = new StringBuilder("[");
 
     var tillIndex = stack.Length - 1;
 
@@ -97,7 +97,7 @@ public static class LogExtension
     }
 
     sb.Append(stack[tillIndex]);
-    sb.Append("}]");
+    sb.Append("]");
     return sb.ToString();
   }
 
@@ -162,7 +162,10 @@ public static class LogExtension
   }
 
   public static void WriteToLog(this ConstructorInfo? constructor, LogLevel logLevel)
-    => Log.WriteLine(logLevel, () => $"Constructor: {constructor.ToHoconString()}");
+  {
+    if(Log.IsEnabled(logLevel))
+      Log.WriteLine(logLevel, $"Constructor: {constructor.ToHoconString()}");
+  }
 
   public static void WriteToLog(this Exception exception)
   {

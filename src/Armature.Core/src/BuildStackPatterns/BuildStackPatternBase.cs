@@ -75,13 +75,11 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
 
     var matchingWeight = inputWeight + Weight;
 
-    var hasActions = false;
-
-    // ReSharper disable once AccessToModifiedClosure, yes that's the point
-    using(Log.ConditionalMode(LogLevel.Verbose, () => hasActions))
+    using(var condition = Log.UnderCondition(LogLevel.Verbose))
     using(Log.NamedBlock(LogLevel.Verbose, "PassTailToChildren"))
     {
-      Log.WriteLine(LogLevel.Verbose, () => $"ActualWeight = {matchingWeight.ToHoconString()}, Tail = {stack.ToHoconString()}");
+      if(Log.IsEnabled(LogLevel.Verbose))
+        Log.WriteLine(LogLevel.Verbose, $"ActualWeight = {matchingWeight.ToHoconString()}, Tail = {stack.ToHoconString()}");
 
       foreach(var child in RawChildren)
       {
@@ -89,7 +87,8 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
           actionBag = actionBag.Merge(childBag);
       }
 
-      hasActions = actionBag is not null;
+      var hasActions = actionBag is not null;
+      condition.IsMet = hasActions;
       return hasActions;
     }
   }

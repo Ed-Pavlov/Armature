@@ -18,17 +18,17 @@ public class IfFirstUnit : BuildStackPatternByUnitBase
   {
     actionBag = null;
 
-    var hasActions = false;
-    // ReSharper disable once AccessToModifiedClosure - yes, I need it to be captured
-    using(Log.ConditionalMode(LogLevel.Verbose, () => hasActions))
+    using(var condition = Log.UnderCondition(LogLevel.Verbose))
     using(Log.NamedBlock(LogLevel.Verbose, nameof(IfFirstUnit)))
     {
-      Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
+      if(Log.IsEnabled(LogLevel.Verbose))
+        Log.WriteLine(LogLevel.Verbose, $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
 
       var isPatternMatches = UnitPattern.Matches(stack[0]);
       Log.WriteLine(LogLevel.Verbose, LogConst.Matched, isPatternMatches);
 
-      hasActions = isPatternMatches && GetOwnAndChildrenBuildActions(stack.GetTail(1), inputWeight, out actionBag);
+      var hasActions = isPatternMatches && GetOwnAndChildrenBuildActions(stack.GetTail(1), inputWeight, out actionBag);
+      condition.IsMet = hasActions;
       return hasActions;
     }
   }

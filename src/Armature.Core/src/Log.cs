@@ -39,7 +39,15 @@ public static class Log
   }
 
   /// <summary>
-  /// Enables logging, can be limited by disposing returned object.
+  /// Can be used instead of passing lambda into <see cref="WriteLine(LogLevel, Func{string})"/> if logging is placed on a critical path
+  /// and even creating of a lambda and even more so a closure is not an option.
+  /// </summary>
+  /// <remarks>See usages in Armature itself for details.</remarks>
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public static bool IsEnabled(LogLevel logLevel = LogLevel.Info) => _logLevel >= logLevel;
+
+  /// <summary>
+  /// Enables logging, disposing returned object revert Log to the previous state
   /// </summary>
   public static Disposable Enable(LogLevel logLevel = LogLevel.Info)
   {
@@ -49,7 +57,7 @@ public static class Log
   }
 
   /// <summary>
-  /// Disables logging, can be limited by disposing returned object.
+  /// Disables logging, disposing returned object revert Log to the previous state
   /// </summary>
   public static Disposable Disable()
   {
@@ -112,14 +120,13 @@ public static class Log
   }
 
   /// <summary>
-  /// This method calls <paramref name="createMessage"/> only if Logging is enabled for <paramref name="logLevel"/>,
+  /// This method calls <paramref name="getText"/> only if Logging is enabled for <paramref name="logLevel"/>,
   /// use if calculating arguments for logging takes a time.
   /// </summary>
-  [StringFormatMethod("format")]
-  public static void WriteLine(LogLevel logLevel, [InstantHandle] Func<string> createMessage)
+  public static void WriteLine(LogLevel logLevel, [InstantHandle] Func<string> getText)
   {
     if(_logLevel >= logLevel)
-      DoWriteLine(createMessage(), logLevel);
+      DoWriteLine(getText(), logLevel);
   }
 
   /// <summary>
@@ -155,42 +162,41 @@ public static class Log
   }
 
   /// <summary>
-  /// Enters Log into conditional mode, all records to the log will be preserved till returned object is disposed, then which
-  /// records will be written to the log and which be discarded depends on passed parameters.
-  ///
-  /// If the current <see cref="LogLevel"/> is less then passed <paramref name="conditionalLevel"/>
+  /// If the current <see cref="Log"/> <see cref="LogLevel"/> is less then passed <paramref name="conditionLogLevel"/>
   /// Log doesn't enter into the conditional mode, because all records with <see cref="LogLevel"/> bigger then currently active will be ignored.
   ///
-  /// If the current <see cref="LogLevel"/> is bigger then passed <paramref name="conditionalLevel"/>
+  /// If the current <see cref="Log"/> <see cref="LogLevel"/> is bigger then passed <paramref name="conditionLogLevel"/>
   /// Log doesn't enter into the conditional mode, because all records with <see cref="LogLevel"/> less then currently active will be written anyway.
+  ///
+  /// If the current <see cref="Log"/> <see cref="LogLevel"/> is equal to passed <paramref name="conditionLogLevel"/> all records to the log will be
+  /// preserved till returned object is disposed, then records with <see cref="LogLevel"/> equal to the current <see cref="Log"/>
+  /// <see cref="LogLevel"/> will be written only if <see cref="Condition"/>.<see cref="Condition.IsMet"/> set to true.
   /// </summary>
-  /// <param name="conditionalLevel"> The level of log records which will be a subject of condition by passed <paramref name="predicate"/>. </param>
-  /// <param name="predicate"> Log records with <see cref="LogLevel"/> equals to <paramref name="conditionalLevel"/>
-  /// will be written to the log if <paramref name="predicate"/> returns true on the moment of disposing returned object.
-  /// If <paramref name="predicate"/> returns false such records will be dropped.</param>
-  /// <returns></returns>
-  public static Disposable ConditionalMode(LogLevel conditionalLevel, Func<bool> predicate)
+  public static Condition UnderCondition(LogLevel conditionLogLevel)
   {
-    if(_logLevel != conditionalLevel) return Disposable.Empty;
+    if(_logLevel != conditionLogLevel) return Condition.Empty;
 
-    var deferredScope = new DeferredLogScope(predicate);
+    var deferredScope = new DeferredLogScope();
 
     if(_activeDeferredScope is not null)
       _activeDeferredScope.AddInnerScope(deferredScope);
 
-    // implement stack by closure
     var prevActiveDeferredScope = _activeDeferredScope;
     _activeDeferredScope = deferredScope;
 
-    return new Disposable(
-      () =>
+    return CreateCondition(_activeDeferredScope, prevActiveDeferredScope);
+  }
+
+  private static Condition CreateCondition(DeferredLogScope deferredScope, DeferredLogScope? prevActiveDeferredScope)
+    => new Condition(
+      confirmed =>
       {
         if(_activeDeferredScope != deferredScope)
         {
           WriteToTrace($"{LogConst.LoggingSubsystemError}: \"\"\"", true);
 
           WriteToTrace(
-            $"Disposing of objects returned from {nameof(Log)}.{nameof(Log.ConditionalMode)} should not be overlapped, object returned "
+            $"Disposing of objects returned from {nameof(Log)}.{nameof(UnderCondition)} should not be overlapped, object returned "
           + "later should be disposed earlier."
           + Environment.NewLine
           + "Some log data is lost. Fix your code and run it again.",
@@ -204,9 +210,8 @@ public static class Log
         _activeDeferredScope = prevActiveDeferredScope;
 
         if(_activeDeferredScope is null) // all deferred scopes are finished, write them to the real log
-          deferredScope.WriteToTrace();
+          deferredScope.WriteToTrace(confirmed);
       });
-  }
 
   private static void DoWriteLine(string line, LogLevel logLevel) => DoWrite(line, logLevel, true);
 
@@ -295,27 +300,35 @@ public static class Log
     public void Dispose() => _action?.Invoke();
   }
 
+  public class Condition : IDisposable
+  {
+    private readonly Action<bool>? _action;
+
+    public static readonly Condition Empty = new(null);
+
+    public bool IsMet { get; set; }
+
+    public Condition(Action<bool>? action) => _action = action;
+    public void Dispose() => _action?.Invoke(IsMet);
+  }
+
   private class DeferredLogScope
   {
     private readonly List<Tuple<DeferredLogScope, int>> _innerScopes = new();
     private readonly List<Entry>                        _entries     = new();
-    private readonly Func<bool>                         _predicate;
 
-    public DeferredLogScope(Func<bool> predicate) => _predicate = predicate;
-
-    public void Add(string text, bool isLine, LogLevel logLevel, int indent = 0) => _entries.Add(new Entry(text, isLine, logLevel, indent));
+    public void Add(string text, bool isLine, LogLevel logLevel, int indentDelta = 0) => _entries.Add(new Entry(text, isLine, logLevel, indentDelta));
 
     public void AddInnerScope(DeferredLogScope innerScope) => _innerScopes.Add(Tuple.Create(innerScope, _entries.Count));
 
-    public void WriteToTrace()
+    public void WriteToTrace(bool shouldWrite)
     {
-      var shouldWrite = _predicate();
       var startIndex  = 0;
 
       foreach(var (innerScope, endIndex) in _innerScopes)
       {
         WriteEntries(startIndex, endIndex, shouldWrite);
-        innerScope.WriteToTrace();
+        innerScope.WriteToTrace(shouldWrite);
         startIndex = endIndex;
       }
 

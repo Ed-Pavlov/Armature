@@ -18,7 +18,8 @@ public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogSt
 
   public void Process(IBuildSession buildSession)
   {
-    Log.WriteLine(LogLevel.Trace, () => $"Tag: {_tag.ToHoconString()}");
+    if(Log.IsEnabled(LogLevel.Trace))
+      Log.WriteLine(LogLevel.Trace, $"Tag: {_tag.ToHoconString()}");
 
     var targetUnit   = buildSession.Stack.TargetUnit;
     var effectiveTag = _tag == SpecialTag.Propagate ? targetUnit.Tag : _tag;

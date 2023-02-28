@@ -46,7 +46,8 @@ public record InjectDependenciesIntoProperties : IBuildAction
       Log.WriteLine(LogLevel.Trace, "PropertyList: null");
     else
     {
-      Log.WriteLine(LogLevel.Verbose, () => $"PropertyList: {properties.ToHoconString()}");
+      if(Log.IsEnabled(LogLevel.Verbose))
+        Log.WriteLine(LogLevel.Verbose, $"PropertyList: {properties.ToHoconString()}");
 
       foreach(var property in properties)
       {

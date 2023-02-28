@@ -17,7 +17,8 @@ public record BuildArgumentByPropertyInjectPoint : IBuildAction
 
     foreach(var attribute in propertyInfo.GetCustomAttributes<InjectAttribute>())
     {
-      Log.WriteLine(LogLevel.Trace, () => $"Attribute: {attribute.ToHoconString()}");
+      if(Log.IsEnabled(LogLevel.Trace))
+        Log.WriteLine(LogLevel.Trace, $"Attribute: {attribute.ToHoconString()}");
 
       var unitInfo    = Unit.Of(propertyInfo.PropertyType, attribute.Tag);
       var buildResult = buildSession.BuildUnit(unitInfo);

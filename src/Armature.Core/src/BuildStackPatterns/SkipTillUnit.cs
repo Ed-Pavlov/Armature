@@ -15,12 +15,11 @@ public class SkipTillUnit : BuildStackPatternByUnitBase
   /// </summary>
   public override bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
   {
-    var hasActions = false;
-    // ReSharper disable once AccessToModifiedClosure - yes, I need it to be captured
-    using(Log.ConditionalMode(LogLevel.Verbose, () => hasActions))
+    using(var condition = Log.UnderCondition(LogLevel.Verbose))
     using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipTillUnit)))
     {
-      Log.WriteLine(LogLevel.Verbose, () => $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
+      if(Log.IsEnabled(LogLevel.Verbose))
+        Log.WriteLine(LogLevel.Verbose, $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
 
       for(var i = 0; i < stack.Length; i++)
       {
@@ -30,8 +29,11 @@ public class SkipTillUnit : BuildStackPatternByUnitBase
         if(isPatternMatches)
         {
           Log.WriteLine(LogLevel.Verbose, LogConst.Matched, true);
-          var weight = inputWeight + i * WeightOf.BuildStackPattern.SkipTillUnit;
-          hasActions = GetOwnAndChildrenBuildActions(stack.GetTail(i + 1), weight, out actionBag);
+
+          var weight     = inputWeight + i * WeightOf.BuildStackPattern.SkipTillUnit;
+          var hasActions = GetOwnAndChildrenBuildActions(stack.GetTail(i + 1), weight, out actionBag);
+
+          condition.IsMet = hasActions;
           return hasActions;
         }
       }

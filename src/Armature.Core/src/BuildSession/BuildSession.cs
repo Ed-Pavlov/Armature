@@ -69,15 +69,19 @@ public partial class BuildSession
   /// </summary>
   private T Build<T>(UnitId unitId, Func<Stack, WeightedBuildActionBag?, T> build)
   {
-    Log.WriteLine(LogLevel.Info, () => $"Time: \"{DateTime.Now:yyyy-mm-dd HH:mm:ss.fff}\"");
-    Log.WriteLine(LogLevel.Info, () => $"Thread: {Environment.CurrentManagedThreadId.ToHoconString()} ");
+    if(Log.IsEnabled())
+    {
+      Log.WriteLine(LogLevel.Info, $"Time: \"{DateTime.Now:yyyy-mm-dd HH:mm:ss.fff}\"");
+      Log.WriteLine(LogLevel.Info, $"Thread: {Environment.CurrentManagedThreadId.ToHoconString()} ");
+    }
 
     T result;
 
     _buildStackList.Add(unitId);
     var stack = new Stack(_buildStackList);
 
-    Log.WriteLine(LogLevel.Info, () => $"BuildStack = {stack.ToHoconString()}");
+    if(Log.IsEnabled())
+      Log.WriteLine(LogLevel.Info, $"BuildStack = {stack.ToHoconString()}");
 
     try
     {
@@ -203,7 +207,8 @@ public partial class BuildSession
   {
     using(Log.NamedBlock(LogLevel.Info, () => LogConst.BuildAction_PostProcess(buildAction)))
     {
-      Log.WriteLine(LogLevel.Verbose, () => $"Build.Result = {buildSession.BuildResult.ToLogString()}");
+      if(Log.IsEnabled(LogLevel.Verbose))
+        Log.WriteLine(LogLevel.Verbose, $"Build.Result = {buildSession.BuildResult.ToLogString()}");
 
       try
       {
@@ -260,21 +265,29 @@ public partial class BuildSession
 
   private static void Log_BuildResult(BuildResult buildResult)
   {
-    Log.WriteLine(LogLevel.Info, "");
-    Log.WriteLine(LogLevel.Info, () => $"Build.Result = {buildResult.ToLogString()}");
-    Log.WriteLine(LogLevel.Info, "");
+    if(Log.IsEnabled())
+    {
+      Log.WriteLine(LogLevel.Info, "");
+      Log.WriteLine(LogLevel.Info, $"Build.Result = {buildResult.ToLogString()}");
+      Log.WriteLine(LogLevel.Info, "");
+    }
   }
 
   private static void Log_BuildAllResult(List<Weighted<BuildResult>> buildResultList)
   {
-    Log.WriteLine(LogLevel.Info, () => $"BuildAll.Result = {buildResultList.ToHoconString()}");
-    Log.WriteLine(LogLevel.Info, "");
+    if(Log.IsEnabled())
+    {
+      Log.WriteLine(LogLevel.Info, $"BuildAll.Result = {buildResultList.ToHoconString()}");
+      Log.WriteLine(LogLevel.Info, "");
+    }
   }
 
   private static void Log_BuildActionResult(IBuildAction buildAction, BuildResult buildResult)
-    => Log.WriteLine(
-        buildResult.HasValue ? LogLevel.Info : LogLevel.Trace,
-        () => $"{LogConst.BuildAction_Name(buildAction)}.Result = {buildResult.ToLogString()}");
+  {
+    var logLevel = buildResult.HasValue ? LogLevel.Info : LogLevel.Trace;
+    if(Log.IsEnabled(logLevel))
+      Log.WriteLine(logLevel, $"{LogConst.BuildAction_Name(buildAction)}.Result = {buildResult.ToLogString()}");
+  }
 
   private static void Log_GatheredActions(WeightedBuildActionBag? actionBag)
   {
