@@ -30,6 +30,8 @@ public static class BuildStackPatternTreeExtension
   /// <inheritdoc cref="ISubjectTuner.Building{T}"/>
   public static ISubjectTuner Building<T>(this BuildStackPatternTree tree, object? tag = null) => SubjectTuner.Building(new RootTuner(tree), typeof(T), tag);
 
+  public static IDependencyTuner<RootTuner> TreatAll(this BuildStackPatternTree tree) => new RootTuner(tree);
+
   // /// <summary>
   // /// Overrides a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems.
   // /// </summary>
