@@ -5,7 +5,7 @@ using Armature.Core.Sdk;
 namespace Armature.Core;
 
 /// <summary>
-/// This is an restricted interface of the <see cref="BuildSession" /> passed to <see cref="IBuildAction.Process" />
+/// This is a limited interface of the <see cref="BuildSession" /> passed to <see cref="IBuildAction.Process" />
 /// and <see cref="IBuildAction.PostProcess" />.
 /// </summary>
 public interface IBuildSession

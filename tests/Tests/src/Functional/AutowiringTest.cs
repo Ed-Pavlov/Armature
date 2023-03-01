@@ -10,28 +10,6 @@ namespace Tests.Functional
 {
   public class AutowiringTest
   {
-    public void hz()
-    {
-      var target = CreateTarget();
-
-      target.Building<IDisposable>()
-            .Treat<IDisposable>()
-            .AsCreated<IDisposable>()
-            .UsingArguments()
-            .AsSingleton()
-            .BuildingIt()
-            .Building<int>()
-            .Building<string>()
-            .Treat<long>()
-            .UsingArguments()
-            .AsSingleton()
-            .BuildingIt()
-            .TreatAll()
-            .UsingInjectionPoints()
-            .UsingArguments();
-
-    }
-
     [Test]
     public void should_inject_registered_values()
     {
@@ -155,9 +133,6 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs();
-
-      // target.PrintToLog();
-      // return;
 
       // --act
       Action actual = () => target.Build<Subject>();

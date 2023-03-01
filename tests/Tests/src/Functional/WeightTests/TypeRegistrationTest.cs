@@ -13,13 +13,13 @@ public class TypeRegistrationTest
     const string expected = "expected";
 
     // --arrange
-    var target = CreateTarget();
+    var builder = CreateTarget();
 
-    target.TreatInheritorsOf<Base<int>>().UsingArguments("un" + expected);
-    target.Treat<Child<int>>().AsIs().UsingArguments(expected);
+    builder.TreatInheritorsOf<Base<int>>().AsIs().UsingArguments("un" + expected);
+    builder.Treat<Child<int>>().AsIs().UsingArguments(expected);
 
     // --act
-    var actual = target.Build<Child<int>>()!;
+    var actual = builder.Build<Child<int>>()!;
 
     // --assert
     actual.Value.Should().Be(expected);

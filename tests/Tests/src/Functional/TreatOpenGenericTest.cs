@@ -1,4 +1,5 @@
-﻿using Armature;
+﻿using System.Collections.Generic;
+using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
 using FluentAssertions;
@@ -9,6 +10,18 @@ namespace Tests.Functional
 {
   public class TreatOpenGenericTest
   {
+    [Test]
+    public void test()
+    {
+      // --arrange
+      var target = CreateTarget();
+
+      target.TreatOpenGeneric(typeof(List<>))
+            .AsCreated<List<int>>();
+
+      var actual = target.BuildUnit(Unit.Of(typeof(List<>)));
+    }
+
     [Test]
     public void should_instantiate_type_with_specified_generic_parameter()
     {
