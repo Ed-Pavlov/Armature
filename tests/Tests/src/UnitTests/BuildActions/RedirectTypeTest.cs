@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Armature.BuildActions;
 using Armature.Core;
 using Armature.Core.Sdk;
 using FakeItEasy;
@@ -43,7 +44,7 @@ public class RedirectTypeTest
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<MemoryStream>(tag)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
-    var target = new Redirect(Unit.Of(typeof(MemoryStream), SpecialTag.Propagate));
+    var target = new Redirect(Unit.Of(typeof(MemoryStream), Tag.Propagate));
 
     // --act
     target.Process(buildSession);

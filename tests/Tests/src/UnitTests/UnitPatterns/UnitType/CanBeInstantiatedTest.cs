@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Armature.Core;
+using Armature.UnitPatterns.UnitType;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Util;

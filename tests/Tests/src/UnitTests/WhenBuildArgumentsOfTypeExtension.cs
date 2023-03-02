@@ -1,7 +1,9 @@
 using System.Linq;
 using System.Reflection;
+using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
 using FakeItEasy.Configuration;
 using Tests.Util;
 
@@ -41,7 +43,7 @@ public static class WhenBuildArgumentsOfTypeExtension
           var types      = new[] {typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7)}.Where(_ => _ != typeof(Void)).ToArray();
           var unitId     = arguments.Get<UnitId>(0);
           var parameters = unitId.Kind as ParameterInfo[];
-          if(unitId.Tag != SpecialTag.Argument || parameters?.Length != types.Length)
+          if(unitId.Tag != ServiceTag.Argument || parameters?.Length != types.Length)
             return false;
 
           for(var i = 0; i < parameters.Length; i++)

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Core.Sdk;
 
-namespace Armature.Core;
+namespace Armature.BuildActions.Creation;
 
 /// <summary>
 /// Creates a Unit using specified factory method.

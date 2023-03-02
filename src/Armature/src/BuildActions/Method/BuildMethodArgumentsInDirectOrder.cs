@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 
-namespace Armature.Core;
+namespace Armature.BuildActions.Method;
 
 /// <summary>
 /// Builds arguments for constructor/method parameters one by one in the direct order.

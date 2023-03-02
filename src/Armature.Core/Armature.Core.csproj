@@ -26,10 +26,26 @@
     <Compile Remove="src\BuildActions\Method\BuildArgumentByParameterType.cs" />
     <Compile Remove="src\BuildActions\BuildListArgumentBase.cs" />
     <Compile Remove="src\BuildActions\TryInOrder.cs" />
+    <Compile Remove="src\UnitPatterns\Method\IsParameterInfoArray.cs" />
+    <Compile Remove="src\UnitPatterns\Method\IsParameterNamed.cs" />
+    <Compile Remove="src\UnitPatterns\Property\IsPropertyAttributed.cs" />
+    <Compile Remove="src\UnitPatterns\Property\IsPropertyNamed.cs" />
+    <Compile Remove="src\UnitPatterns\InjectPointOfTypeBase.cs" />
+    <Compile Remove="src\UnitPatterns\IsConstructor.cs" />
+    <Compile Remove="src\UnitPatterns\IsInjectPointBase.cs" />
+    <Compile Remove="src\UnitPatterns\IsServiceUnit.cs" />
+    <Compile Remove="src\Sdk\BuildActionBag.cs" />
+    <Compile Remove="src\IBuildAction.cs" />
+    <Compile Remove="src\Sdk\WeightOf.cs" />
+    <Compile Remove="src\Sdk\LogConst.cs" />
+    <Compile Remove="src\Sdk\LogExtension.cs" />
+    <Compile Remove="src\UnitPatterns\IUnitPattern.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="src\BuildActions\Creation" />
+    <Folder Include="src\UnitPatterns\Method" />
+    <Folder Include="src\UnitPatterns\UnitType" />
   </ItemGroup>
 
   <PropertyGroup Label="nuspec">

@@ -1,8 +1,8 @@
 using System.Diagnostics;
+using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Core.Sdk;
 
-namespace Armature.Core;
+namespace Armature.BuildActions;
 
 /// <summary>
 /// Redirects building of a unit with one <see cref="UnitId"/> to the unit with another <see cref="UnitId"/>.
@@ -18,7 +18,7 @@ public record Redirect : IBuildAction, ILogString
   public void Process(IBuildSession buildSession)
   {
     var targetUnit   = buildSession.Stack.TargetUnit;
-    var unitId = Equals(_unitId.Tag, SpecialTag.Propagate) ? Unit.Of(_unitId.Kind, targetUnit.Tag) : _unitId;
+    var unitId = Equals(_unitId.Tag, Tag.Propagate) ? Unit.Of(_unitId.Kind, targetUnit.Tag) : _unitId;
 
     buildSession.BuildResult = buildSession.BuildUnit(unitId);
   }

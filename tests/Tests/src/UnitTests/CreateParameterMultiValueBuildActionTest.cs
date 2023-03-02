@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Armature.BuildActions.Method;
 using Armature.Core;
 using Armature.Core.Sdk;
 using FakeItEasy;

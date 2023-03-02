@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 
-namespace Armature.Core;
+namespace Armature.BuildActions.Constructor;
 
 /// <summary>
 /// Gets the constructor of the type which is marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" />.

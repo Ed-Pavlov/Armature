@@ -1,7 +1,9 @@
 ﻿using System;
+using Armature.BuildActions.Constructor;
 using Armature.Core;
 using Armature.Core.Sdk;
 using Armature.Sdk;
+using Armature.UnitPatterns;
 using JetBrains.Annotations;
 using WeightOf = Armature.Sdk.WeightOf;
 

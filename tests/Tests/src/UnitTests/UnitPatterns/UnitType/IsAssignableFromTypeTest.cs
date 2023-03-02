@@ -1,6 +1,9 @@
 using System;
 using System.IO;
+using Armature;
 using Armature.Core;
+using Armature.Sdk;
+using Armature.UnitPatterns.UnitType;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -57,7 +60,7 @@ public class IsAssignableFromTypeTest
   {
     // --arrange
     var unitId = Unit.Of(typeof(Stream), tag);
-    var target = new IsAssignableFromType(typeof(Stream), Tag.Any);
+    var target = new IsAssignableFromType(typeof(Stream), ServiceTag.Any);
 
     // --assert
     target.Matches(unitId).Should().BeTrue();

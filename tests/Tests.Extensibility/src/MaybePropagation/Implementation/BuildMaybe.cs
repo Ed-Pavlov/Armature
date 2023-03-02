@@ -1,6 +1,7 @@
 #nullable enable
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation;
 

@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
 using Armature;
+using Armature.BuildActions.Constructor;
+using Armature.BuildActions.Method;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.UnitPatterns;
+using Armature.UnitPatterns.Method;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;

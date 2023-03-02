@@ -1,7 +1,12 @@
 ﻿using System;
 using Armature;
+using Armature.BuildActions.Constructor;
+using Armature.BuildActions.Method;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
+using Armature.UnitPatterns;
+using Armature.UnitPatterns.Method;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Extensibility.MaybePropagation.Implementation;
@@ -114,9 +119,9 @@ namespace Tests.Extensibility.MaybePropagation
 
       builder
        .Building<Reader1>()
-       .Treat<Section>(Tag.Any)
+       .Treat<Section>(ServiceTag.Any)
        .AsMaybeValueOf()
-       .As<Maybe<Section>>(SpecialTag.Propagate);
+       .As<Maybe<Section>>(Tag.Propagate);
 
       var actual = builder.Build<Maybe<IReader>>()!;
 

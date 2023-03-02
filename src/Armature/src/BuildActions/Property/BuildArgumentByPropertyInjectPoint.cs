@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Core.Sdk;
 
-namespace Armature.Core;
+namespace Armature.BuildActions.Property;
 
 /// <summary>
 /// Builds an argument for the property which is marked with <see cref="InjectAttribute"/> using <see cref="MemberInfo.Name"/> and

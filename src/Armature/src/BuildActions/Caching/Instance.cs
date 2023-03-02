@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
+using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Core.Sdk;
 
-namespace Armature.Core;
+namespace Armature.BuildActions.Caching;
 
 /// <summary>
 /// Caches passed object and set it as <see cref="BuildResult" /> in <see cref="Process" />.

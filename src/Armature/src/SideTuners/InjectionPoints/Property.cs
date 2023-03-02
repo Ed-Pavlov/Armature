@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using Armature.BuildActions.Property;
 using Armature.Core;
 using Armature.Core.Sdk;
 using Armature.Sdk;
+using Armature.UnitPatterns.Property;
 using JetBrains.Annotations;
 
 namespace Armature;

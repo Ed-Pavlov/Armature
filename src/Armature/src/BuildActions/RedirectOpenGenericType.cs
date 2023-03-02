@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 
-namespace Armature.Core;
+namespace Armature.BuildActions;
 
 /// <summary>
 /// Redirects building of a unit of one open generic type to the unit of another open generic type.
@@ -56,7 +57,7 @@ public record RedirectOpenGenericType : IBuildAction, ILogString
       else
         return;
 
-    var effectiveTag = Equals(_tag, SpecialTag.Propagate) ? targetUnit.Tag : _tag;
+    var effectiveTag = Equals(_tag, Tag.Propagate) ? targetUnit.Tag : _tag;
     var genericType  = _redirectTo.MakeGenericType(genericArguments);
 
     buildSession.BuildResult = buildSession.BuildUnit(Unit.Of(genericType, effectiveTag));

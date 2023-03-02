@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.UnitPatterns;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Util;
@@ -12,7 +13,7 @@ public class IsServiceUnitTest
   [Test]
   public void should_match_any_kind(
     [Values(null, "kind", typeof(string))]                     object?    kind,
-    [ValueSource(typeof(TestUtil), nameof(TestUtil.all_special_tags))] SpecialTag tag)
+    [ValueSource(typeof(TestUtil), nameof(TestUtil.all_special_tags))] Tag tag)
   {
     // --arrange
     var unitId = Unit.Of(kind, tag);

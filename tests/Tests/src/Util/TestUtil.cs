@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
 
 namespace Tests.Util;
 
@@ -26,13 +28,13 @@ public static class TestUtil
     public bool Matches(UnitId unitId) => throw new NotSupportedException();
   }
 
-  public static IEnumerable<SpecialTag> all_special_tags()
+  public static IEnumerable<Tag> all_special_tags()
   {
-    yield return Tag.Any;
-    yield return SpecialTag.Argument;
-    yield return SpecialTag.Constructor;
-    yield return SpecialTag.Propagate;
-    yield return SpecialTag.PropertyCollection;
+    yield return ServiceTag.Any;
+    yield return ServiceTag.Argument;
+    yield return ServiceTag.Constructor;
+    yield return Tag.Propagate;
+    yield return ServiceTag.PropertyCollection;
   }
 }
 

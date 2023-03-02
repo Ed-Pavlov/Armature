@@ -104,7 +104,7 @@ public partial class BuildSession
     catch(Exception exception)
     {
       if(!exception.Data.Contains(ExceptionConst.BuildStack))
-        exception.AddData(ExceptionConst.BuildStack, stack.ToHoconString());
+        exception.AddData<System.Exception>(ExceptionConst.BuildStack, stack.ToHoconString());
 
       throw;
     }

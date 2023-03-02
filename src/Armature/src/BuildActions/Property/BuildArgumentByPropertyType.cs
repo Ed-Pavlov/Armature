@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using Armature.Core;
 
-namespace Armature.Core;
+namespace Armature.BuildActions.Property;
 
 /// <summary>
 /// Builds an argument for the property using <see cref="PropertyInfo.PropertyType"/> and specified tag as <see cref="UnitId"/>.

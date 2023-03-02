@@ -1,11 +1,18 @@
 ﻿using System;
 using Armature;
+using Armature.BuildActions.Constructor;
+using Armature.BuildActions.Method;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
+using Armature.UnitPatterns;
+using Armature.UnitPatterns.Method;
+using Armature.UnitPatterns.UnitType;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Extensibility.MaybePropagation.Implementation;
 using Tests.Extensibility.MaybePropagation.TestData;
+using WeightOf = Armature.Core.WeightOf;
 
 namespace Tests.Extensibility.MaybePropagation
 {
@@ -17,7 +24,7 @@ namespace Tests.Extensibility.MaybePropagation
       var builder = CreateTarget();
 
       builder.AddNode(
-        new IfFirstUnit(new IsGenericOfDefinition(typeof(Maybe<>), Tag.Any), WeightOf.BuildStackPattern.IfFirstUnit)
+        new IfFirstUnit(new IsGenericOfDefinition(typeof(Maybe<>), ServiceTag.Any), WeightOf.BuildStackPattern.IfFirstUnit)
          .UseBuildAction(new BuildMaybe(null), BuildStage.Create));
 
       builder.Treat<Section>().AsInstance(new Section());

@@ -1,6 +1,8 @@
 using System;
 using Armature.Core;
 using Armature.Sdk;
+using Armature.UnitPatterns.UnitType;
+using WeightOf = Armature.Sdk.WeightOf;
 
 namespace Armature;
 

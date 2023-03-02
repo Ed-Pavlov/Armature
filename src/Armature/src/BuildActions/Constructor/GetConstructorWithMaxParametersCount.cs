@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 
-namespace Armature.Core;
+namespace Armature.BuildActions.Constructor;
 
 /// <summary>
 /// Gets the constructor of the type with the largest number of parameters.

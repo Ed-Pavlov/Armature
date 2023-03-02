@@ -2,7 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Armature;
 using Armature.Core;
+using Armature.Sdk;
+using Armature.UnitPatterns.UnitType;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -50,7 +53,7 @@ namespace Tests.UnitTests.UnitPatterns.UnitType
     public void should_match_any_tag_if_specified([Values(null, "tag")] object tag)
     {
       var unitId = Unit.Of(typeof(MemoryStream), tag);
-      var target = new IsInheritorOf(typeof(Stream), Tag.Any);
+      var target = new IsInheritorOf(typeof(Stream), ServiceTag.Any);
 
       target.Matches(unitId).Should().BeTrue();
     }

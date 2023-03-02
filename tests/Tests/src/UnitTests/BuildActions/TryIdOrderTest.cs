@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Armature.BuildActions;
+using Armature.BuildActions.Caching;
+using Armature.BuildActions.Creation;
 using Armature.Core;
 using Armature.Core.Sdk;
 using FakeItEasy;

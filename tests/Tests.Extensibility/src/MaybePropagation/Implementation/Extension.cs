@@ -2,6 +2,7 @@
 using Armature;
 using Armature.Core;
 using Armature.Sdk;
+using WeightOf = Armature.Sdk.WeightOf;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {

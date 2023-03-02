@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Armature;
 using Armature.Core;
+using Armature.Sdk;
+using Armature.UnitPatterns.UnitType;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -46,7 +49,7 @@ public class IsGenericOfDefinitionTest
   {
     // --arrange
     var unitId = Unit.Of(typeof(List<int>), tag);
-    var target = new IsGenericOfDefinition(typeof(List<>), Tag.Any);
+    var target = new IsGenericOfDefinition(typeof(List<>), ServiceTag.Any);
 
     // --assert
     target.Matches(unitId).Should().BeTrue();

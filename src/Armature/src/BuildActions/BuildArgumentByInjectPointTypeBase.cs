@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Core.Sdk;
 
-namespace Armature.Core;
+namespace Armature.BuildActions;
 
 /// <summary>
 /// Base class for build actions building arguments to inject into inject points marked with <see cref="InjectAttribute"/>.
@@ -22,7 +22,7 @@ public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogSt
       Log.WriteLine(LogLevel.Trace, $"Tag: {_tag.ToHoconString()}");
 
     var targetUnit   = buildSession.Stack.TargetUnit;
-    var effectiveTag = _tag == SpecialTag.Propagate ? targetUnit.Tag : _tag;
+    var effectiveTag = _tag == Tag.Propagate ? targetUnit.Tag : _tag;
 
     var valueType = GetInjectPointType(targetUnit);
     buildSession.BuildResult = buildSession.BuildUnit(Unit.Of(valueType, effectiveTag));

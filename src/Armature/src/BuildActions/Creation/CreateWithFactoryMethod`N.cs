@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 
-namespace Armature.Core;
+namespace Armature.BuildActions.Creation;
 
 /// <summary>
 /// Creates a Unit using specified factory method.
@@ -31,7 +32,7 @@ public abstract record CreateWithFactoryMethodBuildAction : IBuildAction, ILogSt
   public sealed override string ToString() => ToHoconString();
 }
 
-/// <inheritdoc cref="Armature.Core.CreateWithFactoryMethodBuildAction" />
+/// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
 public record CreateWithFactoryMethodBuildAction<T1, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, TR> _factoryMethod;
@@ -45,7 +46,7 @@ public record CreateWithFactoryMethodBuildAction<T1, TR> : CreateWithFactoryMeth
   protected override object? Execute(object?[] arguments) => _factoryMethod((T1) arguments[0]!);
 }
 
-/// <inheritdoc cref="Armature.Core.CreateWithFactoryMethodBuildAction" />
+/// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
 public record CreateWithFactoryMethodBuildAction<T1, T2, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, T2, TR> _factoryMethod;
@@ -59,7 +60,7 @@ public record CreateWithFactoryMethodBuildAction<T1, T2, TR> : CreateWithFactory
   protected override object? Execute(object?[] arguments) => _factoryMethod((T1) arguments[0]!, (T2) arguments[1]!);
 }
 
-/// <inheritdoc cref="Armature.Core.CreateWithFactoryMethodBuildAction" />
+/// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
 public record CreateWithFactoryMethodBuildAction<T1, T2, T3, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, T2, T3, TR> _factoryMethod;
@@ -73,7 +74,7 @@ public record CreateWithFactoryMethodBuildAction<T1, T2, T3, TR> : CreateWithFac
   protected override object? Execute(object?[] arguments) => _factoryMethod((T1) arguments[0]!, (T2) arguments[1]!, (T3) arguments[2]!);
 }
 
-/// <inheritdoc cref="Armature.Core.CreateWithFactoryMethodBuildAction" />
+/// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
 public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, T2, T3, T4, TR> _factoryMethod;
@@ -87,7 +88,7 @@ public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, TR> : CreateWit
   protected override object? Execute(object?[] arguments) => _factoryMethod((T1) arguments[0]!, (T2) arguments[1]!, (T3) arguments[2]!, (T4) arguments[3]!);
 }
 
-/// <inheritdoc cref="Armature.Core.CreateWithFactoryMethodBuildAction" />
+/// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
 public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, T2, T3, T4, T5, TR> _factoryMethod;
@@ -102,7 +103,7 @@ public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, TR> : Creat
     => _factoryMethod((T1) arguments[0]!, (T2) arguments[1]!, (T3) arguments[2]!, (T4) arguments[3]!, (T5) arguments[4]!);
 }
 
-/// <inheritdoc cref="Armature.Core.CreateWithFactoryMethodBuildAction" />
+/// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
 public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, T2, T3, T4, T5, T6, TR> _factoryMethod;
@@ -123,7 +124,7 @@ public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, TR> : C
       (T6) arguments[5]!);
 }
 
-/// <inheritdoc cref="Armature.Core.CreateWithFactoryMethodBuildAction" />
+/// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
 public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, T2, T3, T4, T5, T6, T7, TR> _factoryMethod;

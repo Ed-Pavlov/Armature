@@ -33,6 +33,7 @@
     </Compile>
     <Compile Remove="src\Tuners\IFinalAndContextTuner.cs" />
     <Compile Remove="src\Tuners\IFinalTuner.cs" />
+    <Compile Remove="src\Default.cs" />
   </ItemGroup>
 
   <PropertyGroup Label="nuspec">

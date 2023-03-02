@@ -1,9 +1,16 @@
+using Armature.BuildActions;
 using Armature.Core;
+using Armature.UnitPatterns.UnitType;
 using JetBrains.Annotations;
 
 namespace Armature.Sdk;
 
-public class WeightOf : Core.Sdk.WeightOf
+/// <summary>
+/// Inherit this class to extend enum pattern with custom weights if you extend Armature with your own build stack, unit or injection point
+/// patterns which require to re-balance the weighting system.
+/// </summary>
+[PublicAPI]
+public class WeightOf : Core.WeightOf
 {
   [PublicAPI]
   public class InjectionPoint

@@ -1,5 +1,7 @@
 using System;
+using Armature;
 using Armature.Core;
+using Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -52,7 +54,7 @@ public class UnitIdTest
 
     // --arrange
     var unit1 = Unit.Of(kind, tag);
-    var unit2 = Unit.Of(kind, Tag.Any);
+    var unit2 = Unit.Of(kind, ServiceTag.Any);
 
     // --assert
     unit1.Equals(unit2).Should().BeFalse();

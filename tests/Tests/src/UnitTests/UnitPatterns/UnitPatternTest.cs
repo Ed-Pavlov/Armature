@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Armature;
 using Armature.Core;
+using Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -24,7 +26,7 @@ namespace Tests.UnitTests.UnitPatterns
     public void should_match_if_tag_any_provided([Values(null, "tag")] object tag)
     {
       var unitInfo = Unit.Of("kind", tag);
-      var target  = new UnitPattern("kind", Tag.Any);
+      var target  = new UnitPattern("kind", ServiceTag.Any);
 
       // --assert
       target.Matches(unitInfo).Should().BeTrue();
@@ -69,7 +71,7 @@ namespace Tests.UnitTests.UnitPatterns
       if(kind is null && tag is null) Assert.Ignore("Impossible arguments combination");
 
       var target1 = new UnitPattern(kind, tag);
-      var target2 = new UnitPattern(kind, Tag.Any); // fix tag value
+      var target2 = new UnitPattern(kind, ServiceTag.Any); // fix tag value
 
       // --assert
       target1.Equals(target2).Should().BeFalse();
@@ -102,7 +104,7 @@ namespace Tests.UnitTests.UnitPatterns
       yield return null;
       yield return "tag"; // object
       yield return 4; // value type
-      yield return Tag.Any; // special
+      yield return ServiceTag.Any; // special
     }
   }
 }

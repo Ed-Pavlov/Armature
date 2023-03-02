@@ -1,7 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
+using Armature.UnitPatterns.Method;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Util;
@@ -16,7 +19,7 @@ public class IsParameterInfoTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(int))!;
 
     // --arrange
-    var unitId = Unit.Of(parameterInfo, SpecialTag.Argument);
+    var unitId = Unit.Of(parameterInfo, ServiceTag.Argument);
     var target = new IsParameterInfo();
 
     // --act
@@ -28,7 +31,7 @@ public class IsParameterInfoTest
   public void should_not_match_unit_kind_other_than_parameter_info()
   {
     // --arrange
-    var unitId = Unit.Of("parameterInfo", SpecialTag.Argument);
+    var unitId = Unit.Of("parameterInfo", ServiceTag.Argument);
     var target = new IsParameterInfo();
 
     // --act

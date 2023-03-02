@@ -3,6 +3,8 @@ using System.Linq;
 using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
+using Armature.UnitPatterns.Method;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -16,7 +18,7 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(int))!;
 
     // --arrange
-    var unitId = Unit.Of(parameterInfo, SpecialTag.Argument);
+    var unitId = Unit.Of(parameterInfo, ServiceTag.Argument);
     var target = new IsParameterAttributed();
 
     // --act
@@ -30,7 +32,7 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(string))!;
 
     // --arrange
-    var unitId = Unit.Of(parameterInfo, SpecialTag.Argument);
+    var unitId = Unit.Of(parameterInfo, ServiceTag.Argument);
     var target = new IsParameterAttributed(Subject.StringPointId);
 
     // --act
@@ -44,7 +46,7 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(bool))!;
 
     // --arrange
-    var unitId = Unit.Of(parameterInfo, SpecialTag.Argument);
+    var unitId = Unit.Of(parameterInfo, ServiceTag.Argument);
     var target = new IsParameterAttributed(pointId);
 
     // --act

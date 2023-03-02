@@ -3,8 +3,12 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Armature;
+using Armature.BuildActions.Constructor;
+using Armature.BuildActions.Method;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.UnitPatterns;
+using Armature.UnitPatterns.Method;
 using NUnit.Framework;
 
 namespace Tests.Functional

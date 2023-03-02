@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using Armature.Core;
 using Armature.Core.Annotations;
 
-namespace Armature.Core;
+namespace Armature.BuildActions.Method;
 
 /// <summary>
 /// Builds a list of arguments by using <see cref="IBuildSession.BuildAllUnits"/> method for a constructor/method parameters.

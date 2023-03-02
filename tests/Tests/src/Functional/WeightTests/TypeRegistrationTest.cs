@@ -1,5 +1,9 @@
 using Armature;
+using Armature.BuildActions.Constructor;
+using Armature.BuildActions.Method;
 using Armature.Core;
+using Armature.UnitPatterns;
+using Armature.UnitPatterns.Method;
 using FluentAssertions;
 using NUnit.Framework;
 

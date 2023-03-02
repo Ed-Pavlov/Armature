@@ -1,8 +1,11 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
+using Armature.UnitPatterns.Method;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -16,7 +19,7 @@ public class IsMethodParameterNamedTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.Name == "i")!;
 
     // --arrange
-    var unitId = Unit.Of(parameterInfo, SpecialTag.Argument);
+    var unitId = Unit.Of(parameterInfo, ServiceTag.Argument);
     var target = new IsParameterNamed(parameterInfo.Name!);
 
     // --act
@@ -30,7 +33,7 @@ public class IsMethodParameterNamedTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.Name == "i")!;
 
     // --arrange
-    var unitId = Unit.Of(parameterInfo, SpecialTag.Argument);
+    var unitId = Unit.Of(parameterInfo, ServiceTag.Argument);
     var target = new IsParameterNamed("another parameter name");
 
     // --act

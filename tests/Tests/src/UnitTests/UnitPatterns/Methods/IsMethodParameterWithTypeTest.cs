@@ -1,8 +1,11 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
+using Armature.UnitPatterns.Method;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -21,7 +24,7 @@ public class IsMethodParameterWithTypeTest
     // --arrange
     var typePattern = A.Fake<IUnitPattern>();
     var target      = new IsParameterOfType(typePattern);
-    var unitId      = Unit.Of(parameterInfo, SpecialTag.Argument);
+    var unitId      = Unit.Of(parameterInfo, ServiceTag.Argument);
 
     // --act
     target.Matches(unitId);

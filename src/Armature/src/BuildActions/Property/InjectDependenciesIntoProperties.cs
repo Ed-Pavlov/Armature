@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 
-namespace Armature.Core;
+namespace Armature.BuildActions.Property;
 
 /// <summary>
 /// Injects values into building Unit properties specified for injection
@@ -32,7 +33,7 @@ public record InjectDependenciesIntoProperties : IBuildAction
 
     var type = buildSession.Stack.TargetUnit.GetUnitTypeSafe() ?? unit.GetType();
 
-    var unitInfo = Unit.Of(type, SpecialTag.PropertyCollection);
+    var unitInfo = Unit.Of(type, ServiceTag.PropertyCollection);
 
     var properties = buildSession.BuildAllUnits(unitInfo)
                                .OrderByDescending(_ => _.Weight)
