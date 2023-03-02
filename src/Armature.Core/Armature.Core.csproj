@@ -20,6 +20,18 @@
     <ProjectReference Include="..\Armature.Interface\Armature.Interface.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="src\BuildActions\Creation\CreateWithFactoryMethod.cs" />
+    <Compile Remove="src\BuildActions\Method\BuildArgumentByParameterName.cs" />
+    <Compile Remove="src\BuildActions\Method\BuildArgumentByParameterType.cs" />
+    <Compile Remove="src\BuildActions\BuildListArgumentBase.cs" />
+    <Compile Remove="src\BuildActions\TryInOrder.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="src\BuildActions\Creation" />
+  </ItemGroup>
+
   <PropertyGroup Label="nuspec">
     <description>The core part of the Armature framework, can be used to build your own framework with syntax and features of your choice</description>
   </PropertyGroup>

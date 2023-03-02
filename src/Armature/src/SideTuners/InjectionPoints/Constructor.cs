@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Armature.Core;
 using Armature.Core.Sdk;
 using Armature.Sdk;
 using JetBrains.Annotations;
+using WeightOf = Armature.Sdk.WeightOf;
 
 namespace Armature;
 

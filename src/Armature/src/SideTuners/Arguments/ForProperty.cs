@@ -1,7 +1,7 @@
 ﻿using System;
 using Armature.Core;
-using Armature.Core.Sdk;
 using Armature.Sdk;
+using WeightOf = Armature.Sdk.WeightOf;
 
 namespace Armature;
 
