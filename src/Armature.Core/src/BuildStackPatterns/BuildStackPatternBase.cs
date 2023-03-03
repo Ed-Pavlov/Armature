@@ -14,8 +14,12 @@ namespace Armature.Core;
 public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, ILogPrintable
 {
   private BuildActionBag?             _buildActions;
-  private HashSet<IBuildStackPattern> LazyChildren    => RawChildren ??= new HashSet<IBuildStackPattern>();
-  private BuildActionBag              LazyBuildAction => _buildActions ??= new BuildActionBag();
+
+  [PublicAPI]
+  protected HashSet<IBuildStackPattern> LazyChildren    => RawChildren ??= new HashSet<IBuildStackPattern>();
+
+  [PublicAPI]
+  protected BuildActionBag              LazyBuildAction => _buildActions ??= new BuildActionBag();
 
   protected BuildStackPatternBase(int weight) => Weight = weight;
 

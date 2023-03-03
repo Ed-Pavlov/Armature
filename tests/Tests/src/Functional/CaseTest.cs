@@ -14,6 +14,7 @@ using Armature.UnitPatterns.Property;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;
+using Tests.Util;
 
 namespace Tests.Functional
 {
@@ -27,7 +28,7 @@ namespace Tests.Functional
 
       target
        .Treat<string>()
-       .AsCreatedWith(buildSession => buildSession.Stack.Last().Kind!.ToString()!);
+       .AsCreatedWith(buildSession => buildSession.Stack.AsEnumerable().Last().Kind!.ToString());
 
       target
        .Treat<DisposableAndStringCtorClass>()

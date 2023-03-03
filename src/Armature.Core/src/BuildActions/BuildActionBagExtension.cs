@@ -26,9 +26,7 @@ public static class BuildActionBagExtension
       List<Weighted<IBuildAction>> resultValue;
 
       if(!right.TryGetValue(pair.Key, out var rightValue)) // if key is presented only in 'left' dictionary - get value from it
-      {
         resultValue = pair.Value;
-      }
       else // if key is presented in both dictionaries create a new list and merge items from both
       {
         resultValue = new List<Weighted<IBuildAction>>(pair.Value);

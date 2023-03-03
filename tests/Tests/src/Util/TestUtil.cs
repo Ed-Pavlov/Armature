@@ -1,10 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
 using Armature.Sdk;
 
 namespace Tests.Util;
@@ -18,6 +17,9 @@ public static class TestUtil
   public static BuildSession.Stack ToBuildStack(this UnitId item) => new(new []{item});
 
   [DebuggerStepThrough]
+  public static IEnumerable<UnitId> AsEnumerable(this BuildSession.Stack stack) => new BuildStackEnumerable(stack);
+
+  [DebuggerStepThrough]
   public static BuildResult ToArguments<T>(this T? value) => new BuildResult(value?.GetType().IsArray == true ? value : new object?[] {value});
 
   [DebuggerStepThrough]
@@ -26,6 +28,64 @@ public static class TestUtil
   public record OtherUnitPattern : IUnitPattern
   {
     public bool Matches(UnitId unitId) => throw new NotSupportedException();
+  }
+
+  private class BuildStackEnumerable : IEnumerable<UnitId>
+  {
+    private readonly BuildSession.Stack _stack;
+
+    public BuildStackEnumerable(BuildSession.Stack stack) => _stack = stack;
+    public IEnumerator<UnitId> GetEnumerator() => new Enumerator(_stack);
+
+    private struct Enumerator : IEnumerator<UnitId>
+    {
+      private readonly BuildSession.Stack _buildStack;
+
+      private bool   _disposed;
+      private int    _iterator;
+      private UnitId _current;
+
+      public Enumerator(BuildSession.Stack stack)
+      {
+        _buildStack = stack;
+        Reset();
+      }
+
+      public bool MoveNext()
+      {
+        if(_disposed) throw new ObjectDisposedException(nameof(Enumerator));
+
+        if(_iterator >= _buildStack.Length)
+        {
+          _current = default;
+          return false;
+        }
+
+        _current = _buildStack[_iterator++];
+        return true;
+      }
+
+      public UnitId Current
+      {
+        get
+        {
+          if(_disposed) throw new ObjectDisposedException(nameof(Enumerator));
+          return _current;
+        }
+      }
+
+      public void Reset()
+      {
+        _current  = default;
+        _iterator = 0;
+      }
+
+      public void Dispose() => _disposed = true;
+
+      object IEnumerator.Current => Current;
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
   }
 
   public static IEnumerable<Tag> all_special_tags()

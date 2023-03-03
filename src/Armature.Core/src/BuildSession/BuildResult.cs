@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Armature.Core.Sdk;
 
-
 namespace Armature.Core;
 
 /// <summary>
@@ -21,5 +20,5 @@ public readonly struct BuildResult
   }
 
   [DebuggerStepThrough]
-  public override string ToString() => HasValue ? Value.ToHoconString() : "nothing";
+  public override string ToString() => HasValue ? Value.ToHoconString() : nameof(BuildResult) + ".Nothing";
 }

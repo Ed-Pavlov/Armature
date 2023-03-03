@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Armature.Core.Annotations;
 
 namespace Armature.Core;
 
@@ -15,8 +13,7 @@ public partial class BuildSession
   /// It could be for example IA -> A -> IB -> B -> int. This stack means that for now Unit of type 'int' is the target unit
   /// but it is built in the "context" of the whole build stack.
   /// </summary>
-  /// <remarks>It implements <see cref="IEnumerable{T}"/> for rare and mostly debugging cases, use it wisely</remarks>
-  public readonly struct Stack : IEnumerable<UnitId>
+  public readonly struct Stack
   {
     private readonly IReadOnlyList<UnitId> _array;
     private readonly int                   _startIndex;
@@ -87,59 +84,5 @@ public partial class BuildSession
       if(array is null) throw new ArgumentNullException(nameof(array));
       return array[array.Count - 1];
     }
-
-    public IEnumerator<UnitId> GetEnumerator() => new Enumerator(this);
-
-    private struct Enumerator : IEnumerator<UnitId>
-    {
-      private readonly Stack _buildStack;
-
-      private bool   _disposed;
-      private int    _iterator;
-      private UnitId _current;
-
-      public Enumerator(Stack stack)
-      {
-        _buildStack = stack;
-        Reset();
-      }
-
-      public bool MoveNext()
-      {
-        if(_disposed) throw new ObjectDisposedException(nameof(Enumerator));
-
-        if(_iterator >= _buildStack.Length)
-        {
-          _current = default;
-          return false;
-        }
-
-        _current = _buildStack[_iterator++];
-        return true;
-      }
-
-      public UnitId Current
-      {
-        get
-        {
-          if(_disposed) throw new ObjectDisposedException(nameof(Enumerator));
-          return _current;
-        }
-      }
-
-      [WithoutTest]
-      public void Reset()
-      {
-        _current  = default;
-        _iterator = 0;
-      }
-
-      [WithoutTest]
-      public void Dispose() => _disposed = true;
-
-      object IEnumerator.Current => Current;
-    }
-
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
   }
 }

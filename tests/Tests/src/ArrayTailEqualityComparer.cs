@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Armature.Core;
+using Tests.Util;
 
 namespace Tests;
 
@@ -25,7 +26,7 @@ public class ArrayTailEqualityComparer<T> : IEqualityComparer<BuildSession.Stack
     unchecked
     {
       var hash = array.GetHashCode();
-      foreach(var item in array)
+      foreach(var item in array.AsEnumerable())
         hash ^= 397 * item.GetHashCode();
 
       return hash;
