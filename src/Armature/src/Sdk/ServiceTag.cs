@@ -13,7 +13,12 @@ namespace Armature.Sdk;
 public class ServiceTag : Tag
 {
   [PublicAPI]
-  protected ServiceTag([CallerMemberName] string name = "") : base(name) { }
+  public ServiceTag([CallerMemberName] string name = "") : base(name) { }
+
+  /// <summary>
+  /// Is used to propagate a tag to building dependencies
+  /// </summary>
+  public static readonly ServiceTag  Propagate = new();
 
   /// <summary>
   /// Is used to "build" a <see cref="ConstructorInfo" /> for a type
@@ -27,4 +32,9 @@ public class ServiceTag : Tag
   /// Is used to build an argument for the inject point
   /// </summary>
   public static readonly ServiceTag  Argument = new ();
+}
+
+public static class TagExtension
+{
+  public static object? GetEffectiveTag(this object? patternTag, object? unitTag) => ReferenceEquals(patternTag, ServiceTag.Propagate) ? unitTag : patternTag;
 }

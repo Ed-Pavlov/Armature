@@ -9,7 +9,7 @@ namespace Armature.UnitPatterns;
 /// </summary>
 public record IsConstructor : IUnitPattern
 {
-  public bool Matches(UnitId unitId) => unitId.Tag == ServiceTag.Constructor;
+  public bool Matches(UnitId unitId) => unitId.Tag == ServiceTag.Constructor && unitId.GetUnitTypeSafe() is not null;
 
   [DebuggerStepThrough]
   public override string ToString() => nameof(IsConstructor);

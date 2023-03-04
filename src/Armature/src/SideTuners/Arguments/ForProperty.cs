@@ -15,7 +15,7 @@ public static class ForProperty
   /// Tunes up how to build an argument to inject into a property of type <paramref name="type"/>.
   /// </summary>
   public static PropertyArgumentTuner<object?> OfType(Type type)
-    => new PropertyArgumentTuner<object?>(
+    => new(
       (tuner, weight) =>
       {
         Property.OfType(type).ApplyTo(tuner);
@@ -33,7 +33,7 @@ public static class ForProperty
   /// Tunes up how to build an argument to inject into a property of type<typeparamref name="T" />
   /// </summary>
   public static PropertyArgumentTuner<T> OfType<T>()
-    => new PropertyArgumentTuner<T>(
+    => new(
       (tuner, weight) =>
       {
         Property.OfType<T>().ApplyTo(tuner);
@@ -51,7 +51,7 @@ public static class ForProperty
   /// Tunes up how to build an argument to inject into a property named <paramref name="propertyName"/>.
   /// </summary>
   public static PropertyArgumentTuner<object?> Named(string propertyName)
-    => new PropertyArgumentTuner<object?>(
+    => new(
       (tuner, weight) =>
       {
         Property.Named(propertyName).ApplyTo(tuner);
@@ -70,7 +70,7 @@ public static class ForProperty
   /// with the optional <paramref name="injectPointTag"/>.
   /// </summary>
   public static PropertyArgumentTuner<object?> WithInjectPoint(object? injectPointTag)
-    => new PropertyArgumentTuner<object?>(
+    => new(
       (tuner, weight) =>
       {
         Property.ByInjectPointTag(injectPointTag).ApplyTo(tuner);

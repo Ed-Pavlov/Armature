@@ -121,7 +121,7 @@ namespace Tests.Extensibility.MaybePropagation
        .Building<Reader1>()
        .Treat<Section>(ServiceTag.Any)
        .AsMaybeValueOf()
-       .As<Maybe<Section>>(Tag.Propagate);
+       .As<Maybe<Section>>(ServiceTag.Propagate);
 
       var actual = builder.Build<Maybe<IReader>>()!;
 

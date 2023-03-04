@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Armature.Core;
+using Armature.Sdk;
 
 namespace Armature.UnitPatterns;
 
@@ -8,7 +9,7 @@ namespace Armature.UnitPatterns;
 /// </summary>
 public record IsServiceUnit : IUnitPattern, ILogString
 {
-  public bool Matches(UnitId unitId) => unitId.Tag is Tag;
+  public bool Matches(UnitId unitId) => unitId.Tag is ServiceTag;
 
   [DebuggerStepThrough]
   public override string ToString() => nameof(IsServiceUnit);

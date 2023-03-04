@@ -6,9 +6,6 @@ namespace Armature;
 
 public partial class BuildingTuner<T>
 {
-  /// <summary>
-  /// Register Unit as an singleton with a lifetime equal to parent <see cref="BuildStackPatternTree"/>. See <see cref="Singleton" /> for details
-  /// </summary>
   IContextTuner ISettingTuner.AsSingleton()
   {
     BuildStackPatternSubtree().UseBuildAction(new Singleton(), BuildStage.Cache);

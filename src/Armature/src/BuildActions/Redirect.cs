@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Armature.Core;
 using Armature.Core.Annotations;
+using Armature.Sdk;
 
 namespace Armature.BuildActions;
 
@@ -18,7 +19,7 @@ public record Redirect : IBuildAction, ILogString
   public void Process(IBuildSession buildSession)
   {
     var targetUnit   = buildSession.Stack.TargetUnit;
-    var unitId = Equals(_unitId.Tag, Tag.Propagate) ? Unit.Of(_unitId.Kind, targetUnit.Tag) : _unitId;
+    var unitId = Equals(_unitId.Tag, ServiceTag.Propagate) ? Unit.Of(_unitId.Kind, targetUnit.Tag) : _unitId;
 
     buildSession.BuildResult = buildSession.BuildUnit(unitId);
   }

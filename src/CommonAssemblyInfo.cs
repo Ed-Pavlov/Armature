@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 #pragma warning disable 7035
 
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]
 [assembly: ComVisible(false)]
 
 [assembly: AssemblyProduct("Armature")]

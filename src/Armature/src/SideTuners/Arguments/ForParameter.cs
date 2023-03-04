@@ -17,7 +17,7 @@ public static class ForParameter
   /// Tunes up how to build an argument to inject into method parameter of type <paramref name="type"/>.
   /// </summary>
   public static MethodArgumentTuner<object?> OfType(Type type)
-    => new MethodArgumentTuner<object?>(
+    => new(
       (tuner, weight)
         => tuner.GetInternals()
                 .TreeRoot
@@ -32,7 +32,7 @@ public static class ForParameter
   /// Tunes up how to build an argument to inject into method parameter of type <typeparamref name="T" />.
   /// </summary>
   public static MethodArgumentTuner<T> OfType<T>()
-    => new MethodArgumentTuner<T>(
+    => new(
       (tuner, weight)
         => tuner.GetInternals()
                 .TreeRoot
@@ -47,7 +47,7 @@ public static class ForParameter
   /// Tunes up how to build an argument to inject into method parameter named <paramref name="parameterName"/>.
   /// </summary>
   public static MethodArgumentTuner<object?> Named(string parameterName)
-    => new MethodArgumentTuner<object?>(
+    => new(
       (tuner, weight)
         => tuner.GetInternals()
                 .TreeRoot
@@ -63,7 +63,7 @@ public static class ForParameter
   /// with the specified <paramref name="injectPointId"/>.
   /// </summary>
   public static MethodArgumentTuner<object?> WithInjectPoint(object? injectPointId)
-    => new MethodArgumentTuner<object?>(
+    => new(
       (tuner, weight)
         => tuner.GetInternals()
                 .TreeRoot

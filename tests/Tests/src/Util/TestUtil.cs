@@ -93,7 +93,7 @@ public static class TestUtil
     yield return ServiceTag.Any;
     yield return ServiceTag.Argument;
     yield return ServiceTag.Constructor;
-    yield return Tag.Propagate;
+    yield return ServiceTag.Propagate;
     yield return ServiceTag.PropertyCollection;
   }
 }

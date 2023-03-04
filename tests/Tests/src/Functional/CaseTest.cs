@@ -28,7 +28,7 @@ namespace Tests.Functional
 
       target
        .Treat<string>()
-       .AsCreatedWith(buildSession => buildSession.Stack.AsEnumerable().Last().Kind!.ToString());
+       .AsCreatedWith(buildSession => buildSession.Stack.AsEnumerable().Last().Kind!.ToString()!);
 
       target
        .Treat<DisposableAndStringCtorClass>()

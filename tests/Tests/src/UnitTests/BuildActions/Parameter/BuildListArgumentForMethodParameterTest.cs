@@ -7,6 +7,7 @@ using System.Reflection;
 using Armature.BuildActions.Method;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -53,7 +54,7 @@ public class BuildListArgumentForMethodParameterTest
     var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(TUnit.OfType<int>(tag)));
     buildUnitCall.Returns(expected.Select(_ => _.ToBuildResult().WithWeight(_)).ToList());
 
-    var target = new BuildListArgumentForMethodParameter(Tag.Propagate);
+    var target = new BuildListArgumentForMethodParameter(ServiceTag.Propagate);
 
     // --act
     target.Process(buildSession);
@@ -75,7 +76,7 @@ public class BuildListArgumentForMethodParameterTest
 
     var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(TUnit.OfType<int>(tag)));
 
-    var target = new BuildListArgumentForMethodParameter(Tag.Propagate);
+    var target = new BuildListArgumentForMethodParameter(ServiceTag.Propagate);
 
     // --act
     target.Process(buildSession);

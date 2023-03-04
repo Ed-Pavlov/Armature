@@ -15,7 +15,7 @@ public static class ExtensibilityExtension
 }
 
 /// <summary>
-/// This interface provide access to the internal fields in the generic form for the sake of possible extensibility by the end user.
+/// This interface provides access to the internal fields in the generic form for the sake of possible extensibility by the end user.
 /// See implementation for details.
 /// </summary>
 public interface IInternal<out T1>

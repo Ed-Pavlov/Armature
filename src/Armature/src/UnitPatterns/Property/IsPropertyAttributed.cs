@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Armature.Core;
+using Armature.Core.Sdk;
 
 namespace Armature.UnitPatterns.Property;
 
@@ -17,5 +18,5 @@ public record IsPropertyAttributed : IsInjectPointBase
   public IsPropertyAttributed(object? injectPointTag = null) : base(injectPointTag) { }
 
   protected override IEnumerable<InjectAttribute> GetAttributes(UnitId unitId)
-    => unitId.Kind is PropertyInfo propertyInfo ? propertyInfo.GetCustomAttributes<InjectAttribute>() : Enumerable.Empty<InjectAttribute>();
+    => unitId.Kind is PropertyInfo propertyInfo ? propertyInfo.GetCustomAttributes<InjectAttribute>() : Empty<InjectAttribute>.Array;
 }

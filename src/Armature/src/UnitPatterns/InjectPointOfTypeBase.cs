@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
+using Armature.Core.Sdk;
 using Armature.Sdk;
 
 namespace Armature.UnitPatterns;
@@ -8,7 +9,7 @@ namespace Armature.UnitPatterns;
 /// <summary>
 /// Base class for patterns check if a unit is an argument for an "inject point" requires argument of the specified type.
 /// </summary>
-public abstract record InjectPointOfTypeBase : IUnitPattern, ILogString
+public abstract record InjectPointOfTypeBase : IUnitPattern, ILogString, IInternal<IUnitPattern>
 {
   private readonly IUnitPattern _typePattern;
 
@@ -29,4 +30,6 @@ public abstract record InjectPointOfTypeBase : IUnitPattern, ILogString
   public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ TypePattern: {_typePattern.ToHoconString()} }} }}";
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
+
+  IUnitPattern IInternal<IUnitPattern>.Member1 => _typePattern;
 }

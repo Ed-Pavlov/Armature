@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Armature.BuildActions.Method;
 using Armature.Core;
+using Armature.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -38,7 +39,7 @@ public class BuildArgumentByParameterNameTest
     var actual = A.Fake<IBuildSession>();
     A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo, tag).ToBuildStack());
 
-    var target = new BuildArgumentByParameterName(Tag.Propagate);
+    var target = new BuildArgumentByParameterName(ServiceTag.Propagate);
 
     // --act
     target.Process(actual);

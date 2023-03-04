@@ -14,7 +14,7 @@ public static class UnitIdExtension
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static Type GetUnitType(this UnitId unitId)
     => unitId.Kind as Type
-    ?? throw new ArmatureException($"Unit {nameof(UnitId.Kind)} is not an instance of the class {nameof(Type)}")
+    ?? throw new ArmatureException($"Unit {nameof(UnitId.Kind)} is not a {nameof(Type)}")
         .AddData(nameof(unitId), unitId);
 
   /// <summary>

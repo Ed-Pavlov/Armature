@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Armature.Core;
 using Armature.Core.Annotations;
+using Armature.Sdk;
 
 namespace Armature.BuildActions;
 
@@ -22,7 +23,7 @@ public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogSt
       Log.WriteLine(LogLevel.Trace, $"Tag: {_tag.ToHoconString()}");
 
     var targetUnit   = buildSession.Stack.TargetUnit;
-    var effectiveTag = _tag == Tag.Propagate ? targetUnit.Tag : _tag;
+    var effectiveTag = _tag == ServiceTag.Propagate ? targetUnit.Tag : _tag;
 
     var valueType = GetInjectPointType(targetUnit);
     buildSession.BuildResult = buildSession.BuildUnit(Unit.Of(valueType, effectiveTag));

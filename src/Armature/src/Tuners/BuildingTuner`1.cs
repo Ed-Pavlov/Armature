@@ -5,14 +5,17 @@ using Armature.BuildActions.Creation;
 using Armature.Core;
 using Armature.Core.Sdk;
 using Armature.Sdk;
+using JetBrains.Annotations;
 using WeightOf = Armature.Sdk.WeightOf;
 
 namespace Armature;
 
-public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreationTuner, IInternal<IUnitPattern>
+public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreationTuner, IInternal<IUnitPattern, IBuildStackPattern?>
 {
-  private readonly IUnitPattern        _unitPattern;
-  private          IBuildStackPattern? _buildStackPatternSubtree;
+  [PublicAPI]
+  protected readonly IUnitPattern        _unitPattern;
+  [PublicAPI]
+  protected          IBuildStackPattern? _buildStackPatternSubtree;
 
   public BuildingTuner(ITuner parent, CreateNode createNode, IUnitPattern unitPattern)
     : base(parent, createNode)
@@ -105,5 +108,8 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
 
   protected IBuildStackPattern BuildStackPatternSubtree() => _buildStackPatternSubtree ??= this.Apply();
 
-  IUnitPattern IInternal<IUnitPattern>.Member1 => _unitPattern;
+  #region Internals
+  IUnitPattern IInternal<IUnitPattern>.                            Member1 => _unitPattern;
+  IBuildStackPattern? IInternal<IUnitPattern, IBuildStackPattern?>.Member2 => _buildStackPatternSubtree;
+  #endregion
 }

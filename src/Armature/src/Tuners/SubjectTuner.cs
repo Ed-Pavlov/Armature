@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
+using Armature.Core.Sdk;
 using Armature.Sdk;
 using JetBrains.Annotations;
 
 namespace Armature;
 
-public partial class SubjectTuner : ISubjectTuner, IAllTuner, ITuner
+public partial class SubjectTuner : ISubjectTuner, IAllTuner, ITuner, IInternal<CreateNode>
 {
-  private readonly CreateNode _createNode;
+  [PublicAPI]
+  protected readonly CreateNode _createNode;
 
   [DebuggerStepThrough]
   [PublicAPI]
@@ -41,7 +43,7 @@ public partial class SubjectTuner : ISubjectTuner, IAllTuner, ITuner
 
   public IAllTuner Using(params ISideTuner[] sideTuners) => DependencyTuner.Using(this, sideTuners);
 
-  ISubjectTuner ISubjectTuner.                  AmendWeight(short delta) => AmendWeight(delta, this);
+  ISubjectTuner ISubjectTuner.          AmendWeight(short delta) => AmendWeight(delta, this);
   IAllTuner IDependencyTuner<IAllTuner>.AmendWeight(short delta) => AmendWeight<IAllTuner>(delta, this);
 
   protected T AmendWeight<T>(short delta, T inheritor)
@@ -55,4 +57,10 @@ public partial class SubjectTuner : ISubjectTuner, IAllTuner, ITuner
   public int                Weight   { get; private set; }
 
   public IBuildStackPattern GetOrAddNodeTo(IBuildStackPattern node) => node.GetOrAddNode(_createNode());
+
+  #region Internals
+
+  CreateNode IInternal<CreateNode>.Member1 => _createNode;
+
+  #endregion
 }

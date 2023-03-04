@@ -59,9 +59,9 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrinta
     public override bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
     {
       actionBag = null;
-      if(_rawChildren is null) return false;
+      if(RawChildren is null) return false;
 
-      foreach(var child in _rawChildren)
+      foreach(var child in RawChildren)
       {
         if(child.GatherBuildActions(stack, out var childBag, inputWeight))
           actionBag = actionBag.Merge(childBag);

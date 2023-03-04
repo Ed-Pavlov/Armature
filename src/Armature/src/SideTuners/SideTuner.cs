@@ -1,5 +1,6 @@
 using System;
 using Armature.Core.Sdk;
+using JetBrains.Annotations;
 
 namespace Armature;
 
@@ -8,7 +9,8 @@ namespace Armature;
 /// </summary>
 public class SideTuner : ISideTuner, IInternal<Action<ITunerBase>>
 {
-  private readonly Action<ITunerBase> _tune;
+  [PublicAPI]
+  protected readonly Action<ITunerBase> _tune;
 
   public SideTuner(Action<ITunerBase> tune) => _tune = tune ?? throw new ArgumentNullException(nameof(tune));
 

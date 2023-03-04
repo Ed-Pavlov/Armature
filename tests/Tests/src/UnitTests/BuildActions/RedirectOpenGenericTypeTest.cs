@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Armature.BuildActions;
 using Armature.Core;
+using Armature.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -44,7 +45,7 @@ public class RedirectOpenGenericTypeTest
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>(tag)));
     buildUnitCall.Returns(expected.ToBuildResult());
 
-    var target = new RedirectOpenGenericType(typeof(List<>), Tag.Propagate);
+    var target = new RedirectOpenGenericType(typeof(List<>), ServiceTag.Propagate);
 
     // --act
     target.Process(buildSession);

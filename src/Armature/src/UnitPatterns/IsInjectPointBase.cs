@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Armature.Core;
+using Armature.Core.Sdk;
 using Armature.Sdk;
+using JetBrains.Annotations;
 
 namespace Armature.UnitPatterns;
 
@@ -10,9 +12,10 @@ namespace Armature.UnitPatterns;
 /// Base class for patterns check if a unit is an inject point marked with with <see cref="InjectAttribute" />
 /// with an optional <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" />
 /// </summary>
-public abstract record IsInjectPointBase : IUnitPattern, ILogString
+public abstract record IsInjectPointBase : IUnitPattern, ILogString, IInternal<object?>
 {
-  private readonly object? _injectPointTag;
+  [PublicAPI]
+  protected readonly object? _injectPointTag;
 
   /// <param name="injectPointTag">An optional tag of the inject point. <see cref="InjectAttribute"/> for details.</param>
   [DebuggerStepThrough]
@@ -32,4 +35,6 @@ public abstract record IsInjectPointBase : IUnitPattern, ILogString
   public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ InjectPointId: {_injectPointTag.ToHoconString()} }} }}";
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
+
+  object? IInternal<object?>.Member1 => _injectPointTag;
 }

@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <Compile Update="src\Tuners\SubjectTuner.Static.cs">
-      <DependentUpon>BuildingTuner.cs</DependentUpon>
+      <DependentUpon>SubjectTuner.cs</DependentUpon>
     </Compile>
     <Compile Update="src\Tuners\BuildingTuner.CreationTuner.cs">
       <DependentUpon>BuildingTuner`1.cs</DependentUpon>

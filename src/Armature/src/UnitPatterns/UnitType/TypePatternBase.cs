@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
 using Armature.Core;
+using Armature.Core.Sdk;
 
 namespace Armature.UnitPatterns.UnitType;
 
 /// <summary>
 /// Base class for unit patterns matching unit with a <see cref="System.Type"/>.
 /// </summary>
-public abstract record TypePatternBase : ILogString
+public abstract record TypePatternBase : ILogString, IInternal<Type, object?>
 {
-  protected readonly object? Tag;
   protected readonly Type    Type;
+  protected readonly object? Tag;
 
   /// <summary>
   /// Base class for matchers matching unit with a <see cref="System.Type"/> pattern
@@ -28,4 +29,9 @@ public abstract record TypePatternBase : ILogString
 
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
+
+  #region Internals
+  Type IInternal<Type>.            Member1 => Type;
+  object? IInternal<Type, object?>.Member2 => Tag;
+  #endregion
 }
