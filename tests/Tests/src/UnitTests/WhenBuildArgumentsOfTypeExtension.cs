@@ -1,8 +1,6 @@
 using System.Linq;
 using System.Reflection;
-using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
 using Armature.Sdk;
 using FakeItEasy.Configuration;
 using Tests.Util;

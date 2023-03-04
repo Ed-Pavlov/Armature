@@ -104,7 +104,7 @@ public partial class BuildSession
     catch(Exception exception)
     {
       if(!exception.Data.Contains(ExceptionConst.BuildStack))
-        exception.AddData<System.Exception>(ExceptionConst.BuildStack, stack.ToHoconString());
+        exception.AddData(ExceptionConst.BuildStack, stack.ToHoconString());
 
       throw;
     }
@@ -188,7 +188,7 @@ public partial class BuildSession
 
   private static void BuildActionProcess(IBuildAction buildAction, IBuildSession buildSession)
   {
-    using(Log.NamedBlock(LogLevel.Info, () => LogConst.BuildAction_Process(buildAction)))
+    using(Log.NamedBlock(LogLevel.Info, () => buildAction.ProcessMethod()))
       try
       {
         buildAction.Process(buildSession);
@@ -196,7 +196,7 @@ public partial class BuildSession
       catch(Exception exception)
       {
         if(!exception.Data.Contains(ExceptionConst.Logged))
-          using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_Process(buildAction)}.Exception: "))
+          using(Log.NamedBlock(LogLevel.Info, () => $"{buildAction.ProcessMethod()}.Exception: "))
             exception.WriteToLog();
 
         throw;
@@ -205,7 +205,7 @@ public partial class BuildSession
 
   private static void BuildActionPostProcess(IBuildAction buildAction, IBuildSession buildSession)
   {
-    using(Log.NamedBlock(LogLevel.Info, () => LogConst.BuildAction_PostProcess(buildAction)))
+    using(Log.NamedBlock(LogLevel.Info, () => buildAction.PostProcessMethod()))
     {
       if(Log.IsEnabled(LogLevel.Verbose))
         Log.WriteLine(LogLevel.Verbose, $"Build.Result = {buildSession.BuildResult.ToLogString()}");
@@ -216,7 +216,7 @@ public partial class BuildSession
       }
       catch(Exception exc)
       {
-        using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_PostProcess(buildAction)}.Exception: "))
+        using(Log.NamedBlock(LogLevel.Info, () => $"{buildAction.PostProcessMethod()}.Exception: "))
           exc.WriteToLog();
 
         throw;
@@ -286,7 +286,7 @@ public partial class BuildSession
   {
     var logLevel = buildResult.HasValue ? LogLevel.Info : LogLevel.Trace;
     if(Log.IsEnabled(logLevel))
-      Log.WriteLine(logLevel, $"{LogConst.BuildAction_Name(buildAction)}.Result = {buildResult.ToLogString()}");
+      Log.WriteLine(logLevel, $"{buildAction.GetName()}.Result = {buildResult.ToLogString()}");
   }
 
   private static void Log_GatheredActions(WeightedBuildActionBag? actionBag)

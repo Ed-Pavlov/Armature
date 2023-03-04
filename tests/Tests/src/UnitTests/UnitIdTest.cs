@@ -1,5 +1,4 @@
 using System;
-using Armature;
 using Armature.Core;
 using Armature.Sdk;
 using FluentAssertions;

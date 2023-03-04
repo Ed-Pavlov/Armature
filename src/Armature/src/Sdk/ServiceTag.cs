@@ -1,7 +1,6 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Armature.Core;
-using Armature.Core.Sdk;
 using JetBrains.Annotations;
 
 namespace Armature.Sdk;

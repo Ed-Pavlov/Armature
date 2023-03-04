@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 namespace Armature.Core;
 
 /// <summary>
-/// Class is used to log Armature activities in human friendly form. Writes data into <see cref="System.Diagnostics.Trace" />,
+/// Class is used to log Armature activities in human friendly form in HOCON format. Writes data into <see cref="System.Diagnostics.Trace" />,
 /// so add a listener to see the log.
 /// </summary>
 [PublicAPI]

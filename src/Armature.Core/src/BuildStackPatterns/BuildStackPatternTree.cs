@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Armature.Core.Sdk;
 
 namespace Armature.Core;
 
@@ -23,18 +22,18 @@ namespace Armature.Core;
 /// </remarks>
 public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrintable
 {
-  private readonly Root _root;
+  private readonly RootNode _rootNode;
 
-  public BuildStackPatternTree(int weight = 0) => _root = new Root(weight);
+  public BuildStackPatternTree(int weight = 0) => _rootNode = new RootNode(weight);
 
-  HashSet<IBuildStackPattern> IBuildStackPattern.Children => _root.Children;
+  HashSet<IBuildStackPattern> IBuildStackPattern.Children => _rootNode.Children;
 
   ///<inheritdoc />
   bool IBuildStackPattern.GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
-    => _root.GatherBuildActions(stack, out actionBag, 0);
+    => _rootNode.GatherBuildActions(stack, out actionBag, 0);
 
   ///<inheritdoc />
-  public void PrintToLog(LogLevel logLevel = LogLevel.None) => _root.PrintToLog(logLevel);
+  public void PrintToLog(LogLevel logLevel = LogLevel.None) => _rootNode.PrintToLog(logLevel);
 
   ///<inheritdoc />
   BuildActionBag IBuildStackPattern.BuildActions => throw new NotSupportedException();
@@ -51,18 +50,18 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrinta
   /// <summary>
   /// Reuse implementation of <see cref="BuildStackPatternBase" /> to implement <see cref="BuildStackPatternTree" /> public interface.
   /// </summary>
-  private class Root : BuildStackPatternBase
+  private class RootNode : BuildStackPatternBase
   {
     [DebuggerStepThrough]
-    public Root(int weight) : base(weight) { }
+    public RootNode(int weight) : base(weight) { }
 
     [DebuggerStepThrough]
     public override bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
     {
       actionBag = null;
-      if(RawChildren is null) return false;
+      if(_rawChildren is null) return false;
 
-      foreach(var child in RawChildren)
+      foreach(var child in _rawChildren)
       {
         if(child.GatherBuildActions(stack, out var childBag, inputWeight))
           actionBag = actionBag.Merge(childBag);

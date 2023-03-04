@@ -45,7 +45,7 @@ public record TryInOrder : IBuildAction, IEnumerable, ILogString
       try
       {
         using(var condition = Log.UnderCondition(LogLevel.Verbose))
-        using(Log.NamedBlock(LogLevel.Verbose, () => LogConst.BuildAction_Process(buildAction)))
+        using(Log.NamedBlock(LogLevel.Verbose, () => buildAction.ProcessMethod()))
         {
           buildAction.Process(buildSession);
           condition.IsMet = buildSession.BuildResult.HasValue;
@@ -59,14 +59,14 @@ public record TryInOrder : IBuildAction, IEnumerable, ILogString
       }
       catch(ArmatureException exception)
       { // ArmatureException is a valid way to indicate that build action can't build a unit, gather such exceptions to report them all
-        using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_Process(buildAction)}.Exception: "))
+        using(Log.NamedBlock(LogLevel.Info, () => $"{buildAction.ProcessMethod()}.Exception: "))
           exception.WriteToLog();
 
         exceptions.Add(exception);
       }
       catch(Exception exception)
       { // User exception is another matter
-        using(Log.NamedBlock(LogLevel.Info, () => $"{LogConst.BuildAction_Process(buildAction)}.Exception: "))
+        using(Log.NamedBlock(LogLevel.Info, () => $"{buildAction.ProcessMethod()}.Exception: "))
           exception.WriteToLog();
 
         throw; // don't try to call other actions, they can return "wrong" unit, user exception is unexpected case
@@ -90,7 +90,7 @@ public record TryInOrder : IBuildAction, IEnumerable, ILogString
     {
       _effectiveBuildActions.Remove(buildSession);
 
-      using(Log.NamedBlock(LogLevel.Verbose, () => LogConst.BuildAction_PostProcess(buildAction)))
+      using(Log.NamedBlock(LogLevel.Verbose, () => buildAction.PostProcessMethod()))
         buildAction.PostProcess(buildSession);
     }
   }

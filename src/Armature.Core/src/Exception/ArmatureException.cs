@@ -19,10 +19,10 @@ public class ArmatureException : AggregateException
   public ArmatureException(string message) : base(message + LogConst.ArmatureExceptionPostfix()) { }
 
   [DebuggerStepThrough]
-  public ArmatureException(string message, System.Exception innerException) : base(message + LogConst.ArmatureExceptionPostfix(), innerException) { }
+  public ArmatureException(string message, Exception innerException) : base(message + LogConst.ArmatureExceptionPostfix(), innerException) { }
 
   [DebuggerStepThrough]
-  public ArmatureException(string message, IEnumerable<System.Exception> innerExceptions) : base(message, innerExceptions) { }
+  public ArmatureException(string message, IEnumerable<Exception> innerExceptions) : base(message, innerExceptions) { }
 
   [DebuggerStepThrough]
   public override string ToString()

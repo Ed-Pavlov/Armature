@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Armature.BuildActions;
 using Armature.Core;
-using Armature.Core.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;

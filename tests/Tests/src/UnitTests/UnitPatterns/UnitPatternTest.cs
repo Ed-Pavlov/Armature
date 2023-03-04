@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Armature;
 using Armature.Core;
 using Armature.Sdk;
 using FluentAssertions;

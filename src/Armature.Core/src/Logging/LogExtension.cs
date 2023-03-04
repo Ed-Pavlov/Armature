@@ -76,7 +76,7 @@ public static class LogExtension
                _                        => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
              };
     }
-    catch(System.Exception exception)
+    catch(Exception exception)
     {
       return $"{nameof(ToHoconString)} {{ ExceptionType: {exception.GetType().ToLogString().QuoteIfNeeded()} }}";
     }
@@ -162,7 +162,19 @@ public static class LogExtension
         weightedAction.Weight.ToHoconString());
   }
 
-  public static void WriteToLog(this System.Exception exception)
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public static string GetName(this IBuildAction buildAction)
+    => $"{buildAction.GetType().GetShortName().QuoteIfNeeded()}";
+
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public static string ProcessMethod(this IBuildAction buildAction)
+    => $"{GetName(buildAction)}.{nameof(IBuildAction.Process)}";
+
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public static string PostProcessMethod(this IBuildAction buildAction)
+    => $"{GetName(buildAction)}.{nameof(IBuildAction.PostProcess)}";
+
+  public static void WriteToLog(this Exception exception)
   {
     if(exception.Data.Contains(ExceptionConst.Logged)) return;
 

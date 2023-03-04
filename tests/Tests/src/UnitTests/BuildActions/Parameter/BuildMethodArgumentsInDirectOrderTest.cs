@@ -1,10 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using Armature;
 using Armature.BuildActions.Method;
 using Armature.Core;
-using Armature.Core.Sdk;
 using Armature.Sdk;
 using FakeItEasy;
 using FluentAssertions;

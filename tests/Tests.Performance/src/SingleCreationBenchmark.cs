@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
-using Armature.Core.Sdk;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 

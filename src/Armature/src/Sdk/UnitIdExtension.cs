@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Armature.Core;
-using Armature.Core.Sdk;
 
 namespace Armature.Sdk;
 

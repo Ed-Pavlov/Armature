@@ -1,6 +1,4 @@
-﻿using Armature.Core.Sdk;
-
-namespace Armature.Core;
+﻿namespace Armature.Core;
 
 /// <summary>
 /// Moves along the build stack skipping units until it encounters a matching unit. Behaves like string search with wildcard.

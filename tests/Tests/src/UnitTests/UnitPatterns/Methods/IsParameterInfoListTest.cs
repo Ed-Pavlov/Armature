@@ -1,7 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
 using Armature.Sdk;
 using Armature.UnitPatterns.Method;
 using FluentAssertions;

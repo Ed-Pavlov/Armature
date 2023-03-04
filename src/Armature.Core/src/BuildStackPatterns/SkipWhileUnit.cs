@@ -1,6 +1,4 @@
-﻿using Armature.Core.Sdk;
-
-namespace Armature.Core;
+﻿namespace Armature.Core;
 
 /// <summary>
 /// Skips units from the build stack while unit matches specified pattern till the target unit. The target unit is never skipped.

@@ -3,7 +3,6 @@ using System.Linq;
 using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
-using Tests.Util;
 
 namespace Tests.UnitTests;
 

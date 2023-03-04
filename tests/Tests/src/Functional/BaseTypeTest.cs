@@ -7,7 +7,6 @@ using Armature.BuildActions.Constructor;
 using Armature.BuildActions.Property;
 using Armature.Core;
 using Armature.Core.Sdk;
-using Armature.Sdk;
 using Armature.UnitPatterns;
 using Armature.UnitPatterns.Property;
 using FluentAssertions;

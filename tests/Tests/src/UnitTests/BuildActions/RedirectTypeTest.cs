@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using Armature.BuildActions;
 using Armature.Core;
-using Armature.Core.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;

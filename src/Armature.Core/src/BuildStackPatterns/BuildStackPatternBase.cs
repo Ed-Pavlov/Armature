@@ -11,23 +11,18 @@ namespace Armature.Core;
 /// <summary>
 /// Base class implementing <see cref="IBuildStackPattern.BuildActions"/>
 /// </summary>
-public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, ILogPrintable
+public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, ILogPrintable, IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?>
 {
-  private BuildActionBag?             _buildActions;
-
   [PublicAPI]
-  protected HashSet<IBuildStackPattern> LazyChildren    => RawChildren ??= new HashSet<IBuildStackPattern>();
-
-  [PublicAPI]
-  protected BuildActionBag              LazyBuildAction => _buildActions ??= new BuildActionBag();
+  protected BuildActionBag?              _buildActions;
+  protected HashSet<IBuildStackPattern>? _rawChildren;
 
   protected BuildStackPatternBase(int weight) => Weight = weight;
 
-  public    BuildActionBag               BuildActions => LazyBuildAction;
-  public    HashSet<IBuildStackPattern>  Children     => LazyChildren;
+  protected long Weight { [DebuggerStepThrough] get; }
 
-  protected long                         Weight       { [DebuggerStepThrough] get; }
-  protected HashSet<IBuildStackPattern>? RawChildren;
+  public BuildActionBag              BuildActions => _buildActions ??= new BuildActionBag();
+  public HashSet<IBuildStackPattern> Children     => _rawChildren ??= new HashSet<IBuildStackPattern>();
 
   [PublicAPI]
   protected bool GetOwnBuildActions(long inputWeight, out WeightedBuildActionBag? actionBag)
@@ -49,7 +44,7 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
     var result = GetOwnBuildActions(inputWeight, out actionBag);
     actionBag.WriteToLog(LogLevel.Verbose, "Actions: ");
 
-    if(RawChildren is not null && stack.Length > 0)
+    if(_rawChildren is not null && stack.Length > 0)
     { // pass the rest of the stack to children and return their actions
       result    |= GetChildrenActions(stack, inputWeight, out var childrenActionBag);
       actionBag =  actionBag.Merge(childrenActionBag);
@@ -71,7 +66,7 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
   {
     actionBag = null;
 
-    if(RawChildren is null)
+    if(_rawChildren is null)
     {
       Log.WriteLine(LogLevel.Trace, "Children: null");
       return false;
@@ -85,7 +80,7 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
       if(Log.IsEnabled(LogLevel.Verbose))
         Log.WriteLine(LogLevel.Verbose, $"ActualWeight = {matchingWeight.ToHoconString()}, Tail = {stack.ToHoconString()}");
 
-      foreach(var child in RawChildren)
+      foreach(var child in _rawChildren)
       {
         if(child.GatherBuildActions(stack, out var childBag, matchingWeight))
           actionBag = actionBag.Merge(childBag);
@@ -119,8 +114,8 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
   [PublicAPI]
   protected void PrintChildrenToLog(LogLevel logLevel)
   {
-    if(RawChildren is not null)
-      foreach(var child in RawChildren)
+    if(_rawChildren is not null)
+      foreach(var child in _rawChildren)
         if(child is ILogPrintable printable)
           printable.PrintToLog(logLevel);
         else
@@ -142,5 +137,11 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
   public override int  GetHashCode()       => Weight.GetHashCode();
 
   public void             Add(IBuildStackPattern buildStackPattern) => Children.Add(buildStackPattern);
-  IEnumerator IEnumerable.GetEnumerator()                           => RawChildren?.GetEnumerator() ?? Empty<IBuildStackPattern>.Array.GetEnumerator();
+  IEnumerator IEnumerable.GetEnumerator()                           => _rawChildren?.GetEnumerator() ?? Empty<IBuildStackPattern>.Array.GetEnumerator();
+
+  #region Internal
+  long IInternal<long>.Member1 => Weight;
+  HashSet<IBuildStackPattern>? IInternal<long, HashSet<IBuildStackPattern>?>.Member2 => _rawChildren;
+  BuildActionBag? IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?>.Member3 => _buildActions;
+  #endregion
 }

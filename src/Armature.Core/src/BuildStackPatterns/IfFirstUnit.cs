@@ -1,6 +1,4 @@
-﻿using Armature.Core.Sdk;
-
-namespace Armature.Core;
+﻿namespace Armature.Core;
 
 /// <summary>
 /// Checks if the first unit in the build stack matches the specified pattern.

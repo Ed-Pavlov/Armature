@@ -31,7 +31,7 @@ namespace Tests.Extensibility.MaybePropagation
       builder
        .Building<Reader>()           // IfFirst<Section>
        .Treat<Section>()             //   SkipTill<Reader>   -> Redirect<Maybe<Section>>
-       .AsMaybeValueOf<Section>()   //                       -> BuildResult.Value as Maybe .Value | throw
+       .AsMaybeValueOf()   //                       -> BuildResult.Value as Maybe .Value | throw
        .As<Maybe<Section>>();
 
       var actual = builder.Build<Maybe<IReader>>()!;
