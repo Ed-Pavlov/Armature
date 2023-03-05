@@ -90,10 +90,8 @@ public static class TestUtil
 
   public static IEnumerable<Tag> all_special_tags()
   {
-    yield return ServiceTag.Any;
     yield return ServiceTag.Argument;
     yield return ServiceTag.Constructor;
-    yield return ServiceTag.Propagate;
     yield return ServiceTag.PropertyCollection;
   }
 }
