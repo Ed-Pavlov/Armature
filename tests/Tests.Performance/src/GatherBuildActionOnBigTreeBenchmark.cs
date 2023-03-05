@@ -19,7 +19,7 @@ public class GatherBuildActionOnBigTreeBenchmark
 
   public GatherBuildActionOnBigTreeBenchmark()
   {
-    var builder = new Builder(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create);
+    var builder = new Builder("test", BuildStage.Cache, BuildStage.Initialize, BuildStage.Create);
 
     // Treat<I>().AsCreated<C>().AsSingleton();
     const int registrationsCount    = 3_000;

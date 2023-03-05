@@ -230,14 +230,12 @@ public partial class BuildSession
 
     var exceptions = new List<Exception>();
 
-    for(var i = 0; i < _parentBuilders.Length; i++)
+    foreach(var parentBuilder in _parentBuilders)
       try
       {
-        var parentBuilderNumber = i + 1;
-
-        using(Log.NamedBlock(LogLevel.Info, () => $"{ParentBuilder} #{parentBuilderNumber}".Quote()))
+        using(Log.NamedBlock(LogLevel.Info, () => $"{ParentBuilder}({parentBuilder.Name})"))
         {
-          var buildResult = _parentBuilders[i].BuildUnit(unitId, _auxPatternTree);
+          var buildResult = parentBuilder.BuildUnit(unitId, _auxPatternTree);
 
           if(buildResult.HasValue)
             return buildResult;

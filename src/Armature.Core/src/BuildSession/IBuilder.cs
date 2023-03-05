@@ -22,4 +22,5 @@ public interface IBuilder
   /// <param name="auxBuildStackPatternTree">Additional build stack pattern tree containing build actions to build a unit or its dependencies.</param>
   /// <returns>Returns <see cref="Empty{BuildResult}.List"/> if no units were built. </returns>
   List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId, IBuildStackPattern? auxBuildStackPatternTree = null);
+  string Name { get; }
 }

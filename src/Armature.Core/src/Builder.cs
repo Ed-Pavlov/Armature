@@ -15,21 +15,26 @@ public class Builder : BuildStackPatternTree, IBuilder
   private readonly object[]    _buildStages;
   private readonly IBuilder[]? _parentBuilders;
 
+  private string? _hoconString;
+
   public Builder() => throw new ArgumentException("Provide stages");
 
+  /// <param name="name">Used in logs an for debugging</param>
   /// <param name="buildStages">The ordered collection of build stages all of which are performed to build a unit.</param>
-  public Builder(params object[] buildStages) : this(buildStages, null)
+  public Builder(string name, params object[] buildStages) : this(name, buildStages, null)
   {
   }
 
+  /// <param name="name">Used in logs an for debugging</param>
   /// <param name="buildStages">The ordered collection of build stages all of which are performed to build a unit.
   /// See <see cref="BuildStackPatternExtension.UseBuildAction"/> for details.</param>
   /// <param name="parentBuilders">
   /// If unit is not built and <paramref name="parentBuilders" /> are provided, tries to build an unit using
   /// parent builders one by one in the order they passed into the constructor.
   /// </param>
-  public Builder(object[] buildStages, params IBuilder[]? parentBuilders)
+  public Builder(string name, object[] buildStages, params IBuilder[]? parentBuilders)
   {
+    Name         = name        ?? throw new ArgumentNullException(nameof(name));
     _buildStages = buildStages ?? throw new ArgumentNullException(nameof(buildStages));
     if(buildStages is null) throw new ArgumentNullException(nameof(buildStages));
     if(buildStages.Length == 0) throw new ArgumentException("Should contain at least one build stage", nameof(buildStages));
@@ -40,6 +45,11 @@ public class Builder : BuildStackPatternTree, IBuilder
     _parentBuilders = parentBuilders is {Length: > 0} ? parentBuilders : null;
   }
 
+  /// <summary>
+  /// Used in logs and for debugging.
+  /// </summary>
+  public string Name { get; }
+
   /// <inheritdoc />
   public BuildResult BuildUnit(UnitId unitId, IBuildStackPattern? auxBuildStackPatternTree = null)
     => new BuildSession(_buildStages, this, auxBuildStackPatternTree, _parentBuilders).BuildUnit(unitId);
@@ -47,4 +57,6 @@ public class Builder : BuildStackPatternTree, IBuilder
   /// <inheritdoc />
   public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId, IBuildStackPattern? auxBuildStackPatternTree = null)
     => new BuildSession(_buildStages, this, auxBuildStackPatternTree, _parentBuilders).BuildAllUnits(unitId);
+
+  public override string  ToHoconString() => _hoconString ??= Name.QuoteIfNeeded();
 }

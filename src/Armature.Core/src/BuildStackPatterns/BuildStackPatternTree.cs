@@ -24,7 +24,7 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrinta
 {
   private readonly RootNode _rootNode;
 
-  public BuildStackPatternTree(int weight = 0) => _rootNode = new RootNode(weight);
+  public BuildStackPatternTree(int weight = 0) => _rootNode = new RootNode(weight, this);
 
   HashSet<IBuildStackPattern> IBuildStackPattern.Children => _rootNode.Children;
 
@@ -33,7 +33,7 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrinta
     => _rootNode.GatherBuildActions(stack, out actionBag, 0);
 
   ///<inheritdoc />
-  public void PrintToLog(LogLevel logLevel = LogLevel.None) => _rootNode.PrintToLog(logLevel);
+  public virtual void PrintToLog(LogLevel logLevel = LogLevel.None) => _rootNode.PrintToLog(logLevel);
 
   ///<inheritdoc />
   BuildActionBag IBuildStackPattern.BuildActions => throw new NotSupportedException();
@@ -52,8 +52,10 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrinta
   /// </summary>
   private class RootNode : BuildStackPatternBase
   {
+    private readonly ILogString _logString;
+
     [DebuggerStepThrough]
-    public RootNode(int weight) : base(weight) { }
+    public RootNode(int weight, ILogString logString) : base(weight) => _logString = logString ?? throw new ArgumentNullException(nameof(logString));
 
     [DebuggerStepThrough]
     public override bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
@@ -71,8 +73,11 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrinta
     }
 
     [DebuggerStepThrough]
+    public override string ToHoconString() => _logString.ToHoconString();
+
+    [DebuggerStepThrough]
     public override bool Equals(IBuildStackPattern? other) => throw new NotSupportedException();
   }
 
-  string ILogString.ToHoconString() => GetType().GetShortName().QuoteIfNeeded();
+  public virtual string ToHoconString() => GetType().GetShortName().QuoteIfNeeded();
 }

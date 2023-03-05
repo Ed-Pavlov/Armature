@@ -234,7 +234,7 @@ namespace Tests.Functional
         //  .UsingArguments(AutoBuildByParameter.Type);
         //
         // return builder;
-        new(BuildStage.Cache, BuildStage.Create)
+        new("test", BuildStage.Cache, BuildStage.Create)
                                              {
                                                      new SkipTillUnit(new IsInheritorOf(typeof(IDisposable), null))
                                                         .UseBuildAction(new CreateByReflection(), BuildStage.Cache),

@@ -38,7 +38,7 @@ public class ContextTest
 
   private static Builder CreateTarget()
   {
-    var target = new Builder(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+    var target = new Builder("test", BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
                   {
                     // inject into constructor
                     new IfFirstUnit(new IsConstructor())

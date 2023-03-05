@@ -123,7 +123,7 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
   }
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public string ToHoconString() => GetType().GetShortName().QuoteIfNeeded();
+  public virtual string ToHoconString() => GetType().GetShortName().QuoteIfNeeded();
 
   public virtual bool Equals(IBuildStackPattern? other)
   {

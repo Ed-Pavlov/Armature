@@ -82,7 +82,7 @@ namespace Tests.Extensibility.MaybePropagation
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Create)
+      => new("test", BuildStage.Cache, BuildStage.Create)
          {
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),

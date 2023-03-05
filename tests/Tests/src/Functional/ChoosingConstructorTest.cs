@@ -22,7 +22,7 @@ namespace Tests.Functional
     [TestCaseSource(nameof(max_number_of_parameters))]
     public void should_call_ctor_with_max_number_of_parameters(IBuildAction getConstructorAction)
     {
-      var target = new Builder(BuildStage.Cache, BuildStage.Create)
+      var target = new Builder("test", BuildStage.Cache, BuildStage.Create)
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
                        new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
@@ -44,7 +44,7 @@ namespace Tests.Functional
     [TestCaseSource(nameof(parameterless_ctor))]
     public void should_call_parameterless_ctor(IBuildAction getConstructorAction)
     {
-      var target = new Builder(BuildStage.Create)
+      var target = new Builder("test", BuildStage.Create)
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
                        new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
@@ -67,7 +67,7 @@ namespace Tests.Functional
     [TestCaseSource(nameof(inject_point_id_ctor))]
     public void should_call_constructor_marked_with_attribute(string injectPointId, IBuildAction getConstructorAction)
     {
-      var target = new Builder(BuildStage.Cache, BuildStage.Create)
+      var target = new Builder("test", BuildStage.Cache, BuildStage.Create)
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
                        new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
@@ -89,7 +89,7 @@ namespace Tests.Functional
     [Test]
     public void should_call_constructor_matched_with_parameter_types()
     {
-      var target = new Builder(BuildStage.Cache, BuildStage.Create)
+      var target = new Builder("test", BuildStage.Cache, BuildStage.Create)
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
@@ -127,7 +127,7 @@ namespace Tests.Functional
     [Test]
     public void should_use_personal_rules_for_each_type()
     {
-      var target = new Builder(BuildStage.Cache, BuildStage.Create)
+      var target = new Builder("test", BuildStage.Cache, BuildStage.Create)
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
@@ -158,7 +158,7 @@ namespace Tests.Functional
     [Test]
     public void should_fail_if_no_constructor_found()
     {
-      var target = new Builder(BuildStage.Cache, BuildStage.Create)
+      var target = new Builder("test", BuildStage.Cache, BuildStage.Create)
                    {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(

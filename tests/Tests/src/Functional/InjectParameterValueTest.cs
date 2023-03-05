@@ -300,8 +300,6 @@ namespace Tests.Functional
        .TreatAll()
        .UsingArguments(expected);
 
-      target.PrintToLog();
-
       // --act
       var actual = target.Build<LevelThree>()!;
 
@@ -387,7 +385,7 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+      => new("test", BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())

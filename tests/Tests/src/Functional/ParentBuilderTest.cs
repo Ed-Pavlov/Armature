@@ -121,7 +121,7 @@ namespace Tests.Functional
       const string expected = "expectedString";
 
       // --arrange
-      var parentBuilder = new Builder(BuildStage.Cache);
+      var parentBuilder = new Builder("test", BuildStage.Cache);
       parentBuilder.Treat<string>().AsInstance(expected);
 
       var target = CreateTarget(parentBuilder);
@@ -144,7 +144,7 @@ namespace Tests.Functional
       const string expected = "expectedString";
 
       // --arrange
-      var parentBuilder = new Builder(BuildStage.Cache);
+      var parentBuilder = new Builder("test", BuildStage.Cache);
       parentBuilder.Treat<string>().AsInstance(expected + "bad");
 
       var target = CreateTarget(parentBuilder);
@@ -169,10 +169,10 @@ namespace Tests.Functional
     public void should_report_all_armature_exceptions_from_parent_builders()
     {
       // --arrange
-      var parent1 = new Builder(BuildStage.Create)
+      var parent1 = new Builder("test", BuildStage.Create)
        .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArmatureException()));
 
-      var parent2 = new Builder(BuildStage.Create)
+      var parent2 = new Builder("test", BuildStage.Create)
        .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArmatureException()));
 
       var target = CreateTarget(parent1, parent2);
@@ -191,10 +191,10 @@ namespace Tests.Functional
     {
       const string expected = "parent2string";
 
-      var parent1 = new Builder(BuildStage.Create)
+      var parent1 = new Builder("test", BuildStage.Create)
        .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArgumentOutOfRangeException()));
 
-      var parent2 = new Builder(BuildStage.Cache)
+      var parent2 = new Builder("test", BuildStage.Cache)
        .With(builder => builder.Treat<string>().AsInstance(expected));
 
       var target = CreateTarget(parent1, parent2);
@@ -209,7 +209,7 @@ namespace Tests.Functional
     {
       const string expected = "parent2string";
 
-      var parent = new Builder(BuildStage.Cache)
+      var parent = new Builder("test", BuildStage.Cache)
        .With(builder => builder.Treat<string>().AsInstance(expected));
 
       var target = CreateTarget(parent);
@@ -235,7 +235,7 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget(params Builder[] parents)
-      => new(new object[] {BuildStage.Cache, BuildStage.Create}, parents)
+      => new("test", new object[] {BuildStage.Cache, BuildStage.Create}, parents)
          {
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
