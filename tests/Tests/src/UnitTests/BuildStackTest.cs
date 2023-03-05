@@ -3,6 +3,7 @@ using System.Linq;
 using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.Util;
 
 namespace Tests.UnitTests;
 
@@ -31,7 +32,7 @@ public class BuildStackTest
     var stack = new BuildSession.Stack(expected.Reverse().ToArray());
 
     // act, assert
-    stack.Should().BeEquivalentTo(expected);
+    stack.AsEnumerable().Should().BeEquivalentTo(expected);
   }
 
   [Test]
@@ -45,7 +46,7 @@ public class BuildStackTest
     var tail = stack.GetTail(1);
 
     // assert
-    tail.Should().BeEquivalentTo(array.Reverse().Skip(1));
+    tail.AsEnumerable().Should().BeEquivalentTo(array.Reverse().Skip(1));
   }
 
   [Test]
