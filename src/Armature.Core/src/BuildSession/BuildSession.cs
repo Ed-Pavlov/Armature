@@ -14,7 +14,6 @@ namespace Armature.Core;
 public partial class BuildSession
 {
   private const string GatherBuildActions = "GatherBuildActions";
-  private const string ParentBuilder      = "ParentBuilder";
 
   private readonly object[]            _buildStages;
   private readonly IBuildStackPattern  _mainBuildStackPatternTree;
@@ -233,7 +232,7 @@ public partial class BuildSession
     foreach(var parentBuilder in _parentBuilders)
       try
       {
-        using(Log.NamedBlock(LogLevel.Info, () => $"{ParentBuilder}({parentBuilder.Name})"))
+        using(Log.NamedBlock(LogLevel.Info, () => $"{parentBuilder.Name}"))
         {
           var buildResult = parentBuilder.BuildUnit(unitId, _auxPatternTree);
 
