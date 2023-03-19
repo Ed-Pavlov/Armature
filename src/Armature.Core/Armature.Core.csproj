@@ -44,8 +44,6 @@
 
   <ItemGroup>
     <Folder Include="src\BuildActions\Creation" />
-    <Folder Include="src\UnitPatterns\Method" />
-    <Folder Include="src\UnitPatterns\UnitType" />
   </ItemGroup>
 
   <PropertyGroup Label="nuspec">

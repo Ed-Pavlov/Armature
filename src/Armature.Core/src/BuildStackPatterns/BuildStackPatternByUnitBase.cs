@@ -13,6 +13,8 @@ public abstract class BuildStackPatternByUnitBase : BuildStackPatternBase, IInte
   protected BuildStackPatternByUnitBase(IUnitPattern unitPattern, int weight) : base(weight)
     => UnitPattern = unitPattern ?? throw new ArgumentNullException(nameof(unitPattern));
 
+  public override bool IsStatic(out UnitId unitId) => UnitPattern is IStaticPattern @static ? @static.IsStatic(out unitId) : base.IsStatic(out unitId);
+
   protected override void PrintContentToLog(LogLevel logLevel)
   {
     Log.WriteLine(LogLevel.Info, $"Pattern: {UnitPattern.ToHoconString()}");

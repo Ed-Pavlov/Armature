@@ -6,7 +6,7 @@ namespace Armature.Core;
 /// <summary>
 /// Checks if a unit matches with the specified kind and a tag.
 /// </summary>
-public sealed record UnitPattern : IUnitPattern, ILogString
+public sealed record UnitPattern : IUnitPattern, ILogString, IStaticPattern
 {
   private readonly object? _unitKind;
   private readonly object? _tag;
@@ -27,4 +27,10 @@ public sealed record UnitPattern : IUnitPattern, ILogString
   public string ToHoconString() => $"{{ {nameof(UnitPattern)} {{ kind: {_unitKind.ToHoconString()}, tag: {_tag.ToHoconString()} }} }}";
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
+
+  public bool IsStatic(out UnitId unitId)
+  {
+    unitId = new UnitId(_unitKind, _tag);
+    return !Equals(_tag, Tag.Any);
+  }
 }

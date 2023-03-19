@@ -92,6 +92,12 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
     }
   }
 
+  public virtual bool IsStatic(out UnitId unitId)
+  {
+    unitId = default;
+    return false;
+  }
+
   public void PrintToLog(LogLevel logLevel = LogLevel.None)
   {
     using(Log.NamedBlock(logLevel, ToHoconString))
@@ -136,7 +142,6 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
   public override bool Equals(object? obj) => Equals(obj as IBuildStackPattern);
   public override int  GetHashCode()       => Weight.GetHashCode();
 
-  public void             Add(IBuildStackPattern buildStackPattern) => Children.Add(buildStackPattern);
   IEnumerator IEnumerable.GetEnumerator()                           => RawChildren?.GetEnumerator() ?? Empty<IBuildStackPattern>.Array.GetEnumerator();
 
   #region Internal

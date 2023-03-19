@@ -6,7 +6,7 @@ namespace Armature.Core;
 /// <summary>
 /// A pattern used to match a unit or their combination in the build stack. See <see cref="BuildSession.Stack"/> for details.
 /// </summary>
-public interface IBuildStackPattern : IEquatable<IBuildStackPattern>, ILogString
+public interface IBuildStackPattern : IEquatable<IBuildStackPattern>, IStaticPattern, ILogString
 {
   /// <summary>
   /// The collection of all children nodes used to find existing one, add new, or replace one with another.

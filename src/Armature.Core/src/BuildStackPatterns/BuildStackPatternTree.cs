@@ -23,6 +23,7 @@ namespace Armature.Core;
 public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrintable
 {
   private readonly Root _root;
+  private readonly Dictionary<UnitId, IBuildStackPattern> _staticMap = new();
 
   public BuildStackPatternTree(int weight = 0) => _root = new Root(weight, this);
 
@@ -31,6 +32,12 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrinta
   ///<inheritdoc />
   bool IBuildStackPattern.GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
     => _root.GatherBuildActions(stack, out actionBag, 0);
+
+  bool IStaticPattern.IsStatic(out UnitId unitId)
+  {
+    unitId = default;
+    return false;
+  }
 
   ///<inheritdoc />
   public virtual void PrintToLog(LogLevel logLevel = LogLevel.None) => _root.PrintToLog(logLevel);
