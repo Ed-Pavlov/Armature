@@ -22,18 +22,18 @@ namespace Armature.Core;
 /// </remarks>
 public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrintable
 {
-  private readonly RootNode _rootNode;
+  private readonly Root _root;
 
-  public BuildStackPatternTree(int weight = 0) => _rootNode = new RootNode(weight, this);
+  public BuildStackPatternTree(int weight = 0) => _root = new Root(weight, this);
 
-  HashSet<IBuildStackPattern> IBuildStackPattern.Children => _rootNode.Children;
+  HashSet<IBuildStackPattern> IBuildStackPattern.Children => _root.Children;
 
   ///<inheritdoc />
   bool IBuildStackPattern.GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
-    => _rootNode.GatherBuildActions(stack, out actionBag, 0);
+    => _root.GatherBuildActions(stack, out actionBag, 0);
 
   ///<inheritdoc />
-  public virtual void PrintToLog(LogLevel logLevel = LogLevel.None) => _rootNode.PrintToLog(logLevel);
+  public virtual void PrintToLog(LogLevel logLevel = LogLevel.None) => _root.PrintToLog(logLevel);
 
   ///<inheritdoc />
   BuildActionBag IBuildStackPattern.BuildActions => throw new NotSupportedException();
@@ -50,12 +50,12 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrinta
   /// <summary>
   /// Reuse implementation of <see cref="BuildStackPatternBase" /> to implement <see cref="BuildStackPatternTree" /> public interface.
   /// </summary>
-  private class RootNode : BuildStackPatternBase
+  private class Root : BuildStackPatternBase
   {
     private readonly ILogString _logString;
 
     [DebuggerStepThrough]
-    public RootNode(int weight, ILogString logString) : base(weight) => _logString = logString ?? throw new ArgumentNullException(nameof(logString));
+    public Root(int weight, ILogString logString) : base(weight) => _logString = logString ?? throw new ArgumentNullException(nameof(logString));
 
     [DebuggerStepThrough]
     public override bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
