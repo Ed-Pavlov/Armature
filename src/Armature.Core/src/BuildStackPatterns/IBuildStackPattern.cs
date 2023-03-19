@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Armature.Core;
 
@@ -9,15 +8,26 @@ namespace Armature.Core;
 public interface IBuildStackPattern : IEquatable<IBuildStackPattern>, IStaticPattern, ILogString
 {
   /// <summary>
-  /// The collection of all children nodes used to find existing one, add new, or replace one with another.
-  /// All nodes with their children are a build stack pattern tree.
+  /// Adds a <paramref name="node" /> as a child node if the node is not already added. Returns the new node, or the existing node if the node already added.
   /// </summary>
-  HashSet<IBuildStackPattern> Children { get; }
+  /// <remarks>Call it first and then fill returned <see cref="IBuildStackPattern" /> with build actions or perform other needed actions due to
+  /// it can return other instance of <see cref="IBuildStackPattern"/> then passed <paramref name="node"/>.</remarks>
+  T GetOrAddNode<T>(T node) where T : IBuildStackPattern;
 
   /// <summary>
-  /// The collection of build actions which should be performed to build a unit.
+  /// Adds the <paramref name="node" /> as a child node.
   /// </summary>
-  BuildActionBag BuildActions { get; }
+  /// <exception cref="ArmatureException">A node is already in the tree.</exception>
+  T AddNode<T>(T node, string? exceptionMessage = null) where T : IBuildStackPattern;
+
+  /// <summary>
+  /// Adds a <see cref="IBuildAction" /> which will be called to build a Target Unit matched by the branch of the build stack pattern tree represented
+  /// by this node with its parents.
+  /// </summary>
+  /// <param name="buildAction">A build action.</param>
+  /// <param name="buildStage">A build stage in which the build action is executed.</param>
+  /// <returns>Returns true if build action was added, false if the equal build action is already in the collection.</returns>
+  bool AddBuildAction(IBuildAction buildAction, object buildStage);
 
   /// <summary>
   /// Returns build actions which should be performed to build a <see cref="BuildSession.Stack.TargetUnit"/>.

@@ -20,14 +20,12 @@ namespace Armature.Core;
 ///      .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
 /// };
 /// </remarks>
-public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrintable
+public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILoggable
 {
   private readonly Root _root;
   private readonly Dictionary<UnitId, IBuildStackPattern> _staticMap = new();
 
   public BuildStackPatternTree(int weight = 0) => _root = new Root(weight, this);
-
-  HashSet<IBuildStackPattern> IBuildStackPattern.Children => _root.Children;
 
   ///<inheritdoc />
   bool IBuildStackPattern.GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
@@ -42,14 +40,15 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILogPrinta
   ///<inheritdoc />
   public virtual void PrintToLog(LogLevel logLevel = LogLevel.None) => _root.PrintToLog(logLevel);
 
-  ///<inheritdoc />
-  BuildActionBag IBuildStackPattern.BuildActions => throw new NotSupportedException();
+  public T GetOrAddNode<T>(T node) where T : IBuildStackPattern                                  => _root.GetOrAddNode(node);
+  public T AddNode<T>(T      node, string? exceptionMessage = null) where T : IBuildStackPattern => _root.AddNode(node, exceptionMessage);
 
+  bool IBuildStackPattern.AddBuildAction(IBuildAction buildAction, object buildStage) => throw new NotSupportedException();
   bool IEquatable<IBuildStackPattern>.Equals(IBuildStackPattern other) => throw new NotSupportedException();
 
   #region Syntax sugar
 
-  public void             Add(IBuildStackPattern buildStackPattern) => ((IBuildStackPattern) this).Children.Add(buildStackPattern);
+  public void             Add(IBuildStackPattern buildStackPattern) => _root.AddNode(buildStackPattern);
   IEnumerator IEnumerable.GetEnumerator()                           => throw new NotSupportedException();
 
   #endregion

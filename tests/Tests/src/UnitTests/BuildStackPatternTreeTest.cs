@@ -23,8 +23,8 @@ namespace Tests.UnitTests
       var matchAny      = new SkipTillUnit(unitIdMatcher).UseBuildAction(singletonAction, BuildStage.Cache);
 
       IBuildStackPattern target = new BuildStackPatternTree();
-      target.Children.Add(matchString);
-      target.Children.Add(matchAny);
+      target.AddNode(matchString);
+      target.AddNode(matchAny);
 
       // --act
       var actual = target.GatherBuildActions(TUnit.OfType<string>().ToBuildStack(), out var actionBag);

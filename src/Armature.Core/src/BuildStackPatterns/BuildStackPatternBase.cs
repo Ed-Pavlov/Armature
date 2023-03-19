@@ -1,28 +1,79 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Armature.Core.Internal;
 using Armature.Core.Sdk;
 using JetBrains.Annotations;
 
 namespace Armature.Core;
 
 /// <summary>
-/// Base class implementing <see cref="IBuildStackPattern.BuildActions"/>
+/// Base class implementing <see cref="IBuildStackPattern.AddBuildAction"/>
 /// </summary>
-public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, ILogPrintable, IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?>
+public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, ILoggable, IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?>
 {
   [PublicAPI]
-  protected BuildActionBag?              RawBuildActions;
+  protected BuildActionBag? RawBuildActions;
   protected HashSet<IBuildStackPattern>? RawChildren;
 
   protected BuildStackPatternBase(int weight) => Weight = weight;
 
   protected long Weight { [DebuggerStepThrough] get; }
 
-  public BuildActionBag              BuildActions => RawBuildActions ??= new BuildActionBag();
-  public HashSet<IBuildStackPattern> Children     => RawChildren ??= new HashSet<IBuildStackPattern>();
+  public BuildActionBag BuildActions => RawBuildActions ??= new BuildActionBag();
+
+  /// <summary>
+  /// The collection of all children nodes used to find existing one, add new, or replace one with another.
+  /// All nodes with their children are a build stack pattern tree.
+  /// </summary>
+  public HashSet<IBuildStackPattern> Children => RawChildren ??= new HashSet<IBuildStackPattern>();
+
+  /// <summary>
+  /// Adds a <paramref name="node" /> as a child node if the node is not already added. Returns the new node, or the existing node if the node already added.
+  /// </summary>
+  /// <remarks>Call it first and then fill returned <see cref="IBuildStackPattern" /> with build actions or perform other needed actions due to
+  /// it can return other instance of <see cref="IBuildStackPattern"/> then passed <paramref name="node"/>.</remarks>
+  public virtual T GetOrAddNode<T>(T node) where T : IBuildStackPattern
+  {
+    if(node is null) throw new ArgumentNullException(nameof(node));
+
+    if(Children.TryGetValue(node, out var actualNode))
+      return (T) actualNode;
+
+    Children.Add(node);
+    return node;
+  }
+
+  public virtual T AddNode<T>(T node, string? exceptionMessage = null) where T : IBuildStackPattern
+  {
+    if(node is null) throw new ArgumentNullException(nameof(node));
+
+    if(!Children.Add(node))
+      throw new ArmatureException(exceptionMessage ?? $"Node '{node}' is already in the tree.")
+           .AddData($"this", this)
+           .AddData($"{nameof(node)}", node);
+
+    return node;
+  }
+
+  public bool AddBuildAction(IBuildAction buildAction, object buildStage)
+  {
+    if(!BuildActions.TryGetValue(buildStage, out var list))
+    {
+      list = new List<IBuildAction>();
+      RawBuildActions!.Add(buildStage, list); // RawBuildActions is not null at this point
+    }
+
+    if(list.Contains(buildAction)) return false;
+
+    list.Add(buildAction);
+    return true;
+  }
+
+  public abstract bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight);
 
   [PublicAPI]
   protected bool GetOwnBuildActions(long inputWeight, out WeightedBuildActionBag? actionBag)
@@ -52,8 +103,6 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
 
     return result;
   }
-
-  public abstract bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight);
 
   /// <summary>
   /// Gathers and merges build actions from all children nodes.
@@ -122,7 +171,7 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
   {
     if(RawChildren is not null)
       foreach(var child in RawChildren)
-        if(child is ILogPrintable printable)
+        if(child is ILoggable printable)
           printable.PrintToLog(logLevel);
         else
           Log.WriteLine(logLevel, $"Child: {child.ToHoconString()}");
@@ -142,11 +191,13 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
   public override bool Equals(object? obj) => Equals(obj as IBuildStackPattern);
   public override int  GetHashCode()       => Weight.GetHashCode();
 
-  IEnumerator IEnumerable.GetEnumerator()                           => RawChildren?.GetEnumerator() ?? Empty<IBuildStackPattern>.Array.GetEnumerator();
+  IEnumerator IEnumerable.GetEnumerator() => RawChildren?.GetEnumerator() ?? Empty<IBuildStackPattern>.Array.GetEnumerator();
 
   #region Internal
-  long IInternal<long>.Member1 => Weight;
-  HashSet<IBuildStackPattern>? IInternal<long, HashSet<IBuildStackPattern>?>.Member2 => RawChildren;
+
+  long IInternal<long>.                                                          Member1 => Weight;
+  HashSet<IBuildStackPattern>? IInternal<long, HashSet<IBuildStackPattern>?>.    Member2 => RawChildren;
   BuildActionBag? IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?>.Member3 => RawBuildActions;
+
   #endregion
 }
