@@ -18,7 +18,7 @@ public interface IBuildStackPattern : IEquatable<IBuildStackPattern>, IStaticPat
   /// Adds the <paramref name="node" /> as a child node.
   /// </summary>
   /// <exception cref="ArmatureException">A node is already in the tree.</exception>
-  T AddNode<T>(T node, string? exceptionMessage = null) where T : IBuildStackPattern;
+  T AddNode<T>(T node) where T : IBuildStackPattern;
 
   /// <summary>
   /// Adds a <see cref="IBuildAction" /> which will be called to build a Target Unit matched by the branch of the build stack pattern tree represented

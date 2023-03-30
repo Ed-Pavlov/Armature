@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using Armature.Core.Internal;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -8,7 +9,7 @@ namespace Armature.Core;
 /// <summary>
 /// Collection of build actions with weight grouped by a build stage.
 /// </summary>
-public class WeightedBuildActionBag : Dictionary<object, List<Weighted<IBuildAction>>>
+public class WeightedBuildActionBag : Dictionary<object, LeanList<Weighted<IBuildAction>>>
 {
   [DebuggerStepThrough]
   public override string ToString()

@@ -6,7 +6,7 @@ namespace Tests.Performance;
 
 [MemoryDiagnoser]
 [SimpleJob(RuntimeMoniker.Net472, LaunchCount, WarmupCount, IterationCount, InvocationCount)]
-[SimpleJob(RuntimeMoniker.Net70, LaunchCount, WarmupCount, IterationCount, InvocationCount)]
+[SimpleJob(RuntimeMoniker.Net60, LaunchCount, WarmupCount, IterationCount, InvocationCount)]
 public class IfFirstUnitBenchmark
 {
   private const int LaunchCount    = -1;

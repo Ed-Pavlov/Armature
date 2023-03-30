@@ -11,19 +11,19 @@ namespace Tests.Performance;
 [MemoryDiagnoser]
 [SimpleJob(RuntimeMoniker.Net472)]
 [SimpleJob(RuntimeMoniker.Net60)]
-public class GatherBuildActionOnBigTreeBenchmark
+public class GatherBuildActionOnRealTreeBenchmark
 {
   private readonly IBuildStackPattern _treeRoot;
 
   private readonly BuildSession.Stack _stack = new BuildSession.Stack(new[] {Unit.Of("unobtanium")});
 
-  public GatherBuildActionOnBigTreeBenchmark()
+  public GatherBuildActionOnRealTreeBenchmark()
   {
     var builder = new Builder("GatherBuildActionOnBigTreeBenchmark", BuildStage.Cache, BuildStage.Initialize, BuildStage.Create);
 
     // Treat<I>().AsCreated<C>().AsSingleton();
-    const int registrationsCount    = 3_000;
-    const int argsRegistrationCount = 100;
+    const int registrationsCount    = 100;
+    const int argsRegistrationCount = 10;
 
     for(var i = 1; i < registrationsCount; i++)
     {
@@ -65,6 +65,7 @@ public class GatherBuildActionOnBigTreeBenchmark
 
 
 // Before optimization
+
 // * Summary *
 
 // BenchmarkDotNet=v0.13.3, OS=Windows 10 (10.0.19045.2728)
@@ -74,22 +75,17 @@ public class GatherBuildActionOnBigTreeBenchmark
 //   .NET Framework 4.7.2 : .NET Framework 4.8 (4.8.4614.0), X64 RyuJIT VectorSize=256
 //
 //
-// |             Method |                  Job |              Runtime |     Mean |   Error |  StdDev | Allocated |
-// |------------------- |--------------------- |--------------------- |---------:|--------:|--------:|----------:|
-// | GatherBuildActions |             .NET 6.0 |             .NET 6.0 | 125.6 us | 1.51 us | 1.41 us |         - |
-// | GatherBuildActions | .NET Framework 4.7.2 | .NET Framework 4.7.2 | 205.0 us | 1.57 us | 1.31 us |         - |
+// |             Method |                  Job |              Runtime |     Mean |     Error |    StdDev | Allocated |
+// |------------------- |--------------------- |--------------------- |---------:|----------:|----------:|----------:|
+// | GatherBuildActions |             .NET 6.0 |             .NET 6.0 | 4.236 us | 0.0832 us | 0.0890 us |         - |
+// | GatherBuildActions | .NET Framework 4.7.2 | .NET Framework 4.7.2 | 6.876 us | 0.0474 us | 0.0444 us |         - |
 //
-// // * Hints *
-// Outliers
-//   GatherBuildActionOnBigTreeBenchmark.GatherBuildActions: .NET Framework 4.7.2 -> 2 outliers were removed (216.90 us, 218.58 us)
-
 // // * Legends *
 //   Mean      : Arithmetic mean of all measurements
 //   Error     : Half of 99.9% confidence interval
 //   StdDev    : Standard deviation of all measurements
 //   Allocated : Allocated memory per single operation (managed only, inclusive, 1KB = 1024B)
 //   1 us      : 1 Microsecond (0.000001 sec)
-
 
 // After introducing _staticMap in BuildStackPatternTree
 // * Summary *
@@ -104,13 +100,8 @@ public class GatherBuildActionOnBigTreeBenchmark
 //
 // |             Method |                  Job |              Runtime |     Mean |    Error |   StdDev | Allocated |
 // |------------------- |--------------------- |--------------------- |---------:|---------:|---------:|----------:|
-// | GatherBuildActions |             .NET 6.0 |             .NET 6.0 | 11.13 ns | 0.056 ns | 0.053 ns |         - |
-// | GatherBuildActions | .NET Framework 4.7.2 | .NET Framework 4.7.2 | 41.33 ns | 0.180 ns | 0.159 ns |         - |
-//
-// // * Hints *
-// Outliers
-//   GatherBuildActionOnBigTreeBenchmark.GatherBuildActions: .NET 6.0             -> 1 outlier  was  detected (12.13 ns)
-//   GatherBuildActionOnBigTreeBenchmark.GatherBuildActions: .NET Framework 4.7.2 -> 1 outlier  was  removed (42.98 ns)
+// | GatherBuildActions |             .NET 6.0 |             .NET 6.0 | 10.76 ns | 0.062 ns | 0.058 ns |         - |
+// | GatherBuildActions | .NET Framework 4.7.2 | .NET Framework 4.7.2 | 41.42 ns | 0.237 ns | 0.221 ns |         - |
 //
 // // * Legends *
 //   Mean      : Arithmetic mean of all measurements

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using Armature.Core.Internal;
 using Armature.Core.Sdk;
@@ -47,14 +46,12 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
     return node;
   }
 
-  public virtual T AddNode<T>(T node, string? exceptionMessage = null) where T : IBuildStackPattern
+  public virtual T AddNode<T>(T node) where T : IBuildStackPattern
   {
     if(node is null) throw new ArgumentNullException(nameof(node));
 
     if(!Children.Add(node))
-      throw new ArmatureException(exceptionMessage ?? $"Node '{node}' is already in the tree.")
-           .AddData($"this", this)
-           .AddData($"{nameof(node)}", node);
+      BuildStackPatternExtension.ThrowNodeIsAlreadyAddedException(this, node);
 
     return node;
   }
@@ -85,7 +82,15 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
     actionBag = new WeightedBuildActionBag();
 
     foreach(var pair in RawBuildActions)
-      actionBag.Add(pair.Key, pair.Value.Select(_ => _.WithWeight(matchingWeight)).ToList());
+    {
+      var actions         = pair.Value;
+      var weightedActions = new LeanList<Weighted<IBuildAction>>(actions.Count);
+
+      foreach(var buildAction in actions)
+        weightedActions.Add(buildAction.WithWeight(matchingWeight));
+
+      actionBag.Add(pair.Key, weightedActions);
+    }
 
     return true;
   }
@@ -147,7 +152,7 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
     return false;
   }
 
-  public void PrintToLog(LogLevel logLevel = LogLevel.None)
+  public virtual void PrintToLog(LogLevel logLevel = LogLevel.None)
   {
     using(Log.NamedBlock(logLevel, ToHoconString))
     {

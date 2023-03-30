@@ -59,7 +59,7 @@ namespace Tests.Functional
       Action action = () => target.Build<Subject>();
 
       // --assert
-      action.Should().Throw<ArmatureException>().Where(_ => _.Message.StartsWith("Two or more building actions matched with the same weight"));
+      action.Should().Throw<ArmatureException>().Where(_ => _.Message.StartsWith("Two or more building actions with the same weight are matched. See log for details."));
     }
 
     private static Builder CreateTarget()

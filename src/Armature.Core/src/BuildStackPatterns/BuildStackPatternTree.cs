@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using Armature.Core.Internal;
 
 namespace Armature.Core;
 
@@ -22,14 +24,31 @@ namespace Armature.Core;
 /// </remarks>
 public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILoggable
 {
-  private readonly Root _root;
-  private readonly Dictionary<UnitId, IBuildStackPattern> _staticMap = new();
+  private readonly string _name;
+  private readonly Root   _root;
 
-  public BuildStackPatternTree(int weight = 0) => _root = new Root(weight, this);
+  private readonly Dictionary<UnitId, LeanList<IBuildStackPattern>> _staticMap = new();
+
+  public BuildStackPatternTree(string name, int weight = 0)
+  {
+    _name = name ?? throw new ArgumentNullException(nameof(name));
+    _root = new Root(weight, this);
+  }
 
   ///<inheritdoc />
   bool IBuildStackPattern.GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
-    => _root.GatherBuildActions(stack, out actionBag, 0);
+  {
+    _root.GatherBuildActions(stack, out actionBag, 0);
+
+    if(_staticMap.TryGetValue(stack.TargetUnit, out var list))
+      foreach(var node in list)
+      {
+        node.GatherBuildActions(stack, out var bag);
+        actionBag = actionBag.Merge(bag);
+      }
+
+    return actionBag != null;
+  }
 
   bool IStaticPattern.IsStatic(out UnitId unitId)
   {
@@ -38,13 +57,74 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILoggable
   }
 
   ///<inheritdoc />
-  public virtual void PrintToLog(LogLevel logLevel = LogLevel.None) => _root.PrintToLog(logLevel);
+  public virtual void PrintToLog(LogLevel logLevel = LogLevel.None)
+  {
+    using(Log.NamedBlock(logLevel, ToHoconString))
+    {
+      foreach(var node in _staticMap.Values.SelectMany(list => list))
+      {
+        if(node is ILoggable loggable)
+          loggable.PrintToLog(logLevel);
+        else
+          Log.WriteLine(logLevel, node.ToHoconString());
+      }
 
-  public T GetOrAddNode<T>(T node) where T : IBuildStackPattern                                  => _root.GetOrAddNode(node);
-  public T AddNode<T>(T      node, string? exceptionMessage = null) where T : IBuildStackPattern => _root.AddNode(node, exceptionMessage);
+      _root.PrintToLog(logLevel);
+    }
+  }
 
-  bool IBuildStackPattern.AddBuildAction(IBuildAction buildAction, object buildStage) => throw new NotSupportedException();
-  bool IEquatable<IBuildStackPattern>.Equals(IBuildStackPattern other) => throw new NotSupportedException();
+  public T GetOrAddNode<T>(T node) where T : IBuildStackPattern
+  {
+    IBuildStackPattern result;
+
+    if(node is not IStaticPattern staticPattern || !staticPattern.IsStatic(out var unitId))
+      result = _root.GetOrAddNode(node);
+    else
+    {
+      if(!_staticMap.TryGetValue(unitId, out var list))
+      { // no list - no node, add passed one
+        list = new LeanList<IBuildStackPattern> {node};
+        _staticMap.Add(unitId, list);
+        result = node;
+      }
+      else
+      {
+        var indexOfExistentNode = list.IndexOf(node);
+
+        if(indexOfExistentNode >= 0)
+          result = list[indexOfExistentNode]; // list contains equal node, return it
+        else
+        {
+          list.Add(node); // list presents but doesn't contain a node equal to passed, add passed one
+          result = node;
+        }
+      }
+    }
+
+    return (T) result;
+  }
+
+  public T AddNode<T>(T node) where T : IBuildStackPattern
+  {
+    if(node is not IStaticPattern staticPattern || !staticPattern.IsStatic(out var unitId))
+      _root.AddNode(node);
+    else
+    {
+      if(!_staticMap.TryGetValue(unitId, out var list))
+        _staticMap.Add(unitId, new LeanList<IBuildStackPattern> {node}); // no list - no node, add passed one
+      else if(!list.Contains(node))
+        list.Add(node); // list presents but doesn't contain a node equal to passed, add passed one
+      else
+        BuildStackPatternExtension.ThrowNodeIsAlreadyAddedException(this, node);
+    }
+
+    return node;
+  }
+
+  public virtual string ToHoconString() => _name.ToHoconString();
+
+  bool IBuildStackPattern.            AddBuildAction(IBuildAction buildAction, object buildStage) => throw new NotSupportedException();
+  bool IEquatable<IBuildStackPattern>.Equals(IBuildStackPattern   other) => throw new NotSupportedException();
 
   #region Syntax sugar
 
@@ -78,12 +158,12 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILoggable
       return true;
     }
 
+    public override void PrintToLog(LogLevel logLevel = LogLevel.None) => PrintChildrenToLog(logLevel);
+
     [DebuggerStepThrough]
     public override string ToHoconString() => _logString.ToHoconString();
 
     [DebuggerStepThrough]
     public override bool Equals(IBuildStackPattern? other) => throw new NotSupportedException();
   }
-
-  public virtual string ToHoconString() => GetType().GetShortName().QuoteIfNeeded();
 }

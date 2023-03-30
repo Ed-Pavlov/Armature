@@ -17,7 +17,7 @@ public class Builder : BuildStackPatternTree, IBuilder
 
   private string? _hoconString;
 
-  public Builder() => throw new ArgumentException("Provide stages");
+  public Builder() : base("Error") => throw new ArgumentException("Provide stages");
 
   /// <param name="name">Used in logs an for debugging</param>
   /// <param name="buildStages">The ordered collection of build stages all of which are performed to build a unit.</param>
@@ -32,7 +32,7 @@ public class Builder : BuildStackPatternTree, IBuilder
   /// If unit is not built and <paramref name="parentBuilders" /> are provided, tries to build an unit using
   /// parent builders one by one in the order they passed into the constructor.
   /// </param>
-  public Builder(string name, object[] buildStages, params IBuilder[]? parentBuilders)
+  public Builder(string name, object[] buildStages, params IBuilder[]? parentBuilders) : base(name)
   {
     Name         = name        ?? throw new ArgumentNullException(nameof(name));
     _buildStages = buildStages ?? throw new ArgumentNullException(nameof(buildStages));

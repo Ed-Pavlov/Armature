@@ -22,7 +22,7 @@ namespace Tests.UnitTests
       var matchString   = new IfFirstUnit(unitIdMatcher).UseBuildAction(new CreateByReflection(), BuildStage.Cache);
       var matchAny      = new SkipTillUnit(unitIdMatcher).UseBuildAction(singletonAction, BuildStage.Cache);
 
-      IBuildStackPattern target = new BuildStackPatternTree();
+      IBuildStackPattern target = new BuildStackPatternTree("test");
       target.AddNode(matchString);
       target.AddNode(matchAny);
 

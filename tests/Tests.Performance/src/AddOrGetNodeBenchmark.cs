@@ -7,7 +7,7 @@ namespace Tests.Performance;
 
 [MemoryDiagnoser]
 [SimpleJob(RuntimeMoniker.Net472)]
-[SimpleJob(RuntimeMoniker.Net70)]
+[SimpleJob(RuntimeMoniker.Net60)]
 public class AddOrGetNodeBenchmark
 {
   [Benchmark]

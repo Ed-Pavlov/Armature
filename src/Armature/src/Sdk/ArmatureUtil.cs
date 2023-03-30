@@ -66,7 +66,7 @@ public static class ArmatureUtil
   /// </summary>
   public static BuildStackPatternTree CreatePatternTreeOnArguments(object[]? arguments, short weight = -10)
   {
-    var patternTree = new BuildStackPatternTree(weight); // decrease weight of the "runtime" arguments by default
+    var patternTree = new BuildStackPatternTree("\"Runtime Arguments\"", weight); // decrease weight of the "runtime" arguments by default
 
     if(arguments is {Length: > 0})
     {

@@ -1,4 +1,6 @@
-﻿namespace Armature.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Armature.Core;
 
 public static class BuildStackPatternExtension
 {
@@ -9,4 +11,10 @@ public static class BuildStackPatternExtension
     node.AddBuildAction(buildAction, buildStage);
     return node;
   }
+
+  [DoesNotReturn]
+  public static void ThrowNodeIsAlreadyAddedException(IBuildStackPattern parentNode, IBuildStackPattern node)
+    => throw new ArmatureException($"Node '{node}' is already in the tree.")
+            .AddData($"{nameof(parentNode)}", parentNode)
+            .AddData($"{nameof(node)}", node);
 }

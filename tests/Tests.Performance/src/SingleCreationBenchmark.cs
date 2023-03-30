@@ -8,7 +8,7 @@ namespace Tests.Performance;
 
 [MemoryDiagnoser]
 [SimpleJob(RuntimeMoniker.Net472)]
-[SimpleJob(RuntimeMoniker.Net70)]
+[SimpleJob(RuntimeMoniker.Net60)]
 public class SingleCreationBenchmark
 {
   private readonly object[] _args = {"1", "2", "3", "4", "5", "6", "7"};
