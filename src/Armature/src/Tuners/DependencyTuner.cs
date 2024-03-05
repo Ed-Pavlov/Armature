@@ -16,9 +16,9 @@ namespace Armature;
 public static class DependencyTuner
 {
   /// <summary>
-  /// Tunes how dependencies of an unit represented by <paramref name="tuner"/> should be built
+  /// Tunes how dependencies of a unit represented by <paramref name="tuner"/> should be built
   /// </summary>
-  /// <param name="tuner">Tuner of an unit building rules</param>
+  /// <param name="tuner">Tuner of a unit building rules</param>
   /// <param name="arguments">Arguments should be object instances or implementation of <see cref="IArgumentSideTuner"/></param>
   public static T UsingArguments<T>(T tuner, params object[] arguments) where T : ITunerBase
   {
@@ -54,9 +54,9 @@ public static class DependencyTuner
   }
 
   /// <summary>
-  /// Tunes which members should be used as injection points dependencies of an unit represented by <paramref name="tuner"/>
+  /// Tunes which members should be used as injection points dependencies of a unit represented by <paramref name="tuner"/>
   /// </summary>
-  /// <param name="tuner">Tuner of an unit building rules</param>
+  /// <param name="tuner">Tuner of a unit building rules</param>
   /// <param name="injectionPoints">See inheritors of <see cref="IInjectionPointSideTuner"/> and usages in tests for details</param>
   public static T UsingInjectionPoints<T>(T tuner, params IInjectionPointSideTuner[] injectionPoints) where T : ITunerBase
   {
@@ -71,9 +71,9 @@ public static class DependencyTuner
   }
 
   /// <summary>
-  /// Applies passed implementation of <see cref="ISideTuner"/> to an unit represented by <paramref name="tuner"/>
+  /// Applies passed implementation of <see cref="ISideTuner"/> to a unit represented by <paramref name="tuner"/>
   /// </summary>
-  /// <param name="tuner">Tuner of an unit building rules</param>
+  /// <param name="tuner">Tuner of a unit building rules</param>
   /// <param name="sideTuners">See implementations of <see cref="ISideTuner"/> and their usages for details.</param>
   public static T Using<T>(T tuner, params ISideTuner[] sideTuners) where T : ITunerBase
   {

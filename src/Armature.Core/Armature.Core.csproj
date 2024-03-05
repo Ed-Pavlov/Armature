@@ -42,10 +42,6 @@
     <Compile Remove="src\UnitPatterns\IUnitPattern.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="src\BuildActions\Creation" />
-  </ItemGroup>
-
   <PropertyGroup Label="nuspec">
     <description>The core part of the Armature framework, can be used to build your own framework with syntax and features of your choice</description>
   </PropertyGroup>

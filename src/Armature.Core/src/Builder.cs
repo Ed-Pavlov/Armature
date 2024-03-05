@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Armature.Core.Sdk;
+using JetBrains.Annotations;
 
 
 namespace Armature.Core;
@@ -17,6 +18,7 @@ public class Builder : BuildStackPatternTree, IBuilder
 
   private string? _hoconString;
 
+  [PublicAPI]
   public Builder() : base("Error") => throw new ArgumentException("Provide stages");
 
   /// <param name="name">Used in logs an for debugging</param>
@@ -29,7 +31,7 @@ public class Builder : BuildStackPatternTree, IBuilder
   /// <param name="buildStages">The ordered collection of build stages all of which are performed to build a unit.
   /// See <see cref="BuildStackPatternExtension.UseBuildAction"/> for details.</param>
   /// <param name="parentBuilders">
-  /// If unit is not built and <paramref name="parentBuilders" /> are provided, tries to build an unit using
+  /// If unit is not built and <paramref name="parentBuilders" /> are provided, tries to build a unit using
   /// parent builders one by one in the order they passed into the constructor.
   /// </param>
   public Builder(string name, object[] buildStages, params IBuilder[]? parentBuilders) : base(name)

@@ -182,8 +182,8 @@ namespace Tests.Functional
 
       // --assert
       action.Should()
-          .ThrowExactly<ArmatureException>()
-          .Where(_ => _.InnerExceptions.Count == 2 && _.InnerExceptions.All(inner => inner is ArmatureException));
+            .ThrowExactly<ArmatureException>()
+            .Where(_ => _.InnerExceptions.Count == 2 && _.InnerExceptions.All(inner => inner is ArmatureException));
     }
 
     [Test]
@@ -214,9 +214,10 @@ namespace Tests.Functional
 
       var target = CreateTarget(parent);
 
-      // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder
+      // add build action which actual doesn't build any value, in this case Armature should try to build a unit via parent builder
       target
-       // .GetOrAddNode(new SkipAllUnits())
+
+        // .GetOrAddNode(new SkipAllUnits())
        .AddNode(new IfFirstUnit(new CanBeInstantiated()))
        .UseBuildAction(new DebugOnlyBuildAction(), BuildStage.Cache);
 
@@ -234,15 +235,15 @@ namespace Tests.Functional
       public void PostProcess(IBuildSession buildSession) { }
     }
 
-    private static Builder CreateTarget(params Builder[] parents)
-      => new("test", new object[] {BuildStage.Cache, BuildStage.Create}, parents)
+    private static Builder CreateTarget(params IBuilder[] parents)
+      => new("test", [BuildStage.Cache, BuildStage.Create], parents)
          {
-             new IfFirstUnit(new IsConstructor())
-              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoArray())
-              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfo())
-              .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
+           new IfFirstUnit(new IsConstructor())
+            .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
+           new IfFirstUnit(new IsParameterInfoArray())
+            .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+           new IfFirstUnit(new IsParameterInfo())
+            .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
          };
 
     [UsedImplicitly]

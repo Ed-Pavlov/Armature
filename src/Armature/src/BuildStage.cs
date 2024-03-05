@@ -11,9 +11,9 @@ namespace Armature;
 /// </summary>
 /// <remarks>Use objects but int or enum in order to avoid memory traffic on boxing.</remarks>
 /// <example>
-/// new <see cref="Builder"/>(<see cref="BuildStage"/>.<see cref="Intercept"/>, <see cref="BuildStage"/>.<see cref="BuildStage.Cache"/> , <see cref="BuildStage"/>.<see cref="BuildStage.Initialize"/>, <see cref="BuildStage"/>.<see cref="BuildStage.Create"/>);
+/// new <see cref="Builder"/>(<see cref="BuildStage"/>.<see cref="Intercept"/>, <see cref="BuildStage"/>.<see cref="BuildStage.Cache"/>, <see cref="BuildStage"/>.<see cref="BuildStage.Initialize"/>, <see cref="BuildStage"/>.<see cref="BuildStage.Create"/>);
 ///
-/// An action of the <see cref="BuildStage"/>.<see cref="BuildStage.Create"/> stage will create an Unit in the <see cref="IBuildAction"/>.<see cref="IBuildAction.Process"/> method.
+/// An action of the <see cref="BuildStage"/>.<see cref="BuildStage.Create"/> stage will create a unit in the <see cref="IBuildAction"/>.<see cref="IBuildAction.Process"/> method.
 /// Then an action of the <see cref="BuildStage"/>.<see cref="BuildStage.Initialize"/> stage if any will inject dependencies in the <see cref="IBuildAction"/>.<see cref="IBuildAction.PostProcess"/> method.
 /// Then an action of the <see cref="BuildStage"/>.<see cref="BuildStage.Intercept"/> stage if any will subscribe events, log the event of creation, call methods, etc. in the <see cref="IBuildAction"/>.<see cref="IBuildAction.PostProcess"/> method.
 /// Then an action of the <see cref="BuildStage"/>.<see cref="Cache"/> stage if any will cache the instance in the <see cref="IBuildAction"/>.<see cref="IBuildAction.PostProcess"/> method.

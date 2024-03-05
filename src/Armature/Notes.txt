@@ -248,7 +248,7 @@ BuildingInheritorsOf<B>.TreatAll.UsingArguments.UsingInjectPoints
 Treat<I>.AsCreated<C>.AsSingleton.BuildingWhich.TreatAll.UsingArguments
 
 
-3. Arguments for an unit and its dependencies
+3. Arguments for a unit and its dependencies
 
 Treat<I>.AsCreated<C>.UseArguments.InTheContext.UseArguments
 
@@ -260,7 +260,7 @@ We need both TreatAll and BuildingIt
 Building<I>.Building<J>.TreatAll
 Building<I>.Building<J>.Treat<C>   both are needed and TreatAll explicitly specifies what we mean
 
-Treat<C>.UsingArguments.BuildingIt.TreatAll/Treat<Hz>.UsingArguments - the way to specify arguments for an unit and its dependencies
+Treat<C>.UsingArguments.BuildingIt.TreatAll/Treat<Hz>.UsingArguments - the way to specify arguments for a unit and its dependencies
 
 Treat<C>   IfFirst<C>
 AsIs          -> CreateBA

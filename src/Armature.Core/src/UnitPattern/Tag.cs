@@ -16,7 +16,7 @@ public class Tag : ILogString
   public Tag([CallerMemberName] string name = "") => _name = name ?? throw new ArgumentNullException(nameof(name));
 
   /// <summary>
-  /// Means "any tag", it is used in patterns to match an unit regardless a tag.
+  /// Means "any tag", it is used in patterns to match a unit regardless a tag.
   /// </summary>
   public static readonly Tag Any = new();
 
