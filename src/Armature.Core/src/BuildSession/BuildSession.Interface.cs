@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Armature.Core.Sdk;
 
 namespace Armature.Core;
@@ -7,26 +6,18 @@ namespace Armature.Core;
 public partial class BuildSession
 {
   /// <inheritdoc />
-  private class Interface : IBuildSession
+  private class Interface(BuildSession buildSession, Stack stack) : IBuildSession
   {
-    private readonly BuildSession _buildSession;
-
-    public Interface(BuildSession buildSession, Stack stack)
-    {
-      Stack    = stack;
-      _buildSession = buildSession ?? throw new ArgumentNullException(nameof(buildSession));
-    }
-
     ///<inheritdoc />
     public BuildResult BuildResult { get; set; }
 
     ///<inheritdoc />
-    public Stack Stack { get; }
+    public Stack Stack { get; } = stack;
 
     ///<inheritdoc />
-    public BuildResult BuildUnit(UnitId unitId) => _buildSession.BuildUnit(unitId);
+    public BuildResult BuildUnit(UnitId unitId, bool engageParentBuilders = true) => buildSession.BuildUnit(unitId, engageParentBuilders);
 
     ///<inheritdoc />
-    public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId) => _buildSession.BuildAllUnits(unitId);
+    public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId, bool engageParentBuilders = true) => buildSession.BuildAllUnits(unitId, engageParentBuilders);
   }
 }

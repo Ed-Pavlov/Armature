@@ -21,7 +21,7 @@ public class RedirectOpenGenericTypeTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(TUnit.OfType<IEnumerable<int>>().ToBuildStack());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>(tag)));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>(tag), true));
     buildUnitCall.Returns(expected.ToBuildResult());
 
     var target = new RedirectOpenGenericType(typeof(List<>), tag);
@@ -42,7 +42,7 @@ public class RedirectOpenGenericTypeTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(TUnit.OfType<IEnumerable<int>>(tag).ToBuildStack());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>(tag)));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>(tag), true));
     buildUnitCall.Returns(expected.ToBuildResult());
 
     var target = new RedirectOpenGenericType(typeof(List<>), ServiceTag.Propagate);
@@ -63,7 +63,7 @@ public class RedirectOpenGenericTypeTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(TUnit.OfType<string>().ToBuildStack());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>()));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>(), true));
     buildUnitCall.Returns(expected.ToBuildResult());
 
     var target = new RedirectOpenGenericType(typeof(List<>), null);
@@ -84,7 +84,7 @@ public class RedirectOpenGenericTypeTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(TUnit.OfType<string>().ToBuildStack());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>()));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>(), true));
     buildUnitCall.Returns(expected.ToBuildResult());
 
     var target = new RedirectOpenGenericType(typeof(List<>), null, false);
@@ -106,7 +106,7 @@ public class RedirectOpenGenericTypeTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(Unit.Of(typeof(IEnumerable<>)).ToBuildStack());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>()));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>(), true));
     buildUnitCall.Returns(expected.ToBuildResult());
 
     var target = new RedirectOpenGenericType(typeof(List<>), null);
@@ -127,7 +127,7 @@ public class RedirectOpenGenericTypeTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(Unit.Of(typeof(IEnumerable<>)).ToBuildStack());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>()));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>(), true));
     buildUnitCall.Returns(expected.ToBuildResult());
 
     var target = new RedirectOpenGenericType(typeof(List<>), null, false);
@@ -149,7 +149,7 @@ public class RedirectOpenGenericTypeTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(TUnit.OfType<Dictionary<int, int>>().ToBuildStack());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>()));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>(), true));
     buildUnitCall.Returns(expected.ToBuildResult());
 
     var target = new RedirectOpenGenericType(typeof(List<>), null);
@@ -170,7 +170,7 @@ public class RedirectOpenGenericTypeTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(TUnit.OfType<Dictionary<int, int>>().ToBuildStack());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>()));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>(), true));
     buildUnitCall.Returns(expected.ToBuildResult());
 
     var target = new RedirectOpenGenericType(typeof(List<>), null, false);

@@ -27,7 +27,7 @@ public class BuildListArgumentForMethodParameterTest
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
 
-    var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(TUnit.OfType<int>(tag)));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(TUnit.OfType<int>(tag), true));
     buildUnitCall.Returns(expected.Select(_ => _.ToBuildResult().WithWeight(_)).ToList());
 
     var target = new BuildListArgumentForMethodParameter(tag);
@@ -38,7 +38,7 @@ public class BuildListArgumentForMethodParameterTest
     // --assert
     buildUnitCall.MustHaveHappenedOnceAndOnly();
     buildSession.BuildResult.Value.As<List<int>>().Should().Equal(expected);
-    A.CallTo(() => buildSession.BuildUnit(default)).WithAnyArguments().MustNotHaveHappened();
+    A.CallTo(() => buildSession.BuildUnit(default, true)).WithAnyArguments().MustNotHaveHappened();
   }
 
   [Test]
@@ -51,7 +51,7 @@ public class BuildListArgumentForMethodParameterTest
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(Unit.Of(parameterInfo, tag).ToBuildStack());
 
-    var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(TUnit.OfType<int>(tag)));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(TUnit.OfType<int>(tag), true));
     buildUnitCall.Returns(expected.Select(_ => _.ToBuildResult().WithWeight(_)).ToList());
 
     var target = new BuildListArgumentForMethodParameter(ServiceTag.Propagate);
@@ -62,7 +62,7 @@ public class BuildListArgumentForMethodParameterTest
     // --assert
     buildUnitCall.MustHaveHappenedOnceAndOnly();
     buildSession.BuildResult.Value.As<List<int>>().Should().Equal(expected);
-    A.CallTo(() => buildSession.BuildUnit(default)).WithAnyArguments().MustNotHaveHappened();
+    A.CallTo(() => buildSession.BuildUnit(default, true)).WithAnyArguments().MustNotHaveHappened();
   }
 
   [Test]
@@ -74,7 +74,7 @@ public class BuildListArgumentForMethodParameterTest
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(Unit.Of(parameterInfo, tag).ToBuildStack());
 
-    var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(TUnit.OfType<int>(tag)));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(TUnit.OfType<int>(tag), true));
 
     var target = new BuildListArgumentForMethodParameter(ServiceTag.Propagate);
 
@@ -84,7 +84,7 @@ public class BuildListArgumentForMethodParameterTest
     // --assert
     buildUnitCall.MustNotHaveHappened();
     buildSession.BuildResult.HasValue.Should().BeFalse();
-    A.CallTo(() => buildSession.BuildUnit(default)).WithAnyArguments().MustNotHaveHappened();
+    A.CallTo(() => buildSession.BuildUnit(default, true)).WithAnyArguments().MustNotHaveHappened();
   }
 
   private static IEnumerable<ParameterInfo> not_collection_types()

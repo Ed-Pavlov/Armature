@@ -22,7 +22,7 @@ public class BuildArgumentByParameterTypeTest
     // --arrange
     var actual = A.Fake<IBuildSession>();
     A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
-    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.ParameterType, tag))).Returns(expected.ToBuildResult());
+    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.ParameterType, tag), true)).Returns(expected.ToBuildResult());
 
     var target = new BuildArgumentByParameterType(tag);
 
@@ -30,7 +30,7 @@ public class BuildArgumentByParameterTypeTest
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.ParameterType, tag))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.ParameterType, tag), true)).MustHaveHappenedOnceAndOnly();
     actual.BuildResult.Value.Should().Be(expected);
   }
 
@@ -49,7 +49,7 @@ public class BuildArgumentByParameterTypeTest
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.ParameterType, tag))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.ParameterType, tag), true)).MustHaveHappenedOnceAndOnly();
   }
 
   [SuppressMessage("ReSharper", "UnusedParameter.Local")]

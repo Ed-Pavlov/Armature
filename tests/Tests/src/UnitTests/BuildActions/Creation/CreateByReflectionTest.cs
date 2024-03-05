@@ -22,7 +22,7 @@ public class CreateByReflectionTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(Unit.Of(unitType).ToBuildStack());
-    var buildConstructor = A.CallTo(() => buildSession.BuildUnit(Unit.Of(unitType, ServiceTag.Constructor)));
+    var buildConstructor = A.CallTo(() => buildSession.BuildUnit(Unit.Of(unitType, ServiceTag.Constructor), true));
 
     buildConstructor.Returns(new BuildResult(unitType.GetConstructors().Single(_ => _.GetParameters().Length == 0))); // default constructor
 
@@ -33,7 +33,7 @@ public class CreateByReflectionTest
 
     // --assert
     buildConstructor.MustHaveHappenedOnceExactly();
-    A.CallTo(() => buildSession.BuildUnit(default)).WhenBuildAnyArguments().MustNotHaveHappened();
+    A.CallTo(() => buildSession.BuildUnit(default, true)).WhenBuildAnyArguments().MustNotHaveHappened();
     buildSession.BuildResult.Value.Should().BeOfType<SubjectClass>();
   }
 
@@ -47,10 +47,10 @@ public class CreateByReflectionTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(Unit.Of(unitType).ToBuildStack());
-    var buildConstructor = A.CallTo(() => buildSession.BuildUnit(Unit.Of(unitType, ServiceTag.Constructor)));
+    var buildConstructor = A.CallTo(() => buildSession.BuildUnit(Unit.Of(unitType, ServiceTag.Constructor), true));
     buildConstructor.Returns(new BuildResult(unitType.GetConstructors().Single(_ => _.GetParameters().Length == 1))); // constructor(int i)
 
-    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default)).WhenBuildArgumentsOfType<int>();
+    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default, true)).WhenBuildArgumentsOfType<int>();
     buildArguments.Returns(new BuildResult(new object?[] {expected}));
 
     var target = new CreateByReflection();
@@ -72,7 +72,7 @@ public class CreateByReflectionTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(Unit.Of(unitType).ToBuildStack());
-    var buildConstructor = A.CallTo(() => buildSession.BuildUnit(Unit.Of(unitType, ServiceTag.Constructor)));
+    var buildConstructor = A.CallTo(() => buildSession.BuildUnit(Unit.Of(unitType, ServiceTag.Constructor), true));
     buildConstructor.Returns(new BuildResult(unitType.GetConstructors().Single(_ => _.GetParameters().Length == 0))); // default constructor
 
     var target = new CreateByReflection();
@@ -98,7 +98,7 @@ public class CreateByReflectionTest
 
     // --assert
     buildSession.BuildResult.HasValue.Should().BeFalse();
-    A.CallTo(() => buildSession.BuildUnit(default)).WithAnyArguments().MustNotHaveHappened();
+    A.CallTo(() => buildSession.BuildUnit(default, true)).WithAnyArguments().MustNotHaveHappened();
   }
 
   [Test]
@@ -109,7 +109,7 @@ public class CreateByReflectionTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(Unit.Of(unitType).ToBuildStack());
-    A.CallTo(() => buildSession.BuildUnit(Unit.Of(unitType, ServiceTag.Constructor))).Returns(default);
+    A.CallTo(() => buildSession.BuildUnit(Unit.Of(unitType, ServiceTag.Constructor), true)).Returns(default);
 
     var target = new CreateByReflection();
 
@@ -132,7 +132,7 @@ public class CreateByReflectionTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(Unit.Of(unitType).ToBuildStack());
-    A.CallTo(() => buildSession.BuildUnit(Unit.Of(unitType, ServiceTag.Constructor))).Returns(new BuildResult(ctor));
+    A.CallTo(() => buildSession.BuildUnit(Unit.Of(unitType, ServiceTag.Constructor), true)).Returns(new BuildResult(ctor));
 
     var target = new CreateByReflection();
 

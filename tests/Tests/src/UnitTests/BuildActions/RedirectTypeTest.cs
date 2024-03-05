@@ -20,7 +20,7 @@ public class RedirectTypeTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(TUnit.OfType<IDisposable>().ToBuildStack());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<MemoryStream>(tag)));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<MemoryStream>(tag), true));
     buildUnitCall.Returns(expected.ToBuildResult());
 
     var target = new Redirect(Unit.Of(typeof(MemoryStream), tag));
@@ -41,7 +41,7 @@ public class RedirectTypeTest
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
     A.CallTo(() => buildSession.Stack).Returns(TUnit.OfType<IDisposable>(tag).ToBuildStack());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<MemoryStream>(tag)));
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<MemoryStream>(tag), true));
     buildUnitCall.Returns(expected.ToBuildResult());
 
     var target = new Redirect(Unit.Of(typeof(MemoryStream), ServiceTag.Propagate));

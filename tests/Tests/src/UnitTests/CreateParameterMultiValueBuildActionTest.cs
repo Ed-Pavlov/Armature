@@ -22,7 +22,7 @@ namespace Tests.UnitTests
       var target       = new BuildListArgumentForMethodParameter();
       var buildSession = A.Fake<IBuildSession>();
       A.CallTo(() => buildSession.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
-      A.CallTo(() => buildSession.BuildAllUnits(default)).WithAnyArguments().Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());
+      A.CallTo(() => buildSession.BuildAllUnits(default, true)).WithAnyArguments().Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());
 
       // --act
       target.Process(buildSession);

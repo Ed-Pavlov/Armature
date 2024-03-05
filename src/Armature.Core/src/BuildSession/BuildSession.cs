@@ -9,7 +9,7 @@ namespace Armature.Core;
 /// <summary>
 /// Represents whole build session of one Unit, all dependency of the being built Unit are built in the context of one build session.
 /// </summary>
-/// <remarks>It could be for example IA -> A -> IB -> B -> int. This stack means that for now Unit of type int is the target unit
+/// <remarks>It could be for example IA -> A -> IB -> B -> int. This stack means that for now Unit of type int is the target unit,
 /// but it is built in the "context" of the whole build stack.</remarks>
 public partial class BuildSession
 {
@@ -18,8 +18,8 @@ public partial class BuildSession
   private readonly object[]            _buildStages;
   private readonly IBuildStackPattern  _mainBuildStackPatternTree;
   private readonly IBuildStackPattern? _auxPatternTree;
-  private readonly IBuilder[]?         _parentBuilders;
-  private readonly List<UnitId>        _buildStackList = new List<UnitId>(4);
+  private readonly IBuilder[]          _parentBuilders;
+  private readonly List<UnitId>        _buildStackList = new(4);
 
   /// <param name="buildStages">The sequence of build stages. See <see cref="Builder" /> for details.</param>
   /// <param name="patternTree">Build stack patterns tree used to find build actions to build a unit.</param>
@@ -39,28 +39,21 @@ public partial class BuildSession
 
     _mainBuildStackPatternTree = patternTree ?? throw new ArgumentNullException(nameof(patternTree));
     _auxPatternTree            = auxPatternTree;
-    _parentBuilders            = parentBuilders;
+    _parentBuilders            = parentBuilders ?? Empty<IBuilder>.Array;
   }
 
-  /// <summary>
-  /// Builds a Unit represented by <paramref name="unitId" />
-  /// </summary>
-  /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildStackPattern" /> for details</param>
-  public BuildResult BuildUnit(UnitId unitId)
+  /// <inheritdoc cref="IBuildSession.BuildUnit"/>
+  public BuildResult BuildUnit(UnitId unitId, bool engageParentBuilders = true)
   {
-    using(Log.NamedBlock(LogLevel.Info, "Build", true))
-      return Build(unitId, BuildUnit);
+    using(Log.NamedBlock(LogLevel.Info, nameof(BuildUnit), true))
+      return Build(unitId, (stack, bag) => BuildUnit(stack, bag, engageParentBuilders));
   }
 
-  /// <summary>
-  /// Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
-  /// This can be useful to build all implementers of an interface.
-  /// </summary>
-  /// <param name="unitId">"Id" of the unit to build.</param>
-  public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId)
+  /// <inheritdoc cref="IBuildSession.BuildAllUnits"/>
+  public List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId, bool engageParentBuilders = true)
   {
-    using(Log.NamedBlock(LogLevel.Info, "BuildAll", true))
-      return Build(unitId, BuildAllUnits);
+    using(Log.NamedBlock(LogLevel.Info, nameof(BuildAllUnits), true))
+      return Build(unitId, (stack, bag) => BuildAllUnits(stack, bag, engageParentBuilders));
   }
 
   /// <summary>
@@ -89,7 +82,7 @@ public partial class BuildSession
 
       Log.WriteLine(LogLevel.Verbose, "");
 
-      using(Log.NamedBlock(LogLevel.Verbose, GatherBuildActions))
+      using(Log.NamedBlock(LogLevel.Verbose, nameof(GatherBuildActions)))
       {
         _mainBuildStackPatternTree.GatherBuildActions(stack, out actions);
         _auxPatternTree?.GatherBuildActions(stack, out auxActions);
@@ -115,10 +108,10 @@ public partial class BuildSession
     return result;
   }
 
-  private BuildResult BuildUnit(Stack stack, WeightedBuildActionBag? buildActionBag)
+  private BuildResult BuildUnit(Stack stack, WeightedBuildActionBag? buildActionBag, bool engageParentBuilders)
   {
     if(buildActionBag is null)
-      return BuildViaParentBuilder(stack.TargetUnit);
+      return engageParentBuilders ? BuildViaParentBuilder(stack.TargetUnit) : default;
 
     // builder to pass into IBuildActon.Execute
     var buildSession     = new Interface(this, stack);
@@ -145,11 +138,11 @@ public partial class BuildSession
       BuildActionPostProcess(buildAction, buildSession);
 
     return buildSession.BuildResult.HasValue
-               ? buildSession.BuildResult
-               : BuildViaParentBuilder(stack.TargetUnit);
+             ? buildSession.BuildResult
+             : BuildViaParentBuilder(stack.TargetUnit);
   }
 
-  private List<Weighted<BuildResult>> BuildAllUnits(Stack stack, WeightedBuildActionBag? buildActionBag)
+  private List<Weighted<BuildResult>> BuildAllUnits(Stack stack, WeightedBuildActionBag? buildActionBag, bool engageParentBuilders)
   {
     if(buildActionBag is null) return Empty<Weighted<BuildResult>>.List;
 
@@ -181,12 +174,25 @@ public partial class BuildSession
         buildResultList.Add(buildSession.BuildResult.WithWeight(weightedBuildAction.Weight));
     }
 
-    Log_BuildAllResult(buildResultList);
+    Log_BuildAllResult("BuildAll.Result", buildResultList);
+
+    if(engageParentBuilders)
+    {
+      var unitId = stack.TargetUnit;
+      foreach(var parentBuilder in _parentBuilders)
+      {
+        var list = parentBuilder.BuildAllUnits(unitId);
+        Log_BuildAllResult($"ParentBuilder.{parentBuilder.Name}.BuildAll.Result", buildResultList);
+        buildResultList.AddRange(list);
+      }
+    }
+
     return buildResultList;
   }
 
   private static void BuildActionProcess(IBuildAction buildAction, IBuildSession buildSession)
   {
+    // ReSharper disable once ConvertClosureToMethodGroup - method group is worse in terms of performance
     using(Log.NamedBlock(LogLevel.Info, () => buildAction.ProcessMethod()))
       try
       {
@@ -225,8 +231,6 @@ public partial class BuildSession
 
   private BuildResult BuildViaParentBuilder(UnitId unitId)
   {
-    if(_parentBuilders is null) return default;
-
     var exceptions = new List<Exception>();
 
     foreach(var parentBuilder in _parentBuilders)
@@ -252,10 +256,10 @@ public partial class BuildSession
 
     if(exceptions.Count > 0)
       throw new ArmatureException(
-              $"{exceptions.Count} exceptions occured during during building an unit via parent builders."
-            + LogConst.ArmatureExceptionPostfix($" and {nameof(ArmatureException)}.{nameof(ArmatureException.InnerExceptions)}"),
-              exceptions)
-         .AddData(ExceptionConst.Logged, true);
+          $"{exceptions.Count} exceptions occured during during building a unit via parent builders."
+        + LogConst.ArmatureExceptionPostfix($" and {nameof(ArmatureException)}.{nameof(ArmatureException.InnerExceptions)}"),
+          exceptions)
+       .AddData(ExceptionConst.Logged, true);
 
     return default;
   }
@@ -270,11 +274,11 @@ public partial class BuildSession
     }
   }
 
-  private static void Log_BuildAllResult(List<Weighted<BuildResult>> buildResultList)
+  private static void Log_BuildAllResult(string title, List<Weighted<BuildResult>> buildResultList)
   {
     if(Log.IsEnabled())
     {
-      Log.WriteLine(LogLevel.Info, $"BuildAll.Result = {buildResultList.ToHoconString()}");
+      Log.WriteLine(LogLevel.Info, $"{title} = {buildResultList.ToHoconString()}");
       Log.WriteLine(LogLevel.Info, "");
     }
   }
@@ -282,6 +286,7 @@ public partial class BuildSession
   private static void Log_BuildActionResult(IBuildAction buildAction, BuildResult buildResult)
   {
     var logLevel = buildResult.HasValue ? LogLevel.Info : LogLevel.Trace;
+
     if(Log.IsEnabled(logLevel))
       Log.WriteLine(logLevel, $"{buildAction.GetName()}.Result = {buildResult.ToLogString()}");
   }
@@ -289,7 +294,7 @@ public partial class BuildSession
   private static void Log_GatheredActions(WeightedBuildActionBag? actionBag)
   {
     Log.WriteLine(LogLevel.Info, "");
-    actionBag.WriteToLog(LogLevel.Info, $"{GatherBuildActions}.Result: ");
+    actionBag.WriteToLog(LogLevel.Info, $"{nameof(GatherBuildActions)}.Result: ");
     Log.WriteLine(LogLevel.Info, "");
   }
 }
