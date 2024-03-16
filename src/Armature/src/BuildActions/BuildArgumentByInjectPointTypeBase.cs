@@ -4,7 +4,7 @@ using Armature.Core;
 using Armature.Core.Annotations;
 using Armature.Sdk;
 
-namespace Armature.BuildActions;
+namespace Armature;
 
 /// <summary>
 /// Base class for build actions building arguments to inject into inject points marked with <see cref="InjectAttribute"/>.

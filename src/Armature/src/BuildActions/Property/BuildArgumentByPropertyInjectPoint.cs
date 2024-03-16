@@ -3,7 +3,7 @@ using System.Reflection;
 using Armature.Core;
 using Armature.Core.Annotations;
 
-namespace Armature.BuildActions.Property;
+namespace Armature;
 
 /// <summary>
 /// Builds an argument for the property which is marked with <see cref="InjectAttribute"/> using <see cref="MemberInfo.Name"/> and

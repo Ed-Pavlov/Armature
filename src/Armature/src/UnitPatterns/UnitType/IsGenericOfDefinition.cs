@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Armature.Core;
 using Armature.Sdk;
 
-namespace Armature.UnitPatterns.UnitType;
+namespace Armature;
 
 /// <summary>
 /// Checks if a unit is a generic type and it's <see cref="Type.GetGenericTypeDefinition"/> is as specified open generic type.

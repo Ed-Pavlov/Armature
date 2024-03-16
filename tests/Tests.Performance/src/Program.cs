@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using Armature.Core;
 using BenchmarkDotNet.Running;
 using Tests.Performance;
 

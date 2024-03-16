@@ -15,12 +15,12 @@ public interface IBuildingTuner<in T> : ISettingTuner
   void AsInstance(T instance);
 
   /// <summary>
-  /// Set that object of the specified <paramref name="type"/> should be build.
+  /// Set that object of the specified <paramref name="type"/> should be built.
   /// </summary>
   ICreationTuner As(Type type, object? tag = null);
 
   /// <summary>
-  /// Set that object of the type <typeparamref name="TRedirect"/> should be build.
+  /// Set that object of the type <typeparamref name="TRedirect"/> should be built.
   /// </summary>
   ICreationTuner As<TRedirect>(object? tag = null);
 

@@ -6,7 +6,7 @@ using Armature.Core;
 using Armature.Core.Annotations;
 using Armature.Sdk;
 
-namespace Armature.BuildActions.Property;
+namespace Armature;
 
 /// <summary>
 /// Gets a list of  properties marked with <see cref="InjectAttribute" /> with specified tags <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" />.

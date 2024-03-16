@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Armature;
-using Armature.BuildActions.Method;
 using Armature.Core;
 using FakeItEasy;
 using FluentAssertions;

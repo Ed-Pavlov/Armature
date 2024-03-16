@@ -2,7 +2,7 @@
 using Armature.Core;
 using Armature.Sdk;
 
-namespace Armature.UnitPatterns;
+namespace Armature;
 
 /// <summary>
 /// Checks if a unit is a "service" unit, constructor, argument, etc.

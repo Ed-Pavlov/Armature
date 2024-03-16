@@ -6,7 +6,7 @@ using Armature.Core.Annotations;
 using Armature.Core.Sdk;
 using Armature.Sdk;
 
-namespace Armature.BuildActions.Creation;
+namespace Armature;
 
 /// <summary>
 /// Instantiates an object using reflection. See <see cref="ConstructorInfo.Invoke(object[])"/> method.

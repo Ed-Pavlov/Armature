@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Armature;
 using Armature.Core;
 using Armature.Sdk;
-using Armature.UnitPatterns.Method;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;

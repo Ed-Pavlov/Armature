@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Armature.Core.Internal;
+namespace Armature.Core;
 
 /// <summary>
 /// A list which doesn't allocate inner array if contains less than five items

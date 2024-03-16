@@ -4,7 +4,7 @@ using Armature.Core.Sdk;
 using Armature.Sdk;
 using JetBrains.Annotations;
 
-namespace Armature.UnitPatterns.UnitType;
+namespace Armature;
 
 /// <summary>
 /// Checks if a unit is an inheritor of the specified type.

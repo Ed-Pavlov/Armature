@@ -1,4 +1,4 @@
-using Armature.BuildActions.Caching;
+using Armature;
 using FluentAssertions;
 using NUnit.Framework;
 

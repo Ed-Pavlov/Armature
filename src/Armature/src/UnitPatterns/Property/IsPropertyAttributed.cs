@@ -4,7 +4,7 @@ using System.Reflection;
 using Armature.Core;
 using Armature.Core.Sdk;
 
-namespace Armature.UnitPatterns.Property;
+namespace Armature;
 
 /// <summary>
 /// Checks if a unit is an argument for an object property marked with <see cref="InjectAttribute"/> attribute

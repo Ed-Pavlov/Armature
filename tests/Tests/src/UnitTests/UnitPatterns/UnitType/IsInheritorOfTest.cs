@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Armature;
 using Armature.Core;
 using Armature.Sdk;
-using Armature.UnitPatterns.UnitType;
 using FluentAssertions;
 using NUnit.Framework;
 

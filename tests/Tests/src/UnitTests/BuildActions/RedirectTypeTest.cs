@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using Armature.BuildActions;
+using Armature;
 using Armature.Core;
 using Armature.Sdk;
 using FakeItEasy;

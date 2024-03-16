@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Armature;
-using Armature.BuildActions.Constructor;
 using Armature.Core;
 using Armature.Core.Sdk;
-using Armature.UnitPatterns;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Util;

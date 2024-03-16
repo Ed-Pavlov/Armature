@@ -2,7 +2,7 @@
 using System.Reflection;
 using Armature.Core;
 
-namespace Armature.BuildActions.Property;
+namespace Armature;
 
 /// <summary>
 /// Builds a list of arguments by using <see cref="IBuildSession.BuildAllUnits"/> method for a property.

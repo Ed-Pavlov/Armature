@@ -4,7 +4,7 @@ using Armature.Core;
 using Armature.Core.Annotations;
 using Armature.Sdk;
 
-namespace Armature.BuildActions.Method;
+namespace Armature;
 
 /// <summary>
 /// Builds arguments for constructor/method parameters one by one in the direct order.

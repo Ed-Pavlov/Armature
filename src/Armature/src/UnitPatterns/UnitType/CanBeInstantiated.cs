@@ -1,7 +1,7 @@
 ﻿using Armature.Core;
 using Armature.Sdk;
 
-namespace Armature.UnitPatterns.UnitType;
+namespace Armature;
 
 /// <summary>
 /// Checks if a unit is a type which can be instantiated.

@@ -3,7 +3,7 @@ using System.Reflection;
 using Armature.Core;
 using Armature.Sdk;
 
-namespace Armature.UnitPatterns.Method;
+namespace Armature;
 
 /// <summary>
 /// Checks if a unit is an argument for a constructor/method parameter.

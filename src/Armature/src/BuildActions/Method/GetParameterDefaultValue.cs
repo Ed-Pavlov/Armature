@@ -3,7 +3,7 @@ using System.Reflection;
 using Armature.Core;
 using Armature.Core.Annotations;
 
-namespace Armature.BuildActions.Method;
+namespace Armature;
 
 /// <summary>
 /// Gets a default parameter value of the constructor/method parameter.

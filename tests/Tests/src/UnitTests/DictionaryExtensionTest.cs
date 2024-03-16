@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Armature.Core.Internal;
+using Armature.Core;
 using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
@@ -18,7 +18,7 @@ namespace Tests.UnitTests
       var target = new Dictionary<int, string> {{1, expected}, {2, "two"}};
 
       // --act
-      var actual = target.GetValueSafe(1);
+      var actual = DictionaryExtension.GetValueSafe(target, 1);
 
       // ----assert
       actual.Should().Be(expected);
@@ -30,7 +30,7 @@ namespace Tests.UnitTests
       var target = new Dictionary<int, string> {{1, "one"}, {2, "two"}};
 
       // --act
-      var actual = target.GetValueSafe(3);
+      var actual = DictionaryExtension.GetValueSafe(target, 3);
 
       // ----assert
       actual.Should().BeNull();
@@ -42,7 +42,7 @@ namespace Tests.UnitTests
       var target = new Dictionary<int, string?> {{1, "one"}, {2, "two"}};
 
       // --act
-      var actual = target.GetOrCreateValue(3, () => null);
+      var actual = DictionaryExtension.GetOrCreateValue(target, 3, () => null);
 
       // ----assert
       actual.Should().BeNull();
@@ -55,7 +55,7 @@ namespace Tests.UnitTests
       var target = new Dictionary<int, Weighted<string>> {{1, "one".WithWeight(1)}, {2, "two".WithWeight(2)}};
 
       // --act
-      var actual = target.GetValueSafe(3);
+      var actual = DictionaryExtension.GetValueSafe(target, 3);
 
       // ----assert
       actual.Should().Be(default);
@@ -69,7 +69,7 @@ namespace Tests.UnitTests
 
       var  target = new Dictionary<string, string>();
 
-      var nullKey = () => target.GetValueSafe(null!, "value");
+      var nullKey = () => DictionaryExtension.GetValueSafe(target, null!, "value");
       nullKey.Should().ThrowExactly<ArgumentNullException>().WithParameterName("key");
     }
     [Test]
@@ -80,10 +80,10 @@ namespace Tests.UnitTests
 
       var  target = new Dictionary<string, string>();
 
-      var nullKey = () => target.GetOrCreateValue(null!, () => "value");
+      var nullKey = () => DictionaryExtension.GetOrCreateValue(target, null!, () => "value");
       nullKey.Should().ThrowExactly<ArgumentNullException>().WithParameterName("key");
 
-      var nullFactory = () => target.GetOrCreateValue("key", null!);
+      var nullFactory = () => DictionaryExtension.GetOrCreateValue(target, "key", null!);
       nullFactory.Should().ThrowExactly<ArgumentNullException>().WithParameterName("createValue");
     }
   }

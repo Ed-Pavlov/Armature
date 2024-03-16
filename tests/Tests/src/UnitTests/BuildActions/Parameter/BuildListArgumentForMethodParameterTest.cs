@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Armature.BuildActions.Method;
+using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
 using Armature.Sdk;

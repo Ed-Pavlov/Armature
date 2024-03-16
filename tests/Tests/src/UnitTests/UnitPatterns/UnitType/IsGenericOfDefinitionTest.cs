@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Armature;
 using Armature.Core;
 using Armature.Sdk;
-using Armature.UnitPatterns.UnitType;
 using FluentAssertions;
 using NUnit.Framework;
 

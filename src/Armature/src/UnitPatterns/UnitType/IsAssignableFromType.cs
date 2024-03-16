@@ -2,7 +2,7 @@
 using Armature.Core;
 using Armature.Sdk;
 
-namespace Armature.UnitPatterns.UnitType;
+namespace Armature;
 
 /// <summary>
 /// Checks whether an instance of a specified type can be assigned to an instance of the type represented by <see cref="UnitId.Kind"/>

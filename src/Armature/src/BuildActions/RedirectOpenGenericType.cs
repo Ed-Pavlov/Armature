@@ -5,7 +5,7 @@ using Armature.Core;
 using Armature.Core.Annotations;
 using Armature.Sdk;
 
-namespace Armature.BuildActions;
+namespace Armature;
 
 /// <summary>
 /// Redirects building of a unit of one open generic type to the unit of another open generic type.

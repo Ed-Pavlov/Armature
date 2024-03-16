@@ -1,7 +1,5 @@
 using Armature;
-using Armature.BuildActions.Constructor;
 using Armature.Core;
-using Armature.UnitPatterns;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;

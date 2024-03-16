@@ -7,7 +7,7 @@ using Armature.Core;
 using Armature.Core.Annotations;
 using Armature.Sdk;
 
-namespace Armature.BuildActions.Constructor;
+namespace Armature;
 
 /// <summary>
 /// Gets the constructor of the type with the largest number of parameters.

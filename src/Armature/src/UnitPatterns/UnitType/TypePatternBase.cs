@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Armature.Core;
 using Armature.Core.Sdk;
 
-namespace Armature.UnitPatterns.UnitType;
+namespace Armature;
 
 /// <summary>
 /// Base class for unit patterns matching unit with a <see cref="System.Type"/>.

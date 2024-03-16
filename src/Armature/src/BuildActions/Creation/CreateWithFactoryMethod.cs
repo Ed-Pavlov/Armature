@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Armature.Core;
 using Armature.Core.Annotations;
 
-namespace Armature.BuildActions.Creation;
+namespace Armature;
 
 /// <summary>
 /// Creates a Unit using specified factory method.

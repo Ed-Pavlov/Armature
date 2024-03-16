@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Armature.BuildActions;
+using Armature;
 using Armature.Core;
 using Armature.Sdk;
 using FakeItEasy;

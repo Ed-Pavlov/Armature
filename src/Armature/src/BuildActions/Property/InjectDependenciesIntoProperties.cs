@@ -5,7 +5,7 @@ using Armature.Core;
 using Armature.Core.Annotations;
 using Armature.Sdk;
 
-namespace Armature.BuildActions.Property;
+namespace Armature;
 
 /// <summary>
 /// Injects values into building Unit properties specified for injection

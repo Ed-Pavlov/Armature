@@ -5,7 +5,7 @@ using Armature.Core;
 using Armature.Core.Annotations;
 using Armature.Sdk;
 
-namespace Armature.BuildActions.Creation;
+namespace Armature;
 
 /// <summary>
 /// Creates a Unit using specified factory method.

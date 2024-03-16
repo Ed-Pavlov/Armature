@@ -3,7 +3,7 @@ using Armature.Core;
 using Armature.Core.Annotations;
 using Armature.Sdk;
 
-namespace Armature.BuildActions;
+namespace Armature;
 
 /// <summary>
 /// Redirects building of a unit with one <see cref="UnitId"/> to the unit with another <see cref="UnitId"/>.

@@ -1,5 +1,5 @@
 using System.Linq;
-using Armature.BuildActions.Method;
+using Armature;
 using Armature.Core;
 using Armature.Sdk;
 using FluentAssertions;

@@ -1,7 +1,4 @@
 ﻿using System;
-using Armature.BuildActions;
-using Armature.BuildActions.Caching;
-using Armature.BuildActions.Creation;
 using Armature.Core;
 using Armature.Core.Sdk;
 using Armature.Sdk;
@@ -110,6 +107,6 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
 
   #region Internals
   IUnitPattern IInternal<IUnitPattern>.                            Member1 => _unitPattern;
-  IBuildStackPattern? IInternal<IUnitPattern, IBuildStackPattern?>.Member2 => _buildStackPatternSubtree;
+  IBuildStackPattern? IInternal<IUnitPattern, IBuildStackPattern?>.Member2 => BuildStackPatternSubtree();
   #endregion
 }

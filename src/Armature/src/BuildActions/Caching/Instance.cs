@@ -2,7 +2,7 @@
 using Armature.Core;
 using Armature.Core.Annotations;
 
-namespace Armature.BuildActions.Caching;
+namespace Armature;
 
 /// <summary>
 /// Caches passed object and set it as <see cref="BuildResult" /> in <see cref="Process" />.

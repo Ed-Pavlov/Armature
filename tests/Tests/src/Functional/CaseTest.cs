@@ -2,15 +2,8 @@
 using System.IO;
 using System.Linq;
 using Armature;
-using Armature.BuildActions;
-using Armature.BuildActions.Constructor;
-using Armature.BuildActions.Method;
-using Armature.BuildActions.Property;
 using Armature.Core;
 using Armature.Core.Sdk;
-using Armature.UnitPatterns;
-using Armature.UnitPatterns.Method;
-using Armature.UnitPatterns.Property;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;

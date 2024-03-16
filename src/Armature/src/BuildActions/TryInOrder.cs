@@ -7,7 +7,7 @@ using System.Runtime.ExceptionServices;
 using Armature.Core;
 using Armature.Core.Annotations;
 
-namespace Armature.BuildActions;
+namespace Armature;
 
 /// <summary>
 /// This container is used mostly for "default" build actions applied to any target unit.

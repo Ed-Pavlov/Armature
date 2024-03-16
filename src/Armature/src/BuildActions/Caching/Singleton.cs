@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Armature.Core;
 
-namespace Armature.BuildActions.Caching;
+namespace Armature;
 
 /// <summary>
 /// The simplest eternal singleton.

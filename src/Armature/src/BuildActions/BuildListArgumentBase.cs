@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using Armature.Core;
 using Armature.Core.Annotations;
 
-namespace Armature.BuildActions;
+namespace Armature;
 
 /// <summary>
 /// Base class for build actions build a list of arguments by using <see cref="IBuildSession.BuildAllUnits"/> method.

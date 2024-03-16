@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Armature.Core;
 
-namespace Armature.BuildActions.Property;
+namespace Armature;
 
 /// <summary>
 /// Builds an argument for the property using <see cref="MemberInfo.Name"/> and specified tag as an <see cref="UnitId"/>.

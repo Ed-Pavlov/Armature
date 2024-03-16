@@ -2,12 +2,7 @@
 using System.Collections;
 using System.Runtime.InteropServices.ComTypes;
 using Armature;
-using Armature.BuildActions;
-using Armature.BuildActions.Constructor;
-using Armature.BuildActions.Method;
 using Armature.Core;
-using Armature.UnitPatterns;
-using Armature.UnitPatterns.Method;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;

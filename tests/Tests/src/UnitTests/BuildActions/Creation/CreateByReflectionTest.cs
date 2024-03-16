@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using Armature.BuildActions.Creation;
+using Armature;
 using Armature.Core;
 using Armature.Sdk;
 using FakeItEasy;

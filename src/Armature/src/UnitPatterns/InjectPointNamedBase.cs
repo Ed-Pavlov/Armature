@@ -5,7 +5,7 @@ using Armature.Core.Sdk;
 using Armature.Sdk;
 using JetBrains.Annotations;
 
-namespace Armature.UnitPatterns;
+namespace Armature;
 
 /// <summary>
 /// Base class for patterns check if a unit is an argument for an "inject point" with the specified name.

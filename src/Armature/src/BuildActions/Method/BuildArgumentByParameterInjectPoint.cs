@@ -3,7 +3,7 @@ using System.Reflection;
 using Armature.Core;
 using Armature.Core.Annotations;
 
-namespace Armature.BuildActions.Method;
+namespace Armature;
 
 /// <summary>
 /// Builds an argument for the constructor/method parameter which is marked with <see cref="InjectAttribute"/> using <see cref="ParameterInfo.Name"/> and

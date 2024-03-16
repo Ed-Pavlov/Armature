@@ -1,5 +1,5 @@
 using System;
-using Armature.BuildActions.Creation;
+using Armature;
 using Armature.Core;
 using FakeItEasy;
 using FluentAssertions;

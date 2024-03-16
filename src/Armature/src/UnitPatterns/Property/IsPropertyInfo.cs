@@ -3,7 +3,7 @@ using System.Reflection;
 using Armature.Core;
 using Armature.Sdk;
 
-namespace Armature.UnitPatterns.Property;
+namespace Armature;
 
 /// <summary>
 /// Checks if a unit is an argument to inject into the property.

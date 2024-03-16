@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Armature.Core;
 
-namespace Armature.UnitPatterns.Method;
+namespace Armature;
 
 /// <summary>
 /// Checks if a unit is an argument for a constructor/method parameter marked with <see cref="InjectAttribute"/> attribute
