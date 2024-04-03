@@ -60,7 +60,7 @@ public class BuildStackTest
     var arrayTail = new BuildSession.Stack(array).GetTail(tailStartIndex);
 
     // --assert
-    arrayTail.Length.Should().Be(arrayLength - tailStartIndex);
+    arrayTail.Count.Should().Be(arrayLength - tailStartIndex);
   }
 
   [Test]

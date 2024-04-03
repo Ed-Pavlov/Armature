@@ -122,7 +122,7 @@ namespace Tests.Functional
               .UseBuildAction(
                  new TryInOrder
                  {
-                   Static.Of<BuildArgumentByParameterTypeAndTag>(),
+                   Static.Of<BuildArgumentByParameterInjectPoint>(),
                    Static.Of<BuildArgumentByParameterType>()
                  }, BuildStage.Create),
              new IfFirstUnit(new IsParameterInfoArray())

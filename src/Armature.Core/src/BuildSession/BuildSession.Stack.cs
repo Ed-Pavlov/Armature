@@ -34,7 +34,7 @@ public partial class BuildSession
       _startIndex = startIndex;
     }
 
-    public int Length => _array.Count - _startIndex;
+    public int Count => _array.Count - _startIndex;
 
     public UnitId this[int index]
     {
@@ -69,7 +69,7 @@ public partial class BuildSession
 
       var i = 0;
 
-      for(; i < Length - 1; i++)
+      for(; i < Count - 1; i++)
       {
         sb.Append(this[i].ToHoconString());
         sb.Append(", ");

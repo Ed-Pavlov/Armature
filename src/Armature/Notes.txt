@@ -346,3 +346,35 @@ builder                                IfFirstUnit(!IsService && CanBeInstantiat
 builder                                IfFirstUnit<C> -> InjectDependenciesIntoProperties, Initialize
   Treat<C>().AsIs()
   Using(Property.ByInjectPointId())
+
+2024.03.16
+                            TreeRoot
+Treat<I>                    | IfFirst<I>
+As<C>                       |   |> RedirectTo<C>
+                            | IfFirst<C>
+                            |   -> IfFirst<I>
+CreatedByReflection()       |       |> CreateByReflection
+UsingArguments(i, "s")      | IfFirst<int>
+                            |   -> IfFirst<C>
+                            |     -> IfFirst<I>
+                            |       |> Singleton(i)
+                            | IfFirst<string>
+                            |   -> IfFirst<C>
+                            |     -> IfFirst<I>
+                            |         |> Singleton(i)
+
+2024.03.16
+                            TreeRoot
+Treat<I>                    | IfFirst<I>
+As<C>                       |   |> RedirectTo<C>
+                            | IfFirst<C>
+                            |   -> IfFirst<I>
+CreatedByReflection()       |       |> CreateByReflection
+UsingArguments(i, "s")      | IfFirst<int>
+                            |   -> IfFirst<C>
+                            |     -> IfFirst<I>
+                            |       |> Singleton(i)
+                            | IfFirst<string>
+                            |   -> IfFirst<C>
+                            |     -> IfFirst<I>
+                            |         |> Singleton(i)

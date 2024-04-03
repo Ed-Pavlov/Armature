@@ -7,7 +7,7 @@ namespace Armature;
 public interface IBuildingTuner<in T> : ISettingTuner
 {
   /// <inheritdoc cref="ISubjectTuner.AmendWeight"/>
-  new IBuildingTuner<T> AmendWeight(short delta);
+  new IBuildingTuner<T> AmendWeight(int delta);
 
   /// <summary>
   /// Use the <paramref name="instance"/> as the Unit.

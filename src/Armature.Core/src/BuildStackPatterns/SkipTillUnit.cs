@@ -19,7 +19,7 @@ public class SkipTillUnit : BuildStackPatternByUnitBase
       if(Log.IsEnabled(LogLevel.Verbose))
         Log.WriteLine(LogLevel.Verbose, $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
 
-      for(var i = 0; i < stack.Length; i++)
+      for(var i = 0; i < stack.Count; i++)
       {
         var unitInfo = stack[i];
 

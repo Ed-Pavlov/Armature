@@ -16,7 +16,7 @@ public class SkipWhileUnit : BuildStackPatternByUnitBase
         Log.WriteLine(LogLevel.Verbose, $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
 
       var i = 0;
-      for(; i < stack.Length; i++)
+      for(; i < stack.Count; i++)
         if(!UnitPattern.Matches(stack[i]))
           break;
 

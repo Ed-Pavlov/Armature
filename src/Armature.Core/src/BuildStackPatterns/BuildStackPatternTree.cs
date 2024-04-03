@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Armature.Core.Sdk;
 
 namespace Armature.Core;
 
@@ -21,7 +22,11 @@ namespace Armature.Core;
 ///      .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
 /// };
 /// </remarks>
-public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILoggable
+public class BuildStackPatternTree :
+  IBuildStackPattern,
+  IEnumerable,
+  ILoggable,
+  IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?, Dictionary<UnitId, LeanList<IBuildStackPattern>>>
 {
   private readonly string _name;
   private readonly Root   _root;
@@ -35,7 +40,7 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILoggable
   }
 
   ///<inheritdoc />
-  bool IBuildStackPattern.GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
+  public bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
   {
     _root.GatherBuildActions(stack, out actionBag, 0);
 
@@ -165,4 +170,19 @@ public class BuildStackPatternTree : IBuildStackPattern, IEnumerable, ILoggable
     [DebuggerStepThrough]
     public override bool Equals(IBuildStackPattern? other) => throw new NotSupportedException();
   }
+
+  #region Internals
+
+  long IInternal<long>.Member1 => ((IInternal<long, HashSet<IBuildStackPattern>, BuildActionBag>) _root).Member1;
+
+  HashSet<IBuildStackPattern> IInternal<long, HashSet<IBuildStackPattern>?>.Member2
+    => ((IInternal<long, HashSet<IBuildStackPattern>, BuildActionBag>) _root).Member2;
+
+  BuildActionBag? IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?>.Member3 => null;
+
+  Dictionary<UnitId, LeanList<IBuildStackPattern>>
+    IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?, Dictionary<UnitId, LeanList<IBuildStackPattern>>>.Member4
+    => _staticMap;
+
+  #endregion
 }

@@ -11,7 +11,7 @@ namespace Armature.Core;
 /// <summary>
 /// Base class implementing <see cref="IBuildStackPattern.AddBuildAction"/>
 /// </summary>
-public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, ILoggable, IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?>
+public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, ILoggable
 {
   [PublicAPI]
   protected BuildActionBag? RawBuildActions;
@@ -99,7 +99,7 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
     var result = GetOwnBuildActions(inputWeight, out actionBag);
     actionBag.WriteToLog(LogLevel.Verbose, "Actions: ");
 
-    if(RawChildren is not null && stack.Length > 0)
+    if(RawChildren is not null && stack.Count > 0)
     { // pass the rest of the stack to children and return their actions
       result    |= GetChildrenActions(stack, inputWeight, out var childrenActionBag);
       actionBag =  actionBag.Merge(childrenActionBag);

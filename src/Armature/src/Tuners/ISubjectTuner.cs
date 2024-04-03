@@ -8,7 +8,7 @@ public interface ISubjectTuner : ITunerBase
   /// <summary>
   /// Amend the weight of the current registration.
   /// </summary>
-  ISubjectTuner AmendWeight(short delta);
+  ISubjectTuner AmendWeight(int delta);
 
   /// <summary>
   /// Tune up how to treat types building in the context of <paramref name="type"/>. See <see cref="BuildSession.Stack"/> for details.

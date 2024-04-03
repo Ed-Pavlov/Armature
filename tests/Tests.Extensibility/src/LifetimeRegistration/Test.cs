@@ -47,7 +47,7 @@ public class Test
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
            new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(
-                   new TryInOrder {Static.Of<BuildArgumentByParameterTypeAndTag>(), Static.Of<BuildArgumentByParameterType>()},
+                   new TryInOrder {Static.Of<BuildArgumentByParameterInjectPoint>(), Static.Of<BuildArgumentByParameterType>()},
                    BuildStage.Create)
        };
 

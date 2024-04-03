@@ -89,7 +89,7 @@ public static class LogExtension
   {
     var sb = new StringBuilder("[");
 
-    var tillIndex = stack.Length - 1;
+    var tillIndex = stack.Count - 1;
 
     for(var i = 0; i < tillIndex; i++)
     {

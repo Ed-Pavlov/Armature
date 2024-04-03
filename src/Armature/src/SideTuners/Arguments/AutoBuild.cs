@@ -26,7 +26,7 @@ public static class AutoBuild
         tuner =>
           tuner.GetInternals()
                .TreeRoot
-               .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoArray>()))
+               .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoArray>(), WeightOf.BuildStackPattern.IfFirstUnit))
                .ApplyTuner(tuner)
                .UseBuildAction(Static.Of<BuildMethodArgumentsInDirectOrder>(), BuildStage.Create));
   }

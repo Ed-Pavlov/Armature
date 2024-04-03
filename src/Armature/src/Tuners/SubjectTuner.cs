@@ -43,10 +43,10 @@ public partial class SubjectTuner : ISubjectTuner, IAllTuner, ITuner, IInternal<
 
   public IAllTuner Using(params ISideTuner[] sideTuners) => DependencyTuner.Using(this, sideTuners);
 
-  ISubjectTuner ISubjectTuner.          AmendWeight(short delta) => AmendWeight(delta, this);
-  IAllTuner IDependencyTuner<IAllTuner>.AmendWeight(short delta) => AmendWeight<IAllTuner>(delta, this);
+  ISubjectTuner ISubjectTuner.          AmendWeight(int delta) => AmendWeight(delta, this);
+  IAllTuner IDependencyTuner<IAllTuner>.AmendWeight(int delta) => AmendWeight<IAllTuner>(delta, this);
 
-  protected T AmendWeight<T>(short delta, T inheritor)
+  protected T AmendWeight<T>(int delta, T inheritor)
   {
     Weight += delta;
     return inheritor;

@@ -34,3 +34,8 @@ public interface IInternal<out T1, out T2, out T3> : IInternal<T1, T2>
 {
   T3 Member3 { get; }
 }
+
+public interface IInternal<out T1, out T2, out T3, out T4> : IInternal<T1, T2, T3>
+{
+  T4 Member4 { get; }
+}

@@ -11,7 +11,7 @@ public partial class BuildingTuner<T>
 
   ISettingTuner ICreationTuner.CreatedByReflection() => CreateBy(Static.Of<CreateByReflection>());
 
-  ICreationTuner ICreationTuner.AmendWeight(short delta) => AmendWeight<ICreationTuner>(delta, this);
+  ICreationTuner ICreationTuner.AmendWeight(int delta) => AmendWeight<ICreationTuner>(delta, this);
 
   [PublicAPI]
   protected ISettingTuner CreateBy(IBuildAction buildAction)

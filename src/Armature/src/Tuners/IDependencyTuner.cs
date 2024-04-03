@@ -6,7 +6,7 @@ namespace Armature;
 public interface IDependencyTuner<out T> : ITunerBase
 {
   /// <inheritdoc cref="ISubjectTuner.AmendWeight"/>
-  T AmendWeight(short delta);
+  T AmendWeight(int delta);
 
   /// <summary>
   /// Applies passed rules to the unit. E.g. tuners produced by calling <see cref="ForParameter"/>, <see cref="ForProperty"/>.

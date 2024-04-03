@@ -9,5 +9,5 @@ public partial class BuildingTuner<T>
   ISettingTuner IDependencyTuner<ISettingTuner>.UsingInjectionPoints(params IInjectionPointSideTuner[] injectionPoints)
     => DependencyTuner.UsingInjectionPoints(this, injectionPoints);
 
-  ISettingTuner IDependencyTuner<ISettingTuner>.AmendWeight(short delta) => AmendWeight<ISettingTuner>(delta, this);
+  ISettingTuner IDependencyTuner<ISettingTuner>.AmendWeight(int delta) => AmendWeight<ISettingTuner>(delta, this);
 }

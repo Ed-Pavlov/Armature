@@ -13,9 +13,9 @@ public class ArrayTailEqualityComparer<T> : IEqualityComparer<BuildSession.Stack
 {
   public bool Equals(BuildSession.Stack x, BuildSession.Stack y)
   {
-    if(x.Length != y.Length) return false;
+    if(x.Count != y.Count) return false;
 
-    for(var i = 0; i < x.Length; i++)
+    for(var i = 0; i < x.Count; i++)
       if(!Equals(x[i], y[i]))
         return false;
 

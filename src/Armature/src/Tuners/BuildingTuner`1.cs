@@ -7,12 +7,13 @@ using WeightOf = Armature.Sdk.WeightOf;
 
 namespace Armature;
 
-public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreationTuner, IInternal<IUnitPattern, IBuildStackPattern?>
+public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreationTuner
 {
   [PublicAPI]
-  protected readonly IUnitPattern        _unitPattern;
+  protected readonly IUnitPattern _unitPattern;
+
   [PublicAPI]
-  protected          IBuildStackPattern? _buildStackPatternSubtree;
+  protected IBuildStackPattern? _leafNode;
 
   public BuildingTuner(ITuner parent, CreateNode createNode, IUnitPattern unitPattern)
     : base(parent, createNode)
@@ -101,12 +102,14 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
     return this;
   }
 
-  IBuildingTuner<T> IBuildingTuner<T>.AmendWeight(short delta) => AmendWeight(delta, this);
+  IBuildingTuner<T> IBuildingTuner<T>.AmendWeight(int delta) => AmendWeight(delta, this);
 
-  protected IBuildStackPattern BuildStackPatternSubtree() => _buildStackPatternSubtree ??= this.Apply();
+  protected IBuildStackPattern BuildStackPatternSubtree() => _leafNode ??= this.Tune(TreeRoot);
 
   #region Internals
-  IUnitPattern IInternal<IUnitPattern>.                            Member1 => _unitPattern;
-  IBuildStackPattern? IInternal<IUnitPattern, IBuildStackPattern?>.Member2 => BuildStackPatternSubtree();
+
+  IUnitPattern IInternal<IUnitPattern>.                          Member1 => _unitPattern;
+  IBuildStackPattern IInternal<IUnitPattern, IBuildStackPattern>.Member2 => BuildStackPatternSubtree();
+
   #endregion
 }

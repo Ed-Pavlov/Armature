@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using Armature.Core.Sdk;
 
 namespace Armature.Core;
 
 /// <summary>
 /// A pattern used to match a unit or their combination in the build stack. See <see cref="BuildSession.Stack"/> for details.
 /// </summary>
-public interface IBuildStackPattern : IEquatable<IBuildStackPattern>, IStaticPattern, ILogString
+public interface IBuildStackPattern : IEquatable<IBuildStackPattern>, IStaticPattern, ILogString, IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?>
 {
   /// <summary>
   /// Adds a <paramref name="node" /> as a child node if the node is not already added. Returns the new node, or the existing node if the node already added.

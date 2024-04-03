@@ -55,7 +55,7 @@ public static class TestUtil
       {
         if(_disposed) throw new ObjectDisposedException(nameof(Enumerator));
 
-        if(_iterator >= _buildStack.Length)
+        if(_iterator >= _buildStack.Count)
         {
           _current = default;
           return false;

@@ -9,7 +9,7 @@ namespace Armature;
 /// Builds an argument for the constructor/method parameter which is marked with <see cref="InjectAttribute"/> using <see cref="ParameterInfo.Name"/> and
 /// <see cref="InjectAttribute.Tag"/> as /// as <see cref="UnitId"/>.
 /// </summary>
-public record BuildArgumentByParameterTypeAndTag : IBuildAction
+public record BuildArgumentByParameterInjectPoint : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
@@ -35,5 +35,5 @@ public record BuildArgumentByParameterTypeAndTag : IBuildAction
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 
-  public override string ToString() => nameof(BuildArgumentByParameterTypeAndTag);
+  public override string ToString() => nameof(BuildArgumentByParameterInjectPoint);
 }

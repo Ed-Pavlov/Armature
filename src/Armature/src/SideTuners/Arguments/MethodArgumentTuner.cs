@@ -30,10 +30,10 @@ public class MethodArgumentTuner<T> : ArgumentTunerBase<T>
   public IArgumentSideTuner UseInjectPointTag()
     => new ArgumentSideTuner(
       tuner => TuneArgumentRecipientsTo(tuner, Weight)
-       .UseBuildAction(Static.Of<BuildArgumentByParameterTypeAndTag>(), BuildStage.Create));
+       .UseBuildAction(Static.Of<BuildArgumentByParameterInjectPoint>(), BuildStage.Create));
 
   /// <inheritdoc cref="ISubjectTuner.AmendWeight"/>
-  public MethodArgumentTuner<T> AmendWeight(short weight)
+  public MethodArgumentTuner<T> AmendWeight(int weight)
   {
     Weight += weight;
     return this;

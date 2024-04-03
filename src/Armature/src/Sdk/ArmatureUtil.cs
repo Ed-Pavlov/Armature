@@ -35,6 +35,24 @@ public static class ArmatureUtil
   /// <summary>
   /// Adds a branch of <see cref="IBuildStackPattern"/> nodes to the Tree Root and returns the deepest of added nodes.
   /// </summary>
+  public static IBuildStackPattern Tune(this ITuner self, IBuildStackPattern rootNode)
+  {
+    if(self is null) throw new ArgumentNullException(nameof(self));
+
+    var tuner = self;
+    var node  = rootNode;
+
+    do
+    {
+      node  = tuner.GetOrAddNodeTo(node);
+      tuner = tuner.Parent;
+    } while(tuner != null);
+
+    return node;
+  }
+  /// <summary>
+  /// Adds a branch of <see cref="IBuildStackPattern"/> nodes to the Tree Root and returns the deepest of added nodes.
+  /// </summary>
   public static IBuildStackPattern Apply(this ITuner self)
   {
     if(self is null) throw new ArgumentNullException(nameof(self));

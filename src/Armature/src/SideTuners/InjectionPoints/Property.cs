@@ -4,6 +4,7 @@ using Armature.Core;
 using Armature.Core.Sdk;
 using Armature.Sdk;
 using JetBrains.Annotations;
+using WeightOf = Armature.Core.WeightOf;
 
 namespace Armature;
 
@@ -29,7 +30,7 @@ public static class Property
         internals.Apply().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
-                 .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
+                 .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>(), WeightOf.BuildStackPattern.IfFirstUnit))
                  .ApplyTuner(tuner)
                  .UseBuildAction(new GetPropertyByType(type), BuildStage.Create);
       });
@@ -50,7 +51,7 @@ public static class Property
         internals.Apply().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
-                 .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
+                 .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>(), WeightOf.BuildStackPattern.IfFirstUnit))
                  .ApplyTuner(tuner)
                  .UseBuildAction(new GetPropertyListByNames(names), BuildStage.Create);
       });
@@ -58,8 +59,7 @@ public static class Property
 
   /// <summary>
   /// Sets up the properties marked with <see cref="InjectAttribute" /> with corresponding <paramref name="tags" />
-  /// as required a dependency to be injected into it.
-  /// </summary>
+  /// as required a dependency to be injected into it. /// </summary>
   public static IInjectionPointSideTuner ByInjectPointTag(params object?[] tags)
     => new InjectionPointSideTuner(
       tuner =>
@@ -68,7 +68,7 @@ public static class Property
         internals.Apply().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
-                 .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>()))
+                 .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>(), WeightOf.BuildStackPattern.IfFirstUnit))
                  .ApplyTuner(tuner)
                  .UseBuildAction(new GetPropertyListByTags(tags), BuildStage.Create);
       });
