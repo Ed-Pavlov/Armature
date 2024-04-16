@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
   push:
     branches:
-    - master
     - main
     - 'feature/**'
     - 'release/**'
@@ -43,8 +42,7 @@ jobs:
       name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version:     8.0.x
-        include-prerelease: false
+        dotnet-version: 8.0.x
 
     # Build
     -
@@ -68,7 +66,7 @@ jobs:
 
     -
       name: Store Version
-      uses: jsdaniell/create-json@1.1.2
+      uses: jsdaniell/create-json@v1.2.3
       with:
         name: version.json
         json: |
@@ -87,7 +85,7 @@ jobs:
 
     -
       name: Upload Artifacts
-      uses: actions/upload-artifact@v2.2.2
+      uses: actions/upload-artifact@v4
       with:
         name:           Artifacts
         path:           ${{ env.artifacts-dir }}/
