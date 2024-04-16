@@ -2,6 +2,7 @@
 using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Extensibility.MaybePropagation.Implementation;
@@ -19,10 +20,15 @@ namespace Tests.Extensibility.MaybePropagation
       builder.Treat<Maybe<Section>>().AsInstance(new Section().ToMaybe());
 
       builder
-       .Treat<Maybe<IReader>>()
-       .TreatMaybeValue()
-       .AsCreated<Reader>();
-      builder.Building<Reader>().Treat<Section>().AsMaybeValueOf().As<Maybe<Section>>();
+       .Treat<Maybe<IReader>>()       // IfFirst<Maybe<IReader>> -> BuildAction build IReader.ToMaybe
+       .TreatMaybeValue()             //   IfFirst<IReader>
+       .AsCreated<Reader>();          //                     -> BuildAction new Reader
+
+      builder
+       .Building<Reader>()           // IfFirst<Section>
+       .Treat<Section>()             //   SkipTill<Reader>   -> Redirect<Maybe<Section>>
+       .AsMaybeValueOf()   //                       -> BuildResult.Value as Maybe .Value | throw
+       .As<Maybe<Section>>();
 
       var actual = builder.Build<Maybe<IReader>>()!;
 
@@ -105,13 +111,13 @@ namespace Tests.Extensibility.MaybePropagation
        .Treat<Maybe<IReader>>()
        .TreatMaybeValue()
        .AsCreated<Reader1>()
-       .UsingArguments(ForParameter.OfType<Section>().UseInjectPointIdAsTag());
+       .UsingArguments(ForParameter.OfType<Section>().UseInjectPointTag());
 
       builder
        .Building<Reader1>()
-       .Treat<Section>(SpecialTag.Any)
+       .Treat<Section>(ServiceTag.Any)
        .AsMaybeValueOf()
-       .As<Maybe<Section>>(SpecialTag.Propagate);
+       .As<Maybe<Section>>(ServiceTag.Propagate);
 
       var actual = builder.Build<Maybe<IReader>>()!;
 
@@ -121,18 +127,15 @@ namespace Tests.Extensibility.MaybePropagation
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+      => new("test", BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
-           }
          };
   }
 }

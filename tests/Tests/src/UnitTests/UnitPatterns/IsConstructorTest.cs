@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.Util;
 
 namespace Tests.UnitTests.UnitPatterns;
 
@@ -17,7 +19,7 @@ public class IsConstructorTest
     object? kind)
   {
     // --arrange
-    var unitId = new UnitId(kind, SpecialTag.Constructor);
+    var unitId = Unit.Of(kind, ServiceTag.Constructor);
     var target = new IsConstructor();
 
     // --assert
@@ -30,7 +32,7 @@ public class IsConstructorTest
     Type unitType)
   {
     // --arrange
-    var unitId = new UnitId(unitType, SpecialTag.Any);
+    var unitId = Unit.Of(unitType, ServiceTag.Any);
     var target = new IsConstructor();
 
     // --assert
@@ -55,7 +57,7 @@ public class IsConstructorTest
   {
     // --arrange
     var target1 = new IsConstructor();
-    var target2 = new Util.OtherUnitPattern();
+    var target2 = new TestUtil.OtherUnitPattern();
 
     // --assert
     target1.Equals(target2).Should().BeFalse();

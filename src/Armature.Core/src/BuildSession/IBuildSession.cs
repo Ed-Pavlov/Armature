@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using Armature.Core.Sdk;
 
 
 namespace Armature.Core;
 
 /// <summary>
-/// Interface of build session to pass into <see cref="IBuildAction" />
+/// This is a limited interface of the <see cref="BuildSession" /> passed to <see cref="IBuildAction.Process" />
+/// and <see cref="IBuildAction.PostProcess" />.
 /// </summary>
 public interface IBuildSession
 {
@@ -14,19 +16,25 @@ public interface IBuildSession
   BuildResult BuildResult { get; set; }
 
   /// <summary>
-  /// The chain of units representing a build session, the last one is the target unit,
-  /// the previous are the context of the build session. Each next unit info is the dependency of the previous one.
+  /// The stack of units representing a build session. See <see cref="BuildSession.Stack"/> for details.
   /// </summary>
-  BuildChain BuildChain { get; }
+  BuildSession.Stack Stack { get; }
 
   /// <summary>
-  /// Builds a unit represented by <see cref="UnitId" /> in the context of the current build session
+  /// Builds a unit represented by <see cref="UnitId" /> in the context of the current build session.
   /// </summary>
-  BuildResult BuildUnit(UnitId unitId);
+  /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildStackPattern" /> for details</param>
+  /// <param name="engageParentBuilders">Determines whether to build a unit via parent builders in case it's not built in the scope of
+  /// the current build session. Default: true. </param>
+  BuildResult BuildUnit(UnitId unitId, bool engageParentBuilders = true);
 
   /// <summary>
-  /// Builds all units represented by <see cref="UnitId" /> in the context of the current build session
+  /// Builds all units represented by <see cref="UnitId" /> with all build actions in spite of the weight.
+  /// This can be useful to build all implementers of an interface.
   /// </summary>
-  /// <returns>Returns an instance or null if unit can't be built.</returns>
-  List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId);
+  /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildStackPattern" /> for details</param>
+  /// <param name="engageParentBuilders">If true <see cref="Builder.BuildAllUnits"/> is called for whole parent builders graph,
+  /// if false build unit only in the scope of the current build sesstion. Default: true.</param>
+  /// <returns>Returns an empty list if no units were built.</returns>
+  List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId, bool engageParentBuilders = true);
 }

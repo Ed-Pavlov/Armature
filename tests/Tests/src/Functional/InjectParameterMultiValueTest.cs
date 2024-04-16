@@ -54,24 +54,22 @@ namespace Tests.Functional
       Action action = () => target.Build<Subject>();
 
       // --assert
-      action.Should().Throw<ArmatureException>().Where(_ => _.Message.StartsWith("Two or more building actions matched with the same weight"));
+      action.Should().Throw<ArmatureException>().Where(_ => _.Message.StartsWith("Two or more building actions with the same weight are matched. See log for details."));
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+      => new("test", BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(
                  new TryInOrder
                  {
-                   new GetConstructorByInjectPointId(),              // constructor marked with [Inject] attribute has more priority
+                   new GetConstructorByInjectPoint(),              // constructor marked with [Inject] attribute has more priority
                    Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(
@@ -80,7 +78,6 @@ namespace Tests.Functional
                    Static.Of<BuildArgumentByParameterType>(), Static.Of<BuildListArgumentForMethodParameter>(), Static.Of<GetParameterDefaultValue>()
                  },
                  BuildStage.Create) // autowiring
-           }
          };
 
     [UsedImplicitly]

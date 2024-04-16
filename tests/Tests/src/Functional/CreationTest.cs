@@ -211,7 +211,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>(tag)
        .AsIs()
-       .InjectInto(Constructor.WithParameters<int>());
+       .UsingInjectionPoints(Constructor.WithParameters<int>());
 
       // --act
       var actual = target.UsingTag(tag).Build<Subject>(expected)!;
@@ -228,21 +228,18 @@ namespace Tests.Functional
         //  .UsingArguments(AutoBuildByParameter.Type);
         //
         // return builder;
-        new(BuildStage.Cache, BuildStage.Create)
+        new("test", BuildStage.Cache, BuildStage.Create)
                                              {
-                                                 new SkipAllUnits
-                                                 {
                                                      new SkipTillUnit(new IsInheritorOf(typeof(IDisposable), null))
                                                         .UseBuildAction(new CreateByReflection(), BuildStage.Cache),
 
                                                      new IfFirstUnit(new IsConstructor())
                                                         .UseBuildAction(new GetConstructorByParameterTypes(), BuildStage.Create), // use empty ctor by default in this test
 
-                                                     new IfFirstUnit(new IsParameterInfoList())
+                                                     new IfFirstUnit(new IsParameterInfoArray())
                                                         .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
                                                      new IfFirstUnit(new IsParameterInfo())
                                                         .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
-                                                 }
                                              };
 
     private interface ISubject1 { }

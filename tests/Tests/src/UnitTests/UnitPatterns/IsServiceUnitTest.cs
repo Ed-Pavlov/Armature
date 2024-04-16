@@ -1,8 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
+using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.Util;
 
 namespace Tests.UnitTests.UnitPatterns;
 
@@ -11,10 +12,10 @@ public class IsServiceUnitTest
   [Test]
   public void should_match_any_kind(
     [Values(null, "kind", typeof(string))]                     object?    kind,
-    [ValueSource(typeof(Util), nameof(Util.all_special_tags))] SpecialTag tag)
+    [ValueSource(typeof(TestUtil), nameof(TestUtil.all_special_tags))] Tag tag)
   {
     // --arrange
-    var unitId = new UnitId(kind, tag);
+    var unitId = Unit.Of(kind, tag);
     var target = new IsServiceUnit();
 
     // --assert
@@ -29,7 +30,7 @@ public class IsServiceUnitTest
     if(kind is null && tag is null) Assert.Ignore("Impossible argument combination");
 
     // --arrange
-    var unitId = new UnitId(kind, tag);
+    var unitId = Unit.Of(kind, tag);
     var target = new IsServiceUnit();
 
     // --assert
@@ -54,7 +55,7 @@ public class IsServiceUnitTest
   {
     // --arrange
     var target1 = new IsServiceUnit();
-    var target2 = new Util.OtherUnitPattern();
+    var target2 = new TestUtil.OtherUnitPattern();
 
     // --assert
     target1.Equals(target2).Should().BeFalse();

@@ -40,7 +40,7 @@ namespace Tests.Functional
       target.Treat<IDisposable>().AsSingleton(); // involve BuildStage.Cache for first level unit
 
       // --act
-      Action actual = () => target.BuildAllUnits(Unit.IsType<IDisposable>());
+      Action actual = () => target.BuildAllUnits(TUnit.OfType<IDisposable>());
 
       // --assert
       actual.Should().ThrowExactly<ArmatureException>();
@@ -72,13 +72,10 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Create)
+      => new("test", BuildStage.Cache, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create)
-           }
          };
 
     private class SampleType1 : IDisposable

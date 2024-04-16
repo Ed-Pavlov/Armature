@@ -12,14 +12,14 @@ namespace Armature;
 | AttributeTargets.Parameter
 | AttributeTargets.Field
 | AttributeTargets.Event,
-  AllowMultiple = false)]
+  AllowMultiple = true)]
 public class InjectAttribute : Attribute
 {
   /// <summary>
-  /// Id of the injection point. Can be used to distinguishing different points.
+  /// Optional tag of the injection point, can be used by build actions.
   /// </summary>
-  public readonly object? InjectionPointId;
+  public readonly object? Tag;
 
-  /// <param name="injectionPointId">Id of the injection point. Can be used to distinguishing different points.</param>
-  public InjectAttribute(object? injectionPointId = null) => InjectionPointId = injectionPointId;
+  /// <param name="tag">Optional tag of the injection point, can be used by build actions.</param>
+  public InjectAttribute(object? tag = null) => Tag = tag;
 }

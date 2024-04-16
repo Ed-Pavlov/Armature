@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Armature;
 using Armature.Core;
+using Armature.Core.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
-using Tests.UnitTests.BuildActions;
+using Tests.Util;
 
 // ReSharper disable UnusedParameter.Local
 
@@ -19,8 +21,8 @@ namespace Tests.UnitTests
       // --arrange
       var target       = new BuildListArgumentForMethodParameter();
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildChain).Returns(new UnitId(parameterInfo, null).ToBuildChain());
-      A.CallTo(() => buildSession.BuildAllUnits(default)).WithAnyArguments().Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());
+      A.CallTo(() => buildSession.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
+      A.CallTo(() => buildSession.BuildAllUnits(default, true)).WithAnyArguments().Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());
 
       // --act
       target.Process(buildSession);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Armature.Core;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -14,7 +14,7 @@ namespace Tests.UnitTests.UnitPatterns
     {
       if(kind is null && tag is null) Assert.Ignore("Impossible arguments combination");
 
-      var unitInfo = new UnitId(kind, tag);
+      var unitInfo = Unit.Of(kind, tag);
       var target  = new UnitPattern(kind, tag);
 
       // --assert
@@ -24,8 +24,8 @@ namespace Tests.UnitTests.UnitPatterns
     [Test]
     public void should_match_if_tag_any_provided([Values(null, "tag")] object tag)
     {
-      var unitInfo = new UnitId("kind", tag);
-      var target  = new UnitPattern("kind", SpecialTag.Any);
+      var unitInfo = Unit.Of("kind", tag);
+      var target  = new UnitPattern("kind", ServiceTag.Any);
 
       // --assert
       target.Matches(unitInfo).Should().BeTrue();
@@ -34,7 +34,7 @@ namespace Tests.UnitTests.UnitPatterns
     [Test]
     public void should_not_match_if_kind_differs([Values(null, "tag")] object tag)
     {
-      var unitInfo = new UnitId("kind1", tag);
+      var unitInfo = Unit.Of("kind1", tag);
       var target  = new UnitPattern("kind2", tag);
 
       // --assert
@@ -44,7 +44,7 @@ namespace Tests.UnitTests.UnitPatterns
     [Test]
     public void should_not_match_if_tag_differs([Values(null, "kind")] object kind)
     {
-      var unitInfo = new UnitId(kind, "tag1");
+      var unitInfo = Unit.Of(kind, "tag1");
       var target  = new UnitPattern(kind, "tag2");
 
       // --assert
@@ -70,7 +70,7 @@ namespace Tests.UnitTests.UnitPatterns
       if(kind is null && tag is null) Assert.Ignore("Impossible arguments combination");
 
       var target1 = new UnitPattern(kind, tag);
-      var target2 = new UnitPattern(kind, SpecialTag.Any); // fix tag value
+      var target2 = new UnitPattern(kind, ServiceTag.Any); // fix tag value
 
       // --assert
       target1.Equals(target2).Should().BeFalse();
@@ -103,7 +103,7 @@ namespace Tests.UnitTests.UnitPatterns
       yield return null;
       yield return "tag"; // object
       yield return 4; // value type
-      yield return SpecialTag.Any; // special
+      yield return ServiceTag.Any; // special
     }
   }
 }

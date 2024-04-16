@@ -15,7 +15,7 @@ internal static class Public
   + "304b2197c86a0f750ec7b52176f2b3aa2a26a327a19dd93aa2f72124e728a82f774240a351f8ddb4";
 }
 
-namespace System.Runtime.CompilerServices
-{
-  internal class IsExternalInit { }
-}
+// namespace System.Runtime.CompilerServices
+// {
+//   internal class IsExternalInit { }
+// }

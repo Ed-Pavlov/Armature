@@ -1,9 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.Util;
 
 namespace Tests.UnitTests.UnitPatterns.Methods;
 
@@ -15,7 +17,7 @@ public class IsParameterInfoTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(int))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
+    var unitId = Unit.Of(parameterInfo, ServiceTag.Argument);
     var target = new IsParameterInfo();
 
     // --act
@@ -27,7 +29,7 @@ public class IsParameterInfoTest
   public void should_not_match_unit_kind_other_than_parameter_info()
   {
     // --arrange
-    var unitId = new UnitId("parameterInfo", SpecialTag.Argument);
+    var unitId = Unit.Of("parameterInfo", ServiceTag.Argument);
     var target = new IsParameterInfo();
 
     // --act
@@ -41,7 +43,7 @@ public class IsParameterInfoTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(int))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, tag);
+    var unitId = Unit.Of(parameterInfo, tag);
     var target = new IsParameterInfo();
 
     // --act
@@ -67,7 +69,7 @@ public class IsParameterInfoTest
   {
     // --arrange
     var target1 = new IsParameterInfo();
-    var target2 = new Util.OtherUnitPattern();
+    var target2 = new TestUtil.OtherUnitPattern();
 
     // --assert
     target1.Equals(target2).Should().BeFalse();

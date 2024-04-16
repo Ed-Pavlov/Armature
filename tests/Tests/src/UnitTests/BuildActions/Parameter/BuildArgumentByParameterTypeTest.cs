@@ -1,7 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -20,8 +21,8 @@ public class BuildArgumentByParameterTypeTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
-    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.ParameterType).Tag(tag))).Returns(expected.ToBuildResult());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
+    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.ParameterType, tag), true)).Returns(expected.ToBuildResult());
 
     var target = new BuildArgumentByParameterType(tag);
 
@@ -29,7 +30,7 @@ public class BuildArgumentByParameterTypeTest
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.ParameterType).Tag(tag))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.ParameterType, tag), true)).MustHaveHappenedOnceAndOnly();
     actual.BuildResult.Value.Should().Be(expected);
   }
 
@@ -40,15 +41,15 @@ public class BuildArgumentByParameterTypeTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).Tag(tag).ToBuildChain());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo, tag).ToBuildStack());
 
-    var target = new BuildArgumentByParameterType(SpecialTag.Propagate);
+    var target = new BuildArgumentByParameterType(ServiceTag.Propagate);
 
     // --act
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.ParameterType).Tag(tag))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.ParameterType, tag), true)).MustHaveHappenedOnceAndOnly();
   }
 
   [SuppressMessage("ReSharper", "UnusedParameter.Local")]

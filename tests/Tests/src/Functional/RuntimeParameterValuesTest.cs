@@ -22,7 +22,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.StringCtor));
+       .UsingInjectionPoints(Constructor.MarkedWithInjectAttribute(Subject.StringCtor));
 
       // --act
       var actual = target.Build<Subject>(expected)!;
@@ -42,7 +42,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.DisposableCtor));
+       .UsingInjectionPoints(Constructor.MarkedWithInjectAttribute(Subject.DisposableCtor));
 
       // --act
       var actual = target.Build<Subject>(expected)!;
@@ -84,7 +84,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectInto(Constructor.MarkedWithInjectAttribute(Subject.StringCtor));
+       .UsingInjectionPoints(Constructor.MarkedWithInjectAttribute(Subject.StringCtor));
 
       var actual = target.Build<Subject>(ForParameter.OfType<string?>().UseValue(null))!;
 
@@ -93,18 +93,15 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+      => new("test", BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create) // autowiring
-           }
          };
 
     [UsedImplicitly]

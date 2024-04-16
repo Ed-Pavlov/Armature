@@ -1,25 +1,16 @@
 ﻿using System.Diagnostics;
-using Armature.Core.Sdk;
-
 
 namespace Armature.Core;
 
 /// <summary>
-/// A result of building of a Unit, null is a valid value of the <see cref="Value" />.
+/// A result of building a Unit, null is a valid value of the <see cref="Value" />.
 /// </summary>
-public readonly struct BuildResult
+[method: DebuggerStepThrough]
+public readonly struct BuildResult(object? value)
 {
-  public readonly object? Value;
-
-  public readonly bool HasValue;
-
-  [DebuggerStepThrough]
-  public BuildResult(object? value)
-  {
-    HasValue = true;
-    Value    = value;
-  }
+  public readonly object? Value    = value;
+  public readonly bool    HasValue = true;
 
   [DebuggerStepThrough]
-  public override string ToString() => HasValue ? Value.ToHoconString() : "nothing";
+  public override string ToString() => HasValue ? Value.ToHoconString() : nameof(BuildResult) + ".Nothing";
 }

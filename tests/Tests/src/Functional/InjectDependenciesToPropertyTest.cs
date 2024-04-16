@@ -12,7 +12,7 @@ namespace Tests.Functional
   public class InjectDependenciesToPropertyTest
   {
     [TestCaseSource(nameof(test_case_source))]
-    public void value_should_be_injected_into_property_by_name(Func<BuildChainPatternTree, FinalTuner> tune)
+    public void value_should_be_injected_into_property_by_name(Func<BuildStackPatternTree, ISettingTuner> tune)
     {
       const string expected = "expectedString";
 
@@ -22,7 +22,7 @@ namespace Tests.Functional
       target.Treat<string>().AsInstance(expected);
 
       tune(target)
-       .InjectInto(Property.Named(nameof(Subject.StringProperty)));
+       .UsingInjectionPoints(Property.Named(nameof(Subject.StringProperty)));
 
       // --act
       var actual = target.Build<ISubject>()!;
@@ -34,7 +34,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(test_case_source))]
-    public void should_use_argument_for_property_by_name(Func<BuildChainPatternTree, FinalTuner> tune)
+    public void should_use_argument_for_property_by_name(Func<BuildStackPatternTree, ISettingTuner> tune)
     {
       const string expected = "expectedString";
       const string bad      = expected + "bad";
@@ -56,21 +56,8 @@ namespace Tests.Functional
       actual.InjectProperty.Should().BeNull();
     }
 
-    // [Test]
-    public void should()
-    {
-      // --arrange
-      var target = CreateTarget();
-      target.TreatAll().InjectInto(Property.ByInjectPoint()); //TODO: is it possible to make it working
-      target.Treat<Subject>().AsIs();
-
-      // --act
-      target.Build<Subject>();
-
-    }
-
     [TestCaseSource(nameof(test_case_source))]
-    public void should_use_argument_for_property_by_type(Func<BuildChainPatternTree, FinalTuner> tune)
+    public void should_use_argument_for_property_by_type(Func<BuildStackPatternTree, ISettingTuner> tune)
     {
       const int expected = 3254;
 
@@ -101,7 +88,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectInto(injectPointId is null ? Property.ByInjectPoint() : Property.ByInjectPoint(new[] { injectPointId }));
+       .UsingInjectionPoints(injectPointId is null ? Property.ByInjectPointTag() : Property.ByInjectPointTag(new[] { injectPointId }));
 
       // --act
       var actual = target.Build<Subject>()!;
@@ -124,7 +111,7 @@ namespace Tests.Functional
       target.Treat<string>().AsInstance(expected);
 
       target.Treat<ISubject>().AsCreated<Subject>();
-      target.Treat<ISubject>().InjectInto(injectPointId is null ? Property.ByInjectPoint() : Property.ByInjectPoint(new[] { injectPointId }));
+      target.Treat<ISubject>().UsingInjectionPoints(injectPointId is null ? Property.ByInjectPointTag() : Property.ByInjectPointTag(injectPointId));
 
       // --act
       var actual = target.Build<ISubject>()!;
@@ -202,7 +189,7 @@ namespace Tests.Functional
       target
        .Treat<Subject>()
        .AsIs()
-       .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointIdAsTag());
+       .UsingArguments(ForProperty.WithInjectPoint(Subject.InjectPointId).UseInjectPointTag());
 
       // --act
       var actual = target.Build<Subject>()!;
@@ -225,7 +212,7 @@ namespace Tests.Functional
       target.Treat<string>().AsInstance(bad);
       target.Treat<string>(Subject.InterfaceInjectPointId).AsInstance(expected);
 
-      target.Treat<ISubject>().UsingArguments(ForProperty.WithInjectPoint(Subject.InterfaceInjectPointId).UseInjectPointIdAsTag());
+      target.Treat<ISubject>().UsingArguments(ForProperty.WithInjectPoint(Subject.InterfaceInjectPointId).UseInjectPointTag());
       target.Treat<ISubject>().AsCreated<Subject>();
 
       // --act
@@ -238,24 +225,21 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+      => new("test", BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
              new IfFirstUnit(new IsPropertyInfo())
               .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)
-           }
          };
 
     private static IEnumerable test_case_source()
     {
-      yield return new TestCaseData(new Func<BuildChainPatternTree, FinalTuner>(tree => tree.Treat<ISubject>().AsCreated<Subject>())).SetName("Subject");
+      yield return new TestCaseData(new Func<BuildStackPatternTree, ISettingTuner>(tree => tree.Treat<ISubject>().AsCreated<Subject>())).SetName("Subject");
 
       yield return new TestCaseData(
-        new Func<BuildChainPatternTree, FinalTuner>(
+        new Func<BuildStackPatternTree, ISettingTuner>(
           tree =>
           {
             tree.Treat<ISubject>().AsCreated<Subject>();

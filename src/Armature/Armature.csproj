@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\common.proj"/>
+  <Import Project="..\common.proj" />
   <PropertyGroup>
     <AssemblyName>Armature</AssemblyName>
     <RootNamespace>Armature</RootNamespace>
@@ -16,6 +16,24 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Armature.Core\Armature.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="src\Tuners\SubjectTuner.Static.cs">
+      <DependentUpon>SubjectTuner.cs</DependentUpon>
+    </Compile>
+    <Compile Update="src\Tuners\BuildingTuner.CreationTuner.cs">
+      <DependentUpon>BuildingTuner`1.cs</DependentUpon>
+    </Compile>
+    <Compile Update="src\Tuners\BuildingTuner.FinalAndContextTuner.cs">
+      <DependentUpon>BuildingTuner`1.cs</DependentUpon>
+    </Compile>
+    <Compile Update="src\Tuners\BuildingTuner.DependencyTuner.cs">
+      <DependentUpon>BuildingTuner`1.cs</DependentUpon>
+    </Compile>
+    <Compile Remove="src\Tuners\IFinalAndContextTuner.cs" />
+    <Compile Remove="src\Tuners\IFinalTuner.cs" />
+    <Compile Remove="src\Default.cs" />
   </ItemGroup>
 
   <PropertyGroup Label="nuspec">

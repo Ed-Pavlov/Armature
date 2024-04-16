@@ -1,8 +1,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -16,8 +17,8 @@ public class IsMethodParameterNamedTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.Name == "i")!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
-    var target = new IsMethodParameterNamed(parameterInfo.Name!);
+    var unitId = Unit.Of(parameterInfo, ServiceTag.Argument);
+    var target = new IsParameterNamed(parameterInfo.Name!);
 
     // --act
     // --assert
@@ -30,8 +31,8 @@ public class IsMethodParameterNamedTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.Name == "i")!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
-    var target = new IsMethodParameterNamed("another parameter name");
+    var unitId = Unit.Of(parameterInfo, ServiceTag.Argument);
+    var target = new IsParameterNamed("another parameter name");
 
     // --act
     // --assert
@@ -44,8 +45,8 @@ public class IsMethodParameterNamedTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.Name == "i")!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, tag);
-    var target = new IsMethodParameterNamed(parameterInfo.Name!);
+    var unitId = Unit.Of(parameterInfo, tag);
+    var target = new IsParameterNamed(parameterInfo.Name!);
 
     // --act
     // --assert
@@ -58,8 +59,8 @@ public class IsMethodParameterNamedTest
     const string method = "method";
 
     // --arrange
-    var target1 = new IsMethodParameterNamed(method);
-    var target2 = new IsMethodParameterNamed(method);
+    var target1 = new IsParameterNamed(method);
+    var target2 = new IsParameterNamed(method);
 
     // --act
     // --assert
@@ -70,8 +71,8 @@ public class IsMethodParameterNamedTest
   public void should_not_be_equal_if_method_name_differs()
   {
     // --arrange
-    var target1 = new IsMethodParameterNamed("method1");
-    var target2 = new IsMethodParameterNamed("method2");
+    var target1 = new IsParameterNamed("method1");
+    var target2 = new IsParameterNamed("method2");
 
     // --act
     // --assert
@@ -82,7 +83,7 @@ public class IsMethodParameterNamedTest
   public void should_not_allow_null_argument([Values(null, "")] string? methodName)
   {
     // --arrange
-    var actual = () => new IsMethodParameterNamed(methodName!);
+    var actual = () => new IsParameterNamed(methodName!);
 
     // --act
     // --assert
@@ -93,8 +94,8 @@ public class IsMethodParameterNamedTest
   public void should_be_equal_if_name_equal()
   {
     // --arrange
-    var target1 = new IsMethodParameterNamed("methodName");
-    var target2 = new IsMethodParameterNamed("methodName");
+    var target1 = new IsParameterNamed("methodName");
+    var target2 = new IsParameterNamed("methodName");
 
     // --assert
     target1.Equals(target2).Should().BeTrue();
@@ -105,8 +106,8 @@ public class IsMethodParameterNamedTest
   public void should_not_be_equal_if_pattern_differs()
   {
     // --arrange
-    var target1 = new IsMethodParameterNamed("methodName1");
-    var target2 = new IsMethodParameterNamed("methodName2");
+    var target1 = new IsParameterNamed("methodName1");
+    var target2 = new IsParameterNamed("methodName2");
 
     // --assert
     target1.Equals(target2).Should().BeFalse();

@@ -1,9 +1,11 @@
 using System;
+using Armature;
 using Armature.Core;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Util;
+using Void = Tests.Util.Void;
 
 namespace Tests.UnitTests.BuildActions.Creation;
 
@@ -17,7 +19,7 @@ public class CreateWithFactoryMethod_NTest
 
     // --arrange
     var buildSession   = A.Fake<IBuildSession>();
-    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default)).WhenBuildArgumentsOfType<int, Unit, Unit, Unit, Unit, Unit, Unit>();
+    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default, true)).WhenBuildArgumentsOfType<int, Void, Void, Void, Void, Void, Void>();
     buildArguments.Returns(expectedArgument.ToArguments());
 
     var target = new CreateWithFactoryMethodBuildAction<int, string>(arg => arg == expectedArgument ? expectedResult : throw new Exception());
@@ -37,7 +39,7 @@ public class CreateWithFactoryMethod_NTest
 
     // --arrange
     var buildSession   = A.Fake<IBuildSession>();
-    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default)).WhenBuildArgumentsOfType<int, int>();
+    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default, true)).WhenBuildArgumentsOfType<int, int>();
     buildArguments.Returns(expectedArguments.ToArguments());
 
     var target = new CreateWithFactoryMethodBuildAction<int, int, string>(
@@ -59,7 +61,7 @@ public class CreateWithFactoryMethod_NTest
 
     // --arrange
     var buildSession   = A.Fake<IBuildSession>();
-    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default)).WhenBuildArgumentsOfType<int, int, int>();
+    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default, true)).WhenBuildArgumentsOfType<int, int, int>();
     buildArguments.Returns(expectedArguments.ToArguments());
 
     var target = new CreateWithFactoryMethodBuildAction<int, int, int, string>(
@@ -81,7 +83,7 @@ public class CreateWithFactoryMethod_NTest
 
     // --arrange
     var buildSession   = A.Fake<IBuildSession>();
-    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default)).WhenBuildArgumentsOfType<int, int, int, int>();
+    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default, true)).WhenBuildArgumentsOfType<int, int, int, int>();
     buildArguments.Returns(expectedArguments.ToArguments());
 
     var target = new CreateWithFactoryMethodBuildAction<int, int, int, int, string>(
@@ -103,7 +105,7 @@ public class CreateWithFactoryMethod_NTest
 
     // --arrange
     var buildSession   = A.Fake<IBuildSession>();
-    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default)).WhenBuildArgumentsOfType<int, int, int, int, int>();
+    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default, true)).WhenBuildArgumentsOfType<int, int, int, int, int>();
     buildArguments.Returns(expectedArguments.ToArguments());
 
     var target = new CreateWithFactoryMethodBuildAction<int, int, int, int, int, string>(
@@ -125,7 +127,7 @@ public class CreateWithFactoryMethod_NTest
 
     // --arrange
     var buildSession   = A.Fake<IBuildSession>();
-    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default)).WhenBuildArgumentsOfType<int, int, int, int, int, int>();
+    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default, true)).WhenBuildArgumentsOfType<int, int, int, int, int, int>();
     buildArguments.Returns(expectedArguments.ToArguments());
 
     var target = new CreateWithFactoryMethodBuildAction<int, int, int, int, int, int, string>(
@@ -147,7 +149,7 @@ public class CreateWithFactoryMethod_NTest
 
     // --arrange
     var buildSession   = A.Fake<IBuildSession>();
-    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default)).WhenBuildArgumentsOfType<int, int, int, int, int, int, int>();
+    var buildArguments = A.CallTo(() => buildSession.BuildUnit(default, true)).WhenBuildArgumentsOfType<int, int, int, int, int, int, int>();
     buildArguments.Returns(expectedArguments.ToArguments());
 
     var target = new CreateWithFactoryMethodBuildAction<int, int, int, int, int, int, int, string>(

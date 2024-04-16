@@ -1,6 +1,7 @@
 using System.Linq;
+using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Util;
@@ -15,7 +16,7 @@ public class GetParameterDefaultValueTest
     var parameter = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => _.HasDefaultValue);
 
     // --arrange
-    var buildSession = new BuildSessionMock(Unit.Is(parameter).Tag(SpecialTag.Argument).ToBuildChain());
+    var buildSession = new BuildSessionMock(Unit.Of(parameter, ServiceTag.Argument).ToBuildStack());
     var target       = new GetParameterDefaultValue();
 
     // --act
@@ -31,7 +32,7 @@ public class GetParameterDefaultValueTest
     var parameter = typeof(Subject).GetMethod(nameof(Subject.Foo))!.GetParameters().Single(_ => !_.HasDefaultValue);
 
     // --arrange
-    var buildSession = new BuildSessionMock(Unit.Is(parameter).Tag(SpecialTag.Argument).ToBuildChain());
+    var buildSession = new BuildSessionMock(Unit.Of(parameter, ServiceTag.Argument).ToBuildStack());
     var target       = new GetParameterDefaultValue();
 
     // --act

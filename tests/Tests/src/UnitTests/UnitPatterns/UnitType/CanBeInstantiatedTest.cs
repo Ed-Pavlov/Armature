@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using Armature;
 using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.Util;
 
 namespace Tests.UnitTests.UnitPatterns.UnitType;
 
@@ -17,7 +19,7 @@ public class CanBeInstantiatedTest
     [Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = new UnitId(unitType, tag);
+    var unitId = Unit.Of(unitType, tag);
     var target = new CanBeInstantiated();
 
     // --assert
@@ -31,7 +33,7 @@ public class CanBeInstantiatedTest
     if(unitType is null && tag is null) Assert.Ignore("Invalid combination of arguments");
 
     // --arrange
-    var unitId = new UnitId(unitType, tag);
+    var unitId = Unit.Of(unitType, tag);
     var target = new CanBeInstantiated();
 
     // --assert
@@ -56,7 +58,7 @@ public class CanBeInstantiatedTest
   {
     // --arrange
     var target1 = new CanBeInstantiated();
-    var target2 = new Util.OtherUnitPattern();
+    var target2 = new TestUtil.OtherUnitPattern();
 
     // --assert
     target1.Equals(target2).Should().BeFalse();

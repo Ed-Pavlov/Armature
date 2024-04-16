@@ -20,7 +20,7 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target
-       .Treat<string>() //TODO: may be Treat should generate IfLastUnit? why should we perform know to be false matching? Building<> should generate SkipTillUnit
+       .Treat<string>()
        .AsInstance(expected + "bad");
 
       target
@@ -47,7 +47,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .InjectInto(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor))
+       .UsingInjectionPoints(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor))
        .UsingArguments(expectedInt, expectedString);
 
       // --act
@@ -85,7 +85,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(ForParameterSource))]
-    public void should_pass_null_as_parameter_value(MethodArgumentTuner forParameter)
+    public void should_pass_null_as_parameter_value(MethodArgumentTuner<object?> forParameter)
     {
       // --arrange
       var target = CreateTarget();
@@ -107,7 +107,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(ForParameterSource))]
-    public void should_use_value_for_parameter(MethodArgumentTuner forParameter)
+    public void should_use_value_for_parameter(MethodArgumentTuner<object?> forParameter)
     {
       const string expected = "expected";
 
@@ -129,7 +129,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(ForParameterSource))]
-    public void should_build_value_for_parameter_using_parameter_type_and_tag(MethodArgumentTuner forParameter)
+    public void should_build_value_for_parameter_using_parameter_type_and_tag(MethodArgumentTuner<object?> forParameter)
     {
       const string tag      = "tag398";
       const string expected = "expected 398752";
@@ -162,7 +162,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(ForParameterSource))]
-    public void should_fail_if_there_is_no_value_w_tag_registered(MethodArgumentTuner forParameter)
+    public void should_fail_if_there_is_no_value_w_tag_registered(MethodArgumentTuner<object?> forParameter)
     {
       // --arrange
       var target = CreateTarget();
@@ -184,7 +184,7 @@ namespace Tests.Functional
     }
 
     [TestCaseSource(nameof(ForParameterSource))]
-    public void should_use_factory_method(MethodArgumentTuner forParameter)
+    public void should_use_factory_method(MethodArgumentTuner<object?> forParameter)
     {
       const int expectedInt = 392;
 
@@ -226,27 +226,6 @@ namespace Tests.Functional
     }
 
     [Test]
-    public void should_fail_if_value_for_the_same_parameter_registered_more_than_once()
-    {
-      // --arrange
-      var target = CreateTarget();
-
-      var tuner = target
-                 .Treat<LevelOne>()
-                 .AsIs();
-
-      // --act
-      Action actual = () => tuner.UsingArguments(
-                        ForParameter.OfType<string>().UseTag("expected29083"),
-                        ForParameter.OfType<string>().UseValue("bad"));
-
-      // --assert
-      actual.Should()
-            .ThrowExactly<ArmatureException>()
-            .Where(_ => _.Message.StartsWith($"Building of an argument for the method parameter of type {typeof(string).ToLogString()} is already tuned"));
-    }
-
-    [Test]
     public void should_not_pass_registered_parameter_when_building_dependency()
     {
       // --arrange
@@ -282,9 +261,7 @@ namespace Tests.Functional
       target.Treat<LevelTwo>().AsIs();
       target.Treat<LevelThree>().AsIs();
 
-      target
-       .TreatAll()
-       .UsingArguments(expected);
+      target.Treat<string>().AsInstance(expected);
 
       // --act
       var actual = target.Build<LevelThree>()!;
@@ -310,10 +287,11 @@ namespace Tests.Functional
       target
        .Treat<LevelThree>()
        .AsIs()
-       .UsingArguments(expectedOnLevelThree);
+       .UsingArguments(expectedOnLevelThree)
+       .BuildingIt()
 
-      target
-       .Building<LevelThree>()
+      // target
+      //  .Building<LevelThree>()
        .TreatAll()
        .UsingArguments(expected);
 
@@ -363,7 +341,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .InjectInto(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor))
+       .UsingInjectionPoints(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor))
        .UsingArguments(expectedInt);
 
       // --act
@@ -383,7 +361,7 @@ namespace Tests.Functional
       target
        .Treat<LevelOne>()
        .AsIs()
-       .InjectInto(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor));
+       .UsingInjectionPoints(Constructor.MarkedWithInjectAttribute(LevelOne.TwoParameterCtor));
 
       // --act
       var actual = target.Build<LevelOne>()!;
@@ -402,26 +380,23 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+      => new("test", BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(
                  new TryInOrder
                  {
-                   new GetConstructorByInjectPointId(),       // constructor marked with [Inject] attribute has more priority
+                   new GetConstructorByInjectPoint(),       // constructor marked with [Inject] attribute has more priority
                    new GetConstructorWithMaxParametersCount() // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(
                  new TryInOrder() { Static.Of<BuildArgumentByParameterType>(), Static.Of<GetParameterDefaultValue>() },
                  BuildStage.Create)
-           }
          };
 
     private interface ISubject1

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
 using JetBrains.Annotations;
 
 namespace Armature;
@@ -27,18 +28,18 @@ public static class BuilderExtension
   public static T? Build<T>(this Builder builder) => builder.Build<T>(null, null);
 
   /// <summary>
-  /// Builds a Unit registered as type <typeparamref name="T" /> passing additional <paramref name="runtimeArguments" /> they can be values or
-  /// implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> and <see cref="ForProperty"/> for details.
+  /// Builds a Unit registered as type <typeparamref name="T" /> passing additional <paramref name="arguments" /> they can be values or
+  /// implementation of <see cref="ISideTuner" />. See <see cref="ForParameter" /> and <see cref="ForProperty"/> for details.
   /// </summary>
   /// <param name="builder"></param>
-  /// <param name="runtimeArguments">Additional temporary arguments which could be passed into the build session, they are not stored
-  /// anywhere and used only for this build session. Normally, registrations take over these arguments because the weight
-  /// of runtime arguments is <see cref="WeightOf.BuildChainPattern.SkipAllUnits"/> + 10.</param>
+  /// <param name="arguments">Additional temporary arguments which could be passed into the build session, they are not stored
+  /// anywhere and used only for this build session. Normally, usual registrations take over these arguments because the weight
+  /// of runtime arguments is decreased. See <see cref="ArmatureUtil.CreatePatternTreeOnArguments"/> for details.</param>
   /// <returns>Returns an instance or null if null is registered as a unit.</returns>
   /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public static T? Build<T>(this Builder builder, params object[] runtimeArguments) => builder.Build<T>(null, runtimeArguments);
+  public static T? Build<T>(this Builder builder, params object[] arguments) => builder.Build<T>(null, arguments);
 
   /// <summary>
   /// Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight.
@@ -55,23 +56,23 @@ public static class BuilderExtension
   /// This can be useful to build all implementers of an interface.
   /// </summary>
   /// <param name="builder"></param>
-  /// <param name="runtimeArguments">Additional temporary arguments which could be passed into the build session, they are not stored
+  /// <param name="arguments">Additional temporary arguments which could be passed into the build session, they are not stored
   /// anywhere and used only for this build session. Normally, registrations take over these arguments because the weight
-  /// of runtime arguments is <see cref="WeightOf.BuildChainPattern.SkipAllUnits"/> + 10.</param>
+  /// of runtime arguments is decreased. See <see cref="ArmatureUtil.CreatePatternTreeOnArguments"/> for details.</param>
   /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
   /// <exception cref="ArmatureException">Throws if not unit was built by this or any parent containers</exception>
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   [PublicAPI]
-  public static IReadOnlyList<object?> BuildAll<T>(this Builder builder, params object[]? runtimeArguments) => builder.BuildAll<T>(null, runtimeArguments);
+  public static IReadOnlyList<object?> BuildAll<T>(this Builder builder, params object[]? arguments) => builder.BuildAll<T>(null, arguments);
 
   /// <summary>
   /// All other BuildAll... methods should delegate to this one. This is the real implementation
   /// </summary>
   private static IReadOnlyList<object?> BuildAll<T>(this Builder builder, object? tag, params object[]? arguments)
   {
-    var unitId         = new UnitId(typeof(T), tag);
-    var auxPatternTree = CreateAuxPatternTree(arguments);
+    var unitId         = Unit.Of(typeof(T), tag);
+    var auxPatternTree = ArmatureUtil.CreatePatternTreeOnArguments(arguments);
 
     var unitList = builder.BuildAllUnits(unitId, auxPatternTree);
 
@@ -88,8 +89,8 @@ public static class BuilderExtension
   {
     if(builder is null) throw new ArgumentNullException(nameof(builder));
 
-    var unitId      = new UnitId(typeof(T), tag);
-    var patternTree = CreateAuxPatternTree(arguments);
+    var unitId      = Unit.Of(typeof(T), tag);
+    var patternTree = ArmatureUtil.CreatePatternTreeOnArguments(arguments);
 
     var buildResult = builder.BuildUnit(unitId, patternTree);
 
@@ -98,28 +99,15 @@ public static class BuilderExtension
              : throw new ArmatureException($"Unit {unitId} is not built").AddData($"{nameof(UnitId)}", unitId);
   }
 
-  private static IBuildChainPattern? CreateAuxPatternTree(object[]? arguments)
-  {
-    if(arguments is not {Length: > 0}) return null;
-
-    // the logic is patternTree.TreatAll().UsingArguments(arguments), but with increased weight of arguments
-    var patternTree = new BuildChainPatternTree();
-    var treatAll    = new SkipAllUnits(WeightOf.BuildChainPattern.SkipAllUnits + 10);
-    patternTree.Children.Add(treatAll);
-
-    new FinalTuner(treatAll).UsingArguments(arguments);
-    return patternTree;
-  }
-
   public readonly struct WithTag
   {
-    private readonly object  _tag;
     private readonly Builder _builder;
+    private readonly object  _tag;
 
     public WithTag(Builder builder, object tag)
     {
-      _tag     = tag     ?? throw new ArgumentNullException(nameof(tag));
       _builder = builder ?? throw new ArgumentNullException(nameof(builder));
+      _tag     = tag     ?? throw new ArgumentNullException(nameof(tag));
     }
 
     /// <summary>
@@ -132,7 +120,7 @@ public static class BuilderExtension
     /// <summary>
     /// Builds a Unit registered as type <typeparamref name="T" /> with an additional tag passed into <see cref="BuilderExtension.UsingTag"/> method
     /// passing additional <paramref name="arguments" /> they can be values or
-    /// implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> for details.
+    /// implementation of <see cref="ISideTuner" />. See <see cref="ForParameter" /> for details.
     /// </summary>
     [DebuggerStepThrough]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -154,7 +142,7 @@ public static class BuilderExtension
     /// <summary>
     /// Builds all units represented by <see cref="UnitId" /> by all build actions in spite of matching weight with an additional
     /// tag passed into <see cref="BuilderExtension.UsingTag"/> method passing additional <paramref name="arguments" /> they can be values or
-    /// implementation of <see cref="ITuner" />. See <see cref="ForParameter" /> for details.
+    /// implementation of <see cref="ISideTuner" />. See <see cref="ForParameter" /> for details.
     /// This can be useful to build all implementers of an interface.
     /// </summary>
     /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>

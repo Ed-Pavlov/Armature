@@ -21,7 +21,7 @@ namespace Tests.Functional
 
       target
        .TreatInheritorsOf<SubjectBase>()
-       .InjectInto(Property.Named(nameof(SubjectBase.InjectThere)));
+       .UsingInjectionPoints(Property.Named(nameof(SubjectBase.InjectThere)));
 
       target
        .Treat<Subject>()
@@ -46,7 +46,7 @@ namespace Tests.Functional
 
       target
        .TreatInheritorsOf<ISubject>()
-       .InjectInto(Property.Named(nameof(ISubject.InjectThere)));
+       .UsingInjectionPoints(Property.Named(nameof(ISubject.InjectThere)));
 
       target
        .Treat<Subject>()
@@ -71,12 +71,12 @@ namespace Tests.Functional
 
       target
        .TreatInheritorsOf<ISubject>()
-       .InjectInto(Property.Named(nameof(ISubject.InjectThere)));
+       .UsingInjectionPoints(Property.Named(nameof(ISubject.InjectThere)));
 
       target
        .Treat<Subject>()
        .AsIs()
-       .InjectInto(Property.Named(nameof(Subject.InjectHere)));
+       .UsingInjectionPoints(Property.Named(nameof(Subject.InjectHere)));
 
       // --act
       var actual = target.Build<Subject>()!;
@@ -87,17 +87,14 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+      => new("test", BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
-             // inject into constructor
-             new IfFirstUnit(new IsConstructor())
-              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
+           // inject into constructor
+           new IfFirstUnit(new IsConstructor())
+            .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
 
-             new IfFirstUnit(new IsPropertyInfo())
-              .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)
-           }
+           new IfFirstUnit(new IsPropertyInfo())
+            .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)
          };
 
     private interface ISubject

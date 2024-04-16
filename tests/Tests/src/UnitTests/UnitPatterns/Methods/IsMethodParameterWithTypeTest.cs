@@ -1,8 +1,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -16,12 +17,12 @@ public class IsMethodParameterWithTypeTest
   public void should_delegate_call_with_extracted_type()
   {
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(int))!;
-    var expected      = new UnitId(typeof(int), null);
+    var expected      = Unit.Of(typeof(int));
 
     // --arrange
     var typePattern = A.Fake<IUnitPattern>();
-    var target      = new IsMethodParameterWithType(typePattern);
-    var unitId      = new UnitId(parameterInfo, SpecialTag.Argument);
+    var target      = new IsParameterOfType(typePattern);
+    var unitId      = Unit.Of(parameterInfo, ServiceTag.Argument);
 
     // --act
     target.Matches(unitId);
@@ -37,8 +38,8 @@ public class IsMethodParameterWithTypeTest
 
     // --arrange
     var typePattern = A.Fake<IUnitPattern>();
-    var target      = new IsMethodParameterWithType(typePattern);
-    var unitId      = new UnitId(parameterInfo, tag);
+    var target      = new IsParameterOfType(typePattern);
+    var unitId      = Unit.Of(parameterInfo, tag);
 
     // --act
     target.Matches(unitId);
@@ -51,7 +52,7 @@ public class IsMethodParameterWithTypeTest
   public void should_check_argument_for_null()
   {
     // --arrange
-    var target = () => new IsMethodParameterWithType(null!);
+    var target = () => new IsParameterOfType(null!);
 
     // --act
     // --assert
@@ -62,8 +63,8 @@ public class IsMethodParameterWithTypeTest
   public void should_be_equal_if_pattern_equal()
   {
     // --arrange
-    var target1 = new IsMethodParameterWithType(new UnitPattern("1"));
-    var target2 = new IsMethodParameterWithType(new UnitPattern("1"));
+    var target1 = new IsParameterOfType(new UnitPattern("1"));
+    var target2 = new IsParameterOfType(new UnitPattern("1"));
 
     // --assert
     target1.Equals(target2).Should().BeTrue();
@@ -74,8 +75,8 @@ public class IsMethodParameterWithTypeTest
   public void should_not_be_equal_if_pattern_differs()
   {
     // --arrange
-    var target1 = new IsMethodParameterWithType(new UnitPattern("1"));
-    var target2 = new IsMethodParameterWithType(new UnitPattern("2"));
+    var target1 = new IsParameterOfType(new UnitPattern("1"));
+    var target2 = new IsParameterOfType(new UnitPattern("2"));
 
     // --assert
     target1.Equals(target2).Should().BeFalse();

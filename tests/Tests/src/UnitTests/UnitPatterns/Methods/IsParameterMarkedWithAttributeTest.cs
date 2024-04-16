@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -16,8 +16,8 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(int))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
-    var target = new IsParameterMarkedWithAttribute();
+    var unitId = Unit.Of(parameterInfo, ServiceTag.Argument);
+    var target = new IsParameterAttributed();
 
     // --act
     // --assert
@@ -30,8 +30,8 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(string))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
-    var target = new IsParameterMarkedWithAttribute(Subject.StringPointId);
+    var unitId = Unit.Of(parameterInfo, ServiceTag.Argument);
+    var target = new IsParameterAttributed(Subject.StringPointId);
 
     // --act
     // --assert
@@ -44,8 +44,8 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(bool))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, SpecialTag.Argument);
-    var target = new IsParameterMarkedWithAttribute(pointId);
+    var unitId = Unit.Of(parameterInfo, ServiceTag.Argument);
+    var target = new IsParameterAttributed(pointId);
 
     // --act
     // --assert
@@ -58,8 +58,8 @@ public class IsParameterMarkedWithAttributeTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(string))!;
 
     // --arrange
-    var unitId = new UnitId(parameterInfo, tag);
-    var target = new IsParameterMarkedWithAttribute(Subject.StringPointId);
+    var unitId = Unit.Of(parameterInfo, tag);
+    var target = new IsParameterAttributed(Subject.StringPointId);
 
     // --act
     // --assert
@@ -70,8 +70,8 @@ public class IsParameterMarkedWithAttributeTest
   public void should_be_equal_if_point_id_equals([Values(null, "pointId")] object? pointId)
   {
     // --arrange
-    var target1 = new IsParameterMarkedWithAttribute(pointId);
-    var target2 = new IsParameterMarkedWithAttribute(pointId);
+    var target1 = new IsParameterAttributed(pointId);
+    var target2 = new IsParameterAttributed(pointId);
 
     //--assert
     target1.Equals(target2).Should().BeTrue();
@@ -82,8 +82,8 @@ public class IsParameterMarkedWithAttributeTest
   public void should_not_be_equal_if_point_id_differs([Values(null, "pointId")] object? pointId)
   {
     // --arrange
-    var target1 = new IsParameterMarkedWithAttribute(pointId);
-    var target2 = new IsParameterMarkedWithAttribute("different point id");
+    var target1 = new IsParameterAttributed(pointId);
+    var target2 = new IsParameterAttributed("different point id");
 
     //--assert
     target1.Equals(target2).Should().BeFalse();

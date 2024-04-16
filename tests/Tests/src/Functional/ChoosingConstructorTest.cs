@@ -17,12 +17,12 @@ namespace Tests.Functional
     [TestCaseSource(nameof(max_number_of_parameters))]
     public void should_call_ctor_with_max_number_of_parameters(IBuildAction getConstructorAction)
     {
-      var target = new Builder(BuildStage.Cache, BuildStage.Create)
+      var target = new Builder("test", BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                       new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
-
-      target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<Subject2>()
@@ -39,12 +39,12 @@ namespace Tests.Functional
     [TestCaseSource(nameof(parameterless_ctor))]
     public void should_call_parameterless_ctor(IBuildAction getConstructorAction)
     {
-      var target = new Builder(BuildStage.Create)
+      var target = new Builder("test", BuildStage.Create)
                    {
-                     new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                       new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
-
-      target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target
@@ -62,12 +62,12 @@ namespace Tests.Functional
     [TestCaseSource(nameof(inject_point_id_ctor))]
     public void should_call_constructor_marked_with_attribute(string injectPointId, IBuildAction getConstructorAction)
     {
-      var target = new Builder(BuildStage.Cache, BuildStage.Create)
+      var target = new Builder("test", BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipAllUnits {new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),}
+                       new IfFirstUnit(new IsConstructor()).UseBuildAction(getConstructorAction, BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
-
-      target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<Subject1>()
@@ -84,36 +84,33 @@ namespace Tests.Functional
     [Test]
     public void should_call_constructor_matched_with_parameter_types()
     {
-      var target = new Builder(BuildStage.Cache, BuildStage.Create)
+      var target = new Builder("test", BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipAllUnits
-                     {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
-                           new GetConstructorByInjectPointId(),
+                           new GetConstructorByInjectPoint(),
                            new GetConstructorWithMaxParametersCount(),
                            new GetConstructorByParameterTypes()
                          ),
                          BuildStage.Create),
-                     }
+                       new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
-
-      target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<Subject3>()
             .AsIs()
-            .InjectInto(Constructor.WithParameters<int, string>())
+            .UsingInjectionPoints(Constructor.WithParameters<int, string>())
             .UsingArguments(4, "string"); // set value to inject into ctor
 
       target
          .TreatInheritorsOf<object>()
-         .InjectInto(Constructor.WithMaxParametersCount());
+         .UsingInjectionPoints(Constructor.WithMaxParametersCount());
 
       target
          .TreatInheritorsOf<IStream>()
-         .AmendWeight(392)
-         .InjectInto(Constructor.Parameterless());
+         .AmendWeight(39)
+         .UsingInjectionPoints(Constructor.Parameterless());
 
       // --act
       var actual = target.Build<Subject3>();
@@ -125,26 +122,24 @@ namespace Tests.Functional
     [Test]
     public void should_use_personal_rules_for_each_type()
     {
-      var target = new Builder(BuildStage.Cache, BuildStage.Create)
+      var target = new Builder("test", BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipAllUnits
-                     {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
-                           new GetConstructorByInjectPointId(),
+                           new GetConstructorByInjectPoint(),
                            new GetConstructorWithMaxParametersCount(),
                            new GetConstructorByParameterTypes()
                          ),
                          BuildStage.Create),
-                     }
+                       new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
-      target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<object>().AsInstance(new object());
 
-      target.Treat<Subject1>().AsIs().InjectInto(Constructor.WithParameters<Subject3, Subject2>());
-      target.Treat<Subject2>().AsIs().InjectInto(Constructor.Parameterless());
+      target.Treat<Subject1>().AsIs().UsingInjectionPoints(Constructor.WithParameters<Subject3, Subject2>());
+      target.Treat<Subject2>().AsIs().UsingInjectionPoints(Constructor.Parameterless());
       target.Treat<Subject3>().AsIs(); // use default rules, in this case the constructor with max parameters count
 
       // --act
@@ -158,20 +153,18 @@ namespace Tests.Functional
     [Test]
     public void should_fail_if_no_constructor_found()
     {
-      var target = new Builder(BuildStage.Cache, BuildStage.Create)
+      var target = new Builder("test", BuildStage.Cache, BuildStage.Create)
                    {
-                     new SkipAllUnits
-                     {
                        new IfFirstUnit(new IsConstructor()).UseBuildAction(
                          new TryInOrder(
-                           new GetConstructorByInjectPointId(),
+                           new GetConstructorByInjectPoint(),
                            new GetConstructorWithMaxParametersCount(),
                            new GetConstructorByParameterTypes()
                          ),
                          BuildStage.Create),
-                     }
+                       new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+                       new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create)
                    };
-      target.TreatAll().UsingArguments(AutoBuild.MethodArguments.InDirectOrder, AutoBuild.MethodArguments.ByParameter.Type);
 
       // --arrange
       target.Treat<bool>().AsIs();
@@ -188,7 +181,7 @@ namespace Tests.Functional
       yield return new TestCaseData(new GetConstructorWithMaxParametersCount()).SetName("WithMaxParametersCount");
 
       yield return new TestCaseData(
-        new TryInOrder {new GetConstructorByInjectPointId(), new GetConstructorWithMaxParametersCount(), new GetConstructorByParameterTypes(),}
+        new TryInOrder {new GetConstructorByInjectPoint(), new GetConstructorWithMaxParametersCount(), new GetConstructorByParameterTypes(),}
       ).SetName("ByInjectPointId -> WithMaxParametersCount -> Parameterless");
     }
 
@@ -197,7 +190,7 @@ namespace Tests.Functional
       yield return new TestCaseData(new GetConstructorByParameterTypes()).SetName("Parameterless");
 
       yield return new TestCaseData(
-        new TryInOrder {new GetConstructorByInjectPointId(), new GetConstructorByParameterTypes(), new GetConstructorWithMaxParametersCount(),}
+        new TryInOrder {new GetConstructorByInjectPoint(), new GetConstructorByParameterTypes(), new GetConstructorWithMaxParametersCount(),}
       ).SetName("ByInjectPointId -> Parameterless -> WithMaxParametersCount");
     }
 
@@ -205,14 +198,14 @@ namespace Tests.Functional
     {
       yield return new TestCaseData(
         null,
-        new TryInOrder {new GetConstructorByInjectPointId(), new GetConstructorByParameterTypes(), new GetConstructorWithMaxParametersCount(),}
+        new TryInOrder {new GetConstructorByInjectPoint(), new GetConstructorByParameterTypes(), new GetConstructorWithMaxParametersCount(),}
       ).SetName("PointId = null");
 
       const string pointId = Subject1.InjectPointId;
 
       yield return new TestCaseData(
         pointId,
-        new TryInOrder {new GetConstructorByInjectPointId(pointId), new GetConstructorByParameterTypes(), new GetConstructorWithMaxParametersCount(),}
+        new TryInOrder {new GetConstructorByInjectPoint(pointId), new GetConstructorByParameterTypes(), new GetConstructorWithMaxParametersCount(),}
       ).SetName($"PointId = {pointId}");
     }
 

@@ -1,7 +1,8 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
-using Armature.Extensibility;
+using Armature.Sdk;
+using WeightOf = Armature.Sdk.WeightOf;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {
@@ -10,23 +11,28 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     /// <summary>
     /// Specifies what unit should be built to fill <see cref="Maybe{T}" /> value.
     /// </summary>
-    public static TreatingTuner<T> TreatMaybeValue<T>(this TreatingTuner<Maybe<T>> treatingTuner)
+    public static IBuildingTuner<T> TreatMaybeValue<T>(this IBuildingTuner<Maybe<T>> buildingTuner)
     {
-      var treat     = treatingTuner.GetInternals();
-      var uniqueTag = Guid.NewGuid();
-      treat.Member1.UseBuildAction(new BuildMaybeAction<T>(uniqueTag), BuildStage.Create);
+      var tuner = (ITuner) buildingTuner;
 
-      return new TreatingTuner<T>(
-        treat.Member1.GetOrAddNode(new SkipTillUnit(new UnitPattern(typeof(T), uniqueTag), 0)));
+      var uniqueTag = Guid.NewGuid();
+      tuner.Apply().UseBuildAction(new BuildMaybeAction<T>(uniqueTag), BuildStage.Create);
+
+      var unitPattern = new UnitPattern(typeof(T), uniqueTag);
+
+      IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildStackPattern.IfFirstUnit);
+
+      return new BuildingTuner<T>(tuner, CreateNode, unitPattern);
     }
 
     /// <summary>
     /// Specifies that value from built <see cref="Maybe{T}" /> should be used as a unit.
     /// </summary>
-    public static TreatingTuner<Maybe<T>> AsMaybeValueOf<T>(this TreatingTuner<T> treatingTuner)
+    public static IBuildingTuner<T> AsMaybeValueOf<T>(this IBuildingTuner<T> buildingTuner)
     {
-      var treat = treatingTuner.GetInternals();
-      return new TreatingTuner<Maybe<T>>(treat.Member1.UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize));
+      var tuner = (ITuner) buildingTuner;
+      tuner.Apply().UseBuildAction(new GetMaybeValueBuildAction<T>(), BuildStage.Initialize);
+      return buildingTuner;
     }
   }
 }

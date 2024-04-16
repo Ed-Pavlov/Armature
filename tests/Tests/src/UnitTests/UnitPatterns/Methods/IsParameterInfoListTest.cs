@@ -1,8 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
+using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
+using Tests.Util;
 
 namespace Tests.UnitTests.UnitPatterns.Methods;
 
@@ -14,8 +16,8 @@ public class IsParameterInfoListTest
     var parameterInfoList = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters();
 
     // --arrange
-    var unitId = new UnitId(parameterInfoList, SpecialTag.Argument);
-    var target = new IsParameterInfoList();
+    var unitId = Unit.Of(parameterInfoList, ServiceTag.Argument);
+    var target = new IsParameterInfoArray();
 
     // --act
     // --assert
@@ -26,8 +28,8 @@ public class IsParameterInfoListTest
   public void should_not_match_unit_kind_other_than_parameter_info()
   {
     // --arrange
-    var unitId = new UnitId("parameterInfoList", SpecialTag.Argument);
-    var target = new IsParameterInfoList();
+    var unitId = Unit.Of("parameterInfoList", ServiceTag.Argument);
+    var target = new IsParameterInfoArray();
 
     // --act
     // --assert
@@ -40,8 +42,8 @@ public class IsParameterInfoListTest
     var parameterInfoList = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters();
 
     // --arrange
-    var unitId = new UnitId(parameterInfoList, tag);
-    var target = new IsParameterInfoList();
+    var unitId = Unit.Of(parameterInfoList, tag);
+    var target = new IsParameterInfoArray();
 
     // --act
     // --assert
@@ -52,8 +54,8 @@ public class IsParameterInfoListTest
   public void all_instances_should_be_equal()
   {
     // --arrange
-    var target1 = new IsParameterInfoList();
-    var target2 = new IsParameterInfoList();
+    var target1 = new IsParameterInfoArray();
+    var target2 = new IsParameterInfoArray();
 
     // --assert
     target1.Equals(target2).Should().BeTrue();
@@ -65,8 +67,8 @@ public class IsParameterInfoListTest
   public void should_not_be_equal_to_other_unit_patterns()
   {
     // --arrange
-    var target1 = new IsParameterInfoList();
-    var target2 = new Util.OtherUnitPattern();
+    var target1 = new IsParameterInfoArray();
+    var target2 = new TestUtil.OtherUnitPattern();
 
     // --assert
     target1.Equals(target2).Should().BeFalse();

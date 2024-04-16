@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Armature;
 using Armature.Core;
+using Armature.Core.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using Tests.UnitTests.BuildActions;
+using Tests.Util;
 
 namespace Tests.UnitTests
 {
@@ -20,9 +22,9 @@ namespace Tests.UnitTests
       // --arrange
       var target       = new BuildListArgumentForProperty(tag);
       var buildSession = A.Fake<IBuildSession>();
-      A.CallTo(() => buildSession.BuildChain).Returns(new UnitId(propertyInfo, tag).ToBuildChain());
+      A.CallTo(() => buildSession.Stack).Returns(Unit.Of(propertyInfo, tag).ToBuildStack());
 
-      A.CallTo(() => buildSession.BuildAllUnits(new UnitId(propertyInfo, tag)))
+      A.CallTo(() => buildSession.BuildAllUnits(Unit.Of(propertyInfo, tag), true))
        .Returns(new[] {1, 2, 3}.Select(_ => new BuildResult(_).WithWeight(0)).ToList());
 
       // --act

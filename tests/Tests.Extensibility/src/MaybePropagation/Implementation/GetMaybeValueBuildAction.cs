@@ -1,5 +1,4 @@
 ﻿using Armature.Core;
-using Armature.Core.Sdk;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {

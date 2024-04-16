@@ -1,8 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -19,8 +20,8 @@ public class BuildMethodArgumentsInDirectOrderTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Unit.Is(parametersList).Tag(SpecialTag.Argument).ToBuildChain());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(default)).WithAnyArguments();
+    A.CallTo(() => buildSession.Stack).Returns(Unit.Of(parametersList, ServiceTag.Argument).ToBuildStack());
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(default, true)).WithAnyArguments();
 
     buildUnitCall.ReturnsLazily(
         call =>
@@ -37,10 +38,10 @@ public class BuildMethodArgumentsInDirectOrderTest
     // --assert
     buildSession.BuildResult.Value.As<object?[]>().Should().Equal(parametersList.Select(_ => (object?) _.Name).ToArray());
 
-    A.CallTo(() => buildSession.BuildUnit(Unit.Is(parametersList[0]).Tag(SpecialTag.Argument))).MustHaveHappenedOnceExactly()
-     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.Is(parametersList[1]).Tag(SpecialTag.Argument))).MustHaveHappenedOnceExactly())
-     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.Is(parametersList[2]).Tag(SpecialTag.Argument))).MustHaveHappenedOnceExactly())
-     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.Is(parametersList[3]).Tag(SpecialTag.Argument))).MustHaveHappenedOnceExactly());
+    A.CallTo(() => buildSession.BuildUnit(Unit.Of(parametersList[0], ServiceTag.Argument), true)).MustHaveHappenedOnceExactly()
+     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.Of(parametersList[1], ServiceTag.Argument), true)).MustHaveHappenedOnceExactly())
+     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.Of(parametersList[2], ServiceTag.Argument), true)).MustHaveHappenedOnceExactly())
+     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.Of(parametersList[3], ServiceTag.Argument), true)).MustHaveHappenedOnceExactly());
 
     buildUnitCall.MustHaveHappened(parametersList.Length, Times.Exactly);
   }
@@ -52,8 +53,8 @@ public class BuildMethodArgumentsInDirectOrderTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.BuildChain).Returns(Unit.Is(parametersList).Tag(SpecialTag.Argument).ToBuildChain());
-    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(default)).WithAnyArguments();
+    A.CallTo(() => buildSession.Stack).Returns(Unit.Of(parametersList, ServiceTag.Argument).ToBuildStack());
+    var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(default, true)).WithAnyArguments();
 
     var target = new BuildMethodArgumentsInDirectOrder();
 

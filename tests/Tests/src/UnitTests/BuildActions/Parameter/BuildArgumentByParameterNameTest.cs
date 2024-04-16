@@ -1,7 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -18,7 +19,7 @@ public class BuildArgumentByParameterNameTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
 
     var target = new BuildArgumentByParameterName(tag);
 
@@ -26,7 +27,7 @@ public class BuildArgumentByParameterNameTest
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.Name).Tag(tag))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.Name, tag), true)).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]
@@ -36,15 +37,15 @@ public class BuildArgumentByParameterNameTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).Tag(tag).ToBuildChain());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo, tag).ToBuildStack());
 
-    var target = new BuildArgumentByParameterName(SpecialTag.Propagate);
+    var target = new BuildArgumentByParameterName(ServiceTag.Propagate);
 
     // --act
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.Name).Tag(tag))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.Name, tag), true)).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]
@@ -56,8 +57,8 @@ public class BuildArgumentByParameterNameTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
-    A.CallTo(() => actual.BuildUnit(Unit.Is(parameterInfo.Name).Tag(tag))).Returns(expected.ToBuildResult());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
+    A.CallTo(() => actual.BuildUnit(Unit.Of(parameterInfo.Name, tag), true)).Returns(expected.ToBuildResult());
 
     var target = new BuildArgumentByParameterName(tag);
 

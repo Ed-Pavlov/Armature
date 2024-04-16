@@ -6,6 +6,7 @@
     <RootNamespace>Armature.Core</RootNamespace>
     <NoWarn>1591</NoWarn>
     <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
+    <TargetFramework />
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -17,6 +18,28 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Armature.Interface\Armature.Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="src\BuildActions\Creation\CreateWithFactoryMethod.cs" />
+    <Compile Remove="src\BuildActions\Method\BuildArgumentByParameterName.cs" />
+    <Compile Remove="src\BuildActions\Method\BuildArgumentByParameterType.cs" />
+    <Compile Remove="src\BuildActions\BuildListArgumentBase.cs" />
+    <Compile Remove="src\BuildActions\TryInOrder.cs" />
+    <Compile Remove="src\UnitPatterns\Method\IsParameterInfoArray.cs" />
+    <Compile Remove="src\UnitPatterns\Method\IsParameterNamed.cs" />
+    <Compile Remove="src\UnitPatterns\Property\IsPropertyAttributed.cs" />
+    <Compile Remove="src\UnitPatterns\Property\IsPropertyNamed.cs" />
+    <Compile Remove="src\UnitPatterns\InjectPointOfTypeBase.cs" />
+    <Compile Remove="src\UnitPatterns\IsConstructor.cs" />
+    <Compile Remove="src\UnitPatterns\IsInjectPointBase.cs" />
+    <Compile Remove="src\UnitPatterns\IsServiceUnit.cs" />
+    <Compile Remove="src\Sdk\BuildActionBag.cs" />
+    <Compile Remove="src\IBuildAction.cs" />
+    <Compile Remove="src\Sdk\WeightOf.cs" />
+    <Compile Remove="src\Sdk\LogConst.cs" />
+    <Compile Remove="src\Sdk\LogExtension.cs" />
+    <Compile Remove="src\UnitPatterns\IUnitPattern.cs" />
   </ItemGroup>
 
   <PropertyGroup Label="nuspec">

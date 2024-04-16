@@ -1,6 +1,5 @@
 ﻿using System;
 using Armature.Core;
-using Armature.Core.Sdk;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {
@@ -17,7 +16,7 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
     {
       try
       {
-        var result = buildSession.BuildUnit(new UnitId(typeof(T), _uniqueTag));
+        var result = buildSession.BuildUnit(Unit.Of(typeof(T), _uniqueTag));
 
         if(!result.HasValue) throw new InvalidOperationException();
 

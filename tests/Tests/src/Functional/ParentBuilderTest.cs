@@ -116,7 +116,7 @@ namespace Tests.Functional
       const string expected = "expectedString";
 
       // --arrange
-      var parentBuilder = new Builder(BuildStage.Cache);
+      var parentBuilder = new Builder("test", BuildStage.Cache);
       parentBuilder.Treat<string>().AsInstance(expected);
 
       var target = CreateTarget(parentBuilder);
@@ -139,7 +139,7 @@ namespace Tests.Functional
       const string expected = "expectedString";
 
       // --arrange
-      var parentBuilder = new Builder(BuildStage.Cache);
+      var parentBuilder = new Builder("test", BuildStage.Cache);
       parentBuilder.Treat<string>().AsInstance(expected + "bad");
 
       var target = CreateTarget(parentBuilder);
@@ -164,10 +164,10 @@ namespace Tests.Functional
     public void should_report_all_armature_exceptions_from_parent_builders()
     {
       // --arrange
-      var parent1 = new Builder(BuildStage.Create)
+      var parent1 = new Builder("test", BuildStage.Create)
        .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArmatureException()));
 
-      var parent2 = new Builder(BuildStage.Create)
+      var parent2 = new Builder("test", BuildStage.Create)
        .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArmatureException()));
 
       var target = CreateTarget(parent1, parent2);
@@ -177,8 +177,8 @@ namespace Tests.Functional
 
       // --assert
       action.Should()
-          .ThrowExactly<ArmatureException>()
-          .Where(_ => _.InnerExceptions.Count == 2 && _.InnerExceptions.All(inner => inner is ArmatureException));
+            .ThrowExactly<ArmatureException>()
+            .Where(_ => _.InnerExceptions.Count == 2 && _.InnerExceptions.All(inner => inner is ArmatureException));
     }
 
     [Test]
@@ -186,10 +186,10 @@ namespace Tests.Functional
     {
       const string expected = "parent2string";
 
-      var parent1 = new Builder(BuildStage.Create)
+      var parent1 = new Builder("test", BuildStage.Create)
        .With(builder => builder.Treat<string>().AsCreatedWith(() => throw new ArgumentOutOfRangeException()));
 
-      var parent2 = new Builder(BuildStage.Cache)
+      var parent2 = new Builder("test", BuildStage.Cache)
        .With(builder => builder.Treat<string>().AsInstance(expected));
 
       var target = CreateTarget(parent1, parent2);
@@ -204,14 +204,15 @@ namespace Tests.Functional
     {
       const string expected = "parent2string";
 
-      var parent = new Builder(BuildStage.Cache)
+      var parent = new Builder("test", BuildStage.Cache)
        .With(builder => builder.Treat<string>().AsInstance(expected));
 
       var target = CreateTarget(parent);
 
-      // add build action which actual doesn't build any value, in this case Armature should try to build an unit via parent builder
+      // add build action which actual doesn't build any value, in this case Armature should try to build a unit via parent builder
       target
-       .GetOrAddNode(new SkipAllUnits())
+
+        // .GetOrAddNode(new SkipAllUnits())
        .AddNode(new IfFirstUnit(new CanBeInstantiated()))
        .UseBuildAction(new DebugOnlyBuildAction(), BuildStage.Cache);
 
@@ -229,18 +230,15 @@ namespace Tests.Functional
       public void PostProcess(IBuildSession buildSession) { }
     }
 
-    private static Builder CreateTarget(params Builder[] parents)
-      => new(new object[] {BuildStage.Cache, BuildStage.Create}, parents)
+    private static Builder CreateTarget(params IBuilder[] parents)
+      => new("test", [BuildStage.Cache, BuildStage.Create], parents)
          {
-           new SkipAllUnits
-           {
-             new IfFirstUnit(new IsConstructor())
-              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoList())
-              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfo())
-              .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
-           }
+           new IfFirstUnit(new IsConstructor())
+            .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
+           new IfFirstUnit(new IsParameterInfoArray())
+            .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+           new IfFirstUnit(new IsParameterInfo())
+            .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
          };
 
     [UsedImplicitly]

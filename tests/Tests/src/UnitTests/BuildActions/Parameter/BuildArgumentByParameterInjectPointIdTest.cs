@@ -18,15 +18,15 @@ public class BuildArgumentByParameterInjectPointIdTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
 
-    var target = new BuildArgumentByParameterInjectPointId();
+    var target = new BuildArgumentByParameterInjectPoint();
 
     // --act
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.IsType<int>().Tag(Subject.IntId))).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(TUnit.OfType<int>(Subject.IntId), true)).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]
@@ -36,15 +36,15 @@ public class BuildArgumentByParameterInjectPointIdTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
 
-    var target = new BuildArgumentByParameterInjectPointId();
+    var target = new BuildArgumentByParameterInjectPoint();
 
     // --act
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(Unit.IsType<string>())).MustHaveHappenedOnceAndOnly();
+    A.CallTo(() => actual.BuildUnit(TUnit.OfType<string>(), true)).MustHaveHappenedOnceAndOnly();
   }
 
   [Test]
@@ -54,15 +54,15 @@ public class BuildArgumentByParameterInjectPointIdTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
 
-    var target = new BuildArgumentByParameterInjectPointId();
+    var target = new BuildArgumentByParameterInjectPoint();
 
     // --act
     target.Process(actual);
 
     // --assert
-    A.CallTo(() => actual.BuildUnit(default)).WithAnyArguments().MustNotHaveHappened();
+    A.CallTo(() => actual.BuildUnit(default, true)).WithAnyArguments().MustNotHaveHappened();
     actual.BuildResult.HasValue.Should().BeFalse();
   }
 
@@ -75,10 +75,10 @@ public class BuildArgumentByParameterInjectPointIdTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.BuildChain).Returns(Unit.Is(parameterInfo).ToBuildChain());
-    A.CallTo(() => actual.BuildUnit(Unit.IsType<int>().Tag(Subject.IntId))).Returns(expected.ToBuildResult());
+    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
+    A.CallTo(() => actual.BuildUnit(TUnit.OfType<int>(Subject.IntId), true)).Returns(expected.ToBuildResult());
 
-    var target = new BuildArgumentByParameterInjectPointId();
+    var target = new BuildArgumentByParameterInjectPoint();
 
     // --act
     target.Process(actual);

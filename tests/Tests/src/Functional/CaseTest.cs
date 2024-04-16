@@ -7,6 +7,7 @@ using Armature.Core.Sdk;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;
+using Tests.Util;
 
 namespace Tests.Functional
 {
@@ -20,15 +21,15 @@ namespace Tests.Functional
 
       target
        .Treat<string>()
-       .AsCreatedWith(assembler => assembler.BuildChain.First().Kind!.ToString()!);
+       .AsCreatedWith(buildSession => buildSession.Stack.AsEnumerable().Last().Kind!.ToString()!);
 
       target
-       .Treat<TwoDisposableStringCtorClass>()
+       .Treat<DisposableAndStringCtorClass>()
        .AsIs()
        .UsingArguments(new MemoryStream());
 
       // --act
-      var actual = target.Build<TwoDisposableStringCtorClass>()!;
+      var actual = target.Build<DisposableAndStringCtorClass>()!;
 
       // --assert
       actual.Should().NotBeNull();
@@ -42,13 +43,13 @@ namespace Tests.Functional
       var target = CreateTarget();
 
       target.Treat<IDisposableValue1>()
-            .AsCreated<OneDisposableCtorClass>()
+            .AsCreated<DisposableCtorClass>()
             .UsingArguments(new MemoryStream());
 
       var expected = new MemoryStream();
 
       target.Treat<IDisposableValue2>()
-            .AsCreated<OneDisposableCtorClass>()
+            .AsCreated<DisposableCtorClass>()
             .UsingArguments(expected);
 
       // --act
@@ -59,22 +60,6 @@ namespace Tests.Functional
       instance.Value.Should().BeSameAs(expected);
     }
 
-    [Test]
-    public void SameClassForMultipleTagAsSingleton()
-    {
-      const string tag1 = "t1";
-
-      var target = CreateTarget();
-
-      target.Treat<IDisposableValue1>().As<OneDisposableCtorClass>();
-      target.Treat<IDisposableValue2>(tag1).As<OneDisposableCtorClass>();
-      target.Treat<OneDisposableCtorClass>().AsInstance(new OneDisposableCtorClass(null));
-
-      var dep  = target.Build<IDisposableValue1>();
-      var dep1 = target.UsingTag(tag1).Build<IDisposableValue2>();
-
-      Assert.AreSame(dep, dep1);
-    }
 
     [Test(Description = "Registration of some entity separated in several parts should work")]
     public void SeparatedRegistration()
@@ -83,39 +68,53 @@ namespace Tests.Functional
 
       target
        .Treat<IDisposableValue1>()
-       .AsCreated<OneDisposableCtorClass>();
+       .AsCreated<DisposableCtorClass>();
 
       target
        .Treat<IDisposableValue2>()
-       .AsCreated<OneDisposableCtorClass>();
+       .AsCreated<DisposableCtorClass>();
 
       target
-       .Treat<OneDisposableCtorClass>()
+       .Treat<DisposableCtorClass>()
        .UsingArguments(new MemoryStream());
 
       target
-       .Treat<OneDisposableCtorClass>()
+       .Treat<DisposableCtorClass>()
        .AsSingleton();
 
       var actual1 = target.Build<IDisposableValue1>();
       var actual2 = target.Build<IDisposableValue2>();
 
       // --assert
-      actual1.Should().BeOfType<OneDisposableCtorClass>();
+      actual1.Should().BeOfType<DisposableCtorClass>();
       actual1.Should().BeSameAs(actual2);
+    }
+    [Test]
+    public void SameClassForMultipleTagAsSingleton()
+    {
+      const string tag1 = "t1";
+
+      var target = CreateTarget();
+
+      target.Treat<IDisposableValue1>().As<DisposableCtorClass>();
+      target.Treat<IDisposableValue2>(tag1).As<DisposableCtorClass>();
+      target.Treat<DisposableCtorClass>().AsInstance(new DisposableCtorClass(null));
+
+      var dep  = target.Build<IDisposableValue1>();
+      var dep1 = target.UsingTag(tag1).Build<IDisposableValue2>();
+
+      Assert.AreSame(dep, dep1);
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+      => new("test", BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(
                  new TryInOrder
                  {
-                   new GetConstructorByInjectPointId(),              // constructor marked with [Inject] attribute has more priority
+                   new GetConstructorByInjectPoint(),              // constructor marked with [Inject] attribute has more priority
                    Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
@@ -123,10 +122,10 @@ namespace Tests.Functional
               .UseBuildAction(
                  new TryInOrder
                  {
-                   Static.Of<BuildArgumentByParameterInjectPointId>(),
+                   Static.Of<BuildArgumentByParameterInjectPoint>(),
                    Static.Of<BuildArgumentByParameterType>()
                  }, BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfFirstUnit(new IsPropertyInfo())
               .UseBuildAction(
@@ -134,7 +133,6 @@ namespace Tests.Functional
                  {
                    new BuildArgumentByPropertyType()
                  }, BuildStage.Create)
-           }
          };
 
     private interface IEmptyInterface1 { }
@@ -160,19 +158,19 @@ namespace Tests.Functional
       IDisposable? Value { get; }
     }
 
-    private class OneDisposableCtorClass : IDisposableValue1, IDisposableValue2
+    private class DisposableCtorClass : IDisposableValue1, IDisposableValue2
     {
-      public OneDisposableCtorClass(IDisposable? value) => Value = value;
+      public DisposableCtorClass(IDisposable? value) => Value = value;
 
       public IDisposable? Value { get; }
     }
 
     [UsedImplicitly]
-    private class TwoDisposableStringCtorClass : OneDisposableCtorClass
+    private class DisposableAndStringCtorClass : DisposableCtorClass
     {
       public readonly string String;
 
-      public TwoDisposableStringCtorClass(IDisposable? value, string @string) : base(value) => String = @string;
+      public DisposableAndStringCtorClass(IDisposable? value, string @string) : base(value) => String = @string;
     }
   }
 }

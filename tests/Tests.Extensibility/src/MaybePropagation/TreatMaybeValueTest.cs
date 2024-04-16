@@ -2,21 +2,51 @@
 using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
+using Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Extensibility.MaybePropagation.Implementation;
 using Tests.Extensibility.MaybePropagation.TestData;
+using WeightOf = Armature.Core.WeightOf;
 
 namespace Tests.Extensibility.MaybePropagation
 {
   public class TreatMaybeValueTest
   {
+      [Test]
+    public void new_test()
+    {
+      var builder = CreateTarget();
+
+      builder.AddNode(
+        new IfFirstUnit(new IsGenericOfDefinition(typeof(Maybe<>), ServiceTag.Any), WeightOf.BuildStackPattern.IfFirstUnit)
+         .UseBuildAction(new BuildMaybe(null), BuildStage.Create));
+
+      builder.Treat<Section>().AsInstance(new Section());
+
+      builder
+       .Treat<IReader>()
+       .AsCreated<Reader>();
+
+
+      var actual = builder.Build<Maybe<IReader>>()!;
+
+      // --assert
+      actual.HasValue.Should().BeTrue();
+      actual.Value.Should().BeOfType<Reader>();
+    }
+
     [Test]
     public void should_build_maybe()
     {
       var builder = CreateTarget();
 
       builder.Treat<Section>().AsInstance(new Section());
+
+      // Maybe<IReader> -> Create(IReader, guid)
+      // IReader, guid -> Redirect(Reader, null)
+      // Reader, null
+      //   Maybe<IReader> -> Create
 
       builder
        .Treat<Maybe<IReader>>()
@@ -47,17 +77,14 @@ namespace Tests.Extensibility.MaybePropagation
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Create)
+      => new("test", BuildStage.Cache, BuildStage.Create)
          {
-           new SkipAllUnits
-           { // inject into constructor
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
              new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create)
-           }
          };
   }
 }

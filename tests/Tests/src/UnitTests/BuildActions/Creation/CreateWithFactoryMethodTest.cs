@@ -1,4 +1,5 @@
 using System;
+using Armature;
 using Armature.Core;
 using FakeItEasy;
 using FluentAssertions;

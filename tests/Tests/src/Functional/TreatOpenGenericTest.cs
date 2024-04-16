@@ -1,4 +1,5 @@
-﻿using Armature;
+﻿using System.Collections.Generic;
+using Armature;
 using Armature.Core;
 using Armature.Core.Sdk;
 using FluentAssertions;
@@ -9,6 +10,18 @@ namespace Tests.Functional
 {
   public class TreatOpenGenericTest
   {
+    // [Test]
+    public void test()
+    {
+      // --arrange
+      var target = CreateTarget();
+
+      target.TreatOpenGeneric(typeof(List<>))
+            .AsCreated<List<int>>();
+
+      var actual = target.BuildUnit(Unit.Of(typeof(List<>)));
+    }
+
     [Test]
     public void should_instantiate_type_with_specified_generic_parameter()
     {
@@ -22,7 +35,7 @@ namespace Tests.Functional
       target
        .Treat<ISubject<int>>()
        .AsCreated<Subject<int>>()
-       .InjectInto(Constructor.Parameterless());
+       .UsingInjectionPoints(Constructor.Parameterless());
 
       // --act
       var actual = target.Build<ISubject<int>>();
@@ -52,19 +65,16 @@ namespace Tests.Functional
     }
 
     private static Builder CreateTarget()
-      => new(BuildStage.Cache, BuildStage.Create)
+      => new("test", BuildStage.Cache, BuildStage.Create)
          {
-           new SkipAllUnits
-           {
              new IfFirstUnit(new IsConstructor()) // inject into constructor
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
 
-             new IfFirstUnit(new IsParameterInfoList())
+             new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
 
              new IfFirstUnit(new IsParameterInfo())
               .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
-           }
          };
 
     private interface ISubject<out T>

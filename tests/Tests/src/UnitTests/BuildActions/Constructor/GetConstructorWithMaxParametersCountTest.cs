@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using Armature;
 using Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
@@ -16,7 +17,7 @@ public class GetConstructorWithMaxParametersCountTest
   {
     // --arrange
     var target = new GetConstructorWithMaxParametersCount();
-    var actual = new BuildSessionMock(Unit.IsType<Good>().ToBuildChain());
+    var actual = new BuildSessionMock(TUnit.OfType<Good>().ToBuildStack());
 
     // --act
     target.Process(actual);
@@ -32,7 +33,7 @@ public class GetConstructorWithMaxParametersCountTest
     var target = new GetConstructorWithMaxParametersCount();
 
     // --act
-    Action actual = () => target.Process(new BuildSessionMock(Unit.IsType<Bad>().ToBuildChain()));
+    Action actual = () => target.Process(new BuildSessionMock(TUnit.OfType<Bad>().ToBuildStack()));
 
     // --assert
     actual.Should().ThrowExactly<ArmatureException>().Which.Message.Should().StartWith("More than one constructor with max parameters count for type");
@@ -43,7 +44,7 @@ public class GetConstructorWithMaxParametersCountTest
   {
     // --arrange
     var target = new GetConstructorWithMaxParametersCount();
-    var actual = new BuildSessionMock(Unit.IsType<NoCtor>().ToBuildChain());
+    var actual = new BuildSessionMock(TUnit.OfType<NoCtor>().ToBuildStack());
 
     // --act
     target.Process(actual);

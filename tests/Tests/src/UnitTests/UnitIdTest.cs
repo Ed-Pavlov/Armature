@@ -1,6 +1,6 @@
 using System;
 using Armature.Core;
-using Armature.Core.Sdk;
+using Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -12,7 +12,7 @@ public class UnitIdTest
   public void kind_or_tag_should_be_not_null()
   {
     // --arrange
-    var actual = () => new UnitId(null, null);
+    var actual = () => Unit.Of(null);
 
     // --assert
     actual.Should().ThrowExactly<ArgumentNullException>().WithMessage($"Either kind or tag should be provided*");
@@ -24,8 +24,8 @@ public class UnitIdTest
     if(kind is null && tag is null) Assert.Ignore("Impossible arguments combination");
 
     // --arrange
-    var unit1 = new UnitId(kind, tag);
-    var unit2 = new UnitId(kind, tag);
+    var unit1 = Unit.Of(kind, tag);
+    var unit2 = Unit.Of(kind, tag);
 
     // --assert
     unit1.Equals(unit2).Should().BeTrue();
@@ -38,8 +38,8 @@ public class UnitIdTest
     if(kind is null && tag is null) Assert.Ignore("Impossible arguments combination");
 
     // --arrange
-    var unit1 = new UnitId(tag, kind);
-    var unit2 = new UnitId(kind, tag);
+    var unit1 = Unit.Of(tag, kind);
+    var unit2 = Unit.Of(kind, tag);
 
     // --assert
     unit1.Equals(unit2).Should().BeFalse();
@@ -52,8 +52,8 @@ public class UnitIdTest
     if(kind is null && tag is null) Assert.Ignore("Impossible arguments combination");
 
     // --arrange
-    var unit1 = new UnitId(kind, tag);
-    var unit2 = new UnitId(kind, SpecialTag.Any);
+    var unit1 = Unit.Of(kind, tag);
+    var unit2 = Unit.Of(kind, ServiceTag.Any);
 
     // --assert
     unit1.Equals(unit2).Should().BeFalse();
