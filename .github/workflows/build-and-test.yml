@@ -5,6 +5,7 @@ on:
   push:
     branches:
     - master
+    - main
     - 'feature/**'
     - 'release/**'
 #  pull_request:
@@ -22,27 +23,28 @@ jobs:
     steps:
     -
       name: Checkout
-      uses: actions/checkout@v2.3.4
+      uses: actions/checkout@v4.1.1
       with:
         fetch-depth: 0
 
     -
       name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.15
+      uses: gittools/actions/gitversion/setup@v1.1.1
       with:
         versionSpec: '5.x'
+        preferLatestVersion: true
 
     -
       name: Use GitVersion
       id:   gitversion # step id used as reference for output values
-      uses: gittools/actions/gitversion/execute@v0.9.15
+      uses: gittools/actions/gitversion/execute@v1.1.1
 
     -
       name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version:     6.0.x
-        include-prerelease: true
+        dotnet-version:     8.0.x
+        include-prerelease: false
 
     # Build
     -
