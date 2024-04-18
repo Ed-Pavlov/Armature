@@ -5,26 +5,31 @@ using System.Reflection;
 using Armature.Core;
 using Armature.Core.Annotations;
 using Armature.Sdk;
+using JetBrains.Annotations;
 
 namespace Armature;
 
 /// <summary>
-/// Gets the constructor of the type which matches specified parameter types list.
+/// Gets the constructor of the type matches specified parameter types list.
 /// </summary>
 public record GetConstructorByParameterTypes : IBuildAction, ILogString
 {
+  private readonly BindingFlags _bindingFlags;
   private readonly Type[] _parameterTypes;
 
-  public GetConstructorByParameterTypes(params Type[] parameterTypes)
+  public GetConstructorByParameterTypes(params Type[] parameterTypes) : this(BindingFlags.Instance | BindingFlags.Public, parameterTypes) { }
+  public GetConstructorByParameterTypes(BindingFlags bindingFlags, params Type[] parameterTypes)
   {
     _parameterTypes = parameterTypes ?? throw new ArgumentNullException(nameof(parameterTypes));
     if(parameterTypes.Any(_ => _ is null)) throw new ArgumentNullException(nameof(parameterTypes), "One or more items is null");
+
+    _bindingFlags = bindingFlags;
   }
 
   public void Process(IBuildSession buildSession)
   {
     var unitType = buildSession.Stack.TargetUnit.GetUnitType();
-    var ctor     = GetConstructor(unitType);
+    var ctor     = GetConstructor(unitType, _bindingFlags);
 
     ctor.WriteToLog(LogLevel.Trace);
     if(ctor is not null)
@@ -35,8 +40,8 @@ public record GetConstructorByParameterTypes : IBuildAction, ILogString
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 
-  private ConstructorInfo? GetConstructor(Type unitType)
-    => unitType.GetConstructors().FirstOrDefault(ctor => IsParametersListMatch(ctor.GetParameters(), _parameterTypes));
+  private ConstructorInfo? GetConstructor(Type unitType, BindingFlags bindingFlags)
+    => unitType.GetConstructors(bindingFlags).FirstOrDefault(ctor => IsParametersListMatch(ctor.GetParameters(), _parameterTypes));
 
   private static bool IsParametersListMatch(ParameterInfo[] parameterInfos, Type[] parameterTypes)
   {

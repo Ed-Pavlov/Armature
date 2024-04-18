@@ -115,7 +115,7 @@ public class BuildStackPatternTree :
     else
     {
       if(!_staticMap.TryGetValue(unitId, out var list))
-        _staticMap.Add(unitId, new LeanList<IBuildStackPattern> {node}); // no list - no node, add passed one
+        _staticMap.Add(unitId, [node]); // no list - no node, add passed one
       else if(!list.Contains(node))
         list.Add(node); // list presents but doesn't contain a node equal to passed, add passed one
       else
@@ -128,12 +128,12 @@ public class BuildStackPatternTree :
   public virtual string ToHoconString() => _name.ToHoconString();
 
   bool IBuildStackPattern.            AddBuildAction(IBuildAction buildAction, object buildStage) => throw new NotSupportedException();
-  bool IEquatable<IBuildStackPattern>.Equals(IBuildStackPattern   other) => throw new NotSupportedException();
+  bool IEquatable<IBuildStackPattern>.Equals(IBuildStackPattern   other) => ReferenceEquals(this, other);
 
   #region Syntax sugar
 
   public void             Add(IBuildStackPattern buildStackPattern) => _root.AddNode(buildStackPattern);
-  IEnumerator IEnumerable.GetEnumerator()                           => throw new NotSupportedException();
+  IEnumerator IEnumerable.GetEnumerator()                           => Empty<object>.Array.GetEnumerator();
 
   #endregion
 
@@ -168,7 +168,7 @@ public class BuildStackPatternTree :
     public override string ToHoconString() => _logString.ToHoconString();
 
     [DebuggerStepThrough]
-    public override bool Equals(IBuildStackPattern? other) => throw new NotSupportedException();
+    public override bool Equals(IBuildStackPattern? other) => ReferenceEquals(this, other);
   }
 
   #region Internals

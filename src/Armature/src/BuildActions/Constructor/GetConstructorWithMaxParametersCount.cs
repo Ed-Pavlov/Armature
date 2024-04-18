@@ -14,10 +14,15 @@ namespace Armature;
 /// </summary>
 public record GetConstructorWithMaxParametersCount : IBuildAction
 {
+  private readonly BindingFlags _bindingFlags;
+
+  public GetConstructorWithMaxParametersCount() : this(BindingFlags.Instance | BindingFlags.Public){}
+  public GetConstructorWithMaxParametersCount(BindingFlags bindingFlags) => _bindingFlags = bindingFlags;
+
   public void Process(IBuildSession buildSession)
   {
     var unitType     = buildSession.Stack.TargetUnit.GetUnitType();
-    var constructors = unitType.GetConstructors();
+    var constructors = unitType.GetConstructors(_bindingFlags);
 
     if(constructors.Length > 0)
     {

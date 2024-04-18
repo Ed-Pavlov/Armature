@@ -4,25 +4,32 @@ using System.Reflection;
 using Armature.Core;
 using Armature.Core.Annotations;
 using Armature.Sdk;
+using JetBrains.Annotations;
 
 namespace Armature;
 
 /// <summary>
-/// Gets the constructor of the type which is marked with <see cref="InjectAttribute" /> with the optional <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" />.
+/// Gets the constructor of the type which is marked with <see cref="InjectAttribute" /> the optional <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" />.
 /// </summary>
 public record GetConstructorByInjectPoint : IBuildAction, ILogString
 {
+  private readonly BindingFlags _bindingFlags;
   private readonly object? _injectPointTag;
 
-  public GetConstructorByInjectPoint() { }
-  public GetConstructorByInjectPoint(object? injectPointTag) => _injectPointTag = injectPointTag;
+  public GetConstructorByInjectPoint() : this(BindingFlags.Instance | BindingFlags.Public) { }
+  public GetConstructorByInjectPoint(BindingFlags bindingFlags) : this(null, bindingFlags) { }
+  public GetConstructorByInjectPoint(object? injectPointTag, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public)
+  {
+    _bindingFlags = bindingFlags;
+    _injectPointTag = injectPointTag;
+  }
 
   public void Process(IBuildSession buildSession)
   {
     var unitType = buildSession.Stack.TargetUnit.GetUnitType();
 
     var constructors = unitType
-                      .GetConstructors()
+                      .GetConstructors(_bindingFlags)
                       .Where(
                          ctor =>
                          {
