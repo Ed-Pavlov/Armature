@@ -6,7 +6,7 @@ on:
       prerelease_tag:
         description: 'Prerelease tag'
         required: false
-        default: 'dev'
+        default: ''
       publish_artifacts:
         description: 'Publish artifacts'
         required: true
