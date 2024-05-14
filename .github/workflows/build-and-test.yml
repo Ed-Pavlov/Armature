@@ -5,7 +5,7 @@ on:
     inputs:
       prerelease_tag:
         description: 'Prerelease tag'
-        required: true
+        required: false
         default: 'dev'
       publish_artifacts:
         description: 'Publish artifacts'
