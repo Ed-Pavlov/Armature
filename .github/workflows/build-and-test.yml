@@ -11,6 +11,10 @@ on:
         description: 'Publish artifacts'
         required: true
         default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
 
   push:
     branches:
@@ -24,7 +28,7 @@ env:
   artifacts-dir: artifacts
   nugets-dir:    artifacts/nupkgs
   pdb-dir:       artifacts/pdb
-  prerelease-tag: ${{ (github.event.inputs.publish_artifacts && (github.event.inputs.prerelease_tag[1] != null && format('-{0}', github.event.inputs.prerelease_tag) || '' ) || 'dev' ) }}
+  prerelease-tag: ${{ (github.event.inputs.publish_artifacts && (github.event.inputs.prerelease_tag[1] != null && format('-{0}', github.event.inputs.prerelease_tag) || '' ) || '-dev' ) }}
 
 jobs:
   build:
@@ -33,9 +37,8 @@ jobs:
       - name: Info
         run: |
           echo 'input' ${{ github.event.inputs.prerelease_tag }}
-          echo 'input is null?' ${{ (github.event.inputs.prerelease_tag[1] == null && '') || 'false' }}
-          echo 'input[0]' ${{ github.event.inputs.prerelease_tag[0] }}
-          echo 'input[1]' ${{ github.event.inputs.prerelease_tag[1] }}
+          echo 'input[0]' ${{ github.event.inputs.prerelease_tag[0] == null }}
+          echo 'input[1]' ${{ github.event.inputs.prerelease_tag[1] != null}}
           echo 'prerelease tag value' ${{ env.prerelease-tag }}
 
       -
@@ -61,6 +64,8 @@ jobs:
         name: Use GitVersion
         id:   gitversion # step id used as reference for output values
         uses: gittools/actions/gitversion/execute@v1.1.1
+        env:
+          InfoVersion: ${{ format('{0}.{1}{2}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseTag, env.prerelease-tag) }}
 
       # Build
       -
@@ -70,7 +75,7 @@ jobs:
           -c ${{env.configuration}}
           -p:AssemblyVersion=${{ steps.gitversion.outputs.AssemblySemVer }}
           -p:FileVersion=${{ steps.gitversion.outputs.AssemblySemFileVer }}
-          -p:InformationalVersion=${{ format('{0}.{1}{2}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseTag, env.prerelease-tag) }}
+          -p:InformationalVersion=${{ steps.gitversion.env.InfoVersion }}
 
       # Run tests
       -
@@ -80,7 +85,7 @@ jobs:
       # Create and place nuget packages into env.nugets-dir directory
       - if: github.event.inputs.publish_artifacts == 'true'
         name: Pack
-        run: dotnet pack --no-build -o:${{ env.nugets-dir }} -p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }}
+        run: dotnet pack --no-build -o:${{ env.nugets-dir }} -p:PackageVersion=${{ steps.gitversion.outputs.InfoVersion }}
 
       - if: github.event.inputs.publish_artifacts == 'true'
         name: Store Version
@@ -91,7 +96,7 @@ jobs:
             {
             "assembly-version": "${{ steps.gitversion.outputs.AssemblySemVer }}",
             "assembly-file-version": "${{ steps.gitversion.outputs.AssemblySemFileVer }}",
-            "nuget-version": "${{ format('{0}.{1}{2}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseTag, ((github.event.inputs.prerelease_tag[1] == null && '') || format('-{0}', github.event.inputs.prerelease_tag))) }}"
+            "nuget-version": "${{ steps.gitversion.outputs.InfoVersion }}"
             }
           dir:  ${{ env.artifacts-dir }}
 
