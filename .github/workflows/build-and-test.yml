@@ -75,7 +75,7 @@ jobs:
           -c ${{env.configuration}}
           -p:AssemblyVersion=${{ steps.gitversion.outputs.AssemblySemVer }}
           -p:FileVersion=${{ steps.gitversion.outputs.AssemblySemFileVer }}
-          -p:InformationalVersion=${{ steps.gitversion.env.InfoVersion }}
+          -p:InformationalVersion=${{ steps.gitversion.outputs.InfoVersion }}
 
       # Run tests
       -
