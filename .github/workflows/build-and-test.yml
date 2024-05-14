@@ -24,7 +24,7 @@ env:
   artifacts-dir: artifacts
   nugets-dir:    artifacts/nupkgs
   pdb-dir:       artifacts/pdb
-  prerelease-tag: ${{ (github.event.inputs.prerelease_tag[1] != null && format('-{0}', github.event.inputs.prerelease_tag) || '' ) }}
+  prerelease-tag: ${{ (github.event.inputs.publish_artifacts && (github.event.inputs.prerelease_tag[1] != null && format('-{0}', github.event.inputs.prerelease_tag) || '' ) || 'dev' ) }}
 
 jobs:
   build:
