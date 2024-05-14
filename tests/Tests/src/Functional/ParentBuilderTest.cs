@@ -116,7 +116,7 @@ namespace Tests.Functional
       const string expected = "expectedString";
 
       // --arrange
-      var parentBuilder = new Builder("test", BuildStage.Cache);
+      var parentBuilder = new Builder("test", BuildStage.Cache, BuildStage.Create);
       parentBuilder.Treat<string>().AsInstance(expected);
 
       var target = CreateTarget(parentBuilder);
@@ -204,7 +204,7 @@ namespace Tests.Functional
     {
       const string expected = "parent2string";
 
-      var parent = new Builder("test", BuildStage.Cache)
+      var parent = new Builder("test", BuildStage.Cache, BuildStage.Create)
        .With(builder => builder.Treat<string>().AsInstance(expected));
 
       var target = CreateTarget(parent);
