@@ -66,9 +66,11 @@ jobs:
         uses: gittools/actions/gitversion/execute@v1.1.1
 
       -
-        name: Compose info version
-        id: verver
-        run: echo "InfoVersion=${{ format('{0}.{1}{2}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseTag, env.prerelease-tag) }}" >> "$GITHUB_OUTPUT"
+        name: Compose versions
+        id: comver
+        run: |
+          echo InfoVersion=${{ format('{0}.{1}{2}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseTag, env.prerelease-tag) }} >> $GITHUB_OUTPUT
+          echo AssemblyVersion=${{ format('{0}.{1}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseTag) }} >> $GITHUB_OUTPUT
 
       # Build
       -
@@ -78,7 +80,7 @@ jobs:
           -c ${{env.configuration}}
           -p:AssemblyVersion=${{ steps.gitversion.outputs.AssemblySemVer }}
           -p:FileVersion=${{ steps.gitversion.outputs.AssemblySemFileVer }}
-          -p:InformationalVersion=${{ steps.verver.outputs.InfoVersion }}
+          -p:InformationalVersion=${{ steps.comver.outputs.InfoVersion }}
 
       # Run tests
       -
@@ -88,7 +90,7 @@ jobs:
       # Create and place nuget packages into env.nugets-dir directory
       - if: github.event.inputs.publish_artifacts == 'true'
         name: Pack
-        run: dotnet pack --no-build -o:${{ env.nugets-dir }} -p:PackageVersion=${{ steps.verver.outputs.InfoVersion }}
+        run: dotnet pack --no-build -o:${{ env.nugets-dir }} -p:PackageVersion=${{ steps.comver.outputs.InfoVersion }}
 
       - if: github.event.inputs.publish_artifacts == 'true'
         name: Store Version
@@ -99,7 +101,7 @@ jobs:
             {
             "assembly-version": "${{ steps.gitversion.outputs.AssemblySemVer }}",
             "assembly-file-version": "${{ steps.gitversion.outputs.AssemblySemFileVer }}",
-            "nuget-version": "${{ steps.verver.outputs.InfoVersion }}"
+            "nuget-version": "${{ steps.comver.outputs.InfoVersion }}"
             }
           dir:  ${{ env.artifacts-dir }}
 
