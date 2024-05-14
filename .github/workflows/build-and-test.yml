@@ -78,8 +78,8 @@ jobs:
         run:  >
           dotnet build
           -c ${{env.configuration}}
-          -p:AssemblyVersion=${{ steps.gitversion.outputs.AssemblySemVer }}
-          -p:FileVersion=${{ steps.gitversion.outputs.AssemblySemFileVer }}
+          -p:AssemblyVersion=${{ steps.comver.outputs.AssemblyVersion }}
+          -p:FileVersion=${{ steps.comver.outputs.AssemblyVersion }}
           -p:InformationalVersion=${{ steps.comver.outputs.InfoVersion }}
 
       # Run tests
@@ -99,8 +99,8 @@ jobs:
           name: version.json
           json: |
             {
-            "assembly-version": "${{ steps.gitversion.outputs.AssemblySemVer }}",
-            "assembly-file-version": "${{ steps.gitversion.outputs.AssemblySemFileVer }}",
+            "assembly-version": "${{ steps.comver.outputs.AssemblyVersion }}",
+            "assembly-file-version": "${{ steps.comver.outputs.AssemblyVersion  }}",
             "nuget-version": "${{ steps.comver.outputs.InfoVersion }}"
             }
           dir:  ${{ env.artifacts-dir }}
