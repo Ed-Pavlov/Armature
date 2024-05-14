@@ -61,7 +61,7 @@ jobs:
           -c ${{env.configuration}}
           -p:AssemblyVersion=${{ steps.gitversion.outputs.AssemblySemVer }}
           -p:FileVersion=${{ steps.gitversion.outputs.AssemblySemFileVer }}
-          -p:InformationalVersion=${{ format('{0}.{1}{2}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseNumber, (github.event.inputs.prerelease_tag[1] == null && '' ||  format('-{0}', github.event.inputs.prerelease_tag)) }}
+          -p:InformationalVersion=${{ format('{0}.{1}{2}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseNumber, (github.event.inputs.prerelease_tag[1] == null && '' ||  format('-{0}', github.event.inputs.prerelease_tag))) }}
 
       # Run tests
       -
