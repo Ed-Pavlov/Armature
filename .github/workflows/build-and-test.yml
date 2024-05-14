@@ -69,8 +69,8 @@ jobs:
         name: Compose versions
         id: comver
         run: |
-          echo InfoVersion=${{ format('{0}.{1}{2}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseTag, env.prerelease-tag) }} >> $GITHUB_OUTPUT
-          echo AssemblyVersion=${{ format('{0}.{1}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseTag) }} >> $GITHUB_OUTPUT
+          echo InfoVersion=${{ format('{0}.{1}{2}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseTag, env.prerelease-tag) }} >> $env:GITHUB_OUTPUT
+          echo AssemblyVersion=${{ format('{0}.{1}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseTag) }} >> $env:GITHUB_OUTPUT
 
       # Build
       -
