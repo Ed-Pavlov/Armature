@@ -24,7 +24,7 @@ env:
   artifacts-dir: artifacts
   nugets-dir:    artifacts/nupkgs
   pdb-dir:       artifacts/pdb
-  prerelease-tag: ${{ (github.event.inputs.prerelease_tag[1] == null && '') || format('-{0}', github.event.inputs.prerelease_tag) }}
+  prerelease-tag: ${{ (github.event.inputs.prerelease_tag[1] != null && format('-{0}', github.event.inputs.prerelease_tag) || '' ) }}
 
 jobs:
   build:
@@ -33,7 +33,7 @@ jobs:
       - name: Info
         run: |
           echo 'input' ${{ github.event.inputs.prerelease_tag }}
-          echo 'input is null?' ${{ (github.event.inputs.prerelease_tag[1] == null && 'true') || 'false' }}
+          echo 'input is null?' ${{ (github.event.inputs.prerelease_tag[1] == null && '') || 'false' }}
           echo 'input[0]' ${{ github.event.inputs.prerelease_tag[0] }}
           echo 'input[1]' ${{ github.event.inputs.prerelease_tag[1] }}
           echo 'prerelease tag value' ${{ env.prerelease-tag }}
