@@ -64,8 +64,11 @@ jobs:
         name: Use GitVersion
         id:   gitversion # step id used as reference for output values
         uses: gittools/actions/gitversion/execute@v1.1.1
-        env:
-          InfoVersion: ${{ format('{0}.{1}{2}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseTag, env.prerelease-tag) }}
+
+      -
+        name: Compose info version
+        id: infoversion
+        run: echo "InfoVersion=${{ format('{0}.{1}{2}', steps.gitversion.outputs.MajorMinorPatch, steps.gitversion.outputs.PreReleaseTag, env.prerelease-tag) }}" >> $GITHUB_OUTPUT
 
       # Build
       -
@@ -75,7 +78,7 @@ jobs:
           -c ${{env.configuration}}
           -p:AssemblyVersion=${{ steps.gitversion.outputs.AssemblySemVer }}
           -p:FileVersion=${{ steps.gitversion.outputs.AssemblySemFileVer }}
-          -p:InformationalVersion=${{ steps.gitversion.outputs.InfoVersion }}
+          -p:InformationalVersion=${{ steps.infoversion.outputs.InfoVersion }}
 
       # Run tests
       -
@@ -85,7 +88,7 @@ jobs:
       # Create and place nuget packages into env.nugets-dir directory
       - if: github.event.inputs.publish_artifacts == 'true'
         name: Pack
-        run: dotnet pack --no-build -o:${{ env.nugets-dir }} -p:PackageVersion=${{ steps.gitversion.outputs.InfoVersion }}
+        run: dotnet pack --no-build -o:${{ env.nugets-dir }} -p:PackageVersion=${{ steps.infoversion.outputs.InfoVersion }}
 
       - if: github.event.inputs.publish_artifacts == 'true'
         name: Store Version
@@ -96,7 +99,7 @@ jobs:
             {
             "assembly-version": "${{ steps.gitversion.outputs.AssemblySemVer }}",
             "assembly-file-version": "${{ steps.gitversion.outputs.AssemblySemFileVer }}",
-            "nuget-version": "${{ steps.gitversion.outputs.InfoVersion }}"
+            "nuget-version": "${{ steps.infoversion.outputs.InfoVersion }}"
             }
           dir:  ${{ env.artifacts-dir }}
 
