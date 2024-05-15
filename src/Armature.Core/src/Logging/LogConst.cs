@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 public static class LogConst
 {

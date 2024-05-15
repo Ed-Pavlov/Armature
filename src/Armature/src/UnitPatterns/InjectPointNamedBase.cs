@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Core;
-using Armature.Core.Sdk;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Armature.Sdk;
 using JetBrains.Annotations;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Base class for patterns check if a unit is an argument for an "inject point" with the specified name.

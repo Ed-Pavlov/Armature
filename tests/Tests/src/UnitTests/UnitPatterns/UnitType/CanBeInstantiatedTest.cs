@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Armature;
 using Armature.Core;
+using BeatyBit.Armature;
+using BeatyBit.Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Util;

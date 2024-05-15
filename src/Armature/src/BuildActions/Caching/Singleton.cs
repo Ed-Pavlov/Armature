@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// The simplest eternal singleton.

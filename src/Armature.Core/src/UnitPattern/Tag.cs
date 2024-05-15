@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <remarks>
 /// No equality member are needed for this class, <see cref="_name" /> is used only for debug purpose, these tags should be equal by the reference.

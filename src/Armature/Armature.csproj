@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\common.proj" />
   <PropertyGroup>
-    <AssemblyName>Armature</AssemblyName>
-    <RootNamespace>Armature</RootNamespace>
+    <AssemblyName>BeatyBit.Armature</AssemblyName>
+    <RootNamespace>BeatyBit.Armature</RootNamespace>
     <NoWarn>1591,0419</NoWarn>
   </PropertyGroup>
 

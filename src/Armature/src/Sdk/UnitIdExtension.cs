@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 
-namespace Armature.Sdk;
+namespace BeatyBit.Armature.Sdk;
 
 public static class UnitIdExtension
 {

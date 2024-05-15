@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// Exception is used to distinguish internal unexpected situations and error produced by user code

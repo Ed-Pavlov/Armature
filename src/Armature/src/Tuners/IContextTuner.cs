@@ -1,7 +1,7 @@
-using Armature.Core;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Tunes (overrides defaults or higher level tunings) how target unit's dependencies should be treated

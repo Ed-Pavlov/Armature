@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using Armature.Core;
 using Armature.Core.Annotations;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Builds an argument for the constructor/method parameter using <see cref="ParameterInfo.ParameterType"/> and specified tag as <see cref="UnitId"/>.

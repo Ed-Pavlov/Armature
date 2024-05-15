@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 using NUnit.Framework;
 
 namespace Tests.Extensibility;

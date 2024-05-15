@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Armature.Core;
 using Armature.Core.Annotations;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Base class for build actions build a list of arguments by using <see cref="IBuildSession.BuildAllUnits"/> method.

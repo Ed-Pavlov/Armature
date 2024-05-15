@@ -1,4 +1,4 @@
-﻿namespace Armature.Core;
+﻿namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// Build action. One or more build actions should be performed to build a unit.

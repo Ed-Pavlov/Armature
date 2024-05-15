@@ -1,9 +1,9 @@
 using System.Diagnostics;
 using System.Reflection;
-using Armature.Core;
 using Armature.Core.Annotations;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Builds an argument for the constructor/method parameter which is marked with <see cref="InjectAttribute"/> using <see cref="ParameterInfo.Name"/> and

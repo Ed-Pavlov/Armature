@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Base class for build actions building arguments to inject into inject points marked with <see cref="InjectAttribute"/>.

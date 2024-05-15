@@ -2,7 +2,9 @@
 using System.Linq;
 using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
+using BeatyBit.Armature;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Util;

@@ -1,9 +1,9 @@
-﻿using Armature.Core;
-using Armature.Core.Sdk;
-using Armature.Sdk;
-using WeightOf = Armature.Sdk.WeightOf;
+﻿using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Armature.Sdk;
+using WeightOf = BeatyBit.Armature.Sdk.WeightOf;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Shortcut methods to set rules how to build arguments for the constructor and method parameters.
@@ -26,7 +26,7 @@ public static class AutoBuild
         tuner =>
           tuner.GetInternals()
                .TreeRoot
-               .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoArray>(), WeightOf.BuildStackPattern.IfFirstUnit))
+               .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoArray>(), Core.WeightOf.BuildStackPattern.IfFirstUnit))
                .ApplyTuner(tuner)
                .UseBuildAction(Static.Of<BuildMethodArgumentsInDirectOrder>(), BuildStage.Create));
   }
@@ -43,7 +43,7 @@ public static class AutoBuild
              .GetOrAddNode(
                 new IfFirstUnit(
                   Static.Of<IsParameterInfo>(),
-                  WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
+                  WeightOf.InjectionPoint.ByExactType + Core.WeightOf.BuildStackPattern.IfFirstUnit))
              .ApplyTuner(tuner)
              .UseBuildAction(Static.Of<BuildArgumentByParameterType>(), BuildStage.Create));
 
@@ -57,7 +57,7 @@ public static class AutoBuild
              .GetOrAddNode(
                 new IfFirstUnit(
                   Static.Of<IsParameterInfo>(),
-                  WeightOf.InjectionPoint.ByName + WeightOf.BuildStackPattern.IfFirstUnit))
+                  WeightOf.InjectionPoint.ByName + Core.WeightOf.BuildStackPattern.IfFirstUnit))
              .ApplyTuner(tuner)
              .UseBuildAction(Static.Of<BuildArgumentByParameterName>(), BuildStage.Create));
   }

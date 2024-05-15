@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 public partial class BuildSession
 {

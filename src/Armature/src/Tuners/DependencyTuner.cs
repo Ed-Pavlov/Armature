@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using Armature.Core;
-using Armature.Core.Sdk;
-using Armature.Sdk;
-using WeightOf = Armature.Sdk.WeightOf;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Armature.Sdk;
+using WeightOf = BeatyBit.Armature.Sdk.WeightOf;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Real implementation of <see cref="IDependencyTuner{T}"/> interface which can be reused by different implementations
@@ -41,7 +41,7 @@ public static class DependencyTuner
              .GetOrAddNode(
                 new IfFirstUnit(
                   new IsAssignableFromType(argument.GetType()),
-                  WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildStackPattern.IfFirstUnit))
+                  WeightOf.InjectionPoint.ByTypeAssignability + Core.WeightOf.BuildStackPattern.IfFirstUnit))
              .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>()))
              .ApplyTuner(tuner)
              .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);

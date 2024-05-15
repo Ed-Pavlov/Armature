@@ -2,6 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Armature;
 using Armature.Core;
+using BeatyBit.Armature;
+using BeatyBit.Armature.Core;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reflection;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 
-namespace Armature.Sdk;
+namespace BeatyBit.Armature.Sdk;
 
 public static class BuildSessionExtension
 {

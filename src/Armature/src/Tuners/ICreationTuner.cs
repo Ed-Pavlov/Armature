@@ -1,8 +1,8 @@
-using Armature.Core;
-using Armature.Core.Sdk;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Armature.Sdk;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 public interface ICreationTuner : ITunerBase, IInternal<IUnitPattern, IBuildStackPattern>
 {

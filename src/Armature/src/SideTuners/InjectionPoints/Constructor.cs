@@ -1,11 +1,11 @@
 ﻿using System;
-using Armature.Core;
-using Armature.Core.Sdk;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Armature.Sdk;
 using JetBrains.Annotations;
-using WeightOf = Armature.Sdk.WeightOf;
+using WeightOf = BeatyBit.Armature.Sdk.WeightOf;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Tunes which constructor should be called to create an instance.
@@ -24,7 +24,7 @@ public static class Constructor
                 .GetOrAddNode(
                    new IfFirstUnit(
                      Static.Of<IsConstructor>(),
-                     WeightOf.InjectionPoint.ByTypeAssignability + WeightOf.BuildStackPattern.IfFirstUnit))
+                     WeightOf.InjectionPoint.ByTypeAssignability + Core.WeightOf.BuildStackPattern.IfFirstUnit))
                 .ApplyTuner(tuner)
                 .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create));
 
@@ -39,7 +39,7 @@ public static class Constructor
                 .GetOrAddNode(
                    new IfFirstUnit(
                      Static.Of<IsConstructor>(),
-                     WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildStackPattern.IfFirstUnit))
+                     WeightOf.InjectionPoint.ByInjectPointId + Core.WeightOf.BuildStackPattern.IfFirstUnit))
                 .ApplyTuner(tuner)
                 .UseBuildAction(new GetConstructorByInjectPoint(injectionPointTag), BuildStage.Create));
 
@@ -79,7 +79,7 @@ public static class Constructor
                 .GetOrAddNode(
                    new IfFirstUnit(
                      Static.Of<IsConstructor>(),
-                     WeightOf.InjectionPoint.ByName + WeightOf.BuildStackPattern.IfFirstUnit))
+                     WeightOf.InjectionPoint.ByName + Core.WeightOf.BuildStackPattern.IfFirstUnit))
                 .ApplyTuner(tuner)
                 .UseBuildAction(new GetConstructorByParameterTypes(parameterTypes), BuildStage.Create));
 }

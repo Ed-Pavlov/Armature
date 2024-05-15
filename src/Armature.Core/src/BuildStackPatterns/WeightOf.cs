@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// Inherit this class to extend enum pattern with custom weights or want to re-balance the weighting system.

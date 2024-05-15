@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Core;
 using Armature.Core.Annotations;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Creates a Unit using specified factory method.

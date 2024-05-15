@@ -1,14 +1,14 @@
-using Armature.Core;
+using BeatyBit.Armature.Core;
 using JetBrains.Annotations;
 
-namespace Armature.Sdk;
+namespace BeatyBit.Armature.Sdk;
 
 /// <summary>
-/// Inherit this class to extend enum pattern with custom weights if you extend Armature with your own build stack, unit, or injection point
+/// Inherit this class to extend an enum pattern with custom weights if you extend Armature with your own build stack, unit, or injection point
 /// patterns which require to re-balance the weighting system.
 /// </summary>
 [PublicAPI]
-public class WeightOf : Core.WeightOf
+public class WeightOf : BeatyBit.Armature.Core.WeightOf
 {
   [PublicAPI]
   public class InjectionPoint
@@ -55,17 +55,17 @@ public class WeightOf : Core.WeightOf
     protected static short Step { get; set; } = 10_000;
 
     /// <summary>
-    /// Weight of type matched by open generic type, <see cref="IsGenericOfDefinition"/> unit pattern and <see cref="RedirectOpenGenericType"/> for details
+    /// Weight of a type matched by open generic type, <see cref="IsGenericOfDefinition"/> unit pattern and <see cref="RedirectOpenGenericType"/> for details
     /// </summary>
     public static short OpenGenericPattern { get; protected set; } = Step;
 
     /// <summary>
-    /// Weight of type matched by base type, <see cref="IsInheritorOf"/> unit pattern
+    /// Weight of a type matched by base type, <see cref="IsInheritorOf"/> unit pattern
     /// </summary>
     public static short SubtypePattern { get; protected set; } = (short) (OpenGenericPattern + Step);
 
     /// <summary>
-    /// Weight of type matched by exact type
+    /// Weight of a type matched by exact type
     /// </summary>
     public static short ExactTypePattern { get; protected set; } = (short) (SubtypePattern + Step);
   }

@@ -7,5 +7,5 @@ using System.Runtime.InteropServices;
 [assembly: CLSCompliant(false)]
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyProduct("Armature")]
-[assembly: AssemblyCopyright("Copyright © 2018 Ed Pavlov")]
+[assembly: AssemblyProduct("BeatyBit.Armature")]
+[assembly: AssemblyCopyright("Copyright © 2018-2024 Ed Pavlov")]

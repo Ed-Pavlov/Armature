@@ -1,8 +1,10 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
-using Armature.Sdk;
-using WeightOf = Armature.Sdk.WeightOf;
+using BeatyBit.Armature;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
+using WeightOf = BeatyBit.Armature.Sdk.WeightOf;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation
 {

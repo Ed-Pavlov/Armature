@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core.Sdk;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// The root node of the tree of <see cref="IBuildStackPattern"/> nodes.

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reflection;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Builds a list of arguments by using <see cref="IBuildSession.BuildAllUnits"/> method for a property.

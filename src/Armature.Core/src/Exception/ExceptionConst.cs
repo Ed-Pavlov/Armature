@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 [PublicAPI]
 public static class ExceptionConst

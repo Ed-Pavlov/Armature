@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core.Sdk;
 using JetBrains.Annotations;
 
-
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// The builder of units. It is the convenient way to couple a build stack pattern tree, (<see cref="BuildStackPatternTree" />),

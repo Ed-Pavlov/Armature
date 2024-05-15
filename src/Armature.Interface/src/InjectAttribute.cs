@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Attribute is used to mark type member into which dependencies should be injected

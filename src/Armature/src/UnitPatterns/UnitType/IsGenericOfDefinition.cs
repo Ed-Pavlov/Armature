@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Core;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Checks if a unit is a generic type and it's <see cref="Type.GetGenericTypeDefinition"/> is as specified open generic type.

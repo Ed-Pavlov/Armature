@@ -1,4 +1,4 @@
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Marker of the tuner to use in extension methods and as generic restrictions

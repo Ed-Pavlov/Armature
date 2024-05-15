@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Armature.Core;
-using Armature.Core.Sdk;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Armature.Sdk;
 using JetBrains.Annotations;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 public static class BuilderExtension
 {

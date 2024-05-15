@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// Collection of build actions grouped by a build stage.

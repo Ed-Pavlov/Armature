@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using Armature.Core;
 using Armature.Core.Annotations;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Caches passed object and set it as <see cref="BuildResult" /> in <see cref="Process" />.

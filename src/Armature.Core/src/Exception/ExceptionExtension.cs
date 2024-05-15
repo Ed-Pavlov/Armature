@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 public static class ExceptionExtension
 {

@@ -1,4 +1,4 @@
-﻿namespace Armature;
+﻿namespace BeatyBit.Armature;
 
 public partial class BuildingTuner<T>
 {

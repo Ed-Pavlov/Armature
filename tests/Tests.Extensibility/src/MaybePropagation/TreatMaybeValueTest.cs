@@ -1,13 +1,15 @@
 ﻿using System;
 using Armature;
 using Armature.Core;
-using Armature.Core.Sdk;
-using Armature.Sdk;
+using BeatyBit.Armature;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Extensibility.MaybePropagation.Implementation;
 using Tests.Extensibility.MaybePropagation.TestData;
-using WeightOf = Armature.Core.WeightOf;
+using WeightOf = BeatyBit.Armature.Core.WeightOf;
 
 namespace Tests.Extensibility.MaybePropagation
 {

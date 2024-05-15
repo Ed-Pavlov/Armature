@@ -1,8 +1,8 @@
 using System;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 using JetBrains.Annotations;
 
-namespace Armature.Sdk;
+namespace BeatyBit.Armature.Sdk;
 
 public static class ArmatureUtil
 {

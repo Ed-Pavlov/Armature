@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Armature.Core;
+using BeatyBit.Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
 

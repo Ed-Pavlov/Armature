@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using Armature.Core;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Checks if a unit is an argument for an object property marked with <see cref="InjectAttribute"/> attribute

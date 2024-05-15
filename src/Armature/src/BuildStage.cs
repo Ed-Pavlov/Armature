@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 using JetBrains.Annotations;
 
-
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Represents predefined build stages used by Armature framework.

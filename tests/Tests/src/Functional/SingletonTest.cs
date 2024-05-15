@@ -1,5 +1,7 @@
 using Armature;
 using Armature.Core;
+using BeatyBit.Armature;
+using BeatyBit.Armature.Core;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;

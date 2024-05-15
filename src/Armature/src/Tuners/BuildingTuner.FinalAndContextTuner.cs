@@ -1,7 +1,7 @@
-﻿using Armature.Core;
-using WeightOf = Armature.Sdk.WeightOf;
+﻿using BeatyBit.Armature.Core;
+using WeightOf = BeatyBit.Armature.Sdk.WeightOf;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 public partial class BuildingTuner<T>
 {

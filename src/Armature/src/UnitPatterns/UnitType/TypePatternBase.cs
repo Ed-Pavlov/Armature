@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Core;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Base class for unit patterns matching unit with a <see cref="System.Type"/>.

@@ -1,9 +1,9 @@
 ﻿using System;
-using Armature.Core;
-using Armature.Sdk;
-using WeightOf = Armature.Sdk.WeightOf;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
+using WeightOf = BeatyBit.Armature.Sdk.WeightOf;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// This class provides methods to tune up how to build arguments to inject to object properties.
@@ -24,7 +24,7 @@ public static class ForProperty
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyOfType(new UnitPattern(type)),
-                         weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
+                         weight + WeightOf.InjectionPoint.ByExactType + Core.WeightOf.BuildStackPattern.IfFirstUnit))
                     .ApplyTuner(tuner);
       });
 
@@ -42,7 +42,7 @@ public static class ForProperty
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyOfType(new UnitPattern(typeof(T))),
-                         weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
+                         weight + WeightOf.InjectionPoint.ByExactType + Core.WeightOf.BuildStackPattern.IfFirstUnit))
                     .ApplyTuner(tuner);
       });
 
@@ -60,7 +60,7 @@ public static class ForProperty
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyNamed(propertyName),
-                         weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildStackPattern.IfFirstUnit))
+                         weight + WeightOf.InjectionPoint.ByName + Core.WeightOf.BuildStackPattern.IfFirstUnit))
                     .ApplyTuner(tuner);
       });
 
@@ -79,7 +79,7 @@ public static class ForProperty
                     .GetOrAddNode(
                        new IfFirstUnit(
                          new IsPropertyAttributed(injectPointTag),
-                         weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildStackPattern.IfFirstUnit))
+                         weight + WeightOf.InjectionPoint.ByInjectPointId + Core.WeightOf.BuildStackPattern.IfFirstUnit))
                     .ApplyTuner(tuner);
       });
 }

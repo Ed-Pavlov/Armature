@@ -1,8 +1,8 @@
 using System;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core.Sdk;
 using JetBrains.Annotations;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Implementation of <see cref="ISideTuner.ApplyTo"/> based on calling passed lambda action.

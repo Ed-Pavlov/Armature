@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Thread safe implementation of <see cref="TryInOrder"/> build action.

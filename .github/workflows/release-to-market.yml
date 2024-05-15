@@ -18,7 +18,7 @@ jobs:
       with:
         github_token: ${{secrets.GITHUB_TOKEN}}
         workflow:     build-and-test.yml         # Required, workflow file name or ID
-        branch:       master
+        branch:       main
         name:         Artifacts
 
     -

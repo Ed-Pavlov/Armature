@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Checks if a unit is an argument to inject into the property with a specified name

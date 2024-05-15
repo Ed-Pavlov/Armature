@@ -1,4 +1,4 @@
-﻿namespace Armature.Core;
+﻿namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// Checks if the first unit in the build stack matches the specified pattern.

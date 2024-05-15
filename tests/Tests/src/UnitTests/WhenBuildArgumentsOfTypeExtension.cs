@@ -1,7 +1,8 @@
 using System.Linq;
 using System.Reflection;
 using Armature.Core;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
 using FakeItEasy.Configuration;
 using Tests.Util;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <inheritdoc />
 /// <summary>

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Armature.Core.Sdk;
+namespace BeatyBit.Armature.Core.Sdk;
 
 public static class Empty<T>
 {

@@ -1,8 +1,8 @@
-﻿using Armature.Core;
-using Armature.Core.Sdk;
+﻿using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
 using JetBrains.Annotations;
 
-namespace Armature.Sdk;
+namespace BeatyBit.Armature.Sdk;
 
 [PublicAPI]
 public class Default

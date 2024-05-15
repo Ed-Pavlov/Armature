@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Armature.Core;
-using Armature.Core.Sdk;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Armature.Sdk;
 using JetBrains.Annotations;
-using WeightOf = Armature.Core.WeightOf;
+using WeightOf = BeatyBit.Armature.Core.WeightOf;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Tunes up in which properties of the object inject dependencies.

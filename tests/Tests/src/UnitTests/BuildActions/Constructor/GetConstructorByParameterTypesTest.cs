@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Armature;
+using BeatyBit.Armature;
 using FluentAssertions;
 using JetBrains.Annotations;
 using NUnit.Framework;

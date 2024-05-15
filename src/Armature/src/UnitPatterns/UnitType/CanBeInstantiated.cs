@@ -1,7 +1,7 @@
-﻿using Armature.Core;
-using Armature.Sdk;
+﻿using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Checks if a unit is a type which can be instantiated.

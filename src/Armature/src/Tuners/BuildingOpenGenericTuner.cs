@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Core;
-using Armature.Sdk;
-using WeightOf = Armature.Sdk.WeightOf;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
+using WeightOf = BeatyBit.Armature.Sdk.WeightOf;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 public class BuildingOpenGenericTuner : BuildingTuner<object?>
 {
@@ -20,7 +20,7 @@ public class BuildingOpenGenericTuner : BuildingTuner<object?>
     BuildStackPatternSubtree().UseBuildAction(new RedirectOpenGenericType(openGenericType, tag), BuildStage.Create);
 
     var unitPattern = new IsGenericOfDefinition(openGenericType, tag);
-    IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.OpenGenericPattern + WeightOf.BuildStackPattern.IfFirstUnit);
+    IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.OpenGenericPattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
     return new BuildingOpenGenericTuner(this, CreateNode, unitPattern);
   }
 }

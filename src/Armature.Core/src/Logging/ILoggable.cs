@@ -1,6 +1,6 @@
 ﻿using Armature.Core.Annotations;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// Represents an object as a text ready to be logged.

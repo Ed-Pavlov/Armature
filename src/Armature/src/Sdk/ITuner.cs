@@ -1,6 +1,6 @@
-﻿using Armature.Core;
+﻿using BeatyBit.Armature.Core;
 
-namespace Armature.Sdk;
+namespace BeatyBit.Armature.Sdk;
 
 /// <summary>
 /// Provides possibility to extent the framework with custom Tuners by providing access to internal stuff.

@@ -2,12 +2,11 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Sdk;
-using JetBrains.Annotations;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Gets the constructor of the type matches specified parameter types list.

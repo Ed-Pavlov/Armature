@@ -1,5 +1,5 @@
-using Armature.Core;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 public delegate IBuildStackPattern CreateNode();

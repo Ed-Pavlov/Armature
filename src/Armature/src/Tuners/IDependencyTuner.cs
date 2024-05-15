@@ -1,4 +1,4 @@
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Tunes (override defaults) target unit's dependencies and how they should be injected

@@ -1,8 +1,8 @@
 ﻿using System;
-using Armature.Core;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Tuner is used as a not null parent tuner which does not perform any tuning. <see cref="GetOrAddNodeTo"/> returns passed node w/o any changes.

@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Armature.Core.Sdk;
+namespace BeatyBit.Armature.Core.Sdk;
 
 public static class ExtensibilityExtension
 {

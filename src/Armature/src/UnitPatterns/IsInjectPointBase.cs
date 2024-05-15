@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Armature.Core;
-using Armature.Core.Sdk;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Armature.Sdk;
 using JetBrains.Annotations;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Base class for patterns check if a unit is an inject point marked with with <see cref="InjectAttribute" />

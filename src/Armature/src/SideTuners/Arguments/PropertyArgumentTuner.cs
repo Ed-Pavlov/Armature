@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Reflection;
-using Armature.Core;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
 using JetBrains.Annotations;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Adds build actions to build arguments for injection points defined by <see cref="ForProperty"/> tuner.

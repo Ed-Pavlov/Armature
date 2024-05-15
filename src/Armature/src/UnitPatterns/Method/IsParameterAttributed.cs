@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Checks if a unit is an argument for a constructor/method parameter marked with <see cref="InjectAttribute"/> attribute

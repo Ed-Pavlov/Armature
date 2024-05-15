@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core.Sdk;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// Collection of build actions with weight grouped by a build stage.

@@ -1,6 +1,7 @@
 #nullable enable
 using Armature.Core;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
 
 namespace Tests.Extensibility.MaybePropagation.Implementation;
 

@@ -1,8 +1,8 @@
 using System;
-using Armature.Core;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 public interface IBuildingTuner<in T> : ISettingTuner
 {

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\common.proj"/>
   <PropertyGroup>
-    <AssemblyName>Armature.Interface</AssemblyName>
-    <RootNamespace>Armature</RootNamespace>
+    <AssemblyName>BeatyBit.Armature.Interface</AssemblyName>
+    <RootNamespace>BeatyBit.Armature</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Label="nuspec">

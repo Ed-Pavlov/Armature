@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core.Sdk;
 using JetBrains.Annotations;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// Base class implementing <see cref="IBuildStackPattern.AddBuildAction"/>

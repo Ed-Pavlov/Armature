@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Checks if a unit is an argument to inject into a property requires argument of the specified type.

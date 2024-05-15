@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <inheritdoc />
 public class TryInOrder : TryInOrderBase

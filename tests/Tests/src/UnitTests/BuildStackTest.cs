@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Armature.Core;
+using BeatyBit.Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
 using Tests.Util;

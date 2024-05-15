@@ -1,4 +1,4 @@
-﻿namespace Armature;
+﻿namespace BeatyBit.Armature;
 
 /// <summary>
 /// Tunes the build stack pattern at any time, in opposite to static "tuners" like

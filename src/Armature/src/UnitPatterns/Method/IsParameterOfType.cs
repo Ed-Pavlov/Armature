@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reflection;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Checks if a unit is an argument for a constructor/method parameter of the specified type.

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core.Sdk;
 
-
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// This is a limited interface of the <see cref="BuildSession" /> passed to <see cref="IBuildAction.Process" />

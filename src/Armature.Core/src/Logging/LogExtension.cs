@@ -7,10 +7,10 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core.Sdk;
 using JetBrains.Annotations;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 [PublicAPI]
 public static class LogExtension

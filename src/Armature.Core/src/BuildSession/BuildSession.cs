@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core.Sdk;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// Represents whole build session of one Unit, all dependency of the being built Unit are built in the context of one build session.

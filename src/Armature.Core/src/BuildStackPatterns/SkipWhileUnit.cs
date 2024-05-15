@@ -1,4 +1,4 @@
-﻿namespace Armature.Core;
+﻿namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// Skips units from the build stack while unit matches specified pattern till the target unit. The target unit is never skipped.

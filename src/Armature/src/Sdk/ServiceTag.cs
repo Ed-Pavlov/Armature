@@ -1,9 +1,9 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 using JetBrains.Annotations;
 
-namespace Armature.Sdk;
+namespace BeatyBit.Armature.Sdk;
 
 /// <summary>
 /// These tags are used by Armature to build such units as a constructor needed to instantiate an object, or an argument for the method parameter and so on.

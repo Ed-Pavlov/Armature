@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Armature.Core.Annotations;
 
-namespace Armature.Core.Sdk;
+namespace BeatyBit.Armature.Core.Sdk;
 
 /// <summary>
 /// Couples an entity with a weight.

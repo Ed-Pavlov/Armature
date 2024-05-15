@@ -2,8 +2,8 @@
   <Import Project="..\common.proj" />
 
   <PropertyGroup>
-    <AssemblyName>Armature.Core</AssemblyName>
-    <RootNamespace>Armature.Core</RootNamespace>
+    <AssemblyName>BeatyBit.Armature.Core</AssemblyName>
+    <RootNamespace>BeatyBit.Armature.Core</RootNamespace>
     <NoWarn>1591</NoWarn>
     <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
     <TargetFramework />

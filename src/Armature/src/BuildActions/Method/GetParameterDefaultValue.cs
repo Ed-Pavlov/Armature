@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using Armature.Core;
 using Armature.Core.Annotations;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Gets a default parameter value of the constructor/method parameter.

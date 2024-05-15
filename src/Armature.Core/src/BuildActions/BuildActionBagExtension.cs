@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core.Sdk;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// These methods are implemented as extensions instead of class members in order to be able to operation with 'null' BuildActionBag.

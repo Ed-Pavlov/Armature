@@ -1,8 +1,8 @@
 ﻿using System;
-using Armature.Core;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Checks whether an instance of a specified type can be assigned to an instance of the type represented by <see cref="UnitId.Kind"/>

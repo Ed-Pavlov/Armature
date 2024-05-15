@@ -1,9 +1,9 @@
 using System.Diagnostics;
-using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Redirects building of a unit with one <see cref="UnitId"/> to the unit with another <see cref="UnitId"/>.

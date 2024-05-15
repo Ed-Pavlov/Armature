@@ -1,10 +1,10 @@
 ﻿using System;
-using Armature.Core;
-using Armature.Core.Sdk;
-using Armature.Sdk;
-using WeightOf = Armature.Sdk.WeightOf;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Armature.Sdk;
+using WeightOf = BeatyBit.Armature.Sdk.WeightOf;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Provides methods to tune up how to build arguments for method parameters.
@@ -22,7 +22,7 @@ public static class ForParameter
                 .GetOrAddNode(
                    new IfFirstUnit(
                      new IsParameterOfType(new UnitPattern(type)),
-                     weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
+                     weight + WeightOf.InjectionPoint.ByExactType + Core.WeightOf.BuildStackPattern.IfFirstUnit))
                 .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>()))
                 .ApplyTuner(tuner));
 
@@ -37,7 +37,7 @@ public static class ForParameter
                 .GetOrAddNode(
                    new IfFirstUnit(
                      new IsParameterOfType(new UnitPattern(typeof(T))),
-                     weight + WeightOf.InjectionPoint.ByExactType + WeightOf.BuildStackPattern.IfFirstUnit))
+                     weight + WeightOf.InjectionPoint.ByExactType + Core.WeightOf.BuildStackPattern.IfFirstUnit))
                 .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>()))
                 .ApplyTuner(tuner));
 
@@ -52,7 +52,7 @@ public static class ForParameter
                 .GetOrAddNode(
                    new IfFirstUnit(
                      new IsParameterNamed(parameterName),
-                     weight + WeightOf.InjectionPoint.ByName + WeightOf.BuildStackPattern.IfFirstUnit))
+                     weight + WeightOf.InjectionPoint.ByName + Core.WeightOf.BuildStackPattern.IfFirstUnit))
                 .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>()))
                 .ApplyTuner(tuner));
 
@@ -68,7 +68,7 @@ public static class ForParameter
                 .GetOrAddNode(
                    new IfFirstUnit(
                      new IsParameterAttributed(injectPointId),
-                     weight + WeightOf.InjectionPoint.ByInjectPointId + WeightOf.BuildStackPattern.IfFirstUnit))
+                     weight + WeightOf.InjectionPoint.ByInjectPointId + Core.WeightOf.BuildStackPattern.IfFirstUnit))
                 .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>()))
                 .ApplyTuner(tuner));
 }

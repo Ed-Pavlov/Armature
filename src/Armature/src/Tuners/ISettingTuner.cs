@@ -1,4 +1,4 @@
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <inheritdoc cref="IDependencyTuner{T}"/>
 /// <inheritdoc cref="IContextTuner"/>

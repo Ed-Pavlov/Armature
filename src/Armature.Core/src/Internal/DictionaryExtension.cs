@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 internal static class DictionaryExtension
 {

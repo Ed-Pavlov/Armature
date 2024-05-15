@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core.Sdk;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// A pattern used to match a unit or their combination in the build stack. See <see cref="BuildSession.Stack"/> for details.

@@ -1,7 +1,7 @@
 using System;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core.Sdk;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// Base class for build stack patterns using <see cref="IUnitPattern"/> to match the passed <see cref="UnitId"/>.

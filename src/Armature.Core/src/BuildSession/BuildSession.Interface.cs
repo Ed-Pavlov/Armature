@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Armature.Core.Sdk;
+using BeatyBit.Armature.Core.Sdk;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 public partial class BuildSession
 {

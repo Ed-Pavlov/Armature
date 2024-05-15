@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using JetBrains.Annotations;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// Class is used to log Armature activities in human friendly form in HOCON format. Writes data into <see cref="System.Diagnostics.Trace" />,

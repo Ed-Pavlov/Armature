@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// A result of building a Unit, null is a valid value of the <see cref="Value" />.

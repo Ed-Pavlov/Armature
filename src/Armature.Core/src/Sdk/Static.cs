@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Armature.Core.Sdk;
+namespace BeatyBit.Armature.Core.Sdk;
 
 /// <summary>
 /// Generic approach of creating singleton instances of a type when needed.

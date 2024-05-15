@@ -1,4 +1,4 @@
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 public interface IStaticPattern
 {

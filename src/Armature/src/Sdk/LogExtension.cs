@@ -1,8 +1,8 @@
 using System.Reflection;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 using JetBrains.Annotations;
 
-namespace Armature.Sdk;
+namespace BeatyBit.Armature.Sdk;
 
 [PublicAPI]
 public static class LogExtension

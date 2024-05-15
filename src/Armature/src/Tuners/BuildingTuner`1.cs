@@ -1,11 +1,11 @@
 ﻿using System;
-using Armature.Core;
-using Armature.Core.Sdk;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Armature.Sdk;
 using JetBrains.Annotations;
-using WeightOf = Armature.Sdk.WeightOf;
+using WeightOf = BeatyBit.Armature.Sdk.WeightOf;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreationTuner
 {
@@ -31,7 +31,7 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
     var unitPattern = new UnitPattern(type, tag);
 
     IBuildStackPattern CreateTargetNode()
-      => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildStackPattern.IfFirstUnit);
+      => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.ExactTypePattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
 
     return new BuildingTuner<object>(this, CreateTargetNode, unitPattern);
   }

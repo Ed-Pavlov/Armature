@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 public static class UnitTagExtension
 {

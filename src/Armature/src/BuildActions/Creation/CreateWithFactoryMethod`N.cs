@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using Armature.Core;
 using Armature.Core.Annotations;
-using Armature.Sdk;
+using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 /// <summary>
 /// Creates a Unit using specified factory method.

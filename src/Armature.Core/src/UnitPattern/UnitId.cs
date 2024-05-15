@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Armature.Core.Annotations;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// An Id of the Unit to be built.

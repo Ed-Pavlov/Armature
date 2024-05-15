@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Armature.Core;
+namespace BeatyBit.Armature.Core;
 
 public static class BuildStackPatternExtension
 {

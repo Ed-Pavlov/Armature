@@ -1,7 +1,7 @@
 using System;
-using Armature.Core;
+using BeatyBit.Armature.Core;
 
-namespace Armature;
+namespace BeatyBit.Armature;
 
 public static class BuildStackPatternTreeExtension
 {
