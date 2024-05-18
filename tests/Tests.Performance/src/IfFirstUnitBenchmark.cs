@@ -1,4 +1,3 @@
-using Armature.Core;
 using BeatyBit.Armature.Core;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;

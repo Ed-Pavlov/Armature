@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using Armature.Core.Annotations;
+using BeatyBit.Armature.Core.Annotations;
 using BeatyBit.Armature.Core;
 
 namespace BeatyBit.Armature;

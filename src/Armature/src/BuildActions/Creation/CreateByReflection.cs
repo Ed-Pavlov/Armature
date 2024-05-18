@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
-using Armature.Core.Annotations;
+using BeatyBit.Armature.Core.Annotations;
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Core.Sdk;
 using BeatyBit.Armature.Sdk;

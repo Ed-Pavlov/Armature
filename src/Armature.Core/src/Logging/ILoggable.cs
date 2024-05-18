@@ -1,4 +1,4 @@
-﻿using Armature.Core.Annotations;
+﻿using BeatyBit.Armature.Core.Annotations;
 
 namespace BeatyBit.Armature.Core;
 

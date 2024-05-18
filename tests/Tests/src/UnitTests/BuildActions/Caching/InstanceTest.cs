@@ -1,4 +1,3 @@
-using Armature;
 using BeatyBit.Armature;
 using FluentAssertions;
 using NUnit.Framework;

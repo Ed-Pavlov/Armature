@@ -1,5 +1,4 @@
 using System;
-using Armature.Core;
 using BeatyBit.Armature.Core;
 using NUnit.Framework;
 

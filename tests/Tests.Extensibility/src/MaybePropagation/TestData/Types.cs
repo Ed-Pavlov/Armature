@@ -1,5 +1,4 @@
-﻿using Armature;
-using BeatyBit.Armature;
+﻿using BeatyBit.Armature;
 
 namespace Tests.Extensibility.MaybePropagation.TestData
 {

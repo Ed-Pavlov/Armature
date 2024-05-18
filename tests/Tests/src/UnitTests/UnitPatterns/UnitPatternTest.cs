@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Armature.Core;
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Sdk;
 using FluentAssertions;

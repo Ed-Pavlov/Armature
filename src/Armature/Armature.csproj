@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DocumentationFile>bin\Release\Armature.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\BeatyBit.Armature.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DocumentationFile>bin\Debug\Armature.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\BeatyBit.Armature.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,7 +1,5 @@
 using System;
 using System.IO;
-using Armature;
-using Armature.Core;
 using BeatyBit.Armature;
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Sdk;

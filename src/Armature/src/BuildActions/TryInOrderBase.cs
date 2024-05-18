@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.ExceptionServices;
-using Armature.Core.Annotations;
+using BeatyBit.Armature.Core.Annotations;
 using BeatyBit.Armature.Core;
 
 namespace BeatyBit.Armature;

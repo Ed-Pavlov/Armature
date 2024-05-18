@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Armature.Core.Annotations;
+using BeatyBit.Armature.Core.Annotations;
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Sdk;
 
