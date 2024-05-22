@@ -43,6 +43,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "global", "global", "{4F748C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Performance", "tests\Tests.Performance\Tests.Performance.csproj", "{47000C08-6B61-4ADB-8BBF-D8EED737D2D1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wiki", "wiki", "{72213BB1-A203-4716-8BFD-8CB39CAEC612}"
+	ProjectSection(SolutionItems) = preProject
+		wiki\_Sidebar.md = wiki\_Sidebar.md
+		wiki\Armature-the-DSL-over-Armature.Core.md = wiki\Armature-the-DSL-over-Armature.Core.md
+		wiki\Core-Concepts-of-Armature.Core.md = wiki\Core-Concepts-of-Armature.Core.md
+		wiki\Home.md = wiki\Home.md
+		wiki\Logging.md = wiki\Logging.md
+		wiki\One-Process-to-Rule-Them-All.-Armature's-Universal-Dependency-Resolution.md = wiki\One-Process-to-Rule-Them-All.-Armature's-Universal-Dependency-Resolution.md
+		wiki\InjectAttribute.-Marking-Injection-Points-and-Customizing-Injection-Rules.md = wiki\InjectAttribute.-Marking-Injection-Points-and-Customizing-Injection-Rules.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -3,13 +3,13 @@
 namespace BeatyBit.Armature.Core;
 
 /// <summary>
-/// Inherit this class to extend enum pattern with custom weights or want to re-balance the weighting system.
+/// Inherit this class to extend the enum pattern with custom weights or want to re-balance the weighting system.
 /// </summary>
 [PublicAPI]
 public class WeightOf
 {
   /// <summary>
-  /// Note that <see cref="SkipTillUnit"/> and <see cref="SkipWhileUnit"/> are multipliers, see the implementation of method
+  /// Note that <see cref="SkipTillUnit"/> and <see cref="SkipWhileUnit"/> are multipliers, see the implementation of the method
   /// <see cref="IBuildStackPattern"/>.<see cref="IBuildStackPattern.GatherBuildActions"/> in classes <see cref="Armature.Core.SkipTillUnit"/> and
   /// <see cref="Armature.Core.SkipWhileUnit"/>, whereas <see cref="IfFirstUnit"/> is an absolute value.
   ///

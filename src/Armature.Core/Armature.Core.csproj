@@ -17,10 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Armature.Interface\Armature.Interface.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="src\BuildActions\Creation\CreateWithFactoryMethod.cs" />
     <Compile Remove="src\BuildActions\Method\BuildArgumentByParameterName.cs" />
     <Compile Remove="src\BuildActions\Method\BuildArgumentByParameterType.cs" />

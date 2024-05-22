@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Armature.Core\Armature.Core.csproj" />
+    <ProjectReference Include="..\Armature.Interface\Armature.Interface.csproj" />
   </ItemGroup>
 
   <ItemGroup>

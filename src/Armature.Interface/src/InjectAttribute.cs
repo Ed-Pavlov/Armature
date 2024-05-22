@@ -16,10 +16,10 @@ namespace BeatyBit.Armature;
 public class InjectAttribute : Attribute
 {
   /// <summary>
-  /// Optional tag of the injection point, can be used by build actions.
+  /// Optional tag of the injection point can be used by build actions.
   /// </summary>
   public readonly object? Tag;
 
-  /// <param name="tag">Optional tag of the injection point, can be used by build actions.</param>
+  /// <param name="tag">Optional tag of the injection point can be used by build actions.</param>
   public InjectAttribute(object? tag = null) => Tag = tag;
 }
