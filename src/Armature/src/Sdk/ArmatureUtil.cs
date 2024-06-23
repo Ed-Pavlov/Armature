@@ -7,7 +7,7 @@ namespace BeatyBit.Armature.Sdk;
 public static class ArmatureUtil
 {
   /// <summary>
-  /// Provides an access to internal members of tuners. See inheritors of <see cref="ITunerBase"/> for details.
+/// Provides access to internal members of tuners. See inheritors of <see cref="ITunerBase"/> for details.
   /// </summary>
   public static ITuner GetInternals(this ITunerBase tuner) => (ITuner) tuner;
 
