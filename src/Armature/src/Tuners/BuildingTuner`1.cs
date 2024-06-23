@@ -19,7 +19,7 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
     : base(parent, createNode)
     => _unitPattern = unitPattern;
 
-  public void AsInstance(T instance) => BuildStackPatternSubtree().UseBuildAction(new Instance<T>(instance), BuildStage.Cache);
+  public void AsInstance(T instance) => BuildStackPatternSubtree().UseBuildAction(new Instance<T>(instance), BuildStage.Create);
 
   public virtual ICreationTuner As(Type type, object? tag = null)
   {

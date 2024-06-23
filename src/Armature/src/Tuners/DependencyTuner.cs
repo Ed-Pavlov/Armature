@@ -44,7 +44,7 @@ public static class DependencyTuner
                   WeightOf.InjectionPoint.ByTypeAssignability + Core.WeightOf.BuildStackPattern.IfFirstUnit))
              .GetOrAddNode(new SkipWhileUnit(Static.Of<IsServiceUnit>()))
              .ApplyTuner(tuner)
-             .UseBuildAction(new Instance<object>(argument), BuildStage.Cache);
+             .UseBuildAction(new Instance<object>(argument), BuildStage.Create);
       }
 
     return tuner;
