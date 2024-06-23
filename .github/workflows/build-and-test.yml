@@ -65,8 +65,8 @@ jobs:
         name: Compose versions
         id: comver
         run: |
-          echo InfoVersion=steps.gitversion.outputs.SemVer >> $env:GITHUB_OUTPUT
-          echo AssemblyVersion=steps.gitversion.outputs.SemVer >> $env:GITHUB_OUTPUT
+          echo InfoVersion=${{ steps.gitversion.outputs.SemVer }} >> $env:GITHUB_OUTPUT
+          echo AssemblyVersion=${{ steps.gitversion.outputs.SemVer }} >> $env:GITHUB_OUTPUT
 
       # Build
       -
