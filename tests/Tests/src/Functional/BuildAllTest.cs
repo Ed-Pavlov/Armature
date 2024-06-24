@@ -71,21 +71,60 @@ namespace Tests.Functional
       actual.Single(_ => _ is SampleType2).Should().NotBeSameAs(precondition.Single(_ => _ is SampleType2));
     }
 
-    private static Builder CreateTarget()
-      => new("test", BuildStage.Cache, BuildStage.Create)
-         {
-             new IfFirstUnit(new IsConstructor())
-              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create)
-         };
-
-    private class SampleType1 : IDisposable
+    [Test]
+    public void should_build_units_in_parent_builder_too()
     {
-      public void Dispose() { }
+      var parent = CreateTarget();
+      var target = CreateTarget(parent);
+
+      parent.Treat<IDisposable>().AsCreated<SampleType1>().UsingArguments(nameof(parent));
+      parent.Treat<IDisposable>().AsCreated<SampleType2>().UsingArguments(nameof(parent));
+      target.Treat<IDisposable>().AsCreated<SampleType1>().UsingArguments(nameof(target));
+      target.Treat<IDisposable>().AsCreated<SampleType2>().UsingArguments(nameof(target));
+
+      var actual = target.BuildAll<IDisposable>();
+      actual.Should().HaveCount(4);
+
+      actual.Select(_ => _ as SampleType1).Where(_ => _ != null).Should()
+            .HaveCount(2)
+            .And.Subject.Select(_ => _.Value).Should()
+            .BeEquivalentTo([nameof(parent), nameof(target)]);
+
+      actual.Select(_ => _ as SampleType2).Where(_ => _ != null).Should()
+            .HaveCount(2)
+            .And.Subject.Select(_ => _.Value).Should()
+            .BeEquivalentTo([nameof(parent), nameof(target)]);
     }
 
-    private class SampleType2 : IDisposable
+    private static Builder CreateTarget(Builder? parent = null)
+      => new("test", [BuildStage.Cache, BuildStage.Create], parent == null ? null : [parent])
+         {
+             new IfFirstUnit(new IsConstructor())
+              .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
+
+             new IfFirstUnit(new IsParameterInfoArray())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+
+             new IfFirstUnit(new IsParameterInfo())
+              .UseBuildAction(
+                 new TryInOrder
+                 {
+                   Static.Of<BuildArgumentByParameterType>(),
+                   Static.Of<GetParameterDefaultValue>()
+                 },
+                 BuildStage.Create)
+         };
+
+    private class SampleType1(string? value = null) : IDisposable
     {
-      public void Dispose() { }
+      public string? Value     { get; } = value;
+      public void    Dispose() { }
+    }
+
+    private class SampleType2(string? value = null) : IDisposable
+    {
+      public string? Value     { get; } = value;
+      public void    Dispose() { }
     }
   }
 }

@@ -144,7 +144,8 @@ public partial class BuildSession
 
   private List<Weighted<BuildResult>> BuildAllUnits(Stack stack, WeightedBuildActionBag? buildActionBag, bool engageParentBuilders)
   {
-    if(buildActionBag is null) return Empty<Weighted<BuildResult>>.List;
+    if(buildActionBag is null)
+      return engageParentBuilders ? BuildAllViaParentBuilder(stack.TargetUnit) : Empty<Weighted<BuildResult>>.List;
 
     if(buildActionBag.Keys.Count > 1)
     {
@@ -166,7 +167,9 @@ public partial class BuildSession
 
       var buildAction = weightedBuildAction.Entity;
       BuildActionProcess(buildAction, buildSession);
+
       Log_BuildActionResult(buildAction, buildSession.BuildResult);
+
       BuildActionPostProcess(buildAction, buildSession);
       Log.WriteLine(LogLevel.Info, "");
 
@@ -177,15 +180,7 @@ public partial class BuildSession
     Log_BuildAllResult("BuildAll.Result", buildResultList);
 
     if(engageParentBuilders)
-    {
-      var unitId = stack.TargetUnit;
-      foreach(var parentBuilder in _parentBuilders)
-      {
-        var list = parentBuilder.BuildAllUnits(unitId);
-        Log_BuildAllResult($"ParentBuilder.{parentBuilder.Name}.BuildAll.Result", buildResultList);
-        buildResultList.AddRange(list);
-      }
-    }
+      BuildAllViaParentBuilder(stack.TargetUnit, buildResultList);
 
     return buildResultList;
   }
@@ -227,6 +222,18 @@ public partial class BuildSession
         throw;
       }
     }
+  }
+
+  private List<Weighted<BuildResult>> BuildAllViaParentBuilder(UnitId unitId, List<Weighted<BuildResult>>? buildResultList = null)
+  {
+    buildResultList ??= [];
+    foreach(var parentBuilder in _parentBuilders)
+    {
+      var list = parentBuilder.BuildAllUnits(unitId);
+      buildResultList.AddRange(list);
+    }
+
+    return buildResultList;
   }
 
   private BuildResult BuildViaParentBuilder(UnitId unitId)
