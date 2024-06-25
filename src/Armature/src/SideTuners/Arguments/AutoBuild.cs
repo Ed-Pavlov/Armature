@@ -24,7 +24,7 @@ public static class AutoBuild
     public ISideTuner InDirectOrder { get; }
       = new SideTuner(
         tuner =>
-          tuner.GetInternals()
+          tuner.GetTunerInternals()
                .TreeRoot
                .GetOrAddNode(new IfFirstUnit(Static.Of<IsParameterInfoArray>(), Core.WeightOf.BuildStackPattern.IfFirstUnit))
                .ApplyTuner(tuner)
@@ -38,7 +38,7 @@ public static class AutoBuild
     /// </summary>
     public ISideTuner Type { get; } = new SideTuner(
       tuner =>
-        tuner.GetInternals()
+        tuner.GetTunerInternals()
              .TreeRoot
              .GetOrAddNode(
                 new IfFirstUnit(
@@ -52,7 +52,7 @@ public static class AutoBuild
     /// </summary>
     public ISideTuner Name { get; } = new SideTuner(
       tuner =>
-        tuner.GetInternals()
+        tuner.GetTunerInternals()
              .TreeRoot
              .GetOrAddNode(
                 new IfFirstUnit(

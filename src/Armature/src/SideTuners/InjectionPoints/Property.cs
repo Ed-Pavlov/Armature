@@ -26,7 +26,7 @@ public static class Property
     => new InjectionPointSideTuner(
       tuner =>
       {
-        var internals = tuner.GetInternals();
+        var internals = tuner.GetTunerInternals();
         internals.Apply().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
@@ -47,7 +47,7 @@ public static class Property
     return new InjectionPointSideTuner(
       tuner =>
       {
-        var internals = tuner.GetInternals();
+        var internals = tuner.GetTunerInternals();
         internals.Apply().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
@@ -64,7 +64,7 @@ public static class Property
     => new InjectionPointSideTuner(
       tuner =>
       {
-        var internals = tuner.GetInternals();
+        var internals = tuner.GetTunerInternals();
         internals.Apply().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot

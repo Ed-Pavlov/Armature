@@ -36,7 +36,7 @@ public static class DependencyTuner
         throw new ArgumentException($"{nameof(IArgumentSideTuner)} or argument instance is expected");
       else
       {
-        tuner.GetInternals()
+        tuner.GetTunerInternals()
              .TreeRoot
              .GetOrAddNode(
                 new IfFirstUnit(

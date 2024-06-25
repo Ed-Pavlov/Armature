@@ -19,7 +19,7 @@ public static class Constructor
   public static IInjectionPointSideTuner WithMaxParametersCount()
     => new InjectionPointSideTuner(
       tuner
-        => tuner.GetInternals()
+        => tuner.GetTunerInternals()
                 .TreeRoot
                 .GetOrAddNode(
                    new IfFirstUnit(
@@ -34,7 +34,7 @@ public static class Constructor
   public static IInjectionPointSideTuner MarkedWithInjectAttribute(object? injectionPointTag)
     => new InjectionPointSideTuner(
       tuner
-        => tuner.GetInternals()
+        => tuner.GetTunerInternals()
                 .TreeRoot
                 .GetOrAddNode(
                    new IfFirstUnit(
@@ -74,7 +74,7 @@ public static class Constructor
   public static IInjectionPointSideTuner WithParameters(params Type[] parameterTypes)
     => new InjectionPointSideTuner(
       tuner
-        => tuner.GetInternals()
+        => tuner.GetTunerInternals()
                 .TreeRoot
                 .GetOrAddNode(
                    new IfFirstUnit(
