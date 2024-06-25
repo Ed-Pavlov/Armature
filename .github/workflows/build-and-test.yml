@@ -2,19 +2,19 @@ name: Build & Test
 
 on:
   workflow_dispatch:
-    inputs:
-      prerelease_tag:
-        description: 'Prerelease tag'
-        required: false
-        default: ''
-      publish_artifacts:
-        description: 'Publish artifacts'
-        required: true
-        default: 'false'
-        type: choice
-        options:
-          - 'true'
-          - 'false'
+#    inputs:
+#      prerelease_tag:
+#        description: 'Prerelease tag'
+#        required: false
+#        default: ''
+#      publish_artifacts:
+#        description: 'Publish artifacts'
+#        required: true
+#        default: 'false'
+#        type: choice
+#        options:
+#          - 'true'
+#          - 'false'
 
   push:
     branches:
@@ -28,15 +28,11 @@ env:
   artifacts-dir: artifacts
   nugets-dir:    artifacts/nupkgs
   pdb-dir:       artifacts/pdb
-  prerelease-tag: ${{ !github.event.inputs.publish_artifacts && '-dev' || (github.event.inputs.prerelease_tag != null && format('-{0}', github.event.inputs.prerelease_tag) || '') }}
 
 jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Info
-        run: echo 'prerelease tag value' ${{ env.prerelease-tag }}
-
       -
         name: Checkout
         uses: actions/checkout@v4.1.1
@@ -77,11 +73,11 @@ jobs:
         run: dotnet test --no-build
 
       # Create and place nuget packages into env.nugets-dir directory
-      - if: github.event.inputs.publish_artifacts == 'true'
+      -
         name: Pack
         run: dotnet pack --no-build -o:${{ env.nugets-dir }} -p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }}
 
-      - if: github.event.inputs.publish_artifacts == 'true'
+      -
         name: Store Version
         uses: jsdaniell/create-json@v1.2.3
         with:
@@ -94,13 +90,13 @@ jobs:
             }
           dir:  ${{ env.artifacts-dir }}
 
-      - if: github.event.inputs.publish_artifacts == 'true'
+      -
         name: Store PDB
         run: |
           robocopy src\Armature\bin\Release\netstandard2.1\ ${{ env.pdb-dir }} *.pdb
           if ($lastexitcode -lt 8) { $global:lastexitcode = 0 }
 
-      - if: github.event.inputs.publish_artifacts == 'true'
+      -
         name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
