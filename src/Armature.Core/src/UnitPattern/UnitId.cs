@@ -58,9 +58,9 @@ public readonly struct UnitId : ILogString, IEquatable<UnitId>
 }
 
 /// <summary>
-/// Syntax sugar for increasing code readability. 'Unit.Of(' looks cleaner than 'new UnitId('
+/// Syntax sugar for increasing code readability. 'Unit.By(' looks cleaner than 'new UnitId('
 /// </summary>
 public static class Unit
 {
-  public static UnitId Of(object? kind, object? tag = null) => new(kind, tag);
+  public static UnitId By(object? kind, object? tag = null) => new(kind, tag);
 }

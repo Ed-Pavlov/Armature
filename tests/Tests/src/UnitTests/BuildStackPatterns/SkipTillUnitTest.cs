@@ -17,8 +17,8 @@ namespace Tests.UnitTests.BuildStackPatterns
     {
       const string kind = "kind";
 
-      var expected1 = Unit.Of("expected", "expected");
-      var expected2 = Unit.Of("expected1l", "expected");
+      var expected1 = Unit.By("expected", "expected");
+      var expected2 = Unit.By("expected1l", "expected");
 
       // --arrange
       var target = new SkipTillUnit(new UnitPattern(kind));
@@ -28,7 +28,7 @@ namespace Tests.UnitTests.BuildStackPatterns
       target.AddNode(child2);
 
       // --act
-      var                     stack = TestUtil.CreateBuildStack(expected2, expected1, Unit.Of(kind), Unit.Of(2), Unit.Of(1));
+      var                     stack = TestUtil.CreateBuildStack(expected2, expected1, Unit.By(kind), Unit.By(2), Unit.By(1));
       WeightedBuildActionBag? actionBag;
       target.GatherBuildActions(stack, out actionBag, 0);
 
@@ -55,8 +55,8 @@ namespace Tests.UnitTests.BuildStackPatterns
     [Test]
     public void should_not_send_the_rest_to_children_if_no_unit_matched()
     {
-      var expected1 = Unit.Of("expected", "expected");
-      var expected2 = Unit.Of("expected1l", "expected");
+      var expected1 = Unit.By("expected", "expected");
+      var expected2 = Unit.By("expected1l", "expected");
 
       // --arrange
       var target = new SkipTillUnit(new UnitPattern("absent"));
@@ -66,7 +66,7 @@ namespace Tests.UnitTests.BuildStackPatterns
       target.AddNode(child2);
 
       // --act
-      var                     stack = TestUtil.CreateBuildStack(Unit.Of(1), Unit.Of(2), expected1, expected2);
+      var                     stack = TestUtil.CreateBuildStack(Unit.By(1), Unit.By(2), expected1, expected2);
       WeightedBuildActionBag? actionBag;
       target.GatherBuildActions(stack, out actionBag, 0);
 
@@ -92,7 +92,7 @@ namespace Tests.UnitTests.BuildStackPatterns
       target.AddNode(child2);
 
       // --act
-      var                     stack = TestUtil.CreateBuildStack(Unit.Of(kind), Unit.Of(kind));
+      var                     stack = TestUtil.CreateBuildStack(Unit.By(kind), Unit.By(kind));
       WeightedBuildActionBag? actionBag;
       target.GatherBuildActions(stack, out actionBag, inputWeight);
 

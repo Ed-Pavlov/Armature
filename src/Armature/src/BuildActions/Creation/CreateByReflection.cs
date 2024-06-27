@@ -22,7 +22,7 @@ public record CreateByReflection : IBuildAction
       var constructor = buildSession.GetConstructorOf(type);
       var parameters  = constructor.GetParameters();
 
-      if(parameters.Length == 0 && type.IsValueType) // do not create default value of value type, it can confuse business logic
+      if(parameters.Length == 0 && type.IsValueType) // do not create default value of a value type, it can confuse business logic
         return;
 
       var arguments = parameters.Length == 0 ? Empty<object>.Array : buildSession.BuildArgumentsForMethod(parameters);
@@ -36,7 +36,7 @@ public record CreateByReflection : IBuildAction
         if(exception.InnerException is null)
           throw;
 
-        // throw "user" exception caused the TargetInvocationException w/o loosing the original stack trace
+        // throw "user" exception caused the TargetInvocationException w/o losing the original stack trace
         ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
         throw; // this call is for compiler which doesn't understand that capture.Throw() never returns
       }

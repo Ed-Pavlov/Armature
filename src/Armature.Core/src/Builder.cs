@@ -22,14 +22,14 @@ public class Builder : BuildStackPatternTree, IBuilder
   [PublicAPI]
   public Builder() : base("Error") => throw new ArgumentException("Provide stages");
 
-  /// <param name="name">Used in logs and for debugging</param>
+  /// <param name="name">Used in logs and for debugging.</param>
   /// <param name="buildStages">The ordered collection of build stages, all of which are performed to build a unit.</param>
   public Builder(string name, params object[] buildStages) : this(name, buildStages, null)
   {
   }
 
-  /// <param name="name">Used in logs an for debugging</param>
-  /// <param name="buildStages">The ordered collection of build stages all of which are performed to build a unit.
+  /// <param name="name">Used in logs and for debugging.</param>
+  /// <param name="buildStages">The ordered collection of build stages, all of which are performed to build a unit.
   /// See <see cref="BuildStackPatternExtension.UseBuildAction"/> for details.</param>
   /// <param name="parentBuilders">
   /// If a unit is not built and <paramref name="parentBuilders" /> are provided, tries to build a unit using

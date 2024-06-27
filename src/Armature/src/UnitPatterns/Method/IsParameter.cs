@@ -6,12 +6,12 @@ using BeatyBit.Armature.Sdk;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Checks if a unit is an argument for a constructor/method parameter.
+/// Checks if a unit to be built is an argument for a constructor/method parameter
 /// </summary>
-public record IsParameterInfo : IUnitPattern
+public record IsParameter : IUnitPattern
 {
   public bool Matches(UnitId unitId) => unitId.Tag == ServiceTag.Argument && unitId.Kind is ParameterInfo;
 
   [DebuggerStepThrough]
-  public override string ToString() => nameof(IsParameterInfo);
+  public override string ToString() => nameof(IsParameter);
 }

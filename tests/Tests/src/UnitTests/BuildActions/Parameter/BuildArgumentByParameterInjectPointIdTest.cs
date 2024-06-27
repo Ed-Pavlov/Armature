@@ -18,7 +18,7 @@ public class BuildArgumentByParameterInjectPointIdTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
+    A.CallTo(() => actual.Stack).Returns(Unit.By(parameterInfo).ToBuildStack());
 
     var target = new BuildArgumentByParameterInjectPoint();
 
@@ -36,7 +36,7 @@ public class BuildArgumentByParameterInjectPointIdTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
+    A.CallTo(() => actual.Stack).Returns(Unit.By(parameterInfo).ToBuildStack());
 
     var target = new BuildArgumentByParameterInjectPoint();
 
@@ -54,7 +54,7 @@ public class BuildArgumentByParameterInjectPointIdTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
+    A.CallTo(() => actual.Stack).Returns(Unit.By(parameterInfo).ToBuildStack());
 
     var target = new BuildArgumentByParameterInjectPoint();
 
@@ -75,7 +75,7 @@ public class BuildArgumentByParameterInjectPointIdTest
 
     // --arrange
     var actual = A.Fake<IBuildSession>();
-    A.CallTo(() => actual.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
+    A.CallTo(() => actual.Stack).Returns(Unit.By(parameterInfo).ToBuildStack());
     A.CallTo(() => actual.BuildUnit(TUnit.OfType<int>(Subject.IntId), true)).Returns(expected.ToBuildResult());
 
     var target = new BuildArgumentByParameterInjectPoint();

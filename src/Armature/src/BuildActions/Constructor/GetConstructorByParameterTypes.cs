@@ -5,6 +5,7 @@ using System.Reflection;
 using BeatyBit.Armature.Core.Annotations;
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Sdk;
+using JetBrains.Annotations;
 
 namespace BeatyBit.Armature;
 
@@ -17,6 +18,8 @@ public record GetConstructorByParameterTypes : IBuildAction, ILogString
   private readonly Type[] _parameterTypes;
 
   public GetConstructorByParameterTypes(params Type[] parameterTypes) : this(BindingFlags.Instance | BindingFlags.Public, parameterTypes) { }
+
+  [PublicAPI]
   public GetConstructorByParameterTypes(BindingFlags bindingFlags, params Type[] parameterTypes)
   {
     _parameterTypes = parameterTypes ?? throw new ArgumentNullException(nameof(parameterTypes));

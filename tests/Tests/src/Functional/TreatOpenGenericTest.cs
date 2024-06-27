@@ -19,7 +19,7 @@ namespace Tests.Functional
       target.TreatOpenGeneric(typeof(List<>))
             .AsCreated<List<int>>();
 
-      var actual = target.BuildUnit(Unit.Of(typeof(List<>)));
+      var actual = target.BuildUnit(Unit.By(typeof(List<>)));
     }
 
     [Test]
@@ -73,7 +73,7 @@ namespace Tests.Functional
              new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
 
-             new IfFirstUnit(new IsParameterInfo())
+             new IfFirstUnit(new IsParameter())
               .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
          };
 

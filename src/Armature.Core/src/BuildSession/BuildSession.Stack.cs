@@ -10,9 +10,10 @@ public partial class BuildSession
 {
   /// <summary>
   /// Represents the "building stack".
-  /// It could be for example IA -> A -> IB -> B -> int. This stack means that for now Unit of type 'int' is the target unit
-  /// but it is built in the "context" of the whole build stack.
+  /// It could be, for example, 'int &lt;- B &lt;- IB &lt;- A &lt;- IA'.
+  /// This stack means that for now Unit of type int is the target unit, but it is built in the "context" of the whole build stack.
   /// </summary>
+  // ReSharper disable once DefaultStructEqualityIsUsed.Global
   public readonly struct Stack
   {
     private readonly IReadOnlyList<UnitId> _array;
@@ -58,7 +59,7 @@ public partial class BuildSession
     /// <summary>
     /// Gets the tails of the stack. <see cref="TargetUnit"/> remains the same, in opposite to items accessed by <see cref="this[int]"/>
     /// </summary>
-    /// <param name="startIndex">The index of the item which should became the very first item of the tail.</param>
+    /// <param name="startIndex">The index of the item which should become the very first item of the tail.</param>
     [DebuggerStepThrough]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Stack GetTail(int startIndex) => new(_array, _startIndex + startIndex, TargetUnit);

@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Base class for patterns check if a unit is an argument for an "inject point" with the specified name.
+/// Base class for patterns which check if a unit is an argument for an "injection point" with the specified name
 /// </summary>
 public abstract record InjectPointNamedBase : IUnitPattern, ILogString, IInternal<string>
 {

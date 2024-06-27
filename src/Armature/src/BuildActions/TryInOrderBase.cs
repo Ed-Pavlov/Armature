@@ -6,14 +6,15 @@ using System.Linq;
 using System.Runtime.ExceptionServices;
 using BeatyBit.Armature.Core.Annotations;
 using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Core.Sdk;
 
 namespace BeatyBit.Armature;
 
 /// <summary>
 /// This build action is used mostly for "default" build actions applied to any target unit.
-/// For example by default we want to find attributed constructor and if there is no any get the constructor with the largest number of parameters,
-/// add these two actions in right order as children of <see cref="TryInOrderBase" /> to reach such behaviour. If a build action did not build a unit,
-/// this build action calls the next child till a unit will be built.
+/// For example, by default we want to find attributed constructor and if there is no any get the constructor with the largest number of parameters,
+/// add these two actions in right order as children of <see cref="TryInOrderBase" /> to reach such behaviour.
+/// If a build action has not built a unit, <see cref="TryInOrderBase"/> build action calls the next child till a unit will be built.
 /// </summary>
 /// <remarks>
 /// This class implements <see cref="IEnumerable" /> and has <see cref="Add" /> method to make possible compact and readable initialization like
@@ -71,7 +72,7 @@ public abstract class TryInOrderBase : IBuildAction, IEnumerable, ILogString
         using(Log.NamedBlock(LogLevel.Info, () => $"{buildAction.ProcessMethod()}.Exception: "))
           exception.WriteToLog();
 
-        throw; // don't try to call other actions, they can return "wrong" unit, user exception is unexpected case
+        throw; // don't try to call other actions, they can return "wrong" unit, user exception is an unexpected case
       }
 
     if(!buildSession.BuildResult.HasValue)
@@ -127,7 +128,7 @@ public abstract class TryInOrderBase : IBuildAction, IEnumerable, ILogString
   }
 
   [WithoutTest]
-  public IEnumerator GetEnumerator() => throw new NotSupportedException();
+  public IEnumerator GetEnumerator() => Empty.Enumerator;
 
   [DebuggerStepThrough]
   public override string ToString() => GetType().ToLogString();

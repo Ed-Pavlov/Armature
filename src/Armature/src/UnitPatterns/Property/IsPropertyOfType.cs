@@ -6,7 +6,7 @@ using BeatyBit.Armature.Core;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Checks if a unit is an argument to inject into a property requires argument of the specified type.
+/// Checks if a unit to be built is an argument to inject into a property requires argument of the specified type.
 /// </summary>
 public record IsPropertyOfType : InjectPointOfTypeBase
 {

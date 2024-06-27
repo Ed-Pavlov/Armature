@@ -9,7 +9,7 @@ using WeightOf = BeatyBit.Armature.Core.WeightOf;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Tunes up in which properties of the object inject dependencies.
+/// Tunes up in which properties of the object inject dependencies. Pass the result of its method to <see cref="IDependencyTuner{T}.UsingInjectionPoints"/>
 /// </summary>
 [PublicAPI]
 public static class Property

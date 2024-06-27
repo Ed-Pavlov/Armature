@@ -13,10 +13,10 @@ public class BuildStackTest
   public void target_unit_should_not_depend_on_tail()
   {
     // arrange
-    var expected    = Unit.Of("Argument");
-    var firstOfTail = Unit.Of("ParamInfo");
+    var expected    = Unit.By("Argument");
+    var firstOfTail = Unit.By("ParamInfo");
 
-    var array = new[] {Unit.Of("Interface"), Unit.Of("Class"), firstOfTail, expected};
+    var array = new[] {Unit.By("Interface"), Unit.By("Class"), firstOfTail, expected};
     var stack = new BuildSession.Stack(array).GetTail(1);
 
     // act, assert
@@ -26,7 +26,7 @@ public class BuildStackTest
   [Test]
   public void items_order()
   {
-    var expected = new[] {Unit.Of(0), Unit.Of(1), Unit.Of(2), Unit.Of(3)};
+    var expected = new[] {Unit.By(0), Unit.By(1), Unit.By(2), Unit.By(3)};
 
     // arrange
     var stack = new BuildSession.Stack(expected.Reverse().ToArray());
@@ -39,7 +39,7 @@ public class BuildStackTest
   public void get_tail()
   {
     // arrange
-    var array = new[] {Unit.Of("Interface"), Unit.Of("Class"), Unit.Of("ParamInfo"), Unit.Of("Argument")};
+    var array = new[] {Unit.By("Interface"), Unit.By("Class"), Unit.By("ParamInfo"), Unit.By("Argument")};
     var stack = new BuildSession.Stack(array);
 
     // act
@@ -96,7 +96,7 @@ public class BuildStackTest
   [Test]
   public void should_check_start_index_argument([Values(-3, 24)] int startIndex)
   {
-    var array = new[] {Unit.Of(0), Unit.Of(2, 0)};
+    var array = new[] {Unit.By(0), Unit.By(2, 0)};
 
     // --arrange
     startIndex = Math.Min(startIndex, array.Length + 1);

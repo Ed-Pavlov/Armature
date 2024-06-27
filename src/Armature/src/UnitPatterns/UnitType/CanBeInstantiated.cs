@@ -4,7 +4,7 @@ using BeatyBit.Armature.Sdk;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Checks if a unit is a type which can be instantiated.
+/// Checks if a unit is a type that can be instantiated
 /// </summary>
 public record CanBeInstantiated : IUnitPattern
 {

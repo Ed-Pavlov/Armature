@@ -87,7 +87,7 @@ public class BuildStackPatternTree :
     {
       if(!_staticMap.TryGetValue(unitId, out var list))
       { // no list - no node, add passed one
-        list = new LeanList<IBuildStackPattern> {node};
+        list = [node];
         _staticMap.Add(unitId, list);
         result = node;
       }
@@ -133,7 +133,7 @@ public class BuildStackPatternTree :
   #region Syntax sugar
 
   public void             Add(IBuildStackPattern buildStackPattern) => _root.AddNode(buildStackPattern);
-  IEnumerator IEnumerable.GetEnumerator()                           => Empty<object>.Array.GetEnumerator();
+  IEnumerator IEnumerable.GetEnumerator()                           => Empty.Enumerator;
 
   #endregion
 

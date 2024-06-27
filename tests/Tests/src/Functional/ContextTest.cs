@@ -42,13 +42,13 @@ public class ContextTest
                           Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has less priority
                         },
                         BuildStage.Create),
-                    new IfFirstUnit(new IsParameterInfo())
+                    new IfFirstUnit(new IsParameter())
                      .UseBuildAction(
                         new TryInOrder {Static.Of<BuildArgumentByParameterInjectPoint>(), Static.Of<BuildArgumentByParameterType>()},
                         BuildStage.Create),
                     new IfFirstUnit(new IsParameterInfoArray())
                      .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-                    new IfFirstUnit(new IsPropertyInfo())
+                    new IfFirstUnit(new IsProperty())
                      .UseBuildAction(
                         new TryInOrder {new BuildArgumentByPropertyType()},
                         BuildStage.Create)

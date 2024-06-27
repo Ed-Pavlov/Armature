@@ -17,12 +17,12 @@ public class IsMethodParameterWithTypeTest
   public void should_delegate_call_with_extracted_type()
   {
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(int))!;
-    var expected      = Unit.Of(typeof(int));
+    var expected      = Unit.By(typeof(int));
 
     // --arrange
     var typePattern = A.Fake<IUnitPattern>();
     var target      = new IsParameterOfType(typePattern);
-    var unitId      = Unit.Of(parameterInfo, ServiceTag.Argument);
+    var unitId      = Unit.By(parameterInfo, ServiceTag.Argument);
 
     // --act
     target.Matches(unitId);
@@ -39,7 +39,7 @@ public class IsMethodParameterWithTypeTest
     // --arrange
     var typePattern = A.Fake<IUnitPattern>();
     var target      = new IsParameterOfType(typePattern);
-    var unitId      = Unit.Of(parameterInfo, tag);
+    var unitId      = Unit.By(parameterInfo, tag);
 
     // --act
     target.Matches(unitId);

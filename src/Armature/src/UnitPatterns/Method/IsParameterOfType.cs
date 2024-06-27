@@ -5,7 +5,7 @@ using BeatyBit.Armature.Core;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Checks if a unit is an argument for a constructor/method parameter of the specified type.
+/// Checks if a unit to be built is an argument for a constructor/method parameter of the specified type.
 /// </summary>
 public record IsParameterOfType : InjectPointOfTypeBase
 {

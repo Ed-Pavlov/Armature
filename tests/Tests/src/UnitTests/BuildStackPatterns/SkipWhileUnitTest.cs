@@ -14,8 +14,8 @@ public class SkipWhileUnitTest
     {
       const string kind = "kind";
 
-      var expected1 = Unit.Of("expected", "expected");
-      var expected2 = Unit.Of("expected1l", "expected");
+      var expected1 = Unit.By("expected", "expected");
+      var expected2 = Unit.By("expected1l", "expected");
 
       // --arrange
       var target = new SkipWhileUnit(new UnitPattern(kind));
@@ -25,7 +25,7 @@ public class SkipWhileUnitTest
       target.AddNode(child2);
 
       // --act
-      var stack = TestUtil.CreateBuildStack(expected2, expected1, Unit.Of(kind), Unit.Of(kind), Unit.Of(kind));
+      var stack = TestUtil.CreateBuildStack(expected2, expected1, Unit.By(kind), Unit.By(kind), Unit.By(kind));
       target.GatherBuildActions(stack, out var actionBag, 0);
 
       // --assert
@@ -49,7 +49,7 @@ public class SkipWhileUnitTest
     {
       const string kind = "kind";
 
-      var expected = Unit.Of("expected", "expected");
+      var expected = Unit.By("expected", "expected");
 
       // --arrange
       var target = new SkipWhileUnit(new UnitPattern(kind));
@@ -59,7 +59,7 @@ public class SkipWhileUnitTest
       target.AddNode(child2);
 
       // --act
-      var stack = TestUtil.CreateBuildStack(expected, Unit.Of(kind), Unit.Of(kind), Unit.Of(kind));
+      var stack = TestUtil.CreateBuildStack(expected, Unit.By(kind), Unit.By(kind), Unit.By(kind));
       target.GatherBuildActions(stack, out var actionBag, 0);
 
       // --assert
@@ -93,7 +93,7 @@ public class SkipWhileUnitTest
       target.AddNode(child2);
 
       // --act
-      var stack = TestUtil.CreateBuildStack(Unit.Of("not" + kind), Unit.Of(kind), Unit.Of(kind));
+      var stack = TestUtil.CreateBuildStack(Unit.By("not" + kind), Unit.By(kind), Unit.By(kind));
       target.GatherBuildActions(stack, out var actionBag, inputWeight);
 
       // --assert

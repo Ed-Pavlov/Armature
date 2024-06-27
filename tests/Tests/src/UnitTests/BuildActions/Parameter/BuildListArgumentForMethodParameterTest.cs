@@ -25,7 +25,7 @@ public class BuildListArgumentForMethodParameterTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.Stack).Returns(Unit.Of(parameterInfo).ToBuildStack());
+    A.CallTo(() => buildSession.Stack).Returns(Unit.By(parameterInfo).ToBuildStack());
 
     var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(TUnit.OfType<int>(tag), true));
     buildUnitCall.Returns(expected.Select(_ => _.ToBuildResult().WithWeight(_)).ToList());
@@ -49,7 +49,7 @@ public class BuildListArgumentForMethodParameterTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.Stack).Returns(Unit.Of(parameterInfo, tag).ToBuildStack());
+    A.CallTo(() => buildSession.Stack).Returns(Unit.By(parameterInfo, tag).ToBuildStack());
 
     var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(TUnit.OfType<int>(tag), true));
     buildUnitCall.Returns(expected.Select(_ => _.ToBuildResult().WithWeight(_)).ToList());
@@ -72,7 +72,7 @@ public class BuildListArgumentForMethodParameterTest
   {
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.Stack).Returns(Unit.Of(parameterInfo, tag).ToBuildStack());
+    A.CallTo(() => buildSession.Stack).Returns(Unit.By(parameterInfo, tag).ToBuildStack());
 
     var buildUnitCall = A.CallTo(() => buildSession.BuildAllUnits(TUnit.OfType<int>(tag), true));
 

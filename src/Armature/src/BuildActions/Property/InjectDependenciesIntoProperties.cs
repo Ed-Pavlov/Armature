@@ -33,7 +33,7 @@ public record InjectDependenciesIntoProperties : IBuildAction
 
     var type = buildSession.Stack.TargetUnit.GetUnitTypeSafe() ?? unit.GetType();
 
-    var unitInfo = Unit.Of(type, ServiceTag.PropertyCollection);
+    var unitInfo = Unit.By(type, ServiceTag.PropertyCollection);
 
     var properties = buildSession.BuildAllUnits(unitInfo)
                                .OrderByDescending(_ => _.Weight)

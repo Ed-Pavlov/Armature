@@ -118,7 +118,7 @@ namespace Tests.Functional
                    Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has less priority
                  },
                  BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfo())
+             new IfFirstUnit(new IsParameter())
               .UseBuildAction(
                  new TryInOrder
                  {
@@ -127,7 +127,7 @@ namespace Tests.Functional
                  }, BuildStage.Create),
              new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             new IfFirstUnit(new IsPropertyInfo())
+             new IfFirstUnit(new IsProperty())
               .UseBuildAction(
                  new TryInOrder
                  {

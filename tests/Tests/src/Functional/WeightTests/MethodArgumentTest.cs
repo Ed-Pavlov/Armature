@@ -77,7 +77,7 @@ public class MethodArgumentTest
        {
            new IfFirstUnit(new IsConstructor()).UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
            new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-           new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
+           new IfFirstUnit(new IsParameter()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
        };
 
   [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]

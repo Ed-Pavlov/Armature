@@ -5,7 +5,7 @@ using BeatyBit.Armature.Sdk;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Checks if a unit is a constructor.
+/// Checks if a unit to be built is a type constructor
 /// </summary>
 public record IsConstructor : IUnitPattern
 {

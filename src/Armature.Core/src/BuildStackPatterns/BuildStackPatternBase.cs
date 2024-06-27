@@ -21,19 +21,21 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
 
   protected long Weight { [DebuggerStepThrough] get; }
 
+  [PublicAPI]
   public BuildActionBag BuildActions => RawBuildActions ??= new BuildActionBag();
 
   /// <summary>
   /// The collection of all children nodes used to find existing one, add new, or replace one with another.
   /// All nodes with their children are a build stack pattern tree.
   /// </summary>
+  [PublicAPI]
   public HashSet<IBuildStackPattern> Children => RawChildren ??= new HashSet<IBuildStackPattern>();
 
   /// <summary>
   /// Adds a <paramref name="node" /> as a child node if the node is not already added. Returns the new node, or the existing node if the node already added.
   /// </summary>
   /// <remarks>Call it first and then fill returned <see cref="IBuildStackPattern" /> with build actions or perform other needed actions due to
-  /// it can return other instance of <see cref="IBuildStackPattern"/> then passed <paramref name="node"/>.</remarks>
+  /// it can return another instance of <see cref="IBuildStackPattern"/> then passed <paramref name="node"/>.</remarks>
   public virtual T GetOrAddNode<T>(T node) where T : IBuildStackPattern
   {
     if(node is null) throw new ArgumentNullException(nameof(node));
@@ -195,7 +197,8 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
   public override bool Equals(object? obj) => Equals(obj as IBuildStackPattern);
   public override int  GetHashCode()       => Weight.GetHashCode();
 
-  IEnumerator IEnumerable.GetEnumerator() => RawChildren?.GetEnumerator() ?? Empty<IBuildStackPattern>.Array.GetEnumerator();
+  // ReSharper disable once NotDisposedResourceIsReturned
+  IEnumerator IEnumerable.GetEnumerator() => RawChildren?.GetEnumerator() ?? Empty.Enumerator;
 
   #region Internal
 

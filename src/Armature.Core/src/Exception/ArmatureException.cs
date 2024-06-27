@@ -7,7 +7,7 @@ using System.Text;
 namespace BeatyBit.Armature.Core;
 
 /// <summary>
-/// Exception is used to distinguish internal unexpected situations and error produced by user code
+/// Exception is used to distinguish internal unexpected situations and error produced by user code.
 /// </summary>
 [Serializable]
 public class ArmatureException : AggregateException

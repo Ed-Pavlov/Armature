@@ -155,7 +155,7 @@ namespace Tests.Functional
                  BuildStage.Create),
              new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfo())
+             new IfFirstUnit(new IsParameter())
               .UseBuildAction(
                  new TryInOrder
                  {

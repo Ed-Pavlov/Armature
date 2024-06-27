@@ -13,7 +13,7 @@ namespace BeatyBit.Armature;
 public static class BuilderExtension
 {
   /// <summary>
-  /// Use <paramref name="tag"/> to build a unit. See <see cref="UnitId" /> for details.
+  /// Use <paramref name="tag"/> to build a unit. See <see cref="UnitId" /> for details
   /// </summary>
   [DebuggerStepThrough]
   public static WithTag UsingTag(this Builder builder, object tag) => new(builder, tag);
@@ -37,7 +37,7 @@ public static class BuilderExtension
   /// anywhere and used only for this build session. Normally, usual registrations take over these arguments because the weight
   /// of runtime arguments is decreased. See <see cref="ArmatureUtil.CreatePatternTreeOnArguments"/> for details.</param>
   /// <returns>Returns an instance or null if null is registered as a unit.</returns>
-  /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
+  /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers.</exception>
   /// <inheritdoc cref="IBuilder.BuildUnit" />
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -53,7 +53,7 @@ public static class BuilderExtension
   /// This can be useful to build all implementers of an interface.
   /// </summary>
   /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
-  /// <exception cref="ArmatureException">Throws if no unit was built by this or any parent containers</exception>
+  /// <exception cref="ArmatureException">Throws if no unit was built by this or any parent containers.</exception>
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static IReadOnlyList<object?> BuildAll<T>(this Builder builder) => builder.BuildAll<T>(null);
@@ -68,7 +68,7 @@ public static class BuilderExtension
   /// anywhere and used only for this build session. Normally, registrations take over these arguments because the weight
   /// of runtime arguments is decreased. See <see cref="ArmatureUtil.CreatePatternTreeOnArguments"/> for details.</param>
   /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
-  /// <exception cref="ArmatureException">Throws if not unit was built by this or any parent containers</exception>
+  /// <exception cref="ArmatureException">Throws if not unit was built by this or any parent containers.</exception>
   /// <inheritdoc cref="IBuilder.BuildAllUnits" />
   [DebuggerStepThrough]
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -82,11 +82,11 @@ public static class BuilderExtension
   public static IReadOnlyList<object?> BuildAll<T>(this Builder builder, params object[]? arguments) => builder.BuildAll<T>(null, true, arguments);
 
   /// <summary>
-  /// All other BuildAll... methods should delegate to this one. This is the real implementation
+  /// All other BuildAll... methods should delegate to this one. This is the real implementation.
   /// </summary>
   private static IReadOnlyList<object?> BuildAll<T>(this Builder builder, object? tag, bool engageParentBuilders, params object[]? arguments)
   {
-    var unitId         = Unit.Of(typeof(T), tag);
+    var unitId         = Unit.By(typeof(T), tag);
     var auxPatternTree = ArmatureUtil.CreatePatternTreeOnArguments(arguments);
 
     var unitList = builder.BuildAllUnits(unitId, auxPatternTree, engageParentBuilders);
@@ -97,14 +97,14 @@ public static class BuilderExtension
   }
 
   /// <summary>
-  /// All other Build... methods should delegate to this one. This is the real implementation
+  /// All other Build... methods should delegate to this one. This is the real implementation.
   /// </summary>
   [DebuggerStepThrough]
   private static T? Build<T>(this Builder builder, object? tag, bool engageParentBuilders, params object[]? arguments)
   {
     if(builder is null) throw new ArgumentNullException(nameof(builder));
 
-    var unitId      = Unit.Of(typeof(T), tag);
+    var unitId      = Unit.By(typeof(T), tag);
     var patternTree = ArmatureUtil.CreatePatternTreeOnArguments(arguments);
 
     var buildResult = builder.BuildUnit(unitId, patternTree, engageParentBuilders);
@@ -148,7 +148,7 @@ public static class BuilderExtension
     /// This can be useful to build all implementers of an interface.
     /// </summary>
     /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
-    /// <exception cref="ArmatureException">Throws if no unit was built by this or any parent containers</exception>
+    /// <exception cref="ArmatureException">Throws if no unit was built by this or any parent containers.</exception>
     [DebuggerStepThrough]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<object?> BuildAll<T>() => _builder.BuildAll<T>(_tag, true);
@@ -161,7 +161,7 @@ public static class BuilderExtension
     /// This can be useful to build all implementers of an interface.
     /// </summary>
     /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
-    /// <exception cref="ArmatureException">Throws if no unit was built by this or any parent containers</exception>
+    /// <exception cref="ArmatureException">Throws if no unit was built by this or any parent containers.</exception>
     [DebuggerStepThrough]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<object?> BuildAll<T>(params object[] arguments) => _builder.BuildAll<T>(_tag, true, arguments);

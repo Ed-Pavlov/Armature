@@ -7,10 +7,10 @@ using BeatyBit.Armature.Core.Sdk;
 namespace BeatyBit.Armature.Core;
 
 /// <summary>
-/// Represents whole build session of one Unit, all dependency of the being built Unit are built in the context of one build session.
+/// Represents the whole build session of one Unit, all dependency of the being built Unit are built in the context of one build session.
 /// </summary>
-/// <remarks>It could be for example IA -> A -> IB -> B -> int. This stack means that for now Unit of type int is the target unit,
-/// but it is built in the "context" of the whole build stack.</remarks>
+/// <remarks>It could be, for example, 'int &lt;- B &lt;- IB &lt;- A &lt;- IA'.
+/// This stack means that for now Unit of type int is the target unit, but it is built in the "context" of the whole build stack.</remarks>
 public partial class BuildSession
 {
   private const string GatherBuildActions = "GatherBuildActions";
@@ -57,7 +57,7 @@ public partial class BuildSession
   }
 
   /// <summary>
-  /// Common logic to build one or all units
+  /// Common logic to build one or all units.
   /// </summary>
   private T Build<T>(UnitId unitId, Func<Stack, WeightedBuildActionBag?, T> build)
   {

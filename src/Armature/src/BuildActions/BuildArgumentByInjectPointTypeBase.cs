@@ -7,7 +7,7 @@ using BeatyBit.Armature.Sdk;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Base class for build actions building arguments to inject into inject points marked with <see cref="InjectAttribute"/>.
+/// Base class for build actions building arguments to inject into injection points marked with <see cref="InjectAttribute"/>.
 /// </summary>
 public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogString
 {
@@ -26,7 +26,7 @@ public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogSt
     var effectiveTag = _tag == ServiceTag.Propagate ? targetUnit.Tag : _tag;
 
     var valueType = GetInjectPointType(targetUnit);
-    buildSession.BuildResult = buildSession.BuildUnit(Unit.Of(valueType, effectiveTag));
+    buildSession.BuildResult = buildSession.BuildUnit(Unit.By(valueType, effectiveTag));
   }
   [WithoutTest]
   [DebuggerStepThrough]

@@ -12,7 +12,7 @@ public class GatherBuildActionOnRealTreeBenchmark
 {
   private readonly IBuildStackPattern _treeRoot;
 
-  private readonly BuildSession.Stack _stack = new BuildSession.Stack(new[] {Unit.Of("unobtanium")});
+  private readonly BuildSession.Stack _stack = new BuildSession.Stack(new[] {Unit.By("unobtanium")});
 
   public GatherBuildActionOnRealTreeBenchmark()
   {
@@ -27,7 +27,7 @@ public class GatherBuildActionOnRealTreeBenchmark
       var i1      = i;
       var created = (i1 * 10_000).ToString();
 
-      builder.AddNode(CreateNode()).UseBuildAction(new Redirect(Unit.Of(created)), BuildStage.Create);
+      builder.AddNode(CreateNode()).UseBuildAction(new Redirect(Unit.By(created)), BuildStage.Create);
 
       builder.AddNode(new IfFirstUnit(new UnitPattern(created)))
               .AddNode(CreateNode())

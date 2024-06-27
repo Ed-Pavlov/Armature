@@ -7,7 +7,7 @@ namespace BeatyBit.Armature;
 
 /// <summary>
 /// Redirects building of a unit with one <see cref="UnitId"/> to the unit with another <see cref="UnitId"/>.
-/// E.g. redirecting interface to the implementation.
+/// E.g., redirecting interface to the implementation.
 /// </summary>
 public record Redirect : IBuildAction, ILogString
 {
@@ -19,7 +19,7 @@ public record Redirect : IBuildAction, ILogString
   public void Process(IBuildSession buildSession)
   {
     var targetUnit   = buildSession.Stack.TargetUnit;
-    var unitId = Equals(_unitId.Tag, ServiceTag.Propagate) ? Unit.Of(_unitId.Kind, targetUnit.Tag) : _unitId;
+    var unitId = Equals(_unitId.Tag, ServiceTag.Propagate) ? Unit.By(_unitId.Kind, targetUnit.Tag) : _unitId;
 
     buildSession.BuildResult = buildSession.BuildUnit(unitId);
   }

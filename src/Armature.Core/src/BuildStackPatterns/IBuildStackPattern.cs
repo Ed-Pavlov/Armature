@@ -13,7 +13,7 @@ public interface IBuildStackPattern : IEquatable<IBuildStackPattern>, IStaticPat
   /// Adds a <paramref name="node" /> as a child node if the node is not already added. Returns the new node, or the existing node if the node already added.
   /// </summary>
   /// <remarks>Call it first and then fill returned <see cref="IBuildStackPattern" /> with build actions or perform other needed actions due to
-  /// it can return other instance of <see cref="IBuildStackPattern"/> then passed <paramref name="node"/>.</remarks>
+  /// it can return another instance of <see cref="IBuildStackPattern"/> then passed <paramref name="node"/>.</remarks>
   T GetOrAddNode<T>(T node) where T : IBuildStackPattern;
 
   /// <summary>
@@ -42,7 +42,7 @@ public interface IBuildStackPattern : IEquatable<IBuildStackPattern>, IStaticPat
   ///   The weight of matching which used by children matchers to calculate a final weight of matching
   /// </param>
   /// <remarks>
-  /// IA -> A -> IB -> B. This stack means that for now Unit of type 'B' is the target unit
+  /// IA &lt;- A &lt;- IB &lt;- B. This stack means that for now Unit of type 'B' is the target unit,
   /// but it is built in the "context" of the whole build stack.
   /// </remarks>
   /// <returns>

@@ -10,7 +10,7 @@ public class IfFirstUnit : BuildStackPatternByUnitBase
 
   /// <summary>
   /// Checks if the first unit in the build stack matches the specified patter.
-  /// If it is the target unit, returns build actions for it, if no, pass the rest of the build stack to each child and returns all actions from children merged
+  /// If it is the target unit, returns build actions for it, if no, pass the rest of the build stack to each child and returns all actions from children merged.
   /// </summary>
   public override bool GatherBuildActions(BuildSession.Stack stack, out WeightedBuildActionBag? actionBag, long inputWeight)
   {

@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Checks if a unit is an inheritor of the specified type.
+/// Checks if a unit is a type that inherits the specified type
 /// </summary>
 public record IsInheritorOf : TypePatternBase, IUnitPattern, IInternal<bool>
 {

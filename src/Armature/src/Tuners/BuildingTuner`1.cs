@@ -26,7 +26,7 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
     if(type.IsGenericTypeDefinition)
       throw new ArgumentException($"Type should not be open generic, use {nameof(RedirectOpenGenericType)} for open generics", nameof(type));
 
-    BuildStackPatternSubtree().UseBuildAction(Default.CreateAsBuildAction(Unit.Of(type, tag)), BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(Default.CreateAsBuildAction(Unit.By(type, tag)), BuildStage.Create);
 
     var unitPattern = new UnitPattern(type, tag);
     return new BuildingTuner<object>(this, CreateTargetNode, unitPattern);

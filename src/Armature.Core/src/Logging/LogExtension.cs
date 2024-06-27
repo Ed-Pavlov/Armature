@@ -15,8 +15,8 @@ namespace BeatyBit.Armature.Core;
 [PublicAPI]
 public static class LogExtension
 {
-  private static readonly HashSet<char> BadCharacters = new(
-    new[] {'$', '"', '{', '}', '[', ']', ':', '=', ',', '+', '#', '`', '^', '?', '!', '@', '*', '&', '/', '\\', ' ', '.'});
+  private static readonly HashSet<char> BadCharacters =
+    ['$', '"', '{', '}', '[', ']', ':', '=', ',', '+', '#', '`', '^', '?', '!', '@', '*', '&', '/', '\\', ' ', '.'];
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static string GetFullName(this Type type)
@@ -37,7 +37,7 @@ public static class LogExtension
          : type.Name;
 
   /// <summary>
-  /// Returns the name of <paramref name="type" /> respecting <see cref="Log.LogFullTypeName" /> property
+  /// Returns the name of <paramref name="type" /> respecting <see cref="Log.LogFullTypeName" /> property.
   /// </summary>
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static string ToLogString(this Type type) => Log.LogFullTypeName ? type.GetFullName() : type.GetShortName();
@@ -46,7 +46,7 @@ public static class LogExtension
   public static string ToLogString(this BuildResult buildResult) => buildResult.HasValue ? buildResult.Value.ToHoconString() : "nothing";
 
   /// <summary>
-  /// Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns
+  /// Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns.
   /// </summary>
   public static string ToHoconString(this object? value)
   {

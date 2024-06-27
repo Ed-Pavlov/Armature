@@ -31,33 +31,4 @@ public static class BuildStackPatternTreeExtension
   public static ISubjectTuner Building<T>(this BuildStackPatternTree tree, object? tag = null) => SubjectTuner.Building(new RootTuner(tree), typeof(T), tag);
 
   public static IDependencyTuner<RootTuner> TreatAll(this BuildStackPatternTree tree) => new RootTuner(tree);
-
-  // /// <summary>
-  // /// Overrides a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems.
-  // /// </summary>
-  // public static BuildingTuner TreatOverride(this BuildStackPatternTree tree, Type type, object? tag = null)
-  // {
-  //   if(pattern is null) throw new ArgumentNullException(nameof(pattern));
-  //   if(type is null) throw new ArgumentNullException(nameof(type));
-  //
-  //   var newPatternMatcher = new SkipTillUnit(new UnitPattern(type, tag), WeightOf.BuildStackPattern.TargetUnit + WeightOf.UnitPattern.ExactTypePattern);
-  //   var oldPatternMatcher = pattern.Children.Single(_ => _.Equals(newPatternMatcher));
-  //
-  //   pattern.Children.Remove(oldPatternMatcher);
-  //   return new BuildingTuner(pattern.AddNode(newPatternMatcher));
-  // }
-  //
-  // /// <summary>
-  // /// Overrides a previously registered <see cref="Treat{T}"/>. Mostly used in test environment to use mocks instead of real subsystems.
-  // /// </summary>
-  // public static BuildingTuner<T> TreatOverride<T>(this BuildStackPatternTree tree, object? tag = null)
-  // {
-  //   if(pattern is null) throw new ArgumentNullException(nameof(pattern));
-  //
-  //   var newPatternMatcher = new SkipTillUnit(new UnitPattern(typeof(T), tag), WeightOf.BuildStackPattern.TargetUnit + WeightOf.UnitPattern.ExactTypePattern);
-  //   var oldPatternMatcher = pattern.Children.Single(_ => _.Equals(newPatternMatcher));
-  //
-  //   pattern.Children.Remove(oldPatternMatcher);
-  //   return new BuildingTuner<T>(pattern.AddNode(newPatternMatcher));
-  // }
 }

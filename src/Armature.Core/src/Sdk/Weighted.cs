@@ -29,6 +29,9 @@ public readonly struct Weighted<T> : IComparable<Weighted<T>>
 
 public static class WeightedExtension
 {
+  /// <summary>
+  /// Couples an entity with a weight. The method is introduced for the sake of readability only.
+  /// </summary>
   [DebuggerStepThrough]
   public static Weighted<T> WithWeight<T>(this T entity, long weight) => new(entity, weight);
 }

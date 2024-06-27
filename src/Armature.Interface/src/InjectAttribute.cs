@@ -17,6 +17,7 @@ public class InjectAttribute : Attribute
 {
   /// <summary>
   /// Optional tag of the injection point can be used by build actions.
+  /// See usages for details.
   /// </summary>
   public readonly object? Tag;
 

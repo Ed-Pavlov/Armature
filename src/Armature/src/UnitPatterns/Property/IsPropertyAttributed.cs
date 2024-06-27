@@ -7,7 +7,7 @@ using BeatyBit.Armature.Core.Sdk;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Checks if a unit is an argument for an object property marked with <see cref="InjectAttribute"/> attribute
+/// Checks if a unit to be built is an argument for an object property marked with <see cref="InjectAttribute"/> attribute
 /// with an optional <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" />
 /// </summary>
 public record IsPropertyAttributed : IsInjectPointBase

@@ -14,7 +14,7 @@ public abstract record TypePatternBase : ILogString, IInternal<Type, object?>
   protected readonly object? Tag;
 
   /// <summary>
-  /// Base class for matchers matching unit with a <see cref="System.Type"/> pattern
+  /// Base class for unit patterns matching unit with a <see cref="System.Type"/>
   /// </summary>
   protected TypePatternBase(Type type, object? tag)
   {

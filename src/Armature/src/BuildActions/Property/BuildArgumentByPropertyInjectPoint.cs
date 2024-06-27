@@ -20,7 +20,7 @@ public record BuildArgumentByPropertyInjectPoint : IBuildAction
       if(Log.IsEnabled(LogLevel.Trace))
         Log.WriteLine(LogLevel.Trace, $"Attribute: {attribute.ToHoconString()}");
 
-      var unitInfo    = Unit.Of(propertyInfo.PropertyType, attribute.Tag);
+      var unitInfo    = Unit.By(propertyInfo.PropertyType, attribute.Tag);
       var buildResult = buildSession.BuildUnit(unitInfo);
 
       if(buildResult.HasValue)
