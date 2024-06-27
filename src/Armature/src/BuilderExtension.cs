@@ -93,7 +93,7 @@ public static class BuilderExtension
 
     return ReferenceEquals(unitList, Empty<Weighted<BuildResult>>.List)
              ? Empty<object?>.List
-             : unitList.Select(_ => _.Entity).Select(buildResult => buildResult.Value).ToArray();
+             : unitList.OrderByDescending(_ => _.Weight).Select(_ => _.Entity.Value).ToArray();
   }
 
   /// <summary>
