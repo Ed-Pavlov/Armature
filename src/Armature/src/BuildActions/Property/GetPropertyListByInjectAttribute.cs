@@ -11,11 +11,11 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Gets a list of  properties marked with <see cref="InjectAttribute" /> with specified tags <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" />.
 /// </summary>
-public record GetPropertyListByTags : IBuildAction, ILogString
+public record GetPropertyListByInjectAttribute : IBuildAction, ILogString
 {
   private readonly object?[] _tags;
 
-  public GetPropertyListByTags(params object?[] tags) => _tags = tags ?? throw new ArgumentNullException(nameof(tags));
+  public GetPropertyListByInjectAttribute(params object?[] tags) => _tags = tags ?? throw new ArgumentNullException(nameof(tags));
 
   public void Process(IBuildSession buildSession)
   {
@@ -50,5 +50,5 @@ public record GetPropertyListByTags : IBuildAction, ILogString
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(GetPropertyListByTags)} {{ Points: {_tags.ToHoconString()} }} }}";
+  public string ToHoconString() => $"{{ {nameof(GetPropertyListByInjectAttribute)} {{ Points: {_tags.ToHoconString()} }} }}";
 }

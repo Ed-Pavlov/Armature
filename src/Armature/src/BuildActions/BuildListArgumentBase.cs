@@ -59,7 +59,6 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
   private static object CreateListInstance(Type listType, int capacity)
   {
     var listConstructor = listType.GetConstructor(IntTypeParam);
-
     return listConstructor!.Invoke(CreateParameter(capacity));
   }
 
@@ -76,7 +75,6 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
   private static object[] CreateParameter(object value)
   {
     ParamContainer[0] = value;
-
     return ParamContainer;
   }
 
@@ -84,7 +82,6 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
   private static Type[] CreateTypeParameter(Type type)
   {
     TypeParamContainer[0] = type;
-
     return TypeParamContainer;
   }
 

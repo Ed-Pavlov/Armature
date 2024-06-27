@@ -73,7 +73,7 @@ namespace Tests.Functional
              new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
 
-             new IfFirstUnit(new IsParameter())
+             new IfFirstUnit(new IsParameterArgument())
               .UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
          };
 

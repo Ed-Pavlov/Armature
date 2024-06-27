@@ -39,6 +39,45 @@ Armature is not your average dependency injection (DI) framework. We've built it
 * **Inject Attribute:** Mark injection points clearly in your code with the `[Inject]` attribute. Armature will handle the rest.
 * **Open Generic Types:** Handle generic types with ease! Armature supports open generics and their inheritors, making it a breeze to configure common abstractions.
 
+**Example: Creating a Builder with "default" rules**
+```c#
+new Builder("Root Builder", BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
+       {
+           // choose which constructor to call to instantiate an object
+           new IfFirstUnit(new IsConstructor())
+              .UseBuildAction(
+                   new TryInOrder
+                   {
+                       new GetConstructorByInjectPoint(),         // constructor marked with [Inject] attribute has more priority
+                       new GetConstructorWithMaxParametersCount() // constructor with the largest number of parameters has less priority
+                   },
+                   BuildStage.Create),
+
+           new IfFirstUnit(new IsParameterInfoArray())
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create), // build arguments for a constructor/method in the order of their parameters
+
+           // build each argument for a constructor/method
+           new IfFirstUnit(new IsParameterArgument())
+              .UseBuildAction(
+                   new TryInOrder
+                   {
+                     new BuildArgumentByParameterInjectPoint(), // parameter marked with [Inject] attribute has more priority
+                     new BuildArgumentByParameterType(),        // if not, try to build it by type
+                     new GetParameterDefaultValue()
+                   },
+                   BuildStage.Create),
+
+           new IfFirstUnit(Unit.Any)
+            .UseBuildAction(new InjectDependenciesIntoProperties(), BuildStage.Initialize), // try to inject dependencies into property of any built unit
+
+           new IfFirstUnit(new IsPropertyInfoCollection())
+            .UseBuildAction(new GetPropertyListByInjectAttribute(), BuildStage.Create), // inject dependencies into all properties marked with [Inject] attribute
+
+           new IfFirstUnit(new IsPropertyArgument())
+            .UseBuildAction(new BuildArgumentByPropertyInjectPoint(), BuildStage.Create) // use a property type and InjectAttribute.Tag as UnitId.Tag to build argument for a property
+       }
+```
+---
 **Example: Open Generic Types**
 ```c#
 // Create instances of Child<T> for all requests to Base<T>
@@ -48,6 +87,17 @@ builder.TreatOpenGeneric(typeof(Base<>)).AsCreated(typeof(Child<>));
 builder
   .TreatInheritorsOf<Base<int>>()
   .Using(Constructor.Parameterless(), ForPropety.OfType<int>().UseFactoryMethod(...));
+```
+**Example: Simple Types**
+```c#
+builder
+  .Treat<IMyInterface>()
+  .AsCreated<MyClass>()
+  .UsingArguments(ForParameter.OfType<string>().UseValue("identity"))
+  .AsSingleton()
+  .BuildingIt()
+  .Treat<Stream>()
+  .UsingFactoryMethod(bs => buildSession... )
 ```
 ---
 **Armature: A DSL for Dependency Injection, But Not Your Limit**

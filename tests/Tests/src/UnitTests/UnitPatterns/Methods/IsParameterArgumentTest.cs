@@ -9,7 +9,7 @@ using Tests.Util;
 
 namespace Tests.UnitTests.UnitPatterns.Methods;
 
-public class IsParameterTest
+public class IsParameterArgumentTest
 {
   [Test]
   public void should_match_parameter_info_with_argument_tag()
@@ -18,7 +18,7 @@ public class IsParameterTest
 
     // --arrange
     var unitId = Unit.By(parameterInfo, ServiceTag.Argument);
-    var target = new IsParameter();
+    var target = new IsParameterArgument();
 
     // --act
     // --assert
@@ -30,7 +30,7 @@ public class IsParameterTest
   {
     // --arrange
     var unitId = Unit.By("parameterInfo", ServiceTag.Argument);
-    var target = new IsParameter();
+    var target = new IsParameterArgument();
 
     // --act
     // --assert
@@ -44,7 +44,7 @@ public class IsParameterTest
 
     // --arrange
     var unitId = Unit.By(parameterInfo, tag);
-    var target = new IsParameter();
+    var target = new IsParameterArgument();
 
     // --act
     // --assert
@@ -55,8 +55,8 @@ public class IsParameterTest
   public void all_instances_should_be_equal()
   {
     // --arrange
-    var target1 = new IsParameter();
-    var target2 = new IsParameter();
+    var target1 = new IsParameterArgument();
+    var target2 = new IsParameterArgument();
 
     // --assert
     target1.Equals(target2).Should().BeTrue();
@@ -68,7 +68,7 @@ public class IsParameterTest
   public void should_not_be_equal_to_other_unit_patterns()
   {
     // --arrange
-    var target1 = new IsParameter();
+    var target1 = new IsParameterArgument();
     var target2 = new TestUtil.OtherUnitPattern();
 
     // --assert

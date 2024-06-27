@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using BeatyBit.Armature.Core.Annotations;
+using BeatyBit.Armature.Core.Sdk;
 
 namespace BeatyBit.Armature.Core;
 
@@ -63,4 +64,11 @@ public readonly struct UnitId : ILogString, IEquatable<UnitId>
 public static class Unit
 {
   public static UnitId By(object? kind, object? tag = null) => new(kind, tag);
+
+  public static IUnitPattern Any => Static.Of<AnyUnit>();
+
+  private class AnyUnit : IUnitPattern
+  {
+    public bool Matches(UnitId unitId) => true;
+  }
 }

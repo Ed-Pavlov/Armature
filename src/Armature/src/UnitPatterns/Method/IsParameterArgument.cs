@@ -8,10 +8,10 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Checks if a unit to be built is an argument for a constructor/method parameter
 /// </summary>
-public record IsParameter : IUnitPattern
+public record IsParameterArgument : IUnitPattern
 {
   public bool Matches(UnitId unitId) => unitId.Tag == ServiceTag.Argument && unitId.Kind is ParameterInfo;
 
   [DebuggerStepThrough]
-  public override string ToString() => nameof(IsParameter);
+  public override string ToString() => nameof(IsParameterArgument);
 }

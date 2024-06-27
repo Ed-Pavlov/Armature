@@ -6,7 +6,7 @@ using BeatyBit.Armature.Core;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Builds an argument for the property which is marked with <see cref="InjectAttribute"/> using <see cref="MemberInfo.Name"/> and
+/// Builds an argument for the property which is marked with <see cref="InjectAttribute"/> using <see cref="MemberInfo.MemberType"/> and
 /// <see cref="InjectAttribute.Tag"/> as <see cref="UnitId"/>.
 /// </summary>
 public record BuildArgumentByPropertyInjectPoint : IBuildAction

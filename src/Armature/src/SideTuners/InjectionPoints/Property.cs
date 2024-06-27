@@ -70,6 +70,6 @@ public static class Property
         internals.TreeRoot
                  .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>(), WeightOf.BuildStackPattern.IfFirstUnit))
                  .ApplyTuner(tuner)
-                 .UseBuildAction(new GetPropertyListByTags(tags), BuildStage.Create);
+                 .UseBuildAction(new GetPropertyListByInjectAttribute(tags), BuildStage.Create);
       });
 }
