@@ -7,11 +7,11 @@ namespace BeatyBit.Armature;
 
 public partial class BuildingTuner<T>
 {
-  ISettingTuner ICreationTuner.CreatedByDefault() => CreateBy(Default.CreationBuildAction);
+  public ISettingTuner CreatedByDefault() => CreateBy(Default.CreationBuildAction);
 
-  ISettingTuner ICreationTuner.CreatedByReflection() => CreateBy(Static.Of<CreateByReflection>());
+  public ISettingTuner CreatedByReflection() => CreateBy(Static.Of<CreateByReflection>());
 
-  ICreationTuner ICreationTuner.AmendWeight(int delta) => AmendWeight<ICreationTuner>(delta, this);
+  public ICreationTuner AmendWeight(int delta) => AmendWeight<ICreationTuner>(delta, this);
 
   [PublicAPI]
   protected ISettingTuner CreateBy(IBuildAction buildAction)
@@ -19,5 +19,4 @@ public partial class BuildingTuner<T>
     BuildStackPatternSubtree().UseBuildAction(buildAction, BuildStage.Create);
     return this;
   }
-
 }

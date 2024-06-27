@@ -9,10 +9,10 @@ public interface IDependencyTuner<out T> : ITunerBase
   T AmendWeight(int delta);
 
   /// <summary>
-  /// Applies passed rules to the unit. E.g. tuners produced by calling <see cref="ForParameter"/>, <see cref="ForProperty"/>.
+  /// Applies passed rules to the unit. E.g., tuners produced by calling <see cref="ForParameter"/>, <see cref="ForProperty"/>.
   /// </summary>
   /// <param name="sideTuners">See <see cref="ForParameter"/>, <see cref="ForProperty"/>, <see cref="Constructor"/>, and <see cref="Property"/>
-  /// for details. Also custom tuners could be implemented.</param>
+  /// for details. Also, custom tuners could be implemented.</param>
   T Using(params ISideTuner[] sideTuners);
 
   /// <summary>

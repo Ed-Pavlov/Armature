@@ -27,14 +27,16 @@ public class GatherBuildActionOnBigTreeBenchmark
       var i1      = i;
       var created = (i1 * 10_000).ToString();
 
-      IfFirstUnit CreateNode() => new IfFirstUnit(new UnitPattern(i1));
-
       builder.AddNode(CreateNode()).UseBuildAction(new Redirect(Unit.Of(created)), BuildStage.Create);
 
       builder.AddNode(new IfFirstUnit(new UnitPattern(created)))
               .AddNode(CreateNode())
               .UseBuildAction(new CreateWithFactoryMethod<string>(_ => created.ToString()), BuildStage.Create)
               .UseBuildAction(new Singleton(), BuildStage.Cache);
+
+      continue;
+
+      IfFirstUnit CreateNode() => new IfFirstUnit(new UnitPattern(i1));
     }
 
     // Treat<I>().AsCreated<C>().UsingArguments(1, 2, 3)
