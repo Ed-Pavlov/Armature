@@ -21,7 +21,7 @@ public class Default
   public static IBuildAction CreationBuildAction { get; protected set; } = Static.Of<CreateByReflection>();
 
   /// <summary>
-  /// This is the default build action used by <see cref="BuildingTuner{T}.AsSingleton" />.
+  /// This is the default build action used by <see cref="BuildingTuner{T}.AsSingleton()" />.
   /// You can set your own build action which will be used by these tuners.
   /// </summary>
   public static Func<IBuildAction> CreateSingletonBuildAction { get; protected set; } = () => new Singleton();

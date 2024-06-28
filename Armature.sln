@@ -17,6 +17,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Extensibility", "tests\Tests.Extensibility\Tests.Extensibility.csproj", "{AFA12DCC-6B53-4DA6-A5A7-990904B41E5D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{D75094B8-1EF8-49E9-8728-F2A0B9142D4B}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{C14230EB-D939-40D2-A84A-7D41449F2B03}"
 ProjectSection(SolutionItems) = preProject

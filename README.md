@@ -1,4 +1,4 @@
-<p align='right'>If <b>Armature</b> has done you any good, consider support my future initiatives</p>
+<p align='right'>If <b>Armature</b> has done you any good, consider supporting my future initiatives</p>
 <p align="right">
   <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ed@pavlov.is&lc=US&item_name=Kudos+for+Armature&no_note=0&cn=&currency_code=EUR">
     <img src="https://ed.pavlov.is/Images/donate-button-small.png" />
@@ -16,17 +16,14 @@ ___
 
 **Explore the Wiki:** Explore the [Wiki](https://github.com/Ed-Pavlov/Armature/wiki) for full documentation
 
-
 # Armature
 **The Lightweight, Intuitive, and extremely easy Extensible Dependency Injection Framework for .NET**
-
 
 Armature is not your average dependency injection (DI) framework. We've built it from the ground up to be:
 
 * **Intuitive:** With Armature's Tuner concept and fluent API, you'll write DI configurations that read like plain English, not cryptic code.
 * **Extensible:** Armature embraces customization. Easily tailor the framework to your project's specific needs without ever touching the source code of the framework itself.
 * **Lightweight:** Armature stays out of your way. It's designed to be minimal, focusing on the core DI tasks without unnecessary overhead.
-* **Powerful:** Armature offers robust features like Build Actions, customizable Build Stacks, and precise argument resolution through Side Tuners.
 * **Transparent:** Understand exactly what's happening. Armature's logging uses a human-readable format, giving you clear insights into the DI process.
 
 **Key Features**
@@ -48,33 +45,42 @@ new Builder("Root Builder", BuildStage.Cache, BuildStage.Initialize, BuildStage.
               .UseBuildAction(
                    new TryInOrder
                    {
-                       new GetConstructorByInjectPoint(),         // constructor marked with [Inject] attribute has more priority
-                       new GetConstructorWithMaxParametersCount() // constructor with the largest number of parameters has less priority
+                       // constructor marked with [Inject] attribute has more priority
+                       new GetConstructorByInjectPoint(),
+                       // constructor with the largest number of parameters has less priority
+                       new GetConstructorWithMaxParametersCount()
                    },
                    BuildStage.Create),
 
+           // build arguments for a constructor/method in the order of their parameters
            new IfFirstUnit(new IsParameterInfoArray())
-              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create), // build arguments for a constructor/method in the order of their parameters
+              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
 
            // build each argument for a constructor/method
            new IfFirstUnit(new IsParameterArgument())
               .UseBuildAction(
                    new TryInOrder
                    {
-                     new BuildArgumentByParameterInjectPoint(), // parameter marked with [Inject] attribute has more priority
-                     new BuildArgumentByParameterType(),        // if not, try to build it by type
+                     // parameter marked with [Inject] attribute has more priority
+                     new BuildArgumentByParameterInjectPoint(),
+                     // if not, try to build it by type
+                     new BuildArgumentByParameterType(),
+                     // if still not build and parameter has default value, use it
                      new GetParameterDefaultValue()
                    },
                    BuildStage.Create),
 
+           // try to inject dependencies into property of any built unit
            new IfFirstUnit(Unit.Any)
-            .UseBuildAction(new InjectDependenciesIntoProperties(), BuildStage.Initialize), // try to inject dependencies into property of any built unit
+            .UseBuildAction(new InjectDependenciesIntoProperties(), BuildStage.Initialize),
 
+           // inject dependencies into all properties marked with [Inject] attribute
            new IfFirstUnit(new IsPropertyInfoCollection())
-            .UseBuildAction(new GetPropertyListByInjectAttribute(), BuildStage.Create), // inject dependencies into all properties marked with [Inject] attribute
+            .UseBuildAction(new GetPropertyListByInjectAttribute(), BuildStage.Create),
 
+           // use a property type and InjectAttribute.Tag as UnitId.Tag to build argument for a property
            new IfFirstUnit(new IsPropertyArgument())
-            .UseBuildAction(new BuildArgumentByPropertyInjectPoint(), BuildStage.Create) // use a property type and InjectAttribute.Tag as UnitId.Tag to build argument for a property
+            .UseBuildAction(new BuildArgumentByPropertyInjectPoint(), BuildStage.Create)
        }
 ```
 ---
@@ -107,7 +113,7 @@ While Armature's DSL is a great starting point, it's not your only option. Armat
 
 * **Create Your Own DSL:** If you have specific requirements or preferences, you can craft a DSL that perfectly aligns with your project's conventions and style.
 * **Build Specialized Tools:** Armature.Core can be used to create tools beyond traditional DI frameworks. You could build an object composition engine, a configuration management system, or anything else that requires the flexible assembly of components.
-* **Integrate with Existing Systems:** Seamlessly integrate Armature.Core with your existing codebase or other frameworks. Its modular design allows for easy adaptation and extension.
+* **Integrate with Existing Systems:** Seamlessly integrate Armature.Core with your existing codebase or other frameworks. Its open design allows for easy adaptation and extension.
 
 **The Power of Choice**
 
