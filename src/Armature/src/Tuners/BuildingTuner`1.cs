@@ -21,6 +21,8 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
 
   public void AsInstance(T instance) => BuildStackPatternSubtree().UseBuildAction(new Instance<T>(instance), BuildStage.Create);
 
+  public void AsSingleton(T instance) => BuildStackPatternSubtree().UseBuildAction(new Instance<T>(instance), BuildStage.Cache);
+
   public virtual ICreationTuner As(Type type, object? tag = null)
   {
     if(type.IsGenericTypeDefinition)

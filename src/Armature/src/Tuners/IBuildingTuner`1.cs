@@ -10,9 +10,21 @@ public interface IBuildingTuner<in T> : ISettingTuner
   new IBuildingTuner<T> AmendWeight(int delta);
 
   /// <summary>
-  /// Use the <paramref name="instance"/> as the Unit.
+  /// Stores passed <paramref name="instance"/> as Unit, that is associates corresponding BuildAction
+  /// with the <see cref="BuildStage.Create"/> build stage.
+  ///
+  /// Important:
+  /// If your builder has other build stages which post-processing applies to objects after creation, it's possible that
+  /// some of your rules will match the instance and will perform some manipulations with it.
+  /// Consider using <see cref="AsSingleton(T)"/> if you want to avoid it.
   /// </summary>
   void AsInstance(T instance);
+
+  /// <summary>
+  /// Stores passed <paramref name="instance"/> as cached Unit, that is associates corresponding BuildAction
+  /// with the <see cref="BuildStage.Cache"/> build stage.
+  /// </summary>
+  void AsSingleton(T instance);
 
   /// <summary>
   /// Set that object of the specified <paramref name="type"/> should be built.
