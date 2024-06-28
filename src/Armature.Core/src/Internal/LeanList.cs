@@ -6,7 +6,7 @@ using System.Linq;
 namespace BeatyBit.Armature.Core;
 
 /// <summary>
-/// A list which doesn't allocate inner array if contains less than five items
+/// A list which doesn't allocate the inner array if contains less than five items.
 /// </summary>
 public class LeanList<T> : IList<T>
 {

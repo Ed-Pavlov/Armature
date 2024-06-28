@@ -29,7 +29,7 @@ public abstract record BuildArgumentByInjectPointNameBase : IBuildAction, ILogSt
     var effectiveTag = _tag == ServiceTag.Propagate ? targetUnit.Tag : _tag;
 
     var injectPointName = GetInjectPointName(targetUnit);
-    buildSession.BuildResult = buildSession.BuildUnit(Unit.Of(injectPointName, effectiveTag));
+    buildSession.BuildResult = buildSession.BuildUnit(Unit.By(injectPointName, effectiveTag));
   }
 
   [WithoutTest]

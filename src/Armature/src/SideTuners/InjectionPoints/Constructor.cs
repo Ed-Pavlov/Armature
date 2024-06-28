@@ -19,7 +19,7 @@ public static class Constructor
   public static IInjectionPointSideTuner WithMaxParametersCount()
     => new InjectionPointSideTuner(
       tuner
-        => tuner.GetInternals()
+        => tuner.GetTunerInternals()
                 .TreeRoot
                 .GetOrAddNode(
                    new IfFirstUnit(
@@ -34,7 +34,7 @@ public static class Constructor
   public static IInjectionPointSideTuner MarkedWithInjectAttribute(object? injectionPointTag)
     => new InjectionPointSideTuner(
       tuner
-        => tuner.GetInternals()
+        => tuner.GetTunerInternals()
                 .TreeRoot
                 .GetOrAddNode(
                    new IfFirstUnit(
@@ -49,32 +49,32 @@ public static class Constructor
   public static IInjectionPointSideTuner Parameterless() => WithParameters();
 
   /// <summary>
-  /// Instantiate a Unit using constructor with exact set of parameters which match specified types.
+  /// Instantiate a Unit using constructor with an exact set of parameters which match specified types.
   /// </summary>
   public static IInjectionPointSideTuner WithParameters<T1>() => WithParameters(typeof(T1));
 
   /// <summary>
-  /// Instantiate a Unit using constructor with exact set of parameters which match specified types.
+  /// Instantiate a Unit using constructor with an exact set of parameters which match specified types.
   /// </summary>
   public static IInjectionPointSideTuner WithParameters<T1, T2>() => WithParameters(typeof(T1), typeof(T2));
 
   /// <summary>
-  /// Instantiate a Unit using constructor with exact set of parameters which match specified types.
+  /// Instantiate a Unit using constructor with an exact set of parameters which match specified types.
   /// </summary>
   public static IInjectionPointSideTuner WithParameters<T1, T2, T3>() => WithParameters(typeof(T1), typeof(T2), typeof(T3));
 
   /// <summary>
-  /// Instantiate a Unit using constructor with exact set of parameters which match specified types.
+  /// Instantiate a Unit using constructor with an exact set of parameters which match specified types.
   /// </summary>
   public static IInjectionPointSideTuner WithParameters<T1, T2, T3, T4>() => WithParameters(typeof(T1), typeof(T2), typeof(T3), typeof(T4));
 
   /// <summary>
-  /// Instantiate a Unit using constructor with exact set of parameters which match specified types.
+  /// Instantiate a Unit using constructor with an exact set of parameters which match specified types.
   /// </summary>
   public static IInjectionPointSideTuner WithParameters(params Type[] parameterTypes)
     => new InjectionPointSideTuner(
       tuner
-        => tuner.GetInternals()
+        => tuner.GetTunerInternals()
                 .TreeRoot
                 .GetOrAddNode(
                    new IfFirstUnit(

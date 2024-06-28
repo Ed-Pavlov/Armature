@@ -6,7 +6,7 @@ using BeatyBit.Armature.Sdk;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Checks if a unit is a list of arguments for a constructor/method.
+/// Checks if a unit to be built is a list of arguments for a constructor/method.
 /// </summary>
 public record IsParameterInfoArray : IUnitPattern
 {

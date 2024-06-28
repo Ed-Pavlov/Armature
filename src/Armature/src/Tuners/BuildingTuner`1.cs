@@ -19,21 +19,22 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
     : base(parent, createNode)
     => _unitPattern = unitPattern;
 
-  public void AsInstance(T instance) => BuildStackPatternSubtree().UseBuildAction(new Instance<T>(instance), BuildStage.Cache);
+  public void AsInstance(T instance) => BuildStackPatternSubtree().UseBuildAction(new Instance<T>(instance), BuildStage.Create);
+
+  public void AsSingleton(T instance) => BuildStackPatternSubtree().UseBuildAction(new Instance<T>(instance), BuildStage.Cache);
 
   public virtual ICreationTuner As(Type type, object? tag = null)
   {
     if(type.IsGenericTypeDefinition)
-      throw new ArgumentException($"Type should not be open generic, use {nameof(RedirectOpenGenericType)} for open generics", nameof(type));
+      throw new ArgumentException($"Type should not be open generic, use {nameof(TreatOpenGeneric)} for open generics", nameof(type));
 
-    BuildStackPatternSubtree().UseBuildAction(new Redirect(Unit.Of(type, tag)), BuildStage.Create);
+    BuildStackPatternSubtree().UseBuildAction(Default.CreateAsBuildAction(Unit.By(type, tag)), BuildStage.Create);
 
     var unitPattern = new UnitPattern(type, tag);
+    return new BuildingTuner<object>(this, CreateTargetNode, unitPattern);
 
     IBuildStackPattern CreateTargetNode()
       => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.ExactTypePattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
-
-    return new BuildingTuner<object>(this, CreateTargetNode, unitPattern);
   }
 
   public ICreationTuner As<TRedirect>(object? tag = null) => As(typeof(TRedirect), tag);

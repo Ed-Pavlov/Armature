@@ -9,7 +9,7 @@ namespace BeatyBit.Armature;
 
 /// <summary>
 /// Redirects building of a unit of one open generic type to the unit of another open generic type.
-/// E.g. redirecting interface to the implementation
+/// E.g., redirecting interface to the implementation.
 /// </summary>
 public record RedirectOpenGenericType : IBuildAction, ILogString
 {
@@ -60,7 +60,7 @@ public record RedirectOpenGenericType : IBuildAction, ILogString
     var effectiveTag = Equals(_tag, ServiceTag.Propagate) ? targetUnit.Tag : _tag;
     var genericType  = _redirectTo.MakeGenericType(genericArguments);
 
-    buildSession.BuildResult = buildSession.BuildUnit(Unit.Of(genericType, effectiveTag));
+    buildSession.BuildResult = buildSession.BuildUnit(Unit.By(genericType, effectiveTag));
   }
 
   [WithoutTest]

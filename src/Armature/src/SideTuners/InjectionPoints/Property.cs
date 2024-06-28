@@ -9,7 +9,7 @@ using WeightOf = BeatyBit.Armature.Core.WeightOf;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Tunes up in which properties of the object inject dependencies.
+/// Tunes up in which properties of the object inject dependencies. Pass the result of its method to <see cref="IDependencyTuner{T}.UsingInjectionPoints"/>
 /// </summary>
 [PublicAPI]
 public static class Property
@@ -26,7 +26,7 @@ public static class Property
     => new InjectionPointSideTuner(
       tuner =>
       {
-        var internals = tuner.GetInternals();
+        var internals = tuner.GetTunerInternals();
         internals.Apply().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
@@ -47,7 +47,7 @@ public static class Property
     return new InjectionPointSideTuner(
       tuner =>
       {
-        var internals = tuner.GetInternals();
+        var internals = tuner.GetTunerInternals();
         internals.Apply().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
@@ -64,12 +64,12 @@ public static class Property
     => new InjectionPointSideTuner(
       tuner =>
       {
-        var internals = tuner.GetInternals();
+        var internals = tuner.GetTunerInternals();
         internals.Apply().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
 
         internals.TreeRoot
                  .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>(), WeightOf.BuildStackPattern.IfFirstUnit))
                  .ApplyTuner(tuner)
-                 .UseBuildAction(new GetPropertyListByTags(tags), BuildStage.Create);
+                 .UseBuildAction(new GetPropertyListByInjectAttribute(tags), BuildStage.Create);
       });
 }

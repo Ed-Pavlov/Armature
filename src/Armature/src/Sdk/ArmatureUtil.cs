@@ -7,9 +7,9 @@ namespace BeatyBit.Armature.Sdk;
 public static class ArmatureUtil
 {
   /// <summary>
-/// Provides access to internal members of tuners. See inheritors of <see cref="ITunerBase"/> for details.
+  /// Provides access to internal members of tuners. See inheritors of <see cref="ITunerBase"/> for details.
   /// </summary>
-  public static ITuner GetInternals(this ITunerBase tuner) => (ITuner) tuner;
+  public static ITuner GetTunerInternals(this ITunerBase tuner) => (ITuner) tuner;
 
   /// <summary>
   /// Appends a branch of <see cref="IBuildStackPattern"/> nodes from the <paramref name="tuner"/> to <paramref name="impl"/>
@@ -20,7 +20,7 @@ public static class ArmatureUtil
     if(impl is null) throw new ArgumentNullException(nameof(impl));
     if(tuner is null) throw new ArgumentNullException(nameof(tuner));
 
-    var parent = tuner.GetInternals();
+    var parent = tuner.GetTunerInternals();
     var node   = (IBuildStackPattern) impl;
 
     do
@@ -84,7 +84,7 @@ public static class ArmatureUtil
   /// </summary>
   public static BuildStackPatternTree CreatePatternTreeOnArguments(object[]? arguments, short weight = -10)
   {
-    var patternTree = new BuildStackPatternTree("\"Runtime Arguments\"", weight); // decrease weight of the "runtime" arguments by default
+    var patternTree = new BuildStackPatternTree("\"Runtime Arguments\"", weight); // decrease the weight of the "runtime" arguments by default
 
     if(arguments is {Length: > 0})
     {

@@ -105,7 +105,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.Stack).Returns(Unit.Of(typeof(IEnumerable<>)).ToBuildStack());
+    A.CallTo(() => buildSession.Stack).Returns(Unit.By(typeof(IEnumerable<>)).ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>(), true));
     buildUnitCall.Returns(expected.ToBuildResult());
 
@@ -126,7 +126,7 @@ public class RedirectOpenGenericTypeTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.Stack).Returns(Unit.Of(typeof(IEnumerable<>)).ToBuildStack());
+    A.CallTo(() => buildSession.Stack).Returns(Unit.By(typeof(IEnumerable<>)).ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(TUnit.OfType<List<int>>(), true));
     buildUnitCall.Returns(expected.ToBuildResult());
 

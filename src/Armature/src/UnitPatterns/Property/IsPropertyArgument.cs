@@ -6,12 +6,12 @@ using BeatyBit.Armature.Sdk;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Checks if a unit is an argument to inject into the property.
+/// Checks if a unit to be built is an argument to inject into the property
 /// </summary>
-public record IsPropertyInfo : IUnitPattern
+public record IsPropertyArgument : IUnitPattern
 {
   public bool Matches(UnitId unitId) => unitId.Tag == ServiceTag.Argument && unitId.Kind is PropertyInfo;
 
   [DebuggerStepThrough]
-  public override string ToString() => nameof(IsPropertyInfo);
+  public override string ToString() => nameof(IsPropertyArgument);
 }

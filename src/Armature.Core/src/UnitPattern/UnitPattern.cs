@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace BeatyBit.Armature.Core;
 
 /// <summary>
-/// Checks if a unit matches with the specified kind and a tag.
+/// The simplest pattern, checks if a unit matches with the specified kind and a tag.
 /// </summary>
 public sealed record UnitPattern : IUnitPattern, ILogString, IStaticPattern
 {

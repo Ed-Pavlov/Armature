@@ -20,7 +20,8 @@ public class BuildingOpenGenericTuner : BuildingTuner<object?>
     BuildStackPatternSubtree().UseBuildAction(new RedirectOpenGenericType(openGenericType, tag), BuildStage.Create);
 
     var unitPattern = new IsGenericOfDefinition(openGenericType, tag);
-    IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.OpenGenericPattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
     return new BuildingOpenGenericTuner(this, CreateNode, unitPattern);
+
+    IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.OpenGenericPattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
   }
 }

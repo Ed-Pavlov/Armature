@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
 using BeatyBit.Armature.Core.Annotations;
+using BeatyBit.Armature.Core.Sdk;
 
 namespace BeatyBit.Armature.Core;
 
 /// <summary>
-/// An Id of the Unit to be built.
+/// An ID of the Unit to be built.
 /// </summary>
 [Serializable]
-public readonly struct UnitId : ILogString
+public readonly struct UnitId : ILogString, IEquatable<UnitId>
 {
   /// <summary>
   /// The part of an <see cref="UnitId"/>. It could be any object e.g. a <see cref="Type"/>, or a string constant.
@@ -18,7 +19,7 @@ public readonly struct UnitId : ILogString
 
   /// <summary>
   /// The part of an <see cref="UnitId"/>. Two Units of the same <see cref="Kind"/> but with different <see cref="Tag"/> are different Units and could be
-  /// built in different ways. It allows distinguishing e.g. two implementations of the same interface, etc.
+  /// built in different ways. It allows distinguishing i.e., two implementations of the same interface, etc.
   /// </summary>
   public readonly object? Tag;
 
@@ -35,12 +36,14 @@ public readonly struct UnitId : ILogString
   public          string ToHoconString() => $"{{ kind: {Kind.ToHoconString()}, tag: {Tag.ToHoconString()}}}";
 
   #region Equality implementation
+  public static bool operator ==(UnitId left, UnitId right) => left.Equals(right);
+  public static bool operator !=(UnitId left, UnitId right) => !left.Equals(right);
 
   [DebuggerStepThrough]
   public bool Equals(UnitId other) => Equals(Kind, other.Kind) && Equals(Tag, other.Tag);
 
   [DebuggerStepThrough]
-  public override bool Equals(object obj) => obj is UnitId other && Equals(other);
+  public override bool Equals(object? obj) => obj is UnitId other && Equals(other);
 
   [WithoutTest]
   [DebuggerStepThrough]
@@ -56,9 +59,16 @@ public readonly struct UnitId : ILogString
 }
 
 /// <summary>
-/// Syntax sugar for increasing code readability. 'Unit.Of(' looks cleaner than 'new UnitId('
+/// Syntax sugar for increasing code readability. 'Unit.By(' looks cleaner than 'new UnitId('
 /// </summary>
 public static class Unit
 {
-  public static UnitId Of(object? kind, object? tag = null) => new(kind, tag);
+  public static UnitId By(object? kind, object? tag = null) => new(kind, tag);
+
+  public static IUnitPattern Any => Static.Of<AnyUnit>();
+
+  private class AnyUnit : IUnitPattern
+  {
+    public bool Matches(UnitId unitId) => true;
+  }
 }

@@ -5,7 +5,7 @@ using BeatyBit.Armature.Sdk;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Checks if a unit is the list of properties of a type to inject dependencies.
+/// Checks if a unit to be built is the list of properties of a type to inject dependencies
 /// </summary>
 public record IsPropertyInfoCollection : IUnitPattern
 {

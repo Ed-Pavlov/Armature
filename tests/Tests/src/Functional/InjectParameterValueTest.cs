@@ -393,7 +393,7 @@ namespace Tests.Functional
                  BuildStage.Create),
              new IfFirstUnit(new IsParameterInfoArray())
               .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfo())
+             new IfFirstUnit(new IsParameterArgument())
               .UseBuildAction(
                  new TryInOrder() { Static.Of<BuildArgumentByParameterType>(), Static.Of<GetParameterDefaultValue>() },
                  BuildStage.Create)

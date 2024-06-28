@@ -20,7 +20,7 @@ public class BuildMethodArgumentsInDirectOrderTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.Stack).Returns(Unit.Of(parametersList, ServiceTag.Argument).ToBuildStack());
+    A.CallTo(() => buildSession.Stack).Returns(Unit.By(parametersList, ServiceTag.Argument).ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(default, true)).WithAnyArguments();
 
     buildUnitCall.ReturnsLazily(
@@ -38,10 +38,10 @@ public class BuildMethodArgumentsInDirectOrderTest
     // --assert
     buildSession.BuildResult.Value.As<object?[]>().Should().Equal(parametersList.Select(_ => (object?) _.Name).ToArray());
 
-    A.CallTo(() => buildSession.BuildUnit(Unit.Of(parametersList[0], ServiceTag.Argument), true)).MustHaveHappenedOnceExactly()
-     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.Of(parametersList[1], ServiceTag.Argument), true)).MustHaveHappenedOnceExactly())
-     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.Of(parametersList[2], ServiceTag.Argument), true)).MustHaveHappenedOnceExactly())
-     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.Of(parametersList[3], ServiceTag.Argument), true)).MustHaveHappenedOnceExactly());
+    A.CallTo(() => buildSession.BuildUnit(Unit.By(parametersList[0], ServiceTag.Argument), true)).MustHaveHappenedOnceExactly()
+     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.By(parametersList[1], ServiceTag.Argument), true)).MustHaveHappenedOnceExactly())
+     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.By(parametersList[2], ServiceTag.Argument), true)).MustHaveHappenedOnceExactly())
+     .Then(A.CallTo(() => buildSession.BuildUnit(Unit.By(parametersList[3], ServiceTag.Argument), true)).MustHaveHappenedOnceExactly());
 
     buildUnitCall.MustHaveHappened(parametersList.Length, Times.Exactly);
   }
@@ -53,7 +53,7 @@ public class BuildMethodArgumentsInDirectOrderTest
 
     // --arrange
     var buildSession = A.Fake<IBuildSession>();
-    A.CallTo(() => buildSession.Stack).Returns(Unit.Of(parametersList, ServiceTag.Argument).ToBuildStack());
+    A.CallTo(() => buildSession.Stack).Returns(Unit.By(parametersList, ServiceTag.Argument).ToBuildStack());
     var buildUnitCall = A.CallTo(() => buildSession.BuildUnit(default, true)).WithAnyArguments();
 
     var target = new BuildMethodArgumentsInDirectOrder();

@@ -20,9 +20,9 @@ namespace Tests.Extensibility.MaybePropagation.Implementation
 
       var unitPattern = new UnitPattern(typeof(T), uniqueTag);
 
-      IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildStackPattern.IfFirstUnit);
-
       return new BuildingTuner<T>(tuner, CreateNode, unitPattern);
+
+      IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildStackPattern.IfFirstUnit);
     }
 
     /// <summary>

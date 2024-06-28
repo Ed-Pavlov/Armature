@@ -4,7 +4,7 @@ using BeatyBit.Armature.Core;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Checks if a unit is an argument to inject into the property with a specified name
+/// Checks if a unit to be built is an argument to inject into the property with a specified name
 /// </summary>
 public record IsPropertyNamed : InjectPointNamedBase
 {

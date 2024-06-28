@@ -6,6 +6,7 @@ using System.Reflection;
 using BeatyBit.Armature.Core.Annotations;
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Sdk;
+using JetBrains.Annotations;
 
 namespace BeatyBit.Armature;
 
@@ -17,6 +18,8 @@ public record GetConstructorWithMaxParametersCount : IBuildAction
   private readonly BindingFlags _bindingFlags;
 
   public GetConstructorWithMaxParametersCount() : this(BindingFlags.Instance | BindingFlags.Public){}
+
+  [PublicAPI]
   public GetConstructorWithMaxParametersCount(BindingFlags bindingFlags) => _bindingFlags = bindingFlags;
 
   public void Process(IBuildSession buildSession)

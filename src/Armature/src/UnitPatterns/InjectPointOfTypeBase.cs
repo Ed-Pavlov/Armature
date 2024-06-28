@@ -7,7 +7,7 @@ using BeatyBit.Armature.Sdk;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Base class for patterns check if a unit is an argument for an "inject point" requires argument of the specified type.
+/// Base class for patterns which check if a unit is an argument for an "injection point" requires argument of the specified type
 /// </summary>
 public abstract record InjectPointOfTypeBase : IUnitPattern, ILogString, IInternal<IUnitPattern>
 {
@@ -21,7 +21,7 @@ public abstract record InjectPointOfTypeBase : IUnitPattern, ILogString, IIntern
     if(unitId.Tag != ServiceTag.Argument) return false;
 
     var type = GetInjectPointType(unitId);
-    return type is not null && _typePattern.Matches(Unit.Of(type));
+    return type is not null && _typePattern.Matches(Unit.By(type));
   }
 
   protected abstract Type? GetInjectPointType(UnitId unitId);

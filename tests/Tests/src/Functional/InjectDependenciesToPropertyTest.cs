@@ -230,7 +230,7 @@ namespace Tests.Functional
              // inject into constructor
              new IfFirstUnit(new IsConstructor())
               .UseBuildAction(Static.Of<GetConstructorWithMaxParametersCount>(), BuildStage.Create),
-             new IfFirstUnit(new IsPropertyInfo())
+             new IfFirstUnit(new IsPropertyArgument())
               .UseBuildAction(new BuildArgumentByPropertyType(), BuildStage.Create)
          };
 

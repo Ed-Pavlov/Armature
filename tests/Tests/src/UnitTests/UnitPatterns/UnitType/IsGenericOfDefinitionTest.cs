@@ -14,7 +14,7 @@ public class IsGenericOfDefinitionTest
   public void should_match_open_generic_type([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = Unit.Of(typeof(List<>), tag);
+    var unitId = Unit.By(typeof(List<>), tag);
     var target = new IsGenericOfDefinition(typeof(List<>), tag);
 
     // --assert
@@ -25,7 +25,7 @@ public class IsGenericOfDefinitionTest
   public void should_match_generic_type([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = Unit.Of(typeof(List<int>), tag);
+    var unitId = Unit.By(typeof(List<int>), tag);
     var target = new IsGenericOfDefinition(typeof(List<>), tag);
 
     // --assert
@@ -36,7 +36,7 @@ public class IsGenericOfDefinitionTest
   public void should_match_not_equal_open_generic_type([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = Unit.Of(typeof(IList<>), tag);
+    var unitId = Unit.By(typeof(IList<>), tag);
     var target = new IsGenericOfDefinition(typeof(List<>), tag);
 
     // --assert
@@ -47,7 +47,7 @@ public class IsGenericOfDefinitionTest
   public void should_match_if_tag_is_any([Values(null, "tag")] object? tag)
   {
     // --arrange
-    var unitId = Unit.Of(typeof(List<int>), tag);
+    var unitId = Unit.By(typeof(List<int>), tag);
     var target = new IsGenericOfDefinition(typeof(List<>), ServiceTag.Any);
 
     // --assert

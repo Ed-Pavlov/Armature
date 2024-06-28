@@ -74,7 +74,7 @@ public class TypeRegistrationTest
        {
            new IfFirstUnit(new IsConstructor()).UseBuildAction(new GetConstructorWithMaxParametersCount(), BuildStage.Create),
            new IfFirstUnit(new IsParameterInfoArray()).UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-           new IfFirstUnit(new IsParameterInfo()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
+           new IfFirstUnit(new IsParameterArgument()).UseBuildAction(new BuildArgumentByParameterType(), BuildStage.Create),
        };
 
   private record Base<T>(string Value);

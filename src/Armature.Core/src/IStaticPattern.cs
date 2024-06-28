@@ -6,6 +6,7 @@ namespace BeatyBit.Armature.Core;
 /// This concept is introduced for increasing performance purposes.
 /// If an implementation of this interface contains a simple pattern w/o any dynamic matching logic,
 /// such a pattern can be placed in a <see cref="Dictionary{TKey,TValue}"/> instead of the Tree and be resolved faster.
+/// See inheritors returning true and usages for details.
 /// </summary>
 public interface IStaticPattern
 {

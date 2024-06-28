@@ -14,7 +14,7 @@ public class IfFirstUnitBenchmark
   private const int IterationCount = -1;
   private const int InvocationCount = -1;
 
-  private readonly BuildSession.Stack _stack = new BuildSession.Stack(new[] {Unit.Of("unobtanium")});
+  private readonly BuildSession.Stack _stack = new BuildSession.Stack(new[] {Unit.By("unobtanium")});
 
   private readonly IfFirstUnit _target = new IfFirstUnit(new UnitPattern("kind"));
 

@@ -29,7 +29,7 @@ public static class Log
   public static bool LogFullTypeName = false;
 
   /// <summary>
-  /// The count of spaces used for indentation
+  /// The count of spaces used for indentation.
   /// </summary>
   public static int IndentSize
   {
@@ -46,7 +46,7 @@ public static class Log
   public static bool IsEnabled(LogLevel logLevel = LogLevel.Info) => _logLevel >= logLevel;
 
   /// <summary>
-  /// Enables logging, disposing returned object revert Log to the previous state
+  /// Enables logging, disposing returned object revert Log to the previous state.
   /// </summary>
   public static Disposable Enable(LogLevel logLevel = LogLevel.Info)
   {
@@ -56,7 +56,7 @@ public static class Log
   }
 
   /// <summary>
-  /// Disables logging, disposing returned object revert Log to the previous state
+  /// Disables logging, disposing returned object revert Log to the previous state.
   /// </summary>
   public static Disposable Disable()
   {
@@ -168,7 +168,7 @@ public static class Log
   /// Log doesn't enter into the conditional mode, because all records with <see cref="LogLevel"/> less then currently active will be written anyway.
   ///
   /// If the current <see cref="Log"/> <see cref="LogLevel"/> is equal to passed <paramref name="conditionLogLevel"/> all records to the log will be
-  /// preserved till returned object is disposed, then records with <see cref="LogLevel"/> equal to the current <see cref="Log"/>
+  /// preserved till the returned object is disposed, then records with <see cref="LogLevel"/> equal to the current <see cref="Log"/>
   /// <see cref="LogLevel"/> will be written only if <see cref="Condition"/>.<see cref="Condition.IsMet"/> set to true.
   /// </summary>
   public static Condition UnderCondition(LogLevel conditionLogLevel)

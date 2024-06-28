@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 namespace BeatyBit.Armature.Core;
 
 /// <remarks>
-/// No equality member are needed for this class, <see cref="_name" /> is used only for debug purpose, these tags should be equal by the reference.
+/// No equality members are needed for this class, <see cref="_name" /> is used only for debug purpose, these tags should be equal by the reference.
 /// </remarks>
 public class Tag : ILogString
 {

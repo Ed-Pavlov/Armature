@@ -103,7 +103,7 @@ public static class TestUtil
 public static class TUnit
 {
   public static UnitId OfType<T>()            => OfType<T>(null);
-  public static UnitId OfType<T>(object? tag) => Unit.Of(typeof(T), tag);
+  public static UnitId OfType<T>(object? tag) => Unit.By(typeof(T), tag);
 }
 
 /// <summary>

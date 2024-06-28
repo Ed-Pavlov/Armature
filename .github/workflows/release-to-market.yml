@@ -1,6 +1,6 @@
 name: Release to Market
 
-on:   workflow_dispatch
+on: workflow_dispatch
 
 env:
   nugets-dir: nupkgs
@@ -16,9 +16,9 @@ jobs:
       name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
-        github_token: ${{secrets.GITHUB_TOKEN}}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         workflow:     build-and-test.yml         # Required, workflow file name or ID
-        branch:       main
+        branch:       ${{ github.ref_name }}
         name:         Artifacts
 
     -

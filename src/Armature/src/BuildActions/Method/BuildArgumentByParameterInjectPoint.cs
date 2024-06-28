@@ -20,7 +20,7 @@ public record BuildArgumentByParameterInjectPoint : IBuildAction
       if(Log.IsEnabled(LogLevel.Trace))
         Log.WriteLine(LogLevel.Trace, $"Attribute: {attribute.ToHoconString()}");
 
-      var unitInfo    = Unit.Of(parameterInfo.ParameterType, attribute.Tag);
+      var unitInfo    = Unit.By(parameterInfo.ParameterType, attribute.Tag);
       var buildResult = buildSession.BuildUnit(unitInfo);
 
       if(buildResult.HasValue)

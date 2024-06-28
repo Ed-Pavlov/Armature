@@ -15,7 +15,7 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
 {
   private static readonly object[] ParamContainer     = new object[1];
   private static readonly Type[]   TypeParamContainer = new Type[1];
-  private static readonly Type[]   IntTypeParam       = {typeof(int)};
+  private static readonly Type[]   IntTypeParam       = [typeof(int)];
 
   private readonly object? _tag;
 
@@ -38,7 +38,7 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
     if(IsCollection(injectionPointType, out var listType))
     {
       var collectionItemType = injectionPointType.GenericTypeArguments[0];
-      var arguments          = buildSession.BuildAllUnits(Unit.Of(collectionItemType, effectiveTag));
+      var arguments          = buildSession.BuildAllUnits(Unit.By(collectionItemType, effectiveTag));
 
       var listInstance = CreateListInstance(listType!, arguments.Count);
       FillList(listInstance, listType!, collectionItemType, arguments.Select(_ => _.Entity));
@@ -59,7 +59,6 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
   private static object CreateListInstance(Type listType, int capacity)
   {
     var listConstructor = listType.GetConstructor(IntTypeParam);
-
     return listConstructor!.Invoke(CreateParameter(capacity));
   }
 
@@ -76,7 +75,6 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
   private static object[] CreateParameter(object value)
   {
     ParamContainer[0] = value;
-
     return ParamContainer;
   }
 
@@ -84,7 +82,6 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
   private static Type[] CreateTypeParameter(Type type)
   {
     TypeParamContainer[0] = type;
-
     return TypeParamContainer;
   }
 

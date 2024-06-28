@@ -22,18 +22,20 @@ public interface IBuildSession
   /// <summary>
   /// Builds a unit represented by <see cref="UnitId" /> in the context of the current build session.
   /// </summary>
-  /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildStackPattern" /> for details</param>
+  /// <param name="unitId">The id of the unit to build. See <see cref="IBuildStackPattern" /> for details.</param>
   /// <param name="engageParentBuilders">Determines whether to build a unit via parent builders in case it's not built in the scope of
-  /// the current build session. Default: true. </param>
+  /// the current Builder.
+  /// Default: true. </param>
   BuildResult BuildUnit(UnitId unitId, bool engageParentBuilders = true);
 
   /// <summary>
   /// Builds all units represented by <see cref="UnitId" /> with all build actions in spite of the weight.
   /// This can be useful to build all implementers of an interface.
   /// </summary>
-  /// <param name="unitId">"Id" of the unit to build. See <see cref="IBuildStackPattern" /> for details</param>
+  /// <param name="unitId">The id of the unit to build. See <see cref="IBuildStackPattern" /> for details</param>
   /// <param name="engageParentBuilders">If true <see cref="Builder.BuildAllUnits"/> is called for whole parent builders graph,
-  /// if false build unit only in the scope of the current build sesstion. Default: true.</param>
+  /// if false build unit only in the scope of the current Builder.
+  /// Default: true.</param>
   /// <returns>Returns an empty list if no units were built.</returns>
   List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId, bool engageParentBuilders = true);
 }

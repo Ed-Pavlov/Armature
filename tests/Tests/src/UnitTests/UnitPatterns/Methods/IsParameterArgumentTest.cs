@@ -9,7 +9,7 @@ using Tests.Util;
 
 namespace Tests.UnitTests.UnitPatterns.Methods;
 
-public class IsParameterInfoTest
+public class IsParameterArgumentTest
 {
   [Test]
   public void should_match_parameter_info_with_argument_tag()
@@ -17,8 +17,8 @@ public class IsParameterInfoTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(int))!;
 
     // --arrange
-    var unitId = Unit.Of(parameterInfo, ServiceTag.Argument);
-    var target = new IsParameterInfo();
+    var unitId = Unit.By(parameterInfo, ServiceTag.Argument);
+    var target = new IsParameterArgument();
 
     // --act
     // --assert
@@ -29,8 +29,8 @@ public class IsParameterInfoTest
   public void should_not_match_unit_kind_other_than_parameter_info()
   {
     // --arrange
-    var unitId = Unit.Of("parameterInfo", ServiceTag.Argument);
-    var target = new IsParameterInfo();
+    var unitId = Unit.By("parameterInfo", ServiceTag.Argument);
+    var target = new IsParameterArgument();
 
     // --act
     // --assert
@@ -43,8 +43,8 @@ public class IsParameterInfoTest
     var parameterInfo = typeof(Subject).GetMethod(nameof(Subject.Foo))?.GetParameters().Single(_ => _.ParameterType == typeof(int))!;
 
     // --arrange
-    var unitId = Unit.Of(parameterInfo, tag);
-    var target = new IsParameterInfo();
+    var unitId = Unit.By(parameterInfo, tag);
+    var target = new IsParameterArgument();
 
     // --act
     // --assert
@@ -55,8 +55,8 @@ public class IsParameterInfoTest
   public void all_instances_should_be_equal()
   {
     // --arrange
-    var target1 = new IsParameterInfo();
-    var target2 = new IsParameterInfo();
+    var target1 = new IsParameterArgument();
+    var target2 = new IsParameterArgument();
 
     // --assert
     target1.Equals(target2).Should().BeTrue();
@@ -68,7 +68,7 @@ public class IsParameterInfoTest
   public void should_not_be_equal_to_other_unit_patterns()
   {
     // --arrange
-    var target1 = new IsParameterInfo();
+    var target1 = new IsParameterArgument();
     var target2 = new TestUtil.OtherUnitPattern();
 
     // --assert

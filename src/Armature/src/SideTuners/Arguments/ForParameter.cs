@@ -17,7 +17,7 @@ public static class ForParameter
   public static MethodArgumentTuner<object?> OfType(Type type)
     => new(
       (tuner, weight)
-        => tuner.GetInternals()
+        => tuner.GetTunerInternals()
                 .TreeRoot
                 .GetOrAddNode(
                    new IfFirstUnit(
@@ -32,7 +32,7 @@ public static class ForParameter
   public static MethodArgumentTuner<T> OfType<T>()
     => new(
       (tuner, weight)
-        => tuner.GetInternals()
+        => tuner.GetTunerInternals()
                 .TreeRoot
                 .GetOrAddNode(
                    new IfFirstUnit(
@@ -47,7 +47,7 @@ public static class ForParameter
   public static MethodArgumentTuner<object?> Named(string parameterName)
     => new(
       (tuner, weight)
-        => tuner.GetInternals()
+        => tuner.GetTunerInternals()
                 .TreeRoot
                 .GetOrAddNode(
                    new IfFirstUnit(
@@ -63,7 +63,7 @@ public static class ForParameter
   public static MethodArgumentTuner<object?> WithInjectPoint(object? injectPointId)
     => new(
       (tuner, weight)
-        => tuner.GetInternals()
+        => tuner.GetTunerInternals()
                 .TreeRoot
                 .GetOrAddNode(
                    new IfFirstUnit(

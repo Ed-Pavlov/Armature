@@ -5,7 +5,7 @@ namespace BeatyBit.Armature;
 public interface ISettingTuner : IDependencyTuner<ISettingTuner>, IContextTuner
 {
   /// <summary>
-  /// Only one instance of Unit should be build and used for all subsequent requests.
+  /// Only one instance of Unit should be build and used for all further requests.
   /// </summary>
   IContextTuner AsSingleton();
 }

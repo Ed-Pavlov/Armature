@@ -1,21 +1,22 @@
 ﻿using BeatyBit.Armature.Core;
+using BeatyBit.Armature.Sdk;
 using WeightOf = BeatyBit.Armature.Sdk.WeightOf;
 
 namespace BeatyBit.Armature;
 
 public partial class BuildingTuner<T>
 {
-  IContextTuner ISettingTuner.AsSingleton()
+  public IContextTuner AsSingleton()
   {
-    BuildStackPatternSubtree().UseBuildAction(new Singleton(), BuildStage.Cache);
+    BuildStackPatternSubtree().UseBuildAction(Default.CreateSingletonBuildAction(), BuildStage.Cache);
     return this;
   }
 
-  ISubjectTuner IContextTuner.BuildingIt()
+  public ISubjectTuner BuildingIt()
   {
+    return new SubjectTuner(Parent!, CreateNode);
+
     // Parent.Building<T>(tag)
     IBuildStackPattern CreateNode() => new SkipTillUnit(_unitPattern, Weight + WeightOf.UnitPattern.ExactTypePattern);
-
-    return new SubjectTuner(Parent!, CreateNode);
   }
 }

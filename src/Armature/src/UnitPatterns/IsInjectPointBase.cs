@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Base class for patterns check if a unit is an inject point marked with with <see cref="InjectAttribute" />
+/// Base class for patterns which check if a unit is an injection point marked with with <see cref="InjectAttribute" />
 /// with an optional <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" />
 /// </summary>
 public abstract record IsInjectPointBase : IUnitPattern, ILogString, IInternal<object?>
@@ -17,7 +17,7 @@ public abstract record IsInjectPointBase : IUnitPattern, ILogString, IInternal<o
   [PublicAPI]
   protected readonly object? _injectPointTag;
 
-  /// <param name="injectPointTag">An optional tag of the inject point. <see cref="InjectAttribute"/> for details.</param>
+  /// <param name="injectPointTag">An optional tag of the injection point. <see cref="InjectAttribute"/> for details.</param>
   [DebuggerStepThrough]
   protected IsInjectPointBase(object? injectPointTag = null) => _injectPointTag = injectPointTag;
 

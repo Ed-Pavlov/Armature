@@ -15,7 +15,7 @@ public class BuildMaybe : IBuildAction
     var maybeType = buildSession.Stack.TargetUnit.GetUnitType();
     var valueType = maybeType.GenericTypeArguments[0];
 
-    var buildResult = buildSession.BuildUnit(Unit.Of(valueType, _tag));
+    var buildResult = buildSession.BuildUnit(Unit.By(valueType, _tag));
 
     if(buildResult.HasValue)
     {
