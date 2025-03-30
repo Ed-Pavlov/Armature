@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BeatyBit.Armature.Interface</name>
+    </assembly>
+    <members>
+        <member name="T:BeatyBit.Armature.InjectAttribute">
+            <summary>
+            Attribute is used to mark type member into which dependencies should be injected
+            </summary>
+        </member>
+        <member name="F:BeatyBit.Armature.InjectAttribute.Tag">
+            <summary>
+            Optional tag of the injection point can be used by build actions.
+            See usages for details.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.InjectAttribute.#ctor(System.Object)">
+            <param name="tag">Optional tag of the injection point can be used by build actions.</param>
+        </member>
+    </members>
+</doc>

@@ -1,5 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <Import Project="..\common.proj"/>
+
   <PropertyGroup>
     <AssemblyName>BeatyBit.Armature.Interface</AssemblyName>
     <RootNamespace>BeatyBit.Armature</RootNamespace>
@@ -9,11 +11,8 @@
     <description>An interface part of Armature framework to use in the code which shouldn't depend on Armature implementation part</description>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DocumentationFile>bin\Release\BeatyBit.Armature.Interface.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DocumentationFile>bin\Debug\BeatyBit.Armature.Interface.xml</DocumentationFile>
+  <PropertyGroup>
+    <DocumentationFile>$(SolutionDir)\.out\BeatyBit.Armature.Interface.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

@@ -1,45 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <Import Project="..\common.proj" />
 
   <PropertyGroup>
     <AssemblyName>BeatyBit.Armature.Core</AssemblyName>
     <RootNamespace>BeatyBit.Armature.Core</RootNamespace>
+    <DocumentationFile>$(SolutionDir)\.out\BeatyBit.Armature.Core.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
-    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <TargetFramework />
   </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DocumentationFile>bin\Release\BeatyBit.Armature.Core.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DocumentationFile>bin\Debug\BeatyBit.Armature.Core.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="src\BuildActions\Creation\CreateWithFactoryMethod.cs" />
-    <Compile Remove="src\BuildActions\Method\BuildArgumentByParameterName.cs" />
-    <Compile Remove="src\BuildActions\Method\BuildArgumentByParameterType.cs" />
-    <Compile Remove="src\BuildActions\BuildListArgumentBase.cs" />
-    <Compile Remove="src\BuildActions\TryInOrder.cs" />
-    <Compile Remove="src\UnitPatterns\Method\IsParameterInfoArray.cs" />
-    <Compile Remove="src\UnitPatterns\Method\IsParameterNamed.cs" />
-    <Compile Remove="src\UnitPatterns\Property\IsPropertyAttributed.cs" />
-    <Compile Remove="src\UnitPatterns\Property\IsPropertyNamed.cs" />
-    <Compile Remove="src\UnitPatterns\InjectPointOfTypeBase.cs" />
-    <Compile Remove="src\UnitPatterns\IsConstructor.cs" />
-    <Compile Remove="src\UnitPatterns\IsInjectPointBase.cs" />
-    <Compile Remove="src\UnitPatterns\IsServiceUnit.cs" />
-    <Compile Remove="src\Sdk\BuildActionBag.cs" />
-    <Compile Remove="src\IBuildAction.cs" />
-    <Compile Remove="src\Sdk\WeightOf.cs" />
-    <Compile Remove="src\Sdk\LogConst.cs" />
-    <Compile Remove="src\Sdk\LogExtension.cs" />
-    <Compile Remove="src\UnitPatterns\IUnitPattern.cs" />
-  </ItemGroup>
 
   <PropertyGroup Label="nuspec">
     <description>The core part of the Armature framework, can be used to build your own framework with syntax and features of your choice</description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include=".build\Annotations.cs" />
+    <Compile Include=".build\JetBrains.Annotations.cs" />
+    <Compile Include=".build\Roslyn.CodeAnalysis.cs" />
+  </ItemGroup>
 
 </Project>

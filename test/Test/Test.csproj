@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)\.build\beatybit.public.snk</AssemblyOriginatorKeyFile>
+    <PublicSign>true</PublicSign>
+    <LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
+    <IsPublishable>false</IsPublishable>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.3"/>
+    <PackageReference Include="FakeItEasy" Version="7.2.0"/>
+    <PackageReference Include="FluentAssertions" Version="6.2.0"/>
+    <PackageReference Include="JetBrains.dotMemoryUnit" Version="3.1.20200127.214830"/>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0"/>
+    <PackageReference Include="NUnit" Version="3.13.2"/>
+    <PackageReference Include="NUnit.Console" Version="3.12.0"/>
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Armature.Core\Armature.Core.csproj"/>
+    <ProjectReference Include="..\..\src\Armature\Armature.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include=".build\AssemblyInfo.cs"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)\.build\beatybit.public.snk">
+      <Link>.build\armature.public.snk</Link>
+    </None>
+  </ItemGroup>
+</Project>

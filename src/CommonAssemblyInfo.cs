@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 #pragma warning disable 7035
@@ -7,5 +6,7 @@ using System.Runtime.InteropServices;
 [assembly: CLSCompliant(false)]
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyProduct("BeatyBit.Armature")]
-[assembly: AssemblyCopyright("Copyright © 2018-2024 Ed Pavlov")]
+namespace System.Runtime.CompilerServices
+{
+  internal class IsExternalInit { }
+}

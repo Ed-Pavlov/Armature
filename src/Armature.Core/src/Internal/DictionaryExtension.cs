@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BeatyBit.Armature.Core;
 
-internal static class DictionaryExtension
+public static class DictionaryExtension
 {
   public static TValue? GetValueSafe<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue? defaultValue = default)
   {

@@ -1,0 +1,1222 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BeatyBit.Armature</name>
+    </assembly>
+    <members>
+        <member name="T:BeatyBit.Armature.BuildArgumentByInjectPointNameBase">
+            <summary>
+            Base class for build actions building arguments to inject.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.BuildArgumentByInjectPointTypeBase">
+            <summary>
+            Base class for build actions building arguments to inject into injection points marked with <see cref="T:BeatyBit.Armature.InjectAttribute"/>.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.BuildListArgumentBase">
+            <summary>
+            Base class for build actions build a list of arguments by using <see cref="M:BeatyBit.Armature.Core.IBuildSession.BuildAllUnits(BeatyBit.Armature.Core.UnitId,System.Boolean)"/> method.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.Singleton">
+            <summary>
+            The simplest eternal singleton.
+            Caches just built Unit in <see cref="M:BeatyBit.Armature.Singleton.PostProcess(BeatyBit.Armature.Core.IBuildSession)" /> and then set it as <see cref="T:BeatyBit.Armature.Core.BuildResult" /> in <see cref="M:BeatyBit.Armature.Singleton.Process(BeatyBit.Armature.Core.IBuildSession)" />.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.GetConstructorByInjectPoint">
+            <summary>
+            Gets the constructor of the type which is marked with <see cref="T:BeatyBit.Armature.InjectAttribute" /> the optional <see cref="T:BeatyBit.Armature.InjectAttribute" />.<see cref="F:BeatyBit.Armature.InjectAttribute.Tag" />.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.GetConstructorByParameterTypes">
+            <summary>
+            Gets the constructor of the type matches specified parameter types list.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.GetConstructorWithMaxParametersCount">
+            <summary>
+            Gets the constructor of the type with the largest number of parameters.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.CreateByReflection">
+            <summary>
+            Instantiates an object using reflection. See <see cref="M:System.Reflection.ConstructorInfo.Invoke(System.Object[])"/> method.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.CreateWithFactoryMethod`1">
+            <summary>
+            Creates a Unit using specified factory method.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction">
+            <summary>
+            Creates a Unit using specified factory method.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction`2">
+            <inheritdoc cref="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction" />
+        </member>
+        <member name="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction`3">
+            <inheritdoc cref="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction" />
+        </member>
+        <member name="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction`4">
+            <inheritdoc cref="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction" />
+        </member>
+        <member name="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction`5">
+            <inheritdoc cref="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction" />
+        </member>
+        <member name="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction`6">
+            <inheritdoc cref="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction" />
+        </member>
+        <member name="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction`7">
+            <inheritdoc cref="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction" />
+        </member>
+        <member name="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction`8">
+            <inheritdoc cref="T:BeatyBit.Armature.CreateWithFactoryMethodBuildAction" />
+        </member>
+        <member name="T:BeatyBit.Armature.Instance`1">
+            <summary>
+            Caches passed object and set it as <see cref="T:BeatyBit.Armature.Core.BuildResult" /> in <see cref="M:BeatyBit.Armature.Instance`1.Process(BeatyBit.Armature.Core.IBuildSession)" />.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.BuildArgumentByParameterInjectPoint">
+            <summary>
+            Builds an argument for the constructor/method parameter which is marked with <see cref="T:BeatyBit.Armature.InjectAttribute"/> using <see cref="P:System.Reflection.ParameterInfo.Name"/> and
+            <see cref="F:BeatyBit.Armature.InjectAttribute.Tag"/> as /// as <see cref="T:BeatyBit.Armature.Core.UnitId"/>.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.BuildArgumentByParameterName">
+            <summary>
+            Builds an argument for the constructor/method parameter using <see cref="P:System.Reflection.ParameterInfo.Name"/> and specified tag as <see cref="T:BeatyBit.Armature.Core.UnitId"/>.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.BuildArgumentByParameterType">
+            <summary>
+            Builds an argument for the constructor/method parameter using <see cref="P:System.Reflection.ParameterInfo.ParameterType"/> and specified tag as <see cref="T:BeatyBit.Armature.Core.UnitId"/>.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.BuildListArgumentForMethodParameter">
+            <summary>
+            Builds a list of arguments by using <see cref="M:BeatyBit.Armature.Core.IBuildSession.BuildAllUnits(BeatyBit.Armature.Core.UnitId,System.Boolean)"/> method for a constructor/method parameters.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.BuildMethodArgumentsInDirectOrder">
+            <summary>
+            Builds arguments for constructor/method parameters one by one in the direct order.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.GetParameterDefaultValue">
+            <summary>
+            Gets a default parameter value of the constructor/method parameter.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.BuildArgumentByPropertyInjectPoint">
+            <summary>
+            Builds an argument for the property which is marked with <see cref="T:BeatyBit.Armature.InjectAttribute"/> using <see cref="P:System.Reflection.MemberInfo.MemberType"/> and
+            <see cref="F:BeatyBit.Armature.InjectAttribute.Tag"/> as <see cref="T:BeatyBit.Armature.Core.UnitId"/>.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.BuildArgumentByPropertyName">
+            <summary>
+            Builds an argument for the property using <see cref="P:System.Reflection.MemberInfo.Name"/> and specified tag as an <see cref="T:BeatyBit.Armature.Core.UnitId"/>.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.BuildArgumentByPropertyType">
+            <summary>
+            Builds an argument for the property using <see cref="P:System.Reflection.PropertyInfo.PropertyType"/> and specified tag as <see cref="T:BeatyBit.Armature.Core.UnitId"/>.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.BuildListArgumentForProperty">
+            <summary>
+            Builds a list of arguments by using <see cref="M:BeatyBit.Armature.Core.IBuildSession.BuildAllUnits(BeatyBit.Armature.Core.UnitId,System.Boolean)"/> method for a property.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.GetPropertyByType">
+            <summary>
+            Gets a property by specified type.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.GetPropertyByType.#ctor(System.Type)">
+            <summary>
+            Gets a property by specified type.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.GetPropertyListByInjectAttribute">
+            <summary>
+            Gets a list of  properties marked with <see cref="T:BeatyBit.Armature.InjectAttribute" /> with specified tags <see cref="T:BeatyBit.Armature.InjectAttribute" />.<see cref="F:BeatyBit.Armature.InjectAttribute.Tag" />.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.GetPropertyListByNames">
+            <summary>
+            Gets a list of properties with specified names.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.InjectDependenciesIntoProperties">
+            <summary>
+            Injects values into building Unit properties specified for injection
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.Redirect">
+            <summary>
+            Redirects building of a unit with one <see cref="T:BeatyBit.Armature.Core.UnitId"/> to the unit with another <see cref="T:BeatyBit.Armature.Core.UnitId"/>.
+            E.g., redirecting interface to the implementation.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.RedirectOpenGenericType">
+            <summary>
+            Redirects building of a unit of one open generic type to the unit of another open generic type.
+            E.g., redirecting interface to the implementation.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.TryInOrder">
+            <inheritdoc />
+        </member>
+        <member name="T:BeatyBit.Armature.TryInOrderBase">
+            <summary>
+            This build action is used mostly for "default" build actions applied to any target unit.
+            For example, by default we want to find attributed constructor and if there is no any get the constructor with the largest number of parameters,
+            add these two actions in right order as children of <see cref="T:BeatyBit.Armature.TryInOrderBase" /> to reach such behaviour.
+            If a build action has not built a unit, <see cref="T:BeatyBit.Armature.TryInOrderBase"/> build action calls the next child till a unit will be built.
+            </summary>
+            <remarks>
+            This class implements <see cref="T:System.Collections.IEnumerable" /> and has <see cref="M:BeatyBit.Armature.TryInOrderBase.Add(BeatyBit.Armature.Core.IBuildAction)" /> method to make possible compact and readable initialization like
+            new TryInOrder
+            {
+             new GetConstructorByInjectPoint (),
+             new GetConstructorWithMaxParametersCount ()
+            }
+            </remarks>
+        </member>
+        <member name="T:BeatyBit.Armature.TryInOrderThreadSafe">
+            <summary>
+            Thread safe implementation of <see cref="T:BeatyBit.Armature.TryInOrder"/> build action.
+            </summary>
+            <inheritdoc />
+        </member>
+        <member name="M:BeatyBit.Armature.BuilderExtension.UsingTag(BeatyBit.Armature.Core.Builder,System.Object)">
+            <summary>
+            Use <paramref name="tag"/> to build a unit. See <see cref="T:BeatyBit.Armature.Core.UnitId" /> for details
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.BuilderExtension.Build``1(BeatyBit.Armature.Core.Builder,System.Boolean)">
+            <summary>
+            Builds a Unit registered as type <typeparamref name="T" />
+            </summary>
+            <returns>Returns an instance or null if null is registered as a unit.</returns>
+            <exception cref="T:BeatyBit.Armature.Core.ArmatureException">Throws if unit wasn't built by this or any parent containers</exception>
+        </member>
+        <member name="M:BeatyBit.Armature.BuilderExtension.Build``1(BeatyBit.Armature.Core.Builder,System.Boolean,System.Object[])">
+            <summary>
+            Builds a Unit registered as type <typeparamref name="T" /> passing additional <paramref name="arguments" /> they can be values or
+            implementation of <see cref="T:BeatyBit.Armature.ISideTuner" />. See <see cref="T:BeatyBit.Armature.ForParameter" /> and <see cref="T:BeatyBit.Armature.ForProperty"/> for details.
+            </summary>
+            <param name="builder"></param>
+            <param name="engageParentBuilders"></param>
+            <param name="arguments">Additional temporary arguments which could be passed into the build session, they are not stored
+            anywhere and used only for this build session. Normally, usual registrations take over these arguments because the weight
+            of runtime arguments is decreased. See <see cref="M:BeatyBit.Armature.Sdk.ArmatureUtil.CreatePatternTreeOnArguments(System.Object[],System.Int16)"/> for details.</param>
+            <returns>Returns an instance or null if null is registered as a unit.</returns>
+            <exception cref="T:BeatyBit.Armature.Core.ArmatureException">Throws if unit wasn't built by this or any parent containers.</exception>
+            <inheritdoc cref="M:BeatyBit.Armature.Core.IBuilder.BuildUnit(BeatyBit.Armature.Core.UnitId,BeatyBit.Armature.Core.IBuildStackPattern,System.Boolean)" />
+        </member>
+        <member name="M:BeatyBit.Armature.BuilderExtension.Build``1(BeatyBit.Armature.Core.Builder,System.Object[])">
+            <inheritdoc cref="M:BeatyBit.Armature.BuilderExtension.Build``1(BeatyBit.Armature.Core.Builder,System.Boolean,System.Object[])" />
+        </member>
+        <member name="M:BeatyBit.Armature.BuilderExtension.BuildAll``1(BeatyBit.Armature.Core.Builder)">
+            <summary>
+            Builds all units represented by <see cref="T:BeatyBit.Armature.Core.UnitId" /> by all build actions in spite of matching weight.
+            This can be useful to build all implementers of an interface.
+            </summary>
+            <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
+            <exception cref="T:BeatyBit.Armature.Core.ArmatureException">Throws if no unit was built by this or any parent containers.</exception>
+        </member>
+        <member name="M:BeatyBit.Armature.BuilderExtension.BuildAll``1(BeatyBit.Armature.Core.Builder,System.Boolean,System.Object[])">
+            <summary>
+            Builds all units represented by <see cref="T:BeatyBit.Armature.Core.UnitId" /> by all build actions in spite of matching weight.
+            This can be useful to build all implementers of an interface.
+            </summary>
+            <param name="builder"></param>
+            <param name="engageParentBuilders"></param>
+            <param name="arguments">Additional temporary arguments which could be passed into the build session, they are not stored
+            anywhere and used only for this build session. Normally, registrations take over these arguments because the weight
+            of runtime arguments is decreased. See <see cref="M:BeatyBit.Armature.Sdk.ArmatureUtil.CreatePatternTreeOnArguments(System.Object[],System.Int16)"/> for details.</param>
+            <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
+            <exception cref="T:BeatyBit.Armature.Core.ArmatureException">Throws if not unit was built by this or any parent containers.</exception>
+            <inheritdoc cref="M:BeatyBit.Armature.Core.IBuilder.BuildAllUnits(BeatyBit.Armature.Core.UnitId,BeatyBit.Armature.Core.IBuildStackPattern,System.Boolean)" />
+        </member>
+        <member name="M:BeatyBit.Armature.BuilderExtension.BuildAll``1(BeatyBit.Armature.Core.Builder,System.Object[])">
+            <inheritdoc cref="M:BeatyBit.Armature.BuilderExtension.BuildAll``1(BeatyBit.Armature.Core.Builder,System.Boolean,System.Object[])" />
+        </member>
+        <member name="M:BeatyBit.Armature.BuilderExtension.BuildAll``1(BeatyBit.Armature.Core.Builder,System.Object,System.Boolean,System.Object[])">
+            <summary>
+            All other BuildAll... methods should delegate to this one. This is the real implementation.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.BuilderExtension.Build``1(BeatyBit.Armature.Core.Builder,System.Object,System.Boolean,System.Object[])">
+            <summary>
+            All other Build... methods should delegate to this one. This is the real implementation.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.BuilderExtension.WithTag.Build``1">
+            <summary>
+            Builds a Unit registered as type <typeparamref name="T" /> with an additional tag passed into <see cref="M:BeatyBit.Armature.BuilderExtension.UsingTag(BeatyBit.Armature.Core.Builder,System.Object)"/> method.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.BuilderExtension.WithTag.Build``1(System.Object[])">
+            <summary>
+            Builds a Unit registered as type <typeparamref name="T" /> with an additional tag passed into <see cref="M:BeatyBit.Armature.BuilderExtension.UsingTag(BeatyBit.Armature.Core.Builder,System.Object)"/> method
+            passing additional <paramref name="arguments" /> they can be values or
+            implementation of <see cref="T:BeatyBit.Armature.ISideTuner" />. See <see cref="T:BeatyBit.Armature.ForParameter" /> for details.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.BuilderExtension.WithTag.BuildAll``1">
+            <summary>
+            Builds all units represented by <see cref="T:BeatyBit.Armature.Core.UnitId" /> by all build actions in spite of matching weight with an additional tag
+            passed into <see cref="M:BeatyBit.Armature.BuilderExtension.UsingTag(BeatyBit.Armature.Core.Builder,System.Object)"/> method.
+            This can be useful to build all implementers of an interface.
+            </summary>
+            <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
+            <exception cref="T:BeatyBit.Armature.Core.ArmatureException">Throws if no unit was built by this or any parent containers.</exception>
+        </member>
+        <member name="M:BeatyBit.Armature.BuilderExtension.WithTag.BuildAll``1(System.Object[])">
+            <summary>
+            Builds all units represented by <see cref="T:BeatyBit.Armature.Core.UnitId" /> by all build actions in spite of matching weight with an additional
+            tag passed into <see cref="M:BeatyBit.Armature.BuilderExtension.UsingTag(BeatyBit.Armature.Core.Builder,System.Object)"/> method passing additional <paramref name="arguments" /> they can be values or
+            implementation of <see cref="T:BeatyBit.Armature.ISideTuner" />. See <see cref="T:BeatyBit.Armature.ForParameter" /> for details.
+            This can be useful to build all implementers of an interface.
+            </summary>
+            <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
+            <exception cref="T:BeatyBit.Armature.Core.ArmatureException">Throws if no unit was built by this or any parent containers.</exception>
+        </member>
+        <member name="M:BeatyBit.Armature.BuildStackPatternTreeExtension.Treat(BeatyBit.Armature.Core.BuildStackPatternTree,System.Type,System.Object)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.Treat(System.Type,System.Object)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.BuildStackPatternTreeExtension.Treat``1(BeatyBit.Armature.Core.BuildStackPatternTree,System.Object)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.Treat``1(System.Object)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.BuildStackPatternTreeExtension.TreatOpenGeneric(BeatyBit.Armature.Core.BuildStackPatternTree,System.Type,System.Object)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.TreatOpenGeneric(System.Type,System.Object)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.BuildStackPatternTreeExtension.TreatInheritorsOf(BeatyBit.Armature.Core.BuildStackPatternTree,System.Type,System.Object)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.TreatInheritorsOf(System.Type,System.Object)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.BuildStackPatternTreeExtension.TreatInheritorsOf``1(BeatyBit.Armature.Core.BuildStackPatternTree,System.Object)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.TreatInheritorsOf``1(System.Object)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.BuildStackPatternTreeExtension.Building(BeatyBit.Armature.Core.BuildStackPatternTree,System.Type,System.Object)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.Building(System.Type,System.Object)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.BuildStackPatternTreeExtension.Building``1(BeatyBit.Armature.Core.BuildStackPatternTree,System.Object)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.Building``1(System.Object)"/>
+        </member>
+        <member name="T:BeatyBit.Armature.BuildStage">
+             <summary>
+             Represents predefined build stages used by Armature framework.
+             You are free to create your own build stages which fulfill your project needs.
+            
+             Read the project's wiki to learn basic concepts of Armature.
+             </summary>
+             <remarks>Use objects but value types (int, struct) or enum to avoid memory traffic on boxing.</remarks>
+             <example>
+             new <see cref="T:BeatyBit.Armature.Core.Builder"/>(<see cref="T:BeatyBit.Armature.BuildStage"/>.<see cref="F:BeatyBit.Armature.BuildStage.Intercept"/>, <see cref="T:BeatyBit.Armature.BuildStage"/>.<see cref="F:BeatyBit.Armature.BuildStage.Cache"/>, <see cref="T:BeatyBit.Armature.BuildStage"/>.<see cref="F:BeatyBit.Armature.BuildStage.Initialize"/>, <see cref="T:BeatyBit.Armature.BuildStage"/>.<see cref="F:BeatyBit.Armature.BuildStage.Create"/>);
+             </example>
+        </member>
+        <member name="F:BeatyBit.Armature.BuildStage.Cache">
+            <summary>
+            Stage of building when already built and cached object can be reused.
+            </summary>
+        </member>
+        <member name="F:BeatyBit.Armature.BuildStage.Initialize">
+            <summary>
+            Stage of injecting dependencies into newly created unit.
+            </summary>
+        </member>
+        <member name="F:BeatyBit.Armature.BuildStage.Create">
+            <summary>
+            Stage of creating a unit, injects dependencies into a constructor, due it must be called to create the unit.
+            </summary>
+        </member>
+        <member name="F:BeatyBit.Armature.BuildStage.Process">
+            <summary>
+            Stage of processing fully initialized object, e.g., subscribe events or add it to object pool, etc.
+            </summary>
+        </member>
+        <member name="F:BeatyBit.Armature.BuildStage.Intercept">
+            <summary>
+            Stage of intercepting unit returned by the build process for any reason, e.g., for wrapping it with another object.
+            </summary>
+        </member>
+        <member name="F:BeatyBit.Armature.BuildStage.Aware">
+            <summary>
+            Stage for notifying any concerned party that object was created, initialized, wrapped, and so on and so forth, and ready to work.
+            </summary>
+        </member>
+        <member name="F:BeatyBit.Armature.BuildStage.Log">
+            <summary>
+            Stage to perform some operations with <see cref="T:BeatyBit.Armature.Core.Log"/> for diagnostic purpose.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Sdk.ArmatureUtil.GetTunerInternals(BeatyBit.Armature.ITunerBase)">
+            <summary>
+            Provides access to internal members of tuners. See inheritors of <see cref="T:BeatyBit.Armature.ITunerBase"/> for details.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Sdk.ArmatureUtil.ApplyTuner(BeatyBit.Armature.Core.BuildStackPatternBase,BeatyBit.Armature.ITunerBase)">
+            <summary>
+            Appends a branch of <see cref="T:BeatyBit.Armature.Core.IBuildStackPattern"/> nodes from the <paramref name="tuner"/> to <paramref name="impl"/>
+            and return the deepest of appended nodes.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Sdk.ArmatureUtil.Tune(BeatyBit.Armature.Sdk.ITuner,BeatyBit.Armature.Core.IBuildStackPattern)">
+            <summary>
+            Adds a branch of <see cref="T:BeatyBit.Armature.Core.IBuildStackPattern"/> nodes to the Tree Root and returns the deepest of added nodes.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Sdk.ArmatureUtil.Apply(BeatyBit.Armature.Sdk.ITuner)">
+            <summary>
+            Adds a branch of <see cref="T:BeatyBit.Armature.Core.IBuildStackPattern"/> nodes to the Tree Root and returns the deepest of added nodes.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Sdk.ArmatureUtil.TryCreatePatternTreeOnArguments(System.Object[],System.Int16)">
+            <summary>
+            Creates an instance of <see cref="T:BeatyBit.Armature.Core.BuildStackPatternTree"/> and register passed <paramref name="arguments"/>.
+            Then the tree can be passed to <see cref="M:BeatyBit.Armature.Core.Builder.BuildUnit(BeatyBit.Armature.Core.UnitId,BeatyBit.Armature.Core.IBuildStackPattern,System.Boolean)"/> as additional, runtime registrations.
+            </summary>
+            <returns>Returns null if no arguments provided</returns>
+        </member>
+        <member name="M:BeatyBit.Armature.Sdk.ArmatureUtil.CreatePatternTreeOnArguments(System.Object[],System.Int16)">
+            <summary>
+            Creates an instance of <see cref="T:BeatyBit.Armature.Core.BuildStackPatternTree"/> and register passed <paramref name="arguments"/> if any.
+            Then the tree can be passed to <see cref="M:BeatyBit.Armature.Core.Builder.BuildUnit(BeatyBit.Armature.Core.UnitId,BeatyBit.Armature.Core.IBuildStackPattern,System.Boolean)"/> as additional, runtime registrations.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Sdk.BuildSessionExtension.GetConstructorOf(BeatyBit.Armature.Core.IBuildSession,System.Type)">
+            <summary>
+            Builds a <see cref="T:System.Reflection.ConstructorInfo" /> for a <paramref name="type"/> by building a unit represented
+            by <see cref="T:BeatyBit.Armature.Core.UnitId" />(<paramref name="type" />, <see cref="F:BeatyBit.Armature.Sdk.ServiceTag.Constructor" />) via current build session.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Sdk.BuildSessionExtension.BuildPropertyArgument(BeatyBit.Armature.Core.IBuildSession,System.Reflection.PropertyInfo)">
+            <summary>
+            Builds an argument to inject into the property representing by <paramref name="propertyInfo" />
+            </summary>
+        </member>
+        <member name="P:BeatyBit.Armature.Sdk.Default.CreateAsBuildAction">
+            <summary>
+            This is the default build action used by <see cref="M:BeatyBit.Armature.BuildingTuner`1.As(System.Type,System.Object)" />.
+            You can set your own build action which will be used by these tuners.
+            </summary>
+        </member>
+        <member name="P:BeatyBit.Armature.Sdk.Default.CreationBuildAction">
+            <summary>
+            This is the default build action used by <see cref="M:BeatyBit.Armature.BuildingTuner`1.AsCreated``1(System.Object)" />.
+            You can set your own build action which will be used by these tuners.
+            </summary>
+        </member>
+        <member name="P:BeatyBit.Armature.Sdk.Default.CreateSingletonBuildAction">
+            <summary>
+            This is the default build action used by <see cref="M:BeatyBit.Armature.BuildingTuner`1.AsSingleton" />.
+            You can set your own build action which will be used by these tuners.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.Sdk.ITuner">
+            <summary>
+            Provides the possibility to extend the framework with custom Tuners by providing access to internal stuff.
+            Other "tuner" interfaces do not inherit this interface to not expose "internals" needed in rare advanced cases.
+            Use <see cref="M:BeatyBit.Armature.Sdk.ArmatureUtil.GetTunerInternals(BeatyBit.Armature.ITunerBase)"/> to access it.
+            </summary>
+        </member>
+        <member name="P:BeatyBit.Armature.Sdk.ITuner.Parent">
+            <summary>
+            The "parent" tuner or null if this is a root of a tuning sequence.
+            </summary>
+        </member>
+        <member name="P:BeatyBit.Armature.Sdk.ITuner.TreeRoot">
+            <summary>
+            The root of the tree containing patterns to match a build stack.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Sdk.ITuner.GetOrAddNodeTo(BeatyBit.Armature.Core.IBuildStackPattern)">
+            <summary>
+            Adds a build stack pattern produced by this tuner as a child of <paramref name="node"/> or gets already added one.
+            </summary>
+            <returns>Returns the actual build stack pattern node, newly added or obtained from the <paramref name="node"/> </returns>
+        </member>
+        <member name="P:BeatyBit.Armature.Sdk.ITuner.Weight">
+            <summary>
+            The weight used to amend the weight of build stack patterns added by the tuner.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.Sdk.ServiceTag">
+             <summary>
+             Armature uses these tags to build such units as a constructor needed to instantiate an object, or an argument for the method parameter and so on.
+            
+             If you need to extend the set of special tags with your own, make a derived class and create tags using protected constructor.
+             </summary>
+        </member>
+        <member name="F:BeatyBit.Armature.Sdk.ServiceTag.Constructor">
+            <summary>
+            Is used to "build" a <see cref="T:System.Reflection.ConstructorInfo" /> for a type.
+            </summary>
+        </member>
+        <member name="F:BeatyBit.Armature.Sdk.ServiceTag.PropertyCollection">
+            <summary>
+            Is used to build a collection of properties to inject dependencies.
+            </summary>
+        </member>
+        <member name="F:BeatyBit.Armature.Sdk.ServiceTag.Argument">
+            <summary>
+            Is used to build an argument for the injection point.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Sdk.UnitIdExtension.GetUnitType(BeatyBit.Armature.Core.UnitId)">
+            <summary>
+            Returns a <see cref="T:System.Type" /> if <see cref="F:BeatyBit.Armature.Core.UnitId.Kind" /> is a type, otherwise throws exception.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Sdk.UnitIdExtension.GetUnitTypeSafe(BeatyBit.Armature.Core.UnitId)">
+            <summary>
+            Returns a <see cref="T:System.Type" /> if <see cref="F:BeatyBit.Armature.Core.UnitId.Kind" /> is a type, otherwise null.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.Sdk.WeightOf">
+            <summary>
+            Inherit this class to extend an enum pattern with custom weights if you extend Armature with your own build stack, unit, or injection point
+            patterns which require to re-balance the weighting system.
+            </summary>
+        </member>
+        <member name="P:BeatyBit.Armature.Sdk.WeightOf.InjectionPoint.ByTypeAssignability">
+            <summary>
+            Weight of argument matched by assignability to a parameter/property.
+            </summary>
+        </member>
+        <member name="P:BeatyBit.Armature.Sdk.WeightOf.InjectionPoint.ByExactType">
+            <summary>
+            Weight of injection point (method parameter or property) matched by strict equality of a parameter/property type.
+            </summary>
+        </member>
+        <member name="P:BeatyBit.Armature.Sdk.WeightOf.InjectionPoint.ByInjectPointId">
+            <summary>
+            Weight of argument matched by an attribute used to mark a parameter/property.
+            </summary>
+        </member>
+        <member name="P:BeatyBit.Armature.Sdk.WeightOf.InjectionPoint.ByName">
+            <summary>
+            Weight of argument matched by a parameter name.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.Sdk.WeightOf.UnitPattern">
+             <summary>
+             Weights of <see cref="T:BeatyBit.Armature.Core.IUnitPattern"/> is about two orders of magnitude higher than weights of <see cref="T:BeatyBit.Armature.Sdk.WeightOf.InjectionPoint"/> in order to registrations like
+            
+             builder.GetOrAddNode(new IfFirstUnit(Unit.Of(typeof(string)), WeightOf.InjectionPoint.ByName))
+                    .GetOrAddNode(new IfFirstUnit(new IsInheritorOf(typeof(BaseType)), WeightOf.UnitPattern.SubtypePattern))
+            
+             never "wins"
+            
+             builder.GetOrAddNode(new IfFirstUnit(Unit.Of(typeof(string)), WeightOf.InjectionPoint.ByType))
+                    .GetOrAddNode(new IfFirstUnit(new Unit.Of(typeof(ChildType)), WeightOf.UnitPattern.ExactTypePattern))
+            
+             because the second one is narrower case than the first one
+             </summary>
+        </member>
+        <member name="P:BeatyBit.Armature.Sdk.WeightOf.UnitPattern.OpenGenericPattern">
+            <summary>
+            Weight of a type matched by open generic type, <see cref="T:BeatyBit.Armature.IsGenericOfDefinition"/> unit pattern and <see cref="T:BeatyBit.Armature.RedirectOpenGenericType"/> for details
+            </summary>
+        </member>
+        <member name="P:BeatyBit.Armature.Sdk.WeightOf.UnitPattern.SubtypePattern">
+            <summary>
+            Weight of a type matched by base type, <see cref="T:BeatyBit.Armature.IsInheritorOf"/> unit pattern
+            </summary>
+        </member>
+        <member name="P:BeatyBit.Armature.Sdk.WeightOf.UnitPattern.ExactTypePattern">
+            <summary>
+            Weight of a type matched by exact type
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IArgumentSideTuner">
+            <inheritdoc />
+            <summary>
+            This interface is used as a marker of a tuner which tunes rules for building arguments. It's needed to ensure that not suitable tuner
+            like <see cref="T:BeatyBit.Armature.IInjectionPointSideTuner"/> is not passed to <see cref="M:BeatyBit.Armature.IDependencyTuner`1.UsingArguments(System.Object[])"/>
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.ArgumentTunerBase`1">
+            <summary>
+            Adds build actions to build arguments for injection points defined by <see cref="T:BeatyBit.Armature.ForParameter"/> and <see cref="T:BeatyBit.Armature.ForProperty"/> tuners.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ArgumentTunerBase`1.UseValue(`0)">
+            <summary>
+            Use the <paramref name="value" /> as an argument for the injection point.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ArgumentTunerBase`1.UseFactoryMethod(System.Func{`0})">
+            <summary>
+            Use an instance returned by <paramref name="factoryMethod" /> as an argument for the injection point.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ArgumentTunerBase`1.UseFactoryMethod``1(System.Func{``0,System.Object})">
+            <summary>
+            Use an instance returned by <paramref name="factoryMethod" /> as an argument for the injection point.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ArgumentTunerBase`1.UseFactoryMethod``2(System.Func{``0,``1,System.Object})">
+            <summary>
+            Use an instance returned by <paramref name="factoryMethod" /> as an argument for the injection point.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ArgumentTunerBase`1.UseFactoryMethod``3(System.Func{``0,``1,``2,System.Object})">
+            <summary>
+            Use an instance returned by <paramref name="factoryMethod" /> as an argument for the injection point.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ArgumentTunerBase`1.UseFactoryMethod``4(System.Func{``0,``1,``2,``3,System.Object})">
+            <summary>
+            Use an instance returned by <paramref name="factoryMethod" /> as an argument for the injection point.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ArgumentTunerBase`1.UseFactoryMethod``5(System.Func{``0,``1,``2,``3,``4,System.Object})">
+            <summary>
+            Use an instance returned by <paramref name="factoryMethod" /> as an argument for the injection point.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ArgumentTunerBase`1.UseFactoryMethod``6(System.Func{``0,``1,``2,``3,``4,``5,System.Object})">
+            <summary>
+            Use an instance returned by <paramref name="factoryMethod" /> as an argument for the injection point.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ArgumentTunerBase`1.UseFactoryMethod``7(System.Func{``0,``1,``2,``3,``4,``5,``6,System.Object})">
+            <summary>
+            Use an instance returned by <paramref name="factoryMethod" /> as an argument for the injection point.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ArgumentTunerBase`1.UseFactoryMethod``1(System.Func{BeatyBit.Armature.Core.IBuildSession,``0})">
+            <summary>
+            Use an instance returned by <paramref name="factoryMethod" /> as an argument for the injection point.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.ForParameter">
+            <summary>
+            Provides methods to tune up how to build arguments for method parameters.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ForParameter.OfType(System.Type)">
+            <summary>
+            Tunes up how to build an argument to inject into method parameter of type <paramref name="type"/>.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ForParameter.OfType``1">
+            <summary>
+            Tunes up how to build an argument to inject into method parameter of type <typeparamref name="T" />.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ForParameter.Named(System.String)">
+            <summary>
+            Tunes up how to build an argument to inject into method parameter named <paramref name="parameterName"/>.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ForParameter.WithInjectPoint(System.Object)">
+            <summary>
+            Tunes up how to build and argument to inject into a method parameter marked with <see cref="T:BeatyBit.Armature.InjectAttribute"/>
+            with the specified <paramref name="injectPointId"/>.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.ForProperty">
+            <summary>
+            This class provides methods to tune up how to build arguments to inject to object properties.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ForProperty.OfType(System.Type)">
+            <summary>
+            Tunes up how to build an argument to inject into a property of type <paramref name="type"/>.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ForProperty.OfType``1">
+            <summary>
+            Tunes up how to build an argument to inject into a property of type<typeparamref name="T" />
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ForProperty.Named(System.String)">
+            <summary>
+            Tunes up how to build an argument to inject into a property named <paramref name="propertyName"/>.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ForProperty.WithInjectPoint(System.Object)">
+            <summary>
+            Tunes up how to build and argument to inject into a property marked with <see cref="T:BeatyBit.Armature.InjectAttribute"/>
+            with the optional <paramref name="injectPointTag"/>.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.MethodArgumentTuner`1">
+            <summary>
+            Adds build actions to build arguments for injection points defined by <see cref="T:BeatyBit.Armature.ForParameter"/> tuner.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.MethodArgumentTuner`1.UseTag(System.Object)">
+            <summary>
+            For building a value for the parameter use <see cref="T:System.Reflection.ParameterInfo" />.<see cref="P:System.Reflection.ParameterInfo.ParameterType" /> and <paramref name="tag" />
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.MethodArgumentTuner`1.UseInjectPointTag">
+            <summary>
+            For building a value for the parameter use <see cref="T:System.Reflection.ParameterInfo" />.<see cref="P:System.Reflection.ParameterInfo.ParameterType" /> and <see cref="T:BeatyBit.Armature.InjectAttribute" />.<see cref="F:BeatyBit.Armature.InjectAttribute.Tag" /> as a tag
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.MethodArgumentTuner`1.AmendWeight(System.Int32)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.AmendWeight(System.Int32)"/>
+        </member>
+        <member name="T:BeatyBit.Armature.PropertyArgumentTuner`1">
+            <summary>
+            Adds build actions to build arguments for injection points defined by <see cref="T:BeatyBit.Armature.ForProperty"/> tuner.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.PropertyArgumentTuner`1.UseTag(System.Object)">
+            <summary>
+            For building a value for the parameter use <see cref="P:System.Reflection.PropertyInfo.PropertyType" /> and <paramref name="tag" />
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.PropertyArgumentTuner`1.UseInjectPointTag">
+            <summary>
+            For building a value for the parameter use <see cref="T:System.Reflection.ParameterInfo" />.<see cref="P:System.Reflection.ParameterInfo.ParameterType" />
+            and <see cref="T:BeatyBit.Armature.InjectAttribute" />.<see cref="F:BeatyBit.Armature.InjectAttribute.Tag" /> as a tag
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.PropertyArgumentTuner`1.AmendWeight(System.Int32)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.AmendWeight(System.Int32)"/>
+        </member>
+        <member name="T:BeatyBit.Armature.Constructor">
+            <summary>
+            Tunes which constructor should be called to create an instance.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Constructor.WithMaxParametersCount">
+            <summary>
+            Instantiate a Unit using a constructor with the largest number of parameters.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Constructor.MarkedWithInjectAttribute(System.Object)">
+            <summary>
+            Instantiate a Unit using a constructor marked with <see cref="T:BeatyBit.Armature.InjectAttribute" />(<paramref name="injectionPointTag" />).
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Constructor.Parameterless">
+            <summary>
+            Instantiate a Unit using constructor without parameters.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Constructor.WithParameters``1">
+            <summary>
+            Instantiate a Unit using constructor with an exact set of parameters which match specified types.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Constructor.WithParameters``2">
+            <summary>
+            Instantiate a Unit using constructor with an exact set of parameters which match specified types.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Constructor.WithParameters``3">
+            <summary>
+            Instantiate a Unit using constructor with an exact set of parameters which match specified types.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Constructor.WithParameters``4">
+            <summary>
+            Instantiate a Unit using constructor with an exact set of parameters which match specified types.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Constructor.WithParameters(System.Type[])">
+            <summary>
+            Instantiate a Unit using constructor with an exact set of parameters which match specified types.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IInjectionPointSideTuner">
+            <inheritdoc />
+            <summary>
+            This interface is used as a marker to ensure that not suitable tuner like <see cref="T:BeatyBit.Armature.IArgumentSideTuner"/>
+            not passed to <see cref="M:BeatyBit.Armature.IDependencyTuner`1.UsingInjectionPoints(BeatyBit.Armature.IInjectionPointSideTuner[])"/>
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.Property">
+            <summary>
+            Tunes up in which properties of the object inject dependencies. Pass the result of its method to <see cref="M:BeatyBit.Armature.IDependencyTuner`1.UsingInjectionPoints(BeatyBit.Armature.IInjectionPointSideTuner[])"/>
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Property.OfType``1">
+            <summary>
+            Sets up the property of type <typeparamref name="T"/> as required a dependency to be injected into it.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Property.OfType(System.Type)">
+            <summary>
+            Sets up the property of type <paramref name="type"/>> as required a dependency to be injected into it.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Property.Named(System.String[])">
+            <summary>
+            Sets up the properties with names passed with <paramref name="names"/> list as required a dependency to be injected into it.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.Property.ByInjectPointTag(System.Object[])">
+            <summary>
+            Sets up the properties marked with <see cref="T:BeatyBit.Armature.InjectAttribute" /> with corresponding <paramref name="tags" />
+            as required a dependency to be injected into it. /// </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.ISideTuner">
+            <summary>
+            Tunes the build stack pattern at any time, in opposite to static "tuners" like <see cref="T:BeatyBit.Armature.BuildingTuner`1"/>,
+            <see cref="T:BeatyBit.Armature.ICreationTuner"/> which append build a stack pattern and build actions immediately during the call of their methods.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ISideTuner.ApplyTo(BeatyBit.Armature.ITunerBase)">
+            <summary>
+            Append build stack pattern tree nodes to the passed <paramref name="tuner"/>
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.SideTuner">
+            <summary>
+            Implementation of <see cref="M:BeatyBit.Armature.ISideTuner.ApplyTo(BeatyBit.Armature.ITunerBase)"/> based on calling passed lambda action.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.BuildingOpenGenericTuner.As(System.Type,System.Object)">
+            <summary>
+            Build an object of the specified <paramref name="openGenericType"/> instead.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.DependencyTuner">
+            <summary>
+            Real implementation of <see cref="T:BeatyBit.Armature.IDependencyTuner`1"/> interface which can be reused by different implementations
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.DependencyTuner.UsingArguments``1(``0,System.Object[])">
+            <summary>
+            Tunes how dependencies of a unit represented by <paramref name="tuner"/> should be built
+            </summary>
+            <param name="tuner">Tuner of a unit building rules</param>
+            <param name="arguments">Arguments should be object instances or implementation of <see cref="T:BeatyBit.Armature.IArgumentSideTuner"/></param>
+        </member>
+        <member name="M:BeatyBit.Armature.DependencyTuner.UsingInjectionPoints``1(``0,BeatyBit.Armature.IInjectionPointSideTuner[])">
+            <summary>
+            Tunes which members should be used as injection points dependencies of a unit represented by <paramref name="tuner"/>
+            </summary>
+            <param name="tuner">Tuner of a unit building rules</param>
+            <param name="injectionPoints">See inheritors of <see cref="T:BeatyBit.Armature.IInjectionPointSideTuner"/> and usages in tests for details</param>
+        </member>
+        <member name="M:BeatyBit.Armature.DependencyTuner.Using``1(``0,BeatyBit.Armature.ISideTuner[])">
+            <summary>
+            Applies passed implementation of <see cref="T:BeatyBit.Armature.ISideTuner"/> to a unit represented by <paramref name="tuner"/>
+            </summary>
+            <param name="tuner">Tuner of a unit building rules</param>
+            <param name="sideTuners">See implementations of <see cref="T:BeatyBit.Armature.ISideTuner"/> and their usages for details.</param>
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AmendWeight(System.Int32)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.AmendWeight(System.Int32)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AsInstance(`0)">
+            <summary>
+            Use the <paramref name="instance"/> as the Unit.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.As(System.Type,System.Object)">
+            <summary>
+            Set that object of the specified <paramref name="type"/> should be built.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.As``1(System.Object)">
+            <summary>
+            Set that object of the type <typeparamref name="TRedirect"/> should be built.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AsIs">
+            <summary>
+            Set that the <see cref="T:BeatyBit.Armature.Sdk.Default"/>.<see cref="P:BeatyBit.Armature.Sdk.Default.CreationBuildAction"/> build action should be used to build the Unit.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AsCreated(System.Type,System.Object)">
+            <summary>
+            Set that object of the specified <paramref name="type"/> should be build and
+            the <see cref="T:BeatyBit.Armature.Sdk.Default"/>.<see cref="P:BeatyBit.Armature.Sdk.Default.CreationBuildAction"/> build action should be used to build a unit.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AsCreated``1(System.Object)">
+            <summary>
+            Set that object of the type <typeparamref name="TRedirect"/> should be build and
+            the <see cref="T:BeatyBit.Armature.Sdk.Default"/>.<see cref="P:BeatyBit.Armature.Sdk.Default.CreationBuildAction"/> build action should be used to build a unit.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AsCreatedWith(System.Func{`0})">
+            <summary>
+            Use specified <paramref name="factoryMethod"/> to build a unit.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AsCreatedWith``1(System.Func{``0,`0})">
+            <inheritdoc cref="M:BeatyBit.Armature.BuildingTuner`1.AsCreatedWith(System.Func{`0})" />
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AsCreatedWith``2(System.Func{``0,``1,`0})">
+            <inheritdoc cref="M:BeatyBit.Armature.BuildingTuner`1.AsCreatedWith(System.Func{`0})" />
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AsCreatedWith``3(System.Func{``0,``1,``2,`0})">
+            <inheritdoc cref="M:BeatyBit.Armature.BuildingTuner`1.AsCreatedWith(System.Func{`0})" />
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AsCreatedWith``4(System.Func{``0,``1,``2,``3,`0})">
+            <inheritdoc cref="M:BeatyBit.Armature.BuildingTuner`1.AsCreatedWith(System.Func{`0})" />
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AsCreatedWith``5(System.Func{``0,``1,``2,``3,``4,`0})">
+            <inheritdoc cref="M:BeatyBit.Armature.BuildingTuner`1.AsCreatedWith(System.Func{`0})" />
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AsCreatedWith``6(System.Func{``0,``1,``2,``3,``4,``5,`0})">
+            <inheritdoc cref="M:BeatyBit.Armature.BuildingTuner`1.AsCreatedWith(System.Func{`0})" />
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AsCreatedWith``7(System.Func{``0,``1,``2,``3,``4,``5,``6,`0})">
+            <inheritdoc cref="M:BeatyBit.Armature.BuildingTuner`1.AsCreatedWith(System.Func{`0})" />
+        </member>
+        <member name="M:BeatyBit.Armature.IBuildingTuner`1.AsCreatedWith(System.Func{BeatyBit.Armature.Core.IBuildSession,`0})">
+            <inheritdoc cref="M:BeatyBit.Armature.BuildingTuner`1.AsCreatedWith(System.Func{`0})" />
+        </member>
+        <member name="T:BeatyBit.Armature.IContextTuner">
+            <summary>
+            Tunes (overrides defaults or higher level tunings) how target unit's dependencies should be treated
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.IContextTuner.BuildingIt">
+            <summary>
+            Tune up how to treat types building in the context defined by previous calls.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ICreationTuner.AmendWeight(System.Int32)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.AmendWeight(System.Int32)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.ICreationTuner.CreatedByDefault">
+            <summary>
+            Set that the <see cref="T:BeatyBit.Armature.Sdk.Default"/>.<see cref="P:BeatyBit.Armature.Sdk.Default.CreationBuildAction"/> build action should be used to build the Unit.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ICreationTuner.CreatedByReflection">
+            <summary>
+            Set that the <see cref="T:BeatyBit.Armature.CreateByReflection"/> build action should be used to build the Unit.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IDependencyTuner`1">
+            <summary>
+            Tunes (override defaults) target unit's dependencies and how they should be injected.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.IDependencyTuner`1.AmendWeight(System.Int32)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.AmendWeight(System.Int32)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.IDependencyTuner`1.Using(BeatyBit.Armature.ISideTuner[])">
+            <summary>
+            Applies passed rules to the unit. E.g., tuners produced by calling <see cref="T:BeatyBit.Armature.ForParameter"/>, <see cref="T:BeatyBit.Armature.ForProperty"/>.
+            </summary>
+            <param name="sideTuners">See <see cref="T:BeatyBit.Armature.ForParameter"/>, <see cref="T:BeatyBit.Armature.ForProperty"/>, <see cref="T:BeatyBit.Armature.Constructor"/>, and <see cref="T:BeatyBit.Armature.Property"/>
+            for details. Also, custom tuners could be implemented.</param>
+        </member>
+        <member name="M:BeatyBit.Armature.IDependencyTuner`1.UsingArguments(System.Object[])">
+            <summary>
+            Object instances or <see cref="T:BeatyBit.Armature.IArgumentSideTuner"/> which should be used as arguments for all Units being built during the session
+            if there are no suitable registrations in the main tree.
+            </summary>
+            <param name="arguments">Arguments should be object instances or implementation of <see cref="T:BeatyBit.Armature.IArgumentSideTuner"/> interface.</param>
+        </member>
+        <member name="M:BeatyBit.Armature.IDependencyTuner`1.UsingInjectionPoints(BeatyBit.Armature.IInjectionPointSideTuner[])">
+            <summary>
+            Tunes which members of the unit should be used to inject dependencies.
+            </summary>
+            <param name="injectionPoints">See <see cref="T:BeatyBit.Armature.Constructor"/> and <see cref="T:BeatyBit.Armature.Property"/> for details.</param>
+        </member>
+        <member name="T:BeatyBit.Armature.ISettingTuner">
+            <inheritdoc cref="T:BeatyBit.Armature.IDependencyTuner`1"/>
+            <inheritdoc cref="T:BeatyBit.Armature.IContextTuner"/>
+        </member>
+        <member name="M:BeatyBit.Armature.ISettingTuner.AsSingleton">
+            <summary>
+            Only one instance of Unit should be build and used for all further requests.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ISubjectTuner.AmendWeight(System.Int32)">
+            <summary>
+            Amend the weight of the current registration.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.ISubjectTuner.Building(System.Type,System.Object)">
+            <summary>
+            Tune up how to treat types building in the context of <paramref name="type"/>. See <see cref="T:BeatyBit.Armature.Core.BuildSession.Stack"/> for details.
+            </summary>
+            <param name="type">The type in the "context" of which all later tunings are applied.</param>
+            <param name="tag">See <see cref="T:BeatyBit.Armature.Core.UnitId"/>.<see cref="F:BeatyBit.Armature.Core.UnitId.Tag"/> for details.</param>
+        </member>
+        <member name="M:BeatyBit.Armature.ISubjectTuner.Building``1(System.Object)">
+            <summary>
+            Tune up how to treat types building in the context of <typeparamref name="T"/>. See <see cref="T:BeatyBit.Armature.Core.BuildSession.Stack"/> for details.
+            </summary>
+            <typeparam name="T">The type in the "context" of which all later tunings are applied.</typeparam>
+            <param name="tag">See <see cref="T:BeatyBit.Armature.Core.UnitId"/>.<see cref="F:BeatyBit.Armature.Core.UnitId.Tag"/> for details.</param>
+        </member>
+        <member name="M:BeatyBit.Armature.ISubjectTuner.Treat(System.Type,System.Object)">
+            <summary>
+            Tune up how to treat the type <paramref name="type"/> during building.
+            </summary>
+            <param name="type">The type, the building of which is tuned up by later calls to the tuner.</param>
+            <param name="tag">See <see cref="T:BeatyBit.Armature.Core.UnitId"/>.<see cref="F:BeatyBit.Armature.Core.UnitId.Tag"/> for details.</param>
+        </member>
+        <member name="M:BeatyBit.Armature.ISubjectTuner.Treat``1(System.Object)">
+            <summary>
+            Tune up how to treat the type <typeparamref name="T"/> during building.
+            </summary>
+            <typeparam name="T">The type, the building of which is tuned up by later calls to the tuner.</typeparam>
+            <param name="tag">See <see cref="T:BeatyBit.Armature.Core.UnitId"/>.<see cref="F:BeatyBit.Armature.Core.UnitId.Tag"/> for details.</param>
+        </member>
+        <member name="M:BeatyBit.Armature.ISubjectTuner.TreatOpenGeneric(System.Type,System.Object)">
+            <summary>
+            Tune up how to treat the type <paramref name="openGenericType"/> during building.
+            </summary>
+            <param name="openGenericType">The type, the building of which is tuned up by later calls to the tuner.</param>
+            <param name="tag">See <see cref="T:BeatyBit.Armature.Core.UnitId"/>.<see cref="F:BeatyBit.Armature.Core.UnitId.Tag"/> for details.</param>
+        </member>
+        <member name="M:BeatyBit.Armature.ISubjectTuner.TreatInheritorsOf(System.Type,System.Object)">
+            <summary>
+            Tune up how to treat all the types inherit the type <paramref name="baseType"/> during building.
+            </summary>
+            <param name="baseType">The base type of types being tuned up.</param>
+            <param name="tag">See <see cref="T:BeatyBit.Armature.Core.UnitId"/>.<see cref="F:BeatyBit.Armature.Core.UnitId.Tag"/> for details.</param>
+        </member>
+        <member name="M:BeatyBit.Armature.ISubjectTuner.TreatInheritorsOf``1(System.Object)">
+            <summary>
+            Tune up how to treat all the types inherit the type <typeparamref name="T"/> during building.
+            </summary>
+            <typeparam name="T">The base type of types being tuned up.</typeparam>
+            <param name="tag">See <see cref="T:BeatyBit.Armature.Core.UnitId"/>.<see cref="F:BeatyBit.Armature.Core.UnitId.Tag"/> for details.</param>
+        </member>
+        <member name="M:BeatyBit.Armature.ISubjectTuner.TreatAll">
+            <summary>
+            Tune up how to treat all the types building in this context.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.ITunerBase">
+            <summary>
+            Marker of the tuner to use in extension methods and as generic restrictions
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.RootTuner">
+            <summary>
+            Tuner is used as a not null parent tuner which does not perform any tuning. <see cref="M:BeatyBit.Armature.RootTuner.GetOrAddNodeTo(BeatyBit.Armature.Core.IBuildStackPattern)"/> returns passed node w/o any changes.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.SubjectTuner.Building(BeatyBit.Armature.Sdk.ITuner,System.Type,System.Object,System.Int32)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.Building(System.Type,System.Object)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.SubjectTuner.Treat(BeatyBit.Armature.Sdk.ITuner,System.Type,System.Object,System.Int32)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.Treat(System.Type,System.Object)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.SubjectTuner.Treat``1(BeatyBit.Armature.Sdk.ITuner,System.Object,System.Int32)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.Treat``1(System.Object)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.SubjectTuner.TreatOpenGeneric(BeatyBit.Armature.Sdk.ITuner,System.Type,System.Object,System.Int32)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.TreatOpenGeneric(System.Type,System.Object)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.SubjectTuner.TreatInheritorsOf(BeatyBit.Armature.Sdk.ITuner,System.Type,System.Object,System.Int32)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.TreatInheritorsOf(System.Type,System.Object)"/>
+        </member>
+        <member name="M:BeatyBit.Armature.SubjectTuner.TreatInheritorsOf``1(BeatyBit.Armature.Sdk.ITuner,System.Object,System.Int32)">
+            <inheritdoc cref="M:BeatyBit.Armature.ISubjectTuner.TreatInheritorsOf``1(System.Object)"/>
+        </member>
+        <member name="T:BeatyBit.Armature.InjectPointNamedBase">
+            <summary>
+            Base class for patterns which check if a unit is an argument for an "injection point" with the specified name
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.InjectPointOfTypeBase">
+            <summary>
+            Base class for patterns which check if a unit is an argument for an "injection point" requires argument of the specified type
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IsConstructor">
+            <summary>
+            Checks if a unit to be built is a type constructor
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IsInjectPointBase">
+            <summary>
+            Base class for patterns which check if a unit is an injection point marked with with <see cref="T:BeatyBit.Armature.InjectAttribute" />
+            with an optional <see cref="T:BeatyBit.Armature.InjectAttribute" />.<see cref="F:BeatyBit.Armature.InjectAttribute.Tag" />
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.IsInjectPointBase.#ctor(System.Object)">
+            <param name="injectPointTag">An optional tag of the injection point. <see cref="T:BeatyBit.Armature.InjectAttribute"/> for details.</param>
+        </member>
+        <member name="T:BeatyBit.Armature.IsServiceUnit">
+            <summary>
+            Checks if a unit is a "service" unit, constructor, argument, etc.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IsParameterArgument">
+            <summary>
+            Checks if a unit to be built is an argument for a constructor/method parameter
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IsParameterAttributed">
+            <summary>
+            Checks if a unit to be built is an argument for a constructor/method parameter marked with <see cref="T:BeatyBit.Armature.InjectAttribute"/> attribute
+            with an optional <see cref="T:BeatyBit.Armature.InjectAttribute" />.<see cref="F:BeatyBit.Armature.InjectAttribute.Tag" />
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.IsParameterAttributed.#ctor(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="T:BeatyBit.Armature.IsParameterInfoArray">
+            <summary>
+            Checks if a unit to be built is a list of arguments for a constructor/method.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IsParameterNamed">
+            <summary>
+            Checks if a unit to be built is an argument for a constructor/method parameter with the specified name.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IsParameterOfType">
+            <summary>
+            Checks if a unit to be built is an argument for a constructor/method parameter of the specified type.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IsPropertyArgument">
+            <summary>
+            Checks if a unit to be built is an argument to inject into the property
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IsPropertyAttributed">
+            <summary>
+            Checks if a unit to be built is an argument for an object property marked with <see cref="T:BeatyBit.Armature.InjectAttribute"/> attribute
+            with an optional <see cref="T:BeatyBit.Armature.InjectAttribute" />.<see cref="F:BeatyBit.Armature.InjectAttribute.Tag" />
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.IsPropertyAttributed.#ctor(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="T:BeatyBit.Armature.IsPropertyInfoCollection">
+            <summary>
+            Checks if a unit to be built is the list of properties of a type to inject dependencies
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IsPropertyNamed">
+            <summary>
+            Checks if a unit to be built is an argument to inject into the property with a specified name
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IsPropertyOfType">
+            <summary>
+            Checks if a unit to be built is an argument to inject into a property requires argument of the specified type.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.CanBeInstantiated">
+            <summary>
+            Checks if a unit is a type that can be instantiated
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IsAssignableFromType">
+            <summary>
+            Checks whether an instance of a specified type can be assigned to an instance of the type represented by <see cref="F:BeatyBit.Armature.Core.UnitId.Kind"/>
+            See <see cref="M:System.Type.IsAssignableFrom(System.Type)"/> documentation for details.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.IsAssignableFromType.#ctor(System.Type,System.Object)">
+            <summary>
+            Checks whether an instance of a specified type can be assigned to an instance of the type represented by <see cref="F:BeatyBit.Armature.Core.UnitId.Kind"/>
+            See <see cref="M:System.Type.IsAssignableFrom(System.Type)"/> documentation for details.
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IsGenericOfDefinition">
+            <summary>
+            Checks if a unit is a generic type and its <see cref="M:System.Type.GetGenericTypeDefinition"/> is as specified open generic type
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.IsInheritorOf">
+            <summary>
+            Checks if a unit is a type that inherits the specified type
+            </summary>
+        </member>
+        <member name="T:BeatyBit.Armature.TypePatternBase">
+            <summary>
+            Base class for unit patterns matching unit with a <see cref="T:System.Type"/>.
+            </summary>
+        </member>
+        <member name="M:BeatyBit.Armature.TypePatternBase.#ctor(System.Type,System.Object)">
+            <summary>
+            Base class for unit patterns matching unit with a <see cref="T:System.Type"/>
+            </summary>
+        </member>
+        <member name="T:JetBrains.Annotations.UsedImplicitlyAttribute">
+             <summary>
+             Indicates that the marked symbol is used implicitly (e.g. via reflection, in external library),
+             so this symbol will be ignored by usage-checking inspections. <br/>
+             You can use <see cref="T:JetBrains.Annotations.ImplicitUseKindFlags"/> and <see cref="T:JetBrains.Annotations.ImplicitUseTargetFlags"/>
+             to configure how this attribute is applied.
+             </summary>
+             <example><code>
+             [UsedImplicitly]
+             public class TypeConverter {}
+            
+             public class SummaryData
+             {
+             [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+             public SummaryData() {}
+             }
+            
+             [UsedImplicitly(ImplicitUseTargetFlags.WithInheritors | ImplicitUseTargetFlags.Default)]
+             public interface IService {}
+             </code></example>
+        </member>
+        <member name="T:JetBrains.Annotations.MeansImplicitUseAttribute">
+            <summary>
+            Can be applied to attributes, type parameters, and parameters of a type assignable from <see cref="T:System.Type"/> .
+            When applied to an attribute, the decorated attribute behaves the same as <see cref="T:JetBrains.Annotations.UsedImplicitlyAttribute"/>.
+            When applied to a type parameter or to a parameter of type <see cref="T:System.Type"/>,
+            indicates that the corresponding type is used implicitly.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Annotations.ImplicitUseKindFlags">
+            <summary>
+            Specifies the details of implicitly used symbol when it is marked
+            with <see cref="T:JetBrains.Annotations.MeansImplicitUseAttribute"/> or <see cref="T:JetBrains.Annotations.UsedImplicitlyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Annotations.ImplicitUseKindFlags.Access">
+            <summary>Only entity marked with attribute considered used.</summary>
+        </member>
+        <member name="F:JetBrains.Annotations.ImplicitUseKindFlags.Assign">
+            <summary>Indicates implicit assignment to a member.</summary>
+        </member>
+        <member name="F:JetBrains.Annotations.ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature">
+            <summary>
+            Indicates implicit instantiation of a type with fixed constructor signature.
+            That means any unused constructor parameters won't be reported as such.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Annotations.ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature">
+            <summary>Indicates implicit instantiation of a type.</summary>
+        </member>
+        <member name="T:JetBrains.Annotations.ImplicitUseTargetFlags">
+            <summary>
+            Specifies what is considered to be used implicitly when marked
+            with <see cref="T:JetBrains.Annotations.MeansImplicitUseAttribute"/> or <see cref="T:JetBrains.Annotations.UsedImplicitlyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Annotations.ImplicitUseTargetFlags.Members">
+            <summary>Members of the type marked with the attribute are considered used.</summary>
+        </member>
+        <member name="F:JetBrains.Annotations.ImplicitUseTargetFlags.WithInheritors">
+            <summary> Inherited entities are considered used. </summary>
+        </member>
+        <member name="F:JetBrains.Annotations.ImplicitUseTargetFlags.WithMembers">
+            <summary>Entity marked with the attribute and all its members considered used.</summary>
+        </member>
+        <member name="T:JetBrains.Annotations.PublicAPIAttribute">
+            <summary>
+            This attribute is intended to mark publicly available API,
+            which should not be removed and so is treated as used.
+            </summary>
+        </member>
+    </members>
+</doc>
