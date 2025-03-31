@@ -29,7 +29,7 @@ public class BuildStackTest
     var expected = new[] {Unit.By(0), Unit.By(1), Unit.By(2), Unit.By(3)};
 
     // arrange
-    var stack = new BuildSession.Stack(expected.Reverse().ToArray());
+    var stack = new BuildSession.Stack(Enumerable.Reverse(expected).ToArray());
 
     // act, assert
     stack.AsEnumerable().Should().BeEquivalentTo(expected);
@@ -46,7 +46,7 @@ public class BuildStackTest
     var tail = stack.GetTail(1);
 
     // assert
-    tail.AsEnumerable().Should().BeEquivalentTo(array.Reverse().Skip(1));
+    tail.AsEnumerable().Should().BeEquivalentTo(Enumerable.Reverse(array).Skip(1));
   }
 
   [Test]
