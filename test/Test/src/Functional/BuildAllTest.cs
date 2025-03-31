@@ -87,12 +87,12 @@ namespace Armature.Test.Functional
 
       actual.Select(_ => _ as SampleType1).Where(_ => _ != null).Should()
             .HaveCount(2)
-            .And.Subject.Select(_ => _.Value).Should()
+            .And.Subject.Select(_ => _?.Value).Should()
             .BeEquivalentTo([nameof(parent), nameof(target)]);
 
       actual.Select(_ => _ as SampleType2).Where(_ => _ != null).Should()
             .HaveCount(2)
-            .And.Subject.Select(_ => _.Value).Should()
+            .And.Subject.Select(_ => _?.Value).Should()
             .BeEquivalentTo([nameof(parent), nameof(target)]);
     }
 

@@ -103,7 +103,7 @@ namespace Armature.Test.Functional
       var dep  = target.Build<IDisposableValue1>();
       var dep1 = target.UsingTag(tag1).Build<IDisposableValue2>();
 
-      Assert.AreSame(dep, dep1);
+      dep.Should().Be(dep1);
     }
 
     private static Builder CreateTarget()
