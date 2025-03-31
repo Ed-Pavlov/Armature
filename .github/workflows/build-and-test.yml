@@ -43,7 +43,7 @@ jobs:
         name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 9.0.104
 
       -
         name: Install GitVersion
@@ -109,7 +109,7 @@ jobs:
         with:
           label: Unit Test Coverage
           color: brightgreen
-          path: test\Test\TestResults\coverage.net6.0.opencover.xml
+          path: test\Test\TestResults\coverage.net9.0.opencover.xml
           gist-filename: armature-test-coverage.json
           gist-id: ad5636de8f9cf631d90e2e85d2f3019c
           gist-auth-token: ${{ secrets.GIST_KEY }}
