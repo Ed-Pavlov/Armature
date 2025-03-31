@@ -1,150 +1,258 @@
 <p align='right'>If <b>Armature</b> has done you any good, consider supporting my future initiatives</p>
 <p align="right">
   <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ed@pavlov.is&lc=US&item_name=Kudos+for+Armature&no_note=0&cn=&currency_code=EUR">
-    <img src="https://ed.pavlov.is/Images/donate-button-small.png" />
+    <img src="/.build/button.png" width="76" height="32">
   </a>
 </p>
 
 ___
 
-[![Nuget](https://img.shields.io/nuget/dt/Armature)](https://www.nuget.org/packages/Armature/)
-[![Build & Test](https://github.com/Ed-Pavlov/Armature/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/Ed-Pavlov/Armature/actions/workflows/build-and-test.yml)
-___
+# Armature
+
 <p align="center">
-  <img src="/build/logo.svg" width="128" height="128">
+  <img src="/.build/logo.svg" width="86" height="86">
 </p>
 
-**Explore the Wiki:** Explore the [Wiki](https://github.com/Ed-Pavlov/Armature/wiki) for full documentation
+**The Lightweight, Intuitive, and Highly Extensible Dependency Injection Framework for .NET**
 
-# Armature
-**The Lightweight, Intuitive, and extremely easy Extensible Dependency Injection Framework for .NET**
+✔ Empowers you to build robust and maintainable .NET applications with a clear and flexible approach to dependency injection.
+✔ It's designed to be easy to learn, powerful to use, and to extend when your project demands it.
+✔ It gets out of your way, letting you focus on your application logic while providing robust control over object creation and wiring when you need it.
 
-Armature is not your average dependency injection (DI) framework. We've built it from the ground up to be:
+Dive deeper into the **documentation**: [Armature Wiki](https://github.com/Ed-Pavlov/Armature/wiki)
 
-* **Intuitive:** With Armature's Tuner concept and fluent API, you'll write DI configurations that read like plain English, not cryptic code.
-* **Extensible:** Armature embraces customization. Easily tailor the framework to your project's specific needs without ever touching the source code of the framework itself.
-* **Lightweight:** Armature stays out of your way. It's designed to be minimal, focusing on the core DI tasks without unnecessary overhead.
-* **Transparent:** Understand exactly what's happening. Armature's logging uses a human-readable format, giving you clear insights into the DI process.
+[![Build & Test](https://github.com/Ed-Pavlov/Armature/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/Ed-Pavlov/Armature/actions/workflows/build-and-test.yml)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Ed-Pavlov/ad5636de8f9cf631d90e2e85d2f3019c/raw/armature-test-coverage.json)
+[![Nuget](https://img.shields.io/nuget/dt/BeatyBit.Armature)](https://www.nuget.org/packages/BeatyBit.Armature/)
+___
 
-**Key Features**
+## Powered by
+<p align="right">
+  <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/Rider.png" width="185" height="64">
+</p>
 
-* **Tuner Hierarchy:** Fine-tune every aspect of the DI process. Specify which types to tune, how they're created, which constructors or properties to inject into, and much more.
-* **Fluent API:** Write clean, expressive configurations. Armature's syntax feels natural and guides you through the process, making complex setups straightforward.
-* **Build Actions:** Control the exact steps of object creation and configuration. Use built-in actions or create your own to handle unique requirements.
-* **Build Stack Patterns:** Define complex, conditional logic for dependency resolution. This powerful feature gives you unprecedented flexibility.
-* **Side Tuners:** Refine your configurations even further. These modifiers let you make targeted adjustments to the injection process, like specifying argument values or selecting particular constructors.
-* **Inject Attribute:** Mark injection points clearly in your code with the `[Inject]` attribute. Armature will handle the rest.
-* **Open Generic Types:** Handle generic types with ease! Armature supports open generics and their inheritors, making it a breeze to configure common abstractions.
-
-**Example: Creating a Builder with "default" rules**
-```c#
-new Builder("Root Builder", BuildStage.Cache, BuildStage.Initialize, BuildStage.Create)
-       {
-           // choose which constructor to call to instantiate an object
-           new IfFirstUnit(new IsConstructor())
-              .UseBuildAction(
-                   new TryInOrder
-                   {
-                       // constructor marked with [Inject] attribute has more priority
-                       new GetConstructorByInjectPoint(),
-                       // constructor with the largest number of parameters has less priority
-                       new GetConstructorWithMaxParametersCount()
-                   },
-                   BuildStage.Create),
-
-           // build arguments for a constructor/method in the order of their parameters
-           new IfFirstUnit(new IsParameterInfoArray())
-              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-
-           // build each argument for a constructor/method
-           new IfFirstUnit(new IsParameterArgument())
-              .UseBuildAction(
-                   new TryInOrder
-                   {
-                     // parameter marked with [Inject] attribute has more priority
-                     new BuildArgumentByParameterInjectPoint(),
-                     // if not, try to build it by type
-                     new BuildArgumentByParameterType(),
-                     // if still not build and parameter has default value, use it
-                     new GetParameterDefaultValue()
-                   },
-                   BuildStage.Create),
-
-           // try to inject dependencies into property of any built unit
-           new IfFirstUnit(Unit.Any)
-            .UseBuildAction(new InjectDependenciesIntoProperties(), BuildStage.Initialize),
-
-           // inject dependencies into all properties marked with [Inject] attribute
-           new IfFirstUnit(new IsPropertyInfoCollection())
-            .UseBuildAction(new GetPropertyListByInjectAttribute(), BuildStage.Create),
-
-           // use a property type and InjectAttribute.Tag as UnitId.Tag to build argument for a property
-           new IfFirstUnit(new IsPropertyArgument())
-            .UseBuildAction(new BuildArgumentByPropertyInjectPoint(), BuildStage.Create)
-       }
-```
 ---
-**Example: Open Generic Types**
-```c#
-// Create instances of Child<T> for all requests to Base<T>
-builder.TreatOpenGeneric(typeof(Base<>)).AsCreated(typeof(Child<>));
 
-// Apply special rules for any requests to Base<int> and its inheritors
+## Why Choose Armature?
+
+Armature stands out by focusing on clarity, flexibility, and developer control.
+
+* **✨ Intuitive Fluent API:**
+Configure your dependencies using a fluent API that reads like plain English. Armature's DSL concept makes defining object creation and injection rules straightforward and understandable.
+
+```csharp
+// Example:
+// a bunch of features just to show them off :)
+// in real life, it's much simpler than that.
+
+target
+ .Treat<IMyInterface>()
+ .AsCreated<MyClass>()
+ .UsingArguments(ForParameter.OfType<string>().UseValue("MyId"))
+ .UsingInjectionPoints(Constructor.WithParameters<string, int>())
+ .AsSingleton()
+ .BuildingIt()
+ .TreatAll()
+ .UsingArguments(childLifetime);
+```
+See [What You Have Out of the Box](https://github.com/Ed-Pavlov/Armature/wiki/Out-of-the-Box) for all features of Armature DSL.*
+
+* **🚀 Adaptable & Focused: Your Paradigm, Not Ours**:
+  Armature stands apart by *not* imposing its own concepts or abstractions onto your application code. You won't find mandatory `Lifetimes`, `Modules`, `Service Providers`, or the other framework-specific structures that you must conform to.<br>
+  **Armature** concentrates on the core DI tasks—**you** develop your product.
+
+
+* **✨ Explicit DI: No Assumptions, No Magic**
+  Armature operates on the principle of **no default behaviour**.
+  There's no hidden magic or predetermined outcomes for crucial aspects like constructor selection, property injection, or default parameter handling – **you define the rules explicitly.**
+Crucially, you achieve this fine-grained control not through numerous configuration flags, but by **setting up Armature with specific rules** that define behaviour exactly where it's necessary.
+
+
+* **🔍 Transparent Logging:**
+Understand exactly how your dependencies are resolved. offering clear, structured, and human-readable insights into the build process. Debugging dependency issues becomes significantly easier. Debugging dependency issues becomes significantly easier.
+
+```hocon
+// Example of HOCON log output
+BuildUnit {
+  Time: "2025-14-31 21:14:03.202"
+  Thread: 14
+  BuildStack = [{ kind: typeof(Subject), tag: null}]
+
+  GatherBuildActions.Result:  [
+    { Action: CreateByReflection, Stage: BuildStage.Create, Weight: "1,030,000" }
+    { Action: { Singleton{ Instance: nothing } }, Stage: BuildStage.Cache, Weight: "1,030,000" }
+  ]
+  Singleton.Process {
+  }
+  CreateByReflection.Process {
+    BuildUnit {
+      Time: "2025-14-31 21:14:03.211"
+      Thread: 14
+      BuildStack = [{ kind: typeof(Subject), tag: ServiceTag.Constructor}, { kind: typeof(Subject), tag: null}]
+
+    GatherBuildActions.Result: { Action: GetConstructorWithMaxParametersCount, Stage: BuildStage.Create, Weight: "1,000,000" }
+   //...
+    }
+  }
+}
+```
+*Explore [Logging details](https://github.com/Ed-Pavlov/Armature/wiki/Logging).*
+
+
+* **🔧 Deep Extensibility:**
+  Armature is built from the ground up for customization. Tailor every aspect of the DI process—from object creation logic to dependency resolution strategies—without ever needing to modify the framework's source code. When advanced customization is required, create your own Build Actions, Tuners, and Build Stack Patterns to perfectly match your project's unique requirements.
+
+*Learn more about customization in the [Extensibility](https://github.com/Ed-Pavlov/Armature/wiki/Propagation-of-Maybe.-Subscribing-Events.-And-Many-Many-More) section.*
+
+---
+
+## Key Features
+
+Armature provides a rich set of features for precise control over dependency injection.
+
+### Tuner Hierarchy & Fluent API
+Armature's fluent API is powered by a hierarchy of Tuners (`Treat`, `AsCreated`, `UsingArguments`, etc.). These allow you to chain configuration calls logically, specifying *what* to configure, *how* it should be created, *what* dependencies it needs, and its *lifetime*.
+
+```csharp
 builder
-  .TreatInheritorsOf<Base<int>>()
-  .Using(Constructor.Parameterless(), ForPropety.OfType<int>().UseFactoryMethod(...));
+  .Treat<IMyService>()             // For requests of IMyService...
+  .AsCreated<MyServiceImpl>()      // ...create an instance of MyServiceImpl...
+  .UsingArguments(                 // ...injecting these arguments:
+      ForParameter.OfType<string>().UseValue("config_value"),
+      ForParameter.OfType<ILogger>().UseTag("special_logger")
+  )
+  .AsSingleton();                 // ...and manage it as a singleton.
 ```
-**Example: Simple Types**
-```c#
+*See [Tuners](https://github.com/Ed-Pavlov/Armature/wiki/Armature-the-DSL-over-Armature.Core) and [Side Tuners](https://github.com/Ed-Pavlov/Armature/wiki/Side-Tuners-Fine-Grained-Control-Over-Dependency-Injection).*
+
+### Build Actions
+These are the workhorses performing the actual object creation and configuration (`CreateByReflection`, `InjectDependenciesIntoProperties`, `Singleton`, `Redirect`). Use built-in actions or implement the `IBuildAction` interface to define custom steps in the build process.
+
+```csharp
+// Example: Using a built-in action to redirect requests
 builder
-  .Treat<IMyInterface>()
-  .AsCreated<MyClass>()
-  .UsingArguments(ForParameter.OfType<string>().UseValue("identity"))
-  .AsSingleton()
-  .BuildingIt()
-  .Treat<Stream>()
-  .UsingFactoryMethod(bs => buildSession... )
+  .Treat<ILegacyService>()
+  .As<INewService>(); // Redirects requests for ILegacyService to INewService
 ```
+*Learn about [Build Actions](https://github.com/Ed-Pavlov/Armature/wiki/Armature-the-DSL-over-Armature.Core).*
+
+### Build Stack Patterns
+Define complex, conditional logic for dependency resolution based on the context (the chain of dependencies being built). Patterns like `IfFirstUnit` and `SkipTillUnit` match against the build stack, enabling highly specific configuration rules. Create custom patterns by implementing `IBuildStackPattern`.
+
+*(Complex concept - best explored in the [Core Concepts](https://github.com/Ed-Pavlov/Armature/wiki/Core-Concepts-of-Armature.Core) wiki page)*
+
+### Side Tuners
+Refine configurations with targeted modifiers. Side Tuners like `UsingArguments` and `UsingInjectionPoints` accept further specifiers (e.g., `ForParameter`, `Constructor`, `Property`) to precisely control how dependencies are injected or which members are used.
+
+```csharp
+// Example: Specifying a constructor using a Side Tuner
+builder
+  .Treat<MyComplexObject>()
+  .UsingInjectionPoints(Constructor.WithParameters<ILogger, string>());
+```
+*See [Side Tuners](https://github.com/Ed-Pavlov/Armature/wiki/Side-Tuners-Fine-Grained-Control-Over-Dependency-Injection).*
+
+
+### `[Inject]` Attribute
+The `[Inject]` attribute provides a clear way to mark constructors, properties, methods, or parameters in your code that Armature should consider for injection.
+However, **using this specific attribute is entirely optional**. Armature's flexibility means you don't *have* to use it.
+You can:
+* Configure injection based on conventions or other rules **without using attributes at all**.
+* **Leverage your own custom attributes** if they already exist in your codebase. Supporting them simply requires creating custom `Build Actions` tailored to your attributes (you can look at how Armature handles `[Inject]` internally for inspiration and guidance).
+
+Note also that this attribute lives in the separate `Armature.Interface` assembly, ensuring your domain code remains decoupled from the core framework logic.
+
+```csharp
+public class DataProcessor
+{
+    public ILogger Logger { get; }
+
+    [Inject] // Mark this constructor for injection
+    public DataProcessor([Inject("db")] IDatabase database, ILogger logger)
+    {
+        Logger = logger;
+        // ...
+    }
+}
+```
+*Read about the [InjectAttribute](https://github.com/Ed-Pavlov/Armature/wiki/InjectAttribute.-Marking-Injection-Points-and-Customizing-Injection-Rules).*
+
+### Open Generic Types
+Configure rules for open generic types and their implementations. Armature simplifies handling common abstractions like repositories or handlers.
+
+```csharp
+// Example: Map all ISubject<T> requests to Subject<T>
+target
+ .TreatOpenGeneric(typeof(ISubject<>))
+ .AsCreated(typeof(Subject<>));
+
+// but override rules for Generic Argument type int
+target
+ .Treat<ISubject<int>>()
+ .AsCreated<AnotherSubject<int>>()
+ .Using(Constructor.Parameterless());
+```
+
+### Weighted Prioritization
+Control the order in which configuration rules are applied. Assign weights to rules (using `AmendWeight` or implicitly by specificity) to resolve ambiguity and prioritize certain configurations over others, ensuring predictable dependency resolution.
+
+```csharp
+// Example: Giving a specific rule higher priority
+builder
+  .Treat<IService>()
+  .As<DefaultService>(); // Lower priority default
+
+builder
+  .Treat<IService>()            // Higher priority rule for IService
+  .WhenBuilding<MyController>() // ...only when MyController needs it
+  .AmendWeight(10)              // Increase weight to ensure it "wins"
+  .As<SpecialService>();
+```
+*See [Weighted Build Actions and Patterns](https://github.com/Ed-Pavlov/Armature/wiki/Weighted-Build-Actions-and-Patterns.-Prioritizing-Resolution-Paths).*
+
+### Tags for Specificity
+Differentiate between multiple registrations of the same type using tags. This allows injecting specific named instances based on context, perfect for scenarios like multiple database connections or feature-specific implementations.
+
+```csharp
+// Example: Registering named loggers
+builder.Treat<ILogger>("Console").AsCreated<ConsoleLogger>();
+builder.Treat<ILogger>("File").AsCreated<FileLogger>();
+
+// Example: Building a specific named instance
+var fileLogger = builder.BuildUnit(new UnitId(typeof(ILogger), "File"));
+```
+*Learn about [Tags in Core Concepts](https://github.com/Ed-Pavlov/Armature/wiki/Core-Concepts-of-Armature.Core).*
+
 ---
-**Armature: A DSL for Dependency Injection, But Not Your Limit**
 
-Armature offers a powerful Domain-Specific Language (DSL) that simplifies the configuration of dependency injection. This DSL, built on top of Armature.Core, provides a fluent and intuitive way to express how your objects should be created, wired together, and managed.
-While Armature's DSL is a great starting point, it's not your only option. Armature.Core, the engine behind the DSL, is a versatile toolkit that allows you to build your own custom DI solutions.
+## Beyond the DSL: The Power of Armature.Core
 
-* **Create Your Own DSL:** If you have specific requirements or preferences, you can craft a DSL that perfectly aligns with your project's conventions and style.
-* **Build Specialized Tools:** Armature.Core can be used to create tools beyond traditional DI frameworks. You could build an object composition engine, a configuration management system, or anything else that requires the flexible assembly of components.
-* **Integrate with Existing Systems:** Seamlessly integrate Armature.Core with your existing codebase or other frameworks. Its open design allows for easy adaptation and extension.
+While the `Armature` assembly provides a convenient DSL for common dependency injection tasks, the underlying engine, `Armature.Core`, is a versatile toolkit. It's the foundation upon which the DSL is built and can be used directly:
 
-**The Power of Choice**
+* **Create Your Own DSL:** If Armature's DSL doesn't perfectly fit your team's style or project conventions, use Armature.Core to build a custom DSL tailored to your needs.
+* **Build Specialized Tools:** Leverage Armature.Core for tasks beyond traditional DI, such as object composition engines, configuration managers, or complex orchestrators.
+* **Integrate with Existing Systems:** Its flexible design allows Armature.Core to be integrated smoothly with other frameworks and systems.
 
-Armature gives you the freedom to choose the best approach for your project. Whether you prefer the convenience of the built-in DSL or the flexibility of building your own tools, Armature.Core empowers you to create a dependency injection solution that fits your needs perfectly.
-
-**Unlock Your Potential**
-
-Armature is more than just a framework; it's a platform for innovation. By understanding the distinction between the DSL and the underlying core, you can unlock new possibilities and create truly unique solutions for your .NET applications.
+Armature gives you the choice: use the convenient built-in DSL or harness the power of the core engine for ultimate flexibility.
 
 ---
 
-**Build Your Own Rules with Armature**
+## Your Framework, Your Rules
 
-Armature gives you the building blocks, but you're the architect. Here's how you can create your own dependency injection masterpiece:
+Armature doesn't impose a rigid set of default behaviours. You, the developer, define the rules.
 
-* **Custom Build Actions:** Implement the `IBuildAction` interface to define precisely how your objects are created, their dependencies injected, and any post-creation logic.
+* **No Forced Defaults:** Start with a clean slate and add only the rules you need.
+* **Reference Implementation:** While there are no enforced defaults, Armature provides examples of common configurations (like constructor selection strategies) in the [Default Rules](https://github.com/Ed-Pavlov/Armature/wiki/Default-Rules-For-Resolving-Unit-and-Its-Dependencies) documentation to guide you.
+* **Total Control:** Implement custom `IBuildAction`, `ITuner`, and `IBuildStackPattern` to craft a dependency injection system that perfectly aligns with your application's architecture.
 
-* **Custom Tuners:** Extend the `ITuner` interface to create your own tuners. Tailor the injection process to your exact needs, adding new configuration options or modifying existing behavior.
+---
 
-* **Custom Build Stack Patterns:** Dive deeper into the resolution process. By implementing `IBuildStackPattern`, you can create complex patterns to match specific build stacks and execute your custom build actions.
+## Get Started
 
-* **Weighted Build Actions and Patterns:** Set priorities for different build actions and patterns using numerical weights. This gives you granular control over which path Armature takes to resolve dependencies.
+Ready to experience a more intuitive and flexible DI framework?
 
-* **Default Rules as a Guide:** While Armature doesn't enforce defaults, we provide a set of "default-like" rules as a reference implementation.  Learn from these examples and use them as a starting point for your own configurations.
+1.  **Install the NuGet package:** `Armature` (or `Armature.Core` if you want to build your own DSL).
+2.  **Explore the [Wiki Documentation](https://github.com/Ed-Pavlov/Armature/wiki)** for detailed guides and examples.
+3.  **Start configuring!** Use the fluent API to define your application's dependencies.
 
-
-**Under the Hood and Beyond**
-
-Armature is more than just a DI framework. It's a philosophy of extensibility and customization:
-
-* **Internal Logic as Units:** Armature uses its own build process to handle internal logic like constructor selection or argument resolution. This means you can apply the same rules and patterns you use for your code to Armature itself, opening up even more customization possibilities.
-* **Tags for Specificity:** Differentiate between multiple implementations of the same interface or type with Tags. This allows you to easily switch between implementations based on the context, like using a mock logger for testing.
-* **HOCON Logging:** Armature's logs are formatted in the easy-to-read HOCON format, giving you clear insights into how dependencies are resolved and built.
-* **Built on Armature.Core:** Armature's foundation is a powerful, low-level toolkit. You can leverage this core to build your own dependency injection frameworks or other tools that require seamless component integration.
+Armature provides the building blocks – you’re the architect. Build cleaner, more maintainable, and adaptable .NET applications with Armature.
