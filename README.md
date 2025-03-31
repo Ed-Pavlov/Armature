@@ -57,7 +57,7 @@ target
 ```
 See [What You Have Out of the Box](https://github.com/Ed-Pavlov/Armature/wiki/Out-of-the-Box) for all features of Armature DSL.*
 
-* **🚀 Adaptable & Focused: Your Paradigm, Not Ours**:
+* **🚀 Adaptable & Focused: Your Paradigm, Not Ours**:<br>
   Armature stands apart by *not* imposing its own concepts or abstractions onto your application code. You won't find mandatory `Lifetimes`, `Modules`, `Service Providers`, or the other framework-specific structures that you must conform to.<br>
   **Armature** concentrates on the core DI tasks—**you** develop your product.
 
