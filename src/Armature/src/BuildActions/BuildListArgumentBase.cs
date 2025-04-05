@@ -103,6 +103,7 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
 
   [DebuggerStepThrough]
   public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ Tag: {_tag.ToHoconString()} }} }}";
+
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
 }

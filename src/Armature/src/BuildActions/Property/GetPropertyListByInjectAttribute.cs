@@ -15,6 +15,10 @@ public record GetPropertyListByInjectAttribute : IBuildAction, ILogString
 {
   private readonly object?[] _tags;
 
+  /// <summary>
+  /// The list of tags to match with property's <see cref="InjectAttribute.Tag"/>.
+  /// Empty list means 'any' tag.
+  /// </summary>
   public GetPropertyListByInjectAttribute(params object?[] tags) => _tags = tags ?? throw new ArgumentNullException(nameof(tags));
 
   public void Process(IBuildSession buildSession)

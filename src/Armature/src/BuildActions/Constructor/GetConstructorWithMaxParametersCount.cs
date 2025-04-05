@@ -73,4 +73,5 @@ public record GetConstructorWithMaxParametersCount : IBuildAction
 
   [DebuggerStepThrough]
   public override string ToString() => nameof(GetConstructorWithMaxParametersCount);
+  public string ToHoconString() => $"{nameof(GetConstructorWithMaxParametersCount)} ";
 }

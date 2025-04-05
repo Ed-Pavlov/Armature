@@ -1,30 +1,22 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
-using BeatyBit.Armature.Core.Annotations;
-using BeatyBit.Armature.Core;
-using BeatyBit.Armature.Sdk;
 
 namespace BeatyBit.Armature;
 
 /// <summary>
 /// Builds arguments for constructor/method parameters one by one in the direct order.
 /// </summary>
-public record BuildMethodArgumentsInDirectOrder : IBuildAction
+public record BuildMethodArgumentsInDirectOrder : BuildMethodArgumentsInCustomOrder
 {
-  public void Process(IBuildSession buildSession)
-  {
-    var parameters = (ParameterInfo[]) buildSession.Stack.TargetUnit.Kind!;
-    var arguments  = new object?[parameters.Length];
+  public BuildMethodArgumentsInDirectOrder() : base(Reorder) { }
 
-    for(var i = 0; i < parameters.Length; i++)
-      arguments[i] = buildSession.BuildArgumentForMethod(parameters[i]);
-
-    buildSession.BuildResult = new BuildResult(arguments);
-  }
-
-  [WithoutTest]
-  [DebuggerStepThrough]
-  public void PostProcess(IBuildSession buildSession) { }
+  /// <summary>
+  /// Doesn't change the order
+  /// </summary>
+  private static IEnumerable<Tuple<int, ParameterInfo>> Reorder(ParameterInfo[] parameters) => parameters.Select((t, i) => Tuple.Create(i, t));
 
   [DebuggerStepThrough]
   public override string ToString() => nameof(BuildMethodArgumentsInDirectOrder);

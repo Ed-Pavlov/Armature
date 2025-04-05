@@ -17,8 +17,13 @@ public class RootTuner : ITuner, IDependencyTuner<RootTuner>
 
   public IBuildStackPattern GetOrAddNodeTo(IBuildStackPattern node) => node;
 
-  public RootTuner AmendWeight(int                                      delta)           => throw new NotSupportedException();
+  public RootTuner AmendWeight(int                                        delta)           => throw new NotSupportedException();
   public RootTuner Using(params                ISideTuner[]               sideTuners)      => DependencyTuner.Using(this, sideTuners);
   public RootTuner UsingArguments(params       object[]                   arguments)       => DependencyTuner.UsingArguments(this, arguments);
   public RootTuner UsingInjectionPoints(params IInjectionPointSideTuner[] injectionPoints) => DependencyTuner.UsingInjectionPoints(this, injectionPoints);
+}
+
+public static class RootTunerExtensions
+{
+  public static bool IsRootTuner(this ITunerBase tuner) => tuner is RootTuner;
 }

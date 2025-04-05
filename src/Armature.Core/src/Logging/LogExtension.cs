@@ -56,9 +56,9 @@ public static class LogExtension
              {
                null                     => "null",
                string str               => str.QuoteIfNeeded(),
-               BuildSession.Stack stack    => stack.ToHoconString(),
+               BuildSession.Stack stack => stack.ToHoconString(),
                ILogString logable       => logable.ToHoconString(),
-               IBuildAction buildAction => buildAction.GetType().GetShortName().QuoteIfNeeded(),
+               // IBuildAction buildAction => buildAction.GetType().GetShortName().QuoteIfNeeded(),
                MethodBase methodInfo    => methodInfo.ToString().QuoteIfNeeded(),
                Type type                => $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})".QuoteIfNeeded(),
                IEnumerable items        => $"[{string.Join(", ", items.Cast<object>().Select(_ => _.ToHoconString()))}]",

@@ -34,7 +34,7 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
   /// <summary>
   /// Adds a <paramref name="node" /> as a child node if the node is not already added. Returns the new node, or the existing node if the node already added.
   /// </summary>
-  /// <remarks>Call it first and then fill returned <see cref="IBuildStackPattern" /> with build actions or perform other needed actions due to
+  /// <remarks>Call it first and then fill returned <see cref="IBuildStackPattern" /> with build actions or perform other necessary actions due to
   /// it can return another instance of <see cref="IBuildStackPattern"/> then passed <paramref name="node"/>.</remarks>
   public virtual T GetOrAddNode<T>(T node) where T : IBuildStackPattern
   {
@@ -84,13 +84,14 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
 
     foreach(var pair in RawBuildActions)
     {
+      var buildStage      = pair.Key;
       var actions         = pair.Value;
       var weightedActions = new LeanList<Weighted<IBuildAction>>(actions.Count);
 
       foreach(var buildAction in actions)
         weightedActions.Add(buildAction.WithWeight(matchingWeight));
 
-      actionBag.Add(pair.Key, weightedActions);
+      actionBag.Add(buildStage, weightedActions);
     }
 
     return true;

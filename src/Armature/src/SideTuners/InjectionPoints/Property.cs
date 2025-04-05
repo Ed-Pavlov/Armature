@@ -64,12 +64,30 @@ public static class Property
     => new InjectionPointSideTuner(
       tuner =>
       {
-        var internals = tuner.GetTunerInternals();
-        internals.Apply().UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+        var mainTuner = tuner.GetTunerInternals();
 
-        internals.TreeRoot
+        // Parent is null means Root tuner and a builder itself
+        var lastNode = mainTuner.Parent is null ? mainTuner.TreeRoot.GetOrAddNode(IfAnyUnit.Instance) : mainTuner.Apply();
+        lastNode.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+
+        mainTuner.TreeRoot
                  .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>(), WeightOf.BuildStackPattern.IfFirstUnit))
                  .ApplyTuner(tuner)
                  .UseBuildAction(new GetPropertyListByInjectAttribute(tags), BuildStage.Create);
+      });
+
+  public static IInjectionPointSideTuner AllProperties()
+    => new InjectionPointSideTuner(
+      tuner =>
+      {
+        var mainTuner = tuner.GetTunerInternals();
+        // Parent is null means Root tuner and a builder itself
+        var lastNode = mainTuner.Parent is null ? mainTuner.TreeRoot.GetOrAddNode(IfAnyUnit.Instance) : mainTuner.Apply();
+        lastNode.UseBuildAction(Static.Of<InjectDependenciesIntoProperties>(), BuildStage.Initialize);
+
+        mainTuner.TreeRoot
+                 .GetOrAddNode(new IfFirstUnit(Static.Of<IsPropertyInfoCollection>(), WeightOf.BuildStackPattern.IfFirstUnit))
+                 .ApplyTuner(tuner)
+                 .UseBuildAction(new GetAllProperties(), BuildStage.Create);
       });
 }

@@ -30,22 +30,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{4F748C60
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Performance", "test\Test.Performance\Test.Performance.csproj", "{47000C08-6B61-4ADB-8BBF-D8EED737D2D1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wiki", "wiki", "{FA14B96D-6F61-4888-92D8-A0B34DFD20AB}"
-	ProjectSection(SolutionItems) = preProject
-		wiki\_Sidebar.md = wiki\_Sidebar.md
-		wiki\Armature-the-DSL-over-Armature.Core.md = wiki\Armature-the-DSL-over-Armature.Core.md
-		wiki\Core-Concepts-of-Armature.Core.md = wiki\Core-Concepts-of-Armature.Core.md
-		wiki\Default-Rules-For-Resolving-Unit-and-Its-Dependencies.md = wiki\Default-Rules-For-Resolving-Unit-and-Its-Dependencies.md
-		wiki\Home.md = wiki\Home.md
-		wiki\InjectAttribute.-Marking-Injection-Points-and-Customizing-Injection-Rules.md = wiki\InjectAttribute.-Marking-Injection-Points-and-Customizing-Injection-Rules.md
-		wiki\Logging.md = wiki\Logging.md
-		wiki\One-Process-to-Rule-Them-All.-Armature's-Universal-Dependency-Resolution.md = wiki\One-Process-to-Rule-Them-All.-Armature's-Universal-Dependency-Resolution.md
-		wiki\Out-of-the-Box.md = wiki\Out-of-the-Box.md
-		wiki\Propagation-of-Maybe.-Subscribing-Events.-And-Many-Many-More.md = wiki\Propagation-of-Maybe.-Subscribing-Events.-And-Many-Many-More.md
-		wiki\Side-Tuners-Fine-Grained-Control-Over-Dependency-Injection.md = wiki\Side-Tuners-Fine-Grained-Control-Over-Dependency-Injection.md
-		wiki\Weighted-Build-Actions-and-Patterns.-Prioritizing-Resolution-Paths.md = wiki\Weighted-Build-Actions-and-Patterns.-Prioritizing-Resolution-Paths.md
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
