@@ -19,4 +19,8 @@
     <Compile Include=".build\Roslyn.CodeAnalysis.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="BeatyBit.Bits" Version="0.0.20" />
+  </ItemGroup>
+
 </Project>

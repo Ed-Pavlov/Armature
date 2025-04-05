@@ -62,7 +62,7 @@ public readonly struct UnitId : ILogString, IEquatable<UnitId>
 /// <summary>
 /// Syntax sugar for increasing code readability. 'Unit.By(' looks cleaner than 'new UnitId('
 /// </summary>
-public static class Unit
+public class Unit
 {
   public static UnitId By(object? kind, object? tag = null) => new(kind, tag);
 
