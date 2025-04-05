@@ -7,6 +7,8 @@
     <Nullable>enable</Nullable>
     <TargetFrameworks>net472;net9.0</TargetFrameworks>
     <IsPublishable>false</IsPublishable>
+    <RootNamespace>Armature.Test</RootNamespace>
+    <AssemblyName>Armature.Test</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>

@@ -1,14 +1,14 @@
 ﻿using System;
+using Armature.Test.Extensibility.MaybePropagation.Implementation;
+using Armature.Test.Extensibility.MaybePropagation.TestData;
 using BeatyBit.Armature;
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Core.Sdk;
 using BeatyBit.Armature.Sdk;
 using FluentAssertions;
 using NUnit.Framework;
-using Tests.Extensibility.MaybePropagation.Implementation;
-using Tests.Extensibility.MaybePropagation.TestData;
 
-namespace Tests.Extensibility.MaybePropagation
+namespace Armature.Test.Extensibility.MaybePropagation
 {
   public class AsMaybeValueOfTest
   {

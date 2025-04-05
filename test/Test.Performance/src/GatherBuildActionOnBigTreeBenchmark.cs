@@ -3,7 +3,7 @@ using BeatyBit.Armature.Core;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 
-namespace Tests.Performance;
+namespace Armature.Test.Performance;
 
 [MemoryDiagnoser]
 [SimpleJob(RuntimeMoniker.Net472)]

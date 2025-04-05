@@ -144,25 +144,21 @@ namespace Armature.Test.Functional
     private static Builder CreateTarget()
       => new("test", BuildStage.Cache, BuildStage.Create)
          {
-             // inject into constructor
-             new IfFirstUnit(new IsConstructor())
-              .UseBuildAction(
-                 new TryInOrder
-                 {
-                   new GetConstructorByInjectPoint(),       // constructor marked with [Inject] attribute has more priority
-                   new GetConstructorWithMaxParametersCount() // constructor with the largest number of parameters has less priority
-                 },
-                 BuildStage.Create),
-             new IfFirstUnit(new IsParameterInfoArray())
-              .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
-             new IfFirstUnit(new IsParameterArgument())
-              .UseBuildAction(
-                 new TryInOrder
-                 {
-                   Static.Of<BuildArgumentByParameterInjectPoint>(),
-                   Static.Of<BuildArgumentByParameterType>()
-                 },
-                 BuildStage.Create)
+           // inject into constructor
+           new IfFirstUnit(new IsConstructor())
+            .UseBuildAction(
+               new TryInOrder
+               {
+                 new GetConstructorByInjectPoint(),         // constructor marked with [Inject] attribute has more priority
+                 new GetConstructorWithMaxParametersCount() // constructor with the largest number of parameters has less priority
+               },
+               BuildStage.Create),
+           new IfFirstUnit(new IsParameterInfoArray())
+            .UseBuildAction(new BuildMethodArgumentsInDirectOrder(), BuildStage.Create),
+           new IfFirstUnit(new IsParameterArgument())
+            .UseBuildAction(
+               new TryInOrder {Static.Of<BuildArgumentByParameterInjectPoint>(), Static.Of<BuildArgumentByParameterType>()},
+               BuildStage.Create)
          };
 
     private interface ISubject1

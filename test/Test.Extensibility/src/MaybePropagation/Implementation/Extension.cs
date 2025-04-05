@@ -4,7 +4,7 @@ using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Sdk;
 using WeightOf = BeatyBit.Armature.Sdk.WeightOf;
 
-namespace Tests.Extensibility.MaybePropagation.Implementation
+namespace Armature.Test.Extensibility.MaybePropagation.Implementation
 {
   public static class Extension
   {

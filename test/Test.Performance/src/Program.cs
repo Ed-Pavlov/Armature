@@ -1,5 +1,5 @@
+using Armature.Test.Performance;
 using BenchmarkDotNet.Running;
-using Tests.Performance;
 
 // var summary = BenchmarkRunner.Run<IfFirstUnitBenchmark>();
 // var summary = BenchmarkRunner.Run<MassCreationBenchmark>();

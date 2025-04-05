@@ -5,7 +5,7 @@ using BeatyBit.Armature.Core.Sdk;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 
-namespace Tests.Performance;
+namespace Armature.Test.Performance;
 
 [MemoryDiagnoser]
 [SimpleJob(RuntimeMoniker.Net472)]

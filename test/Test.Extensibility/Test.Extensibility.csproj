@@ -3,6 +3,8 @@
     <LangVersion>preview</LangVersion>
     <TargetFrameworks>net472;net9.0</TargetFrameworks>
     <IsPublishable>false</IsPublishable>
+    <RootNamespace>Armature.Test.Extensibility</RootNamespace>
+    <AssemblyName>Armature.Test.Extensibility</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="7.2.0" />

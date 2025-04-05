@@ -1,6 +1,6 @@
 ﻿using BeatyBit.Armature;
 
-namespace Tests.Extensibility.MaybePropagation.TestData
+namespace Armature.Test.Extensibility.MaybePropagation.TestData
 {
   internal class Section { }
 

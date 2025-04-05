@@ -1,6 +1,6 @@
 ﻿using BeatyBit.Armature.Core;
 
-namespace Tests.Extensibility.MaybePropagation.Implementation
+namespace Armature.Test.Extensibility.MaybePropagation.Implementation
 {
   /// <summary>
   /// Uses <see cref="Maybe{T}.Value" /> as a build unit

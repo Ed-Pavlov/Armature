@@ -2,7 +2,7 @@
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Sdk;
 
-namespace Tests.Extensibility.MaybePropagation.Implementation;
+namespace Armature.Test.Extensibility.MaybePropagation.Implementation;
 
 public class BuildMaybe : IBuildAction
 {

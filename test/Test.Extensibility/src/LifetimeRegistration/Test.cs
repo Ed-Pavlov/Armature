@@ -1,10 +1,9 @@
 ﻿using BeatyBit.Armature;
 using BeatyBit.Armature.Core;
-using BeatyBit.Armature.Core.Sdk;
 using JetBrains.Lifetimes;
 using NUnit.Framework;
 
-namespace Tests.Extensibility.LifetimeRegistration;
+namespace Armature.Test.Extensibility.LifetimeRegistration;
 
 public class Test
 {

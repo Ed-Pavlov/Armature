@@ -7,6 +7,8 @@
     <Nullable>enable</Nullable>
     <TargetFrameworks>net472;net9.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
+    <RootNamespace>Armature.Test.Performance</RootNamespace>
+    <AssemblyName>Armature.Test.Performance</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

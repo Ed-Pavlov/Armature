@@ -2,7 +2,7 @@ using System.Diagnostics;
 using BeatyBit.Armature.Core;
 using NUnit.Framework;
 
-namespace Tests.Extensibility;
+namespace Armature.Test.Extensibility;
 
 [SetUpFixture]
 public class TestFixture

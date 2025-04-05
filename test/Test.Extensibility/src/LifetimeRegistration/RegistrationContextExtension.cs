@@ -5,7 +5,7 @@ using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Sdk;
 using JetBrains.Lifetimes;
 
-namespace Tests.Extensibility.LifetimeRegistration;
+namespace Armature.Test.Extensibility.LifetimeRegistration;
 
 public static class RegistrationContextExtension
 {

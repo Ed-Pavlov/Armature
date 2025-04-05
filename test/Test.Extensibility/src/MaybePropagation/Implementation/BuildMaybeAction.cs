@@ -1,7 +1,7 @@
 ﻿using System;
 using BeatyBit.Armature.Core;
 
-namespace Tests.Extensibility.MaybePropagation.Implementation
+namespace Armature.Test.Extensibility.MaybePropagation.Implementation
 {
   /// <summary>
   /// Builds <typeparamref name="T" /> and wraps it into <see cref="Maybe{T}" />
