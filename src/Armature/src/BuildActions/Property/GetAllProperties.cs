@@ -38,5 +38,5 @@ public class GetAllProperties : IBuildAction, ILogString
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(GetAllProperties)} {{ BindingFlags: {_bindingFlags.ToHoconString()}, Predicate: {(_predicate is null ? "not set" : "set")} }} }}";
+  public string ToHoconString() => Hocon.Object<GetAllProperties>(("bindingFlags", _bindingFlags), ("predicate", _predicate is null ? "not set" : "set"));
 }

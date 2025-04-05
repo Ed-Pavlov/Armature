@@ -32,7 +32,7 @@ public abstract record IsInjectPointBase : IUnitPattern, ILogString, IInternal<o
   protected abstract IEnumerable<InjectAttribute> GetAttributes(UnitId unitId);
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ InjectPointId: {_injectPointTag.ToHoconString()} }} }}";
+  public string ToHoconString() => Hocon.Object(GetType(), ("injectPointTag", _injectPointTag));
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
 

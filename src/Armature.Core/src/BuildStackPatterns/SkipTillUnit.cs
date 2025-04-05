@@ -17,7 +17,7 @@ public class SkipTillUnit : BuildStackPatternByUnitBase
     using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipTillUnit)))
     {
       if(Log.IsEnabled(LogLevel.Verbose))
-        Log.WriteLine(LogLevel.Verbose, $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
+        Log.WriteLine(LogLevel.Verbose, Hocon.Properties(("pattern", UnitPattern), ("weight", Weight)));
 
       for(var i = 0; i < stack.Count; i++)
       {

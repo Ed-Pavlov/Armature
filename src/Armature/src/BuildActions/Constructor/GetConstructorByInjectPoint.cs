@@ -61,7 +61,7 @@ public record GetConstructorByInjectPoint : IBuildAction, ILogString
   public void PostProcess(IBuildSession buildSession) { }
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(GetConstructorByInjectPoint)} {{ InjectPointId: {_injectPointTag.ToHoconString()} }} }}";
+  public string ToHoconString() => Hocon.Object<GetConstructorByInjectPoint>(("injectPointId", _injectPointTag));
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
 }

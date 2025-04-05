@@ -33,9 +33,10 @@ public readonly struct UnitId : ILogString, IEquatable<UnitId>
   }
 
   public override string ToString()      => ToHoconString();
-  public          string ToHoconString() => $"{{ kind: {Kind.ToHoconString()}, tag: {Tag.ToHoconString()}}}";
+  public          string ToHoconString() => Hocon.Properties(("kind", Kind), ("tag", Tag));
 
   #region Equality implementation
+
   public static bool operator ==(UnitId left, UnitId right) => left.Equals(right);
   public static bool operator !=(UnitId left, UnitId right) => !left.Equals(right);
 

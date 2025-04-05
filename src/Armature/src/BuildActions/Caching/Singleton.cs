@@ -28,7 +28,7 @@ public record Singleton : IBuildAction, ILogString
   }
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(Singleton)}{{ Instance: {(_hasInstance ? _instance.ToHoconString() : "nothing")} }} }}";
+  public string ToHoconString() => Hocon.Object<Singleton>(("instance", _hasInstance ? _instance : "nothing"));
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
 }

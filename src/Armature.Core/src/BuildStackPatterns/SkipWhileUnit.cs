@@ -13,7 +13,7 @@ public class SkipWhileUnit : BuildStackPatternByUnitBase
     using(Log.NamedBlock(LogLevel.Verbose, nameof(SkipWhileUnit)))
     {
       if(Log.IsEnabled(LogLevel.Verbose))
-        Log.WriteLine(LogLevel.Verbose, $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
+        Log.WriteLine(LogLevel.Verbose, Hocon.Properties(("pattern", UnitPattern), ("weight", Weight)));
 
       var i = 0;
       for(; i < stack.Count; i++)

@@ -60,7 +60,7 @@ public record GetConstructorByParameterTypes : IBuildAction, ILogString
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(GetConstructorByParameterTypes)} {{ Types: {_parameterTypes.ToHoconArray()} }} }}";
+  public string ToHoconString() => Hocon.Object<GetConstructorByParameterTypes>(("types", _parameterTypes));
 
   public virtual bool Equals(GetConstructorByParameterTypes? other)
   {

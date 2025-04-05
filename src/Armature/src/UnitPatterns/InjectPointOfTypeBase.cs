@@ -27,7 +27,7 @@ public abstract record InjectPointOfTypeBase : IUnitPattern, ILogString, IIntern
   protected abstract Type? GetInjectPointType(UnitId unitId);
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ TypePattern: {_typePattern.ToHoconString()} }} }}";
+  public string ToHoconString() => Hocon.Object(GetType(), ("typePattern", _typePattern));
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
 

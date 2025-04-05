@@ -23,10 +23,7 @@ public abstract record TypePatternBase : ILogString, IInternal<Type, object?>
   }
 
   [DebuggerStepThrough]
-  public string ToHoconString()
-    => $"{{ {GetType().GetShortName().QuoteIfNeeded()} "
-     + $"{{ Type: {Type.ToLogString().QuoteIfNeeded()}, Tag: {Tag.ToHoconString()} }} }}";
-
+  public string ToHoconString() => Hocon.Object(GetType(), ("type", Type), ("tag", Tag));
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
 

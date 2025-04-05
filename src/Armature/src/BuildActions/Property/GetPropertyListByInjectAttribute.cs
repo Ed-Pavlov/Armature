@@ -54,5 +54,5 @@ public record GetPropertyListByInjectAttribute : IBuildAction, ILogString
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(GetPropertyListByInjectAttribute)} {{ Points: {_tags.ToHoconString()} }} }}";
+  public string ToHoconString() => Hocon.Object<GetPropertyListByInjectAttribute>(("points", _tags));
 }

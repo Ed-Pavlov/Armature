@@ -68,8 +68,7 @@ public record RedirectOpenGenericType : IBuildAction, ILogString
   public void PostProcess(IBuildSession buildSession) { }
 
   [DebuggerStepThrough]
-  public string ToHoconString()
-    => $"{{ {nameof(RedirectOpenGenericType)} {{ RedirectToType: {_redirectTo.ToLogString().QuoteIfNeeded()}, Tag: {_tag.ToHoconString()} }} }}";
+  public string ToHoconString() => Hocon.Object<RedirectOpenGenericType>(("redirectToType", _redirectTo), ("tag", _tag));
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
 }

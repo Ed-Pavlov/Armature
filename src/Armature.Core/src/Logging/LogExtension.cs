@@ -46,7 +46,7 @@ public static class LogExtension
   public static string ToLogString(this BuildResult buildResult) => buildResult.HasValue ? buildResult.Value.ToHoconString() : "nothing";
 
   /// <summary>
-  /// Returns log representation of object, some objects logs in more friendly form then common <see cref="object.ToString" /> returns.
+  /// Returns log representation of the object in more human friendly form than common <see cref="object.ToString" /> returns.
   /// </summary>
   public static string ToHoconString(this object? value)
   {
@@ -54,26 +54,26 @@ public static class LogExtension
     {
       return value switch
              {
-               null                     => "null",
-               string str               => str.QuoteIfNeeded(),
+               null => "null",
+               string str => str.QuoteIfNeeded(),
                BuildSession.Stack stack => stack.ToHoconString(),
-               ILogString logable       => logable.ToHoconString(),
-               // IBuildAction buildAction => buildAction.GetType().GetShortName().QuoteIfNeeded(),
-               MethodBase methodInfo    => methodInfo.ToString().QuoteIfNeeded(),
-               Type type                => $"typeof({(Log.LogFullTypeName ? type.GetFullName() : type.GetShortName())})".QuoteIfNeeded(),
-               IEnumerable items        => $"[{string.Join(", ", items.Cast<object>().Select(_ => _.ToHoconString()))}]",
-               bool b                   => b.ToString(CultureInfo.CurrentUICulture),
-               char c                   => c.ToString(CultureInfo.CurrentUICulture),
-               short s                  => s.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               ushort us                => us.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               int i                    => i.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               uint ui                  => ui.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               long l                   => l.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               ulong ul                 => ul.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               float f                  => f.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               double d                 => d.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               decimal dc               => dc.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
-               _                        => $"{{ Object {{ Type: {value.GetType().ToLogString().QuoteIfNeeded()}, Value: {value.ToString().QuoteIfNeeded()} }} }}"
+               ILogString logable => logable.ToHoconString(),
+               IBuildAction buildAction => buildAction.GetType().GetShortName().QuoteIfNeeded(),
+               MethodBase methodInfo => methodInfo.ToString().QuoteIfNeeded(),
+               Type type => type.ToLogString().QuoteIfNeeded(),
+               IEnumerable items => $"[{string.Join(", ", items.Cast<object>().Select(_ => _.ToHoconString()))}]",
+               bool b => b.ToString(CultureInfo.CurrentUICulture),
+               char c => c.ToString(CultureInfo.CurrentUICulture),
+               short s => s.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               ushort us => us.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               int i => i.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               uint ui => ui.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               long l => l.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               ulong ul => ul.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               float f => f.ToString("n0", CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               double d => d.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               decimal dc => dc.ToString(CultureInfo.CurrentUICulture).QuoteIfNeeded(),
+               _ => $"{{ object {{ type: {value.GetType().ToLogString().QuoteIfNeeded()}, value: {value.ToString().QuoteIfNeeded()} }} }}"
              };
     }
     catch(Exception exception)
@@ -81,9 +81,6 @@ public static class LogExtension
       return $"{nameof(ToHoconString)} {{ ExceptionType: {exception.GetType().ToLogString().QuoteIfNeeded()} }}";
     }
   }
-
-  public static string ToHoconString(this Type              type)  => type.ToLogString().QuoteIfNeeded();
-  public static string ToHoconArray(this  IEnumerable<Type> items) => $"[{string.Join(", ", items.Select(type => type.ToHoconString()))}]";
 
   public static string ToHoconString(this BuildSession.Stack stack)
   {
@@ -108,6 +105,7 @@ public static class LogExtension
   public static string QuoteIfNeeded(this string str)
   {
     var containSlash = false;
+
     foreach(var symbol in str)
     {
       if(symbol == '\\')
@@ -163,16 +161,13 @@ public static class LogExtension
   }
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public static string GetName(this IBuildAction buildAction)
-    => $"{buildAction.GetType().GetShortName().QuoteIfNeeded()}";
+  public static string GetName(this IBuildAction buildAction) => $"{buildAction.GetType().GetShortName().QuoteIfNeeded()}";
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public static string ProcessMethod(this IBuildAction buildAction)
-    => $"{GetName(buildAction)}.{nameof(IBuildAction.Process)}";
+  public static string ProcessMethod(this IBuildAction buildAction) => $"{GetName(buildAction)}.{nameof(IBuildAction.Process)}";
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public static string PostProcessMethod(this IBuildAction buildAction)
-    => $"{GetName(buildAction)}.{nameof(IBuildAction.PostProcess)}";
+  public static string PostProcessMethod(this IBuildAction buildAction) => $"{GetName(buildAction)}.{nameof(IBuildAction.PostProcess)}";
 
   public static void WriteToLog(this Exception exception)
   {
@@ -183,7 +178,7 @@ public static class LogExtension
       () =>
       {
         exception.Data.Add(ExceptionConst.Logged, true);
-        Log.WriteLine(LogLevel.Info, "Type: {0}", exception.GetType().ToHoconString());
+        Log.WriteLine(LogLevel.Info, "Type: {0}", exception.GetType().ToLogString().QuoteIfNeeded());
 
         WriteHoconProperty(LogLevel.Info, "Message", exception.Message);
 
@@ -228,5 +223,28 @@ public static class LogExtension
 
       Log.WriteLine(logLevel, "\"\"\"");
     }
+  }
+}
+
+public class Hocon
+{
+  public static string Object<T>(params (string, object?)[] properties) => Object(typeof(T), properties);
+
+  public static string Object(Type type, params (string, object?)[] properties) => Object(type.GetShortName().QuoteIfNeeded(), properties);
+
+  public static string Object(object obj, params (string, object?)[] properties)
+    => properties.Length == 0 ? $"{obj.ToHoconString()}" : $"{{ {obj.ToHoconString()}{{ {Properties(properties)} }} }}";
+
+  public static string Properties(params (string, object?)[] properties)
+  {
+    var props = properties
+     .Select(
+        property =>
+        {
+          var (name, value) = property;
+          return $"{name}: {value.ToHoconString()}";
+        });
+
+    return string.Join(", ", props);
   }
 }

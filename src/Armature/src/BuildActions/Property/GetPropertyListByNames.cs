@@ -38,5 +38,5 @@ public record GetPropertyListByNames : IBuildAction, ILogString
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(GetPropertyListByNames)} {{ Names: {_names.ToHoconString()} }} }}";
+  public string ToHoconString() => Hocon.Object<GetPropertyListByNames>(("names", _names));
 }

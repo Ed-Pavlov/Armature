@@ -35,7 +35,7 @@ public record GetPropertyByType(Type _type) : IBuildAction, ILogString
   public void PostProcess(IBuildSession buildSession) { }
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(GetPropertyByType)} {{ Type: {_type.ToLogString().QuoteIfNeeded()} }} }}";
+  public string ToHoconString() => Hocon.Object<GetPropertyByType>(("type", _type));
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
 }

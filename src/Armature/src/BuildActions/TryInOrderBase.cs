@@ -131,7 +131,7 @@ public abstract class TryInOrderBase : IBuildAction, IEnumerable, ILogString
   public IEnumerator GetEnumerator() => Empty.Enumerator;
 
   [DebuggerStepThrough]
-  public override string ToString() => GetType().ToLogString();
-
-  public string ToHoconString() => $"{{ {GetType().Name} {{ Actions: {_buildActions.ToHoconString()} }} }}";
+  public string ToHoconString() => Hocon.Object(GetType(), ("actions", _buildActions));
+  [DebuggerStepThrough]
+  public override string ToString() => GetType().GetShortName();
 }

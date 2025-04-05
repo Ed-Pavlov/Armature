@@ -29,8 +29,7 @@ public record Redirect : IBuildAction, ILogString
   public void PostProcess(IBuildSession buildSession) { }
 
   [DebuggerStepThrough]
-  public string ToHoconString()
-    => $"{{ {nameof(Redirect)} {{ UnitId: {_unitId.ToHoconString()} }} }}";
+  public string ToHoconString() => Hocon.Object<Redirect>(("unitId", _unitId));
 
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();

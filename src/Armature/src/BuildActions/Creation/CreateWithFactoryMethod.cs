@@ -23,7 +23,7 @@ public record CreateWithFactoryMethod<TR> : IBuildAction, ILogString
   public void PostProcess(IBuildSession buildSession) { }
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ Method: {_factoryMethod.ToHoconString()} }} }}";
+  public string ToHoconString() => Hocon.Object(GetType(), ("method", _factoryMethod));
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
 }

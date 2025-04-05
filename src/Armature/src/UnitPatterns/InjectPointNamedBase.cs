@@ -27,7 +27,7 @@ public abstract record InjectPointNamedBase : IUnitPattern, ILogString, IInterna
   protected abstract string? GetInjectPointName(UnitId unitId);
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {GetType().GetShortName().QuoteIfNeeded()} {{ Name: {_name.QuoteIfNeeded()} }} }}";
+  public string ToHoconString() => Hocon.Object(GetType(), ("name", _name));
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
 

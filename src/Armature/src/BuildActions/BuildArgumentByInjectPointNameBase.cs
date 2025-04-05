@@ -39,7 +39,7 @@ public abstract record BuildArgumentByInjectPointNameBase : IBuildAction, ILogSt
   protected abstract string GetInjectPointName(UnitId unitId);
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(BuildArgumentByInjectPointNameBase)}{{ Tag: {_tag.ToHoconString()} }} }}";
+  public string ToHoconString() => Hocon.Object<BuildArgumentByInjectPointNameBase>(("tag", _tag));
   [DebuggerStepThrough]
   public sealed override string ToString() => ToHoconString();
 }

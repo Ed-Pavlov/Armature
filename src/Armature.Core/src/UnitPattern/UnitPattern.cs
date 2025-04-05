@@ -24,7 +24,7 @@ public sealed record UnitPattern : IUnitPattern, ILogString, IStaticPattern
   public bool Matches(UnitId unitId) => Equals(_unitKind, unitId.Kind) && _tag.Matches(unitId.Tag);
 
   [DebuggerStepThrough]
-  public string ToHoconString() => $"{{ {nameof(UnitPattern)} {{ kind: {_unitKind.ToHoconString()}, tag: {_tag.ToHoconString()} }} }}";
+  public string ToHoconString() => Hocon.Object<UnitPattern>(("kind", _unitKind), ("tag", _tag));
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
 

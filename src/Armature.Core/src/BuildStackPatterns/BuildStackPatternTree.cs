@@ -125,7 +125,7 @@ public class BuildStackPatternTree :
     return node;
   }
 
-  public virtual string ToHoconString() => _name.ToHoconString();
+  public virtual string ToHoconString() =>  _name.ToHoconString();
 
   bool IBuildStackPattern.            AddBuildAction(IBuildAction buildAction, object buildStage) => throw new NotSupportedException();
   bool IEquatable<IBuildStackPattern>.Equals(IBuildStackPattern   other) => ReferenceEquals(this, other);

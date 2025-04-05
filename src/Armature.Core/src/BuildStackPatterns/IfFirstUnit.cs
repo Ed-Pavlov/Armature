@@ -20,7 +20,7 @@ public class IfFirstUnit : BuildStackPatternByUnitBase
     using(Log.NamedBlock(LogLevel.Verbose, nameof(IfFirstUnit)))
     {
       if(Log.IsEnabled(LogLevel.Verbose))
-        Log.WriteLine(LogLevel.Verbose, $"Pattern = {UnitPattern.ToHoconString()}, Weight = {Weight.ToHoconString()}");
+        Log.WriteLine(LogLevel.Verbose, Hocon.Properties(("pattern", UnitPattern), ("weight", Weight)));
 
       var isPatternMatches = UnitPattern.Matches(stack[0]);
       Log.WriteLine(LogLevel.Verbose, LogConst.Matched, isPatternMatches);
