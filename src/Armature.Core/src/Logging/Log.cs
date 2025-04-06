@@ -13,7 +13,7 @@ namespace BeatyBit.Armature.Core;
 /// so add a listener to see the log.
 /// </summary>
 [PublicAPI]
-public static class Log
+public class Log
 {
   private static DeferredLogScope? _activeDeferredScope;
 

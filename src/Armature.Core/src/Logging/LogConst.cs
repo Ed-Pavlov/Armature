@@ -2,7 +2,7 @@
 
 namespace BeatyBit.Armature.Core;
 
-public static class LogConst
+public class LogConst
 {
   public const string Matched = "Matched: {0}";
 

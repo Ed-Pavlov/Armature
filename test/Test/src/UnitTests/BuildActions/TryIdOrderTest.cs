@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BeatyBit.Armature;
 using BeatyBit.Armature.Core;
-using BeatyBit.Armature.Core.Sdk;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -196,7 +195,7 @@ public class TryIdOrderTest
 
   private static IEnumerable<TestCaseData> should_be_equal_source()
   {
-    yield return new TestCaseData(new TryInOrder(), new TryInOrder(Empty<IBuildAction>.Array));
+    yield return new TestCaseData(new TryInOrder(), new TryInOrder([]));
     const int intValue = 397;
     yield return new TestCaseData(new TryInOrder(new Instance<int>(intValue), new CreateByReflection()), new TryInOrder(new Instance<int>(intValue), new CreateByReflection()));
 

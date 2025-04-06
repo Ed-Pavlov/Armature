@@ -1,11 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 namespace BeatyBit.Armature.Core.Sdk;
 
 /// <summary>
 /// Generic approach of creating singleton instances of a type when needed.
 /// </summary>
-public static class Static
+[PublicAPI]
+public class Static
 {
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static T Of<T>() where T : new()

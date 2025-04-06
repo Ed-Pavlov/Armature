@@ -12,7 +12,7 @@ namespace Armature.Test.Performance;
 [SimpleJob(RuntimeMoniker.Net60)]
 public class MassCreationBenchmark
 {
-  private readonly object[]               _emptyArgs            = Empty<object>.Array;
+  private readonly object[]               _emptyArgs            = [];
   private readonly object[]               _args                 = {"1", "2", "3", "4", "5", "6", "7"};
   private readonly ConstructorInfo        _constructorInfo      = typeof(Subject).GetConstructors().Single(_ => _.GetParameters().Length > 0);
   private readonly ConstructorInfo        _emptyConstructorInfo = typeof(Subject).GetConstructors().Single(_ => _.GetParameters().Length == 0);

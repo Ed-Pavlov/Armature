@@ -3,7 +3,6 @@ using System.Reflection;
 using System.Runtime.ExceptionServices;
 using BeatyBit.Armature.Core.Annotations;
 using BeatyBit.Armature.Core;
-using BeatyBit.Armature.Core.Sdk;
 using BeatyBit.Armature.Sdk;
 
 namespace BeatyBit.Armature;
@@ -25,7 +24,7 @@ public record CreateByReflection : IBuildAction
       if(parameters.Length == 0 && type.IsValueType) // do not create default value of a value type, it can confuse business logic
         return;
 
-      var arguments = parameters.Length == 0 ? Empty<object>.Array : buildSession.BuildArgumentsForMethod(parameters);
+      var arguments = parameters.Length == 0 ? [] : buildSession.BuildArgumentsForMethod(parameters);
       try
       {
         var instance = constructor.Invoke(arguments);

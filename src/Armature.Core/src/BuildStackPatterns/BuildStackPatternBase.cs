@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Bits;
 using JetBrains.Annotations;
 
 namespace BeatyBit.Armature.Core;

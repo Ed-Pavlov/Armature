@@ -5,7 +5,7 @@ namespace BeatyBit.Armature.Sdk;
 /// <summary>
 /// Provides the possibility to extend the framework with custom Tuners by providing access to internal stuff.
 /// Other "tuner" interfaces do not inherit this interface to not expose "internals" needed in rare advanced cases.
-/// Use <see cref="ArmatureUtil.GetTunerInternals"/> to access it.
+/// Use <see cref="TunerExtension.GetTunerInternals"/> to access it.
 /// </summary>
 public interface ITuner
 {

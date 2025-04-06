@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Bits;
 
 namespace BeatyBit.Armature.Core;
 

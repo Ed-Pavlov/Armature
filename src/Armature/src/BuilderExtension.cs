@@ -6,7 +6,9 @@ using System.Runtime.CompilerServices;
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Core.Sdk;
 using BeatyBit.Armature.Sdk;
+using BeatyBit.Bits;
 using JetBrains.Annotations;
+using Unit = BeatyBit.Armature.Core.Unit;
 
 namespace BeatyBit.Armature;
 
@@ -35,7 +37,7 @@ public static class BuilderExtension
   /// <param name="engageParentBuilders"></param>
   /// <param name="arguments">Additional temporary arguments which could be passed into the build session, they are not stored
   /// anywhere and used only for this build session. Normally, usual registrations take over these arguments because the weight
-  /// of runtime arguments is decreased. See <see cref="ArmatureUtil.CreatePatternTreeOnArguments"/> for details.</param>
+  /// of runtime arguments is decreased. See <see cref="BuildStackPattern.CreateFromArguments"/> for details.</param>
   /// <returns>Returns an instance or null if null is registered as a unit.</returns>
   /// <exception cref="ArmatureException">Throws if unit wasn't built by this or any parent containers.</exception>
   /// <inheritdoc cref="IBuilder.BuildUnit" />
@@ -66,7 +68,7 @@ public static class BuilderExtension
   /// <param name="engageParentBuilders"></param>
   /// <param name="arguments">Additional temporary arguments which could be passed into the build session, they are not stored
   /// anywhere and used only for this build session. Normally, registrations take over these arguments because the weight
-  /// of runtime arguments is decreased. See <see cref="ArmatureUtil.CreatePatternTreeOnArguments"/> for details.</param>
+  /// of runtime arguments is decreased. See <see cref="Sdk.BuildStackPattern.CreateFromArguments"/> for details.</param>
   /// <returns>Returns a list of built units or null if no an instance or null if null is registered as a unit.</returns>
   /// <exception cref="ArmatureException">Throws if not unit was built by this or any parent containers.</exception>
   /// <inheritdoc cref="IBuilder.BuildAllUnits" />
@@ -87,7 +89,7 @@ public static class BuilderExtension
   private static IReadOnlyList<object?> BuildAll<T>(this Builder builder, object? tag, bool engageParentBuilders, params object[]? arguments)
   {
     var unitId         = Unit.By(typeof(T), tag);
-    var auxPatternTree = ArmatureUtil.CreatePatternTreeOnArguments(arguments);
+    var auxPatternTree = BuildStackPattern.CreateFromArguments(arguments);
 
     var unitList = builder.BuildAllUnits(unitId, auxPatternTree, engageParentBuilders);
 
@@ -105,7 +107,7 @@ public static class BuilderExtension
     if(builder is null) throw new ArgumentNullException(nameof(builder));
 
     var unitId      = Unit.By(typeof(T), tag);
-    var patternTree = ArmatureUtil.CreatePatternTreeOnArguments(arguments);
+    var patternTree = BuildStackPattern.CreateFromArguments(arguments);
 
     var buildResult = builder.BuildUnit(unitId, patternTree, engageParentBuilders);
 

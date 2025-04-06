@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Bits;
 
 namespace BeatyBit.Armature.Core;
 
@@ -26,7 +27,7 @@ public interface IBuilder
   /// <param name="engageParentBuilders">Determines whether to build a unit via parent builders in case it's not built in the scope of
   /// the current Builder.
   /// Default: true. </param>
-  /// <returns>Returns <see cref="Empty{BuildResult}.List"/> if no units were built. </returns>
+  /// <returns>Returns <see cref="Empty{T}.List"/> if no units were built. </returns>
   List<Weighted<BuildResult>> BuildAllUnits(UnitId unitId, IBuildStackPattern? auxBuildStackPatternTree = null, bool engageParentBuilders = true);
 
   string Name { get; }

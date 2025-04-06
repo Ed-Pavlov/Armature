@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Bits;
 
 namespace BeatyBit.Armature.Core;
 
@@ -39,7 +40,7 @@ public partial class BuildSession
 
     _mainBuildStackPatternTree = patternTree ?? throw new ArgumentNullException(nameof(patternTree));
     _auxPatternTree            = auxPatternTree;
-    _parentBuilders            = parentBuilders ?? Empty<IBuilder>.Array;
+    _parentBuilders            = parentBuilders ?? [];
   }
 
   /// <inheritdoc cref="IBuildSession.BuildUnit"/>
