@@ -243,8 +243,10 @@ namespace Armature.Test.Functional
        .AsIs()
        .UsingArguments(expected);
 
+      // --act
       Action actual = () => target.Build<LevelTwo>();
 
+      // --assert
       actual.Should()
             .Throw<ArmatureException>(
                "Register string parameter only for LevelTwo class, despite that LevelOne also requires string in its .ctor registered parameter should not be propagated into LevelOne");
@@ -388,8 +390,8 @@ namespace Armature.Test.Functional
               .UseBuildAction(
                  new TryInOrder
                  {
-                   new GetConstructorByInjectPoint(),       // constructor marked with [Inject] attribute has more priority
-                   new GetConstructorWithMaxParametersCount() // constructor with largest number of parameters has less priority
+                   new GetConstructorByInjectPoint(null),       // constructor marked with [Inject] attribute has higher priority
+                   new GetConstructorWithMaxParametersCount() // constructor with largest number of parameters has lower priority
                  },
                  BuildStage.Create),
              new IfFirstUnit(new IsParameterInfoArray())
@@ -421,7 +423,6 @@ namespace Armature.Test.Functional
       public LevelOne([Inject] string text) => Text = text;
 
       [Inject(TwoParameterCtor)]
-
       public LevelOne(string text = DefaultText, int value = DefaultInt)
       {
         Text  = text;

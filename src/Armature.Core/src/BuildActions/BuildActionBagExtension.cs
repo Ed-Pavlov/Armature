@@ -23,13 +23,13 @@ public static class BuildActionBagExtension
 
     foreach(var pair in left)
     {
-      LeanList<Weighted<IBuildAction>> resultValue;
+      LeanList4<Weighted<IBuildAction>> resultValue;
 
       if(!right.TryGetValue(pair.Key, out var rightValue)) // if key is presented only in 'left' dictionary - get value from it
         resultValue = pair.Value;
       else // if key is presented in both dictionaries, create a new list and merge items from both
       {
-        resultValue = new LeanList<Weighted<IBuildAction>>(pair.Value);
+        resultValue = new LeanList4<Weighted<IBuildAction>>(pair.Value);
         resultValue.AddRange(rightValue);
       }
 

@@ -27,12 +27,12 @@ public class BuildStackPatternTree :
   IBuildStackPattern,
   IEnumerable,
   ILoggable,
-  IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?, Dictionary<UnitId, LeanList<IBuildStackPattern>>>
+  IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?, Dictionary<UnitId, LeanList4<IBuildStackPattern>>>
 {
   private readonly string _name;
   private readonly Root   _root;
 
-  private readonly Dictionary<UnitId, LeanList<IBuildStackPattern>> _staticMap = new();
+  private readonly Dictionary<UnitId, LeanList4<IBuildStackPattern>> _staticMap = new();
 
   public BuildStackPatternTree(string name, int weight = 0)
   {
@@ -181,8 +181,8 @@ public class BuildStackPatternTree :
 
   BuildActionBag? IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?>.Member3 => null;
 
-  Dictionary<UnitId, LeanList<IBuildStackPattern>>
-    IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?, Dictionary<UnitId, LeanList<IBuildStackPattern>>>.Member4
+  Dictionary<UnitId, LeanList4<IBuildStackPattern>>
+    IInternal<long, HashSet<IBuildStackPattern>?, BuildActionBag?, Dictionary<UnitId, LeanList4<IBuildStackPattern>>>.Member4
     => _staticMap;
 
   #endregion

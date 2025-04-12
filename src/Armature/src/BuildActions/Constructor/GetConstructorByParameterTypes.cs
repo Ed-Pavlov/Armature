@@ -10,13 +10,14 @@ using JetBrains.Annotations;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Gets the constructor of the type matches specified parameter types list.
+/// Gets the constructor of the type which matches the specified parameter types list.
 /// </summary>
-public record GetConstructorByParameterTypes : IBuildAction, ILogString
+public sealed record GetConstructorByParameterTypes : IBuildAction, ILogString
 {
   private readonly BindingFlags _bindingFlags;
-  private readonly Type[] _parameterTypes;
+  private readonly Type[]       _parameterTypes;
 
+  [PublicAPI]
   public GetConstructorByParameterTypes(params Type[] parameterTypes) : this(BindingFlags.Instance | BindingFlags.Public, parameterTypes) { }
 
   [PublicAPI]
@@ -34,6 +35,7 @@ public record GetConstructorByParameterTypes : IBuildAction, ILogString
     var ctor     = GetConstructor(unitType, _bindingFlags);
 
     ctor.WriteToLog(LogLevel.Trace);
+
     if(ctor is not null)
       buildSession.BuildResult = new BuildResult(ctor);
   }
@@ -60,9 +62,9 @@ public record GetConstructorByParameterTypes : IBuildAction, ILogString
   [DebuggerStepThrough]
   public override string ToString() => ToHoconString();
   [DebuggerStepThrough]
-  public string ToHoconString() => Hocon.Object<GetConstructorByParameterTypes>(("types", _parameterTypes));
+  public string ToHoconString() => Hocon.Object<GetConstructorByParameterTypes>(("bindingFlags", _bindingFlags), ("types", _parameterTypes));
 
-  public virtual bool Equals(GetConstructorByParameterTypes? other)
+  public bool Equals(GetConstructorByParameterTypes? other)
   {
     if(ReferenceEquals(null, other)) return false;
     if(ReferenceEquals(this, other)) return true;
@@ -74,7 +76,6 @@ public record GetConstructorByParameterTypes : IBuildAction, ILogString
 
     return true;
   }
-
 
   public override int GetHashCode()
   {

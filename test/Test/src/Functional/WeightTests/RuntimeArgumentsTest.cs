@@ -56,8 +56,8 @@
 //               .UseBuildAction(
 //                    new TryInOrder
 //                    {
-//                        new GetConstructorByInjectPointId(),       // constructor marked with [Inject] attribute has more priority
-//                        new GetConstructorWithMaxParametersCount() // constructor with largest number of parameters has less priority
+//                        new GetConstructorByInjectPointId(),       // constructor marked with [Inject] attribute has higher priority
+//                        new GetConstructorWithMaxParametersCount() // constructor with largest number of parameters has lower priority
 //                    },
 //                    BuildStage.Create),
 //            new IfFirstUnit(new IsParameterInfoList())

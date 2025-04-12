@@ -7,6 +7,7 @@ using BeatyBit.Armature;
 using BeatyBit.Armature.Core;
 using FluentAssertions;
 using NUnit.Framework;
+// ReSharper disable ClassNeverInstantiated.Local
 
 namespace Armature.Test.UnitTests.BuildActions;
 

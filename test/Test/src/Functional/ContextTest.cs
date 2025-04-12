@@ -38,8 +38,8 @@ public class ContextTest
                      .UseBuildAction(
                         new TryInOrder
                         {
-                          new GetConstructorByInjectPoint(),              // constructor marked with [Inject] attribute has more priority
-                          Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has less priority
+                          new GetConstructorByInjectPoint(null),              // constructor marked with [Inject] attribute has higher priority
+                          Static.Of<GetConstructorWithMaxParametersCount>() // constructor with largest number of parameters has lower priority
                         },
                         BuildStage.Create),
                     new IfFirstUnit(new IsParameterArgument())

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using BeatyBit.Armature.Core.Annotations;
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Sdk;
+using BeatyBit.Bits;
 using JetBrains.Annotations;
 
 namespace BeatyBit.Armature;
@@ -13,11 +13,12 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Gets the constructor of the type with the largest number of parameters.
 /// </summary>
-public record GetConstructorWithMaxParametersCount : IBuildAction
+public sealed record GetConstructorWithMaxParametersCount : IBuildAction, ILogString
 {
   private readonly BindingFlags _bindingFlags;
 
-  public GetConstructorWithMaxParametersCount() : this(BindingFlags.Instance | BindingFlags.Public){}
+  [PublicAPI]
+  public GetConstructorWithMaxParametersCount() : this(BindingFlags.Instance | BindingFlags.Public) { }
 
   [PublicAPI]
   public GetConstructorWithMaxParametersCount(BindingFlags bindingFlags) => _bindingFlags = bindingFlags;
@@ -41,37 +42,40 @@ public record GetConstructorWithMaxParametersCount : IBuildAction
 
   private static ConstructorInfo GetConstructor(IReadOnlyList<ConstructorInfo> constructors, Type unitType)
   {
-    var suitableConstructors = new Dictionary<int, int> {{0, constructors[0].GetParameters().Length}};
-    for(var i = 1; i < constructors.Count; i++)
-    {
-      var parametersCount    = constructors[i].GetParameters().Length;
-      var maxParametersCount = suitableConstructors.First().Value;
+    // collect constructors with equal number of parameters to pass to the exception if something goes wrong
+    var matchedConstructors = new LeanList4<ConstructorInfo>();
+    var maxParametersCount  = 0;
 
-      if(parametersCount == maxParametersCount)
-        suitableConstructors.Add(i, parametersCount);
-      else if(parametersCount > maxParametersCount)
+    foreach(var constructor in constructors)
+    {
+      var parametersCount = constructor.GetParameters().Length;
+      if(parametersCount < maxParametersCount) continue;
+
+      if(parametersCount > maxParametersCount) // new candidate, remove previous
       {
-        suitableConstructors.Clear();
-        suitableConstructors.Add(i, parametersCount);
+        matchedConstructors.Clear();
+        maxParametersCount = parametersCount;
       }
+
+      matchedConstructors.Add(constructor); // parametersCount >= maxParametersCount - add to list
     }
 
-    if(suitableConstructors.Count > 1)
+    if(matchedConstructors.Count > 1)
     {
       var exception = new ArmatureException($"More than one constructor with max parameters count for type '{unitType.ToLogString()}' found");
 
-      var counter = 0;
-
-      foreach(var pair in suitableConstructors)
-        exception.AddData($"Constructor #{++counter}", constructors[pair.Key]);
+      for(var i = 0; i < matchedConstructors.Count; i++)
+        exception.AddData($"Constructor #{i}", matchedConstructors[i]);
 
       throw exception;
     }
 
-    return constructors[suitableConstructors.First().Key];
+    return matchedConstructors[0];
   }
 
   [DebuggerStepThrough]
   public override string ToString() => nameof(GetConstructorWithMaxParametersCount);
-  public string ToHoconString() => Hocon.Object<GetConstructorWithMaxParametersCount>();
+
+  [DebuggerStepThrough]
+  public string ToHoconString() => Hocon.Object<GetConstructorWithMaxParametersCount>(("bindingFlags", _bindingFlags));
 }

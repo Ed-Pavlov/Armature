@@ -17,5 +17,5 @@ public record IsParameterAttributed : IsInjectPointBase
   public IsParameterAttributed(object? injectPointTag = null) : base(injectPointTag) { }
 
   protected override IEnumerable<InjectAttribute> GetAttributes(UnitId unitId)
-    => unitId.Kind is ParameterInfo parameterInfo ? parameterInfo.GetCustomAttributes<InjectAttribute>() : Enumerable.Empty<InjectAttribute>();
+    => unitId.Kind is ParameterInfo parameterInfo ? parameterInfo.GetCustomAttributes<InjectAttribute>() : [];
 }

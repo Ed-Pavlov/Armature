@@ -2,13 +2,14 @@
 using System.Diagnostics;
 using System.Text;
 using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Bits;
 
 namespace BeatyBit.Armature.Core;
 
 /// <summary>
 /// Collection of build actions with weight grouped by a build stage.
 /// </summary>
-public class WeightedBuildActionBag : Dictionary<object, LeanList<Weighted<IBuildAction>>>
+public class WeightedBuildActionBag : Dictionary<object, LeanList4<Weighted<IBuildAction>>>
 {
   [DebuggerStepThrough]
   public override string ToString()

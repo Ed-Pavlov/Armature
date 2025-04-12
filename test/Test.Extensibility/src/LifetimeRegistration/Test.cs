@@ -38,8 +38,8 @@ public class Test
               .UseBuildAction(
                    new TryInOrder
                    {
-                       new GetConstructorByInjectPoint(),         // constructor marked with [Inject] attribute has more priority
-                       new GetConstructorWithMaxParametersCount() // constructor with the largest number of parameters has less priority
+                       new GetConstructorByInjectPoint(null),         // constructor marked with [Inject] attribute has higher priority
+                       new GetConstructorWithMaxParametersCount() // constructor with the largest number of parameters has lower priority
                    },
                    BuildStage.Create),
 
@@ -51,7 +51,7 @@ public class Test
               .UseBuildAction(
                    new TryInOrder
                    {
-                     new BuildArgumentByParameterInjectPoint(), // parameter marked with [Inject] attribute has more priority
+                     new BuildArgumentByParameterInjectPoint(), // parameter marked with [Inject] attribute has higher priority
                      new BuildArgumentByParameterType(),        // if not, try to build it by type
                      new GetParameterDefaultValue()
                    },

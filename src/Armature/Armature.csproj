@@ -30,6 +30,10 @@
     <Compile Include=".build\JetBrains.Annotations.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="BeatyBit.Bits" Version="0.0.20" />
+  </ItemGroup>
+
   <PropertyGroup Label="nuspec">
     <description>Armature dependency injection framework, provides fluent syntax and syntax sugar over Armature.Core framework</description>
   </PropertyGroup>

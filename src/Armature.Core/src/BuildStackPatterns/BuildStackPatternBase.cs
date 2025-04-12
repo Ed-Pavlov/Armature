@@ -87,7 +87,7 @@ public abstract class BuildStackPatternBase : IBuildStackPattern, IEnumerable, I
     {
       var buildStage      = pair.Key;
       var actions         = pair.Value;
-      var weightedActions = new LeanList<Weighted<IBuildAction>>(actions.Count);
+      var weightedActions = new LeanList4<Weighted<IBuildAction>>(actions.Count);
 
       foreach(var buildAction in actions)
         weightedActions.Add(buildAction.WithWeight(matchingWeight));

@@ -71,6 +71,8 @@ public class GetConstructorByParameterTypesTest
   [TestCaseSource(nameof(should_be_equal_source))]
   public void should_be_equal(GetConstructorByParameterTypes target1, GetConstructorByParameterTypes target2)
   {
+    var hz = target1 == target2;
+    var fz = target1.Equals(target2);
     // --assert
     target1.Equals(target2).Should().BeTrue();
     target2.Equals(target1).Should().BeTrue();
