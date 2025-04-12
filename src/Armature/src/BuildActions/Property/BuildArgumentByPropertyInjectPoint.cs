@@ -9,7 +9,7 @@ namespace BeatyBit.Armature;
 /// Builds an argument for the property which is marked with <see cref="InjectAttribute"/> using <see cref="MemberInfo.MemberType"/> and
 /// <see cref="InjectAttribute.Tag"/> as <see cref="UnitId"/>.
 /// </summary>
-public record BuildArgumentByPropertyInjectPoint : IBuildAction
+public sealed record BuildArgumentByPropertyInjectPoint : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {

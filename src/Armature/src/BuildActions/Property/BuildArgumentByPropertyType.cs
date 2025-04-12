@@ -7,7 +7,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Builds an argument for the property using <see cref="PropertyInfo.PropertyType"/> and specified tag as <see cref="UnitId"/>.
 /// </summary>
-public record BuildArgumentByPropertyType : BuildArgumentByInjectPointTypeBase
+public sealed record BuildArgumentByPropertyType : BuildArgumentByInjectPointTypeBase
 {
   public BuildArgumentByPropertyType() { }
   public BuildArgumentByPropertyType(object? tag = null) : base(tag) { }

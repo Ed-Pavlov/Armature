@@ -9,7 +9,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Builds arguments for constructor/method parameters one by one in the direct order.
 /// </summary>
-public record BuildMethodArgumentsInDirectOrder : BuildMethodArgumentsInCustomOrder
+public sealed record BuildMethodArgumentsInDirectOrder : BuildMethodArgumentsInCustomOrder
 {
   public BuildMethodArgumentsInDirectOrder() : base(Reorder) { }
 

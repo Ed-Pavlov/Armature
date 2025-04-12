@@ -10,25 +10,27 @@ namespace BeatyBit.Armature;
 /// </summary>
 public abstract record TypePatternBase : ILogString, IInternal<Type, object?>
 {
-  protected readonly Type    Type;
-  protected readonly object? Tag;
+  protected readonly Type    _type;
+  protected readonly object? _tag;
 
   /// <summary>
   /// Base class for unit patterns matching unit with a <see cref="System.Type"/>
   /// </summary>
   protected TypePatternBase(Type type, object? tag)
   {
-    Type = type ?? throw new ArgumentNullException(nameof(type));
-    Tag  = tag;
+    _type = type ?? throw new ArgumentNullException(nameof(type));
+    _tag  = tag;
   }
 
   [DebuggerStepThrough]
-  public string ToHoconString() => Hocon.Object(GetType(), ("type", Type), ("tag", Tag));
+  public string ToHoconString() => Hocon.Object(GetType(), ("type", _type), ("tag", _tag));
   [DebuggerStepThrough]
-  public sealed override string ToString() => ToHoconString();
+  public override string ToString() => ToHoconString();
 
   #region Internals
-  Type IInternal<Type>.            Member1 => Type;
-  object? IInternal<Type, object?>.Member2 => Tag;
+
+  Type IInternal<Type>.            Member1 => _type;
+  object? IInternal<Type, object?>.Member2 => _tag;
+
   #endregion
 }

@@ -11,7 +11,7 @@ namespace BeatyBit.Armature;
 /// Redirects building of a unit of one open generic type to the unit of another open generic type.
 /// E.g., redirecting interface to the implementation.
 /// </summary>
-public record RedirectOpenGenericType : IBuildAction, ILogString
+public sealed record RedirectOpenGenericType : IBuildAction, ILogString
 {
   private readonly Type    _redirectTo;
   private readonly object? _tag;

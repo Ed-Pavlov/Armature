@@ -3,6 +3,7 @@ using System.Diagnostics;
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Core.Sdk;
 using BeatyBit.Armature.Sdk;
+using JetBrains.Annotations;
 
 namespace BeatyBit.Armature;
 
@@ -11,7 +12,8 @@ namespace BeatyBit.Armature;
 /// </summary>
 public abstract record InjectPointOfTypeBase : IUnitPattern, ILogString, IInternal<IUnitPattern>
 {
-  private readonly IUnitPattern _typePattern;
+  [PublicAPI]
+  protected readonly IUnitPattern _typePattern;
 
   [DebuggerStepThrough]
   protected InjectPointOfTypeBase(IUnitPattern typePattern) => _typePattern = typePattern ?? throw new ArgumentNullException(nameof(typePattern));
@@ -29,7 +31,7 @@ public abstract record InjectPointOfTypeBase : IUnitPattern, ILogString, IIntern
   [DebuggerStepThrough]
   public string ToHoconString() => Hocon.Object(GetType(), ("typePattern", _typePattern));
   [DebuggerStepThrough]
-  public sealed override string ToString() => ToHoconString();
+  public override string ToString() => ToHoconString();
 
   IUnitPattern IInternal<IUnitPattern>.Member1 => _typePattern;
 }

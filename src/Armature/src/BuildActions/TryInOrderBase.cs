@@ -7,6 +7,7 @@ using System.Runtime.ExceptionServices;
 using BeatyBit.Armature.Core.Annotations;
 using BeatyBit.Armature.Core;
 using BeatyBit.Bits;
+using JetBrains.Annotations;
 
 namespace BeatyBit.Armature;
 
@@ -26,9 +27,10 @@ namespace BeatyBit.Armature;
 /// </remarks>
 public abstract class TryInOrderBase : IBuildAction, IEnumerable, ILogString
 {
-  private readonly List<IBuildAction> _buildActions;
+  [PublicAPI]
+  protected readonly List<IBuildAction> _buildActions;
 
-  protected TryInOrderBase() => _buildActions = new List<IBuildAction>();
+  protected TryInOrderBase() => _buildActions = [];
   protected TryInOrderBase(params IBuildAction[] buildActions)
   {
     if(buildActions is null) throw new ArgumentNullException(nameof(buildActions));

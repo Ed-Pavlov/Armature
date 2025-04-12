@@ -6,8 +6,9 @@ namespace BeatyBit.Armature;
 
 /// <summary>
 /// Caches passed object and set it as <see cref="BuildResult" /> in <see cref="Process" />.
+/// <see cref="PostProcess"/> does nothing, the initialization of the instance is the responsibility of the caller.
 /// </summary>
-public record Instance<T> : IBuildAction, ILogString
+public sealed record Instance<T> : IBuildAction, ILogString
 {
   private readonly T _value;
 

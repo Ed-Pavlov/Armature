@@ -3,6 +3,7 @@ using System.Diagnostics;
 using BeatyBit.Armature.Core.Annotations;
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Sdk;
+using JetBrains.Annotations;
 
 namespace BeatyBit.Armature;
 
@@ -11,7 +12,8 @@ namespace BeatyBit.Armature;
 /// </summary>
 public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogString
 {
-  private readonly object? _tag;
+  [PublicAPI]
+  protected readonly object? _tag;
 
   [WithoutTest]
   protected BuildArgumentByInjectPointTypeBase() { }
@@ -37,5 +39,5 @@ public abstract record BuildArgumentByInjectPointTypeBase : IBuildAction, ILogSt
   [DebuggerStepThrough]
   public string ToHoconString() => Hocon.Object(GetType(), ("tag", _tag));
   [DebuggerStepThrough]
-  public sealed override string ToString() => ToHoconString();
+  public override string ToString() => ToHoconString();
 }

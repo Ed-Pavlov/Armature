@@ -29,7 +29,7 @@ public abstract record InjectPointNamedBase : IUnitPattern, ILogString, IInterna
   [DebuggerStepThrough]
   public string ToHoconString() => Hocon.Object(GetType(), ("name", _name));
   [DebuggerStepThrough]
-  public sealed override string ToString() => ToHoconString();
+  public override string ToString() => ToHoconString();
 
   string IInternal<string>.Member1 => _name;
 }

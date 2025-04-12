@@ -74,8 +74,10 @@ public sealed record GetConstructorWithMaxParametersCount : IBuildAction, ILogSt
   }
 
   [DebuggerStepThrough]
+  [WithoutTest]
   public override string ToString() => nameof(GetConstructorWithMaxParametersCount);
 
   [DebuggerStepThrough]
+  [WithoutTest]
   public string ToHoconString() => Hocon.Object<GetConstructorWithMaxParametersCount>(("bindingFlags", _bindingFlags));
 }

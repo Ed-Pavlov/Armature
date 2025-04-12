@@ -8,7 +8,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Checks if a unit to be built is a list of arguments for a constructor/method.
 /// </summary>
-public record IsParameterInfoArray : IUnitPattern
+public sealed record IsParameterInfoArray : IUnitPattern
 {
   public bool Matches(UnitId unitId) => unitId.Tag == ServiceTag.Argument && unitId.Kind is ParameterInfo[];
 

@@ -21,7 +21,7 @@ public class PropertyArgumentTuner<T> : ArgumentTunerBase<T>
   {
     if(tag is null) throw new ArgumentNullException(nameof(tag));
 
-    return new ArgumentSideTuner(tuner => TuneArgumentRecipientsTo(tuner, Weight).UseBuildAction(new BuildArgumentByPropertyType(tag), BuildStage.Create));
+    return new ArgumentSideTuner(tuner => _tuneArgumentRecipientsTo(tuner, Weight).UseBuildAction(new BuildArgumentByPropertyType(tag), BuildStage.Create));
   }
 
   /// <summary>
@@ -30,7 +30,7 @@ public class PropertyArgumentTuner<T> : ArgumentTunerBase<T>
   /// </summary>
   public IArgumentSideTuner UseInjectPointTag()
     => new ArgumentSideTuner(
-      node => TuneArgumentRecipientsTo(node, Weight).UseBuildAction(Static.Of<BuildArgumentByPropertyInjectPoint>(), BuildStage.Create));
+      node => _tuneArgumentRecipientsTo(node, Weight).UseBuildAction(Static.Of<BuildArgumentByPropertyInjectPoint>(), BuildStage.Create));
 
   /// <inheritdoc cref="ISubjectTuner.AmendWeight"/>
   public PropertyArgumentTuner<T> AmendWeight(int weight)

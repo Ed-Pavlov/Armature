@@ -9,7 +9,7 @@ namespace BeatyBit.Armature;
 /// Redirects building of a unit with one <see cref="UnitId"/> to the unit with another <see cref="UnitId"/>.
 /// E.g., redirecting interface to the implementation.
 /// </summary>
-public record Redirect : IBuildAction, ILogString
+public sealed record Redirect : IBuildAction, ILogString
 {
   private readonly UnitId _unitId;
 

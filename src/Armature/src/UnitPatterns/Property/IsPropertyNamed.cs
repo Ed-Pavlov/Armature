@@ -6,7 +6,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Checks if a unit to be built is an argument to inject into the property with a specified name
 /// </summary>
-public record IsPropertyNamed : InjectPointNamedBase
+public sealed record IsPropertyNamed : InjectPointNamedBase
 {
   public IsPropertyNamed(string propertyName) : base(propertyName) { }
 

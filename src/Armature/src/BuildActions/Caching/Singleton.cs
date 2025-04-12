@@ -7,7 +7,7 @@ namespace BeatyBit.Armature;
 /// The simplest eternal singleton.
 /// Caches just built Unit in <see cref="PostProcess" /> and then set it as <see cref="BuildResult" /> in <see cref="Process" />.
 /// </summary>
-public record Singleton : IBuildAction, ILogString
+public sealed record Singleton : IBuildAction, ILogString
 {
   private bool    _hasInstance;
   private object? _instance;

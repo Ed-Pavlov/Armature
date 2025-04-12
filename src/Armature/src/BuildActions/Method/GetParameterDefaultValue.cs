@@ -8,7 +8,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Gets a default parameter value of the constructor/method parameter.
 /// </summary>
-public record GetParameterDefaultValue : IBuildAction
+public sealed record GetParameterDefaultValue : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {

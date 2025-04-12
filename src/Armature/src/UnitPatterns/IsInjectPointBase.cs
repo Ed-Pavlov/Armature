@@ -34,7 +34,7 @@ public abstract record IsInjectPointBase : IUnitPattern, ILogString, IInternal<o
   [DebuggerStepThrough]
   public string ToHoconString() => Hocon.Object(GetType(), ("injectPointTag", _injectPointTag));
   [DebuggerStepThrough]
-  public sealed override string ToString() => ToHoconString();
+  public override string ToString() => ToHoconString();
 
   object? IInternal<object?>.Member1 => _injectPointTag;
 }

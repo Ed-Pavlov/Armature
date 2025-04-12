@@ -7,7 +7,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Checks if a unit to be built is the list of properties of a type to inject dependencies
 /// </summary>
-public record IsPropertyInfoCollection : IUnitPattern
+public sealed record IsPropertyInfoCollection : IUnitPattern
 {
   public bool Matches(UnitId unitId) => unitId.Tag == ServiceTag.PropertyCollection && unitId.GetUnitTypeSafe() is not null;
 

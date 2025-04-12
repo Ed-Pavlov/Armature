@@ -8,7 +8,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Creates a Unit using specified factory method.
 /// </summary>
-public record CreateWithFactoryMethod<TR> : IBuildAction, ILogString
+public sealed record CreateWithFactoryMethod<TR> : IBuildAction, ILogString
 {
   private readonly Func<IBuildSession, TR?> _factoryMethod;
 

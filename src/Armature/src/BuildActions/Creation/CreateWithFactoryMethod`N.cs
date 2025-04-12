@@ -29,11 +29,11 @@ public abstract record CreateWithFactoryMethodBuildAction : IBuildAction, ILogSt
   [DebuggerStepThrough]
   public string ToHoconString() => Hocon.Object(GetType(), ("method", GetMethod()));
   [DebuggerStepThrough]
-  public sealed override string ToString() => ToHoconString();
+  public override string ToString() => ToHoconString();
 }
 
 /// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
-public record CreateWithFactoryMethodBuildAction<T1, TR> : CreateWithFactoryMethodBuildAction
+public sealed record CreateWithFactoryMethodBuildAction<T1, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, TR> _factoryMethod;
 
@@ -47,7 +47,7 @@ public record CreateWithFactoryMethodBuildAction<T1, TR> : CreateWithFactoryMeth
 }
 
 /// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
-public record CreateWithFactoryMethodBuildAction<T1, T2, TR> : CreateWithFactoryMethodBuildAction
+public sealed record CreateWithFactoryMethodBuildAction<T1, T2, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, T2, TR> _factoryMethod;
 
@@ -61,7 +61,7 @@ public record CreateWithFactoryMethodBuildAction<T1, T2, TR> : CreateWithFactory
 }
 
 /// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
-public record CreateWithFactoryMethodBuildAction<T1, T2, T3, TR> : CreateWithFactoryMethodBuildAction
+public sealed record CreateWithFactoryMethodBuildAction<T1, T2, T3, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, T2, T3, TR> _factoryMethod;
 
@@ -75,7 +75,7 @@ public record CreateWithFactoryMethodBuildAction<T1, T2, T3, TR> : CreateWithFac
 }
 
 /// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
-public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, TR> : CreateWithFactoryMethodBuildAction
+public sealed record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, T2, T3, T4, TR> _factoryMethod;
 
@@ -89,7 +89,7 @@ public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, TR> : CreateWit
 }
 
 /// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
-public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, TR> : CreateWithFactoryMethodBuildAction
+public sealed record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, T2, T3, T4, T5, TR> _factoryMethod;
 
@@ -104,7 +104,7 @@ public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, TR> : Creat
 }
 
 /// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
-public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, TR> : CreateWithFactoryMethodBuildAction
+public sealed record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, T2, T3, T4, T5, T6, TR> _factoryMethod;
 
@@ -125,7 +125,7 @@ public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, TR> : C
 }
 
 /// <inheritdoc cref="CreateWithFactoryMethodBuildAction" />
-public record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, TR> : CreateWithFactoryMethodBuildAction
+public sealed record CreateWithFactoryMethodBuildAction<T1, T2, T3, T4, T5, T6, T7, TR> : CreateWithFactoryMethodBuildAction
 {
   private readonly Func<T1, T2, T3, T4, T5, T6, T7, TR> _factoryMethod;
 

@@ -11,7 +11,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Gets a list of properties with specified names.
 /// </summary>
-public record GetPropertyListByNames : IBuildAction, ILogString
+public sealed record GetPropertyListByNames : IBuildAction, ILogString
 {
   private readonly IReadOnlyCollection<string> _names;
 

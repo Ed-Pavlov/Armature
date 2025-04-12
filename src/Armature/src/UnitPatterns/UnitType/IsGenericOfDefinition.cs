@@ -8,7 +8,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Checks if a unit is a generic type and its <see cref="Type.GetGenericTypeDefinition"/> is as specified open generic type
 /// </summary>
-public record IsGenericOfDefinition : TypePatternBase, IUnitPattern
+public sealed record IsGenericOfDefinition : TypePatternBase, IUnitPattern
 {
   [DebuggerStepThrough]
   public IsGenericOfDefinition(Type genericTypeDefinition, object? tag) : base(genericTypeDefinition, tag)
@@ -19,6 +19,6 @@ public record IsGenericOfDefinition : TypePatternBase, IUnitPattern
   public bool Matches(UnitId unitId)
   {
     var unitType = unitId.GetUnitTypeSafe();
-    return Tag.Matches(unitId.Tag) && unitType is {IsGenericType: true} && unitType.GetGenericTypeDefinition() == Type;
+    return _tag.Matches(unitId.Tag) && unitType is {IsGenericType: true} && unitType.GetGenericTypeDefinition() == _type;
   }
 }

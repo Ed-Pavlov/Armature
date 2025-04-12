@@ -21,7 +21,7 @@ public class MethodArgumentTuner<T> : ArgumentTunerBase<T>
   {
     if(tag is null) throw new ArgumentNullException(nameof(tag));
 
-    return new ArgumentSideTuner(tuner => TuneArgumentRecipientsTo(tuner, Weight).UseBuildAction(new BuildArgumentByParameterType(tag), BuildStage.Create));
+    return new ArgumentSideTuner(tuner => _tuneArgumentRecipientsTo(tuner, Weight).UseBuildAction(new BuildArgumentByParameterType(tag), BuildStage.Create));
   }
 
   /// <summary>
@@ -29,7 +29,7 @@ public class MethodArgumentTuner<T> : ArgumentTunerBase<T>
   /// </summary>
   public IArgumentSideTuner UseInjectPointTag()
     => new ArgumentSideTuner(
-      tuner => TuneArgumentRecipientsTo(tuner, Weight)
+      tuner => _tuneArgumentRecipientsTo(tuner, Weight)
        .UseBuildAction(Static.Of<BuildArgumentByParameterInjectPoint>(), BuildStage.Create));
 
   /// <inheritdoc cref="ISubjectTuner.AmendWeight"/>

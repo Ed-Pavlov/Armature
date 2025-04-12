@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using BeatyBit.Armature.Core.Annotations;
 using BeatyBit.Armature.Core;
+using JetBrains.Annotations;
 
 namespace BeatyBit.Armature;
 
@@ -17,7 +18,8 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
   private static readonly Type[]   TypeParamContainer = new Type[1];
   private static readonly Type[]   IntTypeParam       = [typeof(int)];
 
-  private readonly object? _tag;
+  [PublicAPI]
+  protected readonly object? _tag;
 
   [WithoutTest]
   [DebuggerStepThrough]
@@ -105,5 +107,5 @@ public abstract record BuildListArgumentBase : IBuildAction, ILogString
   public string ToHoconString() => Hocon.Object(GetType(), ("tag", _tag));
 
   [DebuggerStepThrough]
-  public sealed override string ToString() => ToHoconString();
+  public override string ToString() => ToHoconString();
 }

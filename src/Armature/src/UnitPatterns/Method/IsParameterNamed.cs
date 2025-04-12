@@ -7,7 +7,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Checks if a unit to be built is an argument for a constructor/method parameter with the specified name.
 /// </summary>
-public record IsParameterNamed : InjectPointNamedBase
+public sealed record IsParameterNamed : InjectPointNamedBase
 {
   [DebuggerStepThrough]
   public IsParameterNamed(string name) : base(name) { }

@@ -11,7 +11,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Gets a list of  properties marked with <see cref="InjectAttribute" /> with specified tags <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" />.
 /// </summary>
-public record GetPropertyListByInjectAttribute : IBuildAction, ILogString
+public sealed record GetPropertyListByInjectAttribute : IBuildAction, ILogString
 {
   private readonly object?[] _tags;
 

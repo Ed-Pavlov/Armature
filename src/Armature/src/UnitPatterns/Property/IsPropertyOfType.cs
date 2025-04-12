@@ -8,7 +8,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Checks if a unit to be built is an argument to inject into a property requires argument of the specified type.
 /// </summary>
-public record IsPropertyOfType : InjectPointOfTypeBase
+public sealed record IsPropertyOfType : InjectPointOfTypeBase
 {
   [DebuggerStepThrough]
   public IsPropertyOfType(IUnitPattern typePattern) : base(typePattern) { }

@@ -10,7 +10,7 @@ namespace BeatyBit.Armature;
 /// Checks if a unit to be built is an argument for a constructor/method parameter marked with <see cref="InjectAttribute"/> attribute
 /// with an optional <see cref="InjectAttribute" />.<see cref="InjectAttribute.Tag" />
 /// </summary>
-public record IsParameterAttributed : IsInjectPointBase
+public sealed record IsParameterAttributed : IsInjectPointBase
 {
   /// <inheritdoc />
   [DebuggerStepThrough]

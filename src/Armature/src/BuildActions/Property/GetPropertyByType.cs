@@ -10,7 +10,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Gets a property by specified type.
 /// </summary>
-public record GetPropertyByType(Type _type) : IBuildAction, ILogString
+public sealed record GetPropertyByType(Type _type) : IBuildAction, ILogString
 {
   private readonly Type _type = _type ?? throw new ArgumentNullException(nameof(_type));
 

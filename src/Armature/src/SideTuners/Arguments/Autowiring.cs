@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Sdk;
+using JetBrains.Annotations;
 
 namespace BeatyBit.Armature;
 
 /// <summary>
 /// Provides methods to configure argument resolution in different orders for dependency injection.
 /// </summary>
+[PublicAPI]
 public class Autowiring
 {
   /// <summary>

@@ -7,7 +7,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Checks if a unit to be built is an argument for a constructor/method parameter of the specified type.
 /// </summary>
-public record IsParameterOfType : InjectPointOfTypeBase
+public sealed record IsParameterOfType : InjectPointOfTypeBase
 {
   public IsParameterOfType(IUnitPattern typePattern) : base(typePattern) { }
 

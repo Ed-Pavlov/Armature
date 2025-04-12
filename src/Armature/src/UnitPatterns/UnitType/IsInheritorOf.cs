@@ -21,11 +21,11 @@ public record IsInheritorOf : TypePatternBase, IUnitPattern, IInternal<bool>
   }
 
   public bool Matches(UnitId unitId)
-    => Tag.Matches(unitId.Tag)
+    => _tag.Matches(unitId.Tag)
     && unitId.GetUnitTypeSafe() is { } unitType
     && (_isInterface
-          ? Type.IsAssignableFrom(unitType)
-          : unitType.IsSubclassOf(Type));
+          ? _type.IsAssignableFrom(unitType)
+          : unitType.IsSubclassOf(_type));
 
   public bool Member1 => _isInterface;
 }

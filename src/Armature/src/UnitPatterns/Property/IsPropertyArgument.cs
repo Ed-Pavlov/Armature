@@ -8,7 +8,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Checks if a unit to be built is an argument to inject into the property
 /// </summary>
-public record IsPropertyArgument : IUnitPattern
+public sealed record IsPropertyArgument : IUnitPattern
 {
   public bool Matches(UnitId unitId) => unitId.Tag == ServiceTag.Argument && unitId.Kind is PropertyInfo;
 

@@ -7,9 +7,9 @@ using BeatyBit.Armature.Core;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Builds an argument for the constructor/method parameter using <see cref="ParameterInfo.ParameterType"/> and specified tag as <see cref="UnitId"/>.
+/// Builds an argument for a constructor/method parameter using <see cref="ParameterInfo.ParameterType"/> and specified tag as <see cref="UnitId"/>.
 /// </summary>
-public record BuildArgumentByParameterType : BuildArgumentByInjectPointTypeBase
+public sealed record BuildArgumentByParameterType : BuildArgumentByInjectPointTypeBase
 {
   [WithoutTest]
   [DebuggerStepThrough]

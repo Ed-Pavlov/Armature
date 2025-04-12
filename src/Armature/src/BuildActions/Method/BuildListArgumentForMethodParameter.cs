@@ -9,7 +9,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Builds a list of arguments by using <see cref="IBuildSession.BuildAllUnits"/> method for a constructor/method parameters.
 /// </summary>
-public record BuildListArgumentForMethodParameter : BuildListArgumentBase
+public sealed record BuildListArgumentForMethodParameter : BuildListArgumentBase
 {
   [WithoutTest]
   [DebuggerStepThrough]

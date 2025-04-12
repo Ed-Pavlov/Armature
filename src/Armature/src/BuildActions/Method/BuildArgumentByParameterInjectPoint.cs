@@ -6,10 +6,10 @@ using BeatyBit.Armature.Core;
 namespace BeatyBit.Armature;
 
 /// <summary>
-/// Builds an argument for the constructor/method parameter which is marked with <see cref="InjectAttribute"/> using <see cref="ParameterInfo.Name"/> and
-/// <see cref="InjectAttribute.Tag"/> as /// as <see cref="UnitId"/>.
+/// Builds an argument for a constructor/method parameter which is marked with <see cref="InjectAttribute"/> using <see cref="ParameterInfo.Name"/> and
+/// <see cref="InjectAttribute.Tag"/> as <see cref="UnitId"/>.
 /// </summary>
-public record BuildArgumentByParameterInjectPoint : IBuildAction
+public sealed record BuildArgumentByParameterInjectPoint : IBuildAction
 {
   public void Process(IBuildSession buildSession)
   {
@@ -35,5 +35,7 @@ public record BuildArgumentByParameterInjectPoint : IBuildAction
   [DebuggerStepThrough]
   public void PostProcess(IBuildSession buildSession) { }
 
+  [WithoutTest]
+  [DebuggerStepThrough]
   public override string ToString() => nameof(BuildArgumentByParameterInjectPoint);
 }

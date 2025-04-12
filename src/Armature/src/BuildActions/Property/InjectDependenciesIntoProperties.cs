@@ -10,7 +10,7 @@ namespace BeatyBit.Armature;
 /// <summary>
 /// Injects values into building Unit properties specified for injection
 /// </summary>
-public record InjectDependenciesIntoProperties : IBuildAction
+public sealed record InjectDependenciesIntoProperties : IBuildAction
 {
   [WithoutTest]
   [DebuggerStepThrough]
