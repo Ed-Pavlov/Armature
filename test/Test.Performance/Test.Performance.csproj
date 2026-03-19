@@ -1,12 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\common.proj"/>
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>preview</LangVersion>
-    <Nullable>enable</Nullable>
-    <TargetFrameworks>net472;net9.0</TargetFrameworks>
-    <IsPackable>false</IsPackable>
     <RootNamespace>Armature.Test.Performance</RootNamespace>
     <AssemblyName>Armature.Test.Performance</AssemblyName>
   </PropertyGroup>

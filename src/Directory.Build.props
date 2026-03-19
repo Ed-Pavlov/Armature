@@ -1,7 +1,14 @@
 <Project>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup Label="signing">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SlnDir)\.build\beatybit.public.snk</AssemblyOriginatorKeyFile>
+    <PublicSign>true</PublicSign>
+  </PropertyGroup>
   <PropertyGroup>
-    <BaseIntermediateOutputPath>$(SolutionDir)\.out\obj\</BaseIntermediateOutputPath>
-    <OutputPath>$(SolutionDir)\.out\bin\</OutputPath>
+    <BaseIntermediateOutputPath>$(SlnDir)\.out\obj\</BaseIntermediateOutputPath>
+    <OutputPath>$(SlnDir)\.out\bin\</OutputPath>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
   </PropertyGroup>
 </Project>

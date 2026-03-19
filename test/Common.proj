@@ -1,0 +1,24 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFrameworks>net481;net10.0</TargetFrameworks>
+    <IsPublishable>false</IsPublishable>
+  </PropertyGroup>
+
+
+  <PropertyGroup Label="dev">
+    <LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <PropertyGroup Label="signing">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SlnDir)\.build\beatybit.public.snk</AssemblyOriginatorKeyFile>
+    <PublicSign>true</PublicSign>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="obj\**" />
+  </ItemGroup>
+</Project>

@@ -1,7 +1,7 @@
-﻿<Project>
+<Project>
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net472</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net481</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Label="dev">
@@ -22,7 +22,7 @@
 
   <PropertyGroup Label="signing">
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(SolutionDir)\.build\beatybit.public.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>$(SlnDir)\.build\beatybit.public.snk</AssemblyOriginatorKeyFile>
     <PublicSign>true</PublicSign>
   </PropertyGroup>
 
@@ -52,12 +52,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Link=".build\CommonAssemblyInfo.cs" Include="$(SolutionDir)\src\CommonAssemblyInfo.cs" />
+    <Compile Link=".build\CommonAssemblyInfo.cs" Include="$(SlnDir)\src\CommonAssemblyInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)\.build\icon.png" Link=".build\icon.png" Pack="true" PackagePath="\icon.png"/>
-    <None Include="$(SolutionDir)\.build\nuget-readme.md" Link=".build\nuget-readme.md" Pack="true" PackagePath="\readme.md"/>
+    <None Include="$(SlnDir)\.build\icon.png" Link=".build\icon.png" Pack="true" PackagePath="\icon.png"/>
+    <None Include="$(SlnDir)\.build\nuget-readme.md" Link=".build\nuget-readme.md" Pack="true" PackagePath="\readme.md"/>
   </ItemGroup>
 
   <ItemGroup>

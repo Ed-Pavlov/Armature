@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\common.proj" />
 
   <PropertyGroup Label="project">
     <AssemblyName>BeatyBit.Armature</AssemblyName>
     <RootNamespace>BeatyBit.Armature</RootNamespace>
-    <DocumentationFile>$(SolutionDir)\.out\BeatyBit.Armature.xml</DocumentationFile>
+    <DocumentationFile>$(SlnDir)\.out\BeatyBit.Armature.xml</DocumentationFile>
     <NoWarn>1591,0419</NoWarn>
   </PropertyGroup>
 
@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BeatyBit.Bits" Version="0.0.20" />
+    <PackageReference Include="BeatyBit.Bits" Version="0.0.21" />
   </ItemGroup>
 
   <PropertyGroup Label="nuspec">

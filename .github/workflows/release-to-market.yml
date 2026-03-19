@@ -6,43 +6,71 @@ env:
   nugets-dir: nupkgs
 
 jobs:
-
   publish:
     runs-on: ubuntu-latest
 
+    permissions:
+      actions: read
+      contents: write
+
     steps:
-    # https://github.com/dawidd6/action-download-artifact
-    -
-      name: Download artifact
-      uses: dawidd6/action-download-artifact@v2
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        workflow:     build-and-test.yml         # Required, workflow file name or ID
-        branch:       ${{ github.ref_name }}
-        name:         Artifacts
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-    -
-      name: Read version
-      id:   version
-      uses: antifree/json-to-variables@v1.0.1
-      with:
-        filename: version.json
+      - name: Download artifact via GitHub CLI
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Find the latest successful run ID
+          $runId = gh run list --workflow "build-and-test.yml" --branch "${{ github.ref_name }}" --status success --limit 1 --json databaseId -q ".[0].databaseId"
 
-    -
-      name: Publish Nugets to nuget.org
-      run: |
-        for file in nupkgs/*.nupkg; do
-          echo "$file"
-          dotnet nuget push "$file" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
-        done
-      shell: bash
+          if ([string]::IsNullOrWhiteSpace($runId)) {
+            Write-Error "Error: No successful runs found for build-and-test.yml on branch ${{ github.ref_name }}"
+            exit 1
+          }
 
-    -
-      name: Make Github Release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name:                v${{ env.json_nuget-version }}
-        files:                   ${{ env.nugets-dir }}/*.nupkg
-        fail_on_unmatched_files: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          Write-Host "Found Run ID: $runId. Downloading artifacts..."
+
+          # Download the artifact
+          gh run download $runId --name Artifacts
+
+      - name: Read version from JSON
+        shell: pwsh
+        run: |
+          # Parse the version using native PowerShell JSON conversion
+          $json = Get-Content "version.json" -Raw | ConvertFrom-Json
+          $version = $json.'nuget-version'
+
+          if ([string]::IsNullOrWhiteSpace($version) -or $version -eq "null") {
+            Write-Error "Error: Failed to read nuget-version from version.json"
+            exit 1
+          }
+
+          # Write the version to the GitHub Environment file safely
+          "NUGET_VERSION=$version" >> $env:GITHUB_ENV
+          Write-Host "Parsed version: $version"
+
+      - name: Publish Nugets to nuget.org
+        shell: pwsh
+        run: |
+          # Find all .nupkg files and push them iteratively
+          $packages = Get-ChildItem -Path "${{ env.nugets-dir }}" -Filter "*.nupkg"
+
+          foreach ($pkg in $packages) {
+            Write-Host "Publishing $($pkg.Name)..."
+            dotnet nuget push "$($pkg.FullName)" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
+          }
+
+      - name: Make Github Release via GitHub CLI
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Extract full paths of all nuget packages into an array
+          $files = Get-ChildItem -Path "${{ env.nugets-dir }}" -Filter "*.nupkg" | Select-Object -ExpandProperty FullName
+
+          # Create the release and attach the files
+          gh release create "v${{ env.NUGET_VERSION }}" $files --title "v${{ env.NUGET_VERSION }}" --generate-notes

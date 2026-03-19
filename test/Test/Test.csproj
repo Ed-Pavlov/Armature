@@ -1,20 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\common.proj"/>
+
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(SolutionDir)\.build\beatybit.public.snk</AssemblyOriginatorKeyFile>
-    <PublicSign>true</PublicSign>
-    <LangVersion>preview</LangVersion>
-    <Nullable>enable</Nullable>
-    <TargetFrameworks>net472;net9.0</TargetFrameworks>
-    <IsPublishable>false</IsPublishable>
     <RootNamespace>Armature.Test</RootNamespace>
     <AssemblyName>Armature.Test</AssemblyName>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.3"/>
@@ -38,11 +28,5 @@
 
   <ItemGroup>
     <Compile Include=".build\AssemblyInfo.cs"/>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="$(SolutionDir)\.build\beatybit.public.snk">
-      <Link>.build\armature.public.snk</Link>
-    </None>
   </ItemGroup>
 </Project>

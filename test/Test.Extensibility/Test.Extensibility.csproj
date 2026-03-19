@@ -1,8 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\common.proj"/>
+
   <PropertyGroup>
-    <LangVersion>preview</LangVersion>
-    <TargetFrameworks>net472;net9.0</TargetFrameworks>
-    <IsPublishable>false</IsPublishable>
     <RootNamespace>Armature.Test.Extensibility</RootNamespace>
     <AssemblyName>Armature.Test.Extensibility</AssemblyName>
   </PropertyGroup>
