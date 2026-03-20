@@ -31,8 +31,8 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
     var unitPattern = new UnitPattern(type, tag);
     return new BuildingTuner<object>(this, CreateTargetNode, unitPattern);
 
-    IBuildStackPattern CreateTargetNode()
-      => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.ExactTypePattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
+    IBuildStackPattern CreateTargetNode(int weight)
+      => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
   }
 
   public ICreationTuner As<TRedirect>(object? tag = null) => As(typeof(TRedirect), tag);

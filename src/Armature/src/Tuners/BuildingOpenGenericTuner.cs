@@ -22,6 +22,6 @@ public class BuildingOpenGenericTuner : BuildingTuner<object?>
     var unitPattern = new IsGenericOfDefinition(openGenericType, tag);
     return new BuildingOpenGenericTuner(this, CreateNode, unitPattern);
 
-    IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, Weight + WeightOf.UnitPattern.OpenGenericPattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
+    IBuildStackPattern CreateNode(int weight) => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.OpenGenericPattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
   }
 }

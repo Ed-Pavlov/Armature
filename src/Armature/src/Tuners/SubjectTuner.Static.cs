@@ -8,7 +8,7 @@ namespace BeatyBit.Armature;
 public partial class SubjectTuner
 {
   /// <inheritdoc cref="ISubjectTuner.Building"/>
-  public static ISubjectTuner Building(ITuner parentTuner, Type type, object? tag, int weight = 0)
+  public static ISubjectTuner Building(ITuner parentTuner, Type type, object? tag)
   {
     if(parentTuner is null) throw new ArgumentNullException(nameof(parentTuner));
     if(type is null) throw new ArgumentNullException(nameof(type));
@@ -16,11 +16,11 @@ public partial class SubjectTuner
     var unitPattern = new UnitPattern(type, tag);
     return new SubjectTuner(parentTuner, CreateNode);
 
-    IBuildStackPattern CreateNode() => new SkipTillUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern);
+    IBuildStackPattern CreateNode(int weight) => new SkipTillUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern);
   }
 
   /// <inheritdoc cref="ISubjectTuner.Treat"/>
-  public static IBuildingTuner<object?> Treat(ITuner parentTuner, Type type, object? tag, int weight = 0)
+  public static IBuildingTuner<object?> Treat(ITuner parentTuner, Type type, object? tag)
   {
     if(parentTuner is null) throw new ArgumentNullException(nameof(parentTuner));
     if(type is null) throw new ArgumentNullException(nameof(type));
@@ -29,21 +29,21 @@ public partial class SubjectTuner
     var unitPattern = new UnitPattern(type, tag);
     return new BuildingTuner<object?>(parentTuner, CreateNode, unitPattern);
 
-    IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
+    IBuildStackPattern CreateNode(int weight) => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
   }
 
   /// <inheritdoc cref="ISubjectTuner.Treat{T}"/>
-  public static IBuildingTuner<T> Treat<T>(ITuner parentTuner, object? tag, int weight = 0)
+  public static IBuildingTuner<T> Treat<T>(ITuner parentTuner, object? tag)
   {
     var unitPattern = new UnitPattern(typeof(T), tag);
 
     return new BuildingTuner<T>(parentTuner, CreateNode, unitPattern);
 
-    IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
+    IBuildStackPattern CreateNode(int weight) => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
   }
 
   /// <inheritdoc cref="ISubjectTuner.TreatOpenGeneric"/>
-  public static IBuildingTuner<object?> TreatOpenGeneric(ITuner parentTuner, Type openGenericType, object? tag, int weight = 0)
+  public static IBuildingTuner<object?> TreatOpenGeneric(ITuner parentTuner, Type openGenericType, object? tag)
   {
     if(parentTuner is null) throw new ArgumentNullException(nameof(parentTuner));
     if(openGenericType is null) throw new ArgumentNullException(nameof(openGenericType));
@@ -52,11 +52,11 @@ public partial class SubjectTuner
 
     return new BuildingOpenGenericTuner(parentTuner, CreateNode, unitPattern);
 
-    IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.OpenGenericPattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
+    IBuildStackPattern CreateNode(int weight) => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.OpenGenericPattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
   }
 
   /// <inheritdoc cref="ISubjectTuner.TreatInheritorsOf"/>
-  public static IBuildingTuner<object?> TreatInheritorsOf(ITuner parentTuner, Type baseType, object? tag, int weight = 0)
+  public static IBuildingTuner<object?> TreatInheritorsOf(ITuner parentTuner, Type baseType, object? tag)
   {
     if(parentTuner is null) throw new ArgumentNullException(nameof(parentTuner));
     if(baseType is null) throw new ArgumentNullException(nameof(baseType));
@@ -64,17 +64,17 @@ public partial class SubjectTuner
     var unitPattern = new IsInheritorOf(baseType, tag);
     return new BuildingTuner<object?>(parentTuner, CreateNode, unitPattern);
 
-    IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.SubtypePattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
+    IBuildStackPattern CreateNode(int weight) => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.SubtypePattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
   }
 
   /// <inheritdoc cref="ISubjectTuner.TreatInheritorsOf{T}"/>
-  public static IBuildingTuner<T> TreatInheritorsOf<T>(ITuner parentTuner, object? tag, int weight = 0)
+  public static IBuildingTuner<T> TreatInheritorsOf<T>(ITuner parentTuner, object? tag)
   {
     if(parentTuner is null) throw new ArgumentNullException(nameof(parentTuner));
 
     var unitPattern = new IsInheritorOf(typeof(T), tag);
     return new BuildingTuner<T>(parentTuner, CreateNode, unitPattern);
 
-    IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.SubtypePattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
+    IBuildStackPattern CreateNode(int weight) => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.SubtypePattern + Core.WeightOf.BuildStackPattern.IfFirstUnit);
   }
 }

@@ -2,4 +2,4 @@ using BeatyBit.Armature.Core;
 
 namespace BeatyBit.Armature;
 
-public delegate IBuildStackPattern CreateNode();
+public delegate IBuildStackPattern CreateNode(int weight);

@@ -22,7 +22,7 @@ namespace Armature.Test.Extensibility.MaybePropagation.Implementation
 
       return new BuildingTuner<T>(tuner, CreateNode, unitPattern);
 
-      IBuildStackPattern CreateNode() => new IfFirstUnit(unitPattern, WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildStackPattern.IfFirstUnit);
+      IBuildStackPattern CreateNode(int weight) => new IfFirstUnit(unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern + WeightOf.BuildStackPattern.IfFirstUnit);
     }
 
     /// <summary>

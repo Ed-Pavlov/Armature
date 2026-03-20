@@ -17,6 +17,6 @@ public partial class BuildingTuner<T>
     return new SubjectTuner(Parent!, CreateNode);
 
     // Parent.Building<T>(tag)
-    IBuildStackPattern CreateNode() => new SkipTillUnit(_unitPattern, Weight + WeightOf.UnitPattern.ExactTypePattern);
+    IBuildStackPattern CreateNode(int weight) => new SkipTillUnit(_unitPattern, weight + WeightOf.UnitPattern.ExactTypePattern);
   }
 }

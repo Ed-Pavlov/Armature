@@ -23,7 +23,7 @@ public class AddOrGetNodeBenchmark
     if(pattern is null) throw new ArgumentNullException(nameof(pattern));
 
     var unitPattern = new UnitPatternWrapper(new UnitPattern(unitId.Kind, unitId.Tag));
-    return new BuildingTuner<object?>(new RootTuner(pattern), () => new SkipTillUnit(unitPattern), unitPattern);
+    return new BuildingTuner<object?>(new RootTuner(pattern), weight => new SkipTillUnit(unitPattern, weight), unitPattern);
   }
 
   private class UnitPatternWrapper : IUnitPattern

@@ -1,3 +1,3 @@
 namespace BeatyBit.Armature;
 
-public interface IAllTuner : IDependencyTuner<IAllTuner> { }
+public interface IAllTuner : IDependencyTuner<IAllTuner>;
