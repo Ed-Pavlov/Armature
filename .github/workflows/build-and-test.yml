@@ -132,7 +132,7 @@ jobs:
           } | ConvertTo-Json -Depth 5
 
           # 6. Send the PATCH request
-          Invoke-RestMethod -Uri "https://api.github.com/gists/21c1ecd6072def6cf2300fe365aa46b9" `
+          Invoke-RestMethod -Uri "https://api.github.com/gists/ad5636de8f9cf631d90e2e85d2f3019c" `
                             -Method Patch `
                             -Headers @{
                               Authorization = "token ${{ secrets.GIST_KEY }}"
