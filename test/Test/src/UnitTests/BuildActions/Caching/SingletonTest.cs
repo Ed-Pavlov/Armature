@@ -28,7 +28,7 @@ public class SingletonTest
     var target = new Singleton();
 
     // --act
-    target.PostProcess(new BuildSessionMock(new BuildResult(expected))); // call where unit was built
+    target.PostProcess(new BuildSessionMock(new BuildResult(expected))); // call where the unit was built
 
     // --assert
     var actual = new BuildSessionMock();

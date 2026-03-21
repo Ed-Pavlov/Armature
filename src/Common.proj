@@ -20,12 +20,6 @@
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
 
-  <PropertyGroup Label="signing">
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(SlnDir)\.build\beatybit.public.snk</AssemblyOriginatorKeyFile>
-    <PublicSign>true</PublicSign>
-  </PropertyGroup>
-
   <PropertyGroup Label="nuspec">
     <IsPackable>true</IsPackable>
     <MinClientVersion>2.8</MinClientVersion>

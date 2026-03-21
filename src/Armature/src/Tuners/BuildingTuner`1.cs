@@ -103,7 +103,7 @@ public partial class BuildingTuner<T> : SubjectTuner, IBuildingTuner<T>, ICreati
 
   IBuildingTuner<T> IBuildingTuner<T>.AmendWeight(int delta) => AmendWeight(delta, this);
 
-  protected IBuildStackPattern BuildStackPatternSubtree() => _leafNode ??= this.Tune(TreeRoot);
+  protected IBuildStackPattern BuildStackPatternSubtree() => _leafNode ??= this.Tune(_treeRoot);
 
   #region Internals
 
