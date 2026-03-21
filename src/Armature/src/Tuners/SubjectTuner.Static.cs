@@ -35,7 +35,7 @@ public partial class SubjectTuner
   /// <inheritdoc cref="ISubjectTuner.Treat{T}"/>
   public static IBuildingTuner<T> Treat<T>(ITuner parentTuner, object? tag)
   {
-    var unitPattern = new UnitPattern(typeof(T), tag);
+    var unitPattern = Default.CreateUnitPatternInTreatType(typeof(T), tag);
 
     return new BuildingTuner<T>(parentTuner, CreateNode, unitPattern);
 

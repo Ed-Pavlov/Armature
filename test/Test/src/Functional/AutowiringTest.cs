@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using BeatyBit.Armature;
 using BeatyBit.Armature.Core;
 using BeatyBit.Armature.Core.Sdk;
+using BeatyBit.Armature.Sdk;
+using BeatyBit.Lifetimes;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -139,6 +142,39 @@ namespace Armature.Test.Functional
 
       // --assert
       actual.Should().ThrowExactly<ArmatureException>();
+    }
+
+    private class OverrideDefaultUnitPattern : Default
+    {
+      public static void Override(Lifetime lifetime) => _ = new OverrideDefaultUnitPattern(lifetime);
+      private OverrideDefaultUnitPattern(Lifetime lifetime)
+        => lifetime.Bracket(
+          () =>
+          {
+            var prevValue = CreateUnitPatternInTreatType;
+            CreateUnitPatternInTreatType = (type, tag) => new IsAssignableFromType(type, tag);
+            return prevValue;
+          },
+          prevValue => CreateUnitPatternInTreatType = prevValue);
+    }
+
+    [Test]
+    public void should_wire_type_assignable_to_interface()
+    {
+      using var disposable = Lifetime.CreateDisposable();
+
+      // --arrange
+      var lifetime = (Lifetime) disposable;
+      OverrideDefaultUnitPattern.Override(lifetime);
+
+      var target = CreateTarget();
+      target.Treat<Stream>().AsInstance(new MemoryStream());
+
+      // --act
+      var actual = target.Build<IDisposable>();
+
+      // --assert
+      actual.Should().BeOfType<MemoryStream>();
     }
 
     private static Builder CreateTarget()

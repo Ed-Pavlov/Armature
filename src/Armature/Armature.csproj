@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <Import Project="..\common.proj" />
 
   <PropertyGroup Label="project">
