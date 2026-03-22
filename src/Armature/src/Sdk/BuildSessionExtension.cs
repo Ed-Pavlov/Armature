@@ -93,6 +93,8 @@ public static class BuildSessionExtension
   /// </summary>
   public static object? BuildPropertyArgument(this IBuildSession buildSession, PropertyInfo propertyInfo)
   {
+    if(buildSession is null) throw new ArgumentNullException(nameof(buildSession));
+
     var buildResult = buildSession.BuildUnit(Unit.By(propertyInfo, ServiceTag.Argument));
 
     return buildResult.HasValue

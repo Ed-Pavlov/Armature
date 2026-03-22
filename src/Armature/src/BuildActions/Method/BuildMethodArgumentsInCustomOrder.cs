@@ -16,6 +16,9 @@ public record BuildMethodArgumentsInCustomOrder : IBuildAction
 {
   private readonly Func<ParameterInfo[], IEnumerable<Tuple<int, ParameterInfo>>> _reorder;
 
+  /// <param name="reorder">A method that reorders parameters to control the build order.
+  /// It should return a sequence of tuples, each containing the original index of a parameter and the parameter info.
+  /// The build process will follow the order of the returned sequence.</param>
   [PublicAPI]
   public BuildMethodArgumentsInCustomOrder(Func<ParameterInfo[], IEnumerable<Tuple<int, ParameterInfo>>> reorder)
     => _reorder = reorder ?? throw new ArgumentNullException(nameof(reorder));
